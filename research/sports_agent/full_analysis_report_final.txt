@@ -1,0 +1,45 @@
+========================================
+🚀 MLB QUANT 3.1 | HARDENED LOGIC REVERSION
+DG: 145020
+========================================
+Fetching data from The Odds API (Pinnacle/EU)...
+Fetching Daily DFS Lineups from RotoWire...
+Fetching DraftKings Salaries...
+Fetching Opening Odds cache...
+Fetching Betting Splits...
+Fetching Stadium Context (Weather/Umpires)...
+Evaluating Player Prop Movements...
+Loading MLB Advanced Stats...
+Scouting Prop Alpha Signals...
+Analyzing games for DraftGroup 145020...
+
+  [Guardrail] Skipping Max Scherzer: Volume/Ceiling risk.
+  [Guardrail] Skipping Justin Wrobleski: Volume/Ceiling risk.
+  [Guardrail] Skipping Erick Fedde: Volume/Ceiling risk.
+  [Guardrail] Skipping Brandon Young: Volume/Ceiling risk.
+  [Guardrail] Skipping Casey Mize: Volume/Ceiling risk.
+  [Guardrail] Skipping Logan Gilbert: Volume/Ceiling risk.
+  [Guardrail] Skipping Ryan Feltner: Volume/Ceiling risk.
+  [Guardrail] Skipping Cody Bolton: Volume/Ceiling risk.
+  [Guardrail] Skipping Jose Soriano: Volume/Ceiling risk.
+  [Guardrail] Skipping Adrian Houser: Volume/Ceiling risk.
+
+🏆 SE FEATURE PLAY (Hardened Logic)
+  [Mandate] Primary Stack: COL. Locking Rumfield at 1B.
+
+##############################
+##  FINAL HARDENED STRATEGY  ##
+##############################
+Pitching: Sale/Painter/deGrom/Ryan Pool Only
+Structure: Path B (5-1-1-1) | One-Offs: ⚔️🏦 Dual-Gate
+  1B  | TJ Rumfield        (COL) | $2800 ⚔️
+  2B  | Willi Castro       (COL) | $3200 
+  3B  | R. Devers          (SF) | $5300 
+  C   | H. Goodman         (COL) | $4400 
+  OF  | Kyle Tucker        (LAD) | $5700 ⚔️
+  OF  | M. Moniak          (COL) | $3200 
+  OF  | T. Johnston        (COL) | $3000 
+  P   | Chris Sale         (ATL) | $9700 
+  P   | Joe Ryan           (MIN) | $8200 
+  SS  | Corey Seager       (TEX) | $4400 
+  TOTAL SALARY: $49900

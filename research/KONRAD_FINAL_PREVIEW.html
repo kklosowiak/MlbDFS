@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KONRAD SHARP DFS | FINAL HANDOVER PREVIEW</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto+Mono&display=swap');
+        
+        :root {
+            --bg: #050505;
+            --accent: #00FFFF;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --card-bg: #111;
+        }
+        
+        body { background: var(--bg); color: #e0e0e0; font-family: 'Outfit', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 1300px; }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header h1 { margin: 0; font-weight: 800; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+        
+        /* Tabs System */
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; width: 100%; }
+        .tab-btn {
+            flex: 1; padding: 18px; background: var(--glass); border: 1px solid var(--border);
+            color: #fff; cursor: pointer; border-radius: 12px; font-weight: 700;
+            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .tab-btn.active {
+            background: var(--accent); color: #000; border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        }
+        .tab-content { display: none; width: 100%; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Matrix Table Styles */
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { margin-top: 0; color: #fff; font-size: 1.4rem; border-left: 4px solid var(--accent); padding-left: 15px; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; opacity: 0.5; font-size: 0.75rem; padding: 15px; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 18px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+        
+        .score { font-family: 'Roboto Mono', monospace; font-weight: 800; color: var(--accent); font-size: 1.2rem; }
+        .name { font-weight: 700; color: #fff; }
+        .vs { opacity: 0.4; font-size: 0.8rem; margin: 0 5px; }
+        
+        /* CYAN GLOW / OVERDRIVE (> 100) */
+        .god-tier { 
+            background: rgba(0, 255, 255, 0.05) !important;
+            border-left: 4px solid var(--accent) !important;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        .glow-text {
+            color: var(--accent) !important;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8) !important;
+        }
+
+        .signal-pill {
+            font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px;
+            text-transform: uppercase; background: #000; border: 1px solid var(--accent); color: var(--accent);
+            margin-right: 5px;
+        }
+        .metric { font-family: 'Roboto Mono', monospace; font-size: 0.85rem; color: #888; }
+        .metric b { color: #fff; }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap; gap: 12px; margin-bottom: 30px; width: 100%; justify-content: center;
+        }
+        .legend-item {
+            background: var(--glass); padding: 8px 15px; border-radius: 20px; font-size: 0.75rem;
+            border: 1px solid var(--border); color: #888;
+        }
+        .legend-item b { color: var(--accent); }
+        .legend-overdrive { border-color: var(--accent); color: var(--accent); font-weight: 800; box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KONRAD SHARP DFS | v4.2</h1>
+            <div style="text-align: right;">
+                <small style="opacity: 0.5;">FINAL HANDOVER: PURE ALPHA BUILD</small><br>
+                <small style="color: var(--accent);">📡 HYBRID-RELATIVE 40/30/30</small>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item legend-overdrive">⚡ <b>KONRAD OVERDRIVE:</b> Score > 100.0. God-Tier conviction where Physics & Market converge.</div>
+            <div class="legend-item">🎯 <b>TARGET:</b> Top Signal & Prop Confidence. Heavy alignment between xwOBA and Betting Market lines.</div>
+            <div class="legend-item">🔥 <b>ELITE:</b> Upper 5% xwOBA/SIERA. Performance-based signal for 95th percentile historical stats.</div>
+            <div class="legend-item">🎰 <b>SHARP:</b> Market Handle Convergence. Massive professional handle detected on Sharp books.</div>
+            <div class="legend-item">🚂 <b>TRAIN:</b> Aggressive Line Movement. Significant "Steam Move" detected in Moneyline or Prop markets.</div>
+            <div class="legend-item">📈 <b>ALPHA:</b> High Matchup-Relative Variance. Positive deviation from baseline due to specific opponent weakness.</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
+            <button class="tab-btn" onclick="openTab(event, 'hitters')">Hitters Matrix</button>
+            <button class="tab-btn" onclick="openTab(event, 'teams')">Teams Matrix</button>
+        </div>
+
+        <div id="pitchers" class="tab-content active">
+            <div class="card">
+                <h2>Elite Pitcher Alpha Matrix</h2>
+                <table>
+                    <thead><tr><th>OMEGA</th><th>SIGNALS</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>PHYSICS</th><th>MARKET</th></tr></thead>
+                    <tbody>
+                        <tr class="god-tier">
+                            <td class="score glow-text">105.4</td>
+                            <td><span class="signal-pill">🎯 TARGET</span><span class="signal-pill">🚂 TRAIN</span></td>
+                            <td class="name">Paul Skenes</td>
+                            <td><span class="vs">vs</span> CHC</td>
+                            <td class="metric">O 7.5 (-140)</td>
+                            <td class="metric">P: <b>29.2</b></td>
+                            <td class="metric">M: <b>26.2</b></td>
+                        </tr>
+                        <tr>
+                            <td class="score">94.8</td>
+                            <td><span class="signal-pill">📈 ALPHA</span></td>
+                            <td class="name">Zack Wheeler</td>
+                            <td><span class="vs">vs</span> MIA</td>
+                            <td class="metric">O 6.5 (-115)</td>
+                            <td class="metric">P: <b>28.5</b></td>
+                            <td class="metric">M: <b>21.3</b></td>
+                        </tr>
+                        <tr>
+                            <td class="score">92.1</td>
+                            <td><span class="signal-pill">🔥 ELITE</span></td>
+                            <td class="name">Tarik Skubal</td>
+                            <td><span class="vs">vs</span> CWS</td>
+                            <td class="metric">O 8.5 (+110)</td>
+                            <td class="metric">P: <b>29.9</b></td>
+                            <td class="metric">M: <b>17.2</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="hitters" class="tab-content">
+            <div class="card">
+                <h2>Power & Alpha Matrix</h2>
+                <table>
+                    <thead><tr><th>OMEGA</th><th>SIGNALS</th><th>PLAYER</th><th>TEAM</th><th>HR-PROP</th><th>PHYSICS</th><th>MARKET</th></tr></thead>
+                    <tbody>
+                        <tr class="god-tier">
+                            <td class="score glow-text">110.2</td>
+                            <td><span class="signal-pill">🎯 TARGET</span><span class="signal-pill">🔥 ELITE</span></td>
+                            <td class="name">Shohei Ohtani</td>
+                            <td>LAD</td>
+                            <td class="metric">O 0.5 (+350)</td>
+                            <td class="metric">P: <b>29.9</b></td>
+                            <td class="metric">M: <b>30.0</b></td>
+                        </tr>
+                        <tr>
+                            <td class="score">98.5</td>
+                            <td><span class="signal-pill">🎰 SHARP</span><span class="signal-pill">📈 ALPHA</span></td>
+                            <td class="name">Aaron Judge</td>
+                            <td>NYY</td>
+                            <td class="metric">O 0.5 (+220)</td>
+                            <td class="metric">P: <b>28.8</b></td>
+                            <td class="metric">M: <b>24.7</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="teams" class="tab-content">
+            <div class="card">
+                <h2>Market Sentiment Matrix</h2>
+                <table>
+                    <thead><tr><th>OMEGA</th><th>SIGNALS</th><th>TEAM</th><th>vs PITCHER</th><th>PHYSICS</th><th>MARKET</th></tr></thead>
+                    <tbody>
+                        <tr class="god-tier">
+                            <td class="score glow-text">102.0</td>
+                            <td><span class="signal-pill">🚂 TRAIN</span></td>
+                            <td class="name">Baltimore Orioles</td>
+                            <td><span class="vs">vs</span> Crochet</td>
+                            <td class="metric">P: 22.0</td>
+                            <td class="metric">M: 30.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>

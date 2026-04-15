@@ -1,0 +1,179 @@
+========================================
+🚀 MLB QUANT 3.0 | FULL REPORT
+DG: Main Slate
+========================================
+Auto-Detecting 'Main Slate': 14 games between 17:30 and 20:00 UTC
+  Games found for active slate: 10
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! NEUTRAL ODDS (API 401) !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Fetching Daily DFS Lineups from RotoWire...
+Fetching Opening Odds cache...
+Fetching Betting Splits via Playwright...
+Fetching Stadium Context (Weather/Umpires)...
+Evaluating Player Prop Movements for Prop Alpha...
+Loading Individual Player Stats...
+Computing FantasyLabs RLM Scores...
+Analyzing 10 games for target slate...
+
+
+--- Matchup: Chicago Cubs @ Cleveland Guardians ---
+ACTION: PASS
+Proj Score: Chicago Cubs 5.1 | Cleveland Guardians 4.84
+SP: Edward Cabrera vs Slade Cecconi
+Elite: Plt +0.0 | Sty +0.1
+Park: 1.0x at 60°F
+------------------------------
+
+--- Matchup: Los Angeles Dodgers @ Washington Nationals ---
+ACTION: BET Los Angeles Dodgers (Edge: +16.8%)
+Proj Score: Los Angeles Dodgers 5.09 | Washington Nationals 3.58
+SP: Roki Sasaki vs Foster Griffin
+Elite: Plt +0 | Sty +0
+Park: 1.0x at 60°F
+------------------------------
+
+--- Matchup: Baltimore Orioles @ Pittsburgh Pirates ---
+ACTION: PASS
+Proj Score: Baltimore Orioles 5.04 | Pittsburgh Pirates 4.66
+SP: Chris Bassitt vs Braxton Ashcraft
+Elite: Plt +0 | Sty +0
+Park: 0.92x at 60°F
+------------------------------
+
+--- Matchup: San Diego Padres @ Boston Red Sox ---
+ACTION: BET San Diego Padres (Edge: +11.1%)
+Proj Score: San Diego Padres 5.56 | Boston Red Sox 4.47
+SP: Walker Buehler vs Ranger Suarez
+Elite: Plt +0 | Sty +0
+Park: 1.06x at 60°F
+------------------------------
+
+--- Matchup: Miami Marlins @ New York Yankees ---
+ACTION: BET Miami Marlins (Edge: +6.6%)
+Proj Score: Miami Marlins 5.78 | New York Yankees 5.14
+SP: Chris Paddack vs Max Fried
+Elite: Plt +0 | Sty +0
+Park: 1.04x at 60°F
+------------------------------
+
+--- Matchup: Tampa Bay Rays @ Minnesota Twins ---
+ACTION: PASS
+Proj Score: Tampa Bay Rays 4.42 | Minnesota Twins 5.15
+SP: Nick Martinez vs S. Woods Richardson
+Elite: Plt +0 | Sty +0
+Park: 1.0x at 60°F
+------------------------------
+
+--- Matchup: Toronto Blue Jays @ Chicago White Sox ---
+ACTION: PASS
+Proj Score: Toronto Blue Jays 4.28 | Chicago White Sox 5.04
+SP: Eric Lauer vs Davis Martin
+Elite: Plt +0 | Sty +0
+Park: 1.0x at 60°F
+------------------------------
+   ✨ ELITE STUFF (H/P): Kris Bubic resilience override active.
+
+--- Matchup: Milwaukee Brewers @ Kansas City Royals ---
+ACTION: BET Milwaukee Brewers (Edge: +9.7%)
+Proj Score: Milwaukee Brewers 5.87 | Kansas City Royals 4.88
+SP: Kyle Harrison vs Kris Bubic
+Elite: Plt +0.0 | Sty +0
+Park: 1.0x at 60°F
+------------------------------
+   ✨ ELITE STUFF (V/P): Chase Burns resilience override active.
+
+--- Matchup: Cincinnati Reds @ Texas Rangers ---
+ACTION: BET Texas Rangers (Edge: +14.2%)
+Proj Score: Cincinnati Reds 4.13 | Texas Rangers 6.19
+SP: Chase Burns vs Jack Leiter
+Elite: Plt +0 | Sty +0
+Park: 0.96x at 60°F
+------------------------------
+
+--- Matchup: Philadelphia Phillies @ Colorado Rockies ---
+ACTION: BET Philadelphia Phillies (Edge: +7.8%)
+Proj Score: Philadelphia Phillies 5.83 | Colorado Rockies 5.05
+SP: Taijuan Walker vs Tomoyuki Sugano
+Elite: Plt +0 | Sty +0
+Park: 1.35x at 60°F
+------------------------------
+
+##############################
+##  DAILY SHARPSHEET & DFS  ##
+##############################
+
+========================= 1. RLM SUMMARY =========================
+⚠️ RLM ANALYSIS DISABLED: No live market prices (Neutral Mode).
+
+========================= 2. TOP SHARP PLAYER PROPS =========================
+No high-confidence prop moves detected.
+
+========================= 3. TOP TEAM STACKS (DRAFKINGS) =========================
+
+🔥 CONTRARIAN / GPP STACKS (High Runs + Low Visibility):
+🚀 Chicago Cubs: Proj 5.1 Runs | Contrarian Score: 0
+🚀 Cleveland Guardians: Proj 4.84 Runs | Contrarian Score: 0
+🚀 Los Angeles Dodgers: Proj 5.09 Runs | Contrarian Score: 0
+
+🛡️ CASH / VALUE STACKS (High Efficiency):
+💰 Texas Rangers: Proj 6.19 Runs
+💰 Milwaukee Brewers: Proj 5.87 Runs
+💰 Philadelphia Phillies: Proj 5.83 Runs
+
+========================= 4. TOP INDIVIDUAL PLAYS =========================
+(Ranked by projection + contrarian leverage | Tags show WHY)
+
+  #1  Jose Ramirez           (Cleveland Guardians      ) $0     [VALUE]
+  #2  Oneil Cruz             (Pittsburgh Pirates       ) $0     [VALUE]
+  #3  Trea Turner            (Philadelphia Phillies    ) $0     [TOP ENV]
+  #4  CJ Abrams              (Washington Nationals     ) $0     [VALUE]
+  #5  Nico Hoerner           (Chicago Cubs             ) $0     [GREAT ENV]
+  #6  Trevor Story           (Boston Red Sox           ) $0     [VALUE]
+  #7  Matt Shaw              (Chicago Cubs             ) $0     [GREAT ENV]
+  #8  Kyle Tucker            (Los Angeles Dodgers      ) $0     [GREAT ENV]
+  #9  Jarren Duran           (Boston Red Sox           ) $0     [VALUE]
+  #10 Brice Turang           (Milwaukee Brewers        ) $0     [TOP ENV | STRONG xwOBA]
+
+========================= 5. SAMPLE LINEUPS =========================
+
+```
+[🛡️ SAFE/CASH LINEUP - MAX VALUE]
+  TOTAL SALARY: $0
+```
+
+```
+[🎯 UPSIDE/GPP LINEUPS - CONTRARIAN STACKS (Max 1 Chalk Player)]
+
+--- GPP OPTION 1 (Stacking Chicago Cubs) ---
+  3B  | Jose Ramirez         | $0     | Con:    0 | 
+  SS  | Trea Turner          | $0     | Con:    0 | 
+  2B  | Nico Hoerner         | $0     | Con:    0 | 
+  TOTAL SALARY: $0
+
+--- GPP OPTION 2 (Stacking Cleveland Guardians) ---
+  3B  | Jose Ramirez         | $0     | Con:    0 | 
+  SS  | Trea Turner          | $0     | Con:    0 | 
+  2B  | Nico Hoerner         | $0     | Con:    0 | 
+  TOTAL SALARY: $0
+
+--- GPP OPTION 3 (Stacking Los Angeles Dodgers) ---
+  3B  | Jose Ramirez         | $0     | Con:    0 | 
+  SS  | Trea Turner          | $0     | Con:    0 | 
+  2B  | Nico Hoerner         | $0     | Con:    0 | 
+  TOTAL SALARY: $0
+
+--- GPP OPTION 4 (Stacking Washington Nationals) ---
+  3B  | Jose Ramirez         | $0     | Con:    0 | 
+  SS  | Trea Turner          | $0     | Con:    0 | 
+  2B  | Nico Hoerner         | $0     | Con:    0 | 
+  TOTAL SALARY: $0
+```
+
+
+############################################################
+============================================================
+
+📱 Pushing Analysis to Telegram...

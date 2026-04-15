@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OMEGA v4.2 STATIC PREVIEW</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Roboto+Mono&display=swap');
+        
+        body { 
+            background: #050505; 
+            color: #e0e0e0; 
+            font-family: 'Outfit', sans-serif; 
+            padding: 40px; 
+            max-width: 1200px; 
+            margin: auto;
+        }
+        
+        h1 { 
+            text-align: center; 
+            color: #00FFFF; 
+            text-transform: uppercase; 
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .card { 
+            background: linear-gradient(145deg, #111, #080808);
+            border-radius: 12px; 
+            padding: 24px; 
+            border: 1px solid #222; 
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        /* THE GLOW EFFECT - OMEGA OVERDRIVE (> 100 SCORE) */
+        .glow {
+            border: 2px solid #00FFFF !important;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+        
+        .highlight { border-color: #FFD700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
+        .dim { opacity: 0.4; filter: grayscale(1); }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .score { 
+            font-family: 'Roboto Mono', monospace;
+            font-size: 42px; 
+            font-weight: 700; 
+            color: #00FFFF; 
+        }
+        
+        .player-info {
+            border-bottom: 1px solid #333;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .name { font-size: 22px; font-weight: 700; color: #fff; }
+        .team-pos { font-size: 14px; color: #00FFFF; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .signals {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .signal-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            background: #000;
+        }
+        
+        .signal-flame { color: #FF4500; border: 1px solid #FF4500; }
+        .signal-target { color: #00FFFF; border: 1px solid #00FFFF; }
+        .signal-jackpot { color: #FFD700; border: 1px solid #FFD700; }
+        .signal-train { color: #ADFF2F; border: 1px solid #ADFF2F; }
+        
+        .metrics {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .metric-val { color: #fff; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <h1>OMEGA v4.2 PRODUCTION</h1>
+    <div class="subtitle">Hybrid-Relative Model: 40/30/30 Archetype</div>
+    
+    <div class="grid">
+        
+        <!-- EXAMPLE 1: OVERDRIVE GLOW STATE -->
+        <div class="card glow">
+            <div class="score-container">
+                <div class="score">108.4</div>
+                <div class="signals">
+                    <span class="signal-pill signal-target">TARGET</span>
+                    <span class="signal-pill signal-flame">FLAME</span>
+                </div>
+            </div>
+            <div class="player-info">
+                <div class="name">Shohei Ohtani</div>
+                <div class="team-pos">LAD | DH</div>
+            </div>
+            <div class="metrics">
+                <div>PHYSICS: <span class="metric-val">29.2</span></div>
+                <div>MARKET: <span class="metric-val">30.0</span></div>
+            </div>
+        </div>
+
+        <!-- EXAMPLE 2: PITCHER GLOW STATE -->
+        <div class="card glow">
+            <div class="score-container">
+                <div class="score">103.1</div>
+                <div class="signals">
+                    <span class="signal-pill signal-train">TRAIN</span>
+                </div>
+            </div>
+            <div class="player-info">
+                <div class="name">Paul Skenes</div>
+                <div class="team-pos">PIT | SP</div>
+            </div>
+            <div class="metrics">
+                <div>PHYSICS: <span class="metric-val">28.5</span></div>
+                <div>MARKET: <span class="metric-val">29.6</span></div>
+            </div>
+        </div>
+
+        <!-- EXAMPLE 3: HIGH VALUE HIGHLIGHT -->
+        <div class="card highlight">
+            <div class="score-container">
+                <div class="score">94.8</div>
+                <div class="signals">
+                    <span class="signal-pill signal-jackpot">JACKPOT</span>
+                </div>
+            </div>
+            <div class="player-info">
+                <div class="name">Aaron Judge</div>
+                <div class="team-pos">NYY | OF</div>
+            </div>
+            <div class="metrics">
+                <div>PHYSICS: <span class="metric-val">27.3</span></div>
+                <div>MARKET: <span class="metric-val">27.5</span></div>
+            </div>
+        </div>
+
+        <!-- EXAMPLE 4: NEUTRAL STATE -->
+        <div class="card">
+            <div class="score-container">
+                <div class="score">78.2</div>
+                <div class="signals"></div>
+            </div>
+            <div class="player-info">
+                <div class="name">Luis Arraez</div>
+                <div class="team-pos">SD | 2B</div>
+            </div>
+            <div class="metrics">
+                <div>PHYSICS: <span class="metric-val">19.2</span></div>
+                <div>MARKET: <span class="metric-val">19.0</span></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

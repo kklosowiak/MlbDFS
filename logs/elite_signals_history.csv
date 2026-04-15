@@ -1,0 +1,8 @@
+timestamp,team,signal_type,ml_move,tt_move,public_bets_pct,k_prop,final_score,is_elite
+2026-04-07 22:14:00,CHC,Hitter/Pitcher,18,0.5,10,85,94.75,True
+2026-04-07 22:32:34,Minnesota Twins,Signal,600,1.0,100,0,0.0,False
+2026-04-07 22:32:34,Colorado Rockies,Signal,70,-1.0,100,0,0.0,False
+2026-04-07 22:32:34,Boston Red Sox,Signal,17,-0.5,100,0,0.0,False
+2026-04-07 22:32:56,Minnesota Twins,Signal,600,1.0,21,0,0.0,True
+2026-04-07 22:32:56,Colorado Rockies,Signal,70,-1.0,10,0,0.0,False
+2026-04-07 22:32:56,Boston Red Sox,Signal,17,-0.5,100,0,0.0,False

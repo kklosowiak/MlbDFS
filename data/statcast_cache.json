@@ -1,0 +1,1514 @@
+{
+    "andy pages": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.417,
+        "ops": 1.186,
+        "hr": 5,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.654999"
+    },
+    "chandler simpson": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.411,
+        "ops": 0.923,
+        "hr": 0,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655022"
+    },
+    "yandy diaz": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.362,
+        "ops": 1.025,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655035"
+    },
+    "ben rice": {
+        "team": "New York Yankees",
+        "avg": 0.362,
+        "ops": 1.253,
+        "hr": 4,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655041"
+    },
+    "xavier edwards": {
+        "team": "Miami Marlins",
+        "avg": 0.359,
+        "ops": 0.93,
+        "hr": 1,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655047"
+    },
+    "wilyer abreu": {
+        "team": "Boston Red Sox",
+        "avg": 0.355,
+        "ops": 1.0,
+        "hr": 3,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655056"
+    },
+    "oneil cruz": {
+        "team": "Pittsburgh Pirates",
+        "avg": 0.355,
+        "ops": 1.074,
+        "hr": 5,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655062"
+    },
+    "colt keith": {
+        "team": "Detroit Tigers",
+        "avg": 0.34,
+        "ops": 0.847,
+        "hr": 0,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655067"
+    },
+    "mauricio dubon": {
+        "team": "Atlanta Braves",
+        "avg": 0.339,
+        "ops": 0.923,
+        "hr": 2,
+        "pa": 63,
+        "timestamp": "2026-04-14T15:21:53.655072"
+    },
+    "brandon nimmo": {
+        "team": "Texas Rangers",
+        "avg": 0.338,
+        "ops": 0.957,
+        "hr": 3,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655078"
+    },
+    "jordan walker": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.333,
+        "ops": 1.161,
+        "hr": 8,
+        "pa": 66,
+        "timestamp": "2026-04-14T15:21:53.655083"
+    },
+    "taylor ward": {
+        "team": "Baltimore Orioles",
+        "avg": 0.333,
+        "ops": 0.919,
+        "hr": 0,
+        "pa": 75,
+        "timestamp": "2026-04-14T15:21:53.655089"
+    },
+    "cj abrams": {
+        "team": "Washington Nationals",
+        "avg": 0.327,
+        "ops": 1.024,
+        "hr": 5,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655094"
+    },
+    "kevin mcgonigle": {
+        "team": "Detroit Tigers",
+        "avg": 0.322,
+        "ops": 0.92,
+        "hr": 1,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655099"
+    },
+    "yordan alvarez": {
+        "team": "Houston Astros",
+        "avg": 0.321,
+        "ops": 1.201,
+        "hr": 6,
+        "pa": 76,
+        "timestamp": "2026-04-14T15:21:53.655104"
+    },
+    "ryan ohearn": {
+        "team": "Pittsburgh Pirates",
+        "avg": 0.321,
+        "ops": 0.939,
+        "hr": 3,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655110"
+    },
+    "corbin carroll": {
+        "team": "Arizona Diamondbacks",
+        "avg": 0.321,
+        "ops": 1.026,
+        "hr": 2,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655115"
+    },
+    "vladimir guerrero": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.321,
+        "ops": 0.88,
+        "hr": 1,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655121"
+    },
+    "liam hicks": {
+        "team": "Miami Marlins",
+        "avg": 0.319,
+        "ops": 0.902,
+        "hr": 3,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655126"
+    },
+    "angel martinez": {
+        "team": "Cleveland Guardians",
+        "avg": 0.319,
+        "ops": 0.896,
+        "hr": 2,
+        "pa": 53,
+        "timestamp": "2026-04-14T15:21:53.655131"
+    },
+    "carson kelly": {
+        "team": "Chicago Cubs",
+        "avg": 0.317,
+        "ops": 0.83,
+        "hr": 0,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655137"
+    },
+    "otto lopez": {
+        "team": "Miami Marlins",
+        "avg": 0.317,
+        "ops": 0.881,
+        "hr": 2,
+        "pa": 66,
+        "timestamp": "2026-04-14T15:21:53.655142"
+    },
+    "max muncy": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.226,
+        "ops": 0.77,
+        "hr": 4,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655654"
+    },
+    "giancarlo stanton": {
+        "team": "New York Yankees",
+        "avg": 0.315,
+        "ops": 0.809,
+        "hr": 1,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655153"
+    },
+    "teoscar hernandez": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.314,
+        "ops": 0.906,
+        "hr": 3,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655158"
+    },
+    "christian yelich": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.314,
+        "ops": 0.826,
+        "hr": 1,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655163"
+    },
+    "jeff mcneil": {
+        "team": "Athletics",
+        "avg": 0.313,
+        "ops": 0.74,
+        "hr": 0,
+        "pa": 52,
+        "timestamp": "2026-04-14T15:21:53.655168"
+    },
+    "jose altuve": {
+        "team": "Houston Astros",
+        "avg": 0.311,
+        "ops": 0.924,
+        "hr": 2,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655174"
+    },
+    "ernie clement": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.311,
+        "ops": 0.716,
+        "hr": 0,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655179"
+    },
+    "brendan donovan": {
+        "team": "Seattle Mariners",
+        "avg": 0.311,
+        "ops": 1.007,
+        "hr": 3,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655183"
+    },
+    "sal stewart": {
+        "team": "Cincinnati Reds",
+        "avg": 0.309,
+        "ops": 1.035,
+        "hr": 4,
+        "pa": 69,
+        "timestamp": "2026-04-14T15:21:53.655189"
+    },
+    "jo adell": {
+        "team": "Los Angeles Angels",
+        "avg": 0.309,
+        "ops": 0.715,
+        "hr": 1,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655194"
+    },
+    "tj rumfield": {
+        "team": "Colorado Rockies",
+        "avg": 0.308,
+        "ops": 0.843,
+        "hr": 2,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655300"
+    },
+    "maikel garcia": {
+        "team": "Kansas City Royals",
+        "avg": 0.306,
+        "ops": 0.864,
+        "hr": 2,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655305"
+    },
+    "shea langeliers": {
+        "team": "Athletics",
+        "avg": 0.306,
+        "ops": 0.919,
+        "hr": 5,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655310"
+    },
+    "justin crawford": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.306,
+        "ops": 0.799,
+        "hr": 0,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655315"
+    },
+    "luis arraez": {
+        "team": "San Francisco Giants",
+        "avg": 0.304,
+        "ops": 0.732,
+        "hr": 0,
+        "pa": 63,
+        "timestamp": "2026-04-14T15:21:53.655320"
+    },
+    "willson contreras": {
+        "team": "Boston Red Sox",
+        "avg": 0.304,
+        "ops": 0.943,
+        "hr": 3,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655325"
+    },
+    "brandon marsh": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.304,
+        "ops": 0.815,
+        "hr": 2,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655330"
+    },
+    "drake baldwin": {
+        "team": "Atlanta Braves",
+        "avg": 0.3,
+        "ops": 0.915,
+        "hr": 5,
+        "pa": 78,
+        "timestamp": "2026-04-14T15:21:53.655334"
+    },
+    "chase delauter": {
+        "team": "Cleveland Guardians",
+        "avg": 0.3,
+        "ops": 1.059,
+        "hr": 5,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655340"
+    },
+    "nico hoerner": {
+        "team": "Chicago Cubs",
+        "avg": 0.3,
+        "ops": 0.87,
+        "hr": 1,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655345"
+    },
+    "matt olson": {
+        "team": "Atlanta Braves",
+        "avg": 0.299,
+        "ops": 0.979,
+        "hr": 4,
+        "pa": 76,
+        "timestamp": "2026-04-14T15:21:53.655350"
+    },
+    "ceddanne rafaela": {
+        "team": "Boston Red Sox",
+        "avg": 0.298,
+        "ops": 0.748,
+        "hr": 1,
+        "pa": 52,
+        "timestamp": "2026-04-14T15:21:53.655357"
+    },
+    "will smith": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.298,
+        "ops": 0.826,
+        "hr": 2,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655361"
+    },
+    "brice turang": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.298,
+        "ops": 1.058,
+        "hr": 3,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655366"
+    },
+    "luke raley": {
+        "team": "Seattle Mariners",
+        "avg": 0.294,
+        "ops": 0.914,
+        "hr": 3,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655371"
+    },
+    "carlos correa": {
+        "team": "Houston Astros",
+        "avg": 0.291,
+        "ops": 0.761,
+        "hr": 1,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655375"
+    },
+    "matt chapman": {
+        "team": "San Francisco Giants",
+        "avg": 0.29,
+        "ops": 0.762,
+        "hr": 1,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655380"
+    },
+    "bryan reynolds": {
+        "team": "Pittsburgh Pirates",
+        "avg": 0.29,
+        "ops": 0.859,
+        "hr": 3,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655385"
+    },
+    "ozzie albies": {
+        "team": "Atlanta Braves",
+        "avg": 0.288,
+        "ops": 0.757,
+        "hr": 3,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655389"
+    },
+    "daylen lile": {
+        "team": "Washington Nationals",
+        "avg": 0.286,
+        "ops": 0.667,
+        "hr": 0,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655393"
+    },
+    "cam smith": {
+        "team": "Houston Astros",
+        "avg": 0.283,
+        "ops": 0.868,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655398"
+    },
+    "christian walker": {
+        "team": "Houston Astros",
+        "avg": 0.283,
+        "ops": 0.901,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655403"
+    },
+    "troy johnston": {
+        "team": "Colorado Rockies",
+        "avg": 0.283,
+        "ops": 0.805,
+        "hr": 2,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655408"
+    },
+    "elly de la cruz": {
+        "team": "Cincinnati Reds",
+        "avg": 0.281,
+        "ops": 0.924,
+        "hr": 5,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655412"
+    },
+    "william contreras": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.28,
+        "ops": 0.87,
+        "hr": 2,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655417"
+    },
+    "luis robert": {
+        "team": "New York Mets",
+        "avg": 0.28,
+        "ops": 0.819,
+        "hr": 2,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655422"
+    },
+    "andres gimenez": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.278,
+        "ops": 0.772,
+        "hr": 2,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655428"
+    },
+    "james wood": {
+        "team": "Washington Nationals",
+        "avg": 0.277,
+        "ops": 0.997,
+        "hr": 5,
+        "pa": 78,
+        "timestamp": "2026-04-14T15:21:53.655433"
+    },
+    "bryce harper": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.276,
+        "ops": 0.899,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655437"
+    },
+    "freddie freeman": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.273,
+        "ops": 0.809,
+        "hr": 3,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655442"
+    },
+    "jesus sanchez": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.273,
+        "ops": 0.804,
+        "hr": 2,
+        "pa": 49,
+        "timestamp": "2026-04-14T15:21:53.655447"
+    },
+    "randy arozarena": {
+        "team": "Seattle Mariners",
+        "avg": 0.271,
+        "ops": 0.776,
+        "hr": 1,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655451"
+    },
+    "alec burleson": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.271,
+        "ops": 0.804,
+        "hr": 2,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655456"
+    },
+    "bobby witt": {
+        "team": "Kansas City Royals",
+        "avg": 0.271,
+        "ops": 0.693,
+        "hr": 0,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655461"
+    },
+    "victor caratini": {
+        "team": "Minnesota Twins",
+        "avg": 0.271,
+        "ops": 0.727,
+        "hr": 1,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655466"
+    },
+    "josh bell": {
+        "team": "Minnesota Twins",
+        "avg": 0.268,
+        "ops": 0.9,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655470"
+    },
+    "ramon laureano": {
+        "team": "San Diego Padres",
+        "avg": 0.268,
+        "ops": 0.875,
+        "hr": 4,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655476"
+    },
+    "shohei ohtani": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.267,
+        "ops": 0.943,
+        "hr": 5,
+        "pa": 78,
+        "timestamp": "2026-04-14T15:21:53.655480"
+    },
+    "michael harris": {
+        "team": "Atlanta Braves",
+        "avg": 0.259,
+        "ops": 0.687,
+        "hr": 2,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655485"
+    },
+    "brandon lowe": {
+        "team": "Pittsburgh Pirates",
+        "avg": 0.259,
+        "ops": 1.015,
+        "hr": 6,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655489"
+    },
+    "willy adames": {
+        "team": "San Francisco Giants",
+        "avg": 0.258,
+        "ops": 0.813,
+        "hr": 2,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655493"
+    },
+    "steven kwan": {
+        "team": "Cleveland Guardians",
+        "avg": 0.258,
+        "ops": 0.682,
+        "hr": 1,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655498"
+    },
+    "ezequiel tovar": {
+        "team": "Colorado Rockies",
+        "avg": 0.258,
+        "ops": 0.7,
+        "hr": 1,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655503"
+    },
+    "victor scott": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.256,
+        "ops": 0.546,
+        "hr": 0,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655508"
+    },
+    "connor norby": {
+        "team": "Miami Marlins",
+        "avg": 0.255,
+        "ops": 0.847,
+        "hr": 2,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655512"
+    },
+    "trea turner": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.254,
+        "ops": 0.654,
+        "hr": 1,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655517"
+    },
+    "dillon dingler": {
+        "team": "Detroit Tigers",
+        "avg": 0.25,
+        "ops": 0.83,
+        "hr": 3,
+        "pa": 53,
+        "timestamp": "2026-04-14T15:21:53.655522"
+    },
+    "riley greene": {
+        "team": "Detroit Tigers",
+        "avg": 0.25,
+        "ops": 0.715,
+        "hr": 1,
+        "pa": 69,
+        "timestamp": "2026-04-14T15:21:53.655527"
+    },
+    "brady house": {
+        "team": "Washington Nationals",
+        "avg": 0.25,
+        "ops": 0.722,
+        "hr": 2,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655531"
+    },
+    "zach neto": {
+        "team": "Los Angeles Angels",
+        "avg": 0.25,
+        "ops": 0.885,
+        "hr": 5,
+        "pa": 81,
+        "timestamp": "2026-04-14T15:21:53.655536"
+    },
+    "agustin ramirez": {
+        "team": "Miami Marlins",
+        "avg": 0.25,
+        "ops": 0.731,
+        "hr": 1,
+        "pa": 69,
+        "timestamp": "2026-04-14T15:21:53.655541"
+    },
+    "daulton varsho": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.25,
+        "ops": 0.77,
+        "hr": 2,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655546"
+    },
+    "jake burger": {
+        "team": "Texas Rangers",
+        "avg": 0.246,
+        "ops": 0.771,
+        "hr": 4,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655550"
+    },
+    "junior caminero": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.246,
+        "ops": 0.729,
+        "hr": 2,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655555"
+    },
+    "luis garcia": {
+        "team": "Washington Nationals",
+        "avg": 0.245,
+        "ops": 0.655,
+        "hr": 1,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655563"
+    },
+    "ben williamson": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.244,
+        "ops": 0.595,
+        "hr": 0,
+        "pa": 49,
+        "timestamp": "2026-04-14T15:21:53.655568"
+    },
+    "spencer horwitz": {
+        "team": "Pittsburgh Pirates",
+        "avg": 0.244,
+        "ops": 0.701,
+        "hr": 1,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655572"
+    },
+    "ronald acuna": {
+        "team": "Atlanta Braves",
+        "avg": 0.242,
+        "ops": 0.717,
+        "hr": 1,
+        "pa": 77,
+        "timestamp": "2026-04-14T15:21:53.655578"
+    },
+    "fernando tatis": {
+        "team": "San Diego Padres",
+        "avg": 0.242,
+        "ops": 0.625,
+        "hr": 0,
+        "pa": 73,
+        "timestamp": "2026-04-14T15:21:53.655584"
+    },
+    "heliot ramos": {
+        "team": "San Francisco Giants",
+        "avg": 0.241,
+        "ops": 0.543,
+        "hr": 0,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655588"
+    },
+    "cole young": {
+        "team": "Seattle Mariners",
+        "avg": 0.241,
+        "ops": 0.747,
+        "hr": 2,
+        "pa": 66,
+        "timestamp": "2026-04-14T15:21:53.655593"
+    },
+    "hunter goodman": {
+        "team": "Colorado Rockies",
+        "avg": 0.241,
+        "ops": 0.698,
+        "hr": 2,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655597"
+    },
+    "jake bauers": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.239,
+        "ops": 0.822,
+        "hr": 4,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655602"
+    },
+    "gunnar henderson": {
+        "team": "Baltimore Orioles",
+        "avg": 0.239,
+        "ops": 0.911,
+        "hr": 6,
+        "pa": 76,
+        "timestamp": "2026-04-14T15:21:53.655607"
+    },
+    "cody bellinger": {
+        "team": "New York Yankees",
+        "avg": 0.237,
+        "ops": 0.668,
+        "hr": 1,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655611"
+    },
+    "xander bogaerts": {
+        "team": "San Diego Padres",
+        "avg": 0.237,
+        "ops": 0.681,
+        "hr": 2,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655616"
+    },
+    "kyle tucker": {
+        "team": "Los Angeles Dodgers",
+        "avg": 0.237,
+        "ops": 0.657,
+        "hr": 1,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655621"
+    },
+    "kyle schwarber": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.236,
+        "ops": 1.026,
+        "hr": 6,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655626"
+    },
+    "jacob wilson": {
+        "team": "Athletics",
+        "avg": 0.234,
+        "ops": 0.515,
+        "hr": 0,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655631"
+    },
+    "logan ohoppe": {
+        "team": "Los Angeles Angels",
+        "avg": 0.234,
+        "ops": 0.606,
+        "hr": 0,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655636"
+    },
+    "aaron judge": {
+        "team": "New York Yankees",
+        "avg": 0.233,
+        "ops": 0.883,
+        "hr": 6,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655640"
+    },
+    "brett baty": {
+        "team": "New York Mets",
+        "avg": 0.231,
+        "ops": 0.549,
+        "hr": 0,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655645"
+    },
+    "jac caglianone": {
+        "team": "Kansas City Royals",
+        "avg": 0.229,
+        "ops": 0.628,
+        "hr": 0,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655649"
+    },
+    "austin riley": {
+        "team": "Atlanta Braves",
+        "avg": 0.226,
+        "ops": 0.598,
+        "hr": 0,
+        "pa": 71,
+        "timestamp": "2026-04-14T15:21:53.655659"
+    },
+    "jorge soler": {
+        "team": "Los Angeles Angels",
+        "avg": 0.226,
+        "ops": 0.792,
+        "hr": 4,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655664"
+    },
+    "bo bichette": {
+        "team": "New York Mets",
+        "avg": 0.225,
+        "ops": 0.569,
+        "hr": 1,
+        "pa": 77,
+        "timestamp": "2026-04-14T15:21:53.655669"
+    },
+    "adolis garcia": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.224,
+        "ops": 0.671,
+        "hr": 2,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655674"
+    },
+    "eugenio suarez": {
+        "team": "Cincinnati Reds",
+        "avg": 0.224,
+        "ops": 0.642,
+        "hr": 2,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655679"
+    },
+    "mike trout": {
+        "team": "Los Angeles Angels",
+        "avg": 0.224,
+        "ops": 0.883,
+        "hr": 4,
+        "pa": 75,
+        "timestamp": "2026-04-14T15:21:53.655684"
+    },
+    "rafael devers": {
+        "team": "San Francisco Giants",
+        "avg": 0.222,
+        "ops": 0.602,
+        "hr": 2,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655688"
+    },
+    "willi castro": {
+        "team": "Colorado Rockies",
+        "avg": 0.22,
+        "ops": 0.618,
+        "hr": 1,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655693"
+    },
+    "jonathan aranda": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.217,
+        "ops": 0.703,
+        "hr": 3,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655698"
+    },
+    "matt mclain": {
+        "team": "Cincinnati Reds",
+        "avg": 0.217,
+        "ops": 0.596,
+        "hr": 0,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655702"
+    },
+    "jackson merrill": {
+        "team": "San Diego Padres",
+        "avg": 0.217,
+        "ops": 0.705,
+        "hr": 3,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655707"
+    },
+    "yainer diaz": {
+        "team": "Houston Astros",
+        "avg": 0.216,
+        "ops": 0.549,
+        "hr": 1,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655712"
+    },
+    "alex bregman": {
+        "team": "Chicago Cubs",
+        "avg": 0.215,
+        "ops": 0.62,
+        "hr": 2,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655716"
+    },
+    "luke keaschall": {
+        "team": "Minnesota Twins",
+        "avg": 0.215,
+        "ops": 0.57,
+        "hr": 1,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655721"
+    },
+    "gleyber torres": {
+        "team": "Detroit Tigers",
+        "avg": 0.214,
+        "ops": 0.634,
+        "hr": 1,
+        "pa": 69,
+        "timestamp": "2026-04-14T15:21:53.655726"
+    },
+    "pete alonso": {
+        "team": "Baltimore Orioles",
+        "avg": 0.213,
+        "ops": 0.691,
+        "hr": 2,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655730"
+    },
+    "nolan schanuel": {
+        "team": "Los Angeles Angels",
+        "avg": 0.213,
+        "ops": 0.644,
+        "hr": 2,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655735"
+    },
+    "jj wetherholt": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.213,
+        "ops": 0.608,
+        "hr": 1,
+        "pa": 73,
+        "timestamp": "2026-04-14T15:21:53.655739"
+    },
+    "evan carter": {
+        "team": "Texas Rangers",
+        "avg": 0.213,
+        "ops": 0.755,
+        "hr": 2,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655744"
+    },
+    "manny machado": {
+        "team": "San Diego Padres",
+        "avg": 0.213,
+        "ops": 0.774,
+        "hr": 2,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655748"
+    },
+    "spencer torkelson": {
+        "team": "Detroit Tigers",
+        "avg": 0.213,
+        "ops": 0.628,
+        "hr": 0,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655753"
+    },
+    "ketel marte": {
+        "team": "Arizona Diamondbacks",
+        "avg": 0.212,
+        "ops": 0.702,
+        "hr": 4,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655757"
+    },
+    "julio rodriguez": {
+        "team": "Seattle Mariners",
+        "avg": 0.212,
+        "ops": 0.585,
+        "hr": 1,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655762"
+    },
+    "roman anthony": {
+        "team": "Boston Red Sox",
+        "avg": 0.211,
+        "ops": 0.661,
+        "hr": 1,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655767"
+    },
+    "ian happ": {
+        "team": "Chicago Cubs",
+        "avg": 0.211,
+        "ops": 0.782,
+        "hr": 4,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655772"
+    },
+    "tyler soderstrom": {
+        "team": "Athletics",
+        "avg": 0.21,
+        "ops": 0.666,
+        "hr": 2,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655778"
+    },
+    "matt wallner": {
+        "team": "Minnesota Twins",
+        "avg": 0.21,
+        "ops": 0.666,
+        "hr": 3,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655783"
+    },
+    "kerry carpenter": {
+        "team": "Detroit Tigers",
+        "avg": 0.208,
+        "ops": 0.733,
+        "hr": 3,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655787"
+    },
+    "nolan gorman": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.208,
+        "ops": 0.631,
+        "hr": 2,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655792"
+    },
+    "corey seager": {
+        "team": "Texas Rangers",
+        "avg": 0.207,
+        "ops": 0.745,
+        "hr": 4,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655796"
+    },
+    "nasim nunez": {
+        "team": "Washington Nationals",
+        "avg": 0.204,
+        "ops": 0.502,
+        "hr": 0,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655801"
+    },
+    "nolan arenado": {
+        "team": "Arizona Diamondbacks",
+        "avg": 0.204,
+        "ops": 0.547,
+        "hr": 2,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655806"
+    },
+    "kazuma okamoto": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.204,
+        "ops": 0.616,
+        "hr": 2,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655811"
+    },
+    "pete crowarmstrong": {
+        "team": "Chicago Cubs",
+        "avg": 0.203,
+        "ops": 0.505,
+        "hr": 1,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.655818"
+    },
+    "byron buxton": {
+        "team": "Minnesota Twins",
+        "avg": 0.2,
+        "ops": 0.602,
+        "hr": 1,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655822"
+    },
+    "colson montgomery": {
+        "team": "Chicago White Sox",
+        "avg": 0.2,
+        "ops": 0.72,
+        "hr": 3,
+        "pa": 63,
+        "timestamp": "2026-04-14T15:21:53.655827"
+    },
+    "jose ramirez": {
+        "team": "Cleveland Guardians",
+        "avg": 0.2,
+        "ops": 0.651,
+        "hr": 2,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655832"
+    },
+    "brayan rocchio": {
+        "team": "Cleveland Guardians",
+        "avg": 0.2,
+        "ops": 0.684,
+        "hr": 2,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655836"
+    },
+    "bryson stott": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.2,
+        "ops": 0.493,
+        "hr": 0,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655841"
+    },
+    "marcus semien": {
+        "team": "New York Mets",
+        "avg": 0.197,
+        "ops": 0.533,
+        "hr": 1,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655845"
+    },
+    "chase meidroth": {
+        "team": "Chicago White Sox",
+        "avg": 0.196,
+        "ops": 0.59,
+        "hr": 1,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.655850"
+    },
+    "jarren duran": {
+        "team": "Boston Red Sox",
+        "avg": 0.196,
+        "ops": 0.607,
+        "hr": 1,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655855"
+    },
+    "luisangel acuna": {
+        "team": "Chicago White Sox",
+        "avg": 0.196,
+        "ops": 0.42,
+        "hr": 0,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655860"
+    },
+    "ivan herrera": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.193,
+        "ops": 0.611,
+        "hr": 0,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655864"
+    },
+    "nick kurtz": {
+        "team": "Athletics",
+        "avg": 0.192,
+        "ops": 0.661,
+        "hr": 1,
+        "pa": 67,
+        "timestamp": "2026-04-14T15:21:53.655869"
+    },
+    "jorge polanco": {
+        "team": "New York Mets",
+        "avg": 0.192,
+        "ops": 0.571,
+        "hr": 1,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655874"
+    },
+    "mike yastrzemski": {
+        "team": "Atlanta Braves",
+        "avg": 0.192,
+        "ops": 0.569,
+        "hr": 0,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.655878"
+    },
+    "trevor story": {
+        "team": "Boston Red Sox",
+        "avg": 0.188,
+        "ops": 0.469,
+        "hr": 1,
+        "pa": 72,
+        "timestamp": "2026-04-14T15:21:53.655883"
+    },
+    "sal frelick": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.188,
+        "ops": 0.596,
+        "hr": 1,
+        "pa": 57,
+        "timestamp": "2026-04-14T15:21:53.655887"
+    },
+    "marcelo mayer": {
+        "team": "Boston Red Sox",
+        "avg": 0.186,
+        "ops": 0.591,
+        "hr": 1,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655892"
+    },
+    "jung hoo lee": {
+        "team": "San Francisco Giants",
+        "avg": 0.185,
+        "ops": 0.561,
+        "hr": 1,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655896"
+    },
+    "george springer": {
+        "team": "Toronto Blue Jays",
+        "avg": 0.185,
+        "ops": 0.66,
+        "hr": 2,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655901"
+    },
+    "kyle karros": {
+        "team": "Colorado Rockies",
+        "avg": 0.182,
+        "ops": 0.499,
+        "hr": 0,
+        "pa": 51,
+        "timestamp": "2026-04-14T15:21:53.655906"
+    },
+    "jazz chisholm": {
+        "team": "New York Yankees",
+        "avg": 0.18,
+        "ops": 0.493,
+        "hr": 0,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655911"
+    },
+    "lawrence butler": {
+        "team": "Athletics",
+        "avg": 0.18,
+        "ops": 0.575,
+        "hr": 2,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655915"
+    },
+    "josh smith": {
+        "team": "Texas Rangers",
+        "avg": 0.18,
+        "ops": 0.435,
+        "hr": 0,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655920"
+    },
+    "miguel vargas": {
+        "team": "Chicago White Sox",
+        "avg": 0.18,
+        "ops": 0.663,
+        "hr": 1,
+        "pa": 62,
+        "timestamp": "2026-04-14T15:21:53.655924"
+    },
+    "francisco lindor": {
+        "team": "New York Mets",
+        "avg": 0.176,
+        "ops": 0.541,
+        "hr": 0,
+        "pa": 79,
+        "timestamp": "2026-04-14T15:21:53.655929"
+    },
+    "spencer steer": {
+        "team": "Cincinnati Reds",
+        "avg": 0.176,
+        "ops": 0.571,
+        "hr": 2,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.655933"
+    },
+    "masyn winn": {
+        "team": "St. Louis Cardinals",
+        "avg": 0.175,
+        "ops": 0.603,
+        "hr": 0,
+        "pa": 51,
+        "timestamp": "2026-04-14T15:21:53.655937"
+    },
+    "brenton doyle": {
+        "team": "Colorado Rockies",
+        "avg": 0.174,
+        "ops": 0.516,
+        "hr": 1,
+        "pa": 51,
+        "timestamp": "2026-04-14T15:21:53.655942"
+    },
+    "dansby swanson": {
+        "team": "Chicago Cubs",
+        "avg": 0.173,
+        "ops": 0.688,
+        "hr": 3,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655948"
+    },
+    "jose caballero": {
+        "team": "New York Yankees",
+        "avg": 0.17,
+        "ops": 0.497,
+        "hr": 1,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.655952"
+    },
+    "wyatt langford": {
+        "team": "Texas Rangers",
+        "avg": 0.17,
+        "ops": 0.525,
+        "hr": 1,
+        "pa": 54,
+        "timestamp": "2026-04-14T15:21:53.655957"
+    },
+    "trent grisham": {
+        "team": "New York Yankees",
+        "avg": 0.167,
+        "ops": 0.698,
+        "hr": 2,
+        "pa": 61,
+        "timestamp": "2026-04-14T15:21:53.655961"
+    },
+    "austin wells": {
+        "team": "New York Yankees",
+        "avg": 0.167,
+        "ops": 0.562,
+        "hr": 1,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.655966"
+    },
+    "munetaka murakami": {
+        "team": "Chicago White Sox",
+        "avg": 0.157,
+        "ops": 0.715,
+        "hr": 4,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655974"
+    },
+    "yoan moncada": {
+        "team": "Los Angeles Angels",
+        "avg": 0.156,
+        "ops": 0.612,
+        "hr": 1,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.655979"
+    },
+    "alec bohm": {
+        "team": "Philadelphia Phillies",
+        "avg": 0.155,
+        "ops": 0.455,
+        "hr": 1,
+        "pa": 65,
+        "timestamp": "2026-04-14T15:21:53.655983"
+    },
+    "jake cronenworth": {
+        "team": "San Diego Padres",
+        "avg": 0.154,
+        "ops": 0.485,
+        "hr": 1,
+        "pa": 59,
+        "timestamp": "2026-04-14T15:21:53.655988"
+    },
+    "cal raleigh": {
+        "team": "Seattle Mariners",
+        "avg": 0.154,
+        "ops": 0.52,
+        "hr": 2,
+        "pa": 74,
+        "timestamp": "2026-04-14T15:21:53.655992"
+    },
+    "tj friedl": {
+        "team": "Cincinnati Reds",
+        "avg": 0.153,
+        "ops": 0.439,
+        "hr": 0,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.655997"
+    },
+    "vinnie pasquantino": {
+        "team": "Kansas City Royals",
+        "avg": 0.153,
+        "ops": 0.415,
+        "hr": 0,
+        "pa": 69,
+        "timestamp": "2026-04-14T15:21:53.656002"
+    },
+    "salvador perez": {
+        "team": "Kansas City Royals",
+        "avg": 0.153,
+        "ops": 0.507,
+        "hr": 2,
+        "pa": 64,
+        "timestamp": "2026-04-14T15:21:53.656007"
+    },
+    "jakob marsee": {
+        "team": "Miami Marlins",
+        "avg": 0.152,
+        "ops": 0.487,
+        "hr": 0,
+        "pa": 77,
+        "timestamp": "2026-04-14T15:21:53.656011"
+    },
+    "geraldo perdomo": {
+        "team": "Arizona Diamondbacks",
+        "avg": 0.148,
+        "ops": 0.525,
+        "hr": 1,
+        "pa": 68,
+        "timestamp": "2026-04-14T15:21:53.656016"
+    },
+    "cedric mullins": {
+        "team": "Tampa Bay Rays",
+        "avg": 0.137,
+        "ops": 0.437,
+        "hr": 1,
+        "pa": 56,
+        "timestamp": "2026-04-14T15:21:53.656020"
+    },
+    "samuel basallo": {
+        "team": "Baltimore Orioles",
+        "avg": 0.136,
+        "ops": 0.513,
+        "hr": 2,
+        "pa": 50,
+        "timestamp": "2026-04-14T15:21:53.656025"
+    },
+    "luis rengifo": {
+        "team": "Milwaukee Brewers",
+        "avg": 0.136,
+        "ops": 0.418,
+        "hr": 0,
+        "pa": 47,
+        "timestamp": "2026-04-14T15:21:53.656029"
+    },
+    "michael busch": {
+        "team": "Chicago Cubs",
+        "avg": 0.135,
+        "ops": 0.406,
+        "hr": 0,
+        "pa": 60,
+        "timestamp": "2026-04-14T15:21:53.656034"
+    },
+    "caleb durbin": {
+        "team": "Boston Red Sox",
+        "avg": 0.135,
+        "ops": 0.397,
+        "hr": 0,
+        "pa": 58,
+        "timestamp": "2026-04-14T15:21:53.656038"
+    },
+    "josh naylor": {
+        "team": "Seattle Mariners",
+        "avg": 0.127,
+        "ops": 0.436,
+        "hr": 2,
+        "pa": 70,
+        "timestamp": "2026-04-14T15:21:53.656042"
+    },
+    "alek thomas": {
+        "team": "Arizona Diamondbacks",
+        "avg": 0.122,
+        "ops": 0.377,
+        "hr": 0,
+        "pa": 53,
+        "timestamp": "2026-04-14T15:21:53.656046"
+    },
+    "harrison bader": {
+        "team": "San Francisco Giants",
+        "avg": 0.115,
+        "ops": 0.337,
+        "hr": 1,
+        "pa": 55,
+        "timestamp": "2026-04-14T15:21:53.656051"
+    }
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OMEGA Signal Stress Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0a0a0f; --card: #111118; --border: rgba(255,255,255,0.08); --accent: #00e5ff; --glass: rgba(255,255,255,0.03); }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: #e0e0e0; padding: 30px; }
+        h1 { color: var(--accent); margin-bottom: 10px; font-size: 1.4rem; }
+        h3 { color: #888; margin-bottom: 15px; font-size: 0.85rem; }
+        .card { background: var(--card); border-radius: 16px; padding: 30px; margin-bottom: 30px; border: 1px solid var(--border); }
+        .card h2 { margin-bottom: 20px; font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; table-layout: auto; }
+        th { text-align: left; opacity: 0.5; font-size: 0.75rem; padding: 15px; border-bottom: 1px solid var(--border); text-transform: uppercase; }
+        th:nth-child(2), td:nth-child(2) { min-width: 220px; padding-right: 5px; }
+        td { padding: 18px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem; }
+        .score { font-weight: 800; color: var(--accent); font-size: 1.2rem; font-family: 'Courier New', monospace; }
+        .score.overdrive { 
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 200, 255, 0.1));
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .metric { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #888; }
+        .vs { opacity: 0.4; font-size: 0.8rem; margin: 0 5px; }
+        .god-tier { background: rgba(0, 255, 255, 0.05) !important; border-left: 4px solid var(--accent) !important; }
+        .signal-pill {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            background: #000;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            margin-right: 5px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+        }
+        .label { color: #555; font-size: 0.7rem; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>⚡ OMEGA v5.2 — SIGNAL STRESS TEST</h1>
+    <h3>Every matrix at max signal capacity</h3>
+
+    <!-- PITCHERS -->
+    <div class="card">
+        <h2>🎯 Pitchers Matrix — MAX: 2 Signals</h2>
+        <table>
+            <thead>
+                <tr><th>OMEGA</th><th>SIGNALS</th><th>PITCHER</th><th>VS OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
+            </thead>
+            <tbody>
+                <tr class="god-tier">
+                    <td class="score overdrive">105.2</td>
+                    <td>
+                        <span class="signal-pill">🎯 TARGET</span>
+                        <span class="signal-pill">🏗️ ENGINE</span>
+                    </td>
+                    <td><strong>Corbin Burns</strong><br><span style="color:#00ff88;font-weight:800;font-size:0.7rem;">LINEUP LOCKED</span></td>
+                    <td><span class="vs">vs</span>Colorado Rockies</td>
+                    <td class="metric">7.5 <span style="opacity:0.5;font-size:0.75em;">(-145)</span></td>
+                    <td class="metric">19.5 <span style="opacity:0.5;font-size:0.75em;">(-120)</span></td>
+                </tr>
+                <tr>
+                    <td class="score">72.1</td>
+                    <td>
+                        <span class="signal-pill">🎯 TARGET</span>
+                    </td>
+                    <td><strong>Zack Wheeler</strong><br><span style="color:#ff3e3e;font-weight:800;font-size:0.7rem;">LINEUP TBD</span></td>
+                    <td><span class="vs">vs</span>Arizona Diamondbacks</td>
+                    <td class="metric">6.5 <span style="opacity:0.5;font-size:0.75em;">(-130)</span></td>
+                    <td class="metric">17.5 <span style="opacity:0.5;font-size:0.75em;">(-105)</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- HITTERS -->
+    <div class="card">
+        <h2>💪 Hitters Matrix — MAX: 4 Signals</h2>
+        <table>
+            <thead>
+                <tr><th>OMEGA</th><th>SIGNALS</th><th>PLAYER</th><th>TEAM</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th><th>PHYSICS</th><th>MARKET</th></tr>
+            </thead>
+            <tbody>
+                <tr class="god-tier">
+                    <td class="score overdrive">108.4</td>
+                    <td>
+                        <span class="signal-pill">🎯 TARGET</span>
+                        <span class="signal-pill">🏃‍♂️ THIEF</span>
+                        <span class="signal-pill">🔋 POWER</span>
+                        <span class="signal-pill" style="border-color:#ff4444; color:#ff4444;">⛽ GASSED PEN</span>
+                    </td>
+                    <td><strong>Elly De La Cruz <span style="color:#ff8c00;">♨️</span></strong></td>
+                    <td>CIN</td>
+                    <td><span class="vs">vs</span>Reid Detmers (LAA)</td>
+                    <td class="metric">350</td>
+                    <td class="metric">2.5</td>
+                    <td class="metric">P: <b>28.5</b></td>
+                    <td class="metric">M: <b>38.2</b></td>
+                </tr>
+                <tr class="god-tier">
+                    <td class="score">92.1</td>
+                    <td>
+                        <span class="signal-pill">🎯 TARGET</span>
+                        <span class="signal-pill">🔋 POWER</span>
+                        <span class="signal-pill" style="border-color:#ffa500; color:#ffa500;">⚠️ FATIGUE</span>
+                    </td>
+                    <td><strong>Aaron Judge <span style="color:#ff8c00;">♨️</span></strong></td>
+                    <td>NYY</td>
+                    <td><span class="vs">vs</span>Steven Matz (TB)</td>
+                    <td class="metric">280</td>
+                    <td class="metric">3.0</td>
+                    <td class="metric">P: <b>25.0</b></td>
+                    <td class="metric">M: <b>35.0</b></td>
+                </tr>
+                <tr>
+                    <td class="score">78.3</td>
+                    <td>
+                        <span class="signal-pill">🏃‍♂️ THIEF</span>
+                    </td>
+                    <td><strong>Corbin Carroll</strong></td>
+                    <td>ARI</td>
+                    <td><span class="vs">vs</span>Zack Wheeler (PHI)</td>
+                    <td class="metric">500</td>
+                    <td class="metric">1.5</td>
+                    <td class="metric">P: <b>20.1</b></td>
+                    <td class="metric">M: <b>22.5</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TEAMS -->
+    <div class="card">
+        <h2>🦈 Teams Matrix — MAX: 4 Signals</h2>
+        <table>
+            <thead>
+                <tr><th>OMEGA</th><th>SIGNALS</th><th>TEAM</th><th>vs PITCHER</th><th>ML MOVE</th><th>TT MOVE</th><th>CONTEXT</th></tr>
+            </thead>
+            <tbody>
+                <tr class="god-tier">
+                    <td class="score overdrive">102.5</td>
+                    <td>
+                        <span class="signal-pill" style="border-color:#00bfff; color:#00bfff;">🦈 SHARK</span>
+                        <span class="signal-pill">🎰 SHARP</span>
+                        <span class="signal-pill">🚂 TRAIN</span>
+                        <span class="signal-pill" style="border-color:#ff4444; color:#ff4444;">⛽ GASSED</span>
+                    </td>
+                    <td><strong>San Diego Padres</strong></td>
+                    <td><span class="vs">vs</span>Tomoyuki Sugano (COL)</td>
+                    <td class="metric">25.0</td>
+                    <td class="metric">1.5</td>
+                    <td class="metric" style="font-size:0.75rem;">☀️ 82° / Out 12mph<br><span style="opacity:0.6;">Ump: Angel Hernandez</span></td>
+                </tr>
+                <tr class="god-tier">
+                    <td class="score">91.2</td>
+                    <td>
+                        <span class="signal-pill" style="border-color:#00bfff; color:#00bfff;">🦈 SHARK</span>
+                        <span class="signal-pill">🚂 TRAIN</span>
+                        <span class="signal-pill" style="border-color:#ffa500; color:#ffa500;">⚠️ FATIGUE</span>
+                    </td>
+                    <td><strong>Milwaukee Brewers</strong></td>
+                    <td><span class="vs">vs</span>Jake Irvin (WSH)</td>
+                    <td class="metric">18.0</td>
+                    <td class="metric">0.8</td>
+                    <td class="metric" style="font-size:0.75rem;">❄️ 37° / Indoor<br><span style="opacity:0.6;">Ump: Unknown</span></td>
+                </tr>
+                <tr>
+                    <td class="score">68.4</td>
+                    <td>
+                        <span class="signal-pill">🎰 SHARP</span>
+                    </td>
+                    <td><strong>Kansas City Royals</strong></td>
+                    <td><span class="vs">vs</span>Davis Martin (CWS)</td>
+                    <td class="metric">15.0</td>
+                    <td class="metric">0.0</td>
+                    <td class="metric" style="font-size:0.75rem;">🌤️ 54° / Out 7mph<br><span style="opacity:0.6;">Ump: Unknown</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

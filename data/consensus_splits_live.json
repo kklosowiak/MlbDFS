@@ -1,0 +1,114 @@
+{
+  "TOR": {
+    "ticket": 24,
+    "money": 35
+  },
+  "MIL": {
+    "ticket": 76,
+    "money": 65
+  },
+  "COL": {
+    "ticket": 18,
+    "money": 15
+  },
+  "HOU": {
+    "ticket": 82,
+    "money": 85
+  },
+  "TEX": {
+    "ticket": 80,
+    "money": 69
+  },
+  "ATH": {
+    "ticket": 20,
+    "money": 31
+  },
+  "SEA": {
+    "ticket": 21,
+    "money": 36
+  },
+  "SD": {
+    "ticket": 43,
+    "money": 45
+  },
+  "BAL": {
+    "ticket": 82,
+    "money": 60
+  },
+  "ARI": {
+    "ticket": 18,
+    "money": 40
+  },
+  "SF": {
+    "ticket": 73,
+    "money": 86
+  },
+  "CIN": {
+    "ticket": 27,
+    "money": 14
+  },
+  "CHC": {
+    "ticket": 19,
+    "money": 14
+  },
+  "PHI": {
+    "ticket": 81,
+    "money": 86
+  },
+  "WSH": {
+    "ticket": 10,
+    "money": 15
+  },
+  "PIT": {
+    "ticket": 90,
+    "money": 85
+  },
+  "KC": {
+    "ticket": 15,
+    "money": 10
+  },
+  "DET": {
+    "ticket": 85,
+    "money": 90
+  },
+  "LAA": {
+    "ticket": 11,
+    "money": 13
+  },
+  "NYY": {
+    "ticket": 89,
+    "money": 87
+  },
+  "MIA": {
+    "ticket": 19,
+    "money": 22
+  },
+  "ATL": {
+    "ticket": 81,
+    "money": 78
+  },
+  "BOS": {
+    "ticket": 71,
+    "money": 78
+  },
+  "MIN": {
+    "ticket": 29,
+    "money": 22
+  },
+  "TB": {
+    "ticket": 83,
+    "money": 80
+  },
+  "CWS": {
+    "ticket": 17,
+    "money": 20
+  },
+  "CLE": {
+    "ticket": 76,
+    "money": 81
+  },
+  "STL": {
+    "ticket": 24,
+    "money": 19
+  }
+}

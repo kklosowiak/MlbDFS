@@ -1,0 +1,137 @@
+[
+  {
+    "home": "Baltimore Orioles",
+    "away": "Arizona Diamondbacks",
+    "temp": 84,
+    "wind_speed": 6,
+    "wind_dir": "Out to Right",
+    "status": "Yellow",
+    "notes": "YELLOW/GREEN - A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Pittsburgh Pirates",
+    "away": "Washington Nationals",
+    "temp": 77,
+    "wind_speed": 11,
+    "wind_dir": "Out to Left",
+    "status": "Green",
+    "notes": "GREEN/YELLOW - Looks to me like any rain is clear prior to first pitch. I'll confirm that with a pregame radar check, but I'm not expecting any trouble here."
+  },
+  {
+    "home": "Philadelphia Phillies",
+    "away": "Chicago Cubs",
+    "temp": 82,
+    "wind_speed": 9,
+    "wind_dir": "Out to Right",
+    "status": "Orange",
+    "notes": "YELLOW/ORANGE - Should start dry, then a cluster of showers and storms moves in towards the ends of the game. I'm hopeful that it comes after the game, but if it doesn't it could be a long wait to finish 9 (or maybe even a game that doesn't go a full 9)."
+  },
+  {
+    "home": "Detroit Tigers",
+    "away": "Kansas City Royals",
+    "temp": 72,
+    "wind_speed": 12,
+    "wind_dir": "In from Right",
+    "status": "Yellow",
+    "notes": "YELLOW - This actually looks a lot like the PHI game, in that it starts dry and likely plays the entire game juuust before a line of storms moves in. I won't rule out some late inning trouble, and if it happens it could mean game-over... but I think it's more likely they finish 9 before the storms show up."
+  },
+  {
+    "home": "Cincinnati Reds",
+    "away": "San Francisco Giants",
+    "temp": 79,
+    "wind_speed": 12,
+    "wind_dir": "In from Right",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "New York Yankees",
+    "away": "Los Angeles Angels",
+    "temp": 79,
+    "wind_speed": 10,
+    "wind_dir": "Out to Center",
+    "status": "Yellow",
+    "notes": "YELLOW - Another game with some later-inning drama possible. Most of the game plays dry, but the later innings could see some showers and storms. Warm with winds blowing out to center at 10mph, boost to bats."
+  },
+  {
+    "home": "Atlanta Braves",
+    "away": "Miami Marlins",
+    "temp": 80,
+    "wind_speed": 5,
+    "wind_dir": "In from Right",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Minnesota Twins",
+    "away": "Boston Red Sox",
+    "temp": 65,
+    "wind_speed": 5,
+    "wind_dir": "Out to Right",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Milwaukee Brewers",
+    "away": "Toronto Blue Jays",
+    "temp": 60,
+    "wind_speed": 8,
+    "wind_dir": "In from Right (Roof)",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Chicago White Sox",
+    "away": "Tampa Bay Rays",
+    "temp": 76,
+    "wind_speed": 13,
+    "wind_dir": "In from Right",
+    "status": "Yellow",
+    "notes": "YELLOW - This is another 'maybe overly cautious YELLOW tag'. There's a few storms around late... but the likely outcome remains a dry 9 before the rain is a worry. Still, later-inning trouble is certainly possible, hence the tag."
+  },
+  {
+    "home": "St. Louis Cardinals",
+    "away": "Cleveland Guardians",
+    "temp": 84,
+    "wind_speed": 14,
+    "wind_dir": "Out to Right",
+    "status": "Green",
+    "notes": "Warm with winds blowing out to left at 10-15mph, solid hitting weather."
+  },
+  {
+    "home": "Houston Astros",
+    "away": "Colorado Rockies",
+    "temp": 79,
+    "wind_speed": 14,
+    "wind_dir": "Out to Center (Roof)",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "San Diego Padres",
+    "away": "Seattle Mariners",
+    "temp": 64,
+    "wind_speed": 10,
+    "wind_dir": "Across",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Oakland Athletics",
+    "away": "Texas Rangers",
+    "temp": 65,
+    "wind_speed": 6,
+    "wind_dir": "Out to Center",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  },
+  {
+    "home": "Los Angeles Dodgers",
+    "away": "New York Mets",
+    "temp": 61,
+    "wind_speed": 9,
+    "wind_dir": "Out to Right",
+    "status": "Green",
+    "notes": "A few spotty downpours are possible. Coverage is maybe only 20% or so, but a delay is still possible if you get the wrong storm in the wrong spot at the wrong time. Warm with winds blowing out, bump to bats."
+  }
+]
