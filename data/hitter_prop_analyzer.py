@@ -1,5 +1,10 @@
-import json
 import os
+import sys
+
+# Standalone execution support
+if __name__ == "__main__":
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config import config
 from utils.normalization import normalize_player_name
 from data.statcast_bridge import StatcastBridge
@@ -8,14 +13,13 @@ class HitterPropAnalyzer:
     def __init__(self):
         self.target_market = 'batter_home_runs'
         self.xwoba_registry = {
-            'Bobby Witt Jr.': 0.412, 'Salvador Perez': 0.388, 'Manny Machado': 0.375,
             'Fernando Tatis Jr.': 0.395, 'Francisco Lindor': 0.370, 'Ketel Marte': 0.382,
-            'Pete Alonso': 0.365, 'Christian Walker': 0.358, 'Xander Bogaerts': 0.345,
-            'Vinnie Pasquantino': 0.355, 'Jackson Merrill': 0.342, 'Brandon Nimmo': 0.348,
-            'Andrew Vaughn': 0.335, 'Luis Robert Jr.': 0.385, 'Bo Bichette': 0.368,
-            'Nolan Jones': 0.352, 'Ryan McMahon': 0.338, 'Ezequiel Tovar': 0.325,
-            'Edouard Julien': 0.345, 'Juan Soto': 0.425, 'Aaron Judge': 0.430,
-            'Shohei Ohtani': 0.420, 'Teoscar Hernandez': 0.375, 'Mookie Betts': 0.390,
+            'Christian Walker': 0.358, 'Xander Bogaerts': 0.345, 'Vinnie Pasquantino': 0.355,
+            'Jackson Merrill': 0.342, 'Brandon Nimmo': 0.348, 'Andrew Vaughn': 0.335,
+            'Luis Robert Jr.': 0.385, 'Bo Bichette': 0.368, 'Nolan Jones': 0.352,
+            'Ryan McMahon': 0.338, 'Ezequiel Tovar': 0.325, 'Edouard Julien': 0.345,
+            'Juan Soto': 0.425, 'Aaron Judge': 0.430, 'Shohei Ohtani': 0.420,
+            'Teoscar Hernandez': 0.375, 'Mookie Betts': 0.390,
             'Royce Lewis': 0.385, 'Gunnar Henderson': 0.395, 'Pete Alonso': 0.415
         }
         self.team_code_map = {
@@ -109,6 +113,13 @@ class HitterPropAnalyzer:
                         if team_side is None or team_side not in active_teams:
                             continue
 
+                        # OMEGA v6.5: Dynamic Momentum Priority (Rolling 10-Day fallback)
+                        momentum = self.statcast.get_player_momentum(player_name) or {}
+                        if momentum.get('rolling_pa', 0) > 15:
+                            momentum_ops = momentum.get('rolling_ops',0)
+                        else:
+                            momentum_ops = momentum.get('ops', 0)
+                            
                         hitter_map[player_name] = {
                             'name': player_name,
                             'team': team_side,
@@ -120,7 +131,7 @@ class HitterPropAnalyzer:
                             'hits_price': 0,
                             'is_juiced_target': False,
                             'is_speed_target': False,
-                            'matchup_xwoba': (self.statcast.get_player_momentum(player_name) or {}).get('ops', 0) / 2.5 if (self.statcast.get_player_momentum(player_name) or {}).get('ops') else self.xwoba_registry.get(player_name, 0.330)
+                            'matchup_xwoba': momentum_ops / 2.5 if momentum_ops > 0 else self.xwoba_registry.get(player_name, 0.330)
                         }
                     
                     if m_key == 'batter_home_runs':
@@ -176,23 +187,6 @@ class HitterPropAnalyzer:
             
             if found_key:
                 hitter_map[found_key]['ahr_price'] = price_ext
-            else:
-                # Add new high-alpha hitter from worksheet
-                # OMEGA v4.5.1: Strict Slate Isolation Gate
-                # OMEGA v4.5.7: Strict Roster Initialization
-                if team_side is not None:
-                    hitter_map[p_ext] = {
-                        'name': p_ext,
-                        'team': team_side,
-                        'home_team': home_t,
-                        'away_team': away_t,
-                        'ahr_price': price_ext,
-                        'hit_line': 1.5,
-                        'hits_price': 0,
-                        'is_juiced_target': False,
-                        'is_speed_target': False,
-                        'matchup_xwoba': self.statcast.get_player_momentum(p_ext).get('ops', 0) / 2.5 if self.statcast.get_player_momentum(p_ext) else self.xwoba_registry.get(p_ext, 0.330)
-                    }
                 
         # OMEGA v6.2: Final Convergence Validation
         # Add hitters discoverable via pitcher matchups in the snapshot

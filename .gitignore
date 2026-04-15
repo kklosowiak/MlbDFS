@@ -1,0 +1,24 @@
+# OMEGA Engine Git Exclusion
+# Critical: Protect API Keys
+.env
+
+# Runtime
+__pycache__/
+*.pyc
+
+# Data & Snapshots
+data/snapshot_*.json
+data/statcast_cache.json
+data/expert_weather_cache.json
+data/probable_pitchers.json
+data/opening_lines.json
+
+# Local Dev
+.vscode/
+.idea/
+.gemini/
+logs/
+
+# Analysis Results
+reports/latest_results.json
+reports/dashboard.html

@@ -1,6 +1,12 @@
 import requests
 import json
 import os
+import sys
+
+# Standalone execution support
+if __name__ == "__main__":
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from datetime import datetime
 from config import config
 
@@ -23,7 +29,8 @@ class ProbablePitcherFetcher:
         # But StatsAPI schedule handles the current day by default
         params = {
             'sportId': 1,
-            'hydrate': 'probablePitcher'
+            'hydrate': 'probablePitcher',
+            'date': datetime.now().strftime("%Y-%m-%d")
         }
         
         try:

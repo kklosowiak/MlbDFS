@@ -1,5 +1,11 @@
 import json
 import os
+import sys
+
+# Standalone execution support
+if __name__ == "__main__":
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pandas as pd
 import statistics
 from config import config
@@ -359,7 +365,14 @@ class PitcherAnalyzer:
             "Ranger Suarez": {"siera": 3.35, "csw": 0.28},
             "Kyle Harrison": {"siera": 3.42, "csw": 0.29},
             "German Marquez": {"siera": 4.25, "csw": 0.24},
-            "Germán Márquez": {"siera": 4.25, "csw": 0.24}
+            "Germán Márquez": {"siera": 4.25, "csw": 0.24},
+            "Luis Gil": {"siera": 3.55, "csw": 0.29},
+            "Emerson Hancock": {"siera": 4.12, "csw": 0.24},
+            "Randy Vasquez": {"siera": 4.05, "csw": 0.25},
+            "Randy Vásquez": {"siera": 4.05, "csw": 0.25},
+            "Slade Cecconi": {"siera": 4.15, "csw": 0.24},
+            "Simeon Woods Richardson": {"siera": 4.35, "csw": 0.23},
+            "Tyler Mahle": {"siera": 3.75, "csw": 0.26}
         }
 
         # Check Master Matrix first (Fast path - no network)

@@ -57,13 +57,26 @@ def perform_fetch(custom_date_from=None):
             
         print(f"\n[SUCCESS]: OMEGA v3.2.1 Ingestion Complete.")
         print(f"  - Final Snapshot: {os.path.basename(snapshot_path)}")
+        
+        # OMEGA v6.6 Cleanup: Auto-purge snapshots older than 48 hours
+        print("\n[CLEANUP]: Pruning stale snapshots...")
+        try:
+            for f in os.listdir(config.DATA_DIR):
+                if f.startswith("snapshot_") and f.endswith(".json"):
+                    f_path = os.path.join(config.DATA_DIR, f)
+                    f_time = os.path.getmtime(f_path)
+                    if (time.time() - f_time) > (48 * 3600):
+                        os.remove(f_path)
+                        print(f"  - Removed: {f}")
+        except: pass
+
     except Exception as e:
         print(f"  - ERROR: Failed to finalize snapshot. {e}")
 
     # 4. OMEGA v5.2: Auto-Refresh Statcast Momentum Cache (14-day rolling)
     print("\n[STEP 4]: Refreshing Statcast Momentum Cache...")
     try:
-        statcast.refresh_hitter_data(days=14)
+        statcast.refresh_hitter_data()
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
 
