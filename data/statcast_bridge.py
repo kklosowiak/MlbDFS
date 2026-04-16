@@ -18,6 +18,10 @@ class StatcastBridge:
         self.api_url = "https://statsapi.mlb.com/api/v1/stats"
         self._memory_cache = None
 
+    def get_cache_data(self):
+        """Public accessor for the unified momentum cache."""
+        return self._load_cache_to_memory()
+
     def _load_cache_to_memory(self):
         """Loads cache into memory once."""
         if self._memory_cache is not None:
@@ -35,46 +39,61 @@ class StatcastBridge:
             self._memory_cache = {}
             return {}
         
-    def refresh_hitter_data(self, season=2026):
+    def refresh_momentum_data(self, season=2026):
         """
-        OMEGA v6.5: Dual-Stream Alignment (Seasonal + Rolling 10-Day).
-        Pulls both seasonal and recent momentum to identify 'Hot Hitter' signals.
+        OMEGA v6.6: Unified Dual-Stream Alignment (Hitting + Pitching).
+        Pulls seasonal and rolling metrics to eliminate 'Detmers-style' blind spots.
         """
-        print(f"[STATCAST]: Refreshing dual-stream alpha for {season}...")
+        print(f"[STATCAST]: Refreshing unified momentum alpha for {season}...")
         
-        # 1. Fetch Seasonal Baselines
-        seasonal_data = self._fetch_api_stats(group='hitting', stats='season', season=season)
-        
-        # 2. Fetch Rolling 10-Day Momentum
-        today = datetime.now().strftime("%Y-%m-%d")
-        ten_days_ago = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d")
-        rolling_data = self._fetch_api_stats(
+        # 1. Fetch Hitting Data
+        h_seasonal = self._fetch_api_stats(group='hitting', stats='season', season=season)
+        h_rolling = self._fetch_api_stats(
             group='hitting', 
             stats='byDateRange', 
             season=season,
-            extra_params={'startDate': ten_days_ago, 'endDate': today}
+            extra_params={'startDate': (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d"), 'endDate': datetime.now().strftime("%Y-%m-%d")}
         )
         
-        if not seasonal_data:
-            print("  - WARNING: StatsAPI refresh returned no seasonal data.")
-            return {}
-            
-        # 3. Merge and Cache
-        cache = {}
-        processed_names = set(list(seasonal_data.keys()) + list(rolling_data.keys()))
+        # 2. Fetch Pitching Data
+        p_seasonal = self._fetch_api_stats(group='pitching', stats='season', season=season)
+        p_rolling = self._fetch_api_stats(
+            group='pitching', 
+            stats='byDateRange', 
+            season=season,
+            extra_params={'startDate': (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d"), 'endDate': datetime.now().strftime("%Y-%m-%d")}
+        )
         
-        for name in processed_names:
-            s = seasonal_data.get(name, {})
-            r = rolling_data.get(name, {})
-            
+        # 3. Unified Merge
+        cache = {}
+        # Merge Hitters
+        for name in set(list(h_seasonal.keys()) + list(h_rolling.keys())):
+            s = h_seasonal.get(name, {})
+            r = h_rolling.get(name, {})
             cache[name] = {
+                "type": "hitter",
                 "team": s.get('team') or r.get('team') or "UNK",
-                "avg": s.get('avg', 0.0),
                 "ops": s.get('ops', 0.0),
-                "hr": s.get('hr', 0),
-                "pa": s.get('pa', 0),
                 "rolling_ops": r.get('ops', 0.0),
+                "pa": s.get('pa', 0),
                 "rolling_pa": r.get('pa', 0),
+                "k": s.get('k', 0),
+                "rolling_k": r.get('k', 0),
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        # Merge Pitchers
+        for name in set(list(p_seasonal.keys()) + list(p_rolling.keys())):
+            s = p_seasonal.get(name, {})
+            r = p_rolling.get(name, {})
+            cache[name] = {
+                "type": "pitcher",
+                "team": s.get('team') or r.get('team') or "UNK",
+                "era": s.get('era', 0.0),
+                "rolling_era": r.get('era', 0.0),
+                "k": s.get('k', 0),
+                "rolling_k": r.get('k', 0),
+                "ip": s.get('ip', 0.0),
                 "timestamp": datetime.now().isoformat()
             }
         
@@ -84,8 +103,31 @@ class StatcastBridge:
         with open(self.cache_path, 'w') as f:
             json.dump(cache, f, indent=4)
             
-        print(f"  - SUCCESS: Cached {len(cache)} hitters with dual-stream momentum.")
+        print(f"  - SUCCESS: Unified cache synchronized ({len(cache)} profiles).")
         return cache
+
+    def get_team_roster(self, team_name, player_type='hitter'):
+        """
+        Retrieves all cached players of a specific type for a given team.
+        Used for Hybrid Hitter Discovery when market props are thin.
+        """
+        cache = self._load_cache_to_memory()
+        if not cache: return []
+        
+        roster = []
+        for name, data in cache.items():
+            if data.get('type') == player_type and data.get('team') == team_name:
+                p_data = data.copy()
+                p_data['name'] = name # Include original name
+                roster.append(p_data)
+        
+        # Sort by OPS (Hitters) or Rolling K (Pitchers) for discovery quality
+        if player_type == 'hitter':
+            roster.sort(key=lambda x: x.get('ops', 0), reverse=True)
+        else:
+            roster.sort(key=lambda x: x.get('rolling_k', 0), reverse=True)
+            
+        return roster
 
     def _fetch_api_stats(self, group='hitting', stats='season', season=2026, extra_params=None):
         """Internal helper for MLB StatsAPI requests."""
@@ -131,6 +173,9 @@ class StatcastBridge:
                     "team": split.get('team', {}).get('name', "UNK"),
                     "avg": safe_float(stat.get('avg', '0.000')),
                     "ops": safe_float(stat.get('ops', '0.000')),
+                    "era": safe_float(stat.get('era', '0.0')),
+                    "k": int(stat.get('strikeOuts', 0)),
+                    "ip": safe_float(stat.get('inningsPitched', '0.0')),
                     "hr": int(stat.get('homeRuns', 0)),
                     "pa": int(stat.get('plateAppearances', 0))
                 }
@@ -152,4 +197,4 @@ class StatcastBridge:
 
 if __name__ == "__main__":
     bridge = StatcastBridge()
-    bridge.refresh_hitter_data()
+    bridge.refresh_momentum_data()

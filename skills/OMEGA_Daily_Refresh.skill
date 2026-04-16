@@ -1,0 +1,14 @@
+# OMEGA Daily Refresh
+
+## Description
+This skill triggers the full OMEGA data pipeline to synchronize market intelligence, statcast momentum, and generate the daily God-Tier Matrix for the active slate.
+
+## Logic
+1. **Fetch Marketplace Data**: Run `python run_fetch.py` to capture real-time lines and betting percentages.
+2. **Refresh Momentum Alpha**: Run `python data/statcast_bridge.py` to synchronize hitting/pitching metrics and K-rates.
+3. **Execute Analysis**: Run `python main.py` to generate the `reports/dashboard.html` and `reports/latest_results.json`.
+4. **Target Summary**: Extract and present the Top-3 Pitchers and Top-3 Stacks sorted by their OMEGA Alpha Score.
+
+## Operational Constraints
+- Ensure a `probable_pitchers.json` is present or recently updated before running.
+- If a 403 error occurs during fetch, retry once with a 5-second delay before reporting.

@@ -1,0 +1,16 @@
+# OMEGA Post-Mortem Audit
+
+## Description
+This skill performs a retroactive analysis of the previous slate's performance to detect alpha-decay and identify missed breakout targets for future hardening.
+
+## Logic
+1. **Fetch Results**: Run `python run_post_mortem.py` for the target date (default to yesterday).
+2. **Identify Misses**: Parse the audit output to find players who outperformed their Alpha projections (e.g., actual K > k_line but low Alpha).
+3. **Root Cause Analysis**: 
+    - Check if the hitter/pitcher was in the Master Matrix.
+    - Check the `opponent_k_boost` for that day's matchup.
+    - Review sharp money velocity in the `data/snapshot_*.json` from that date.
+4. **Hardening Recommendations**: Draft a list of players to be added to the Matrix or anchor rosters.
+
+## Operational Constraints
+- Results are only available via MLB StatsAPI after games are finalized (usually 1 hour after the last game ends).

@@ -56,6 +56,6 @@ def run_post_mortem(date_str=None):
     print("="*60 + "\n")
 
 if __name__ == "__main__":
-    # Use today's date based on current time
-    # User mentioned games are finished, so April 12, 2026 is the target.
-    run_post_mortem("2026-04-12")
+    import sys
+    target_date = sys.argv[1] if len(sys.argv) > 1 else "2026-04-14"
+    run_post_mortem(target_date)

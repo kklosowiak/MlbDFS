@@ -14,6 +14,11 @@ class Config:
     SHARP_WEIGHT_THRESHOLD = 0.05  # 5% movement threshold
     DEFAULT_SLATE_SIZE = 10
     
+    # OMEGA Shadow Market Settings (v6.15)
+    # Including global sharp books to catch early prop movements
+    BOOKMAKERS = "draftkings,fanduel,betmgm,caesars,pinnacle,betonlineag,bovada"
+    REGIONS = "us,eu"
+    
     # Path Settings
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     DATA_DIR = os.path.join(BASE_DIR, "data")

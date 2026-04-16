@@ -28,8 +28,8 @@ class MarketFetcher:
         # Requirement: Strictly comma-separated strings for requests
         self.prop_markets = 'pitcher_strikeouts,batter_home_runs,batter_hits,pitcher_outs,batter_total_bases,batter_stolen_bases'
         self.game_markets = 'h2h,totals'
-        self.bookmakers = 'draftkings,fanduel,betmgm,caesars'
-        self.regions = 'us'
+        self.bookmakers = config.BOOKMAKERS
+        self.regions = config.REGIONS
         self.odds_format = 'american'
         self.skipped_events = [] # Patch 1: Silent Failure Tracking
 
@@ -201,40 +201,39 @@ class MarketFetcher:
             
             # Requirement: Graceful Degradation wrapper
             try:
-                # 1. Fetch Props
-                prop_data = self.fetch_data_for_event(event_id, self.prop_markets)
-                # 2. Fetch Game Odds (ML/Totals)
-                game_data = self.fetch_data_for_event(event_id, self.game_markets)
+                # OMEGA v6.16: Granular Fetching Hardening
+                # Instead of fetching ALL props in one brittle call, we fetch category-by-category.
+                # This prevents a missing "Pitcher Outs" market from sabotaging live "Home Run" props (422 error).
                 
-                if not prop_data and not game_data:
+                # A. Fetch Game Odds (ML/Totals) - Always primary metadata source
+                game_data = self.fetch_data_for_event(event_id, self.game_markets)
+                if not game_data:
+                    # Fallback to a single prop fetch to get team names if ML market is somehow closed
+                    game_data = self.fetch_data_for_event(event_id, 'h2h')
+                
+                if not game_data:
+                    print(f"  - [WARNING]: No metadata found for event {event_id}. Skipping.")
                     continue
                 
-                # Use game_data as primary meta-source if available, else prop_data
-                meta_source = game_data if game_data else prop_data
-                home_team = meta_source.get('home_team')
-                away_team = meta_source.get('away_team')
-                commence_time = meta_source.get('commence_time')
+                home_team = game_data.get('home_team')
+                away_team = game_data.get('away_team')
+                commence_time = game_data.get('commence_time')
                 
-                # A. Process Game Odds
-                # OMEGA v5.1: Strict Temporal Slate Filter
+                # Temporal Slate Filter
                 commence_dt = datetime.fromisoformat(commence_time.replace('Z', '+00:00'))
                 now = datetime.now(timezone.utc)
-                
-                # Rule: Skip if game started >1 hour ago OR starts >24 hours from now
                 if commence_dt < (now - timedelta(hours=1)) or commence_dt > (now + timedelta(hours=24)):
-                    print(f"  - [FILTER]: Dropped Game {event_id} ({home_team} vs {away_team}) - Outside active slate window ({commence_time})")
                     continue
 
                 if event_id not in structured_odds:
-                    # OMEGA v5.2.2: Probable Pitcher Lookup Fallback
                     try:
-                         with open(os.path.join(config.DATA_DIR, "probable_pitchers.json"), 'r') as f:
+                        with open(os.path.join(config.DATA_DIR, "probable_pitchers.json"), 'r') as f:
                             probables = json.load(f)
                     except:
                         probables = {}
 
-                    h_sp = meta_source.get('home_pitcher') or probables.get(home_team)
-                    a_sp = meta_source.get('away_pitcher') or probables.get(away_team)
+                    h_sp = game_data.get('home_pitcher') or probables.get(home_team)
+                    a_sp = game_data.get('away_pitcher') or probables.get(away_team)
 
                     structured_odds[event_id] = {
                         "id": event_id,
@@ -245,9 +244,49 @@ class MarketFetcher:
                         "commence_time": commence_time,
                         "bookmakers": game_data.get('bookmakers', [])
                     }
+                    print(f"  - [MATCHUP]: {away_team} ({a_sp or 'TBD'}) @ {home_team} ({h_sp or 'TBD'})")
+
+                # B. Granular Prop Ingestion Phase
+                if event_id not in structured_props:
+                    structured_props[event_id] = {}
+                
+                # Split the configured prop markets into individual calls
+                market_categories = self.prop_markets.split(',')
+                for m_cat in market_categories:
+                    m_cat = m_cat.strip()
+                    if not m_cat: continue
                     
-                    # OMEGA v5.2: Clear Ingestion Logging
-                    print(f"  - [MATCHUP]: {away_team} ({a_sp or 'TBD'}) @ {home_team} ({h_sp or 'TBD'}) | {commence_time}")
+                    # Fetch THIS specific market only
+                    prop_cat_data = self.fetch_data_for_event(event_id, m_cat)
+                    if not prop_cat_data or 'bookmakers' not in prop_cat_data:
+                        continue
+                        
+                    for bookmaker in prop_cat_data.get('bookmakers', []):
+                        book_key = bookmaker['key']
+                        for market in bookmaker.get('markets', []):
+                            market_key = market['key']
+                            if market_key not in structured_props[event_id]:
+                                structured_props[event_id][market_key] = []
+                            
+                            for outcomes in market.get('outcomes', []):
+                                raw_name = outcomes.get('name')
+                                raw_description = outcomes.get('description')
+                                player_name = raw_description if raw_description else raw_name
+                                side = raw_name if raw_description else "Yes"
+                                
+                                if not player_name or player_name in ["Yes", "No"] and not raw_description:
+                                    continue
+                                    
+                                structured_props[event_id][market_key].append({
+                                    'player_name': player_name,
+                                    'bookmaker': book_key,
+                                    'price': outcomes.get('price'),
+                                    'point': outcomes.get('point'),
+                                    'side': side,
+                                    'home_team': home_team,
+                                    'away_team': away_team,
+                                    'game_id': event_id
+                                })
 
 
 

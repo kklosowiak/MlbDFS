@@ -4,6 +4,7 @@ from data.statcast_bridge import StatcastBridge
 from data.probable_pitcher_fetcher import ProbablePitcherFetcher
 import json
 import os
+import time
 from datetime import datetime, timedelta, timezone
 from config import config
 
@@ -76,7 +77,8 @@ def perform_fetch(custom_date_from=None):
     # 4. OMEGA v5.2: Auto-Refresh Statcast Momentum Cache (14-day rolling)
     print("\n[STEP 4]: Refreshing Statcast Momentum Cache...")
     try:
-        statcast.refresh_hitter_data()
+        bridge = StatcastBridge(config.DATA_DIR)
+        bridge.refresh_momentum_data()
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
 

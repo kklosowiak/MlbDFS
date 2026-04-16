@@ -1,0 +1,16 @@
+# OMEGA Matrix Hardening
+
+## Description
+This skill automates the process of integrating high-alpha outliers and identified breakout stars into the engine's core intelligence layers.
+
+## Logic
+1. **Target Selection**: Receive a list of identified breakout players (Pitchers or Hitters).
+2. **Physics Verification**: Query `pybaseball` or StatsAPI for recent SIERA, CSW%, and xwOBA trends to confirm the "breakout" is backed by physics.
+3. **Engine Modification**:
+    - Update `PitcherAnalyzer.master_matrix` with the new pitcher stats.
+    - Update `HitterPropAnalyzer.get_anchor_teams()` to assign the player to their correct team roster.
+4. **Logic Verification**: Run `verify_recalc.py` to ensure the new Alpha score correctly reflects the updated intelligence.
+
+## Operational Constraints
+- Only add players with a verified "Process" (e.g., high K-rate, high barrel rate), not just lucky results.
+- Maximum of 5 matrix updates per hardening cycle to avoid over-fitting.

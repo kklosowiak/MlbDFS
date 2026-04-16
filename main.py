@@ -125,6 +125,7 @@ def run_full_analysis():
     # OMEGA v4.5: Component Translation
     for r in p_reports:
         res = r['alpha_score']
+        r['pitcher'] = r['pitcher'].title() # Aesthetic Fix: Capitalization
         r['alpha_score'] = res['final'] # Flatten for display
         r['physics_score'] = res['physics']
         r['market_score'] = res['market']
@@ -156,6 +157,11 @@ def run_full_analysis():
             
     p_reports = cleaned_p_reports
     p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
+    
+    # OMEGA v6.21: The Integrity Gate
+    # Build a definitive map for O(1) ID-locked lookups
+    # Key: (event_id, team_name) -> pitcher_report
+    p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
  
     # 3. Analyze Teams (Team Omega Multiplicative Core)
     print("\n[STEP 2]: Ranking Team Omega...")
@@ -221,12 +227,31 @@ def run_full_analysis():
             
             # OMEGA v5.5: Correlated Momentum (Perfect Storm)
             is_storm = (divergence >= 10 and tt_move >= 0.3)
+
+            # OMEGA v6.7: Dynamic Opponent Physics Discovery
+            opp_pitcher_physics = 0.0
+            opp_pitcher_name = rosters.get(opponent, "TBD")
             
+            # Match discovered pitcher if metadata is missing
+            api_opp_pitcher = next((e.get('home_pitcher' if opponent == e['home_team'] else 'away_pitcher') 
+                                  for e in snapshot.get('odds', []) if e['id'] == game['id']), None)
+            if api_opp_pitcher: opp_pitcher_name = api_opp_pitcher
+
+            # OMEGA v6.21: ID-Locked Physics Discovery
+            opp_pitcher_rep = p_integrity_map.get((gid, opponent))
+            if opp_pitcher_rep:
+                opp_pitcher_physics = opp_pitcher_rep['physics_score']
+                opp_pitcher_name = opp_pitcher_rep['pitcher']
+                print(f"  - [INTEGRITY]: Game ID [{gid[:4]}] -> Found confirmed starter {opp_pitcher_name} for physics scoring.")
+            else:
+                print(f"  - [WARNING]: Game ID [{gid[:4]}] -> No confirmed starter in OMEGA alpha records. Using TBD.")
+
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, 
                 park_factor=park_factor, bullpen_fatigue=opp_bullpen['score'],
                 divergence=divergence, is_whale=is_whale, is_sharp=is_sharp,
-                is_storm=is_storm, is_shark=is_shark
+                is_storm=is_storm, is_shark=is_shark,
+                opp_pitcher_physics=opp_pitcher_physics
             )
             stack_score = res['final']
             physics_score = res['physics']
@@ -253,7 +278,22 @@ def run_full_analysis():
             
             # Dampened Synergy: Treatments weather as a 1% nudge per boost unit
             env_synergy = 1.0 + (weather_boost / 100.0)
-            final_stack_score = round(stack_score * sentiment_mod * env_synergy, 1)
+            
+            # OMEGA v6.21: ID-Locked Conflict Resolution
+            # We dampen the stack score if they are facing an elite OMEGA pitcher (Alpha > 80).
+            dominance_penalty = 0.0
+            opp_pitcher_alpha = 0.0
+            
+            if opp_pitcher_rep:
+                alpha_data = opp_pitcher_rep.get('alpha_score', 0)
+                opp_pitcher_alpha = alpha_data.get('final', 0) if isinstance(alpha_data, dict) else alpha_data
+                
+                if opp_pitcher_alpha > 80:
+                    dominance_penalty = (opp_pitcher_alpha - 80) * 0.5
+                    print(f"  - [CONFLICT]: Dampening {team} Stack (-{round(dominance_penalty,1)}) due to verified elite {opp_pitcher_name} ({round(opp_pitcher_alpha,1)})")
+            
+            
+            final_stack_score = round((stack_score - dominance_penalty) * sentiment_mod * env_synergy, 1)
             
             # OMEGA v5.2: SHARK Conviction Boost
             if is_shark:
@@ -313,17 +353,33 @@ def run_full_analysis():
         # Determine opponent bullpen fatigue
         opp_bullpen_score = next((tr['bullpen_fatigue'] for tr in team_reports if tr['team'] == h['team']), 0)
 
-        # OMEGA v6.0 SE: Momentum Signal Enrichment (Moved up for tiered scoring)
+        # OMEGA v6.22: Momentum & Vision Enrichment
         is_hot = False
+        vision_boost = 1.0
         mom = h_prop_analyzer.statcast.get_player_momentum(h['name'])
-        if mom and mom.get('ops', 0) > 0.900: is_hot = True
+        if mom:
+            if mom.get('ops', 0) > 0.900: is_hot = True
+            # Vision Boost: If rolling K-rate is 20% lower than season K-rate
+            s_k = mom.get('s_k_rate', 0)
+            r_k = mom.get('r_k_rate', 0)
+            if s_k > 0 and r_k < (s_k * 0.8):
+                vision_boost = 1.10
+                print(f"  - [VISION]: {h['name']} detected with improved discipline (K: {r_k} vs {s_k})")
+        
+        # OMEGA v6.22: Lineup Protection Synergy
+        protection_boost = 1.0
+        team_data = next((tr for tr in team_reports if tr['team'] == h['team']), None)
+        if team_data and team_data.get('stack_score', 0) > 85:
+            protection_boost = 1.05 # 5% synergy boost for elite stacks
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, h.get('matchup_xwoba', 0.330), h.get('ahr_price', 400),
             park_factor=park_factor,
             is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False),
-            is_hot=is_hot
+            is_hot=is_hot,
+            vision_boost=vision_boost,
+            protection_boost=protection_boost
         )
 
         # Extract matchup info for rendering
@@ -331,10 +387,10 @@ def run_full_analysis():
         opp_team = next((tr['opponent'] for tr in team_reports if tr['team'] == h['team']), "TBD")
 
         h_reports.append({
-            'name': h['name'],
+            'name': h['name'].title(),
             'team': h['team'],
             'opponent': opp_team,
-            'opp_pitcher': opp_pitcher,
+            'opp_pitcher': opp_pitcher.title(),
             'player_score': res['final'],
 
 
