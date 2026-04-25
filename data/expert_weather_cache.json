@@ -1,137 +1,128 @@
 [
   {
-    "home": "Baltimore Orioles",
-    "away": "Arizona Diamondbacks",
-    "temp": 88,
-    "wind_speed": 11,
-    "wind_dir": "Out to Center",
-    "status": "Green",
-    "notes": "Very warm with winds blowing out to center'ish at 10+mph, nice hitting weather."
-  },
-  {
-    "home": "St. Louis Cardinals",
-    "away": "Cleveland Guardians",
-    "temp": 80,
-    "wind_speed": 13,
-    "wind_dir": "Out to Center",
-    "status": "Yellow",
-    "notes": "Warm with winds blowing out. I think there's enough dry air to squeeze a game in before storms arrive later in the afternoon, but I won't rule out some later inning trouble."
-  },
-  {
-    "home": "Minnesota Twins",
-    "away": "Boston Red Sox",
-    "temp": 62,
-    "wind_speed": 3,
-    "wind_dir": "In from Left",
-    "status": "Green",
-    "notes": "Clear skies with very light winds. No weather concerns for this afternoon matchup."
-  },
-  {
-    "home": "Pittsburgh Pirates",
-    "away": "Washington Nationals",
-    "temp": 79,
-    "wind_speed": 10,
-    "wind_dir": "In from Right",
-    "status": "Yellow",
-    "notes": "YELLOW/GREEN - A storm line gets close to PIT, but I think it holds just north and they play ball without issue. Worth a pre-game check, but likely fine."
-  },
-  {
-    "home": "Philadelphia Phillies",
-    "away": "Chicago Cubs",
-    "temp": 87,
-    "wind_speed": 9,
-    "wind_dir": "Out to Center",
-    "status": "Green",
-    "notes": "Warm and humid evening in Philly. Winds blowing gently out to center. Good hitting environment."
-  },
-  {
-    "home": "Detroit Tigers",
-    "away": "Kansas City Royals",
-    "temp": 64,
-    "wind_speed": 11,
-    "wind_dir": "In from Left",
-    "status": "Yellow",
-    "notes": "YELLOW/GREEN - The main storm line clears pregame. Behind that line there are some showers, but it doesn't look like a washout. Most likely outcome is that they play ball."
-  },
-  {
     "home": "Cincinnati Reds",
-    "away": "San Francisco Giants",
-    "temp": 82,
-    "wind_speed": 12,
-    "wind_dir": "In from Left",
-    "status": "Green",
-    "notes": "Storms stay well north. No issues. Typical warm Cincinnati evening."
+    "away": "Detroit Tigers",
+    "temp": 81,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": "YELLOW/ORANGE - A good old fashion \"gotta be honest, I don't know\" forecast in Cincy. There's a grouping of heavy showers moving in, likely in the middle parts of the game. A chance for light rain before that. I'll definitely need a radar check pregame. Best guess right now would be they play on time, then get rained on in the later-innings, causing a long delay?"
   },
   {
-    "home": "New York Yankees",
-    "away": "Los Angeles Angels",
-    "temp": 80,
-    "wind_speed": 8,
-    "wind_dir": "Out to Right",
-    "status": "Green",
-    "notes": "GREEN/YELLOW - Looks to me like the rain holds north. Warm with winds blowing out at near 10mph."
+    "home": "Baltimore Orioles",
+    "away": "Boston Red Sox",
+    "temp": 68,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Chance For Delay",
+    "notes": "A few small but heavy downpours could be around during gametime. A delay is possible if one meanders over the park, but the game will play (and finish) regardless."
+  },
+  {
+    "home": "Toronto Blue Jays",
+    "away": "Cleveland Guardians",
+    "temp": 46,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": ""
+  },
+  {
+    "home": "Tampa Bay Rays",
+    "away": "Minnesota Twins",
+    "temp": 82,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": "Closed dome \u2014 weather has no effect at this ballpark."
+  },
+  {
+    "home": "New York Mets",
+    "away": "Colorado Rockies",
+    "temp": 58,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Atlanta Braves",
-    "away": "Miami Marlins",
+    "away": "Philadelphia Phillies",
     "temp": 81,
-    "wind_speed": 6,
-    "wind_dir": "Out to Left",
-    "status": "Green",
-    "notes": "Perfect baseball weather in Atlanta. Clear skies and light winds blowing toward the left-field seats."
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Milwaukee Brewers",
-    "away": "Toronto Blue Jays",
-    "temp": 55,
-    "wind_speed": 6,
-    "wind_dir": "In from Center",
-    "status": "Yellow",
-    "notes": "Rain in the area suggests the roof will be closed for this one. Temperature inside will be controlled."
+    "away": "Pittsburgh Pirates",
+    "temp": 68,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": ""
+  },
+  {
+    "home": "Kansas City Royals",
+    "away": "Los Angeles Angels",
+    "temp": 71,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Chicago White Sox",
-    "away": "Tampa Bay Rays",
-    "temp": 71,
-    "wind_speed": 12,
-    "wind_dir": "In from Center",
-    "status": "Yellow",
-    "notes": "Storms moving through Chicago. High chance for an early delay, but they should be able to clear a window to play later in the night."
+    "away": "Washington Nationals",
+    "temp": 69,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
+  },
+  {
+    "home": "Texas Rangers",
+    "away": "Oakland Athletics",
+    "temp": 90,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
   },
   {
     "home": "Houston Astros",
-    "away": "Colorado Rockies",
-    "temp": 79,
-    "wind_speed": 13,
-    "wind_dir": "Indicated",
-    "status": "Green",
-    "notes": "Indoor game at Minute Maid Park. No weather impact on gameplay."
+    "away": "New York Yankees",
+    "temp": 83,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
   },
   {
-    "home": "San Diego Padres",
+    "home": "St. Louis Cardinals",
     "away": "Seattle Mariners",
-    "temp": 64,
-    "wind_speed": 8,
-    "wind_dir": "In from Right",
-    "status": "Green",
-    "notes": "Standard cool and clear San Diego evening. Typical sea breeze blowing in from right field."
+    "temp": 74,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
   },
   {
-    "home": "Oakland Athletics",
-    "away": "Texas Rangers",
-    "temp": 66,
-    "wind_speed": 8,
-    "wind_dir": "Out to Center",
-    "status": "Green",
-    "notes": "Game played at Sutter Health Park in Sacramento. Clear skies and mild temperatures."
+    "home": "San Francisco Giants",
+    "away": "Miami Marlins",
+    "temp": 59,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM\t1:00 AM"
   },
   {
     "home": "Los Angeles Dodgers",
-    "away": "New York Mets",
-    "temp": 63,
-    "wind_speed": 8,
-    "wind_dir": "Out to Center",
-    "status": "Green",
-    "notes": "Clear and pleasant evening at Dodger Stadium. Winds blowing gently out to center field."
+    "away": "Chicago Cubs",
+    "temp": 69,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM\t1:00 AM"
   }
 ]

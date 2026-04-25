@@ -1,0 +1,11 @@
+--- TOP 10 PITCHERS ---
+Paul Skenes (Pittsburgh Pirates): Alpha 118.4, K-Line 6.5, ML Move -10.0, Juiced: False
+Emmet Sheehan (Los Angeles Dodgers): Alpha 93.7, K-Line 4.5, ML Move 0.0, Juiced: True
+Yusei Kikuchi (Los Angeles Angels): Alpha 90.8, K-Line 4.5, ML Move 5.0, Juiced: True
+Freddy Peralta (New York Mets): Alpha 90.7, K-Line 6.5, ML Move -13.0, Juiced: True
+George Kirby (Seattle Mariners): Alpha 89.4, K-Line 5.5, ML Move -14.0, Juiced: True
+Andre Pallante (St. Louis Cardinals): Alpha 82.6, K-Line 3.5, ML Move 12.0, Juiced: True
+Will Warren (New York Yankees): Alpha 79.5, K-Line 5.5, ML Move 7.0, Juiced: True
+Brandon Young (Baltimore Orioles): Alpha 78.5, K-Line 3.5, ML Move 2.0, Juiced: True
+Brayan Bello (Boston Red Sox): Alpha 76.5, K-Line 4.5, ML Move -2.0, Juiced: False
+Taj Bradley (Minnesota Twins): Alpha 75.2, K-Line 5.0, ML Move -9.0, Juiced: True

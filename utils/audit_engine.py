@@ -40,9 +40,11 @@ class AuditEngine:
                 results[game['teams']['away']['team']['name']] = {'runs': teams['away'].get('score', 0), 'status': status}
                 results[game['teams']['home']['team']['name']] = {'runs': teams['home'].get('score', 0), 'status': status}
                 
-                # Pitching Results
+                # Pitching and Hitting Results
                 for side in ['away', 'home']:
                     team_name = game['teams'][side]['team']['name']
+                    
+                    # --- Pitching ---
                     pitcher_ids = box.get('teams', {}).get(side, {}).get('pitchers', [])
                     if pitcher_ids:
                         # First pitcher in the list is the starter
@@ -57,6 +59,21 @@ class AuditEngine:
                         }
                     else:
                         results[team_name]['sp_stats'] = {'name': 'TBD', 'k': 0, 'er': 0, 'ip': "0.0"}
+                        
+                    # --- Hitting ---
+                    results[team_name]['hitters'] = {}
+                    players = box.get('teams', {}).get(side, {}).get('players', {})
+                    for p_id, p_data in players.items():
+                        b_stats = p_data.get('stats', {}).get('batting', {})
+                        if b_stats:
+                            name = p_data.get('person', {}).get('fullName', 'Unknown')
+                            from utils.normalization import normalize_player_name
+                            norm_name = normalize_player_name(name)
+                            results[team_name]['hitters'][norm_name] = {
+                                'hits': b_stats.get('hits', 0),
+                                'hr': b_stats.get('homeRuns', 0),
+                                'rbi': b_stats.get('rbi', 0)
+                            }
             
             return results
         except Exception as e:
@@ -89,28 +106,57 @@ class AuditEngine:
             
             # 2. Pitcher Success: >= 6 Ks AND <= 2 ER (Targeting Alpha-Tier)
             # Or > 5 innings and < 3 ER
-            k_success = sp_stats.get('k', 0) >= 6
-            er_success = sp_stats.get('er', 0) <= 2
-            p_success = k_success and er_success
+            ip_raw = sp_stats.get('ip', "0.0")
+            try:
+                ip = float(ip_raw)
+            except ValueError:
+                ip = 0.0
             
+            k = sp_stats.get('k', 0)
+            er = sp_stats.get('er', 0)
+            
+            # DFS Logic for Pitchers
+            high_k = (k >= 6 and er <= 2)
+            dominant_ip = (ip >= 6.0 and er <= 1)
+            qs_base = (ip >= 6.0 and er <= 3 and k >= 5)
+            p_success = high_k or dominant_ip or qs_base
+            
+            # 3. Hitter Success
+            h_stat_line = ""
+            h_success = False
+            if 'player_score' in r:
+                from utils.normalization import normalize_player_name
+                norm_h_name = normalize_player_name(r.get('name', ''))
+                hitters_dict = result.get('hitters', {})
+                if norm_h_name in hitters_dict:
+                    h_data = hitters_dict[norm_h_name]
+                    hits = h_data.get('hits', 0)
+                    hr = h_data.get('hr', 0)
+                    rbi = h_data.get('rbi', 0)
+                    h_stat_line = f"{hits}H, {hr}HR, {rbi}RBI"
+                    h_success = (hits >= 2 or hr >= 1)
+                else:
+                    h_stat_line = "DNP/No Stats"
+
             # Calculate a summary outcome for the target type
             if 'stack_score' in r:
                 success = stack_success
             elif 'alpha_score' in r: # Pitcher
                 success = p_success
-            else: # Hitters (if we add them)
-                success = False
+            else: # Hitters
+                success = h_success
 
             audit_data.append({
                 **r,
                 'actual_runs': runs,
                 'actual_sp': sp_stats.get('name'),
-                'actual_k': sp_stats.get('k', 0),
-                'actual_er': sp_stats.get('er', 0),
-                'actual_ip': sp_stats.get('ip', "0.0"),
+                'actual_k': k,
+                'actual_er': er,
+                'actual_ip': ip_raw,
+                'hitter_stat_line': h_stat_line,
                 'game_status': status,
                 'success_flag': "[WIN]" if success else "[LOSS]" if status == "Final" else "[BUSY]",
-                'grade': "A" if success and (r.get('stack_score', 0) > 85 or r.get('alpha_score', 0) > 95) else "B" if success else "F"
+                'grade': "A" if success and (r.get('stack_score', 0) > 85 or r.get('alpha_score', 0) > 95 or r.get('player_score', 0) > 95) else "B" if success else "F"
             })
             
         return audit_data

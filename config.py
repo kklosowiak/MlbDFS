@@ -40,6 +40,23 @@ class Config:
     }
     
     @classmethod
+    def get_slate_filter(cls):
+        """OMEGA v6.9: Load Date-Aware Slate Filter."""
+        import json
+        from datetime import datetime
+        filter_path = os.path.join(cls.DATA_DIR, "slate_filter.json")
+        if os.path.exists(filter_path):
+            try:
+                with open(filter_path, 'r') as f:
+                    data = json.load(f)
+                
+                today = datetime.now().strftime("%Y-%m-%d")
+                if data.get('enabled') and data.get('active_date') == today:
+                    return data.get('allowed_teams', [])
+            except: pass
+        return None
+
+    @classmethod
     def validate(cls):
         """Simple validation to ensure keys are present."""
         missing = []

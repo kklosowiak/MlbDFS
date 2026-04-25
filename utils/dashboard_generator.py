@@ -182,6 +182,15 @@ class DashboardGenerator:
         .move-up {{ color: #00ff88 !important; text-shadow: 0 0 5px rgba(0, 255, 136, 0.4); }}
         .move-down {{ color: #ff4444 !important; text-shadow: 0 0 5px rgba(255, 68, 68, 0.4); }}
         .move-even {{ color: #666 !important; }}
+        
+        .trend-surging {{ color: #ff00ff !important; font-weight: 800; animation: pulse-magenta 2s infinite; }}
+        .trend-fading {{ color: #00bfff !important; font-weight: 800; opacity: 0.8; }}
+        .divergence-cell {{ white-space: nowrap; display: flex; align-items: center; gap: 8px; }}
+        @keyframes pulse-magenta {{
+            0% {{ text-shadow: 0 0 5px rgba(255, 0, 255, 0.2); }}
+            50% {{ text-shadow: 0 0 15px rgba(255, 0, 255, 0.6); }}
+            100% {{ text-shadow: 0 0 5px rgba(255, 0, 255, 0.2); }}
+        }}
     </style>
 </head>
 <body>
@@ -194,10 +203,13 @@ class DashboardGenerator:
             </div>
         </div>
 
-            <div class="legend-item" style="border-color: var(--accent); color: var(--accent);">⚡ <b>ALPHA (+15%):</b> Market Leaders (Storm, Whale, Shark, Target).</div>
+            <div class="legend-item" style="border-color: var(--accent); color: var(--accent);">⚡ <b>ALPHA (+15%):</b> Market Leaders (Storm, Whale, Shark, Target, Steam).</div>
             <div class="legend-item">🔹 <b>BETA (+5%):</b> Supporting signals (Sharp, Power, Engine).</div>
             <div class="legend-item" style="color: #ff00ff; border-color: #ff00ff;">🌪️ <b>STORM:</b> Correlated Sharp Action (ML + Total).</div>
+            <div class="legend-item" style="color: #ff4500; border-color: #ff4500;">💨 <b>STEAM:</b> Heavy Line Movement + Consensus Money.</div>
             <div class="legend-item" style="color: #ff8c00;">♨️ <b>PEN ALERT:</b> Bullpen fatigue detected. Red = Gassed.</div>
+            <div class="legend-item" style="color: #ff4500;">⚠️ <b>PARADOX:</b> Conflict detected (Pitcher vs. Top Stack).</div>
+            <div class="legend-item" style="color: #00ced1;">📉 <b>CEILING:</b> Low strikeout upside detected.</div>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
@@ -222,6 +234,10 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">✨ DEBUT</span>' if p.get('is_debut') else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00fa9a; color:#00fa9a;\">🏔️ ALTITUDE</span>' if p.get('is_coors') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ced1; color:#00ced1;\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🏗️ ENGINE</span>' if (p.get('outs_line') or 0) >= 17.5 else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if (p.get('divergence') or 0) >= 10 and not (p.get('divergence') or 0) >= 15 else '' }"
                                   f"<span class='signal-pill' style='border-color:#888; color:#888;'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
@@ -274,7 +290,7 @@ class DashboardGenerator:
                 <h2>Market Sentiment Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody>
                         {"".join([f"<tr class='{'god-tier' if t['stack_score'] >= 85 else ''}'>"
@@ -283,17 +299,24 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#00bfff; color:#00bfff;\">🦈 SHARK</span>' if t.get('is_shark') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
                                   f"{ '<span class=\"signal-pill\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">💨 STEAM</span>' if t.get('is_steam') else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🚂 TRAIN</span>' if t['stack_score'] >= 90 else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ PEN ALERT</span>' if t.get('is_fatigued') or t.get('is_gassed') else '' }"
-                                  f"</div></td>"
+                                  + (f'<span class="signal-pill" style="border-color:#a0f0a0; color:#a0f0a0;">{t["total_signal"]}</span>' if t.get('total_signal') else '')
+                                  + "</div></td>"
                                   f"<td><strong>{t['team']}</strong></td>"
                                   f"<td><span class='vs'>vs</span>{t['opp_pitcher']} ({abbrev_map.get(t['opponent'], 'TBD')})</td>"
-                                  f"<td class='metric { 'move-up' if t['ml_move'] > 0 else ('move-down' if t['ml_move'] < 0 else 'move-even') }'>{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>"
+                                  f"<td class='metric' style='font-weight:bold;'><span style=\"{ 'color:#00e676;' if t.get('implied_total', 0) >= 4.2 else '' }\">{t.get('implied_total', '-')}</span></td>"
+                                  f"<td class='metric { 'move-up' if t['ml_move'] < 0 else ('move-down' if t['ml_move'] > 0 else 'move-even') }'>{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>"
                                   f"<td class='metric { 'move-up' if t['tt_move'] > 0 else ('move-down' if t['tt_move'] < 0 else 'move-even') }'>{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>"
-                                  f"<td class='metric { 'move-up' if (t.get('divergence') or 0) > 0 else ('move-down' if (t.get('divergence') or 0) < 0 else 'move-even') }'>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</td>"
+                                  f"<td><div class='divergence-cell { 'move-up' if (t.get('divergence') or 0) > 0 else ('move-down' if (t.get('divergence') or 0) < 0 else 'move-even') }'>"
+                                  f"<span>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</span>"
+                                  f"<span class='{ 'trend-surging' if t.get('trend') == 'SURGING' else ('trend-fading' if t.get('trend') == 'FADING' else '') }' style='font-size: 0.9rem;'>"
+                                  f"{ '🔥' if t.get('trend') == 'SURGING' else ('❄️' if t.get('trend') == 'FADING' else '▫️') }</span>"
+                                  f"</div></td>"
                                   f"</tr>" for t in t_reports[:20]])}
                     </tbody>
                 </table>

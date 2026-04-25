@@ -2,6 +2,7 @@ from data.market_fetcher import MarketFetcher
 from data.consensus_fetcher import ConsensusFetcher
 from data.statcast_bridge import StatcastBridge
 from data.probable_pitcher_fetcher import ProbablePitcherFetcher
+from data.propfinder_scraper import PropfinderScraper
 import json
 import os
 import time
@@ -10,6 +11,12 @@ from config import config
 
 def perform_fetch(custom_date_from=None):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
+    
+    # OMEGA v6.6.5: Live Weather Overlay Sync
+    try:
+        PropfinderScraper().refresh()
+    except Exception as e:
+        print(f"  - WARNING: Weather refresh failed: {e}")
     
     # OMEGA v6.5: Dynamic Probable Sync
     ProbablePitcherFetcher().refresh()

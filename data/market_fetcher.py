@@ -290,43 +290,7 @@ class MarketFetcher:
 
 
 
-                # B. Process Player Props
-                if prop_data:
-                    if event_id not in structured_props:
-                        structured_props[event_id] = {}
-                        
-                    for bookmaker in prop_data.get('bookmakers', []):
-                        book_key = bookmaker['key']
-                        for market in bookmaker.get('markets', []):
-                            market_key = market['key']
-                            
-                            if market_key not in structured_props[event_id]:
-                                structured_props[event_id][market_key] = []
-                            
-                            for outcomes in market.get('outcomes', []):
-                                # OMEGA v5.0.1: Enhanced Outcome Extraction (Over/Under/Yes/No)
-                                raw_name = outcomes.get('name')
-                                raw_description = outcomes.get('description')
-                                
-                                player_name = raw_description if raw_description else raw_name
-                                side = raw_name if raw_description else "Yes" # Default to Yes for H2H/HomeRun style props
-                                
-                                if not player_name or player_name in ["Yes", "No"] and not raw_description:
-                                    continue
-                                    
-                                price = outcomes.get('price')
-                                point = outcomes.get('point')
-                                
-                                structured_props[event_id][market_key].append({
-                                    'player_name': player_name,
-                                    'bookmaker': book_key,
-                                    'price': price,
-                                    'point': point,
-                                    'side': side,
-                                    'home_team': home_team,
-                                    'away_team': away_team,
-                                    'game_id': event_id
-                                })
+
                             
             except Exception as e:
                 print(f"  - CRITICAL: Bulk loop failed for event {event_id}. Skipping. {e}")

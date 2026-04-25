@@ -17,14 +17,14 @@ class HitterAlpha:
         p_comp = min(50, (curr_itt / 6.0) * 50)
         
         # 2. Market Component (0-50 pts) - Fallback Default: 25.0
-        m_move_pts = min(20, (abs(ml_move) / 25) * 20)
+        m_move_pts = min(20, (abs(ml_move) / 25) * 20) if ml_move < 0 else 0
         tt_pts = min(20, (max(0, tt_move) / 0.8) * 20)
         p_pts = max(0, 40 - public_bets) * 0.25 # Max 10 pts
         m_comp = m_move_pts + tt_pts + p_pts
         
         # 3. Aggressive Signal Boost (1 + boost)
         signals = 0
-        if ml_move >= 15: signals += 1
+        if ml_move <= -15: signals += 1
         if tt_move >= 0.5: signals += 1
         if public_bets < 40: signals += 1
         

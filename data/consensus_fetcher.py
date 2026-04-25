@@ -40,12 +40,23 @@ class ConsensusFetcher:
     def fetch_splits(self):
         """
         Attempts to scrape live splits from ScoresAndOdds.
+        Also attempts to scrape Totals (Over/Under) splits as a visual-only bonus layer.
         """
         print("  [CONSENSUS]: Attempting ScoresAndOdds live scrape (Mirror Unfreeze)...")
         live_data = self._scrape_scoresandodds()
 
         if live_data and len(live_data) > 2:
             print(f"  [CONSENSUS]: SUCCESS - Scraped {len(live_data)} teams from ScoresAndOdds.")
+            # OMEGA v6.8: Additive Totals Layer — scrape O/U splits from same page
+            try:
+                headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'}
+                import requests
+                response = requests.get(self.url, headers=headers, timeout=15)
+                totals_data = self._parse_totals_table(response.text)
+                if totals_data:
+                    self._save_totals_cache(totals_data)
+            except Exception:
+                pass  # Totals are visual-only; silent failure is safe
             self._save_cache(live_data)
             return live_data
 
@@ -135,6 +146,101 @@ class ConsensusFetcher:
         if found_matchups > 0:
              print(f"  [CONSENSUS]: Synchronized {found_matchups} side-isolated matchups.")
         return splits
+
+    def _parse_totals_table(self, html):
+        """
+        OMEGA v6.8: Visual-Only Totals Parser.
+        Scrapes Over/Under ticket% and money% from ScoresAndOdds cards.
+        Returns dict keyed by game label: {game_key: {over_tickets, over_money, under_tickets, under_money, line}}
+        Completely isolated from Sides data — no existing logic is touched.
+        """
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, 'html.parser')
+        totals = {}
+
+        cards = soup.select('div.trend-card.consensus')
+        for card in cards:
+            try:
+                side_container = card.select_one('.trend-graph-sides')
+                if not side_container:
+                    continue
+                sides = side_container.find_all('strong')
+                if len(sides) < 2:
+                    continue
+
+                label_a = sides[0].get_text(strip=True).upper()  # e.g. "OVER"
+                label_b = sides[1].get_text(strip=True).upper()  # e.g. "UNDER"
+
+                # Only process cards that are Totals (label starts with OVER/UNDER or o/u)
+                is_total = (
+                    label_a.startswith('OVER') or label_a.startswith('O ') or
+                    label_b.startswith('UNDER') or label_b.startswith('U ')
+                )
+                if not is_total:
+                    continue
+
+                pct_rows = card.select('.trend-graph-percentage')
+                if len(pct_rows) < 2:
+                    continue
+
+                tickets_a = int(pct_rows[0].select_one('.percentage-a').get_text(strip=True).replace('%', ''))
+                tickets_b = int(pct_rows[0].select_one('.percentage-b').get_text(strip=True).replace('%', ''))
+                money_a   = int(pct_rows[1].select_one('.percentage-a').get_text(strip=True).replace('%', ''))
+                money_b   = int(pct_rows[1].select_one('.percentage-b').get_text(strip=True).replace('%', ''))
+
+                # Grab team labels from the header of the card for game identification
+                header = card.select_one('.trend-card-header, .trend-header, .trend-title')
+                if header:
+                    game_key = header.get_text(strip=True)
+                else:
+                    # Fallback to team names if header select fails
+                    team_names = [t.get_text(strip=True).upper() for t in card.select('.team-name')]
+                    if len(team_names) >= 2:
+                        game_key = f"{team_names[0]} @ {team_names[1]}"
+                    else:
+                        game_key = f"game_{len(totals)+1}"
+
+                # Determine which label is Over vs Under
+                if label_a.startswith('OVER') or label_a.startswith('O '):
+                    totals[game_key] = {
+                        'over_tickets': tickets_a, 'over_money': money_a,
+                        'under_tickets': tickets_b, 'under_money': money_b,
+                        'over_divergence': money_a - tickets_a,
+                        'under_divergence': money_b - tickets_b,
+                    }
+                else:
+                    totals[game_key] = {
+                        'over_tickets': tickets_b, 'over_money': money_b,
+                        'under_tickets': tickets_a, 'under_money': money_a,
+                        'over_divergence': money_b - tickets_b,
+                        'under_divergence': money_a - tickets_a,
+                    }
+            except Exception:
+                continue
+
+        return totals
+
+    def _save_totals_cache(self, data):
+        """Saves scraped totals splits to a separate cache file."""
+        import os, json
+        path = os.path.join(os.path.dirname(self.cache_path), 'consensus_totals_live.json')
+        try:
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception:
+            pass
+
+    def load_totals_cache(self):
+        """Loads totals splits from cache. Returns empty dict on any failure."""
+        import os, json
+        path = os.path.join(os.path.dirname(self.cache_path), 'consensus_totals_live.json')
+        if not os.path.exists(path):
+            return {}
+        try:
+            with open(path, 'r') as f:
+                return json.load(f)
+        except Exception:
+            return {}
 
 
 
@@ -230,10 +336,27 @@ class ConsensusFetcher:
             return False
 
         # Condition 3: Line has actively moved IN FAVOR of this team by at least 10 cents
-        if ml_move < 10:
+        if ml_move > -10:
             return False
 
         return True
+        
+    def detect_steam(self, team_full_name, splits_data, ml_move=0.0):
+        """
+        OMEGA STEAM Signal.
+        Fires if the team has heavy favorable line movement (<= -15 cents) 
+        AND majority money (>= 60%), regardless of ticket divergence.
+        """
+        split = self.get_team_split(team_full_name, splits_data)
+        if not split:
+            return False
+            
+        money_pct = split.get('money', 0)
+        
+        if money_pct >= 60 and ml_move <= -10:
+            return True
+            
+        return False
 
 
 if __name__ == "__main__":

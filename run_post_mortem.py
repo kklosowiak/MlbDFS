@@ -42,14 +42,11 @@ def run_post_mortem(date_str=None):
     for t in t_audit[:8]: # Top 8 stacks
         print(f"  {t['success_flag']} {t['team']:21} | OMEGA: {t['stack_score']:5.1f} | Actual: {t['actual_runs']} Runs | Status: {t['game_status']}")
 
-    # 5. Score Hitters (Simple match if homeruns or multi-hits existed - manual check for now)
-    # We can refine this using boxscore stats for hitters if needed.
+    # 5. Score Hitters
     print("\n--- TOP HITTER PROJECTIONS ---")
-    for h in projections.get('hitters', [])[:10]:
-        team = h['team']
-        res = actuals.get(team, {})
-        status = res.get('status', 'Unknown')
-        print(f"  [TARGET] {h['name']:20} ({team[:12]}) | OMEGA: {h['player_score']:5.1f} | Team Runs: {res.get('runs', 0)} | Status: {status}")
+    h_audit = audit.score_performance(projections.get('hitters', []), actuals)
+    for h in h_audit[:10]:
+        print(f"  {h['success_flag']} {h['name']:20} ({h['team'][:12]}) | OMEGA: {h['player_score']:5.1f} | Actual: {h.get('hitter_stat_line', 'N/A')} | Status: {h['game_status']}")
 
     print("\n" + "="*60)
     print("AUDIT COMPLETE")
@@ -57,5 +54,16 @@ def run_post_mortem(date_str=None):
 
 if __name__ == "__main__":
     import sys
-    target_date = sys.argv[1] if len(sys.argv) > 1 else "2026-04-14"
+    # If no date provided, use today. 
+    # If it's before 10 AM, user likely wants 'yesterday's' slate.
+    if len(sys.argv) > 1:
+        target_date = sys.argv[1]
+    else:
+        now = datetime.now()
+        if now.hour < 10:
+            from datetime import timedelta
+            target_date = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            target_date = now.strftime("%Y-%m-%d")
+            
     run_post_mortem(target_date)

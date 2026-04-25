@@ -77,8 +77,10 @@ class PitcherAnalyzer:
                                 point = float(row.get('point', default_val))
                                 if p_name not in external_props: external_props[p_name] = {}
                                 external_props[p_name][prop_key] = point
-                            except: continue
-            except: pass
+                            except Exception:
+                                continue
+            except Exception as e:
+                print(f"[ERROR]: Worksheet prop load failure: {e}")
         _load_market(ks_path, 'pitcher_strikeouts', 'ks', 5.5)
         _load_market(outs_path, 'pitcher_outs', 'outs', 15.5)
         return external_props
@@ -113,7 +115,10 @@ class PitcherAnalyzer:
 
         pitcher_reports = []
         
+        allowed_teams = self.config.get_slate_filter()
         for game in snapshot.get('odds', []):
+            if allowed_teams and game['home_team'] not in allowed_teams and game['away_team'] not in allowed_teams:
+                continue
             gid = game['id']
             # OMEGA v5.3: Precise ID Match
             open_data = self.opening_lookup.get(gid)
@@ -224,12 +229,13 @@ class PitcherAnalyzer:
                 # Physics Leaderboard Ingestion
                 physics = self.fetch_pitcher_physics(pitcher_name)
                 
-                # Sentiment Overlay (Venue-Aware)
-                venue_team = home if side == 'home' else away # Venue is always the game home_team
+                # Environment & Stadium Alpha (v6.8 Master)
+                venue_team = home # Venue is always the game home_team
+                base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
                 
                 # Umpire Mod
                 ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "Unknown"})
-                ump_factor = (ump_data['factor'] - 1.0) * 100.0 # Convert 1.05 to +5.0 boost
+                ump_boost = (ump_data['factor'] - 1.0) * 100.0 # Convert 1.05 to +5.0 boost
                 
                 # Weather Mod
                 weather_boost = 0
@@ -239,8 +245,9 @@ class PitcherAnalyzer:
                     weather_boost = w_res['boost']
                     weather_label = w_res['label']
                 
-                park_factor = ump_factor + weather_boost
- 
+                # Total Environment Factor (Base 100 + Stadium + Umpire + Weather)
+                park_factor = (base_stadium_factor * 100.0) + ump_boost + weather_boost
+  
                 # OMEGA v6.0 SE: Alpha Signal Detection
                 is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
                 is_whale = (divergence >= 15)
@@ -300,7 +307,9 @@ class PitcherAnalyzer:
         try:
             with open(cache_path, 'r') as f:
                 cache = json.load(f)
-        except: return {}
+        except Exception as e:
+            print(f"[ERROR]: Statcast cache parse failure: {e}")
+            return {}
             
         team_stats = {}
         for name, data in cache.items():
@@ -447,7 +456,15 @@ class PitcherAnalyzer:
             "Tarik Skubal": {"siera": 2.95, "csw": 0.32},
             "Spencer Arrighetti": {"siera": 3.48, "csw": 0.29},
             "Jared Jones": {"siera": 3.35, "csw": 0.305},
-            "Paul Skenes": {"siera": 2.85, "csw": 0.33}
+            "Paul Skenes": {"siera": 2.85, "csw": 0.33},
+            "Jacob deGrom": {"siera": 2.45, "csw": 0.36},
+            "Tyler Glasnow": {"siera": 2.90, "csw": 0.315},
+            "Logan Gilbert": {"siera": 3.20, "csw": 0.28},
+            "Tanner Bibee": {"siera": 3.45, "csw": 0.265},
+            "Chris Bassitt": {"siera": 3.75, "csw": 0.25},
+            "Aaron Civale": {"siera": 3.85, "csw": 0.26},
+            "Casey Mize": {"siera": 4.10, "csw": 0.24},
+            "Bubba Chandler": {"siera": 3.65, "csw": 0.29}
         }
 
         # Check Master Matrix first (Fast path - no network)
@@ -469,28 +486,55 @@ class PitcherAnalyzer:
                 df = pitching_stats(2026, qual=0)
                 if df is not None and not df.empty:
                     df.to_csv(cache_file, index=False)
-            except:
-                pass
+            except Exception as e:
+                print(f"[WARNING]: pybaseball fetch failure: {e}")
 
         # OMEGA v6.6: 'Anti-Ghost' Fallback Logic
-        # If we have no physics data, we look at the market. 
-        # If the ML is -130 or better (implied 56%+ win prob), we don't assume they are 'Average'.
-        # We set a 'Protective' baseline of 3.85 SIERA to avoid over-optimism for the stack.
         siera = 4.10
         csw = 0.25
         
-        # Check if caller passed in optional ML for context-aware fallback (if accessible)
-        # For now, we use a slightly more conservative baseline (4.00) as the default unknown
-        siera = 4.00 
-        
+        match = pd.DataFrame()
         if df is not None and not df.empty:
-            name_col = 'Name' if 'Name' in df.columns else df.columns[0]
-            match = df[df[name_col].apply(lambda x: normalize_player_name(str(x)) == p_norm)]
-            if not match.empty:
-                if 'SIERA' in df.columns: siera = match.iloc[0]['SIERA']
-                if 'CSW%' in df.columns: 
-                    csw = match.iloc[0]['CSW%']
-                    if csw > 1: csw /= 100.0
+            if 'Name' in df.columns:
+                mask = df['Name'].apply(lambda x: normalize_player_name(str(x))) == p_norm
+                match = df[mask]
+        
+        
+        # If we have no physics data, we look at our own StatsAPI cache for momentum-based proxying.
+        if (df is None or df.empty) or (match.empty):
+            statcast_path = os.path.join(self.config.DATA_DIR, "statcast_cache.json")
+            if os.path.exists(statcast_path):
+                try:
+                    with open(statcast_path, 'r') as f:
+                        cache = json.load(f)
+                    p_data = cache.get(p_norm)
+                    if p_data and p_data.get('type') == 'pitcher':
+                        # Proxy SIERA derived from K/IP momentum
+                        era = float(p_data.get('era', 4.00))
+                        k = float(p_data.get('k', 0))
+                        ip = float(p_data.get('ip', 1.0))
+                        k_per_ip = k / ip if ip > 5.0 else 0.85 # Min sample gate
+                        
+                        # Scale Proxy SIERA (Baseline 4.00 @ 0.85 K/IP)
+                        proxy_siera = 4.00 - (k_per_ip - 0.85) * 1.2
+                        siera = max(2.85, min(5.00, proxy_siera))
+                        
+                        # Scale Proxy CSW (Baseline 25% @ 0.85 K/IP)
+                        csw = 0.25 + (k_per_ip - 0.85) * 0.1
+                        csw = max(0.18, min(0.35, csw))
+                        
+                        # Inject audit trace for dashboard
+                        print(f"  - ALIGNED: Developed Proxy Physics for {pitcher_name} via StatsAPI (SIERA: {siera:.2f})")
+                except Exception as e:
+                    siera = 4.10
+                    csw = 0.25
+        
+        # Check if match was found in the dataframe path
+        if df is not None and not df.empty and not match.empty:
+            if 'SIERA' in df.columns: siera = match.iloc[0]['SIERA']
+            if 'CSW%' in df.columns: 
+                csw = match.iloc[0]['CSW%']
+                if csw > 1: csw /= 100.0
         
         bm_score = max(0, min(25, (csw / 0.30) * 25))
         return {"siera": siera, "csw": csw, "bm_score": bm_score}

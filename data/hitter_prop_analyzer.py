@@ -90,8 +90,11 @@ class HitterPropAnalyzer:
             print(f"[WARNING]: Snapshot '{snapshot_path}' contains zero games. Discovery will be thin.")
         
         # OMEGA v4.5.1: Strict Slate Isolation - Only track teams in the current odds
+        allowed_teams = config.get_slate_filter()
         active_teams = set()
         for g in odds:
+            if allowed_teams and g['home_team'] not in allowed_teams and g['away_team'] not in allowed_teams:
+                continue
             active_teams.add(g['home_team'])
             active_teams.add(g['away_team'])
 

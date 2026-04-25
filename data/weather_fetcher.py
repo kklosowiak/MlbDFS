@@ -19,11 +19,31 @@ class WeatherFetcher:
                     data = json.load(f)
                     indexed = {}
                     for item in data:
-                        # Index by the full name and a 'short' name (e.g. 'Athletics')
+                        # OMEGA v6.6.5: Robust Multi-Index for Teams
                         full_home = item['home']
                         indexed[full_home] = item
-                        short_home = full_home.split()[-1] # Grabs 'Athletics' from 'Oakland Athletics'
-                        indexed[short_home] = item
+                        
+                        # Add nickname index (e.g. 'Cubs' from 'Chicago Cubs')
+                        nickname = full_home.split()[-1]
+                        indexed[nickname] = item
+                        
+                        # Add city/prefix index (e.g. 'Chicago' from 'Chicago Cubs')
+                        prefix = full_home.split()[0]
+                        indexed[prefix] = item
+                        
+                        # Special Case Aliases (v6.6.5 hardening)
+                        if "D-backs" in full_home or "Diamondbacks" in full_home:
+                            indexed["D-backs"] = item
+                            indexed["ARI"] = item
+                        
+                        # Support for Abbreviations if available
+                        code_map = {
+                            "NYM": "Mets", "NYY": "Yankees", "LAD": "Dodgers", 
+                            "CHC": "Cubs", "CHW": "White Sox", "ATL": "Braves"
+                        }
+                        for code, nick in code_map.items():
+                            if nick in full_home:
+                                indexed[code] = item
                     return indexed
             except:
                 return {}

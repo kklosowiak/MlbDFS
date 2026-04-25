@@ -42,9 +42,9 @@ def calculate_ml_move(open_ml, curr_ml):
         
     def get_cents(val):
         if val >= 100:
-            return -(val - 100)
+            return (val - 100)
         elif val <= -100:
-            return (abs(val) - 100)
+            return -(-val - 100)
         return 0.0 # Pk or invalid
         
     delta = get_cents(curr_ml) - get_cents(open_ml)

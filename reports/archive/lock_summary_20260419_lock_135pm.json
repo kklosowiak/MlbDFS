@@ -1,0 +1,205 @@
+{
+  "timestamp": "2026-04-19T13:34:36 (Lock)",
+  "top_pitchers": [
+    {
+      "pitcher": "Tobias Myers",
+      "team": "New York Mets",
+      "alpha": 122.8,
+      "divergence": 22,
+      "ml_move": -6.0,
+      "tt_move": -0.5
+    },
+    {
+      "pitcher": "Robbie Ray",
+      "team": "San Francisco Giants",
+      "alpha": 111.1,
+      "divergence": 5,
+      "ml_move": -20.0,
+      "tt_move": -0.5
+    },
+    {
+      "pitcher": "Pj Poulin",
+      "team": "Washington Nationals",
+      "alpha": 100.5,
+      "divergence": -5,
+      "ml_move": 16.0,
+      "tt_move": -0.5
+    },
+    {
+      "pitcher": "Shane Mcclanahan",
+      "team": "Tampa Bay Rays",
+      "alpha": 97.4,
+      "divergence": 31,
+      "ml_move": 0.0,
+      "tt_move": 0.0
+    },
+    {
+      "pitcher": "Jacob Misiorowski",
+      "team": "Milwaukee Brewers",
+      "alpha": 91.1,
+      "divergence": 0,
+      "ml_move": -18.0,
+      "tt_move": 0.0
+    },
+    {
+      "pitcher": "Mike Burrows",
+      "team": "Houston Astros",
+      "alpha": 91.0,
+      "divergence": 7,
+      "ml_move": 5.0,
+      "tt_move": 0.5
+    },
+    {
+      "pitcher": "Javier Assad",
+      "team": "Chicago Cubs",
+      "alpha": 90.4,
+      "divergence": -22,
+      "ml_move": 7.0,
+      "tt_move": -0.5
+    },
+    {
+      "pitcher": "Trevor Rogers",
+      "team": "Baltimore Orioles",
+      "alpha": 86.2,
+      "divergence": 2,
+      "ml_move": -4.0,
+      "tt_move": -0.5
+    }
+  ],
+  "top_stacks": [
+    {
+      "team": "New York Mets",
+      "opp_pitcher": "Javier Assad",
+      "stack_score": 93.3,
+      "divergence": 22,
+      "ml_move": -6.0,
+      "tt_move": -0.5,
+      "trend": "STABLE"
+    },
+    {
+      "team": "San Francisco Giants",
+      "opp_pitcher": "Pj Poulin",
+      "stack_score": 91.3,
+      "divergence": 5,
+      "ml_move": -20.0,
+      "tt_move": -0.5,
+      "trend": "STABLE"
+    },
+    {
+      "team": "Houston Astros",
+      "opp_pitcher": "Matthew Liberatore",
+      "stack_score": 85.2,
+      "divergence": 7,
+      "ml_move": 5.0,
+      "tt_move": 0.5,
+      "trend": "STABLE"
+    },
+    {
+      "team": "Tampa Bay Rays",
+      "opp_pitcher": "Mitch Keller",
+      "stack_score": 84.2,
+      "divergence": 31,
+      "ml_move": 0.0,
+      "tt_move": 0.0,
+      "trend": "STABLE"
+    },
+    {
+      "team": "Milwaukee Brewers",
+      "opp_pitcher": "Eury P\u00e9rez",
+      "stack_score": 77.0,
+      "divergence": 0,
+      "ml_move": -18.0,
+      "tt_move": 0.0,
+      "trend": "STABLE"
+    },
+    {
+      "team": "Minnesota Twins",
+      "opp_pitcher": "Brady Singer",
+      "stack_score": 74.2,
+      "divergence": 9,
+      "ml_move": -11.0,
+      "tt_move": 0.0,
+      "trend": "STABLE"
+    },
+    {
+      "team": "St. Louis Cardinals",
+      "opp_pitcher": "Mike Burrows",
+      "stack_score": 71.7,
+      "divergence": -7,
+      "ml_move": -5.0,
+      "tt_move": 0.5,
+      "trend": "STABLE"
+    },
+    {
+      "team": "Cleveland Guardians",
+      "opp_pitcher": "Trevor Rogers",
+      "stack_score": 71.0,
+      "divergence": -2,
+      "ml_move": 4.0,
+      "tt_move": -0.5,
+      "trend": "STABLE"
+    }
+  ],
+  "top_hitters": [
+    {
+      "name": "Ben Rice",
+      "team": "New York Yankees",
+      "score": 106.7,
+      "opp_pitcher": "Cole Ragans"
+    },
+    {
+      "name": "Yordan Alvarez",
+      "team": "Houston Astros",
+      "score": 106.1,
+      "opp_pitcher": "Matthew Liberatore"
+    },
+    {
+      "name": "Brice Turang",
+      "team": "Milwaukee Brewers",
+      "score": 105.8,
+      "opp_pitcher": "Eury P\u00e9rez"
+    },
+    {
+      "name": "Jordan Walker",
+      "team": "St. Louis Cardinals",
+      "score": 102.9,
+      "opp_pitcher": "Mike Burrows"
+    },
+    {
+      "name": "Sal Stewart",
+      "team": "Cincinnati Reds",
+      "score": 100.0,
+      "opp_pitcher": "Bailey Ober"
+    },
+    {
+      "name": "Aaron Judge",
+      "team": "New York Yankees",
+      "score": 91.4,
+      "opp_pitcher": "Cole Ragans"
+    },
+    {
+      "name": "Jose Altuve",
+      "team": "Houston Astros",
+      "score": 83.0,
+      "opp_pitcher": "Matthew Liberatore"
+    },
+    {
+      "name": "Josh Bell",
+      "team": "Minnesota Twins",
+      "score": 82.0,
+      "opp_pitcher": "Brady Singer"
+    },
+    {
+      "name": "Christian Walker",
+      "team": "Houston Astros",
+      "score": 82.0,
+      "opp_pitcher": "Matthew Liberatore"
+    },
+    {
+      "name": "Garrett Mitchell",
+      "team": "Milwaukee Brewers",
+      "score": 81.8,
+      "opp_pitcher": "Eury P\u00e9rez"
+    }
+  ]
+}

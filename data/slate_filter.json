@@ -1,0 +1,12 @@
+{
+    "enabled": true,
+    "active_date": "2026-04-23",
+    "allowed_teams": [
+        "Atlanta Braves", "Washington Nationals",
+        "Milwaukee Brewers", "Detroit Tigers",
+        "Philadelphia Phillies", "Chicago Cubs",
+        "San Diego Padres", "Colorado Rockies",
+        "Chicago White Sox", "Arizona Diamondbacks",
+        "Los Angeles Angels", "San Francisco Giants"
+    ]
+}
