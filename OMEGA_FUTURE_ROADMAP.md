@@ -23,6 +23,16 @@ These notes capture the proposed enhancements identified during the April 16th p
 *   **Logic**: Replace or supplement the `ops` momentum with a `HardHit_delta`.
 *   **Objective**: Identify "Unlucky Stars" who are hitting rockets but haven't cashed yet.
 
+### 4. Remove/Adjust Pitcher Debut Boost
+*   **Concept**: Re-evaluate the flat 10% visibility boost currently given to pitchers without established K-lines (often debuts/callups).
+*   **Logic**: Reduce this boost to 0-5% or remove it entirely, as it overvalues unproven rookies against established starters.
+*   **Objective**: Prevent untested pitchers from artificially spiking to the top of the Pitcher Alpha board and burning DFS lineups.
+
+### 5. Cap Market Boosts for Weak-Hitting Stacks
+*   **Concept**: Prevent sharp/steam money from vaulting weak-hitting teams to the top of the Stack rankings.
+*   **Logic**: Introduce a threshold based on `team_xwoba`. If a team's underlying physics is below a certain mark, cap the amount of points they can gain from "Shark/Steam" market signals.
+*   **Objective**: Ensure that high conviction stacks have both sharp money *and* the actual offensive capability to produce runs.
+
 ## 📈 Long-Term Integration
 *   **Automation**: Automatic "Snapshot velocity" detection (alerting if a line moves > 10 cents in 15 minutes).
 *   **Weather 2.0**: Humidity and Air Density (DA) impact on HR potential.

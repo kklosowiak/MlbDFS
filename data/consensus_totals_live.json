@@ -1,5 +1,69 @@
 {
-  "TIGERS @ REDS": {
+  "WHITE SOX @ ANGELS": {
+    "over_tickets": 78,
+    "over_money": 78,
+    "under_tickets": 22,
+    "under_money": 22,
+    "over_divergence": 0,
+    "under_divergence": 0
+  },
+  "BRAVES @ MARINERS": {
+    "over_tickets": 77,
+    "over_money": 75,
+    "under_tickets": 23,
+    "under_money": 25,
+    "over_divergence": -2,
+    "under_divergence": 2
+  },
+  "ORIOLES @ MARLINS": {
+    "over_tickets": 82,
+    "over_money": 76,
+    "under_tickets": 18,
+    "under_money": 24,
+    "over_divergence": -6,
+    "under_divergence": 6
+  },
+  "ATHLETICS @ PHILLIES": {
+    "over_tickets": 82,
+    "over_money": 80,
+    "under_tickets": 18,
+    "under_money": 20,
+    "over_divergence": -2,
+    "under_divergence": 2
+  },
+  "TWINS @ NATIONALS": {
+    "over_tickets": 84,
+    "over_money": 83,
+    "under_tickets": 16,
+    "under_money": 17,
+    "over_divergence": -1,
+    "under_divergence": 1
+  },
+  "RANGERS @ YANKEES": {
+    "over_tickets": 86,
+    "over_money": 74,
+    "under_tickets": 14,
+    "under_money": 26,
+    "over_divergence": -12,
+    "under_divergence": 12
+  },
+  "REDS @ CUBS": {
+    "over_tickets": 84,
+    "over_money": 87,
+    "under_tickets": 16,
+    "under_money": 13,
+    "over_divergence": 3,
+    "under_divergence": -3
+  },
+  "METS @ ROCKIES": {
+    "over_tickets": 76,
+    "over_money": 78,
+    "under_tickets": 24,
+    "under_money": 22,
+    "over_divergence": 2,
+    "under_divergence": -2
+  },
+  "PIRATES @ DIAMONDBACKS": {
     "over_tickets": 90,
     "over_money": 92,
     "under_tickets": 10,
@@ -7,44 +71,36 @@
     "over_divergence": 2,
     "under_divergence": -2
   },
-  "YANKEES @ ASTROS": {
-    "over_tickets": 88,
-    "over_money": 86,
-    "under_tickets": 12,
-    "under_money": 14,
-    "over_divergence": -2,
-    "under_divergence": 2
+  "BLUE JAYS @ RAYS": {
+    "over_tickets": 83,
+    "over_money": 77,
+    "under_tickets": 17,
+    "under_money": 23,
+    "over_divergence": -6,
+    "under_divergence": 6
   },
-  "CUBS @ DODGERS": {
-    "over_tickets": 85,
-    "over_money": 87,
-    "under_tickets": 15,
-    "under_money": 13,
-    "over_divergence": 2,
-    "under_divergence": -2
+  "BREWERS @ CARDINALS": {
+    "over_tickets": 77,
+    "over_money": 60,
+    "under_tickets": 23,
+    "under_money": 40,
+    "over_divergence": -17,
+    "under_divergence": 17
   },
-  "MARLINS @ GIANTS": {
-    "over_tickets": 88,
-    "over_money": 86,
-    "under_tickets": 12,
-    "under_money": 14,
-    "over_divergence": -2,
-    "under_divergence": 2
+  "DODGERS @ ASTROS": {
+    "over_tickets": 79,
+    "over_money": 78,
+    "under_tickets": 21,
+    "under_money": 22,
+    "over_divergence": -1,
+    "under_divergence": 1
   },
-  "TWINS @ RAYS": {
-    "over_tickets": 87,
+  "PADRES @ GIANTS": {
+    "over_tickets": 86,
     "over_money": 84,
-    "under_tickets": 13,
+    "under_tickets": 14,
     "under_money": 16,
-    "over_divergence": -3,
-    "under_divergence": 3
-  },
-  "PHILLIES @ BRAVES": {
-    "over_tickets": 87,
-    "over_money": 90,
-    "under_tickets": 13,
-    "under_money": 10,
-    "over_divergence": 3,
-    "under_divergence": -3
+    "over_divergence": -2,
+    "under_divergence": 2
   }
 }

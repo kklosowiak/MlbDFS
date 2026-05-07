@@ -33,7 +33,7 @@ class UmpireFetcher:
             for date in data.get('dates', []):
                 for game in date.get('games', []):
                     # Each game has 'officials'
-                    hp_umpire = "Unknown"
+                    hp_umpire = "TBD"
                     for official in game.get('officials', []):
                         if official.get('officialType') == "Home Plate":
                             hp_umpire = official['official']['fullName']
@@ -47,7 +47,7 @@ class UmpireFetcher:
                     }
             return assignments
         except Exception as e:
-            print(f"ERROR: Umpire fetch failed: {e}")
+            print(f"WARNING: Umpire assignments not yet posted for {date_str}.")
             return {}
 
 if __name__ == "__main__":

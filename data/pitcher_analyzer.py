@@ -234,7 +234,7 @@ class PitcherAnalyzer:
                 base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
                 
                 # Umpire Mod
-                ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "Unknown"})
+                ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "TBD"})
                 ump_boost = (ump_data['factor'] - 1.0) * 100.0 # Convert 1.05 to +5.0 boost
                 
                 # Weather Mod
@@ -257,6 +257,9 @@ class PitcherAnalyzer:
                 # Opponent K Boost (Dynamic v6.8)
                 opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) # 5.0 neutral baseline fallback
                 
+                # OMEGA v7.0: Ceiling Detection
+                is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
+
                 # Scoring (v6.0 SE Tiered)
                 alpha_results = self.analyzer.calculate_pitcher_score(
                     pitcher_name, ml_move, tt_move, money_gap, k_line,
@@ -266,7 +269,8 @@ class PitcherAnalyzer:
                     divergence=divergence,
                     is_shark=is_shark,
                     is_whale=is_whale,
-                    opponent_k_boost=opponent_k_boost
+                    opponent_k_boost=opponent_k_boost,
+                    is_low_ceiling=is_low_ceiling
                 )
                 
                 pitcher_reports.append({
@@ -281,6 +285,7 @@ class PitcherAnalyzer:
                     'alpha_score': alpha_results,
                     'csw': physics['csw'],
                     'bm_score': physics['bm_score'],
+                    'confidence': physics.get('confidence', 'low'),
                     'is_confirmed': team_name in confirmed_list,
                     'is_juiced_target': is_juiced_target,
                     'ml_move': ml_move,
@@ -424,120 +429,173 @@ class PitcherAnalyzer:
         return "TBD"
 
 
+    def _calculate_proxy_physics(self, era, k, ip):
+        """
+        OMEGA v7.2: Unified proxy physics calculator.
+        Derives SIERA and CSW estimates from real MLB StatsAPI data (ERA, K, IP).
+        
+        The proxy blends two signals:
+        - K/IP ratio (strongest single predictor of future SIERA)  
+        - ERA (captures run prevention not visible in K rate alone)
+        
+        Returns: (proxy_siera, proxy_csw, confidence)
+        """
+        era = float(era or 4.00)
+        k = float(k or 0)
+        ip = float(ip or 0)
+        
+        if ip > 5.0:
+            k_per_ip = k / ip
+            
+            # K/IP-based SIERA estimate (Baseline: 4.00 @ 0.85 K/IP)
+            k_siera = 4.00 - (k_per_ip - 0.85) * 1.2
+            
+            # ERA-based SIERA estimate (ERA and SIERA correlate ~0.7)
+            # Regress ERA toward league mean (4.00) to reduce noise
+            era_siera = (era * 0.6) + (4.00 * 0.4)
+            
+            # Blend: Weight K/IP more heavily (60/40) — it's more predictive
+            proxy_siera = (k_siera * 0.6) + (era_siera * 0.4)
+            proxy_siera = max(2.50, min(5.50, proxy_siera))
+            
+            # CSW proxy from K/IP (Baseline: 25% @ 0.85 K/IP)
+            proxy_csw = 0.25 + (k_per_ip - 0.85) * 0.1
+            proxy_csw = max(0.18, min(0.35, proxy_csw))
+            
+            # Confidence based on sample size
+            if ip >= 20.0:
+                confidence = "high"
+            elif ip >= 10.0:
+                confidence = "med"
+            else:
+                confidence = "med"  # Small sample but still real data
+        else:
+            # Insufficient sample — use league-average defaults
+            proxy_siera = 4.00
+            proxy_csw = 0.25
+            confidence = "med"  # Still has SOME data, better than nothing
+        
+        return proxy_siera, proxy_csw, confidence
+
     def fetch_pitcher_physics(self, pitcher_name):
-        """OMEGA v5.3: Optimized Physics Engine with Master Matrix Priority."""
+        """
+        OMEGA v7.2: Tiered Physics Engine.
+        
+        Tier 1: Master Matrix — manual overrides for pitchers where API data is misleading
+                (e.g., returning from injury with 0 IP, or known elite arms with small 2026 samples)
+        Tier 2: StatsAPI Cache — 100+ pitchers with real 2026 ERA/K/IP from MLB.com
+        Tier 3: Live MLB API — on-demand fetch for anyone missing from cache
+        Tier 4: FanGraphs CSV — legacy cache from any prior successful pybaseball run
+        Tier 5: League-average defaults — absolute last resort
+        """
         p_norm = normalize_player_name(pitcher_name)
         
-        # OMEGA v5.2.3: Master Starter Matrix (Night Slate v1)
-        # Static physics overrides to restore High Alpha for elite arms
+        # OMEGA v7.2: Trimmed Master Matrix — OVERRIDE ONLY
+        # Only keep pitchers where the API proxy would be inaccurate:
+        # - Returning from injury (0 IP in 2026 but elite talent)
+        # - Known elite arms with small early-season samples
+        # These values should be reviewed periodically.
         master_matrix = {
-            "Luis Castillo": {"siera": 3.12, "csw": 0.29},
-            "Lance McCullers Jr.": {"siera": 3.45, "csw": 0.28},
-            "Emmet Sheehan": {"siera": 3.65, "csw": 0.31},
-            "Jack Leiter": {"siera": 3.85, "csw": 0.27},
-            "Logan Webb": {"siera": 3.25, "csw": 0.26},
-            "Joe Ryan": {"siera": 3.30, "csw": 0.30},
-            "Kodai Senga": {"siera": 3.15, "csw": 0.29},
-            "Max Fried": {"siera": 3.10, "csw": 0.27},
-            "Nick Pivetta": {"siera": 3.80, "csw": 0.28},
-            "Ranger Suarez": {"siera": 3.35, "csw": 0.28},
-            "Kyle Harrison": {"siera": 3.42, "csw": 0.29},
-            "German Marquez": {"siera": 4.25, "csw": 0.24},
-            "Germán Márquez": {"siera": 4.25, "csw": 0.24},
-            "Luis Gil": {"siera": 3.55, "csw": 0.29},
-            "Emerson Hancock": {"siera": 4.12, "csw": 0.24},
-            "Randy Vasquez": {"siera": 4.05, "csw": 0.25},
-            "Randy Vásquez": {"siera": 4.05, "csw": 0.25},
-            "Slade Cecconi": {"siera": 4.15, "csw": 0.24},
-            "Simeon Woods Richardson": {"siera": 4.35, "csw": 0.23},
-            "Tyler Mahle": {"siera": 3.75, "csw": 0.26},
-            "Reid Detmers": {"siera": 3.82, "csw": 0.285},
-            "Cole Ragans": {"siera": 3.15, "csw": 0.312},
-            "Tarik Skubal": {"siera": 2.95, "csw": 0.32},
-            "Spencer Arrighetti": {"siera": 3.48, "csw": 0.29},
-            "Jared Jones": {"siera": 3.35, "csw": 0.305},
-            "Paul Skenes": {"siera": 2.85, "csw": 0.33},
-            "Jacob deGrom": {"siera": 2.45, "csw": 0.36},
-            "Tyler Glasnow": {"siera": 2.90, "csw": 0.315},
-            "Logan Gilbert": {"siera": 3.20, "csw": 0.28},
-            "Tanner Bibee": {"siera": 3.45, "csw": 0.265},
-            "Chris Bassitt": {"siera": 3.75, "csw": 0.25},
-            "Aaron Civale": {"siera": 3.85, "csw": 0.26},
-            "Casey Mize": {"siera": 4.10, "csw": 0.24},
-            "Bubba Chandler": {"siera": 3.65, "csw": 0.29}
+            "Jacob deGrom": {"siera": 2.45, "csw": 0.36},      # Injury return, limited 2026 data
+            "Paul Skenes": {"siera": 2.85, "csw": 0.33},       # Elite stuff, proxy undersells
+            "Tarik Skubal": {"siera": 2.95, "csw": 0.32},      # Reigning Cy Young
+            "Tyler Glasnow": {"siera": 2.90, "csw": 0.315},    # Elite stuff metrics
+            "Cole Ragans": {"siera": 3.15, "csw": 0.312},      # Elite CSW the proxy misses
+            "Chris Sale": {"siera": 3.15, "csw": 0.29},        # HOF-caliber, proxy unreliable early
+            "Kodai Senga": {"siera": 3.15, "csw": 0.29},       # Injury return
+            "Spencer Arrighetti": {"siera": 3.48, "csw": 0.29}, # 0 IP in cache
+            "Garrett Crochet": {"siera": 3.30, "csw": 0.30},   # High K stuff, ERA inflated
+            "Emmet Sheehan": {"siera": 3.65, "csw": 0.31},     # 0 IP in cache
+            "Lance McCullers Jr.": {"siera": 3.45, "csw": 0.28}, # Injury return
+            "Bubba Chandler": {"siera": 3.65, "csw": 0.29},    # 0 IP in cache
+            "Casey Mize": {"siera": 4.10, "csw": 0.24},        # 0 IP in cache
+            "German Marquez": {"siera": 4.25, "csw": 0.24},    # Injury return
+            "Germán Márquez": {"siera": 4.25, "csw": 0.24},    # Accent variant
         }
-
-        # Check Master Matrix first (Fast path - no network)
+        
+        # --- TIER 1: Master Matrix (manual overrides) ---
         for name, stats in master_matrix.items():
             if normalize_player_name(name) == p_norm:
                 siera = stats['siera']
                 csw = stats['csw']
                 bm_score = max(0, min(25, (csw / 0.30) * 25))
-                return {"siera": siera, "csw": csw, "bm_score": bm_score}
-
-        # Slow Path: pybaseball (Only if not in Matrix)
-        cache_file = os.path.join(self.config.DATA_DIR, "physics_leaderboard.csv")
-        df = None
-        if os.path.exists(cache_file) and os.path.getsize(cache_file) > 100:
-            df = pd.read_csv(cache_file)
-        else:
+                return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": "high"}
+        
+        # --- TIER 2: StatsAPI Cache (real 2026 ERA/K/IP from MLB.com) ---
+        statcast_path = os.path.join(self.config.DATA_DIR, "statcast_cache.json")
+        if os.path.exists(statcast_path):
             try:
-                from pybaseball import pitching_stats
-                df = pitching_stats(2026, qual=0)
-                if df is not None and not df.empty:
-                    df.to_csv(cache_file, index=False)
-            except Exception as e:
-                print(f"[WARNING]: pybaseball fetch failure: {e}")
-
-        # OMEGA v6.6: 'Anti-Ghost' Fallback Logic
-        siera = 4.10
-        csw = 0.25
+                with open(statcast_path, 'r') as f:
+                    cache = json.load(f)
+                p_data = cache.get(p_norm)
+                if p_data and p_data.get('type') == 'pitcher' and float(p_data.get('ip', 0)) > 0:
+                    siera, csw, confidence = self._calculate_proxy_physics(
+                        p_data.get('era', 4.00), p_data.get('k', 0), p_data.get('ip', 0)
+                    )
+                    bm_score = max(0, min(25, (csw / 0.30) * 25))
+                    return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
+            except Exception:
+                pass
         
-        match = pd.DataFrame()
-        if df is not None and not df.empty:
-            if 'Name' in df.columns:
-                mask = df['Name'].apply(lambda x: normalize_player_name(str(x))) == p_norm
-                match = df[mask]
+        # --- TIER 3: Direct MLB StatsAPI Lookup (on-demand for missing pitchers) ---
+        try:
+            import requests
+            resp = requests.get(
+                "https://statsapi.mlb.com/api/v1/people/search",
+                params={"names": pitcher_name, "sportId": 1},
+                timeout=10
+            )
+            if resp.status_code == 200:
+                people = resp.json().get('people', [])
+                if people:
+                    player_id = people[0]['id']
+                    stats_resp = requests.get(
+                        f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats",
+                        params={"stats": "season", "season": 2026, "group": "pitching"},
+                        timeout=10
+                    )
+                    if stats_resp.status_code == 200:
+                        splits = stats_resp.json().get('stats', [{}])[0].get('splits', [])
+                        if splits:
+                            stat = splits[0].get('stat', {})
+                            era = float(stat.get('era', '4.00'))
+                            k = int(stat.get('strikeOuts', 0))
+                            ip = float(stat.get('inningsPitched', '0.0'))
+                            
+                            siera, csw, confidence = self._calculate_proxy_physics(era, k, ip)
+                            print(f"  - LIVE API: Fetched physics for {pitcher_name} (ERA: {era:.2f}, K: {k}, IP: {ip})")
+                            
+                            bm_score = max(0, min(25, (csw / 0.30) * 25))
+                            return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
+        except Exception:
+            pass
         
+        # --- TIER 4: FanGraphs CSV Cache (legacy) ---
+        cache_file_2026 = os.path.join(self.config.DATA_DIR, "physics_leaderboard_2026.csv")
+        cache_file_2025 = os.path.join(self.config.DATA_DIR, "physics_leaderboard_2025.csv")
         
-        # If we have no physics data, we look at our own StatsAPI cache for momentum-based proxying.
-        if (df is None or df.empty) or (match.empty):
-            statcast_path = os.path.join(self.config.DATA_DIR, "statcast_cache.json")
-            if os.path.exists(statcast_path):
+        for cache_file in [cache_file_2026, cache_file_2025]:
+            if os.path.exists(cache_file) and os.path.getsize(cache_file) > 100:
                 try:
-                    with open(statcast_path, 'r') as f:
-                        cache = json.load(f)
-                    p_data = cache.get(p_norm)
-                    if p_data and p_data.get('type') == 'pitcher':
-                        # Proxy SIERA derived from K/IP momentum
-                        era = float(p_data.get('era', 4.00))
-                        k = float(p_data.get('k', 0))
-                        ip = float(p_data.get('ip', 1.0))
-                        k_per_ip = k / ip if ip > 5.0 else 0.85 # Min sample gate
-                        
-                        # Scale Proxy SIERA (Baseline 4.00 @ 0.85 K/IP)
-                        proxy_siera = 4.00 - (k_per_ip - 0.85) * 1.2
-                        siera = max(2.85, min(5.00, proxy_siera))
-                        
-                        # Scale Proxy CSW (Baseline 25% @ 0.85 K/IP)
-                        csw = 0.25 + (k_per_ip - 0.85) * 0.1
-                        csw = max(0.18, min(0.35, csw))
-                        
-                        # Inject audit trace for dashboard
-                        print(f"  - ALIGNED: Developed Proxy Physics for {pitcher_name} via StatsAPI (SIERA: {siera:.2f})")
-                except Exception as e:
-                    siera = 4.10
-                    csw = 0.25
+                    df = pd.read_csv(cache_file)
+                    if 'Name' in df.columns:
+                        mask = df['Name'].apply(lambda x: normalize_player_name(str(x))) == p_norm
+                        match = df[mask]
+                        if not match.empty:
+                            siera = match.iloc[0].get('SIERA', 4.10)
+                            csw = match.iloc[0].get('CSW%', 0.25)
+                            if csw > 1: csw /= 100.0
+                            ip = match.iloc[0].get('IP', 0)
+                            confidence = "high" if ip >= 20.0 else ("med" if ip >= 10.0 else "low")
+                            bm_score = max(0, min(25, (csw / 0.30) * 25))
+                            return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
+                except Exception:
+                    pass
         
-        # Check if match was found in the dataframe path
-        if df is not None and not df.empty and not match.empty:
-            if 'SIERA' in df.columns: siera = match.iloc[0]['SIERA']
-            if 'CSW%' in df.columns: 
-                csw = match.iloc[0]['CSW%']
-                if csw > 1: csw /= 100.0
-        
-        bm_score = max(0, min(25, (csw / 0.30) * 25))
-        return {"siera": siera, "csw": csw, "bm_score": bm_score}
+        # --- TIER 5: Absolute fallback ---
+        print(f"  - FALLBACK: No physics data found for {pitcher_name}. Using league-average defaults.")
+        bm_score = max(0, min(25, (0.25 / 0.30) * 25))
+        return {"siera": 4.10, "csw": 0.25, "bm_score": bm_score, "confidence": "low"}
 
 
     def _ml_to_prob(self, ml):

@@ -1,5 +1,0 @@
-Mike Trout: Score 113.4, xwOBA 0.3896, Hot: True, Juiced: True
-Zach Neto: Score 67.0, xwOBA 0.324, Hot: False, Juiced: True
-Jo Adell: Score 58.8, xwOBA 0.2752, Hot: False, Juiced: True
-Jorge Soler: Score 43.4, xwOBA 0.3076, Hot: False, Juiced: True
-Nolan Schanuel: Score 35.8, xwOBA 0.2752, Hot: False, Juiced: True

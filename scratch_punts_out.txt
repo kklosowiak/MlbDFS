@@ -1,2 +1,0 @@
-Josh Naylor (Seattle Mariners): Score 32.0, xwOBA 0.21960000000000002, Hot: False
-Chase Meidroth (Chicago White Sox): Score 26.9, xwOBA 0.284, Hot: False

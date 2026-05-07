@@ -14,6 +14,8 @@ from data.weather_fetcher import WeatherFetcher
 from data.consensus_fetcher import ConsensusFetcher
 from data.umpire_fetcher import UmpireFetcher
 from data.bullpen_analyzer import BullpenAnalyzer
+from data.lineup_fetcher import LineupFetcher
+from data.statcast_bridge import StatcastBridge
 
 # OMEGA v3.2.1.8: Hard Revert - Shielding Strip
 # No more shield_float or defaults. Raw data only.
@@ -78,6 +80,10 @@ def run_full_analysis():
     print("[INIT]: Syncing atmospheric and officiating sentiment...")
     umpire_assignments = umpire_fetcher.fetch_daily_assignments()
     
+    # OMEGA v6.8.5: Fetch Confirmed Lineups
+    lineup_fetcher = LineupFetcher()
+    confirmed_lineups = lineup_fetcher.fetch_confirmed_lineups()
+    
     snapshot_path = _get_resilient_snapshot()
     if not snapshot_path:
         print("ERROR: No snapshot found.")
@@ -137,21 +143,47 @@ def run_full_analysis():
         except Exception:
             print("[WARNING]: Could not load previous results for trend analysis.")
 
-    # 3. Analyze Teams
+    # 3. Extract Hitters Early for Team Analysis (v6.8)
+    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
+    
+    # OMEGA v6.9.7: Fuzzy Franchise Purge
+    # Purge any hitter not in the confirmed starters using fuzzy team matching.
+    if confirmed_lineups:
+        from utils.normalization import normalize_player_name
+        purged_hitters = []
+        for h in raw_hitters:
+            h_team = h['team'].lower()
+            # Find the confirmed lineup by looking for a fuzzy match in the keys
+            confirmed = None
+            for lineup_team, players in confirmed_lineups.items():
+                if h_team in lineup_team.lower() or lineup_team.lower() in h_team:
+                    confirmed = players
+                    break
+            
+            if confirmed:
+                if normalize_player_name(h['name']) in confirmed:
+                    purged_hitters.append(h)
+            else:
+                purged_hitters.append(h) # Keep projected if no official data exists
+        raw_hitters = purged_hitters
+        print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
+
+    # 4. Analyze Teams
     team_reports = _get_team_reports(
         snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, 
         bullpen_analyzer, consensus_fetcher, splits_data, 
-        umpire_assignments, weather_fetcher, previous_results, totals_data
+        umpire_assignments, weather_fetcher, previous_results, totals_data,
+        raw_hitters=raw_hitters, confirmed_lineups=confirmed_lineups
     )
 
-    # 4. Analyze Hitters
-    h_reports = _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting)
+    # 5. Analyze Hitters
+    h_reports = _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, raw_hitters=raw_hitters)
 
-    # 4.5 OMEGA v6.8.5: Paradox Resolution
+    # 5.5 OMEGA v6.8.5: Paradox Resolution
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
     p_reports = _resolve_pitcher_team_conflicts(p_reports, team_reports)
 
-    # 5. Generate Dash
+    # 6. Generate Dash
     dash_gen.generate_report(p_reports, team_reports, h_reports)
     
     # OMEGA v4.5: Export Summary for Bot/Sentry
@@ -167,6 +199,18 @@ def run_full_analysis():
         
     print(f"\n[SUMMARY]: Results exported to {results_path}")
     print(f"VIEW DASHBOARD v4.5: {dash_gen.output_path}")
+
+    # OMEGA v7.1: Auto Deep-Dive Slate Analysis Report
+    from utils.slate_report_generator import SlateReportGenerator
+    SlateReportGenerator().generate(p_reports, team_reports, h_reports)
+
+    # OMEGA v7.1: Archive results for multi-day post-mortem
+    archive_dir = os.path.join(config.REPORTS_DIR, "archive")
+    os.makedirs(archive_dir, exist_ok=True)
+    archive_path = os.path.join(archive_dir, f"results_{datetime.date.today().isoformat()}.json")
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        json.dump(summary, f, indent=4)
+    print(f"[ARCHIVE]: Results archived to {archive_path}")
 
 def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher):
     """STEP 1: Ranking Pitcher Alpha (Hybrid Core)"""
@@ -254,9 +298,10 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
     return p_reports
 
-def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None):
+def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
     print("\n[STEP 2]: Ranking Team Omega...")
+    confirmed_lineups = confirmed_lineups or {}
     if totals_data is None:
         totals_data = {}
     team_reports = []
@@ -297,8 +342,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
             curr_itt = (curr_total if curr_total else 8.5) * prob
             
-            # Environment & Fatigue
-            park_factor = config.PARK_FACTORS.get(team, 1.0)
+            # OMEGA v6.9.2: Location-Aware Park Factors
+            # Both teams inherit the environment of the home_team's stadium.
+            home_team_for_game = game.get('home_team')
+            park_factor = config.PARK_FACTORS.get(home_team_for_game, 1.0)
             opp_bullpen = bullpen_analyzer.get_fatigue_score(opponent)
             
             # Market Divergence & Signal Detection
@@ -321,16 +368,60 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 api_opp_pitcher = next((e.get('home_pitcher' if opponent == e['home_team'] else 'away_pitcher') 
                                       for e in snapshot.get('odds', []) if e['id'] == gid), None)
                 if api_opp_pitcher: opp_pitcher_name = api_opp_pitcher
+                
+                # If we have a name but no report, try a fresh fetch
+                if opp_pitcher_name != "TBD":
+                    print(f"  [RESCUE]: Attempting fresh physics fetch for {opp_pitcher_name}...")
+                    physics = p_analyzer.fetch_pitcher_physics(opp_pitcher_name)
+                    opp_pitcher_physics = round(physics['bm_score'] * 1.8, 1) # v6.8 scale
+                    opp_pitcher_rep = {
+                        'pitcher': opp_pitcher_name,
+                        'physics_score': opp_pitcher_physics,
+                        'confidence': physics.get('confidence', 'low')
+                    }
+
+            # OMEGA v7.0: Power Concentration Discovery
+            team_h = [h for h in (raw_hitters or []) if h['team'] == team]
+            confirmed = None
+            for lineup_team, players in confirmed_lineups.items():
+                if team.lower() in lineup_team.lower() or lineup_team.lower() in team.lower():
+                    confirmed = players
+                    break
+            lineup_status = "CONFIRMED" if confirmed else "PROJECTED"
+
+            team_xwoba = 0.330
+            power_concentration = 0.330
+            if team_h:
+                # Sort by matchup_xwoba descending
+                sorted_h = sorted(team_h, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
+                # For confirmed lineups, we use all confirmed players. For projected, top 5.
+                sample_size = 5 if not confirmed else len(sorted_h)
+                target_h = sorted_h[:sample_size]
+                team_xwoba = statistics.mean([h.get('matchup_xwoba', 0.330) for h in target_h])
+                
+                # Weighted Concentration (Top 2: 40%, 3-4: 30%, Rest: 30%)
+                top_2 = statistics.mean([h.get('matchup_xwoba', 0.330) for h in sorted_h[:2]])
+                next_2 = statistics.mean([h.get('matchup_xwoba', 0.330) for h in sorted_h[2:4]]) if len(sorted_h) >= 4 else top_2
+                rest = statistics.mean([h.get('matchup_xwoba', 0.330) for h in sorted_h[4:]]) if len(sorted_h) > 4 else next_2
+                power_concentration = (top_2 * 0.4) + (next_2 * 0.3) + (rest * 0.3)
+                
+                print(f"  - Calculated {team} xwOBA: {team_xwoba:.3f} | Conc: {power_concentration:.3f} ({lineup_status})")
 
             from engine.sharps_weighting import SharpsWeighting
             sharps_weighting = SharpsWeighting()
             
+            # Confidence and Leash Discovery
+            opp_confidence = opp_pitcher_rep.get('confidence', 'low') if opp_pitcher_rep else 'low'
+            opp_outs = opp_pitcher_rep.get('outs_line', 15.5) if opp_pitcher_rep else 15.5
+            
             res = sharps_weighting.calculate_stack_score(
-                team, ml_move, tt_move, curr_itt=curr_itt, 
+                team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
+                power_concentration=power_concentration,
                 park_factor=park_factor, bullpen_fatigue=opp_bullpen['score'],
                 divergence=divergence, is_whale=is_whale, is_sharp=is_sharp,
                 is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
-                opp_pitcher_physics=opp_pitcher_physics
+                opp_pitcher_physics=opp_pitcher_physics,
+                confidence=opp_confidence, pitcher_outs=float(opp_outs)
             )
             
             # Sentiment Divergence (Venue-Based)
@@ -389,11 +480,15 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
                 'ml_move': ml_move, 'tt_move': tt_move, 'stack_score': final_stack_score,
                 'physics_score': res['physics'], 'market_score': res['market'],
+                'team_xwoba': res.get('team_xwoba', 0.330),
+                'power_concentration': power_concentration,
                 'weather_label': weather_data['label'], 'umpire_name': ump_data.get('name', 'Unknown'),
                 'bullpen_fatigue': opp_bullpen['score'], 'is_gassed': opp_bullpen['is_gassed'],
                 'is_fatigued': opp_bullpen.get('is_fatigued', False), 'is_shark': is_shark,
                 'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
+                'confidence': res.get('confidence', 'low'),
+                'is_burst': (power_concentration > 0.355 or (opp_bullpen['score'] >= 80 and float(opp_outs) < 15.5)),
                 'implied_total': round(curr_itt, 2),  # v6.3: ITT exported for trend validation
                 'total_signal': total_signal  # v6.8: Visual-only O/U divergence indicator
             })
@@ -440,10 +535,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
     return team_reports
 
-def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting):
+def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, raw_hitters=None):
     """STEP 3: Ranking Hitter Alpha"""
     print("\n[STEP 3]: Ranking Hitter Alpha...")
-    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
+    if raw_hitters is None:
+        raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
     h_reports = []
     
     for h in raw_hitters:

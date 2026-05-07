@@ -210,6 +210,7 @@ class DashboardGenerator:
             <div class="legend-item" style="color: #ff8c00;">♨️ <b>PEN ALERT:</b> Bullpen fatigue detected. Red = Gassed.</div>
             <div class="legend-item" style="color: #ff4500;">⚠️ <b>PARADOX:</b> Conflict detected (Pitcher vs. Top Stack).</div>
             <div class="legend-item" style="color: #00ced1;">📉 <b>CEILING:</b> Low strikeout upside detected.</div>
+            <div class="legend-item" style="color: #ffff00; border-color: #ffff00;">⚡ <b>BURST:</b> High power concentration or Early Explosion detected.</div>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
@@ -232,6 +233,7 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill\">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#00bfff; color:#00bfff;\">🦈 SHARK</span>' if p.get('is_shark') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">✨ DEBUT</span>' if p.get('is_debut') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e; background:rgba(255,62,62,0.1);\">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
@@ -300,6 +302,8 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
                                   f"{ '<span class=\"signal-pill\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">💨 STEAM</span>' if t.get('is_steam') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ffff00; color:#ffff00;\">⚡ BURST</span>' if t.get('is_burst') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e; background:rgba(255,62,62,0.1);\">🔍 LOW CONF</span>' if t.get('confidence') == 'low' else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"

@@ -131,7 +131,7 @@ class WeatherFetcher:
         # Determine Status Icon (Roth Overlay)
         status = weather.get('status', 'Neutral')
         status_icon = "🟢"
-        if status == "Yellow": status_icon = "🟡"
+        if status == "Yellow" or status == "Chance For Delay": status_icon = "🟡"
         elif status == "Orange": status_icon = "🟠"
         elif status == "Red": status_icon = "🔴"
 

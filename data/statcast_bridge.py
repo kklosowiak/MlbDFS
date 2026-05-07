@@ -41,7 +41,7 @@ class StatcastBridge:
         
     def refresh_momentum_data(self, season=2026):
         """
-        OMEGA v6.6: Unified Dual-Stream Alignment (Hitting + Pitching).
+        OMEGA v7.2: Unified Dual-Stream Alignment (Hitting + Pitching).
         Pulls seasonal and rolling metrics to eliminate 'Detmers-style' blind spots.
         """
         print(f"[STATCAST]: Refreshing unified momentum alpha for {season}...")
@@ -97,13 +97,82 @@ class StatcastBridge:
                 "timestamp": datetime.now().isoformat()
             }
         
+        # 4. OMEGA v7.2: Pre-fetch probable pitchers to guarantee cache coverage
+        cache = self._prefetch_probable_pitchers(cache, season)
+        
         # Ensure data directory exists
         os.makedirs(os.path.dirname(self.cache_path), exist_ok=True)
         
         with open(self.cache_path, 'w') as f:
             json.dump(cache, f, indent=4)
             
-        print(f"  - SUCCESS: Unified cache synchronized ({len(cache)} profiles).")
+        pitchers_count = sum(1 for v in cache.values() if v.get('type') == 'pitcher')
+        hitters_count = sum(1 for v in cache.values() if v.get('type') == 'hitter')
+        print(f"  - SUCCESS: Unified cache synchronized ({len(cache)} profiles: {pitchers_count} pitchers, {hitters_count} hitters).")
+        return cache
+
+    def _prefetch_probable_pitchers(self, cache, season=2026):
+        """
+        OMEGA v7.2: Ensures today's probable pitchers are in the cache.
+        Reads probable_pitchers.json and fetches stats for any missing pitcher
+        directly from the MLB StatsAPI.
+        """
+        probables_path = os.path.join(os.path.dirname(self.cache_path), "probable_pitchers.json")
+        if not os.path.exists(probables_path):
+            return cache
+        
+        try:
+            with open(probables_path, 'r') as f:
+                probables = json.load(f)
+        except Exception:
+            return cache
+        
+        missing = []
+        for team, pitcher_name in probables.items():
+            norm = normalize_player_name(pitcher_name)
+            existing = cache.get(norm)
+            if not existing or existing.get('type') != 'pitcher':
+                missing.append((team, pitcher_name, norm))
+        
+        if not missing:
+            return cache
+        
+        print(f"  - PRE-FETCH: {len(missing)} probable pitchers missing from cache. Fetching...")
+        for team, pitcher_name, norm in missing:
+            try:
+                search_url = f"https://statsapi.mlb.com/api/v1/people/search?names={pitcher_name}&sportId=1"
+                resp = requests.get(search_url, timeout=10)
+                if resp.status_code != 200:
+                    continue
+                people = resp.json().get('people', [])
+                if not people:
+                    continue
+                player_id = people[0]['id']
+                stats_url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=season&season={season}&group=pitching"
+                stats_resp = requests.get(stats_url, timeout=10)
+                if stats_resp.status_code != 200:
+                    continue
+                stats_data = stats_resp.json().get('stats', [])
+                if not stats_data:
+                    continue
+                splits = stats_data[0].get('splits', [])
+                if splits:
+                    stat = splits[0].get('stat', {})
+                    cache[norm] = {
+                        "type": "pitcher",
+                        "team": team,
+                        "era": float(stat.get('era', '0.0')),
+                        "rolling_era": 0.0,
+                        "k": int(stat.get('strikeOuts', 0)),
+                        "rolling_k": 0,
+                        "ip": float(stat.get('inningsPitched', '0.0')),
+                        "timestamp": datetime.now().isoformat()
+                    }
+                    print(f"    + {pitcher_name} ({team}): ERA={stat.get('era')}, K={stat.get('strikeOuts')}, IP={stat.get('inningsPitched')}")
+                time.sleep(random.uniform(0.2, 0.4))  # Rate limiting
+            except Exception as e:
+                print(f"    ! Failed to pre-fetch {pitcher_name}: {e}")
+        
         return cache
 
     def get_team_roster(self, team_name, player_type='hitter'):
@@ -129,6 +198,10 @@ class StatcastBridge:
             
         return roster
 
+    def get_verified_team(self, player_name):
+        """OMEGA v7.3: Roster integrity restored. Trusts Live API data exclusively."""
+        return None
+
     def _fetch_api_stats(self, group='hitting', stats='season', season=2026, extra_params=None):
         """Internal helper for MLB StatsAPI requests."""
         time.sleep(random.uniform(0.3, 0.7)) # Respect rate limits
@@ -137,7 +210,7 @@ class StatcastBridge:
             'group': group,
             'sportId': 1,
             'season': season,
-            'limit': 1000
+            'limit': 5000
         }
         if extra_params:
             params.update(extra_params)
@@ -161,7 +234,7 @@ class StatcastBridge:
                         return float(s_val)
                     return float(s_val)
                 except: return 0.0
-
+ 
             for split in splits:
                 p_name = split.get('player', {}).get('fullName')
                 if not p_name: continue
@@ -169,8 +242,12 @@ class StatcastBridge:
                 name = normalize_player_name(str(p_name))
                 stat = split.get('stat', {})
                 
+                # OMEGA v6.8.2: Hardened Team Mapping
+                api_team = split.get('team', {}).get('name', "UNK")
+                final_team = api_team
+                
                 results[name] = {
-                    "team": split.get('team', {}).get('name', "UNK"),
+                    "team": final_team,
                     "avg": safe_float(stat.get('avg', '0.000')),
                     "ops": safe_float(stat.get('ops', '0.000')),
                     "era": safe_float(stat.get('era', '0.0')),

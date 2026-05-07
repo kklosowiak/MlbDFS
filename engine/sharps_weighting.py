@@ -92,16 +92,16 @@ class SharpsWeighting:
         physics_raw = max(0, min(100, physics_raw))
         physics_raw *= (1 + (park_factor / 100.0))
 
-        # OMEGA v7.0: Bullpen Delta Decay
+        # OMEGA v7.0: Bullpen Delta Decay (REFINED v7.4)
         # If the starter is expected to go short (< 5.1 IP) AND the bullpen is fatigued,
-        # we add an "Early Explosion" boost of +10.
+        # we add an "Early Explosion" boost. Max boost reduced to +10.
         bullpen_boost = 0
         if bullpen_fatigue >= 80:
-            bullpen_boost = 5.0
+            bullpen_boost = 3.0
             if pitcher_outs < 15.5:
-                bullpen_boost = 12.0 # Significant upgrade for short leashes
+                bullpen_boost = 7.0 # Reduced from 12.0 for short leashes
         if bullpen_fatigue >= 100:
-            bullpen_boost += 5.0
+            bullpen_boost += 3.0 # Reduced from 5.0
 
         # OMEGA v6.8: Market Pillar (Delta-Based)
         # ml_move < 0 is GOOD for the team. tt_move > 0 is GOOD for the team.
@@ -145,8 +145,15 @@ class SharpsWeighting:
         if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
             multiplier -= 0.10 # -10% if facing an elite arm
         
+        # OMEGA v7.5 (Post-Mortem 5/6): Late-Market Noise Filter (Divergence Sanity Check)
+        # If ITT >= 4.5 and opposing pitcher is vulnerable, do not let public ML noise zero out divergence.
+        eff_divergence = divergence
+        eff_itt_check = implied_total if implied_total is not None else curr_itt
+        if eff_itt_check >= 4.5 and physics_raw > 40.0: # Using team physics to confirm it's a good spot
+            eff_divergence = max(divergence, 5.0)
+
         # Dynamic Divergence Multiplier: +0.66% per 1% divergence (Capped at 15%)
-        div_multiplier = 1.0 + min(0.15, (max(0, divergence) / 150.0))
+        div_multiplier = 1.0 + min(0.15, (max(0, eff_divergence) / 150.0))
         
         final_omega = score * multiplier * div_multiplier
         
@@ -188,6 +195,13 @@ class SharpsWeighting:
         # Prevents "everyone has him" chalk traps (e.g., Ben Rice -474, Drake Baldwin -850)
         m_cap = 40 if ahr_price < -500 else 50
         m_comp = max(0, min(m_cap, ((700 - min(700, ahr_price)) / 500) * 50))
+        
+        # OMEGA v7.5 (Post-Mortem 5/6): The Abrams Patch (AHR Manipulation Floor)
+        # Prevent bookmakers from zeroing out elite hitters with trap lines (+2900).
+        if p_comp >= 35.0: # Elite physics (xwOBA > ~0.380)
+            m_comp = max(m_comp, 20.0)
+        elif p_comp >= 25.0: # Strong physics (xwOBA > ~0.350)
+            m_comp = max(m_comp, 10.0)
         
         # 3. Boost Coefficient (Targets, Momentum, and Vision)
         boost = 1.0
