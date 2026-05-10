@@ -8,7 +8,7 @@ class SharpsWeighting:
         self.TT_MOVE_MIN = 0.3 # 0.3 runs
         self.PUBLIC_BET_MAX = 50 # 50%
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0):
         """
         OMEGA v6.0 SE: Tiered Alpha/Beta Pitcher Scoring.
         """
@@ -68,7 +68,11 @@ class SharpsWeighting:
         # Dynamic Divergence Boost: +0.66% per 1% divergence (Capped at 15%)
         div_boost = 1.0 + min(0.15, (max(0, divergence) / 150.0))
         
-        final_alpha = score * multiplier * div_boost
+        # OMEGA v7.5: The 'Opener' Volume Penalty
+        # If a pitcher isn't projected to stay in for 6 innings (18 outs),
+        # apply a linear volume penalty to prevent overvaluing relievers/spot starters.
+        volume_factor = min(1.0, projected_outs / 18.0)
+        final_alpha = score * multiplier * div_boost * volume_factor
         
         # OMEGA v7.0: The Ceiling Gate
         # REFINEMENT (v7.1): Bypass penalty if the market is heavily juicing the over (The Foster Griffin Rule).
@@ -84,37 +88,32 @@ class SharpsWeighting:
 
     def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None):
         """OMEGA v7.0: Tiered Alpha/Beta Stack Scoring with Burst Potential."""
-        # OMEGA v6.8: Physics Hardening (Hybrid Statcast + Market ITT)
+        # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
-        # We shift weighting to high-concentration xwOBA to catch "Top-Heavy" offenses.
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
         physics_raw = (effective_physics - 0.260) / (0.400 - 0.260) * 100
         physics_raw = max(0, min(100, physics_raw))
         physics_raw *= (1 + (park_factor / 100.0))
 
         # OMEGA v7.0: Bullpen Delta Decay (REFINED v7.4)
-        # If the starter is expected to go short (< 5.1 IP) AND the bullpen is fatigued,
-        # we add an "Early Explosion" boost. Max boost reduced to +10.
         bullpen_boost = 0
         if bullpen_fatigue >= 80:
             bullpen_boost = 3.0
             if pitcher_outs < 15.5:
-                bullpen_boost = 7.0 # Reduced from 12.0 for short leashes
+                bullpen_boost = 7.0 
         if bullpen_fatigue >= 100:
-            bullpen_boost += 3.0 # Reduced from 5.0
+            bullpen_boost += 3.0 
 
         # OMEGA v6.8: Market Pillar (Delta-Based)
-        # ml_move < 0 is GOOD for the team. tt_move > 0 is GOOD for the team.
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
         tt_score = max(0, min(100, (tt_move / 0.5) * 100)) if tt_move > 0 else 0
         market_raw = (ml_score + tt_score) / 2
 
         # OMEGA v6.9: Pitcher Vulnerability
-        # High physics arm = Low vulnerability. 0-100 scale.
-        vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 # Max +20 pts for garbage arms
+        vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
 
-        # Talent-aware base score + Bullpen + Pitcher Vulnerability
-        # OMEGA v7.0: Prioritize raw talent (40%) over market sentiment (20%)
+        # OMEGA v7.7.1: REVERTED WEIGHTS (Baseline Restored, Filters Kept)
+        # Physics 40% | Market 20% | Baseline 40.0
         score = 40.0 + (physics_raw * 0.40) + (market_raw * 0.20) + vulnerability_mod + bullpen_boost
         
         alpha_signals = 0
@@ -126,48 +125,46 @@ class SharpsWeighting:
         if is_shark: alpha_signals += 1
         if is_steam: alpha_signals += 1
         
+        # OMEGA v7.7: Market Convergence Boost (+10% if 3+ Alphas agree)
+        convergence_boost = 1.0
+        if alpha_signals >= 3:
+            convergence_boost = 1.10
+        
         # OMEGA v7.2: Soft Market Boost Cap for Weak Hitters
-        # If the underlying team xwOBA is below average (< 0.315), cap alpha signals at 2.
         if team_xwoba < 0.315:
             alpha_signals = min(2, alpha_signals)
         
         # Beta
         if is_sharp: beta_signals += 1
         if tt_move > 0.5: beta_signals += 1
-        if bullpen_fatigue >= 80: beta_signals += 1 # Consolidation: Any Pen Alert is a Beta signal
+        if bullpen_fatigue >= 80: beta_signals += 1 
         
         # Multiplier Calculation: Alpha (+15%), Beta (+5%)
         multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05)
         
         # OMEGA v6.7: The 'Detmers Patch' (Stopper Penalty Refined)
-        # We only dampen the stack if the OPPOSING PITCHER is elite (30%+ CSW).
-        # opp_pitcher_physics > 85 correlates to elite swing-and-miss profiles.
         if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
-            multiplier -= 0.10 # -10% if facing an elite arm
+            multiplier -= 0.10 
         
-        # OMEGA v7.5 (Post-Mortem 5/6): Late-Market Noise Filter (Divergence Sanity Check)
-        # If ITT >= 4.5 and opposing pitcher is vulnerable, do not let public ML noise zero out divergence.
-        eff_divergence = divergence
-        eff_itt_check = implied_total if implied_total is not None else curr_itt
-        if eff_itt_check >= 4.5 and physics_raw > 40.0: # Using team physics to confirm it's a good spot
-            eff_divergence = max(divergence, 5.0)
+        # OMEGA v7.7: Sharp Volatility Filter (The Trap Protector)
+        # If divergence is extreme (> 25), apply a hard -10% "Noise" penalty.
+        volatility_penalty = 1.0
+        if divergence > 25 or divergence < -25:
+            volatility_penalty = 0.90
+            divergence = 0 # Nuke the boost if noise is too high
 
         # Dynamic Divergence Multiplier: +0.66% per 1% divergence (Capped at 15%)
-        div_multiplier = 1.0 + min(0.15, (max(0, eff_divergence) / 150.0))
+        div_multiplier = 1.0 + min(0.15, (max(0, divergence) / 150.0))
         
-        final_omega = score * multiplier * div_multiplier
+        final_omega = score * multiplier * div_multiplier * volatility_penalty * convergence_boost
         
-        # OMEGA v7.3 (Post-Mortem 4/28): ITT Sanity Gate
-        # No stack should rank elite when Vegas says they score < 4 runs.
-        # Conversely, boost undervalued stacks when ITT > 5.5.
+        # OMEGA v7.3: ITT Sanity Gate
         eff_itt = implied_total if implied_total is not None else curr_itt
         if eff_itt < 4.0 and final_omega > 90.0:
-            final_omega *= 0.85  # -15% hard damper
+            final_omega *= 0.85  
         elif eff_itt > 5.5 and final_omega < 70.0:
-            final_omega *= 1.10  # +10% underdog boost
+            final_omega *= 1.10  
         
-        # OMEGA v6.9.0: Confidence Gate
-        # Prevent "Phantom Whales" against unknown/fallback pitchers.
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
         
@@ -177,7 +174,8 @@ class SharpsWeighting:
             "market": round(market_raw * 0.20, 1),
             "team_xwoba": round(team_xwoba, 3),
             "vulnerability": round(vulnerability_mod, 1),
-            "bullpen_boost": round(bullpen_boost, 1),
+            "volatility_hit": volatility_penalty < 1.0,
+            "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence
         }
 
@@ -191,9 +189,9 @@ class SharpsWeighting:
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))
         
         # 2. Market Pillar (AHR Price based: Scale 700 to 200 -> 0 to 50 pts)
-        # OMEGA v7.3 (Post-Mortem 4/28): Cap at 40 pts for extreme juice (< -500)
-        # Prevents "everyone has him" chalk traps (e.g., Ben Rice -474, Drake Baldwin -850)
-        m_cap = 40 if ahr_price < -500 else 50
+        # OMEGA v7.5 (Post-Mortem 5/9): Lowered cap to -300
+        # Prevents "everyone has him" chalk traps (e.g., Ben Rice -474, Judge -309)
+        m_cap = 40 if ahr_price < -300 else 50
         m_comp = max(0, min(m_cap, ((700 - min(700, ahr_price)) / 500) * 50))
         
         # OMEGA v7.5 (Post-Mortem 5/6): The Abrams Patch (AHR Manipulation Floor)

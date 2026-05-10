@@ -1,0 +1,28 @@
+# OMEGA Lineup Strategist
+
+## Description
+This skill automates the construction of a tactical DFS build based on OMEGA's highest-conviction signals. It follows a structured "5-man Core + 3 Filler" approach to maximize GPP leverage.
+
+## Logic
+1. **Identify Primary Stack**:
+    - Locate the team with the highest `stack_score` in `reports/latest_results.json`.
+    - Priority is given to games with an `↑ OVER` or `GASSED BP` signal.
+    - Select the Top 5 hitters from this team based on their OMEGA `player_score`.
+
+2. **Select Filler Core (3 Hitters)**:
+    - Fill the remaining 3 hitter spots from the overall Top Hitters pool (excluding the primary stack).
+    - If a secondary team has a massive "Thermal" or "Whale" signal (e.g. Arizona today), prioritize a 2-man filler from that team.
+    - The final spot should be the best "Value" one-off available (e.g. Conforto today).
+
+3. **Select Pitcher Pair**:
+    - Pick the #1 OMEGA Pitcher as the "Anchor".
+    - Pick the best "Value" Pitcher (High OMEGA vs. low salary/outs_line) as the SP2.
+
+4. **Output Format**:
+    - **PRIMARY STACK (5)**: [Team Name] - [Player 1, 2, 3, 4, 5]
+    - **FILLERS (3)**: [Player 1], [Player 2], [Player 3]
+    - **PITCHERS (2)**: [SP1], [SP2]
+
+## Operational Constraints
+- Only use players marked as "CONFIRMED" in the latest results.
+- If no 5-man stack exists with a score > 85, prioritize a 4-4 "Split Stack" instead.

@@ -144,7 +144,7 @@ def run_full_analysis():
             print("[WARNING]: Could not load previous results for trend analysis.")
 
     # 3. Extract Hitters Early for Team Analysis (v6.8)
-    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
+    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=confirmed_lineups)
     
     # OMEGA v6.9.7: Fuzzy Franchise Purge
     # Purge any hitter not in the confirmed starters using fuzzy team matching.
@@ -232,6 +232,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['alpha_score'] = res['final'] # Flatten for display
         report['physics_score'] = res['physics']
         report['market_score'] = res['market']
+        report['siera'] = report.get('siera', 4.10)
         report['is_coors'] = res.get('is_coors', False)
         report['is_paradox'] = False # Initial state
         report['is_hazard'] = False  # Initial state
@@ -281,9 +282,13 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
         # 1. Paradox Check (Facing a Top 3 stack)
         if p['opponent'] in top_stack_names:
             p['is_paradox'] = True
-            # Apply -15% Alpha penalty
-            p['alpha_score'] = round(p['alpha_score'] * 0.85, 1)
-            print(f"  - PARADOX: {p['pitcher']} ({p['team']}) penalized for facing Top-3 Stack {p['opponent']}")
+            # OMEGA v7.5: The Veteran Paradox Shield
+            # If a pitcher is a proven veteran (SIERA < 3.80), soften the penalty.
+            is_veteran = float(p.get('siera', 4.10)) < 3.80
+            penalty = 0.925 if is_veteran else 0.85 # -7.5% for vets, -15% for others
+            p['alpha_score'] = round(p['alpha_score'] * penalty, 1)
+            shield_label = " (SHIELDED)" if is_veteran else ""
+            print(f"  - PARADOX: {p['pitcher']} ({p['team']}) penalized{shield_label} for facing Top-3 Stack {p['opponent']}")
 
         # 2. Power Hazard Check (Facing high raw physics)
         if p['opponent'] in high_power_teams:
@@ -457,8 +462,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 elif delta <= -3.0 and divergence <= -5:
                     trend = "FADING"
             
-            # OMEGA v6.8: Total Divergence Signal (Visual-only, does not affect score)
+            # OMEGA v7.6: Total Divergence Signal (Active Scoring Suppression)
             total_signal = ""
+            ud_penalty = 0.0
             if totals_data:
                 # Match game by searching for both team names in the key
                 home_key = home.split()[-1].upper()  # e.g. 'DODGERS'
@@ -468,6 +474,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     if home_key in gk_up or away_key in gk_up:
                         od = gv.get('over_divergence', 0)
                         ud = gv.get('under_divergence', 0)
+                        
+                        if ud >= 25:
+                            ud_penalty = 15.0
+                        elif ud >= 20:
+                            ud_penalty = 10.0
+                        elif ud >= 10:
+                            ud_penalty = 5.0
+                            
                         if od >= 8:
                             total_signal = f"📈 O-DIV +{od}"
                         elif ud >= 8:
@@ -475,6 +489,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         elif od >= 4:
                             total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
                         break
+            
+            final_stack_score = max(0.0, round(final_stack_score - ud_penalty, 1))
 
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,

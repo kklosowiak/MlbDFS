@@ -67,7 +67,7 @@ class HitterPropAnalyzer:
         except: pass
         return external_props
 
-    def extract_top_hitters(self, snapshot_path):
+    def extract_top_hitters(self, snapshot_path, confirmed_lineups=None):
         """Extracts individual hitters with AHR and Hit props for OMEGA Signals (v3.10.0)."""
         """Extracts individual hitters with AHR and Hit props for OMEGA Signals (v3.10.0)."""
         print(f"[OMEGA]: Opening Slate Profile: {snapshot_path}")
@@ -169,7 +169,7 @@ class HitterPropAnalyzer:
                         if not found_key:
                             # Add even if they aren't in Top 8 (Prop Divergence)
                             side_hint = entry.get('side')
-                            team_side = self.resolve_team_side(player_name, matchup.get('home'), matchup.get('away'), market_side=side_hint)
+                            team_side = self.resolve_team_side(player_name, matchup.get('home'), matchup.get('away'), market_side=side_hint, confirmed_lineups=confirmed_lineups)
                             if team_side is None or team_side not in active_teams: continue
 
                             momentum = self.statcast.get_player_momentum(player_name) or {}
@@ -284,7 +284,7 @@ class HitterPropAnalyzer:
         h_list = list(hitter_map.values())
         return sorted(h_list, key=lambda x: x['ahr_price'])
 
-    def resolve_team_side(self, player_name, home_t, away_t, market_side=None):
+    def resolve_team_side(self, player_name, home_t, away_t, market_side=None, confirmed_lineups=None):
         """
         Dynamically determines if a player belongs to the home or away side.
         OMEGA v6.2.2: Strict Roster Gatekeeper (Anti-Ghosting Protocol).
@@ -294,6 +294,15 @@ class HitterPropAnalyzer:
         # 1. API Side Hint (Highest Confidence - direct from bookmaker)
         if market_side == "home": return home_t
         if market_side == "away": return away_t
+
+        # 1.5 OMEGA v7.4: Trust Confirmed Lineups First (User Priority)
+        if confirmed_lineups:
+            for team, players in confirmed_lineups.items():
+                if norm_name in players:
+                    if team == home_t: return home_t
+                    if team == away_t: return away_t
+                    # If confirmed on a team NOT in this game, it's a ghost from another API block
+                    return None
 
         # 2. Identify the player's "Official" Team (Cache or Anchor)
         momentum = self.statcast.get_player_momentum(player_name)

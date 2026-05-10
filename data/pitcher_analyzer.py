@@ -270,7 +270,8 @@ class PitcherAnalyzer:
                     is_shark=is_shark,
                     is_whale=is_whale,
                     opponent_k_boost=opponent_k_boost,
-                    is_low_ceiling=is_low_ceiling
+                    is_low_ceiling=is_low_ceiling,
+                    projected_outs=float(outs_line)
                 )
                 
                 pitcher_reports.append({
@@ -284,6 +285,7 @@ class PitcherAnalyzer:
                     'outs_odds': outs_odds,
                     'alpha_score': alpha_results,
                     'csw': physics['csw'],
+                    'siera': physics['siera'],
                     'bm_score': physics['bm_score'],
                     'confidence': physics.get('confidence', 'low'),
                     'is_confirmed': team_name in confirmed_list,
