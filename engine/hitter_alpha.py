@@ -44,10 +44,10 @@ class HitterAlpha:
             
         return round(max(0, min(100, final)), 1)
         
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, hit_signals=0):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, hit_signals=0, matchup_radar_boost=1.0):
         """
         Individual Hitter Alpha v3.2.1.3 Additive Pillar.
-        Final = (Physics_50 + Market_50) * (1 + Boost)
+        Final = (Physics_50 + Market_50) * (1 + Boost) * MatchupRadar
         Combined with Team Context (30% weight)
         """
         # 1. Physics Pillar (xwOBA based)
@@ -60,14 +60,17 @@ class HitterAlpha:
         boost = 0.05 * hit_signals
         
         # Aggregated Individual Score
-        individual_final = (p_comp + m_comp) * (1 + boost)
+        individual_final = (p_comp + m_comp) * (1 + boost) * matchup_radar_boost
         
         # 4. Integrate Team Context (The 70/30 Master Rule)
         # We treat team context as an additive blender
         final_alpha = (individual_final * 0.7) + (team_score * 0.3)
         
         # TRACING PROOF
-        print(f"TRACING {player_name}: Physics={p_comp:.1f}, Market={m_comp:.1f}, Boost={boost:.2f} -> Alpha={final_alpha:.1f}")
+        if matchup_radar_boost != 1.0:
+            print(f"TRACING {player_name}: Physics={p_comp:.1f}, Market={m_comp:.1f}, MatchupBoost={matchup_radar_boost:.2f}x -> Alpha={final_alpha:.1f}")
+        else:
+            print(f"TRACING {player_name}: Physics={p_comp:.1f}, Market={m_comp:.1f}, Boost={boost:.2f} -> Alpha={final_alpha:.1f}")
         
         return round(max(0, min(100, final_alpha)), 1)
         

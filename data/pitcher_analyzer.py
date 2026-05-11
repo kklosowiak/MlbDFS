@@ -85,10 +85,11 @@ class PitcherAnalyzer:
         _load_market(outs_path, 'pitcher_outs', 'outs', 15.5)
         return external_props
 
-    def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[]):
+    def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[], movement_data=None):
         if props_data is None: props_data = {}
         if rosters is None: rosters = {}
         if splits_data is None: splits_data = {}
+        if movement_data is None: movement_data = []
         
         # OFFICIATING / WEATHER SENTIMENT INGESTION
         ump_assignments = {} if not umpire_fetcher else umpire_fetcher.fetch_daily_assignments()
@@ -120,15 +121,11 @@ class PitcherAnalyzer:
             if allowed_teams and game['home_team'] not in allowed_teams and game['away_team'] not in allowed_teams:
                 continue
             gid = game['id']
-            # OMEGA v5.3: Precise ID Match
             open_data = self.opening_lookup.get(gid)
             
             if not open_data:
-                # Emergency Fallback to legacy names (for transition)
                 home = game['home_team']
-                away = game['away_team']
-                sh_home = self.normalized_map.get(home, home)
-                open_data = next((o for o in opening if any(n in [home, sh_home] for n in [o['team_home'], o['team_away']])), None)
+                open_data = next((o for o in opening if any(n in [home] for n in [o['team_home'], o['team_away']])), None)
             
             if not open_data: continue
             
@@ -138,8 +135,6 @@ class PitcherAnalyzer:
             for side in ['home', 'away']:
                 team_name = game[f'{side}_team']
                 vi_name = self.team_map.get(team_name)
-                # OMEGA v5.4: Enforced Truth
-                # We prioritize our verified local JSON over snapshot metadata to eliminate hallucinations.
                 pitcher_name = probables.get(team_name, rosters.get(team_name, "TBD"))
                 
                 # Market Discovery
@@ -155,10 +150,9 @@ class PitcherAnalyzer:
                 curr_total = float(curr_total or open_total)
                 
                 ml_move = calculate_ml_move(open_ml, curr_ml)
-                tt_move = curr_total - open_total # Stub for full itt calc if needed
+                tt_move = curr_total - open_total
                 
                 # Splits / Divergence Ingestion
-                # OMEGA v5.2: Pivot to direct consensus fetching
                 from data.consensus_fetcher import ConsensusFetcher
                 fetcher = ConsensusFetcher()
                 split = fetcher.get_team_split(team_name, splits_data)
@@ -172,11 +166,9 @@ class PitcherAnalyzer:
                 k_odds = None
                 outs_odds = None
                 
-                # OMEGA v3.2.1.9: Evidence-Based Discovery
                 if not pitcher_name or pitcher_name == "TBD":
                     pitcher_name = self.discover_starter_from_props(props_data, gid, team_name, opponent=(away if side == 'home' else home))
                 
-                # OMEGA v4.5.8: GID-Aware Prop Recovery
                 gid_props = props_data.get(gid, {})
                 
                 # Strikeouts recovery
@@ -190,17 +182,15 @@ class PitcherAnalyzer:
                             o_odds = next((o.get('price') for o in p_k if o.get('point') == k_line and o.get('side') == 'Over'), None)
                             if o_odds: k_odds = o_odds
                         
-                        # OMEGA v5.0.2: Juice Target Logic (Over_Price < Under_Price)
                         for o in p_k:
                             if o.get('side') == 'Over':
                                 o_price = o.get('price', 0)
                                 book = o.get('bookmaker')
                                 pt = o.get('point')
-                                # Find matching Under
                                 matching = [u for u in p_k if u.get('side') == 'Under' and u.get('bookmaker') == book and u.get('point') == pt]
                                 if matching:
                                     u_price = matching[0].get('price', 0)
-                                    if o_price < u_price: # More expensive = Juiced
+                                    if o_price < u_price: 
                                         is_juiced_target = True
                                         break
                 
@@ -220,24 +210,27 @@ class PitcherAnalyzer:
                 if outs_line is None and ext_props.get(norm_pitcher):
                     outs_line = ext_props[norm_pitcher].get('outs')
                 
-                # OMEGA v5.0.4: Prospect Baseline Proxy
-                if k_line is None:
-                    k_line = 4.5
-                if outs_line is None:
-                    outs_line = 14.5
+                if k_line is None: k_line = 4.5
+                if outs_line is None: outs_line = 14.5
                 
-                # Physics Leaderboard Ingestion
+                # OMEGA v7.8: Prop Trap Detection (The Gavin Filter)
+                is_trap = False
+                p_move = next((m for m in movement_data if m.get('player') == pitcher_name), None)
+                k_move = p_move.get('k_move', 0) if p_move else 0
+                
+                # Logic: Team ML is favored (+ml_move), but K-prop is dropping (-k_move)
+                if ml_move > 10 and k_move < 0:
+                    is_trap = True
+                # Logic: K-line hasn't moved but juice has shifted Under (Synthetically detected via volatility)
+                if k_odds and k_odds > 110: # Getting "Longer" = Inviting Over
+                    is_trap = True
+
                 physics = self.fetch_pitcher_physics(pitcher_name)
-                
-                # Environment & Stadium Alpha (v6.8 Master)
-                venue_team = home # Venue is always the game home_team
+                venue_team = home 
                 base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
-                
-                # Umpire Mod
                 ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "TBD"})
-                ump_boost = (ump_data['factor'] - 1.0) * 100.0 # Convert 1.05 to +5.0 boost
+                ump_boost = (ump_data['factor'] - 1.0) * 100.0 
                 
-                # Weather Mod
                 weather_boost = 0
                 weather_label = "TBD"
                 if weather_fetcher:
@@ -245,22 +238,14 @@ class PitcherAnalyzer:
                     weather_boost = w_res['boost']
                     weather_label = w_res['label']
                 
-                # Total Environment Factor (Base 100 + Stadium + Umpire + Weather)
                 park_factor = (base_stadium_factor * 100.0) + ump_boost + weather_boost
-  
-                # OMEGA v6.0 SE: Alpha Signal Detection
                 is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
                 is_whale = (divergence >= 15)
-                
                 opponent = away if side == 'home' else home
-                
-                # Opponent K Boost (Dynamic v6.8)
-                opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) # 5.0 neutral baseline fallback
-                
-                # OMEGA v7.0: Ceiling Detection
+                opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) 
                 is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
 
-                # Scoring (v6.0 SE Tiered)
+                # Scoring (v7.8 Trap-Aware)
                 alpha_results = self.analyzer.calculate_pitcher_score(
                     pitcher_name, ml_move, tt_move, money_gap, k_line,
                     siera=physics['siera'], csw=physics['csw'],
@@ -271,7 +256,8 @@ class PitcherAnalyzer:
                     is_whale=is_whale,
                     opponent_k_boost=opponent_k_boost,
                     is_low_ceiling=is_low_ceiling,
-                    projected_outs=float(outs_line)
+                    projected_outs=float(outs_line),
+                    is_trap=is_trap
                 )
                 
                 pitcher_reports.append({

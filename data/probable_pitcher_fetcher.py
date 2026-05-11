@@ -26,11 +26,12 @@ class ProbablePitcherFetcher:
         print("[INGEST]: Synchronizing MLB Probable Pitchers (Dynamic Slate)...")
         
         # Use current date (local time corresponds to the slate usually)
-        # But StatsAPI schedule handles the current day by default
+        fetch_date = datetime.now().strftime("%Y-%m-%d")
+        print(f"  - TARGET DATE: {fetch_date}")
         params = {
             'sportId': 1,
             'hydrate': 'probablePitcher',
-            'date': datetime.now().strftime("%Y-%m-%d")
+            'date': fetch_date
         }
         
         try:

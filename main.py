@@ -21,6 +21,7 @@ from data.statcast_bridge import StatcastBridge
 # No more shield_float or defaults. Raw data only.
 
 from engine.sharps_weighting import SharpsWeighting
+from engine.matchup_radar import MatchupRadar
 from utils.dashboard_generator import DashboardGenerator
 from utils.audit_engine import AuditEngine
 from config import config
@@ -70,6 +71,12 @@ def run_full_analysis():
     p_analyzer = PitcherAnalyzer()
     h_prop_analyzer = HitterPropAnalyzer()
     sharps_weighting = SharpsWeighting()
+    matchup_radar = MatchupRadar()
+    
+    # OMEGA v7.8: Sunday Automation Trigger
+    import datetime
+    if datetime.datetime.now().weekday() == 6: # Sunday
+        matchup_radar.refresh_data()
     dash_gen = DashboardGenerator()
     weather_fetcher = WeatherFetcher()
     consensus_fetcher = ConsensusFetcher()
@@ -123,10 +130,15 @@ def run_full_analysis():
         rosters[entry['home_team']] = entry.get('home_pitcher') or "TBD"
         rosters[entry['away_team']] = entry.get('away_pitcher') or "TBD"
 
+    # Movement Tracker (v7.8 Trap Detector Support)
+    movement_tracker = MovementTracker()
+    movement_data = movement_tracker.calculate_movement() or []
+
     # 2. Ranking Pitcher Alpha
     p_reports = _get_pitcher_alpha(
         p_analyzer, snapshot_path, opening_lines_path, splits_data, 
-        snapshot.get('props', {}), rosters, weather_fetcher, umpire_fetcher
+        snapshot.get('props', {}), rosters, weather_fetcher, umpire_fetcher,
+        movement_data=movement_data
     )
     
     # OMEGA v6.21: The Integrity Gate
@@ -177,7 +189,7 @@ def run_full_analysis():
     )
 
     # 5. Analyze Hitters
-    h_reports = _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, raw_hitters=raw_hitters)
+    h_reports = _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=raw_hitters)
 
     # 5.5 OMEGA v6.8.5: Paradox Resolution
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
@@ -212,7 +224,7 @@ def run_full_analysis():
         json.dump(summary, f, indent=4)
     print(f"[ARCHIVE]: Results archived to {archive_path}")
 
-def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher):
+def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher, movement_data=None):
     """STEP 1: Ranking Pitcher Alpha (Hybrid Core)"""
     print("[STEP 1]: Ranking Pitcher Alpha...")
     p_reports = p_analyzer.analyze_slate(
@@ -222,7 +234,8 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         props_data=props_data,
         rosters=rosters,
         weather_fetcher=weather_fetcher,
-        umpire_fetcher=umpire_fetcher
+        umpire_fetcher=umpire_fetcher,
+        movement_data=movement_data
     )
     
     # OMEGA v4.5: Component Translation
@@ -236,6 +249,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['is_coors'] = res.get('is_coors', False)
         report['is_paradox'] = False # Initial state
         report['is_hazard'] = False  # Initial state
+        report['is_trap'] = res.get('is_trap', False)
         report['is_low_ceiling'] = False # Initial state
     
     # OMEGA v4.6.1: Backfill rosters with discovered pitchers
@@ -551,7 +565,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
     return team_reports
 
-def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, raw_hitters=None):
+def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=None):
     """STEP 3: Ranking Hitter Alpha"""
     print("\n[STEP 3]: Ranking Hitter Alpha...")
     if raw_hitters is None:
@@ -579,11 +593,16 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         # Protection synergy
         protection_boost = 1.05 if (team_data and team_data.get('stack_score', 0) >= 75) else 1.0
 
+        # OMEGA v7.7: Matchup Radar Synergy
+        opp_pitcher = team_data['opp_pitcher'] if team_data else "TBD"
+        matchup_radar_boost = matchup_radar.get_matchup_boost(h['name'], opp_pitcher)
+
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, h.get('matchup_xwoba', 0.330), h.get('ahr_price', 400),
             park_factor=park_factor, is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
-            vision_boost=vision_boost, protection_boost=protection_boost
+            vision_boost=vision_boost, protection_boost=protection_boost,
+            matchup_radar_boost=matchup_radar_boost
         )
 
         h_reports.append({

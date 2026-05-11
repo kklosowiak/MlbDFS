@@ -210,7 +210,8 @@ class StatcastBridge:
             'group': group,
             'sportId': 1,
             'season': season,
-            'limit': 5000
+            'limit': 5000,
+            'playerPool': 'all'
         }
         if extra_params:
             params.update(extra_params)

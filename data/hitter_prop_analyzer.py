@@ -129,7 +129,8 @@ class HitterPropAnalyzer:
                         match_away = g['away']
                         break
 
-                for p in roster[:10]:
+                # OMEGA v7.6: Increased Roster-First Discovery (10 -> 18) to prevent ghosting elite veterans with low OPS.
+                for p in roster[:18]:
                     name = p['name']
                     hitter_map[name] = {
                         'name': name,
@@ -262,8 +263,8 @@ class HitterPropAnalyzer:
             print(f"[OMEGA]: Backfilling {len(missing_teams)} teams with zero market props (Roster-First Mode)...")
             for team in missing_teams:
                 roster = self.statcast.get_team_roster(team, player_type='hitter')
-                # Inject top 5 hitters from this team
-                for p in roster[:5]:
+                # OMEGA v7.6: Backfill expanded (5 -> 12)
+                for p in roster[:12]:
                     name = p['name']
                     # Don't overwrite if already discovered (should be 0 anyway)
                     if name not in hitter_map:

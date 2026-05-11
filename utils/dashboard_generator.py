@@ -191,6 +191,19 @@ class DashboardGenerator:
             50% {{ text-shadow: 0 0 15px rgba(255, 0, 255, 0.6); }}
             100% {{ text-shadow: 0 0 5px rgba(255, 0, 255, 0.2); }}
         }}
+
+        /* Legend Grouping */
+        .legend {{ display: flex; flex-direction: row; gap: 40px; margin-bottom: 30px; justify-content: center; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 16px; border: 1px solid var(--border); }}
+        .legend-group {{ display: flex; flex-direction: column; gap: 8px; }}
+        .legend-title {{ font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: var(--accent); opacity: 0.7; letter-spacing: 1px; margin-bottom: 5px; }}
+        .legend-item {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #888;
+        }}
+        .legend-item b {{ color: #fff; }}
     </style>
 </head>
 <body>
@@ -202,15 +215,29 @@ class DashboardGenerator:
                 <small style="color: var(--accent);">Last Sync: {datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET")}</small>
             </div>
         </div>
-
-            <div class="legend-item" style="border-color: var(--accent); color: var(--accent);">⚡ <b>ALPHA (+15%):</b> Market Leaders (Storm, Whale, Shark, Target, Steam).</div>
-            <div class="legend-item">🔹 <b>BETA (+5%):</b> Supporting signals (Sharp, Power, Engine).</div>
-            <div class="legend-item" style="color: #ff00ff; border-color: #ff00ff;">🌪️ <b>STORM:</b> Correlated Sharp Action (ML + Total).</div>
-            <div class="legend-item" style="color: #ff4500; border-color: #ff4500;">💨 <b>STEAM:</b> Heavy Line Movement + Consensus Money.</div>
-            <div class="legend-item" style="color: #ff8c00;">♨️ <b>PEN ALERT:</b> Bullpen fatigue detected. Red = Gassed.</div>
-            <div class="legend-item" style="color: #ff4500;">⚠️ <b>PARADOX:</b> Conflict detected (Pitcher vs. Top Stack).</div>
-            <div class="legend-item" style="color: #00ced1;">📉 <b>CEILING:</b> Low strikeout upside detected.</div>
-            <div class="legend-item" style="color: #ffff00; border-color: #ffff00;">⚡ <b>BURST:</b> High power concentration or Early Explosion detected.</div>
+        <div class="legend">
+            <div class="legend-group">
+                <div class="legend-title">Market Alpha</div>
+                <div class="legend-item" style="color: var(--accent);">⚡ <b>ALPHA (+15%):</b> Major Conviction (Storm, Whale, Shark, Steam).</div>
+                <div class="legend-item" style="color: #ff00ff;">🌪️ <b>STORM:</b> Correlated Sharp Action (ML + Total).</div>
+                <div class="legend-item" style="color: #ff4500;">💨 <b>STEAM:</b> Heavy Line Movement + Consensus.</div>
+            </div>
+            <div class="legend-group">
+                <div class="legend-title">Model Beta</div>
+                <div class="legend-item">🔹 <b>BETA (+5%):</b> Supporting signals (Sharp, Power, Engine).</div>
+                <div class="legend-item" style="color: #ffff00;">⚡ <b>BURST:</b> High power concentration or Early Explosion.</div>
+                <div class="legend-item" style="color: #00ced1;">📉 <b>CEILING:</b> Low strikeout upside detected.</div>
+            </div>
+            <div class="legend-group">
+                <div class="legend-title">Risk & Environment</div>
+                <div class="legend-item" style="color: #ff4500;">⚠️ <b>PARADOX:</b> Conflict (Pitcher vs. Top Stack).</div>
+                <div class="legend-item" style="color: #ff8c00;">♨️ <b>PEN ALERT:</b> Bullpen fatigue (Yellow=Weary, Red=Exhausted).</div>
+                <div class="legend-item" style="color: #ff0000;">⚠️ <b>TRAP:</b> Prop line decay vs. Team favorability.</div>
+                <div class="legend-item" style="color: #00ffff;">⚖️ <b>NEUTRAL K:</b> No strikeout cushion (Contact Matchup).</div>
+                <div class="legend-item" style="color: #00ffff;">⚡ <b>RADAR:</b> Elite Pitch-Mix Synergy detected.</div>
+                <div class="legend-item" style="color: #ff3e3e;">⚠️ <b>DIVERGENCE:</b> Physics/Market disagreement (> 30 pts).</div>
+            </div>
+        </div>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
@@ -238,12 +265,12 @@ class DashboardGenerator:
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00fa9a; color:#00fa9a;\">🏔️ ALTITUDE</span>' if p.get('is_coors') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff0000; color:#ff0000; background:rgba(255,0,0,0.1);\">⚠️ TRAP</span>' if p.get('is_trap') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ffff; color:#00ffff;\">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e;\">⚠️ DIVERGENCE</span>' if abs(p.get('physics_score', 0) - p.get('market_score', 0)) > 30 else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#00ced1; color:#00ced1;\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🏗️ ENGINE</span>' if (p.get('outs_line') or 0) >= 17.5 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if (p.get('divergence') or 0) >= 10 and not (p.get('divergence') or 0) >= 15 else '' }"
                                   f"<span class='signal-pill' style='border-color:#888; color:#888;'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
-                                  f"<span class='signal-pill' style='border-color:#888; color:#888;'>UMP: {p.get('umpire_name', 'TBD')}</span>"
                                   f"</div></td>"
                                   f"<td><strong>{p['pitcher']}</strong></td>"
                                   f"<td><span class='vs'>vs</span>{p['opponent']}</td>"
@@ -273,6 +300,7 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🏃‍♂️ THIEF</span>' if h.get('is_speed_target') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">♨️ HOT</span>' if h.get('is_hot') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ffff; color:#00ffff;\">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }"
                                   f"</div></td>"
                                   f"<td><strong>{h['name']}</strong></td>"
@@ -308,7 +336,7 @@ class DashboardGenerator:
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
                                   f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🚂 TRAIN</span>' if t['stack_score'] >= 90 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ PEN ALERT</span>' if t.get('is_fatigued') or t.get('is_gassed') else '' }"
+                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 100 else ('<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill\" style=\"border-color:#ffff00; color:#ffff00;\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 80 else '')) }"
                                   + (f'<span class="signal-pill" style="border-color:#a0f0a0; color:#a0f0a0;">{t["total_signal"]}</span>' if t.get('total_signal') else '')
                                   + "</div></td>"
                                   f"<td><strong>{t['team']}</strong></td>"
