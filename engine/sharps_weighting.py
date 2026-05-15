@@ -34,34 +34,41 @@ class SharpsWeighting:
         if physics_raw_base >= 70.0:
             score += 15.0
         
-        # OMEGA v6.1: Tiered Multipliers
+        # OMEGA v6.1: Tiered Multipliers (Flattened v8.0)
         alpha_signals = 0
         beta_signals = 0
         
         if is_target and not gate_active: alpha_signals += 1
-        if is_whale and not gate_active: alpha_signals += 1
-        if is_shark and not gate_active: alpha_signals += 1
+        
+        # Group market signals to prevent double-counting
+        if (is_whale or is_shark) and not gate_active:
+            alpha_signals += 1
         
         if k_prop and float(k_prop) >= 6.5: beta_signals += 1
         if abs(tt_move) >= 0.5: beta_signals += 1
         if divergence >= 10: beta_signals += 1
         
         multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05)
-        
-        if (is_whale or is_shark) and not gate_active:
-            multiplier += 0.20
             
         if park_factor >= 114:
             multiplier -= 0.20
             
-        div_boost = 1.0 + min(0.15, (max(0, divergence) / 150.0))
+        # Cap div boost at 10%
+        div_boost = 1.0 + min(0.10, (max(0, divergence) / 150.0))
         
         volume_factor = min(1.0, projected_outs / 18.0)
         
         # OMEGA v7.8: Prop Trap Penalty (-15%)
         trap_multiplier = 0.85 if is_trap else 1.0
-        
-        final_alpha = score * multiplier * div_boost * volume_factor * trap_multiplier
+
+        # OMEGA v8.5: The 'Institutional Anchor' (Market Fade)
+        # If divergence is negative (market fading) and it's a high-alpha target,
+        # apply a multiplicative penalty to simulate institutional skepticism.
+        market_anchor = 1.0
+        if divergence < -10 and physics_raw_base > 60:
+            market_anchor = 0.90 # -10% institutional anchor
+            
+        final_alpha = score * multiplier * div_boost * volume_factor * trap_multiplier * market_anchor
         
         if is_low_ceiling and not is_target:
             final_alpha *= 0.90
@@ -74,8 +81,8 @@ class SharpsWeighting:
             "is_trap": is_trap
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None):
-        """OMEGA v7.0: Tiered Alpha/Beta Stack Scoring with Burst Potential."""
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False):
+        """OMEGA v8.0: Tiered Alpha/Beta Stack Scoring (Flattened Multipliers)."""
         # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
@@ -107,23 +114,26 @@ class SharpsWeighting:
         alpha_signals = 0
         beta_signals = 0
         
-        # Alpha
-        if is_storm: alpha_signals += 1
-        if is_whale: alpha_signals += 1
-        if is_shark: alpha_signals += 1
-        if is_steam: alpha_signals += 1
+        # Alpha (Market Convergence Grouping to prevent exponential stacking)
+        market_alphas = 0
+        if is_storm: market_alphas += 1
+        if is_whale: market_alphas += 1
+        if is_shark: market_alphas += 1
+        if is_steam: market_alphas += 1
         
-        # OMEGA v7.7: Market Convergence Boost (+10% if 3+ Alphas agree)
+        # Flatten: Group all market alphas into a max of 1 signal (+15%), 
+        # but keep the convergence bonus if 3+ agree
+        if market_alphas > 0:
+            alpha_signals += 1
+            
         convergence_boost = 1.0
-        if alpha_signals >= 3:
+        if market_alphas >= 3:
             convergence_boost = 1.10
         
-        # OMEGA v7.2: Soft Market Boost Cap for Weak Hitters
-        if team_xwoba < 0.315:
-            alpha_signals = min(2, alpha_signals)
-        
+
         # Beta
         if is_sharp: beta_signals += 1
+        if is_burst: beta_signals += 1
         if tt_move > 0.5: beta_signals += 1
         if bullpen_fatigue >= 80: beta_signals += 1 
         
@@ -134,21 +144,19 @@ class SharpsWeighting:
         if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
             multiplier -= 0.10 
         
-        # OMEGA v7.7: Sharp Volatility Filter (The Trap Protector)
-        # If divergence is extreme (> 25), apply a hard -10% "Noise" penalty.
-        volatility_penalty = 1.0
-        if divergence > 25 or divergence < -25:
-            volatility_penalty = 0.90
-            divergence = 0 # Nuke the boost if noise is too high
-
-        # Dynamic Divergence Multiplier: +0.66% per 1% divergence (Capped at 15%)
-        div_multiplier = 1.0 + min(0.15, (max(0, divergence) / 150.0))
+        # Dynamic Divergence Multiplier: Capped at 10%
+        div_multiplier = 1.0 + min(0.10, (max(0, divergence) / 150.0))
         
-        final_omega = score * multiplier * div_multiplier * volatility_penalty * convergence_boost
+        final_omega = score * multiplier * div_multiplier * convergence_boost
         
-        # OMEGA v7.3: ITT Sanity Gate
+        # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt
-        if eff_itt < 4.0 and final_omega > 90.0:
+        
+        # If Vegas says it's a low total, but sharps disagree (WHALE/STORM), we trust the sharps.
+        # We only apply the penalty if there is no major sharp divergence backing them.
+        is_sharp_backed = is_whale or is_storm or (divergence > 15)
+        
+        if eff_itt < 4.0 and final_omega > 90.0 and not is_sharp_backed:
             final_omega *= 0.85  
         elif eff_itt > 5.5 and final_omega < 70.0:
             final_omega *= 1.10  
@@ -162,7 +170,7 @@ class SharpsWeighting:
             "market": round(market_raw * 0.20, 1),
             "team_xwoba": round(team_xwoba, 3),
             "vulnerability": round(vulnerability_mod, 1),
-            "volatility_hit": volatility_penalty < 1.0,
+            "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence
         }

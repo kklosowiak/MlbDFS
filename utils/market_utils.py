@@ -35,7 +35,14 @@ def calculate_ml_move(open_ml, curr_ml):
     """
     OMEGA v5.0.5: American Odds Linearizer.
     Converts odds to a "Cents" scale relative to 100 to get a real movement delta.
-    -110 -> 10, +110 -> -10
+    
+    POLARITY (Crucial):
+    - Negative (-) Move: Price is moving IN FAVOR of the team (Green/Bullish).
+    - Positive (+) Move: Price is moving AGAINST the team (Red/Bearish).
+    
+    Examples:
+    -110 -> -122: Result is -12 (Good)
+    -150 -> -138: Result is +12 (Bad)
     """
     if open_ml is None or curr_ml is None:
         return 0.0

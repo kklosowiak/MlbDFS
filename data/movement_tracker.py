@@ -2,7 +2,9 @@ import pandas as pd
 import os
 import json
 from datetime import datetime
+import statistics
 from config import config
+from utils.market_utils import calculate_ml_move
 
 class MovementTracker:
     def __init__(self):
@@ -63,7 +65,7 @@ class MovementTracker:
                 
                 movements.append({
                     'team': home_team,
-                    'ml_move': p_ml_home - l_ml_home,
+                    'ml_move': calculate_ml_move(p_ml_home, l_ml_home),
                     'tt_move': round(l_itt_home - p_itt_home, 2),
                     'game_total': l_total,
                     'opponent': away_team,
@@ -71,7 +73,7 @@ class MovementTracker:
                 })
                 movements.append({
                     'team': away_team,
-                    'ml_move': p_ml_away - l_ml_away,
+                    'ml_move': calculate_ml_move(p_ml_away, l_ml_away),
                     'tt_move': round(l_itt_away - p_itt_away, 2),
                     'game_total': l_total,
                     'opponent': home_team,
@@ -79,11 +81,38 @@ class MovementTracker:
                 })
         
         # 2. Calculate Pitcher Prop Movements (K-Lines)
-        for p_name, l_data in l_props.items():
-            if p_name in p_props:
-                prev_data = p_props[p_name]
-                k_move = (l_data.get('pitcher_strikeouts', {}).get('point', 0) or 0) - (prev_data.get('pitcher_strikeouts', {}).get('point', 0) or 0)
-                outs_move = (l_data.get('pitcher_outs', {}).get('point', 0) or 0) - (prev_data.get('pitcher_outs', {}).get('point', 0) or 0)
+        # OMEGA v7.8: Prop structure is dict[event_id][market_key] = list[outcome]
+        def _get_player_props(props_dict):
+            player_map = {}
+            for eid, markets in props_dict.items():
+                for m_key, outcomes in markets.items():
+                    if m_key not in ['pitcher_strikeouts', 'pitcher_outs']: continue
+                    for out in outcomes:
+                        p_name = out.get('player_name')
+                        if not p_name: continue
+                        if p_name not in player_map:
+                            player_map[p_name] = {}
+                        if m_key not in player_map[p_name]:
+                            player_map[p_name][m_key] = []
+                        if out.get('point'):
+                            player_map[p_name][m_key].append(float(out['point']))
+            
+            res = {}
+            for p_name, markets in player_map.items():
+                res[p_name] = {}
+                for m_key, points in markets.items():
+                    if points:
+                        res[p_name][m_key] = statistics.median(points)
+            return res
+
+        l_player_props = _get_player_props(l_props)
+        p_player_props = _get_player_props(p_props)
+
+        for p_name, l_data in l_player_props.items():
+            if p_name in p_player_props:
+                prev_data = p_player_props[p_name]
+                k_move = l_data.get('pitcher_strikeouts', 0) - prev_data.get('pitcher_strikeouts', 0)
+                outs_move = l_data.get('pitcher_outs', 0) - prev_data.get('pitcher_outs', 0)
                 
                 if k_move != 0 or outs_move != 0:
                     movements.append({
@@ -94,6 +123,7 @@ class MovementTracker:
                     })
                 
         return movements
+
 
     def _ml_to_prob(self, ml):
         if ml < 0: return abs(ml) / (abs(ml) + 100)

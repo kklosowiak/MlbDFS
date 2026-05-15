@@ -1,137 +1,101 @@
 [
   {
-    "home": "Miami Marlins",
-    "away": "Washington Nationals",
-    "temp": 88,
-    "wind_speed": 5,
+    "home": "Pittsburgh Pirates",
+    "away": "Colorado Rockies",
+    "temp": 47,
+    "wind_speed": 15,
     "wind_dir": "Neutral",
-    "status": "Roof",
+    "status": "Clear",
     "notes": "11:00 AM\t12:00 PM\t1:00 PM\t2:00 PM\t3:00 PM"
   },
   {
-    "home": "Philadelphia Phillies",
-    "away": "Colorado Rockies",
-    "temp": 73,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1013\t1012.9\t1012.7\t1012.7\t1012.4"
-  },
-  {
-    "home": "Boston Red Sox",
-    "away": "Tampa Bay Rays",
-    "temp": 65,
-    "wind_speed": 10,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1012.6\t1012.2\t1011.9\t1011.2\t1010.7"
-  },
-  {
-    "home": "Baltimore Orioles",
-    "away": "Oakland Athletics",
-    "temp": 76,
-    "wind_speed": 10,
-    "wind_dir": "Out to Right",
-    "status": "Clear",
-    "notes": "Pressure\t1013.4\t1013.3\t1013.1\t1012.5\t1011.9"
-  },
-  {
-    "home": "Toronto Blue Jays",
-    "away": "Los Angeles Angels",
-    "temp": 55,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Roof",
-    "notes": "Pressure\t1015.8\t1016\t1016.2\t1016.5\t1016.8"
-  },
-  {
-    "home": "Cleveland Guardians",
-    "away": "Minnesota Twins",
-    "temp": 51,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "Pressure\t1017.8\t1018.4\t1018.5\t1018.9\t1019.3"
-  },
-  {
     "home": "Cincinnati Reds",
-    "away": "Houston Astros",
-    "temp": 67,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "Pressure\t1016.5\t1016.4\t1016.7\t1016.3\t1016.4"
-  },
-  {
-    "home": "Milwaukee Brewers",
-    "away": "New York Yankees",
+    "away": "Washington Nationals",
     "temp": 56,
     "wind_speed": 5,
     "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "11:00 AM\t12:00 PM\t1:00 PM\t2:00 PM\t3:00 PM"
+  },
+  {
+    "home": "New York Mets",
+    "away": "Detroit Tigers",
+    "temp": 61,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Clear",
+    "notes": "Pressure\t1007.6\t1007.1\t1006.6\t1006\t1005.5"
+  },
+  {
+    "home": "Minnesota Twins",
+    "away": "Miami Marlins",
+    "temp": 71,
+    "wind_speed": 20,
+    "wind_dir": "In from Right",
+    "status": "Clear",
+    "notes": ""
+  },
+  {
+    "home": "Milwaukee Brewers",
+    "away": "San Diego Padres",
+    "temp": 60,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "Pressure\t1019.2\t1019.1\t1019.1\t1018.9\t1018.9"
+    "notes": "Pressure\t1019.9\t1019.4\t1019\t1018.6\t1018.2"
+  },
+  {
+    "home": "Houston Astros",
+    "away": "Seattle Mariners",
+    "temp": 84,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": ""
+  },
+  {
+    "home": "Oakland Athletics",
+    "away": "St. Louis Cardinals",
+    "temp": 75,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "Pressure\t1015.9\t1015.5\t1015.1\t1014.5\t1013.9"
+  },
+  {
+    "home": "Boston Red Sox",
+    "away": "Philadelphia Phillies",
+    "temp": 53,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": "UPDATE - YELLOW/ORANGE - I'm increasingly liking what I'm seeing around Boston. They may still need a brief late start, but I think it's more dry than wet tonight, and my guess is that they manage to play 9 innings without an in-game stoppage, regardless of if there's a late start or not."
+  },
+  {
+    "home": "Atlanta Braves",
+    "away": "Chicago Cubs",
+    "temp": 73,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Chicago White Sox",
-    "away": "Seattle Mariners",
-    "temp": 58,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "Pressure\t1019.7\t1019.4\t1019.3\t1019.3\t1018.9"
-  },
-  {
-    "home": "Texas Rangers",
-    "away": "Chicago Cubs",
-    "temp": 79,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Roof",
-    "notes": "Pressure\t1015.5\t1016.4\t1016.5\t1016.8\t1016.4"
-  },
-  {
-    "home": "San Francisco Giants",
-    "away": "Pittsburgh Pirates",
-    "temp": 59,
+    "away": "Kansas City Royals",
+    "temp": 64,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
     "notes": ""
-  },
-  {
-    "home": "San Diego Padres",
-    "away": "St. Louis Cardinals",
-    "temp": 68,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "Pressure\t1014.4\t1014.6\t1014.5\t1014.5\t1014"
   },
   {
     "home": "Los Angeles Dodgers",
-    "away": "Atlanta Braves",
-    "temp": 72,
+    "away": "San Francisco Giants",
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
-    "notes": "Pressure\t1013.2\t1013.1\t1012.9\t1012.6\t1012"
-  },
-  {
-    "home": "Arizona Diamondbacks",
-    "away": "New York Mets",
-    "temp": 100,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Roof",
-    "notes": ""
-  },
-  {
-    "home": "Kansas City Royals",
-    "away": "Detroit Tigers",
-    "temp": 68,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
+    "notes": "9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM\t1:00 AM"
   }
 ]

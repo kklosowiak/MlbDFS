@@ -33,6 +33,14 @@ class DashboardGenerator:
             'Mariners': 'SEA', 'Cardinals': 'STL', 'Rays': 'TB', 'Rangers': 'TEX',
             'Blue Jays': 'TOR', 'Nationals': 'WSH'
         }
+
+        import json
+        analysis_path = os.path.join(config.BASE_DIR, "reports", "slate_analysis.md")
+        slate_analysis_md = "No analysis available yet."
+        if os.path.exists(analysis_path):
+            with open(analysis_path, "r", encoding="utf-8") as f:
+                slate_analysis_md = f.read()
+        safe_md = json.dumps(slate_analysis_md)
         
         html = f"""
 <!DOCTYPE html>
@@ -40,202 +48,341 @@ class DashboardGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLB Omega DFS + Betting engine v.5.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>MLB Omega Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {{
-            --bg: #050505;
-            --accent: #00ffff;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg: #000000;
+            --surface: #1c1c1e;
+            --surface-hover: #2c2c2e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent-blue: #0a84ff;
+            --accent-green: #32d74b;
+            --accent-red: #ff453a;
+            --accent-orange: #ff9f0a;
+            --accent-purple: #bf5af2;
             --border: rgba(255, 255, 255, 0.1);
-            --card-bg: #111;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
         }}
+        * {{ box-sizing: border-box; }}
         body {{
-            background: var(--bg);
-            color: #e0e0e0;
-            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            background-image: url('omega_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            -webkit-font-smoothing: antialiased;
         }}
-        .container {{ width: 100%; max-width: 1400px; }}
+        .container {{ width: 100%; max-width: 1200px; }}
         .header {{
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
             width: 100%;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
         }}
-        .header h1 {{ margin: 0; font-weight: 800; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }}
+        .header-title {{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }}
+        .header h1 {{ 
+            margin: 0; 
+            font-weight: 800; 
+            font-size: 2.8rem; 
+            letter-spacing: -0.03em; 
+            color: var(--text-primary); 
+            text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+        }}
+        .header-subtitle {{
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            opacity: 0.95;
+        }}
+        .header-meta {{
+            text-align: right;
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            opacity: 0.9;
+        }}
         
-        /* Tabs System */
-        .tabs {{ display: flex; gap: 10px; margin-bottom: 25px; width: 100%; }}
+        /* Tabs System (Segmented Control style) */
+        .tabs {{ 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 30px; 
+            width: 100%; 
+            background: #2c2c2e;
+            padding: 6px;
+            border-radius: var(--radius-md);
+        }}
         .tab-btn {{
             flex: 1;
-            padding: 18px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: #fff;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
             cursor: pointer;
-            border-radius: 12px;
-            font-weight: 700;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }}
+        .tab-btn:hover {{
+            color: var(--text-primary);
         }}
         .tab-btn.active {{
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }}
         .tab-content {{ display: none; width: 100%; }}
-        .tab-content.active {{ display: block; animation: fadeIn 0.4s ease-out; }}
+        .tab-content.active {{ display: block; animation: fadeIn 0.4s ease-out forwards; }}
 
         @keyframes fadeIn {{
-            from {{ opacity: 0; transform: translateY(10px); }}
+            from {{ opacity: 0; transform: translateY(8px); }}
             to {{ opacity: 1; transform: translateY(0); }}
         }}
 
-        /* Table & Card Styles */
+        /* Cards & Tables */
         .card {{
-            background: var(--card-bg);
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: var(--radius-lg);
+            padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }}
+        .card h2 {{
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }}
         table {{ width: 100%; border-collapse: collapse; table-layout: auto; }}
-        th {{ text-align: left; opacity: 0.5; font-size: 0.7rem; padding: 12px; border-bottom: 1px solid var(--border); text-transform: uppercase; }}
-        th:nth-child(2), td:nth-child(2) {{ min-width: 140px; padding-right: 5px; }}
-        th:nth-child(3), td:nth-child(3) {{ min-width: 220px; padding-right: 5px; }}
-        td {{ padding: 12px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.9rem; }}
-        .score {{ font-weight: 800; color: var(--accent); font-size: 1.2rem; font-family: 'Courier New', monospace; }}
-        .score.overdrive {{ 
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 200, 255, 0.1)) !important;
-            color: #00ffff !important;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
-            border: 1px solid rgba(0, 255, 255, 0.4);
-            box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 6px;
-            animation: pulse-cyan 2s infinite ease-in-out;
+        th {{ 
+            text-align: left; 
+            color: #ffffff; 
+            font-size: 0.8rem; 
+            font-weight: 700;
+            padding: 12px 16px; 
+            border-bottom: 1px solid var(--border); 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em;
+            opacity: 0.9;
         }}
-        @keyframes pulse-cyan {{
-            0% {{ box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2); }}
-            50% {{ box-shadow: inset 0 0 25px rgba(0, 255, 255, 0.4); }}
-            100% {{ box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2); }}
+        td {{ 
+            padding: 16px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04); 
+            font-size: 0.95rem; 
+            font-weight: 500;
+            vertical-align: middle;
         }}
-        .metric {{ font-family: 'Courier New', monospace; font-size: 0.85rem; color: #888; }}
-        .metric b {{ color: #fff; }}
-        .vs {{ opacity: 0.4; font-size: 0.8rem; margin: 0 5px; }}
+        tr:last-child td {{ border-bottom: none; }}
+        tr:hover td {{ background: rgba(255, 255, 255, 0.02); }}
         
-        .god-tier {{ 
-            background: rgba(0, 255, 255, 0.05) !important; 
-            border-left: 4px solid var(--accent) !important;
+        .score {{ 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+        }}
+        .score-high {{ color: var(--accent-blue); }}
+        .score-elite {{ color: var(--accent-purple); }}
+        .score-physics {{ color: var(--text-secondary); font-size: 0.85rem; opacity: 0.8; }}
+        .score-market {{ color: var(--accent-blue); font-size: 0.85rem; opacity: 0.8; }}
+        
+        .metric {{ font-variant-numeric: tabular-nums; color: var(--text-secondary); }}
+        .metric b {{ color: var(--text-primary); }}
+        .vs {{ color: var(--text-secondary); font-size: 0.85rem; margin: 0 6px; font-weight: 400; }}
+        
+        .god-tier td {{
+            background: rgba(10, 132, 255, 0.03);
+        }}
+        .god-tier td:first-child {{
+            border-left: 3px solid var(--accent-blue);
         }}
         
-        .legend {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 30px;
-            justify-content: center;
+        .team-label {{
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-left: 2px;
         }}
-        .legend-item {{
-            background: var(--glass);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            border: 1px solid var(--border);
-            color: #888;
-        }}
-        .legend-item b {{ color: var(--accent); }}
         
+        /* Pills & Badges (Apple Style) */
         .signals-container {{
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
-            max-width: 260px;
+            gap: 6px;
+            max-width: 280px;
         }}
         .signal-pill {{
-            display: inline-block;
-            font-size: 8px;
-            font-weight: 800;
-            padding: 3px 6px;
-            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
             text-transform: uppercase;
-            background: #000;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            white-space: nowrap;
+            letter-spacing: 0.02em;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
         }}
+        /* Semantic pill colors */
+        .pill-target {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
+        .pill-shark {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
+        .pill-storm {{ background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }}
+        .pill-whale {{ background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }}
+        .pill-steam {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
+        .pill-burst {{ background: rgba(255, 214, 10, 0.15); color: #ffd60a; }}
+        .pill-lowconf {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
+        .pill-paradox {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
+        .pill-trap {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
+        .pill-exhausted {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
+        .pill-neutral {{ background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }}
 
-        .status-confirmed {{ color: #00ff88; font-weight: 800; font-size: 0.7rem; }}
-        .status-unconfirmed {{ color: #ff3e3e; font-weight: 800; font-size: 0.7rem; }}
-        
-        /* Move Coloring (Neon) */
-        .move-up {{ color: #00ff88 !important; text-shadow: 0 0 5px rgba(0, 255, 136, 0.4); }}
-        .move-down {{ color: #ff4444 !important; text-shadow: 0 0 5px rgba(255, 68, 68, 0.4); }}
-        .move-even {{ color: #666 !important; }}
-        
-        .trend-surging {{ color: #ff00ff !important; font-weight: 800; animation: pulse-magenta 2s infinite; }}
-        .trend-fading {{ color: #00bfff !important; font-weight: 800; opacity: 0.8; }}
-        .divergence-cell {{ white-space: nowrap; display: flex; align-items: center; gap: 8px; }}
-        @keyframes pulse-magenta {{
-            0% {{ text-shadow: 0 0 5px rgba(255, 0, 255, 0.2); }}
-            50% {{ text-shadow: 0 0 15px rgba(255, 0, 255, 0.6); }}
-            100% {{ text-shadow: 0 0 5px rgba(255, 0, 255, 0.2); }}
+        /* Legend */
+        .legend {{
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
         }}
-
-        /* Legend Grouping */
-        .legend {{ display: flex; flex-direction: row; gap: 40px; margin-bottom: 30px; justify-content: center; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 16px; border: 1px solid var(--border); }}
-        .legend-group {{ display: flex; flex-direction: column; gap: 8px; }}
-        .legend-title {{ font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: var(--accent); opacity: 0.7; letter-spacing: 1px; margin-bottom: 5px; }}
+        .legend-content {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+        }}
+        .legend-group {{ display: flex; flex-direction: column; gap: 10px; }}
+        .legend-title {{ 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: var(--accent-blue); 
+            letter-spacing: 0.08em; 
+            margin-bottom: 6px; 
+        }}
         .legend-item {{
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: #888;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }}
-        .legend-item b {{ color: #fff; }}
+        .legend-item b {{ color: var(--text-primary); }}
+        .legend h2 {{
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }}
+        
+        /* Divergence Cells */
+        .divergence-cell {{ display: flex; align-items: center; gap: 8px; font-weight: 600; font-variant-numeric: tabular-nums; }}
+        .val-up {{ color: var(--accent-green); }}
+        .val-down {{ color: var(--accent-red); }}
+        .val-even {{ color: var(--text-secondary); }}
+        
+        /* Markdown container */
+        #analysis-content {{
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            max-width: 900px;
+            margin: 0 auto;
+        }}
+        #analysis-content h1, #analysis-content h2, #analysis-content h3 {{
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-top: 2em;
+            margin-bottom: 0.5em;
+        }}
+        #analysis-content h1 {{ font-size: 1.8rem; margin-top: 0; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 16px; }}
+        #analysis-content h2 {{ font-size: 1.4rem; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; }}
+        #analysis-content h3 {{ font-size: 1.1rem; color: var(--text-primary); }}
+        #analysis-content p {{ margin-bottom: 1.2em; color: rgba(255,255,255,0.8); }}
+        #analysis-content table {{
+            width: 100%;
+            margin-bottom: 2em;
+            border-collapse: collapse;
+        }}
+        #analysis-content th, #analysis-content td {{
+            padding: 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }}
+        #analysis-content th {{ background: rgba(255,255,255,0.05); color: var(--text-primary); }}
+        #analysis-content ul, #analysis-content ol {{ padding-left: 20px; margin-bottom: 1.5em; color: rgba(255,255,255,0.8); }}
+        #analysis-content li {{ margin-bottom: 0.5em; }}
+        #analysis-content strong {{ font-weight: 600; color: var(--text-primary); }}
+        #analysis-content hr {{ border: 0; border-top: 1px solid var(--border); margin: 2em 0; }}
+        
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>MLB Omega DFS + Betting engine v.5.0</h1>
-            <div style="text-align: right;">
-                <small style="opacity: 0.5;">FINAL HANDOVER: v5.0 MASTER CONVERGENCE</small><br>
-                <small style="color: var(--accent);">Last Sync: {datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET")}</small>
+            <div class="header-title">
+                <h1>OMEGA Engine</h1>
+                <div class="header-subtitle">MLB Daily Fantasy & Market Divergence</div>
+            </div>
+            <div class="header-meta">
+                v5.0 MASTER CONVERGENCE<br>
+                <span style="color: var(--text-primary);">{datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET")}</span>
             </div>
         </div>
+        
         <div class="legend">
-            <div class="legend-group">
-                <div class="legend-title">Market Alpha</div>
-                <div class="legend-item" style="color: var(--accent);">⚡ <b>ALPHA (+15%):</b> Major Conviction (Storm, Whale, Shark, Steam).</div>
-                <div class="legend-item" style="color: #ff00ff;">🌪️ <b>STORM:</b> Correlated Sharp Action (ML + Total).</div>
-                <div class="legend-item" style="color: #ff4500;">💨 <b>STEAM:</b> Heavy Line Movement + Consensus.</div>
-            </div>
-            <div class="legend-group">
-                <div class="legend-title">Model Beta</div>
-                <div class="legend-item">🔹 <b>BETA (+5%):</b> Supporting signals (Sharp, Power, Engine).</div>
-                <div class="legend-item" style="color: #ffff00;">⚡ <b>BURST:</b> High power concentration or Early Explosion.</div>
-                <div class="legend-item" style="color: #00ced1;">📉 <b>CEILING:</b> Low strikeout upside detected.</div>
-            </div>
-            <div class="legend-group">
-                <div class="legend-title">Risk & Environment</div>
-                <div class="legend-item" style="color: #ff4500;">⚠️ <b>PARADOX:</b> Conflict (Pitcher vs. Top Stack).</div>
-                <div class="legend-item" style="color: #ff8c00;">♨️ <b>PEN ALERT:</b> Bullpen fatigue (Yellow=Weary, Red=Exhausted).</div>
-                <div class="legend-item" style="color: #ff0000;">⚠️ <b>TRAP:</b> Prop line decay vs. Team favorability.</div>
-                <div class="legend-item" style="color: #00ffff;">⚖️ <b>NEUTRAL K:</b> No strikeout cushion (Contact Matchup).</div>
-                <div class="legend-item" style="color: #00ffff;">⚡ <b>RADAR:</b> Elite Pitch-Mix Synergy detected.</div>
-                <div class="legend-item" style="color: #ff3e3e;">⚠️ <b>DIVERGENCE:</b> Physics/Market disagreement (> 30 pts).</div>
+            <h2>SIGNALS</h2>
+            <div class="legend-content">
+                <div class="legend-group">
+                    <div class="legend-title">Market Alpha</div>
+                    <div class="legend-item"><span class="signal-pill pill-whale">🐋 WHALE</span> <b>+15%:</b> Major Conviction</div>
+                    <div class="legend-item"><span class="signal-pill pill-storm">🌪️ STORM</span> Correlated Sharp Action</div>
+                    <div class="legend-item"><span class="signal-pill pill-steam">💨 STEAM</span> Heavy Line Movement</div>
+                </div>
+                <div class="legend-group">
+                    <div class="legend-title">Model Beta</div>
+                    <div class="legend-item"><span class="signal-pill pill-target">🎯 TARGET</span> Sharp / Power Play</div>
+                    <div class="legend-item"><span class="signal-pill pill-burst">⚡ BURST</span> High power / Early explosion</div>
+                    <div class="legend-item"><span class="signal-pill pill-neutral">📉 CEILING</span> Low strikeout upside</div>
+                </div>
+                <div class="legend-group">
+                    <div class="legend-title">Risk & Context</div>
+                    <div class="legend-item"><span class="signal-pill pill-paradox">⚠️ PARADOX</span> Conflict (Pitcher vs. Stack)</div>
+                    <div class="legend-item"><span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span> Bullpen completely taxed</div>
+                    <div class="legend-item"><span class="signal-pill pill-weary">♨️ WEARY</span> Bullpen fatigue</div>
+                    <div class="legend-item"><span class="signal-pill pill-trap">⚠️ TRAP</span> Suspicious prop lines</div>
+                </div>
             </div>
         </div>
 
@@ -243,6 +390,7 @@ class DashboardGenerator:
             <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
             <button class="tab-btn" onclick="openTab(event, 'hitters')">Hitters Matrix</button>
             <button class="tab-btn" onclick="openTab(event, 'teams')">Teams Matrix</button>
+            <button class="tab-btn" onclick="openTab(event, 'analysis')">Model Analysis</button>
         </div>
 
         <!-- PITCHERS TAB -->
@@ -255,27 +403,27 @@ class DashboardGenerator:
                     </thead>
                     <tbody>
                         {"".join([f"<tr class='{'god-tier' if p['alpha_score'] >= 85 else ''}'>"
-                                  f"<td class='score { 'overdrive' if p['alpha_score'] >= 100 else '' }'>{p['alpha_score']}</td>"
+                                  f"<td class='score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}'>{p['alpha_score']}</td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00bfff; color:#00bfff;\">🦈 SHARK</span>' if p.get('is_shark') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">✨ DEBUT</span>' if p.get('is_debut') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e; background:rgba(255,62,62,0.1);\">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }"
+                                  f"{ '<span class=\"signal-pill pill-target\">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if p.get('is_shark') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-storm\">✨ DEBUT</span>' if p.get('is_debut') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-lowconf\">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff0000; color:#ff0000; background:rgba(255,0,0,0.1);\">⚠️ TRAP</span>' if p.get('is_trap') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ffff; color:#00ffff;\">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e;\">⚠️ DIVERGENCE</span>' if abs(p.get('physics_score', 0) - p.get('market_score', 0)) > 30 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ced1; color:#00ced1;\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🏗️ ENGINE</span>' if (p.get('outs_line') or 0) >= 17.5 else '' }"
-                                  f"<span class='signal-pill' style='border-color:#888; color:#888;'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
+                                  f"{ '<span class=\"signal-pill pill-paradox\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-exhausted\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if p.get('is_trap') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ DIVERGENCE</span>' if abs(p.get('physics_score', 0) - p.get('market_score', 0)) > 30 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">🏗️ ENGINE</span>' if (p.get('outs_line') or 0) >= 17.5 else '' }"
+                                  f"<span class='signal-pill pill-neutral'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
                                   f"</div></td>"
-                                  f"<td><strong>{p['pitcher']}</strong></td>"
+                                  f"<td><strong>{p['pitcher']}</strong> <span class='team-label'>({abbrev_map.get(p['team'], p['team'])})</span></td>"
                                   f"<td><span class='vs'>vs</span>{p['opponent']}</td>"
-                                  f"<td class='metric'><b>{p.get('k_line') or '-'}</b> K <span style='opacity:0.6; font-size:0.75em;'>({p.get('k_odds') or '-'})</span></td>"
-                                  f"<td class='metric'><b>{p.get('outs_line') or '-'}</b> OUTS <span style='opacity:0.6; font-size:0.75em;'>({p.get('outs_odds') or '-'})</span></td>"
+                                  f"<td class='metric'><b>{p.get('k_line') or '-'}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(p.get('k_odds'), (int, float)) and p['k_odds'] > 0 else ''}{p.get('k_odds') or '-'})</span></td>"
+                                  f"<td class='metric'><b>{p.get('outs_line') or '-'}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(p.get('outs_odds'), (int, float)) and p['outs_odds'] > 0 else ''}{p.get('outs_odds') or '-'})</span></td>"
                                   f"</tr>" for p in p_reports[:35]])}
                     </tbody>
                 </table>
@@ -288,26 +436,25 @@ class DashboardGenerator:
                 <h2>Power & Alpha Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>TEAM</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
+                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
                     </thead>
                     <tbody>
                         {"".join([f"<tr class='{'god-tier' if h['player_score'] >= 85 else ''}'>"
-                                  f"<td class='score { 'overdrive' if h['player_score'] >= 100 else '' }'>{h['player_score']}</td>"
+                                  f"<td class='score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}'>{h['player_score']}</td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-target\">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🏃‍♂️ THIEF</span>' if h.get('is_speed_target') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">♨️ HOT</span>' if h.get('is_hot') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00ffff; color:#00ffff;\">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">🏃‍♂️ THIEF</span>' if h.get('is_speed_target') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-target\">♨️ HOT</span>' if h.get('is_hot') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-target\">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-weary\">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }"
                                   f"</div></td>"
-                                  f"<td><strong>{h['name']}</strong></td>"
-                                  f"<td>{abbrev_map.get(h['team'], h['team'])}</td>"
-                                  f"<td><span class='vs'>vs</span>{h.get('opp_pitcher', 'TBD')} ({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</td>"
-                                  f"<td class='metric'>{h['ahr_price']}</td>"
-                                  f"<td class='metric'><b>{h.get('hit_line', '-')}</b> TB <span style='opacity:0.6; font-size:0.75em;'>({h.get('hits_price') or '-'})</span></td>"
+                                  f"<td><strong>{h['name']}</strong> <span class='team-label'>({abbrev_map.get(h['team'], h['team'])})</span></td>"
+                                  f"<td><span class='vs'>vs</span>{h.get('opp_pitcher', 'TBD')} <span class='team-label'>({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>"
+                                  f"<td class='metric'>{'+' if isinstance(h.get('ahr_price'), (int, float)) and h['ahr_price'] > 0 else ''}{h.get('ahr_price', '-')}</td>"
+                                  f"<td class='metric'><b>{h.get('hit_line', '-')}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(h.get('hits_price'), (int, float)) and h['hits_price'] > 0 else ''}{h.get('hits_price') or '-'})</span></td>"
                                   f"</tr>" for h in h_reports[:25]])}
                     </tbody>
                 </table>
@@ -320,44 +467,56 @@ class DashboardGenerator:
                 <h2>Market Sentiment Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody>
                         {"".join([f"<tr class='{'god-tier' if t['stack_score'] >= 85 else ''}'>"
-                                  f"<td class='score { 'overdrive' if t['stack_score'] >= 100 else '' }'>{t['stack_score']}</td>"
+                                  f"<td class='score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}'>{t['stack_score']}</td>"
+                                  f"<td class='score-physics'>{t.get('physics_score', 0)}</td>"
+                                  f"<td class='score-market'>{t.get('market_score', 0)}</td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#00bfff; color:#00bfff;\">🦈 SHARK</span>' if t.get('is_shark') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff00ff; color:#ff00ff;\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
-                                  f"{ '<span class=\"signal-pill\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">💨 STEAM</span>' if t.get('is_steam') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ffff00; color:#ffff00;\">⚡ BURST</span>' if t.get('is_burst') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff3e3e; color:#ff3e3e; background:rgba(255,62,62,0.1);\">🔍 LOW CONF</span>' if t.get('confidence') == 'low' else '' }"
+                                  f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if t.get('is_shark') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-storm\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-whale\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-steam\">💨 STEAM</span>' if t.get('is_steam') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-burst\">⚡ BURST</span>' if t.get('is_burst') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-lowconf\">🔍 LOW CONF</span>' if t.get('confidence') == 'low' else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#aaa; color:#aaa;\">🚂 TRAIN</span>' if t['stack_score'] >= 90 else '' }"
-                                  f"{ '<span class=\"signal-pill\" style=\"border-color:#ff4500; color:#ff4500;\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 100 else ('<span class=\"signal-pill\" style=\"border-color:#ff8c00; color:#ff8c00;\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill\" style=\"border-color:#ffff00; color:#ffff00;\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 80 else '')) }"
-                                  + (f'<span class="signal-pill" style="border-color:#a0f0a0; color:#a0f0a0;">{t["total_signal"]}</span>' if t.get('total_signal') else '')
+                                  f"{ '<span class=\"signal-pill pill-neutral\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\">🚂 TRAIN</span>' if t['stack_score'] >= 90 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-exhausted\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 100 else ('<span class=\"signal-pill pill-gassed\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill pill-weary\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 80 else '')) }"
+                                  + (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '')
                                   + "</div></td>"
-                                  f"<td><strong>{t['team']}</strong></td>"
-                                  f"<td><span class='vs'>vs</span>{t['opp_pitcher']} ({abbrev_map.get(t['opponent'], 'TBD')})</td>"
-                                  f"<td class='metric' style='font-weight:bold;'><span style=\"{ 'color:#00e676;' if t.get('implied_total', 0) >= 4.2 else '' }\">{t.get('implied_total', '-')}</span></td>"
-                                  f"<td class='metric { 'move-up' if t['ml_move'] < 0 else ('move-down' if t['ml_move'] > 0 else 'move-even') }'>{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>"
-                                  f"<td class='metric { 'move-up' if t['tt_move'] > 0 else ('move-down' if t['tt_move'] < 0 else 'move-even') }'>{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>"
-                                  f"<td><div class='divergence-cell { 'move-up' if (t.get('divergence') or 0) > 0 else ('move-down' if (t.get('divergence') or 0) < 0 else 'move-even') }'>"
+                                  f"<td><span class='team-label' style='font-size:1rem; font-weight:700; margin-left:0;'>{t['team']}</span></td>"
+                                  f"<td><span class='vs'>vs</span>{t['opp_pitcher']} <span class='team-label'>({abbrev_map.get(t['opponent'], 'TBD')})</span></td>"
+                                  f"<td class='metric' style='font-weight:600;'><span class=\"{ 'val-up' if t.get('implied_total', 0) >= 4.2 else '' }\">{t.get('implied_total', '-')}</span></td>"
+                                  f"<td class='metric { 'val-up' if t['ml_move'] < 0 else ('val-down' if t['ml_move'] > 0 else 'val-even') }'>{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>"
+                                  f"<td class='metric { 'val-up' if t['tt_move'] > 0 else ('val-down' if t['tt_move'] < 0 else 'val-even') }'>{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>"
+                                  f"<td><div class='divergence-cell { 'val-up' if (t.get('divergence') or 0) > 0 else ('val-down' if (t.get('divergence') or 0) < 0 else 'val-even') }'>"
                                   f"<span>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</span>"
-                                  f"<span class='{ 'trend-surging' if t.get('trend') == 'SURGING' else ('trend-fading' if t.get('trend') == 'FADING' else '') }' style='font-size: 0.9rem;'>"
-                                  f"{ '🔥' if t.get('trend') == 'SURGING' else ('❄️' if t.get('trend') == 'FADING' else '▫️') }</span>"
+                                  f"<span style='font-size: 1.1rem;'>"
+                                  f"{ '🔥' if t.get('trend') == 'SURGING' else ('❄️' if t.get('trend') == 'FADING' else '') }</span>"
                                   f"</div></td>"
                                   f"</tr>" for t in t_reports[:20]])}
                     </tbody>
                 </table>
             </div>
         </div>
+        
+        <!-- ANALYSIS TAB -->
+        <div id="analysis" class="tab-content">
+            <div class="card" style="padding: 40px;">
+                <div id="analysis-content">
+                    Loading analysis...
+                </div>
+            </div>
+        </div>
 
     </div>
 
     <script>
+        // Tab switching logic
         function openTab(evt, tabName) {{
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
@@ -373,6 +532,16 @@ class DashboardGenerator:
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }}
+        
+        // Render Markdown Analysis
+        const markdownData = {safe_md};
+        document.addEventListener('DOMContentLoaded', () => {{
+            if (typeof marked !== 'undefined') {{
+                document.getElementById('analysis-content').innerHTML = marked.parse(markdownData);
+            }} else {{
+                document.getElementById('analysis-content').innerHTML = "<p>Error: Could not load markdown parser.</p>";
+            }}
+        }});
     </script>
 </body>
 </html>

@@ -1,14 +1,10 @@
 {
-    "enabled": true,
-    "active_date": "2026-05-10",
+    "enabled": false,
+    "active_date": "2026-05-14",
     "allowed_teams": [
-        "Pittsburgh Pirates",
-        "San Francisco Giants",
-        "St. Louis Cardinals",
-        "San Diego Padres",
-        "Atlanta Braves",
-        "Los Angeles Dodgers",
-        "New York Mets",
-        "Arizona Diamondbacks"
+        "Philadelphia Phillies", "Boston Red Sox",
+        "Chicago Cubs", "Atlanta Braves",
+        "Kansas City Royals", "Chicago White Sox",
+        "San Francisco Giants", "Los Angeles Dodgers"
     ]
 }

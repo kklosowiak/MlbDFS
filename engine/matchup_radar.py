@@ -45,7 +45,7 @@ class MatchupRadar:
         except Exception as e:
             print(f"[ERROR]: Matchup refresh failed: {e}")
 
-    def get_hitter_synergy(self, hitter_name, pitcher_name):
+    def get_matchup_boost(self, hitter_name, pitcher_name):
         """
         Calculates a synergy multiplier based on Pitch Arsenal vs. xwOBA.
         Returns a float (e.g., 1.05 for a boost, 0.95 for a penalty).

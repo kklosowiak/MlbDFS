@@ -104,22 +104,28 @@ class ConsensusFetcher:
                 v_name = sides[0].get_text(strip=True).upper()
                 h_name = sides[1].get_text(strip=True).upper()
                 
-                # Fuzzy Mapping
+                # 1. Exact Abbreviation Match
                 v_abbr, h_abbr = None, None
-                for full_name, abbr in self.team_abbrev.items():
-                    full_upper = full_name.upper()
-                    if v_name in full_upper or full_upper in v_name:
-                        v_abbr = abbr
-                    if h_name in full_upper or full_upper in h_name:
-                        h_abbr = abbr
-                
-                # Check for direct Abbreviation match
+                if v_name in self.team_abbrev.values(): v_abbr = v_name
+                if h_name in self.team_abbrev.values(): h_abbr = h_name
+
+                # 2. Fuzzy Mapping Fallback
                 if not v_abbr:
-                     for abbr in self.team_abbrev.values():
-                         if abbr in v_name: v_abbr = abbr
+                    for full_name, abbr in self.team_abbrev.items():
+                        full_upper = full_name.upper()
+                        if v_name in full_upper or full_upper in v_name:
+                            # Prevent 'LAD' from matching 'PHILADELPHIA'
+                            if v_name == 'LAD' and abbr == 'PHI': continue
+                            v_abbr = abbr
+                            break
+                
                 if not h_abbr:
-                     for abbr in self.team_abbrev.values():
-                         if abbr in h_name: h_abbr = abbr
+                    for full_name, abbr in self.team_abbrev.items():
+                        full_upper = full_name.upper()
+                        if h_name in full_upper or full_upper in h_name:
+                            if h_name == 'LAD' and abbr == 'PHI': continue
+                            h_abbr = abbr
+                            break
 
                 # 2. Extract Percentage Rows (Row 1: Bets, Row 2: Money)
                 pct_rows = card.select('.trend-graph-percentage')
@@ -344,18 +350,11 @@ class ConsensusFetcher:
     def detect_steam(self, team_full_name, splits_data, ml_move=0.0):
         """
         OMEGA STEAM Signal.
-        Fires if the team has heavy favorable line movement (<= -15 cents) 
-        AND majority money (>= 60%), regardless of ticket divergence.
+        Fires if the team has massive line movement (<= -15 cents),
+        representing pure institutional price action.
         """
-        split = self.get_team_split(team_full_name, splits_data)
-        if not split:
-            return False
-            
-        money_pct = split.get('money', 0)
-        
-        if money_pct >= 60 and ml_move <= -10:
+        if ml_move <= -15:
             return True
-            
         return False
 
 

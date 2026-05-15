@@ -225,6 +225,12 @@ class PitcherAnalyzer:
                 if k_odds and k_odds > 110: # Getting "Longer" = Inviting Over
                     is_trap = True
 
+                # OMEGA v8.0: MARKET_DEATH_SENTENCE
+                is_death_sentence = False
+                if outs_line is not None and float(outs_line) <= 15.5 and outs_odds is not None and float(outs_odds) >= 100:
+                    is_trap = True
+                    is_death_sentence = True
+
                 physics = self.fetch_pitcher_physics(pitcher_name)
                 venue_team = home 
                 base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
@@ -259,6 +265,9 @@ class PitcherAnalyzer:
                     projected_outs=float(outs_line),
                     is_trap=is_trap
                 )
+
+                if is_death_sentence:
+                    alpha_results['final'] = round(alpha_results['final'] * 0.85, 1)
                 
                 pitcher_reports.append({
                     'pitcher': pitcher_name,

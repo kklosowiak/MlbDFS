@@ -24,6 +24,7 @@ from engine.sharps_weighting import SharpsWeighting
 from engine.matchup_radar import MatchupRadar
 from utils.dashboard_generator import DashboardGenerator
 from utils.audit_engine import AuditEngine
+from utils.slate_report_generator import SlateReportGenerator
 from config import config
 from utils.normalization import normalize_player_name
 from utils.market_utils import get_market_prices, calculate_ml_move
@@ -195,7 +196,10 @@ def run_full_analysis():
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
     p_reports = _resolve_pitcher_team_conflicts(p_reports, team_reports)
 
-    # 6. Generate Dash
+    # 6. Generate Analysis Report (Must come BEFORE Dashboard)
+    SlateReportGenerator().generate(p_reports, team_reports, h_reports)
+
+    # 7. Generate Dashboard
     dash_gen.generate_report(p_reports, team_reports, h_reports)
     
     # OMEGA v4.5: Export Summary for Bot/Sentry
@@ -212,9 +216,6 @@ def run_full_analysis():
     print(f"\n[SUMMARY]: Results exported to {results_path}")
     print(f"VIEW DASHBOARD v4.5: {dash_gen.output_path}")
 
-    # OMEGA v7.1: Auto Deep-Dive Slate Analysis Report
-    from utils.slate_report_generator import SlateReportGenerator
-    SlateReportGenerator().generate(p_reports, team_reports, h_reports)
 
     # OMEGA v7.1: Archive results for multi-day post-mortem
     archive_dir = os.path.join(config.REPORTS_DIR, "archive")
@@ -245,6 +246,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['alpha_score'] = res['final'] # Flatten for display
         report['physics_score'] = res['physics']
         report['market_score'] = res['market']
+        report['is_trap'] = res.get('is_trap', False)
         report['siera'] = report.get('siera', 4.10)
         report['is_coors'] = res.get('is_coors', False)
         report['is_paradox'] = False # Initial state
@@ -380,6 +382,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_pitcher_rep = p_integrity_map.get((gid, opponent))
             if opp_pitcher_rep:
                 opp_pitcher_physics = opp_pitcher_rep['physics_score']
+                
+                # OMEGA v8.1: NEUTRALIZE ELITE SUPPRESSOR
+                if opp_pitcher_rep.get('is_trap', False):
+                    prev_physics = opp_pitcher_physics
+                    opp_pitcher_physics = min(opp_pitcher_physics, 65.0)
+                    if prev_physics > 65.0:
+                        print(f"  - NEUTRALIZED: Capped {opp_pitcher_rep['pitcher']} physics score to 65.0 (was {prev_physics:.1f}) due to TRAP/DEATH SENTENCE flag")
+                    
                 opp_pitcher_name = opp_pitcher_rep['pitcher']
             else:
                 opp_pitcher_name = rosters.get(opponent, "TBD")
@@ -433,6 +443,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_confidence = opp_pitcher_rep.get('confidence', 'low') if opp_pitcher_rep else 'low'
             opp_outs = opp_pitcher_rep.get('outs_line', 15.5) if opp_pitcher_rep else 15.5
             
+            # OMEGA v8.0: Evaluate Burst Pre-Scoring
+            is_burst = (power_concentration > 0.355 or (opp_bullpen['score'] >= 80 and float(opp_outs) < 15.5))
+            
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
                 power_concentration=power_concentration,
@@ -440,7 +453,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 divergence=divergence, is_whale=is_whale, is_sharp=is_sharp,
                 is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
                 opp_pitcher_physics=opp_pitcher_physics,
-                confidence=opp_confidence, pitcher_outs=float(opp_outs)
+                confidence=opp_confidence, pitcher_outs=float(opp_outs),
+                is_burst=is_burst
             )
             
             # Sentiment Divergence (Venue-Based)
@@ -479,6 +493,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # OMEGA v7.6: Total Divergence Signal (Active Scoring Suppression)
             total_signal = ""
             ud_penalty = 0.0
+            od_boost = 0.0
             if totals_data:
                 # Match game by searching for both team names in the key
                 home_key = home.split()[-1].upper()  # e.g. 'DODGERS'
@@ -489,12 +504,16 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         od = gv.get('over_divergence', 0)
                         ud = gv.get('under_divergence', 0)
                         
-                        if ud >= 25:
-                            ud_penalty = 15.0
-                        elif ud >= 20:
-                            ud_penalty = 10.0
+                        if ud >= 15:
+                            ud_penalty = 0.15 # OMEGA v8.1: 15% multiplier
                         elif ud >= 10:
-                            ud_penalty = 5.0
+                            ud_penalty = 0.05
+                            
+                        # OMEGA v8.0: Mechanicalize O-DIV
+                        if od >= 15:
+                            od_boost = 8.0
+                        elif od >= 8:
+                            od_boost = 5.0
                             
                         if od >= 8:
                             total_signal = f"📈 O-DIV +{od}"
@@ -504,7 +523,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                             total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
                         break
             
-            final_stack_score = max(0.0, round(final_stack_score - ud_penalty, 1))
+            # OMEGA v8.0: Apply U-DIV as multiplier
+            final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
 
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
@@ -518,9 +538,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
                 'confidence': res.get('confidence', 'low'),
-                'is_burst': (power_concentration > 0.355 or (opp_bullpen['score'] >= 80 and float(opp_outs) < 15.5)),
+                'is_burst': is_burst,
                 'implied_total': round(curr_itt, 2),  # v6.3: ITT exported for trend validation
-                'total_signal': total_signal  # v6.8: Visual-only O/U divergence indicator
+                'total_signal': total_signal  # v8.0: Now applies Mechanical Boosts
             })
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
@@ -604,6 +624,13 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             vision_boost=vision_boost, protection_boost=protection_boost,
             matchup_radar_boost=matchup_radar_boost
         )
+
+        # OMEGA v8.0: ICE_COLD_MARKET penalty
+        try:
+            if float(h.get('hit_line', 0)) >= 0.5 and float(h.get('hits_price', 0)) >= 100:
+                res['final'] = round(res['final'] * 0.80, 1)
+        except (ValueError, TypeError):
+            pass
 
         h_reports.append({
             'name': h['name'].title(), 'team': h['team'], 

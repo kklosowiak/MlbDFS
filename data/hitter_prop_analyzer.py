@@ -102,14 +102,14 @@ class HitterPropAnalyzer:
         hitter_map = {}
         
         try:
-            # OMEGA v6.12: Explicit Roster-First Discovery
-            print(f"[OMEGA]: Initiating Roster-First Discovery for {len(active_teams)} teams...")
+            # OMEGA v7.9: Restored High-Sample Dynamic Discovery.
+            # We now pull from the Statcast Cache but enforce a 50-PA floor to eliminate noise.
+            print(f"[OMEGA]: Initiating High-Sample Dynamic Discovery for {len(active_teams)} teams...")
             for team in active_teams:
-                # Direct Match
                 roster = self.statcast.get_team_roster(team, player_type='hitter')
                 
-                # Fuzzy match fallback
                 if not roster:
+                    # Fuzzy match fallback
                     cache = self.statcast.get_cache_data()
                     for player_data in cache.values():
                         if isinstance(player_data, dict) and team in player_data.get('team', ''):
@@ -117,10 +117,10 @@ class HitterPropAnalyzer:
                             break
                 
                 if not roster:
-                    print(f"  [WARNING]: Could not find roster cache for team '{team}'")
+                    print(f"  [WARNING]: No dynamic roster found for team '{team}'")
                     continue
 
-                # Recover Matchup Meta (Explicit Loop for safety)
+                # Recover Matchup Meta
                 match_home = "TBD"
                 match_away = "TBD"
                 for g in game_map.values():
@@ -129,9 +129,25 @@ class HitterPropAnalyzer:
                         match_away = g['away']
                         break
 
-                # OMEGA v7.6: Increased Roster-First Discovery (10 -> 18) to prevent ghosting elite veterans with low OPS.
-                for p in roster[:18]:
+                for p in roster:
                     name = p['name']
+                    # OMEGA v7.9: Strict 50-PA Gate to eliminate ghosts/rookies
+                    pa_count = p.get('pa', 0)
+                    if pa_count < 50:
+                        continue
+
+                    # OMEGA v7.8: Pitcher Rejection Gate
+                    if p.get('type') == 'pitcher':
+                        continue
+
+                    # Scoring Priority: Registry -> Cache
+                    reg_xwoba = self.xwoba_registry.get(name)
+                    if reg_xwoba:
+                        xwoba = reg_xwoba
+                    else:
+                        ops_val = p.get('ops', 0.0)
+                        xwoba = (ops_val / 2.5) if ops_val > 0 else 0.330
+
                     hitter_map[name] = {
                         'name': name,
                         'team': team,
@@ -142,7 +158,7 @@ class HitterPropAnalyzer:
                         'hits_price': -110,
                         'is_juiced_target': False,
                         'is_speed_target': False,
-                        'matchup_xwoba': p.get('ops', 0.0) / 2.5 if p.get('ops', 0) > 0 else 0.330
+                        'matchup_xwoba': xwoba
                     }
 
             # Ingest API props (Market Overlay)
@@ -174,7 +190,20 @@ class HitterPropAnalyzer:
                             if team_side is None or team_side not in active_teams: continue
 
                             momentum = self.statcast.get_player_momentum(player_name) or {}
-                            momentum_ops = momentum.get('rolling_ops',0) if momentum.get('rolling_pa', 0) > 15 else momentum.get('ops', 0)
+                            # OMEGA v7.8: Pitcher Rejection Gate for Market Arrivals
+                            if momentum.get('type') == 'pitcher':
+                                continue
+
+                            # OMEGA v7.8: Hardened Sample Gate (50 PA) for Market Arrivals.
+                            # We check the Registry first, then fallback to high-sample Statcast data.
+                            total_pa = momentum.get('pa', 0)
+                            
+                            reg_xwoba = self.xwoba_registry.get(player_name)
+                            if reg_xwoba:
+                                xwoba = reg_xwoba
+                            else:
+                                ops_val = momentum.get('ops', 0.0)
+                                xwoba = ops_val / 2.5 if (total_pa >= 50 and ops_val > 0) else 0.330
                             
                             found_key = player_name
                             hitter_map[found_key] = {
@@ -187,17 +216,18 @@ class HitterPropAnalyzer:
                                 'hits_price': -110,
                                 'is_juiced_target': False,
                                 'is_speed_target': False,
-                                'matchup_xwoba': momentum_ops / 2.5 if momentum_ops > 0 else 0.330
+                                'matchup_xwoba': xwoba
                             }
                         
                         # Market Overlay Logic: Replace baseline defaults with real API prices
                         if m_key == 'batter_home_runs':
-                            current_price = hitter_map[found_key].get('ahr_price', 1000)
-                            # If no real price yet (baseline 450 or sentinel 1000), or if this is a sharper price
-                            if current_price >= 450:
-                                hitter_map[found_key]['ahr_price'] = price
-                            else:
-                                hitter_map[found_key]['ahr_price'] = min(current_price, price)
+                            if entry.get('side') == 'Over':
+                                current_price = hitter_map[found_key].get('ahr_price', 1000)
+                                # If no real price yet (baseline 450 or sentinel 1000), or if this is a sharper price
+                                if current_price >= 450:
+                                    hitter_map[found_key]['ahr_price'] = price
+                                else:
+                                    hitter_map[found_key]['ahr_price'] = min(current_price, price)
                             
                         elif m_key in ['batter_hits', 'batter_total_bases']:
                             new_line = entry.get('point', 0.5)
@@ -259,28 +289,34 @@ class HitterPropAnalyzer:
         teams_with_hitters = {h['team'] for h in hitter_map.values()}
         missing_teams = active_teams - teams_with_hitters
         
+        # OMEGA v7.9: Re-enabled dynamic backfill with 50-PA floor.
+        teams_with_hitters = {h['team'] for h in hitter_map.values()}
+        missing_teams = active_teams - teams_with_hitters
+        
         if missing_teams:
-            print(f"[OMEGA]: Backfilling {len(missing_teams)} teams with zero market props (Roster-First Mode)...")
+            print(f"[OMEGA]: Backfilling {len(missing_teams)} teams via High-Sample Dynamic Logic...")
             for team in missing_teams:
                 roster = self.statcast.get_team_roster(team, player_type='hitter')
-                # OMEGA v7.6: Backfill expanded (5 -> 12)
-                for p in roster[:12]:
+                for p in roster:
                     name = p['name']
-                    # Don't overwrite if already discovered (should be 0 anyway)
                     if name not in hitter_map:
+                        pa_count = p.get('pa', 0)
+                        if pa_count < 50: continue
+                        
+                        xwoba = self.xwoba_registry.get(name, p.get('ops', 0.0) / 2.5)
                         hitter_map[name] = {
                             'name': name,
                             'team': team,
                             'home_team': next((g['home'] for g in game_map.values() if g['home'] == team or g['away'] == team), "TBD"),
                             'away_team': next((g['away'] for g in game_map.values() if g['home'] == team or g['away'] == team), "TBD"),
-                            'ahr_price': 450, # Default HR price for unlisted players
+                            'ahr_price': 450,
                             'hit_line': 1.5,
                             'hits_price': -110,
                             'is_juiced_target': False,
                             'is_speed_target': False,
-                            'matchup_xwoba': p.get('ops', 0.0) / 2.5 if p.get('ops', 0) > 0 else 0.330
+                            'matchup_xwoba': xwoba
                         }
-
+        
         # Convert map to sorted list by AHR price
         h_list = list(hitter_map.values())
         return sorted(h_list, key=lambda x: x['ahr_price'])
@@ -341,36 +377,36 @@ class HitterPropAnalyzer:
         Updated with verified 2026 pitcher assignments to ensure dynamic discovery alignment.
         """
         return {
-            'Arizona Diamondbacks': ['Corbin Carroll', 'Ketel Marte', 'Christian Walker', 'Eugenio Suárez', 'Lourdes Gurriel Jr.', 'Gabriel Moreno', 'Trea Turner', 'Nolan Arenado', 'Zac Gallen', 'Merrill Kelly'],
-            'Atlanta Braves': ['Ronald Acuña Jr.', 'Matt Olson', 'Austin Riley', 'Ozzie Albies', 'Max Fried', 'Spencer Strider'],
-            'Baltimore Orioles': ['Gunnar Henderson', 'Adley Rutschman', 'Pete Alonso', 'Colton Cowser', 'Jackson Holliday', 'Corbin Burnes', 'Grayson Rodriguez'],
-            'Boston Red Sox': ['Triston Casas', 'Jarren Duran', 'Tyler O\'Neill', 'Lucas Giolito', 'Nick Pivetta'],
-            'Chicago Cubs': ['Dansby Swanson', 'Cody Bellinger', 'Seiya Suzuki', 'Ian Happ', 'Justin Steele', 'Shota Imanaga'],
-            'Chicago White Sox': ['Andrew Vaughn', 'Eloy Jiménez', 'Andrew Benintendi', 'Munetaka Murakami', 'Luis Robert Jr.', 'Garrett Crochet'],
-            'Cincinnati Reds': ['Elly De La Cruz', 'Spencer Steer', 'TJ Friedl', 'Jeimer Candelario', 'Hunter Greene', 'Nick Lodolo'],
-            'Cleveland Guardians': ['José Ramírez', 'Josh Naylor', 'Steven Kwan', 'Andrés Giménez', 'Shane Bieber', 'Tanner Bibee'],
-            'Colorado Rockies': ['Nolan Jones', 'Ezequiel Tovar', 'Ryan McMahon', 'Kris Bryant', 'Brendan Rodgers', 'Germán Márquez'],
-            'Detroit Tigers': ['Riley Greene', 'Spencer Torkelson', 'Kerry Carpenter', 'Colt Keith', 'Tarik Skubal', 'Casey Mize'],
-            'Houston Astros': ['Yordan Alvarez', 'Jose Altuve', 'Kyle Tucker', 'Alex Bregman', 'Framber Valdez', 'Justin Verlander', 'Spencer Arrighetti'],
-            'Kansas City Royals': ['Bobby Witt Jr.', 'Salvador Perez', 'Vinnie Pasquantino', 'MJ Melendez', 'Maikel Garcia', 'Cole Ragans', 'Seth Lugo'],
-            'Los Angeles Angels': ['Mike Trout', 'Logan O\'Hoppe', 'Anthony Rendon', 'Zach Neto', 'Patrick Sandoval', 'Reid Detmers', 'Tyler Anderson'],
-            'Los Angeles Dodgers': ['Shohei Ohtani', 'Mookie Betts', 'Freddie Freeman', 'Teoscar Hernández', 'Yoshinobu Yamamoto', 'Tyler Glasnow'],
-            'Miami Marlins': ['Jazz Chisholm Jr.', 'Bryan De La Cruz', 'Jesús Sánchez', 'Eury Pérez', 'Jesús Luzardo', 'Braxton Garrett', 'Sandy Alcantara'],
-            'Milwaukee Brewers': ['Christian Yelich', 'William Contreras', 'Jackson Chourio', 'Freddy Peralta'],
-            'Minnesota Twins': ['Royce Lewis', 'Byron Buxton', 'Carlos Correa', 'Pablo Lopez', 'Edouard Julien', 'Matt Wallner', 'Joe Ryan', 'Bailey Ober'],
-            'New York Mets': ['Francisco Lindor', 'Brandon Nimmo', 'Starling Marte', 'Jeff McNeil', 'Edwin Díaz', 'Kodai Senga', 'Luis Severino'],
-            'New York Yankees': ['Aaron Judge', 'Juan Soto', 'Giancarlo Stanton', 'Gleyber Torres', 'Anthony Volpe', 'Clay Holmes', 'Gerrit Cole', 'Carlos Rodón', 'Marcus Stroman', 'Will Warren', 'Luis Gil'],
-            'Oakland Athletics': ['Brent Rooker', 'Shea Langeliers', 'Zack Gelof', 'JJ Bleday', 'Luis Severino', 'JP Sears', 'Ross Stripling'],
-            'Philadelphia Phillies': ['Bryce Harper', 'Kyle Schwarber', 'Trea Turner', 'Nick Castellanos', 'Taijuan Walker', 'Zack Wheeler', 'Aaron Nola'],
-            'Pittsburgh Pirates': ['Bryan Reynolds', 'Oneil Cruz', 'Ke\'Bryan Hayes', 'Paul Skenes', 'Mitch Keller', 'Jared Jones'],
-            'San Diego Padres': ['Fernando Tatis Jr.', 'Manny Machado', 'Xander Bogaerts', 'Jackson Merrill', 'Luis Campusano', 'Jake Cronenworth', 'Joe Musgrove', 'Yu Darvish', 'Dylan Cease'],
-            'San Francisco Giants': ['Rafael Devers', 'Willy Adames', 'Matt Chapman', 'Jung Hoo Lee', 'Logan Webb', 'Thairo Estrada', 'Kyle Harrison', 'Blake Snell'],
-            'Seattle Mariners': ['Julio Rodríguez', 'Cal Raleigh', 'Randy Arozarena', 'J.P. Crawford', 'Luis Castillo', 'George Kirby', 'Logan Gilbert'],
-            'St. Louis Cardinals': ['Nolan Arenado', 'Paul Goldschmidt', 'Willson Contreras', 'Sonny Gray', 'Miles Mikolas'],
-            'Tampa Bay Rays': ['Yandy Díaz', 'Isaac Paredes', 'Jose Siri', 'Brandon Lowe', 'Zach Eflin', 'Shane Baz'],
-            'Texas Rangers': ['Corey Seager', 'Adolis García', 'Marcus Semien', 'Josh Jung', 'Jack Leiter', 'Nathan Eovaldi', 'Jacob deGrom'],
-            'Toronto Blue Jays': ['Vladimir Guerrero Jr.', 'George Springer', 'Kevin Gausman', 'Bo Bichette', 'Eric Lauer', 'José Berríos', 'Chris Bassitt'],
-            'Washington Nationals': ['CJ Abrams', 'Lane Thomas', 'James Wood', 'MacKenzie Gore', 'Josiah Gray']
+            'Arizona Diamondbacks': ['Corbin Carroll', 'Ketel Marte', 'Christian Walker', 'Lourdes Gurriel Jr.', 'Gabriel Moreno', 'Geraldo Perdomo'],
+            'Atlanta Braves': ['Ronald Acuña Jr.', 'Matt Olson', 'Austin Riley', 'Ozzie Albies', 'Michael Harris II'],
+            'Baltimore Orioles': ['Gunnar Henderson', 'Adley Rutschman', 'Pete Alonso', 'Jackson Holliday', 'Anthony Santander', 'Colton Cowser'],
+            'Boston Red Sox': ['Rafael Devers', 'Jarren Duran', 'Triston Casas', 'Ceddanne Rafaela', 'Tyler O\'Neill'],
+            'Chicago Cubs': ['Cody Bellinger', 'Seiya Suzuki', 'Dansby Swanson', 'Ian Happ', 'Michael Busch'],
+            'Chicago White Sox': ['Luis Robert Jr.', 'Andrew Vaughn', 'Andrew Benintendi', 'Gavin Sheets'],
+            'Cincinnati Reds': ['Elly De La Cruz', 'Spencer Steer', 'TJ Friedl', 'Jonathan India'],
+            'Cleveland Guardians': ['José Ramírez', 'Josh Naylor', 'Steven Kwan', 'Andrés Giménez'],
+            'Colorado Rockies': ['Ezequiel Tovar', 'Brenton Doyle', 'Nolan Jones', 'Ryan McMahon'],
+            'Detroit Tigers': ['Riley Greene', 'Spencer Torkelson', 'Kerry Carpenter', 'Colt Keith'],
+            'Houston Astros': ['Yordan Alvarez', 'Jose Altuve', 'Kyle Tucker', 'Alex Bregman', 'Yainer Diaz'],
+            'Kansas City Royals': ['Bobby Witt Jr.', 'Salvador Perez', 'Vinnie Pasquantino', 'Maikel Garcia'],
+            'Los Angeles Angels': ['Mike Trout', 'Taylor Ward', 'Logan O\'Hoppe', 'Zach Neto'],
+            'Los Angeles Dodgers': ['Shohei Ohtani', 'Mookie Betts', 'Freddie Freeman', 'Will Smith', 'Teoscar Hernández'],
+            'Miami Marlins': ['Jazz Chisholm Jr.', 'Bryan De La Cruz', 'Jesús Sánchez'],
+            'Milwaukee Brewers': ['Christian Yelich', 'William Contreras', 'Brice Turang', 'Jackson Chourio'],
+            'Minnesota Twins': ['Royce Lewis', 'Byron Buxton', 'Carlos Correa', 'Ryan Jeffers'],
+            'New York Mets': ['Francisco Lindor', 'Brandon Nimmo', 'Pete Alonso', 'Starling Marte', 'Juan Soto'],
+            'New York Yankees': ['Aaron Judge', 'Juan Soto', 'Giancarlo Stanton', 'Gleyber Torres', 'Anthony Volpe'],
+            'Oakland Athletics': ['Brent Rooker', 'Shea Langeliers', 'Zack Gelof', 'JJ Bleday'],
+            'Philadelphia Phillies': ['Bryce Harper', 'Trea Turner', 'Kyle Schwarber', 'Nick Castellanos', 'Alec Bohm'],
+            'Pittsburgh Pirates': ['Bryan Reynolds', 'Oneil Cruz', 'Ke\'Bryan Hayes', 'Andrew McCutchen'],
+            'San Diego Padres': ['Fernando Tatis Jr.', 'Manny Machado', 'Xander Bogaerts', 'Jackson Merrill', 'Jake Cronenworth'],
+            'San Francisco Giants': ['Jung Hoo Lee', 'Matt Chapman', 'Jorge Soler', 'Thairo Estrada'],
+            'Seattle Mariners': ['Julio Rodríguez', 'Cal Raleigh', 'Randy Arozarena', 'J.P. Crawford'],
+            'St. Louis Cardinals': ['Nolan Arenado', 'Paul Goldschmidt', 'Willson Contreras', 'Masyn Winn'],
+            'Tampa Bay Rays': ['Yandy Díaz', 'Isaac Paredes', 'Brandon Lowe', 'Josh Lowe'],
+            'Texas Rangers': ['Corey Seager', 'Marcus Semien', 'Adolis García', 'Josh Jung', 'Wyatt Langford'],
+            'Toronto Blue Jays': ['Vladimir Guerrero Jr.', 'Bo Bichette', 'George Springer', 'Daulton Varsho'],
+            'Washington Nationals': ['CJ Abrams', 'Lane Thomas', 'James Wood', 'Luis García Jr.']
         }
 
 
