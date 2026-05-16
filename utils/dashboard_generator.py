@@ -42,6 +42,12 @@ class DashboardGenerator:
                 slate_analysis_md = f.read()
         safe_md = json.dumps(slate_analysis_md)
         
+        # OMEGA v8.7: Final Intelligence Sort
+        # Ensures highest-probability plays are always at the top after all gates/boosts
+        t_reports = sorted(t_reports, key=lambda x: x.get('stack_score', 0), reverse=True)
+        p_reports = sorted(p_reports, key=lambda x: x.get('alpha_score', 0), reverse=True)
+        h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
+        
         html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -206,11 +212,32 @@ class DashboardGenerator:
             font-weight: 700; 
             font-size: 1.1rem; 
         }}
-        .score-high {{ color: var(--accent-blue); }}
-        .score-elite {{ color: var(--accent-purple); }}
-        .score-physics {{ color: var(--text-secondary); font-size: 0.85rem; opacity: 0.8; }}
-        .score-market {{ color: var(--accent-blue); font-size: 0.85rem; opacity: 0.8; }}
+        .score-balanced {{ color: var(--accent-blue); }}
+        .score-physics-heavy {{ color: var(--accent-green); text-shadow: 0 0 10px rgba(50, 215, 75, 0.3); }}
+        .score-market-heavy {{ color: var(--accent-purple); text-shadow: 0 0 10px rgba(191, 90, 242, 0.3); }}
+        .score-trap {{ color: var(--accent-red); text-shadow: 0 0 10px rgba(255, 69, 58, 0.3); text-decoration: line-through; opacity: 0.8; }}
         
+        .status-badge {{
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }}
+        .badge-lock {{ background: var(--accent-blue); color: #fff; box-shadow: 0 0 15px rgba(10, 132, 255, 0.5); }}
+        .badge-leverage {{ background: var(--accent-green); color: #fff; box-shadow: 0 0 15px rgba(50, 215, 75, 0.5); }}
+        .badge-steam {{ background: var(--accent-purple); color: #fff; opacity: 0.9; }}
+        .badge-trap {{ background: var(--accent-red); color: #fff; animation: pulse 2s infinite; }}
+        
+        @keyframes pulse {{
+            0% {{ opacity: 1; }}
+            50% {{ opacity: 0.6; }}
+            100% {{ opacity: 1; }}
+        }}
+
         .metric {{ font-variant-numeric: tabular-nums; color: var(--text-secondary); }}
         .metric b {{ color: var(--text-primary); }}
         .vs {{ color: var(--text-secondary); font-size: 0.85rem; margin: 0 6px; font-weight: 400; }}
@@ -251,9 +278,10 @@ class DashboardGenerator:
         /* Semantic pill colors */
         .pill-target {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
         .pill-shark {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
-        .pill-storm {{ background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }}
+        .pill-storm {{ background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }}
+        .pill-sharp {{ background: rgba(20, 184, 166, 0.2); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.3); }}
         .pill-whale {{ background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }}
-        .pill-steam {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
+        .pill-steam {{ background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }}
         .pill-burst {{ background: rgba(255, 214, 10, 0.15); color: #ffd60a; }}
         .pill-lowconf {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
         .pill-paradox {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
@@ -367,6 +395,7 @@ class DashboardGenerator:
                 <div class="legend-group">
                     <div class="legend-title">Market Alpha</div>
                     <div class="legend-item"><span class="signal-pill pill-whale">🐋 WHALE</span> <b>+15%:</b> Major Conviction</div>
+                    <div class="legend-item"><span class="signal-pill pill-sharp">🎰 SHARP</span> <b>Smart Money:</b> Pro Confirmed</div>
                     <div class="legend-item"><span class="signal-pill pill-storm">🌪️ STORM</span> Correlated Sharp Action</div>
                     <div class="legend-item"><span class="signal-pill pill-steam">💨 STEAM</span> Heavy Line Movement</div>
                 </div>
@@ -399,11 +428,13 @@ class DashboardGenerator:
                 <h2>Elite Pitcher Alpha Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
+                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
                     </thead>
                     <tbody>
                         {"".join([f"<tr class='{'god-tier' if p['alpha_score'] >= 85 else ''}'>"
                                   f"<td class='score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}'>{p['alpha_score']}</td>"
+                                  f"<td class='metric-sub'>{p.get('physics_score', '-')}</td>"
+                                  f"<td class='metric-sub'>{p.get('market_score', '-')}</td>"
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill pill-target\">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }"
                                   f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if p.get('is_shark') else '' }"
@@ -415,11 +446,9 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill pill-exhausted\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
                                   f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if p.get('is_trap') else '' }"
                                   f"{ '<span class=\"signal-pill pill-neutral\">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }"
-                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ DIVERGENCE</span>' if abs(p.get('physics_score', 0) - p.get('market_score', 0)) > 30 else '' }"
                                   f"{ '<span class=\"signal-pill pill-neutral\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">🏗️ ENGINE</span>' if (p.get('outs_line') or 0) >= 17.5 else '' }"
                                   f"<span class='signal-pill pill-neutral'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
-                                  f"</div></td>"
+                                  + "</div></td>"
                                   f"<td><strong>{p['pitcher']}</strong> <span class='team-label'>({abbrev_map.get(p['team'], p['team'])})</span></td>"
                                   f"<td><span class='vs'>vs</span>{p['opponent']}</td>"
                                   f"<td class='metric'><b>{p.get('k_line') or '-'}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(p.get('k_odds'), (int, float)) and p['k_odds'] > 0 else ''}{p.get('k_odds') or '-'})</span></td>"
@@ -478,13 +507,13 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if t.get('is_shark') else '' }"
                                   f"{ '<span class=\"signal-pill pill-storm\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
                                   f"{ '<span class=\"signal-pill pill-whale\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-sharp\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
                                   f"{ '<span class=\"signal-pill pill-steam\">💨 STEAM</span>' if t.get('is_steam') else '' }"
                                   f"{ '<span class=\"signal-pill pill-burst\">⚡ BURST</span>' if t.get('is_burst') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-lowconf\">🔍 LOW CONF</span>' if t.get('confidence') == 'low' else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">🚂 TRAIN</span>' if t['stack_score'] >= 90 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if t.get('is_trap') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-paradox\">⚠️ PARADOX</span>' if t.get('is_paradox') else '' }"
                                   f"{ '<span class=\"signal-pill pill-exhausted\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 100 else ('<span class=\"signal-pill pill-gassed\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill pill-weary\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 80 else '')) }"
                                   + (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '')
                                   + "</div></td>"
@@ -495,8 +524,6 @@ class DashboardGenerator:
                                   f"<td class='metric { 'val-up' if t['tt_move'] > 0 else ('val-down' if t['tt_move'] < 0 else 'val-even') }'>{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>"
                                   f"<td><div class='divergence-cell { 'val-up' if (t.get('divergence') or 0) > 0 else ('val-down' if (t.get('divergence') or 0) < 0 else 'val-even') }'>"
                                   f"<span>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</span>"
-                                  f"<span style='font-size: 1.1rem;'>"
-                                  f"{ '🔥' if t.get('trend') == 'SURGING' else ('❄️' if t.get('trend') == 'FADING' else '') }</span>"
                                   f"</div></td>"
                                   f"</tr>" for t in t_reports[:20]])}
                     </tbody>

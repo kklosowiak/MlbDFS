@@ -90,14 +90,16 @@ class SharpsWeighting:
         physics_raw = max(0, min(100, physics_raw))
         physics_raw *= (1 + (park_factor / 100.0))
 
-        # OMEGA v7.0: Bullpen Delta Decay (REFINED v7.4)
-        bullpen_boost = 0
-        if bullpen_fatigue >= 80:
-            bullpen_boost = 5.0 # Increased 3.0 -> 5.0 (v7.6)
-            if pitcher_outs < 15.5:
-                bullpen_boost = 10.0 # Increased 7.0 -> 10.0
-        if bullpen_fatigue >= 100:
-            bullpen_boost += 5.0 # Increased 3.0 -> 5.0
+        # OMEGA v8.7: Linear Fatigue Pressure (Sliding Scale v1.0)
+        # Pressure starts building at 65% instead of a hard cliff at 80%
+        fatigue_floor = 65.0
+        bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 3.5)
+        
+        # Short-Leash Multiplier: If starter < 15.5 outs, pressure on the tired bullpen is 1.5x
+        if pitcher_outs < 15.5:
+            bullpen_boost *= 1.5
+        
+        bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
 
         # OMEGA v6.8: Market Pillar (Delta-Based)
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
@@ -135,10 +137,13 @@ class SharpsWeighting:
         if is_sharp: beta_signals += 1
         if is_burst: beta_signals += 1
         if tt_move > 0.5: beta_signals += 1
-        if bullpen_fatigue >= 80: beta_signals += 1 
+        if bullpen_fatigue >= 65: beta_signals += 1 
         
         # Multiplier Calculation: Alpha (+15%), Beta (+5%)
+        # OMEGA v8.7.7: 'Balanced Sharp Premium' (+7.5% for Smart Money)
         multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05)
+        if is_sharp:
+            multiplier += 0.025 # Add 2.5% specifically for Sharp (Total 7.5% boost)
         
         # OMEGA v6.7: The 'Detmers Patch' (Stopper Penalty Refined)
         if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
@@ -147,7 +152,13 @@ class SharpsWeighting:
         # Dynamic Divergence Multiplier: Capped at 10%
         div_multiplier = 1.0 + min(0.10, (max(0, divergence) / 150.0))
         
-        final_omega = score * multiplier * div_multiplier * convergence_boost
+        # OMEGA v8.6: The 'Whale Trap' Defensive Gate
+        # If physics is weak (< 30.0, i.e., Weighted < 12.0) and market steam is extreme (> 80), apply 0.80x penalty
+        trap_multiplier = 1.0
+        if physics_raw < 30.0 and market_raw > 80.0:
+            trap_multiplier = 0.80
+
+        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt
@@ -172,7 +183,8 @@ class SharpsWeighting:
             "vulnerability": round(vulnerability_mod, 1),
             "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
-            "confidence": confidence
+            "confidence": confidence,
+            "is_trap": trap_multiplier < 1.0
         }
 
     def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0):

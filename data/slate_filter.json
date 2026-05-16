@@ -1,10 +1,30 @@
 {
-    "enabled": false,
-    "active_date": "2026-05-14",
+    "enabled": true,
+    "active_date": "2026-05-15",
     "allowed_teams": [
-        "Philadelphia Phillies", "Boston Red Sox",
-        "Chicago Cubs", "Atlanta Braves",
-        "Kansas City Royals", "Chicago White Sox",
-        "San Francisco Giants", "Los Angeles Dodgers"
+        "Arizona Diamondbacks",
+        "Atlanta Braves",
+        "Boston Red Sox",
+        "Chicago Cubs",
+        "Chicago White Sox",
+        "Cincinnati Reds",
+        "Cleveland Guardians",
+        "Colorado Rockies",
+        "Houston Astros",
+        "Kansas City Royals",
+        "Los Angeles Angels",
+        "Los Angeles Dodgers",
+        "Miami Marlins",
+        "Milwaukee Brewers",
+        "Minnesota Twins",
+        "New York Mets",
+        "New York Yankees",
+        "Athletics",
+        "San Diego Padres",
+        "San Francisco Giants",
+        "Seattle Mariners",
+        "St. Louis Cardinals",
+        "Tampa Bay Rays",
+        "Texas Rangers"
     ]
 }

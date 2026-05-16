@@ -494,3 +494,40 @@ class SlateReportGenerator:
 
         lines.append("")
         return lines
+
+    def _commanders_brief(self, t_reports, p_reports):
+        """Synthesize top plays into actionable intelligence."""
+        lines = ["## 🎖️ Commanders Brief", ""]
+        
+        top_3 = t_reports[:3]
+        for i, t in enumerate(top_3):
+            # Determine status
+            status = "NEUTRAL"
+            if t.get('is_trap'):
+                status = "⚠️ TRAP"
+            elif (t.get('is_shark') or t.get('is_whale')) and t.get('is_sharp') and t.get('physics_score', 0) >= 15:
+                status = "💎 LOCK"
+            elif t.get('is_sharp') and not (t.get('is_shark') or t.get('is_whale')):
+                status = "🎯 LEVERAGE"
+            elif (t.get('is_shark') or t.get('is_whale') or t.get('is_steam')) and not t.get('is_sharp'):
+                status = "💨 STEAM"
+            
+            # Brief rationale
+            rationale = []
+            if status == "💎 LOCK":
+                rationale.append("Massive institutional convergence + sharp backing.")
+            elif status == "🎯 LEVERAGE":
+                rationale.append("Pros are quietly betting this side against low public interest.")
+            elif status == "⚠️ TRAP":
+                rationale.append("Suspicious market movement vs weak statistical floor. AVOID.")
+            elif status == "💨 STEAM":
+                rationale.append("High volume public interest, proceed with caution.")
+            
+            if t.get('bullpen_fatigue', 0) >= 75:
+                rationale.append("Exploiting extreme bullpen fatigue.")
+            
+            lines.append(f"**{i+1}. {t['team']} ({t['stack_score']:.1f}) — {status}**")
+            lines.append(f"> {' '.join(rationale)}")
+            lines.append("")
+            
+        return lines

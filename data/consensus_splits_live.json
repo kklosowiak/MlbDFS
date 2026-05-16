@@ -1,90 +1,114 @@
 {
   "PHI": {
-    "ticket": 42,
-    "money": 40
-  },
-  "BOS": {
-    "ticket": 58,
-    "money": 60
-  },
-  "CHC": {
-    "ticket": 23,
-    "money": 38
-  },
-  "ATL": {
-    "ticket": 77,
-    "money": 62
-  },
-  "KC": {
-    "ticket": 58,
-    "money": 74
-  },
-  "CWS": {
-    "ticket": 42,
-    "money": 26
-  },
-  "SF": {
-    "ticket": 18,
-    "money": 19
-  },
-  "LAD": {
-    "ticket": 82,
-    "money": 81
-  },
-  "COL": {
-    "ticket": 27,
-    "money": 32
+    "ticket": 28,
+    "money": 35
   },
   "PIT": {
-    "ticket": 73,
-    "money": 68
+    "ticket": 72,
+    "money": 65
+  },
+  "BAL": {
+    "ticket": 67,
+    "money": 67
   },
   "WSH": {
-    "ticket": 45,
-    "money": 44
+    "ticket": 33,
+    "money": 33
   },
-  "CIN": {
-    "ticket": 55,
-    "money": 56
+  "TOR": {
+    "ticket": 69,
+    "money": 73
   },
   "DET": {
-    "ticket": 41,
-    "money": 61
-  },
-  "NYM": {
-    "ticket": 59,
-    "money": 39
+    "ticket": 31,
+    "money": 27
   },
   "MIA": {
-    "ticket": 49,
-    "money": 43
+    "ticket": 22,
+    "money": 36
   },
-  "MIN": {
-    "ticket": 51,
-    "money": 57
+  "TB": {
+    "ticket": 78,
+    "money": 64
   },
-  "SD": {
-    "ticket": 27,
-    "money": 40
+  "CIN": {
+    "ticket": 26,
+    "money": 50
+  },
+  "CLE": {
+    "ticket": 74,
+    "money": 50
   },
   "MIL": {
-    "ticket": 73,
-    "money": 60
-  },
-  "SEA": {
-    "ticket": 57,
-    "money": 52
-  },
-  "HOU": {
-    "ticket": 43,
-    "money": 48
-  },
-  "STL": {
-    "ticket": 64,
+    "ticket": 68,
     "money": 69
   },
-  "ATH": {
-    "ticket": 36,
+  "MIN": {
+    "ticket": 32,
     "money": 31
+  },
+  "NYY": {
+    "ticket": 81,
+    "money": 86
+  },
+  "NYM": {
+    "ticket": 19,
+    "money": 14
+  },
+  "CHC": {
+    "ticket": 74,
+    "money": 72
+  },
+  "CWS": {
+    "ticket": 26,
+    "money": 28
+  },
+  "TEX": {
+    "ticket": 39,
+    "money": 24
+  },
+  "HOU": {
+    "ticket": 61,
+    "money": 76
+  },
+  "KC": {
+    "ticket": 44,
+    "money": 53
+  },
+  "STL": {
+    "ticket": 56,
+    "money": 47
+  },
+  "ARI": {
+    "ticket": 70,
+    "money": 75
+  },
+  "COL": {
+    "ticket": 30,
+    "money": 25
+  },
+  "LAD": {
+    "ticket": 85,
+    "money": 56
+  },
+  "LAA": {
+    "ticket": 15,
+    "money": 44
+  },
+  "SD": {
+    "ticket": 32,
+    "money": 69
+  },
+  "SEA": {
+    "ticket": 68,
+    "money": 31
+  },
+  "SF": {
+    "ticket": 24,
+    "money": 22
+  },
+  "ATH": {
+    "ticket": 76,
+    "money": 78
   }
 }
