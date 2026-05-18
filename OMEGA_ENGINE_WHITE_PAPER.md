@@ -47,7 +47,7 @@ In large-field DFS tournaments, "stacking" (pairing 3 to 5 hitters from the same
 *   **PHY (Physics Score):** The raw statistical matchup rating. Evaluates the team's aggregate batting statistics against the opposing starting pitcher's specific weaknesses.
 *   **MKT (Market Score):** Tracks sharp money flows backing this team to score runs.
 *   **ITT (Implied Team Total):** The most important basic stat in DFS. This is the **Vegas Implied Run Total** (e.g., `5.28` means Vegas expects this team to score 5.28 runs). Stacking teams with an ITT above **4.8** is a premier strategy.
-*   **ML MOVE & TT MOVE (Moneyline & Team Total Movement):** Shows how the betting lines have shifted since opening. A positive number (e.g., `+15` or `+0.5`) means money is flooding in, indicating the team is gaining strong market steam.
+*   **ML MOVE & TT MOVE (Moneyline & Team Total Movement):** Shows how betting lines have shifted since opening. For Team Totals (TT), a positive move (e.g., `+0.5`) is positive steam. For Moneyline (ML) in American odds, a negative shift (e.g., `-15`) indicates the price became more expensive/favored, meaning heavy money is flooding in to back them (styled green as 'val-up' in your cockpit).
 *   **DIVERGENCE:** Shows the "Money Gap." If this is **highly positive (e.g., +26%)**, it means smart, high-roller bettors are putting far more money on this team than the general public. This is a massive buy signal.
 
 ---
