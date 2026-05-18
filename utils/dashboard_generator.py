@@ -130,7 +130,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-sharp">🎰 SHARP</span>' if t.get('is_sharp') else '' }
 { '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
 { '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }
-{ '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 10 else '' }
+{ '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 15 else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }
 </div></td>
 <td><div class="signals-container">
