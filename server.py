@@ -381,6 +381,103 @@ def post_refresh_api(background_tasks: BackgroundTasks):
     background_tasks.add_task(perform_refresh_sync)
     return {"status": "started", "message": "Slate analysis triggered in background."}
 
+@app.get("/api/trends", dependencies=[Depends(get_current_user)])
+def get_trends_api():
+    import csv
+    from config import config
+    log_path = os.path.join(config.LOG_DIR, "trend_tag_log.csv")
+    
+    if not os.path.exists(log_path):
+        return JSONResponse(content={"trends": []})
+        
+    try:
+        trends = []
+        with open(log_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                trends.append(row)
+        # Reverse to show newest first
+        trends.reverse()
+        return JSONResponse(content={"trends": trends})
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to read trends: {str(e)}"}, status_code=500)
+
+@app.post("/api/trends/resolve", dependencies=[Depends(get_current_user)])
+def post_trends_resolve_api(body: dict):
+    import csv
+    import tempfile
+    from config import config
+    
+    target_date = body.get("date", "")
+    target_team = body.get("team", "")
+    actual_runs_str = body.get("actual_runs", "")
+    
+    if not target_date or not target_team or actual_runs_str == "":
+        raise HTTPException(status_code=400, detail="Missing required parameters: date, team, actual_runs")
+        
+    try:
+        actual_runs = float(actual_runs_str)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="actual_runs must be a valid number")
+        
+    log_path = os.path.join(config.LOG_DIR, "trend_tag_log.csv")
+    
+    if not os.path.exists(log_path):
+        raise HTTPException(status_code=404, detail="Trend log file not found")
+        
+    updated = False
+    temp_fd, temp_path = tempfile.mkstemp()
+    try:
+        with os.fdopen(temp_fd, 'w', newline='', encoding='utf-8') as temp_file:
+            with open(log_path, 'r', newline='', encoding='utf-8') as csv_file:
+                reader = csv.DictReader(csv_file)
+                fieldnames = reader.fieldnames
+                writer = csv.DictWriter(temp_file, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for row in reader:
+                    if row.get("date") == target_date and row.get("team") == target_team:
+                        row["actual_runs"] = str(actual_runs)
+                        
+                        # Calculate hit/miss
+                        implied_total = float(row.get("implied_total", 4.5) or 4.5)
+                        tag = row.get("tag", "SURGING")
+                        
+                        if tag == "SURGING":
+                            hit = 1 if actual_runs >= implied_total else 0
+                        else:  # FADING
+                            hit = 1 if actual_runs < implied_total else 0
+                            
+                        row["hit"] = str(hit)
+                        updated = True
+                        
+                    writer.writerow(row)
+                    
+        if updated:
+            import shutil
+            shutil.move(temp_path, log_path)
+        else:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise HTTPException(status_code=404, detail="Matching trend log entry not found")
+            
+        # Return updated list
+        trends = []
+        with open(log_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                trends.append(row)
+        trends.reverse()
+        return JSONResponse(content={"status": "success", "trends": trends})
+        
+    except Exception as e:
+        if os.path.exists(temp_path):
+            try: os.remove(temp_path)
+            except: pass
+        if isinstance(e, HTTPException):
+            raise e
+        raise HTTPException(status_code=500, detail=f"Database writeback failure: {str(e)}")
+
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
 def post_chat_api(body: dict):

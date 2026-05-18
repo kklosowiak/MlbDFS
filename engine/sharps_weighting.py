@@ -223,12 +223,60 @@ class SharpsWeighting:
             "is_trap": trap_multiplier < 1.0 or anchor_ratio < 1.0
         }
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
         and new Synergy Logic (Protection + Vision + MatchupRadar).
+        OMEGA v9.5 splits update: Blends player vs LHP/RHP split ratios dynamically.
         """
+        platoon_multiplier = 1.0
+        platoon_label = "Neutral"
+        
+        if pitch_hand and hitter_splits:
+            opp_hand = str(pitch_hand).upper()  # "L" or "R"
+            overall_ops = float(hitter_splits.get("ops", 0.720) or 0.720)
+            if overall_ops <= 0.200: overall_ops = 0.720
+            
+            if opp_hand == "L":
+                split_ops = float(hitter_splits.get("vs_left_ops", 0.0) or 0.0)
+                split_pa = int(hitter_splits.get("vs_left_pa", 0) or 0)
+                split_ops_2025 = float(hitter_splits.get("vs_left_ops_2025", 0.0) or 0.0)
+                split_pa_2025 = int(hitter_splits.get("vs_left_pa_2025", 0) or 0)
+                split_ops_other_2025 = float(hitter_splits.get("vs_right_ops_2025", 0.0) or 0.0)
+                split_pa_other_2025 = int(hitter_splits.get("vs_right_pa_2025", 0) or 0)
+                opp_label = "LHP"
+            else:
+                split_ops = float(hitter_splits.get("vs_right_ops", 0.0) or 0.0)
+                split_pa = int(hitter_splits.get("vs_right_pa", 0) or 0)
+                split_ops_2025 = float(hitter_splits.get("vs_right_ops_2025", 0.0) or 0.0)
+                split_pa_2025 = int(hitter_splits.get("vs_right_pa_2025", 0) or 0)
+                split_ops_other_2025 = float(hitter_splits.get("vs_left_ops_2025", 0.0) or 0.0)
+                split_pa_other_2025 = int(hitter_splits.get("vs_left_pa_2025", 0) or 0)
+                opp_label = "RHP"
+            
+            # Select best split data based on sample size
+            # 1. 2026 Season Splits (qualifying sample size >= 30 plate appearances)
+            if split_pa >= 30 and split_ops > 0:
+                platoon_multiplier = split_ops / overall_ops
+                platoon_percent = round((platoon_multiplier - 1.0) * 100)
+                platoon_label = f"2026 split vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}% OPS)"
+            # 2. Fallback to 2025 Season Splits (qualifying sample size >= 50 plate appearances)
+            elif (split_pa_2025 + split_pa_other_2025) >= 50 and split_ops_2025 > 0:
+                total_pa_2025 = split_pa_2025 + split_pa_other_2025
+                overall_ops_2025 = ((split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)) / total_pa_2025
+                if overall_ops_2025 <= 0.200: overall_ops_2025 = 0.720
+                platoon_multiplier = split_ops_2025 / overall_ops_2025
+                platoon_percent = round((platoon_multiplier - 1.0) * 100)
+                platoon_label = f"2025 split vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}% OPS)"
+            else:
+                platoon_multiplier = 1.0
+                platoon_label = f"Neutral vs {opp_label}"
+            
+            # Bound split-scaling to stay within realistic sabermetric bounds [0.70, 1.30]
+            platoon_multiplier = max(0.70, min(1.30, platoon_multiplier))
+            matchup_xwoba = matchup_xwoba * platoon_multiplier
+
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))
         
@@ -273,5 +321,7 @@ class SharpsWeighting:
             "final": round(max(0, final_alpha), 1),
             "physics": round(p_comp, 1),
             "market": round(m_comp, 1),
-            "matchup_boost": round(matchup_radar_boost, 2)
+            "matchup_boost": round(matchup_radar_boost, 2),
+            "platoon_multiplier": round(platoon_multiplier, 2),
+            "platoon_label": platoon_label
         }

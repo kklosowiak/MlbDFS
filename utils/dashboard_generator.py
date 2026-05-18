@@ -48,6 +48,108 @@ class DashboardGenerator:
         p_reports = sorted(p_reports, key=lambda x: x.get('alpha_score', 0), reverse=True)
         h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
         
+        pitcher_rows = []
+        for p in p_reports[:35]:
+            row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}">
+<td class="score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}">{p['alpha_score']}</td>
+<td class="metric-sub">{p.get('physics_score', '-')}</td>
+<td class="metric-sub">{p.get('market_score', '-')}</td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-target">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }
+{ '<span class="signal-pill pill-shark">🦈 SHARK</span>' if p.get('is_shark') else '' }
+{ '<span class="signal-pill pill-storm">✨ DEBUT</span>' if p.get('is_debut') else '' }
+{ '<span class="signal-pill pill-lowconf">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }
+</div></td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }
+{ '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>' if p.get('is_hazard') else '' }
+{ '<span class="signal-pill pill-trap">⚠️ TRAP</span>' if p.get('is_trap') else '' }
+{ '<span class="signal-pill pill-neutral">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }
+{ '<span class="signal-pill pill-neutral">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }
+<span class="signal-pill pill-neutral">{p.get('weather_label', 'WEATHER: TBD')}</span>
+</div></td>
+<td><strong>{p['pitcher']}</strong> <span class="team-label">({abbrev_map.get(p['team'], p['team'])})</span></td>
+<td><span class="vs">vs</span>{p['opponent']}</td>
+<td class="metric"><b>{p.get('k_line') or '-'}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(p.get('k_odds'), (int, float)) and p['k_odds'] > 0 else ''}{p.get('k_odds') or '-'})</span></td>
+<td class="metric"><b>{p.get('outs_line') or '-'}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(p.get('outs_odds'), (int, float)) and p['outs_odds'] > 0 else ''}{p.get('outs_odds') or '-'})</span></td>
+</tr>"""
+            pitcher_rows.append(row)
+
+        hitter_rows = []
+        for h in h_reports[:25]:
+            platoon_mult = h.get('platoon_multiplier', 1.0)
+            p_hand = h.get('pitch_hand', 'R')
+            if platoon_mult > 1.0:
+                pct = round((platoon_mult - 1.0) * 100)
+                platoon_pill = f'<span class="signal-pill" style="background: linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border: 1px solid #32d74b; color: #32d74b; font-weight:700; box-shadow: 0 0 8px rgba(50, 215, 75, 0.35);">⚡ VS {p_hand}HP (+{pct}%)</span>'
+            elif platoon_mult < 1.0:
+                pct = round((1.0 - platoon_mult) * 100)
+                platoon_pill = f'<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border: 1px solid #ff453a; color: #ff453a; font-weight:700; box-shadow: 0 0 8px rgba(255, 69, 58, 0.35);">📉 VS {p_hand}HP (-{pct}%)</span>'
+            else:
+                platoon_pill = ''
+
+            row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}">
+<td class="score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}">{h['player_score']}</td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }
+</div></td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-neutral">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }
+{ '<span class="signal-pill pill-neutral">🏃\u200d♂️ THIEF</span>' if h.get('is_speed_target') else '' }
+{ '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else '' }
+{ '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }
+{ '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }
+{ platoon_pill }
+</div></td>
+<td><strong>{h['name']}</strong> <span class="team-label" style="font-weight: 800; color: #ff9f0a;">({h.get('bat_side', 'R')}B)</span> <span class="team-label">({abbrev_map.get(h['team'], h['team'])})</span></td>
+<td><span class="vs">vs</span>{h.get('opp_pitcher', 'TBD')} <span class="team-label" style="font-weight: 800; color: #0a84ff;">({h.get('pitch_hand', 'R')}HP)</span> <span class="team-label">({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>
+<td class="metric">{'+' if isinstance(h.get('ahr_price'), (int, float)) and h['ahr_price'] > 0 else ''}{h.get('ahr_price', '-')}</td>
+<td class="metric"><b>{h.get('hit_line', '-')}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(h.get('hits_price'), (int, float)) and h['hits_price'] > 0 else ''}{h.get('hits_price') or '-'})</span></td>
+</tr>"""
+            hitter_rows.append(row)
+
+        team_rows = []
+        for t in t_reports[:20]:
+            div = t.get('divergence', 0)
+            if div >= 15:
+                div_pill = f'<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 O-DIV (+{div}%)</span>'
+            elif div <= -15:
+                div_pill = f'<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 U-DIV ({div}%)</span>'
+            else:
+                div_pill = ''
+
+            row = f"""<tr class="{'god-tier' if t['stack_score'] >= 85 else ''}">
+<td class="score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}">{t['stack_score']}</td>
+<td class="score-physics">{t.get('physics_score', 0)}</td>
+<td class="score-market">{t.get('market_score', 0)}</td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-shark">🦈 SHARK</span>' if t.get('is_shark') else '' }
+{ '<span class="signal-pill pill-storm">🌪️ STORM</span>' if t.get('is_storm') else '' }
+{ '<span class="signal-pill pill-whale">🐋 WHALE</span>' if t.get('is_whale') else '' }
+{ '<span class="signal-pill pill-sharp">🎰 SHARP</span>' if t.get('is_sharp') else '' }
+{ '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
+{ '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }
+{ '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 25 else '' }
+{ '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }
+</div></td>
+<td><div class="signals-container">
+{ '<span class="signal-pill pill-trap">⚠️ TRAP</span>' if t.get('is_trap') else '' }
+{ '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' if t.get('is_paradox') else '' }
+{ '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class="signal-pill pill-gassed">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 80 else ('<span class="signal-pill pill-weary">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 70 else '')) }
+{ (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '') }
+{ div_pill }
+</div></td>
+<td><span class="team-label" style="font-size:1rem; font-weight:700; margin-left:0;">{t['team']}</span></td>
+<td><span class="vs">vs</span>{t['opp_pitcher']} <span class="team-label">({abbrev_map.get(t['opponent'], 'TBD')})</span></td>
+<td class="metric" style="font-weight:600;"><span class="{ 'val-up' if t.get('implied_total', 0) >= 4.2 else '' }">{t.get('implied_total', '-')}</span></td>
+<td class="metric { 'val-up' if t['ml_move'] < 0 else ('val-down' if t['ml_move'] > 0 else 'val-even') }">{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>
+<td class="metric { 'val-up' if t['tt_move'] > 0 else ('val-down' if t['tt_move'] < 0 else 'val-even') }">{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>
+<td><div class="divergence-cell { 'val-up' if (t.get('divergence') or 0) > 0 else ('val-down' if (t.get('divergence') or 0) < 0 else 'val-even') }">
+<span>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</span>
+</div></td>
+</tr>"""
+            team_rows.append(row)
+
         html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -571,29 +673,7 @@ class DashboardGenerator:
                         <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
                     </thead>
                     <tbody>
-                        {"".join([f"<tr class='{'god-tier' if p['alpha_score'] >= 85 else ''}'>"
-                                  f"<td class='score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}'>{p['alpha_score']}</td>"
-                                  f"<td class='metric-sub'>{p.get('physics_score', '-')}</td>"
-                                  f"<td class='metric-sub'>{p.get('market_score', '-')}</td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-target\">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if p.get('is_shark') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-storm\">✨ DEBUT</span>' if p.get('is_debut') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-lowconf\">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }"
-                                  f"</div></td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-paradox\">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-exhausted\">🌋 HAZARD</span>' if p.get('is_hazard') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if p.get('is_trap') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">⚖️ NEUTRAL K</span>' if abs(p.get('opponent_k_boost', 5.0)) <= 3.0 else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }"
-                                  f"<span class='signal-pill pill-neutral'>{p.get('weather_label', 'WEATHER: TBD')}</span>"
-                                  + "</div></td>"
-                                  f"<td><strong>{p['pitcher']}</strong> <span class='team-label'>({abbrev_map.get(p['team'], p['team'])})</span></td>"
-                                  f"<td><span class='vs'>vs</span>{p['opponent']}</td>"
-                                  f"<td class='metric'><b>{p.get('k_line') or '-'}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(p.get('k_odds'), (int, float)) and p['k_odds'] > 0 else ''}{p.get('k_odds') or '-'})</span></td>"
-                                  f"<td class='metric'><b>{p.get('outs_line') or '-'}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(p.get('outs_odds'), (int, float)) and p['outs_odds'] > 0 else ''}{p.get('outs_odds') or '-'})</span></td>"
-                                  f"</tr>" for p in p_reports[:35]])}
+                        {"".join(pitcher_rows)}
                     </tbody>
                 </table>
             </div>
@@ -608,23 +688,7 @@ class DashboardGenerator:
                         <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
                     </thead>
                     <tbody>
-                        {"".join([f"<tr class='{'god-tier' if h['player_score'] >= 85 else ''}'>"
-                                  f"<td class='score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}'>{h['player_score']}</td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-target\">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }"
-                                  f"</div></td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\">🏃‍♂️ THIEF</span>' if h.get('is_speed_target') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-target\">♨️ HOT</span>' if h.get('is_hot') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-target\">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }"
-                                  f"{ '<span class=\"signal-pill pill-weary\">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }"
-                                  f"</div></td>"
-                                  f"<td><strong>{h['name']}</strong> <span class='team-label'>({abbrev_map.get(h['team'], h['team'])})</span></td>"
-                                  f"<td><span class='vs'>vs</span>{h.get('opp_pitcher', 'TBD')} <span class='team-label'>({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>"
-                                  f"<td class='metric'>{'+' if isinstance(h.get('ahr_price'), (int, float)) and h['ahr_price'] > 0 else ''}{h.get('ahr_price', '-')}</td>"
-                                  f"<td class='metric'><b>{h.get('hit_line', '-')}</b><br><span style='font-size:0.8em; color: var(--text-secondary);'>({'+' if isinstance(h.get('hits_price'), (int, float)) and h['hits_price'] > 0 else ''}{h.get('hits_price') or '-'})</span></td>"
-                                  f"</tr>" for h in h_reports[:25]])}
+                        {"".join(hitter_rows)}
                     </tbody>
                 </table>
             </div>
@@ -639,35 +703,7 @@ class DashboardGenerator:
                         <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody>
-                        {"".join([f"<tr class='{'god-tier' if t['stack_score'] >= 85 else ''}'>"
-                                  f"<td class='score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}'>{t['stack_score']}</td>"
-                                  f"<td class='score-physics'>{t.get('physics_score', 0)}</td>"
-                                  f"<td class='score-market'>{t.get('market_score', 0)}</td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-shark\">🦈 SHARK</span>' if t.get('is_shark') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-storm\">🌪️ STORM</span>' if t.get('is_storm') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-whale\">🐋 WHALE</span>' if t.get('is_whale') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-sharp\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-steam\">💨 STEAM</span>' if t.get('is_steam') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-burst\">⚡ BURST</span>' if t.get('is_burst') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-neutral\" style=\"background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);\">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 25 else '' }"
-                                  f"{ '<span class=\"signal-pill pill-storm\">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }"
-                                  f"</div></td>"
-                                  f"<td><div class='signals-container'>"
-                                  f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if t.get('is_trap') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-paradox\">⚠️ PARADOX</span>' if t.get('is_paradox') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-exhausted\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill pill-gassed\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 80 else ('<span class=\"signal-pill pill-weary\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 70 else '')) }"
-                                  + (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '')
-                                  + "</div></td>"
-                                  f"<td><span class='team-label' style='font-size:1rem; font-weight:700; margin-left:0;'>{t['team']}</span></td>"
-                                  f"<td><span class='vs'>vs</span>{t['opp_pitcher']} <span class='team-label'>({abbrev_map.get(t['opponent'], 'TBD')})</span></td>"
-                                  f"<td class='metric' style='font-weight:600;'><span class=\"{ 'val-up' if t.get('implied_total', 0) >= 4.2 else '' }\">{t.get('implied_total', '-')}</span></td>"
-                                  f"<td class='metric { 'val-up' if t['ml_move'] < 0 else ('val-down' if t['ml_move'] > 0 else 'val-even') }'>{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>"
-                                  f"<td class='metric { 'val-up' if t['tt_move'] > 0 else ('val-down' if t['tt_move'] < 0 else 'val-even') }'>{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>"
-                                  f"<td><div class='divergence-cell { 'val-up' if (t.get('divergence') or 0) > 0 else ('val-down' if (t.get('divergence') or 0) < 0 else 'val-even') }'>"
-                                  f"<span>{ '+' if (t.get('divergence') or 0) > 0 else '' }{ t.get('divergence', 0) }%</span>"
-                                  f"</div></td>"
-                                  f"</tr>" for t in t_reports[:20]])}
+                        {"".join(team_rows)}
                     </tbody>
                 </table>
             </div>
@@ -679,6 +715,7 @@ class DashboardGenerator:
                 Loading analysis...
             </div>
         </div>
+
 
     </div>
 

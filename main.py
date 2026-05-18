@@ -604,6 +604,18 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
     print("\n[STEP 3]: Ranking Hitter Alpha...")
     if raw_hitters is None:
         raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
+    
+    # OMEGA v9.5 splits update: Load Cache for splits & Handedness matching
+    cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+    cache = {}
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, 'r') as f:
+                cache = json.load(f)
+            print(f"[SPLITS]: Loaded {len(cache)} profiles for dynamic matchup resolution.")
+        except Exception as e:
+            print(f"[WARNING]: Could not load cache for splits: {e}")
+            
     h_reports = []
     
     for h in raw_hitters:
@@ -631,12 +643,21 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         opp_pitcher = team_data['opp_pitcher'] if team_data else "TBD"
         matchup_radar_boost = matchup_radar.get_matchup_boost(h['name'], opp_pitcher)
 
+        # OMEGA v9.5 splits matching: Resolve opposing pitcher hand and hitter splits
+        opp_pitcher_norm = normalize_player_name(opp_pitcher)
+        p_profile = cache.get(opp_pitcher_norm, {})
+        pitch_hand = p_profile.get("pitch_hand", "R") if p_profile.get("type") == "pitcher" else "R"
+        
+        hitter_norm = normalize_player_name(h['name'])
+        h_profile = cache.get(hitter_norm, {})
+
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, h.get('matchup_xwoba', 0.330), h.get('ahr_price', 400),
             park_factor=park_factor, is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
-            matchup_radar_boost=matchup_radar_boost
+            matchup_radar_boost=matchup_radar_boost,
+            pitch_hand=pitch_hand, hitter_splits=h_profile
         )
 
         # OMEGA v8.0: ICE_COLD_MARKET penalty
@@ -655,7 +676,11 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'ahr_price': h.get('ahr_price', 400), 'hit_line': h.get('hit_line', '-'),
             'hits_price': h.get('hits_price', 0), 'bullpen_fatigue': team_data['bullpen_fatigue'] if team_data else 0,
             'is_hot': is_hot, 'is_juiced_target': h.get('is_juiced_target', False),
-            'is_speed_target': h.get('is_speed_target', False)
+            'is_speed_target': h.get('is_speed_target', False),
+            'platoon_multiplier': res.get('platoon_multiplier', 1.0),
+            'platoon_label': res.get('platoon_label', 'Neutral'),
+            'bat_side': h_profile.get('bat_side', 'R') if h_profile.get('type') == 'hitter' else 'R',
+            'pitch_hand': pitch_hand
         })
 
     h_reports.sort(key=lambda x: x['player_score'], reverse=True)

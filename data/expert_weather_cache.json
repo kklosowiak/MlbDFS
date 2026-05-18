@@ -1,137 +1,128 @@
 [
   {
     "home": "Tampa Bay Rays",
-    "away": "Miami Marlins",
-    "temp": 87,
+    "away": "Baltimore Orioles",
+    "temp": 88,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
     "notes": "Closed dome \u2014 weather has no effect at this ballpark."
   },
   {
-    "home": "Washington Nationals",
-    "away": "Baltimore Orioles",
-    "temp": 77,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1020.6\t1020.3\t1019.8\t1019.2\t1018.6"
-  },
-  {
-    "home": "Pittsburgh Pirates",
-    "away": "Philadelphia Phillies",
-    "temp": 77,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1020.6\t1020.1\t1019.3\t1019\t1018.9"
-  },
-  {
-    "home": "Atlanta Braves",
-    "away": "Boston Red Sox",
-    "temp": 85,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Chance For Delay",
-    "notes": "Pressure\t1020\t1019.7\t1019.1\t1018.7\t1017.8"
-  },
-  {
-    "home": "New York Mets",
-    "away": "New York Yankees",
-    "temp": 81,
-    "wind_speed": 15,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1017.5\t1017.5\t1016.9\t1016.5\t1016.1"
-  },
-  {
-    "home": "Detroit Tigers",
-    "away": "Toronto Blue Jays",
-    "temp": 76,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Chance For Delay",
-    "notes": "Pressure\t1016.3\t1016.1\t1015.4\t1014.9\t1014.2"
-  },
-  {
-    "home": "Cleveland Guardians",
+    "home": "Philadelphia Phillies",
     "away": "Cincinnati Reds",
-    "temp": 74,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
+    "temp": 93,
+    "wind_speed": 10,
+    "wind_dir": "Out to Center",
     "status": "Clear",
-    "notes": "Pressure\t1017.7\t1017.1\t1016.8\t1016.1\t1015.6"
+    "notes": ""
   },
   {
-    "home": "Minnesota Twins",
-    "away": "Milwaukee Brewers",
-    "temp": 63,
-    "wind_speed": 20,
-    "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Pressure\t1008.6\t1007.7\t1007\t1006.2\t1005.3"
-  },
-  {
-    "home": "Houston Astros",
-    "away": "Texas Rangers",
-    "temp": 83,
+    "home": "Miami Marlins",
+    "away": "Atlanta Braves",
+    "temp": 82,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "Pressure\t1012.4\t1012.3\t1012.1\t1011.3\t1010.6"
+    "notes": ""
   },
   {
-    "home": "Chicago White Sox",
-    "away": "Chicago Cubs",
-    "temp": 80,
-    "wind_speed": 20,
+    "home": "Detroit Tigers",
+    "away": "Cleveland Guardians",
+    "temp": 76,
+    "wind_speed": 15,
+    "wind_dir": "In from Right",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": ""
+  },
+  {
+    "home": "Washington Nationals",
+    "away": "New York Mets",
+    "temp": 94,
+    "wind_speed": 10,
     "wind_dir": "Neutral",
     "status": "Clear",
-    "notes": "Pressure\t1011.5\t1010.5\t1008.5\t1009\t1008.6"
+    "notes": ""
   },
   {
-    "home": "St. Louis Cardinals",
-    "away": "Kansas City Royals",
+    "home": "New York Yankees",
+    "away": "Toronto Blue Jays",
     "temp": 82,
-    "wind_speed": 15,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
+  },
+  {
+    "home": "Minnesota Twins",
+    "away": "Houston Astros",
+    "temp": 66,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": "ORANGE - Looks a bit like KC in that we start dry but are in a race against time with storm chances building as the game goes on. Rain might arrive here a touch earlier than KC, but also may initially be light enough to play through (tough to tell). There are some subtle differences between this forecast and KC's, but nothing I'm super confident in, so it gets the same general tag of \"I don't know what happens in the latter half of this game\"."
+  },
+  {
+    "home": "Kansas City Royals",
+    "away": "Boston Red Sox",
+    "temp": 83,
+    "wind_speed": 5,
+    "wind_dir": "Out to Left",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": "ORANGE - This game should start dry, but I'm worried it won't finish that way (in fact, I'm worried it might not even finish at all). A nearby storm line will slowly be pushing towards the ballpark this evening, so it will be a race against time to get the game in before the lightning arrives. Best guess is that I think we've got a good shot of seeing 5+ innings before it gets dicey, but the latter half of this game is a question mark. Warm, humid, winds blowing out to left, solid hitting weather for KC."
+  },
+  {
+    "home": "Chicago Cubs",
+    "away": "Milwaukee Brewers",
+    "temp": 77,
+    "wind_speed": 20,
     "wind_dir": "Out to Left",
     "status": "Clear",
-    "notes": "Pressure\t1011.9\t1011.3\t1010.8\t1010.4\t1010.1"
+    "notes": ""
   },
   {
     "home": "Colorado Rockies",
-    "away": "Arizona Diamondbacks",
-    "temp": 62,
+    "away": "Texas Rangers",
+    "temp": 41,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Chance For Delay",
-    "notes": "YELLOW - The hardest YELLOW of all the YELLOW's today, there are scattered showers and storms in the area most of the day. That said, COL just seems to always get these kinds of games in one way or another, oftentimes without any issues at all. I'll just put this down for a chance of a delay at any point, and assume they will figure things out."
-  },
-  {
-    "home": "Oakland Athletics",
-    "away": "San Francisco Giants",
-    "temp": 71,
-    "wind_speed": 5,
-    "wind_dir": "Cross",
-    "status": "Clear",
-    "notes": "Pressure\t1010.8\t1009.9\t1009.1\t1008.6\t1007.9"
+    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
   },
   {
     "home": "Los Angeles Angels",
+    "away": "Oakland Athletics",
+    "temp": 72,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+  },
+  {
+    "home": "Seattle Mariners",
+    "away": "Chicago White Sox",
+    "temp": 63,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+  },
+  {
+    "home": "San Diego Padres",
     "away": "Los Angeles Dodgers",
     "temp": 67,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
-    "notes": "Pressure\t1009.3\t1008.3\t1007.7\t1007.2\t1006.6"
+    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
   },
   {
-    "home": "Seattle Mariners",
-    "away": "San Diego Padres",
-    "temp": 60,
+    "home": "Arizona Diamondbacks",
+    "away": "San Francisco Giants",
+    "temp": 88,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": ""
+    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
   }
 ]

@@ -43,6 +43,7 @@ class StatcastBridge:
         """
         OMEGA v7.2: Unified Dual-Stream Alignment (Hitting + Pitching).
         Pulls seasonal and rolling metrics to eliminate 'Detmers-style' blind spots.
+        OMEGA v9.5 splits update: Ingests bulk handedness and splits vs LHP/RHP in parallel.
         """
         print(f"[STATCAST]: Refreshing unified momentum alpha for {season}...")
         
@@ -64,12 +65,81 @@ class StatcastBridge:
             extra_params={'startDate': (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d"), 'endDate': datetime.now().strftime("%Y-%m-%d")}
         )
         
+        # OMEGA v9.5 Ingestion addition: Bulk Player Directory for Handedness
+        handedness_map = {}
+        try:
+            print("[STATCAST]: Querying bulk players directory for handedness...")
+            p_resp = requests.get(f"https://statsapi.mlb.com/api/v1/sports/1/players?season={season}", timeout=15)
+            if p_resp.status_code == 200:
+                p_data = p_resp.json().get("people", [])
+                for p in p_data:
+                    p_name = normalize_player_name(p.get("fullName", ""))
+                    handedness_map[p_name] = {
+                        "bat_side": p.get("batSide", {}).get("code", "R"),
+                        "pitch_hand": p.get("pitchHand", {}).get("code", "R")
+                    }
+                print(f"  - Loaded handedness for {len(handedness_map)} players.")
+        except Exception as e:
+            print(f"  - WARNING: Failed to fetch bulk handedness: {e}")
+
+        # OMEGA v9.5 Ingestion addition: Helper to fetch bulk splits
+        def _fetch_bulk_splits(season_year):
+            splits_map = {}
+            try:
+                print(f"[STATCAST]: Querying bulk splits for season {season_year}...")
+                params = {
+                    "stats": "statSplits",
+                    "group": "hitting",
+                    "season": season_year,
+                    "sitCodes": "vl,vr",
+                    "sportId": 1,
+                    "limit": 5000,
+                    "playerPool": "all"
+                }
+                resp = requests.get("https://statsapi.mlb.com/api/v1/stats", params=params, timeout=15)
+                if resp.status_code == 200:
+                    split_records = resp.json().get("stats", [{}])[0].get("splits", [])
+                    for s in split_records:
+                        p_name = normalize_player_name(s.get("player", {}).get("fullName", ""))
+                        code = s.get("split", {}).get("code")  # "vl" or "vr"
+                        stat = s.get("stat", {})
+                        
+                        def safe_float(val):
+                            try: return float(val)
+                            except: return 0.0
+                            
+                        def safe_int(val):
+                            try: return int(val)
+                            except: return 0
+                            
+                        if p_name not in splits_map:
+                            splits_map[p_name] = {}
+                        splits_map[p_name][code] = {
+                            "ops": safe_float(stat.get("ops", 0.0)),
+                            "pa": safe_int(stat.get("plateAppearances", 0))
+                        }
+                    print(f"  - Loaded splits for {len(splits_map)} players in {season_year}.")
+            except Exception as e:
+                print(f"  - WARNING: Failed to fetch bulk splits for {season_year}: {e}")
+            return splits_map
+
+        splits_2026 = _fetch_bulk_splits(2026)
+        splits_2025 = _fetch_bulk_splits(2025)
+
         # 3. Unified Merge
         cache = {}
         # Merge Hitters
         for name in set(list(h_seasonal.keys()) + list(h_rolling.keys())):
             s = h_seasonal.get(name, {})
             r = h_rolling.get(name, {})
+            
+            # Match splits and handedness
+            p_hand = handedness_map.get(name, {})
+            bat_side = p_hand.get("bat_side", "R")
+            
+            p_splits_2026 = splits_2026.get(name, {})
+            p_splits_2025 = splits_2025.get(name, {})
+            
             cache[name] = {
                 "type": "hitter",
                 "team": s.get('team') or r.get('team') or "UNK",
@@ -79,6 +149,15 @@ class StatcastBridge:
                 "rolling_pa": r.get('pa', 0),
                 "k": s.get('k', 0),
                 "rolling_k": r.get('k', 0),
+                "bat_side": bat_side,
+                "vs_left_ops": p_splits_2026.get("vl", {}).get("ops", 0.0),
+                "vs_left_pa": p_splits_2026.get("vl", {}).get("pa", 0),
+                "vs_right_ops": p_splits_2026.get("vr", {}).get("ops", 0.0),
+                "vs_right_pa": p_splits_2026.get("vr", {}).get("pa", 0),
+                "vs_left_ops_2025": p_splits_2025.get("vl", {}).get("ops", 0.0),
+                "vs_left_pa_2025": p_splits_2025.get("vl", {}).get("pa", 0),
+                "vs_right_ops_2025": p_splits_2025.get("vr", {}).get("ops", 0.0),
+                "vs_right_pa_2025": p_splits_2025.get("vr", {}).get("pa", 0),
                 "timestamp": datetime.now().isoformat()
             }
             
@@ -86,14 +165,20 @@ class StatcastBridge:
         for name in set(list(p_seasonal.keys()) + list(p_rolling.keys())):
             s = p_seasonal.get(name, {})
             r = p_rolling.get(name, {})
+            
+            # Match handedness
+            p_hand = handedness_map.get(name, {})
+            pitch_hand = p_hand.get("pitch_hand", "R")
+            
             cache[name] = {
                 "type": "pitcher",
                 "team": s.get('team') or r.get('team') or "UNK",
                 "era": s.get('era', 0.0),
                 "rolling_era": r.get('era', 0.0),
                 "k": s.get('k', 0),
-                "rolling_k": r.get('k', 0),
+                "rolling_k": r.get('rolling_k', 0),
                 "ip": s.get('ip', 0.0),
+                "pitch_hand": pitch_hand,
                 "timestamp": datetime.now().isoformat()
             }
         
@@ -148,6 +233,8 @@ class StatcastBridge:
                 if not people:
                     continue
                 player_id = people[0]['id']
+                pitch_hand = people[0].get("pitchHand", {}).get("code", "R")
+                
                 stats_url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=season&season={season}&group=pitching"
                 stats_resp = requests.get(stats_url, timeout=10)
                 if stats_resp.status_code != 200:
@@ -166,9 +253,10 @@ class StatcastBridge:
                         "k": int(stat.get('strikeOuts', 0)),
                         "rolling_k": 0,
                         "ip": float(stat.get('inningsPitched', '0.0')),
+                        "pitch_hand": pitch_hand,
                         "timestamp": datetime.now().isoformat()
                     }
-                    print(f"    + {pitcher_name} ({team}): ERA={stat.get('era')}, K={stat.get('strikeOuts')}, IP={stat.get('inningsPitched')}")
+                    print(f"    + {pitcher_name} ({team}): ERA={stat.get('era')}, K={stat.get('strikeOuts')}, IP={stat.get('inningsPitched')}, Pitch Hand={pitch_hand}")
                 time.sleep(random.uniform(0.2, 0.4))  # Rate limiting
             except Exception as e:
                 print(f"    ! Failed to pre-fetch {pitcher_name}: {e}")

@@ -1054,6 +1054,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Model Analysis
                 </li>
+                <li class="nav-item" onclick="switchTab(this, 'trends')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Trend Audit
+                </li>
                 <li class="nav-item" onclick="openHandbook()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
                     System Handbook
@@ -1227,6 +1231,49 @@
                     </thead>
                     <tbody id="teams-body">
                         <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TRENDS AUDIT PANEL -->
+        <div id="trends-panel" class="tab-panel">
+            <!-- Trends Summary Cards -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:30px;">
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Total Tracked</span>
+                    <span style="font-size:2rem; font-weight:800; color:var(--text-primary);" id="trends-total-val">0</span>
+                </div>
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Resolved Games</span>
+                    <span style="font-size:2rem; font-weight:800; color:var(--accent-blue);" id="trends-resolved-val">0</span>
+                </div>
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">GPP Hits</span>
+                    <span style="font-size:2rem; font-weight:800; color:var(--accent-green);" id="trends-hits-val">0</span>
+                </div>
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; background:radial-gradient(circle at 50% 50%, rgba(10, 132, 255, 0.05) 0%, rgba(0,0,0,0) 80%); border-color:rgba(10, 132, 255, 0.25);">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">GPP Accuracy</span>
+                    <span style="font-size:2.2rem; font-weight:800; color:#00f2fe; text-shadow:0 0 10px rgba(0, 242, 254, 0.4);" id="trends-rate-val">0%</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Historical Trend Log Post-Mortem Audit</h2>
+                <table id="trends-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>TEAM</th>
+                            <th>TREND TYPE</th>
+                            <th>IMPLIED TOTAL</th>
+                            <th>ACTUAL SCORE</th>
+                            <th>OUTCOME</th>
+                            <th>POST-GAME RESOLUTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trends-body">
+                        <!-- Dynamically populated from /api/trends -->
                     </tbody>
                 </table>
             </div>
@@ -1473,10 +1520,15 @@
                 'pitchers': ['Pitchers Matrix', 'Premium Slate Alpha Matrix'],
                 'hitters': ['Hitters Matrix', 'Power & Matchup Alpha Matrix'],
                 'teams': ['Teams Matrix', 'Market Sentiment & Stack Matrix'],
-                'analysis': ['Model Analysis', 'Slate Intelligence Overview']
+                'analysis': ['Model Analysis', 'Slate Intelligence Overview'],
+                'trends': ['Trend Audit Panel', 'Historical GPP Trend Tag Post-Mortem Audit']
             };
             document.getElementById('page-title').innerText = titles[tabId][0];
             document.getElementById('page-subtitle').innerText = titles[tabId][1];
+
+            if (tabId === 'trends') {
+                loadTrends();
+            }
 
             // Re-run filter/counter
             filterData();
@@ -1629,6 +1681,16 @@
                 
                 const scoreClass = h.player_score >= 100 ? 'score elite' : (h.player_score >= 85 ? 'score high' : 'score med');
                 
+                // Determine splits multiplier badge
+                let platoonBadge = '';
+                if (h.platoon_multiplier && h.platoon_multiplier > 1.0) {
+                    const pct = Math.round((h.platoon_multiplier - 1.0) * 100);
+                    platoonBadge = `<span class="signal-pill" style="background:rgba(50, 215, 75, 0.15); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 6px rgba(50, 215, 75, 0.2);">⚡ VS ${h.pitch_hand}HP (+${pct}%)</span>`;
+                } else if (h.platoon_multiplier && h.platoon_multiplier < 1.0) {
+                    const pct = Math.round((1.0 - h.platoon_multiplier) * 100);
+                    platoonBadge = `<span class="signal-pill" style="background:rgba(255, 69, 58, 0.15); border-color:#ff453a; color:#ff453a; font-weight:800;">📉 VS ${h.pitch_hand}HP (-${pct}%)</span>`;
+                }
+
                 tr.innerHTML = `
                     <td class="${scoreClass}">${h.player_score}</td>
                     <td>
@@ -1638,14 +1700,15 @@
                     </td>
                     <td>
                         <div class="signals-container">
+                            ${platoonBadge}
                             ${h.matchup_xwoba >= 0.360 ? '<span class="signal-pill pill-neutral">🔋 POWER</span>' : ''}
                             ${h.is_speed_target ? '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>' : ''}
                             ${h.is_hot ? '<span class="signal-pill pill-target">♨️ HOT</span>' : ''}
                             ${h.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' : ''}
                         </div>
                     </td>
-                    <td><strong>${h.name}</strong> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
-                    <td><span class="vs">vs</span>${h.opp_pitcher} <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span></td>
+                    <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
+                    <td><span class="vs">vs</span><strong>${h.opp_pitcher}</strong> <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span> <span class="team-label" style="background:rgba(10, 132, 255, 0.12); border-color:rgba(10, 132, 255, 0.3); color:#0a84ff; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.pitch_hand}HP</span></td>
                     <td class="metric">${h.ahr_price > 0 ? '+' : ''}${h.ahr_price || '-'}</td>
                     <td class="metric"><b>${h.hit_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
                 `;
@@ -1678,6 +1741,14 @@
                 const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
                 const oppPhysBadge = `<span class="badge-mini" style="background: ${oppPhysBg}; border: 1px solid ${oppPhysBorder}; color: ${oppPhysColor}; border-radius: 4px; padding: 1px 5px; font-size: 0.75em; font-family: monospace; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px ${oppPhysBg};">PHYS ${oppPhys.toFixed(1)}</span>`;
 
+                // Glowing divergence pills
+                let divPill = '';
+                if (t.divergence >= 15) {
+                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 O-DIV (+${t.divergence}%)</span>`;
+                } else if (t.divergence <= -15) {
+                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 U-DIV (${t.divergence}%)</span>`;
+                }
+
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}</td>
                     <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
@@ -1696,6 +1767,7 @@
                     </td>
                     <td>
                         <div class="signals-container">
+                            ${divPill}
                             ${t.is_trap ? '<span class="signal-pill pill-trap">⚠️ TRAP</span>' : ''}
                             ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 70 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
@@ -1757,6 +1829,119 @@
             });
 
             document.getElementById('counter-box').innerText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
+        }
+
+        async function loadTrends() {
+            try {
+                const res = await fetch('/api/trends');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                const data = await res.json();
+                const trends = data.trends || [];
+                
+                const body = document.getElementById('trends-body');
+                body.innerHTML = '';
+                
+                if (trends.length === 0) {
+                    body.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color:var(--text-secondary);">No historical trends recorded in CSV log yet.</td></tr>';
+                    updateTrendsSummary([]);
+                    return;
+                }
+                
+                trends.forEach(t => {
+                    const tr = document.createElement('tr');
+                    
+                    // Style the Tag badge
+                    let tagClass = 'pill-target'; // default
+                    if (t.tag === 'SURGING') tagClass = 'pill-storm';
+                    if (t.tag === 'FADING') tagClass = 'pill-trap';
+                    
+                    const tagBadge = `<span class="badge ${tagClass}" style="font-weight:800; font-size:0.75rem; padding: 4px 10px;">${t.tag}</span>`;
+                    
+                    // Style the Hit/Miss
+                    let hitBadge = '<span style="color:var(--text-secondary); font-weight:700;">PENDING</span>';
+                    if (t.hit === '1') {
+                        hitBadge = '<span class="badge" style="background:#32d74b; color:#fff; font-weight:800; font-size:0.75rem; padding: 4px 10px; border-radius: 6px; box-shadow: 0 0 10px rgba(50, 215, 75, 0.4);">HIT</span>';
+                    } else if (t.hit === '0') {
+                        hitBadge = '<span class="badge" style="background:#ff453a; color:#fff; font-weight:800; font-size:0.75rem; padding: 4px 10px; border-radius: 6px; box-shadow: 0 0 10px rgba(255, 69, 58, 0.4);">MISS</span>';
+                    }
+                    
+                    // Input element for actual runs
+                    const runsVal = t.actual_runs !== '' ? t.actual_runs : '';
+                    const inputHtml = `
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <input type="number" step="0.5" min="0" max="50" class="search-input" style="padding: 6px 10px; width: 80px; text-align:center; font-weight:700;" value="${runsVal}" placeholder="Runs" id="runs-${t.date}-${t.team}">
+                            <button onclick="resolveTrend('${t.date}', '${t.team}')" style="background:var(--accent-blue); color:#fff; border:none; border-radius:6px; padding: 6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow: 0 2px 5px rgba(10, 132, 255, 0.3);">
+                                Save
+                            </button>
+                        </div>
+                    `;
+                    
+                    tr.innerHTML = `
+                        <td style="font-weight:700;">${t.date}</td>
+                        <td style="font-weight:800; color:var(--accent-blue);">${t.team}</td>
+                        <td>${tagBadge}</td>
+                        <td style="font-weight:700; color:#fff;">${t.implied_total}</td>
+                        <td style="font-weight:800; font-size: 1.1rem; color: #00f2fe;">${t.actual_runs !== '' ? t.actual_runs : '-'}</td>
+                        <td>${hitBadge}</td>
+                        <td>${inputHtml}</td>
+                    `;
+                    body.appendChild(tr);
+                });
+                
+                updateTrendsSummary(trends);
+            } catch (err) {
+                console.error("Error loading trends:", err);
+            }
+        }
+        
+        function updateTrendsSummary(trends) {
+            const total = trends.length;
+            const resolved = trends.filter(t => t.hit !== '').length;
+            const hits = trends.filter(t => t.hit === '1').length;
+            
+            const hitRate = resolved > 0 ? Math.round((hits / resolved) * 100) : 0;
+            
+            document.getElementById('trends-total-val').innerText = total;
+            document.getElementById('trends-resolved-val').innerText = resolved;
+            document.getElementById('trends-hits-val').innerText = hits;
+            document.getElementById('trends-rate-val').innerText = hitRate + '%';
+        }
+        
+        async function resolveTrend(date, team) {
+            const inputEl = document.getElementById(`runs-${date}-${team}`);
+            const runsStr = inputEl.value.trim();
+            if (runsStr === '') {
+                alert("Please enter actual runs scored.");
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/trends/resolve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: date,
+                        team: team,
+                        actual_runs: runsStr
+                    })
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.status === 'success') {
+                        // Re-render
+                        loadTrends();
+                    }
+                } else {
+                    const err = await res.json();
+                    alert("Error: " + err.detail);
+                }
+            } catch (err) {
+                alert("Failed to submit result writeback.");
+            }
         }
 
         // Trigger manual refresh via API
