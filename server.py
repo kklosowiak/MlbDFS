@@ -337,7 +337,15 @@ def get_results_api():
     
     if os.path.exists(results_path):
         with open(results_path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+        return JSONResponse(
+            content=data,
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
     else:
         return {"error": "No results available yet. Run a slate refresh."}
 
