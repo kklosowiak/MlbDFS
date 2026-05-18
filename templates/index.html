@@ -753,6 +753,129 @@
             align-items: center;
             white-space: nowrap;
         }
+
+        /* Handbook Modal */
+        .handbook-modal {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 3, 3, 0.96);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 1000;
+            transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            color: var(--text-primary);
+        }
+
+        .handbook-modal.open {
+            right: 0;
+        }
+
+        .handbook-sidebar {
+            width: 320px;
+            border-right: 1px solid var(--border);
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background: rgba(10, 10, 15, 0.5);
+        }
+
+        .handbook-sidebar h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .handbook-toc {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .handbook-toc-item {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .handbook-toc-item:hover, .handbook-toc-item.active {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .handbook-content-area {
+            flex: 1;
+            padding: 50px 80px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .handbook-close-btn {
+            position: absolute;
+            top: 40px;
+            right: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 1010;
+        }
+
+        .handbook-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Quant Equation Styling */
+        .quant-equation {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: var(--radius-sm);
+            padding: 20px 25px;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .quant-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .quant-card h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -780,6 +903,10 @@
                 <li class="nav-item" onclick="switchTab(this, 'analysis')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Model Analysis
+                </li>
+                <li class="nav-item" onclick="openHandbook()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+                    System Handbook
                 </li>
             </ul>
         </div>
@@ -1391,6 +1518,274 @@
             box.scrollTop = box.scrollHeight;
             return uniqueId;
         }
+
+        // Handbook Modal Toggles
+        function openHandbook() {
+            const modal = document.getElementById('handbook-modal');
+            modal.classList.add('open');
+        }
+
+        function closeHandbook() {
+            const modal = document.getElementById('handbook-modal');
+            modal.classList.remove('open');
+        }
+
+        function scrollToHandbookSection(sectionId) {
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                // Update active TOC item
+                const items = document.querySelectorAll('.handbook-toc-item');
+                items.forEach(item => item.classList.remove('active'));
+                const activeItem = Array.from(items).find(item => item.getAttribute('onclick').includes(sectionId));
+                if (activeItem) activeItem.classList.add('active');
+            }
+        }
     </script>
+
+    <!-- 📖 SYSTEM HANDBOOK MODAL OVERLAY -->
+    <div class="handbook-modal" id="handbook-modal">
+        <button class="handbook-close-btn" onclick="closeHandbook()">CLOSE HANDBOOK ×</button>
+        
+        <div class="handbook-sidebar">
+            <h2>🔱 OMEGA Handbook</h2>
+            <p style="font-size: 0.72rem; color: var(--text-secondary); margin: -10px 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">QUANT WHITEPAPER & GUIDE</p>
+            <hr style="border: 0; border-top: 1px solid var(--border); width: 100%; margin: 0 0 10px 0;">
+            
+            <ul class="handbook-toc">
+                <li class="handbook-toc-item active" onclick="scrollToHandbookSection('sec-philosophy')">1. Core Philosophy</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-pitchers')">2. Pitcher Alpha Math</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-hitters')">3. Hitter Prop Mechanics</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-stacks')">4. Team Stacks & Fatigue</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-environment')">5. Environmental Filters</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-definitions')">6. Outputs & Glossary</li>
+            </ul>
+        </div>
+        
+        <div class="handbook-content-area">
+            <!-- SECTION 1 -->
+            <div id="sec-philosophy" style="margin-bottom: 60px; padding-top: 20px;">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>1.</span> The Triangulation Philosophy
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    The core OMEGA engine operates on the principle of <strong>Multi-Vector Triangulation</strong>. In sports analytics, trusting a single data vector (e.g., standard projections or raw exit velocities) creates severe blind spots. Bookmakers exploit these blind spots to trap public money. To find mathematical value, OMEGA reconciles three conflicting layers of reality:
+                </p>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">Vector A: Pure Physics (Statcast Calibration)</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                        Direct field measurements: barrel rates, expected weighted on-base average (xwOBA), Pitch CSW (Called Strikes + Whiffs), and SIERA. This represents actual physical capability, stripping away luck and ballpark noise.
+                    </p>
+                </div>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">Vector B: Market Intelligence (Sharps & Whales)</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                         betting splits and money flows. Tracking massive cash discrepancies (e.g., a team receiving only 20% of tickets but 80% of total money) exposes where syndicate groups and institutional "Whales" are placing their high-conviction positions.
+                    </p>
+                </div>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">Vector C: Environmental Modifier Overlay</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                        External variables that act as physics accelerators or suppressors: home plate umpire strike zones, stadium-specific humidity and launch velocities, wind shear, and multi-day trailing bullpen fatigue logs.
+                    </p>
+                </div>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    When these three vectors converge on a single matchup, the engine registers an active **Target or Shark Signal**, indicating an highly exploitable outlier edge in the market.
+                </p>
+            </div>
+            
+            <!-- SECTION 2 -->
+            <div id="sec-pitchers" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>2.</span> Pitcher Alpha Mathematical Architecture
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    Pitchers are graded on their raw pitching physics overlaid with market positioning. The score is computed through three sequential formulas:
+                </p>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 1: The Pure Talent Floor</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    Calculates a pitcher's baseline performance, combining skill-interactive ERA (SIERA) and Called Strikes + Whiffs (CSW) percentage. A SIERA &lt; 4.5 and CSW &gt; 25% are mapped to standard scales:
+                </p>
+                <div class="quant-equation">
+                    Talent_Score = 25 * (4.50 - SIERA) + 100 * (CSW - 0.25)
+                </div>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 2: Market Divergence Adjustment</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    Exposes sharp money and steam. Moneyline shifts and ticket-to-money disparities are converted into dynamic points:
+                </p>
+                <div class="quant-equation">
+                    Market_Divergence = (Sharp_ML_Move * 1.5) + (Whale_Money_Gap * 2.0)
+                </div>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 3: The Aggregated Pitcher Alpha</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    The final score incorporates environmental overlays (umpire strike zones, wind/stadium adjustments) and applies defensive gates:
+                </p>
+                <div class="quant-equation">
+                    Pitcher_Alpha = (Talent_Score * Defensive_Gates) + Market_Divergence + Env_Overlay
+                </div>
+                
+                <div class="quant-card" style="border-left: 4px solid var(--accent-red); background: rgba(255, 69, 58, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span class="badge pill-trap">🛡️ DEFENSIVE GATE: THE WHALE TRAP</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                        If public ticket volume is highly heavy (&gt;70% on a pitcher) but the moneyline moves in the <em>opposite</em> direction (Reverse Line Movement), the engine flags a <strong>Whale Trap</strong>. The gate applies a <strong>-20% penalty</strong> to that pitcher, suppressing them in lineup generation to aggressively fade public consensus.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- SECTION 3 -->
+            <div id="sec-hitters" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>3.</span> Hitter Prop Mechanics & The Abrams Patch
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    The Hitter Matrix targets maximum leverage (GPP Home Run odds and high DraftKings ceiling). It works by pairing Statcast hit profiles with pricing inefficiencies.
+                </p>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 4: Expected wOBA Momentum</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    OMEGA tracks a rolling 14-day Statcast window (Exit Velocity, Hard Hit %, and Launch Angle optimization) to calculate raw xwOBA momentum:
+                </p>
+                <div class="quant-equation">
+                    Hitter_xwOBA_Momentum = (Rolling_Avg_EV * 0.4) + (Hard_Hit_Pct * 0.3) + (Launch_Angle_Opt * 0.3)
+                </div>
+                
+                <div class="quant-card" style="border-left: 4px solid var(--accent-orange); background: rgba(255, 159, 10, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span class="badge pill-steam">🛡️ THE ABRAMS PRICE SHIELD</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                        To prevent bookmakers from hiding great players by pricing their HR props extremely high (e.g., pricing CJ Abrams or an elite bat at +900 to suppress public interest), OMEGA sets a <strong>Market Floor</strong>. If a hitter's pure Statcast physics xwOBA is &gt; .380, the engine automatically overrides artificially inflated odds, forcing the player up our target lists based on raw capability rather than bookmaker pricing bias.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- SECTION 4 -->
+            <div id="sec-stacks" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>4.</span> Team Stacks & The Bullpen Death-Spiral
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    DFS tournaments are won through stacking. OMEGA ranks team stacks using an aggregated formula that measures how hard an offense hits, combined with the structural vulnerability of the opposing pitching staff.
+                </p>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 5: Unified Team Stack Score</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    We sum the top xwOBA scores in the projected starting lineup, weigh it for power concentration (the 1-5 batting order spots), and multiply it by atmospheric and fatigue elements:
+                </p>
+                <div class="quant-equation">
+                    Stack_Score = (Lineup_xwOBA_Sum * Power_Concentration) * Bullpen_Fatigue_Factor * Stadium_PF * Umpire_Bias
+                </div>
+                
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 6: Bullpen Fatigue Acceleration Index</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    Bulllpen arms are gassed when overworked. OMEGA logs every relief appearance over a rolling 3-day window. If the opposing bullpen's fatigue score is &gt; 80, the stack conviction scales exponentially:
+                </p>
+                <div class="quant-equation">
+                    Bullpen_Fatigue_Factor = 1.0 + ((Fatigue - 80) / 100) * 0.20 [IF Fatigue &gt; 80, ELSE 1.0]
+                </div>
+                <p style="font-size: 0.95rem; color: var(--text-secondary);">
+                    <em>Example:</em> An opposing gassed bullpen with a fatigue score of 95 triggers a massive **+23% stack multiplier**, exposing teams whose relief cores are highly vulnerable to late-inning collapse!
+                </p>
+                
+                <div class="quant-card" style="border-left: 4px solid var(--accent-purple); background: rgba(191, 90, 242, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span class="badge pill-paradox">⚡ THE PARADOX RESOLVER GATE</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
+                        To prevent contradictory roster construction (e.g., locking in a starting pitcher while simultaneously playing a 5-man batting stack against them), the **Paradox Resolver** checks correlations. If a pitcher is ranked in the Top 5 but their opponent is also a Top 3 stack, the system applies a heavy **-30% penalty** to the pitcher. This forces a clean tactical stance: you either play the pitcher, or stack the hitters, but never compromise your lineups in between.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- SECTION 5 -->
+            <div id="sec-environment" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>5.</span> Environmental Modifiers (The Invisible 10%)
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    The differences between winning and losing rosters often come down to factors that standard projection systems treat as static noise. OMEGA recalculates these environmental vectors daily:
+                </p>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">A. Stadium Thermal Density</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0; line-height: 1.6;">
+                        High temperatures and heavy humidity significantly reduce air density. Reduced air resistance acts as a direct physical accelerator for hit trajectories. For every 10-degree rise above 70°F, hit carry distance increases by ~3.5 feet, boosting our **Hitter Burst Score** and stacking ratings for offenses playing in hot, outdoor stadiums.
+                    </p>
+                </div>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">B. Handedness Park Factors</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0; line-height: 1.6;">
+                         BALLPARK stadium models aren't generic. OMEGA uses asymmetrical park factor multipliers. A stadium with a short right-field porch (like Yankee Stadium) applies a specific <strong>1.12x multiplier to left-handed hitters</strong>, while keeping right-handed parameters completely neutral.
+                    </p>
+                </div>
+                <div class="quant-card">
+                    <h4 style="color:#fff; font-weight: 800;">C. Umpire Strike Zone Bias</h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin:0; line-height: 1.6;">
+                        Umpires are assigned to games daily. OMEGA cross-references a database of historic umpire zones. A "Launch Zone" umpire (tight strike zone) increases pitching walks and forces pitchers to throw meatier pitches in the zone, scaling the opposing team stack Implied Team Total by up to **+12%**. Conversely, "Pitcher-Friendly" umpires (expanded strike zones) scale up Pitcher strikeout predictions.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- SECTION 6 -->
+            <div id="sec-definitions" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>6.</span> Matrix Outputs & Glossary
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    To operate the OMEGA Cockpit at maximum efficiency, keep these core signals and parameters close in mind:
+                </p>
+                <table style="margin-top: 20px; font-size: 0.9rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 250px;">Signal Badge</th>
+                            <th>Mathematical Meaning</th>
+                            <th>Strategic Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge pill-target">🎯 TARGET</span></td>
+                            <td>Highest overall OMEGA-ranked math value on the slate.</td>
+                            <td>Lock in as core roster anchors in both cash and GPP slates.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-shark">🦈 SHARK</span></td>
+                            <td>Sharp money has heavily backed both the Moneyline and the Under.</td>
+                            <td>High-priority plays. Betting limits are expanding; sharps confirm the value.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-whale">🐳 WHALE</span></td>
+                            <td>Highly massive institutional volume flows (high money %, low ticket %).</td>
+                            <td>Indicates "Super-Sharp" backing. Target in GPP rosters to match smart pools.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-steam">🔥 STEAM</span></td>
+                            <td>Lines are moving rapidly in a narrow window across multiple books.</td>
+                            <td>Indicates syndicate activity. Roster immediately before prices rise.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-storm">⚡ STORM</span></td>
+                            <td>Offense playing in ideal hot/humid/wind-out launch environment.</td>
+                            <td>Ideal stack target. High probabilities of multi-homer games.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-trap">❌ TRAP</span></td>
+                            <td>Reverse Line Movement detected. Public is on one side, whales on the other.</td>
+                            <td>Aggressively fade. Avoid starting pitchers or stacks flagged as a trap.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-gassed">🚒 GASSED</span></td>
+                            <td>Opposing bullpen's 3-day trailing fatigue index is greater than 80%.</td>
+                            <td>Prioritize this batting stack. High odds of late-game run explosions.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
