@@ -1559,6 +1559,7 @@
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-stacks')">4. Team Stacks & Fatigue</li>
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-environment')">5. Environmental Filters</li>
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-definitions')">6. Outputs & Glossary</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-playbook')">7. GPP DFS Playbook</li>
             </ul>
         </div>
         
@@ -1618,13 +1619,21 @@
                 <div class="quant-equation">
                     Market_Divergence = (Sharp_ML_Move * 1.5) + (Whale_Money_Gap * 2.0)
                 </div>
+
+                <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">The "Sharp Money" Signal & +7.5% Premium Multiplier</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
+                    <strong>What SHARP means:</strong> OMEGA filters raw betting volume through strict institutional gates. A game is flagged as **SHARP** when pro money splits diverge aggressively from ticket volume (e.g., ticket count is 22% but money percentage is 58%), or when multi-book syndicate steam triggers concurrent line movement on both the moneyline and the under. When a team or pitcher receives confirmed pro money backing, the engine automatically applies a <strong>+7.5% Sharp Premium Multiplier</strong> to their aggregated metrics, prioritizing institutional plays over public bias.
+                </p>
+                <div class="quant-equation">
+                    Sharp_Premium_Factor = 1.075 [IF Sharp_Signal == True, ELSE 1.0]
+                </div>
                 
                 <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 3: The Aggregated Pitcher Alpha</h4>
                 <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
                     The final score incorporates environmental overlays (umpire strike zones, wind/stadium adjustments) and applies defensive gates:
                 </p>
                 <div class="quant-equation">
-                    Pitcher_Alpha = (Talent_Score * Defensive_Gates) + Market_Divergence + Env_Overlay
+                    Pitcher_Alpha = ((Talent_Score * Sharp_Premium_Factor) * Defensive_Gates) + Market_Divergence + Env_Overlay
                 </div>
                 
                 <div class="quant-card" style="border-left: 4px solid var(--accent-red); background: rgba(255, 69, 58, 0.02);">
@@ -1754,8 +1763,13 @@
                         </tr>
                         <tr>
                             <td><span class="badge pill-shark">🦈 SHARK</span></td>
-                            <td>Sharp money has heavily backed both the Moneyline and the Under.</td>
+                            <td>Syndicate sharp-backed money on both the Moneyline and Under.</td>
                             <td>High-priority plays. Betting limits are expanding; sharps confirm the value.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-sharp">🟢 SHARP</span></td>
+                            <td>Confirmed institutional money backing split. Triggers a <strong>+7.5% premium boost</strong>.</td>
+                            <td>Core anchor target. Shows heavy professional consensus before public locks.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-whale">🐳 WHALE</span></td>
@@ -1770,7 +1784,12 @@
                         <tr>
                             <td><span class="badge pill-storm">⚡ STORM</span></td>
                             <td>Offense playing in ideal hot/humid/wind-out launch environment.</td>
-                            <td>Ideal stack target. High probabilities of multi-homer games.</td>
+                            <td>Ideal stack target. High carry multiplier; heavy odds of home run clusters.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-storm">✨ DEBUT</span></td>
+                            <td>Rookie or starting pitcher making their seasonal or career debut.</td>
+                            <td>Highly volatile. Statcast metrics are estimated; utilize small leverage stakes.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-trap">❌ TRAP</span></td>
@@ -1782,8 +1801,69 @@
                             <td>Opposing bullpen's 3-day trailing fatigue index is greater than 80%.</td>
                             <td>Prioritize this batting stack. High odds of late-game run explosions.</td>
                         </tr>
+                        <tr>
+                            <td><span class="badge pill-steam">🔥 GASSING</span></td>
+                            <td>Opponent strikeout rate is high; boosts pitcher strikeout ceiling.</td>
+                            <td>Target pitcher's over-strikeout prop on prop boards. High GPP ceiling.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-lowconf">🧊 COLD</span></td>
+                            <td>Hitter has experienced a severe cold streak over their last 15 plate appearances.</td>
+                            <td>Gate activated. Lowers hitter priority and suppresses them in lineup generator.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-paradox">🚫 PARADOX</span></td>
+                            <td>Conflict: Top Pitcher faces a Top Stack. Suppress rating by 30%.</td>
+                            <td>Forces a clean stand: stack the offense, or lock the pitcher, never mix them.</td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- SECTION 7 -->
+            <div id="sec-playbook" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>7.</span> The OMEGA GPP DFS Playbook
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
+                    The OMEGA Cockpit is not a static scoreboard; it is a **dynamic tournament-winning weapon**. By utilizing expected physical baselines and market betting flows, you can systematically build highly leveraged rosters that out-maximize the field. Here is your step-by-step GPP (Guaranteed Prize Pool) tournament drafting blueprint:
+                </p>
+
+                <div class="quant-card" style="border-left: 4px solid var(--accent-blue);">
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Step 1: Anchor Your Pitching Core (The Talent-Shield)</h4>
+                    <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0 0 12px 0;">
+                        In multi-entry tournaments, pitching failure kills rosters instantly. Build your pitching pool by looking at the **Pitchers Matrix**:
+                    </p>
+                    <ul style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; padding-left: 20px;">
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">Filter by Floor:</strong> Only select pitchers with a raw Talent Score > 55. If a pitcher's arm talent (SIERA/CSW) is weak, do not roster them.</li>
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">Identify Pro backing:</strong> Look for pitchers carrying a <span class="badge pill-sharp">🟢 SHARP</span> or <span class="badge pill-whale">🐳 WHALE</span> badge. Pro-backing confirms that professional money expects an elite game.</li>
+                        <li style="margin-bottom: 0;"><strong style="color:#fff;">AGGRESSIVE FADE:</strong> Never roster a pitcher flagged with a <span class="badge pill-trap">❌ TRAP</span> badge, regardless of how cheap their salary is. The market is screaming that a public trap is active.</li>
+                    </ul>
+                </div>
+
+                <div class="quant-card" style="border-left: 4px solid var(--accent-green);">
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Step 2: Build Your 5-3 and 4-4 Correlation Offenses</h4>
+                    <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0 0 12px 0;">
+                        Correlated scoring is the only way to climb the GPP leaderboards. When a team scores 10 runs, all players in that batting lineup benefit:
+                    </p>
+                    <ul style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; padding-left: 20px;">
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">Identify "Storm" Stacks:</strong> Look for team stacks carrying the <span class="badge pill-storm">⚡ STORM</span> badge. This confirms hot/humid stadium carry velocities, wind launch assistance, and tight umpire strike zones.</li>
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">Target Gassed Bullpens:</strong> Prioritize stack matchups carrying the <span class="badge pill-gassed">🚒 GASSED</span> badge. If the opposing relief pitching staff has a 3-day fatigue index > 80%, the offense will explode in the late innings against exhausted relief arms.</li>
+                        <li style="margin-bottom: 0;"><strong style="color:#fff;">Avoid Paradoxes:</strong> Ensure you do not play a pitcher who is starting against your main batting stack. Lock in your stance and let the **Paradox Resolver** suppress conflicting selections.</li>
+                    </ul>
+                </div>
+
+                <div class="quant-card" style="border-left: 4px solid var(--accent-purple);">
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Step 3: Capture Divergence Arbitrage (Leverage Over the Field)</h4>
+                    <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0 0 12px 0;">
+                        In DFS, high ownership is your enemy. The field drafts based on media hype and basic projection sheets. You win by finding the "Blind Spots":
+                    </p>
+                    <ul style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; padding-left: 20px;">
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">The Divergence Indicator:</strong> Look for matchups in the **Teams Matrix** where the **Physics Score** is highly higher than the **Market Score** (e.g., Physics is 88, but Market is 52).</li>
+                        <li style="margin-bottom: 6px;"><strong style="color:#fff;">Strategic Opportunity:</strong> This means that while public consensus and betting money are cold on the team, their underlying Statcast physical metrics are elite. Stacking this team gives you massive tournament leverage: they will score high but be owned by less than 5% of the tournament field!</li>
+                        <li style="margin-bottom: 0;"><strong style="color:#fff;">Verify on Hitter Prop Boards:</strong> Verify these plays by checking the Hitter prop board for batters whose home run odds are artificially high, leveraging the **Abrams Price Shield** floor.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
