@@ -21,6 +21,24 @@ refresh_progress = "Idle"
 last_refresh_time = None
 refresh_lock = threading.Lock()
 
+# Load last refresh time from cached results on startup
+try:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    if os.path.exists(results_path):
+        with open(results_path, "r", encoding="utf-8") as f:
+            cached_data = json.load(f)
+        cached_ts = cached_data.get("timestamp")
+        if cached_ts:
+            if "T" in cached_ts:
+                # Parse ISO timestamp format
+                dt = datetime.datetime.fromisoformat(cached_ts)
+                last_refresh_time = dt.strftime("%Y-%m-%d %I:%M %p ET")
+            else:
+                last_refresh_time = cached_ts
+except Exception as init_err:
+    print(f"[INIT WARNING]: Failed to load cached timestamp: {init_err}")
+
 # Auth config
 PASSWORD = os.getenv("OMEGA_PASSWORD", "omega2026")
 COOKIE_NAME = "omega_session"
