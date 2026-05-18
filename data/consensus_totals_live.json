@@ -16,12 +16,12 @@
     "under_divergence": 3
   },
   "GUARDIANS @ TIGERS": {
-    "over_tickets": 70,
+    "over_tickets": 71,
     "over_money": 74,
-    "under_tickets": 30,
+    "under_tickets": 29,
     "under_money": 26,
-    "over_divergence": 4,
-    "under_divergence": -4
+    "over_divergence": 3,
+    "under_divergence": -3
   },
   "METS @ NATIONALS": {
     "over_tickets": 83,
@@ -56,12 +56,12 @@
     "under_divergence": 5
   },
   "ASTROS @ TWINS": {
-    "over_tickets": 63,
-    "over_money": 73,
-    "under_tickets": 37,
-    "under_money": 27,
-    "over_divergence": 10,
-    "under_divergence": -10
+    "over_tickets": 65,
+    "over_money": 74,
+    "under_tickets": 35,
+    "under_money": 26,
+    "over_divergence": 9,
+    "under_divergence": -9
   },
   "RANGERS @ ROCKIES": {
     "over_tickets": 85,

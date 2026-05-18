@@ -9,18 +9,18 @@
   },
   "ATL": {
     "ticket": 75,
-    "money": 66
+    "money": 69
   },
   "MIA": {
     "ticket": 25,
-    "money": 34
+    "money": 31
   },
   "CLE": {
-    "ticket": 43,
+    "ticket": 42,
     "money": 69
   },
   "DET": {
-    "ticket": 57,
+    "ticket": 58,
     "money": 31
   },
   "NYM": {
@@ -56,12 +56,12 @@
     "money": 80
   },
   "HOU": {
-    "ticket": 31,
-    "money": 11
+    "ticket": 32,
+    "money": 12
   },
   "MIN": {
-    "ticket": 69,
-    "money": 89
+    "ticket": 68,
+    "money": 88
   },
   "TEX": {
     "ticket": 74,
@@ -80,12 +80,12 @@
     "money": 34
   },
   "LAD": {
-    "ticket": 77,
-    "money": 66
+    "ticket": 78,
+    "money": 68
   },
   "SD": {
-    "ticket": 23,
-    "money": 34
+    "ticket": 22,
+    "money": 32
   },
   "SF": {
     "ticket": 44,
