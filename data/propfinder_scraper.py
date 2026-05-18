@@ -114,15 +114,18 @@ class PropfinderScraper:
                                 break
                         
                         # Expert Notes (The long paragraph)
-                        # We exclude specific headers and names
-                        lines = content.split('\n')
                         notes = ""
-                        for line in lines:
-                            line = line.strip()
-                            # Look for the characteristic Roth report paragraph
-                            if len(line) > 40 and not any(x in line for x in ["Forecaster", "Kevin Roth", "mph", "°", "Humidity", "Wind Speed"]):
-                                notes = line
-                                break
+                        if "FORECASTER NOTES" in content:
+                            notes_part = content.split("FORECASTER NOTES")[-1].strip()
+                            # Clean up prefix like " (1)" or "(2)"
+                            notes_part = re.sub(r'^\s*\(\d+\)\s*', '', notes_part).strip()
+                            # Clean up Forecaster names
+                            notes_part = re.sub(r'^Kevin Roth\s*', '', notes_part).strip()
+                            notes_part = re.sub(r'^Forecaster:\s*Kevin Roth\s*', '', notes_part).strip()
+                            
+                            if notes_part:
+                                # Extract the main forecast paragraph
+                                notes = notes_part.split('\n')[0].strip()
                         
                         results.append({
                             "home": home_team,

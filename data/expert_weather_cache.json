@@ -6,7 +6,7 @@
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "Closed dome \u2014 weather has no effect at this ballpark."
+    "notes": ""
   },
   {
     "home": "Philadelphia Phillies",
@@ -15,7 +15,7 @@
     "wind_speed": 10,
     "wind_dir": "Out to Center",
     "status": "Clear",
-    "notes": ""
+    "notes": "Warm temps and winds blowing out to center at 10mph."
   },
   {
     "home": "Miami Marlins",
@@ -33,7 +33,7 @@
     "wind_speed": 15,
     "wind_dir": "In from Right",
     "status": "Delay Likely, Chance For a Postponement",
-    "notes": ""
+    "notes": "ORANGE - Just annoying timing of the rain here, with a storm line expected to move in shortly after first pitch. They can try to start on time, but it almost definitely will mean starting pitchers get yoinked early... or they could late start to avoid that, but then they might not be able to start until around 8pm. I still think they probably play one way or another despite the delay, but I can't promise it. Winds in from right at 10-15mph."
   },
   {
     "home": "Washington Nationals",
@@ -42,25 +42,16 @@
     "wind_speed": 10,
     "wind_dir": "Neutral",
     "status": "Clear",
-    "notes": ""
+    "notes": "Hot temps with winds blowing out at 10mph, nice hitting weather."
   },
   {
     "home": "New York Yankees",
     "away": "Toronto Blue Jays",
-    "temp": 82,
+    "temp": 84,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
     "notes": ""
-  },
-  {
-    "home": "Minnesota Twins",
-    "away": "Houston Astros",
-    "temp": 66,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Delay Likely, Chance For a Postponement",
-    "notes": "ORANGE - Looks a bit like KC in that we start dry but are in a race against time with storm chances building as the game goes on. Rain might arrive here a touch earlier than KC, but also may initially be light enough to play through (tough to tell). There are some subtle differences between this forecast and KC's, but nothing I'm super confident in, so it gets the same general tag of \"I don't know what happens in the latter half of this game\"."
   },
   {
     "home": "Kansas City Royals",
@@ -72,40 +63,49 @@
     "notes": "ORANGE - This game should start dry, but I'm worried it won't finish that way (in fact, I'm worried it might not even finish at all). A nearby storm line will slowly be pushing towards the ballpark this evening, so it will be a race against time to get the game in before the lightning arrives. Best guess is that I think we've got a good shot of seeing 5+ innings before it gets dicey, but the latter half of this game is a question mark. Warm, humid, winds blowing out to left, solid hitting weather for KC."
   },
   {
+    "home": "Minnesota Twins",
+    "away": "Houston Astros",
+    "temp": 66,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Delay Likely, Chance For a Postponement",
+    "notes": "ORANGE - Looks a bit like KC in that we start dry but are in a race against time with storm chances building as the game goes on. Rain might arrive here a touch earlier than KC, but also may initially be light enough to play through (tough to tell). There are some subtle differences between this forecast and KC's, but nothing I'm super confident in, so it gets the same general tag of \"I don't know what happens in the latter half of this game\"."
+  },
+  {
     "home": "Chicago Cubs",
     "away": "Milwaukee Brewers",
     "temp": 77,
     "wind_speed": 20,
     "wind_dir": "Out to Left",
     "status": "Clear",
-    "notes": ""
+    "notes": "Windy Wrigley! Winds blowing out to left or left-center at 15-20mph with warm weather, great hitting conditions."
   },
   {
     "home": "Colorado Rockies",
     "away": "Texas Rangers",
-    "temp": 41,
+    "temp": 42,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Chance For Delay",
-    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
+    "notes": "YELLOW - There's a little bit of rain around and temps are in the 40s, so these aren't ideal conditions... but I think they manage to play ball here tonight. There's a chance of some sort of delay or late start, but if anything I think it's more likely they play through a few cold rain showers."
   },
   {
     "home": "Los Angeles Angels",
     "away": "Oakland Athletics",
-    "temp": 72,
+    "temp": 74,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "notes": ""
   },
   {
     "home": "Seattle Mariners",
     "away": "Chicago White Sox",
-    "temp": 63,
+    "temp": 68,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "notes": ""
   },
   {
     "home": "San Diego Padres",
@@ -114,7 +114,7 @@
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "notes": ""
   },
   {
     "home": "Arizona Diamondbacks",
@@ -123,6 +123,6 @@
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "notes": ""
   }
 ]
