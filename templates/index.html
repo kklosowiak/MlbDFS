@@ -1702,6 +1702,14 @@
             document.getElementById('page-title').innerText = titles[tabId][0];
             document.getElementById('page-subtitle').innerText = titles[tabId][1];
 
+            // Hide/Show matchup filter dynamically for static pages
+            const filterPanel = document.getElementById('matchup-filter-panel');
+            if (tabId === 'analysis' || tabId === 'trends') {
+                if (filterPanel) filterPanel.style.display = 'none';
+            } else {
+                if (filterPanel) filterPanel.style.display = 'block';
+            }
+
             if (tabId === 'trends') {
                 loadTrends();
             }
@@ -1987,7 +1995,10 @@
                 'pitchers': '#pitchers-body tr',
                 'hitters': '#hitters-body tr',
                 'teams': '#teams-body tr',
-                'analysis': null
+                'platoons': '#platoons-body tr',
+                'weather': '#weather-body tr',
+                'analysis': null,
+                'trends': null
             }[currentTab];
 
             if (!selector) {
@@ -2033,6 +2044,7 @@
 
                 matchups.forEach(m => {
                     const tr = document.createElement('tr');
+                    tr.setAttribute('data-teams', `${getTeamAbbr(m.team)},${getTeamAbbr(m.opponent)}`);
 
                     // OPS color helper
                     function opsColor(ops) {
@@ -2098,6 +2110,7 @@
                     body.appendChild(tr);
                 });
 
+                filterData();
             } catch (err) {
                 console.error("Error loading platoons:", err);
             }
@@ -2125,6 +2138,7 @@
 
                 games.forEach(g => {
                     const tr = document.createElement('tr');
+                    tr.setAttribute('data-teams', `${getTeamAbbr(g.away)},${getTeamAbbr(g.home)}`);
                     
                     // Count statuses
                     const statusLower = g.status.toLowerCase();
@@ -2202,6 +2216,7 @@
                 document.getElementById('weather-domes-val').innerText = domeCount;
                 document.getElementById('weather-hazards-val').innerText = hazardCount;
 
+                filterData();
             } catch (err) {
                 console.error("Error loading weather:", err);
             }
