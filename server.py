@@ -402,6 +402,22 @@ def get_debug_env_api():
     data_files = os.listdir(data_dir) if os.path.exists(data_dir) else []
     reports_files = os.listdir(reports_dir) if os.path.exists(reports_dir) else []
     
+    latest_snap = None
+    snap_size = 0
+    snap_content = ""
+    for f in data_files:
+        if f.startswith("snapshot_") and f.endswith(".json"):
+            if not latest_snap or f > latest_snap:
+                latest_snap = f
+    if latest_snap:
+        snap_path = os.path.join(data_dir, latest_snap)
+        snap_size = os.path.getsize(snap_path) if os.path.exists(snap_path) else 0
+        try:
+            with open(snap_path, "r", encoding="utf-8") as f_snap:
+                snap_content = f_snap.read()[:500]
+        except Exception as e:
+            snap_content = f"Error reading: {e}"
+
     from run_fetch import get_slate_date
     try:
         slate_date = str(get_slate_date())
@@ -412,7 +428,10 @@ def get_debug_env_api():
         "odds_api_key_status": key_status,
         "data_files": data_files,
         "reports_files": reports_files,
-        "base_date_slate": slate_date
+        "base_date_slate": slate_date,
+        "latest_snapshot": latest_snap,
+        "snapshot_size": snap_size,
+        "snapshot_preview": snap_content
     }
 
 @app.post("/api/refresh", dependencies=[Depends(get_current_user)])
