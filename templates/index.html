@@ -1162,12 +1162,28 @@
         </div>
 
         <!-- SEARCH AND FILTER CONTROLS -->
-        <div class="controls-card">
-            <div class="search-wrapper">
-                <input type="text" class="search-input" id="search-bar" placeholder="SEARCH PLAYER OR TEAM..." oninput="filterData()">
+        <div class="controls-card" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div class="search-wrapper" style="flex: 1; max-width: 500px;">
+                    <input type="text" class="search-input" id="search-bar" placeholder="SEARCH PLAYER OR TEAM..." oninput="filterData()">
+                </div>
+                <div style="font-size:0.85rem; font-weight:700; color:var(--text-secondary);" id="counter-box">
+                    SHOWING 0 PLAYS
+                </div>
             </div>
-            <div style="font-size:0.85rem; font-weight:700; color:var(--text-secondary);" id="counter-box">
-                SHOWING 0 PLAYS
+            
+            <!-- Matchup Filter Panel (v9.3) -->
+            <div id="matchup-filter-panel" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; display: none;">
+                <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Matchup Filter (Select Slates)</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="toggleAllMatchups(true)" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Select All</button>
+                        <button onclick="toggleAllMatchups(false)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Clear All</button>
+                    </div>
+                </div>
+                <div id="matchups-checkbox-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 120px; overflow-y: auto; padding-right: 5px;">
+                    <!-- Dynamically Populated Matchups -->
+                </div>
             </div>
         </div>
 
@@ -1312,6 +1328,134 @@
             localStorage.setItem('gemini_api_key', key);
         }
 
+        // Dynamic Slate Matchup Filter (v9.3)
+        function getTeamAbbr(name) {
+            if (!name) return "";
+            const clean = name.trim();
+            if (abbrevMap[clean]) return abbrevMap[clean];
+            if (clean.length === 3 || clean === 'CWS' || clean === 'WSH') return clean;
+            for (const [k, v] of Object.entries(abbrevMap)) {
+                if (k.toLowerCase().includes(clean.toLowerCase()) || clean.toLowerCase().includes(k.toLowerCase())) {
+                    return v;
+                }
+            }
+            return clean.toUpperCase();
+        }
+
+        function populateMatchupFilter(data) {
+            const container = document.getElementById('matchups-checkbox-container');
+            const panel = document.getElementById('matchup-filter-panel');
+            if (!container || !panel || !data) return;
+
+            const pitchers = data.pitchers || [];
+            if (pitchers.length === 0) {
+                panel.style.display = 'none';
+                return;
+            }
+
+            const seenGames = new Set();
+            const matchups = [];
+
+            pitchers.forEach(p => {
+                const team = getTeamAbbr(p.team);
+                const opp = getTeamAbbr(p.opponent);
+                if (!team || !opp) return;
+
+                const gameKey = [team, opp].sort().join('_');
+                if (!seenGames.has(gameKey)) {
+                    seenGames.add(gameKey);
+                    matchups.push({ teamA: team, teamB: opp });
+                }
+            });
+
+            if (matchups.length === 0) {
+                panel.style.display = 'none';
+                return;
+            }
+
+            const uncheckedMatchupKeys = new Set();
+            container.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                if (!cb.checked) {
+                    uncheckedMatchupKeys.add(cb.getAttribute('data-game-key'));
+                }
+            });
+
+            container.innerHTML = '';
+            panel.style.display = 'block';
+
+            matchups.forEach(m => {
+                const gameKey = [m.teamA, m.teamB].sort().join('_');
+                const isChecked = !uncheckedMatchupKeys.has(gameKey);
+
+                const div = document.createElement('div');
+                div.style.cssText = "display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 4px 10px; gap: 6px; cursor: pointer; transition: all 0.2s; user-select: none; font-size: 0.8rem; font-family: monospace; font-weight: bold; color: var(--text-primary);";
+                div.className = "matchup-chip";
+                div.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const cb = div.querySelector('input');
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
+                };
+
+                div.onmouseenter = () => { div.style.borderColor = "var(--accent-blue)"; div.style.background = "rgba(0, 242, 254, 0.04)"; };
+                div.onmouseleave = () => { 
+                    const cb = div.querySelector('input');
+                    if (cb.checked) {
+                        div.style.borderColor = "rgba(0, 242, 254, 0.2)"; 
+                        div.style.background = "rgba(0, 242, 254, 0.04)";
+                    } else {
+                        div.style.borderColor = "rgba(255,255,255,0.08)"; 
+                        div.style.background = "rgba(255,255,255,0.03)";
+                    }
+                };
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.checked = isChecked;
+                input.className = 'matchup-checkbox';
+                input.setAttribute('data-game-key', gameKey);
+                input.setAttribute('data-team-a', m.teamA);
+                input.setAttribute('data-team-b', m.teamB);
+                input.style.cssText = "cursor: pointer; margin: 0; accent-color: var(--accent-blue);";
+                
+                input.onchange = () => {
+                    if (input.checked) {
+                        div.style.borderColor = "rgba(0, 242, 254, 0.2)";
+                        div.style.background = "rgba(0, 242, 254, 0.04)";
+                        div.style.color = "#00f2fe";
+                    } else {
+                        div.style.borderColor = "rgba(255,255,255,0.08)";
+                        div.style.background = "rgba(255,255,255,0.03)";
+                        div.style.color = "var(--text-secondary)";
+                    }
+                    filterData();
+                };
+
+                if (isChecked) {
+                    div.style.borderColor = "rgba(0, 242, 254, 0.2)";
+                    div.style.background = "rgba(0, 242, 254, 0.04)";
+                    div.style.color = "#00f2fe";
+                } else {
+                    div.style.color = "var(--text-secondary)";
+                }
+
+                const span = document.createElement('span');
+                span.innerText = `${m.teamA} @ ${m.teamB}`;
+
+                div.appendChild(input);
+                div.appendChild(span);
+                container.appendChild(div);
+            });
+        }
+
+        function toggleAllMatchups(checkAll) {
+            document.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                cb.checked = checkAll;
+                cb.dispatchEvent(new Event('change'));
+            });
+        }
+
         // Tab Switching
         function switchTab(el, tabId) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -1346,6 +1490,7 @@
                     return;
                 }
                 latestData = await res.json();
+                populateMatchupFilter(latestData);
                 
                 // Update slate date in header
                 if (latestData && latestData.timestamp) {
@@ -1436,6 +1581,7 @@
             const pitchers = latestData.pitchers || [];
             pitchers.forEach(p => {
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
                 if (p.alpha_score >= 85) tr.classList.add('row-highlight');
                 
                 const scoreClass = p.alpha_score >= 100 ? 'score elite' : (p.alpha_score >= 85 ? 'score high' : 'score med');
@@ -1476,6 +1622,7 @@
             const hitters = latestData.hitters || [];
             hitters.forEach(h => {
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
                 if (h.player_score >= 85) tr.classList.add('row-highlight');
                 
                 const scoreClass = h.player_score >= 100 ? 'score elite' : (h.player_score >= 85 ? 'score high' : 'score med');
@@ -1509,6 +1656,7 @@
             const teams = latestData.teams || [];
             teams.forEach(t => {
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
                 if (t.stack_score >= 85) tr.classList.add('row-highlight');
                 
                 const scoreClass = t.stack_score >= 100 ? 'score elite' : (t.stack_score >= 85 ? 'score high' : 'score med');
@@ -1570,6 +1718,14 @@
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             let showingCount = 0;
 
+            const uncheckedTeams = [];
+            document.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                if (!cb.checked) {
+                    uncheckedTeams.push(cb.getAttribute('data-team-a'));
+                    uncheckedTeams.push(cb.getAttribute('data-team-b'));
+                }
+            });
+
             const selector = {
                 'pitchers': '#pitchers-body tr',
                 'hitters': '#hitters-body tr',
@@ -1585,7 +1741,12 @@
             const rows = document.querySelectorAll(selector);
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
-                if (text.includes(query)) {
+                const rowTeamsStr = row.getAttribute('data-teams') || "";
+                const rowTeams = rowTeamsStr.split(',');
+                
+                const isFilteredByMatchup = rowTeams.some(t => uncheckedTeams.includes(t));
+
+                if (text.includes(query) && !isFilteredByMatchup) {
                     row.style.display = '';
                     showingCount++;
                 } else {
