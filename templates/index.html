@@ -1811,6 +1811,29 @@
                     Pitchers are graded on their raw pitching physics overlaid with market positioning. The score is computed through three sequential formulas:
                 </p>
                 
+                <div class="quant-card" style="border-left: 4px solid var(--accent-green); background: rgba(52, 199, 89, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>🔬 Pitcher PHYS (Physics Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        Measures raw starting pitcher skill adjusted for stadium physics and umpire boundaries. This forms <strong>45%</strong> of the pitcher's total baseline score.
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        PHYS = 0.45 * [ (Skill_Score + CSW_Score)/2 * (1.0 + (100 - Park_Factor + Opponent_K_Boost)/100) ]
+                    </div>
+                </div>
+                <div class="quant-card" style="border-left: 4px solid var(--accent-blue); background: rgba(10, 132, 255, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>📊 Pitcher MKT (Market Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        Captures smart money flow and Vegas odds shifts in real-time. This forms <strong>20%</strong> of the pitcher's total baseline score.
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        MKT = 0.20 * [ (Moneyline_Move_Score + Implied_Total_Move_Score) / 2 ]
+                    </div>
+                </div>
+                
                 <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 1: The Pure Talent Floor</h4>
                 <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
                     Calculates a pitcher's baseline performance, combining skill-interactive ERA (SIERA) and Called Strikes + Whiffs (CSW) percentage. A SIERA &lt; 4.5 and CSW &gt; 25% are mapped to standard scales:
@@ -1862,6 +1885,29 @@
                     The Hitter Matrix targets maximum leverage (GPP Home Run odds and high DraftKings ceiling). It works by pairing Statcast hit profiles with pricing inefficiencies.
                 </p>
                 
+                <div class="quant-card" style="border-left: 4px solid var(--accent-green); background: rgba(52, 199, 89, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>🔬 Hitter PHYS (Physics Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        Represents a hitter's pure Statcast contact profile, scaling expected Weighted On-Base Average (xwOBA) over their rolling 14-day and matchup baseline from 0.280 to 0.420. Yields up to <strong>50.0 points</strong> of the player's core rating.
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        PHYS = Limit[0, 50, ((Matchup_xwOBA - 0.280) / (0.420 - 0.280)) * 50]
+                    </div>
+                </div>
+                <div class="quant-card" style="border-left: 4px solid var(--accent-blue); background: rgba(10, 132, 255, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>📊 Hitter MKT (Market Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        Scales the player's AnyTime Home Run (AHR) prop market odds from +200 to +700, exposing bookmaker mispricings. Yields up to <strong>50.0 points</strong> of the player's core rating (with a dynamic protective floor for elite bats).
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        MKT = Limit[0, 50, ((700 - Min[700, AHR_Odds]) / 500) * 50]
+                    </div>
+                </div>
+                
                 <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 4: Expected wOBA Momentum</h4>
                 <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
                     OMEGA tracks a rolling 14-day Statcast window (Exit Velocity, Hard Hit %, and Launch Angle optimization) to calculate raw xwOBA momentum:
@@ -1888,6 +1934,29 @@
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.8);">
                     DFS tournaments are won through stacking. OMEGA ranks team stacks using an aggregated formula that measures how hard an offense hits, combined with the structural vulnerability of the opposing pitching staff.
                 </p>
+                
+                <div class="quant-card" style="border-left: 4px solid var(--accent-green); background: rgba(52, 199, 89, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>🔬 Stack PHYS (Physics Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        Measures the line-up's physical capability, combining core contact talent (Statcast xwOBA) with slot power concentration (batting order weightings) and stadium dimensions. Evaluates to <strong>40%</strong> of the stack's total score.
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        PHYS = 0.40 * [ (Hitter_xwOBA * 0.4 + Power_Concentration * 0.6) scaled to [0,100] * (1.0 + Park_Factor/100) ]
+                    </div>
+                </div>
+                <div class="quant-card" style="border-left: 4px solid var(--accent-blue); background: rgba(10, 132, 255, 0.02);">
+                    <h4 style="color:#fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <span>📊 Stack MKT (Market Score) Calculation</span>
+                    </h4>
+                    <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom: 8px; line-height: 1.6;">
+                        A dual-vector blend incorporating Vegas's absolute Implied Team Total (50%) and live sharp money movements (50%), rewarding both high implied bases and sharp backing. Evaluates to <strong>20%</strong> of the stack's total score.
+                    </p>
+                    <div class="quant-equation" style="font-size: 0.8rem; padding: 10px;">
+                        MKT = 0.20 * [ (Vegas_Implied_Total_Score * 0.50) + (Vegas_Delta_Movement_Score * 0.50) ]
+                    </div>
+                </div>
                 
                 <h4 style="color: #fff; margin-bottom: 8px; font-weight: 700;">Formula 5: Unified Team Stack Score</h4>
                 <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0;">
@@ -1963,6 +2032,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td><span class="badge" style="background: rgba(52, 199, 89, 0.12); border-color: #34c759; color: #34c759; text-shadow: 0 0 6px rgba(52, 199, 89, 0.3); font-weight: 800; font-size: 0.72rem; padding: 4px 8px; border-radius: 4px; border: 1px solid; display: inline-block; white-space: nowrap;">🔬 PHYS (PHYSICS)</span></td>
+                            <td>Expected physical performance based entirely on Statcast launch velocities, expected wOBA (xwOBA), Pitch CSW%, SIERA, umpire zones, and weather physics. Represents true underlying baseline talent.</td>
+                            <td>Compare with market score. When PHYS is high but MKT is low, target for high-leverage GPP tournament plays (exploiting public blind spots).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: rgba(10, 132, 255, 0.12); border-color: #0a84ff; color: #0a84ff; text-shadow: 0 0 6px rgba(10, 132, 255, 0.3); font-weight: 800; font-size: 0.72rem; padding: 4px 8px; border-radius: 4px; border: 1px solid; display: inline-block; white-space: nowrap;">📊 MKT (MARKET)</span></td>
+                            <td>Consensus Vegas and sportsbook sentiment. Reflects opening moneyline lines, live money movements, betting split discrepancies (ticket-to-money gap), and Anytime Home Run (AHR) prop pricing.</td>
+                            <td>Use to detect institutional support and syndicate steam. High MKT scores highlight where the smart money is moving before the public reacts.</td>
+                        </tr>
                         <tr>
                             <td><span class="badge pill-target">🎯 TARGET</span></td>
                             <td>Highest overall OMEGA-ranked math value on the slate.</td>
