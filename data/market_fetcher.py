@@ -222,7 +222,8 @@ class MarketFetcher:
                 # Temporal Slate Filter
                 commence_dt = datetime.fromisoformat(commence_time.replace('Z', '+00:00'))
                 now = datetime.now(timezone.utc)
-                if commence_dt < (now - timedelta(hours=1)) or commence_dt > (now + timedelta(hours=24)):
+                # OMEGA v9.4: Loosen past filtering so manual refreshes do not exclude early games of today's slate
+                if commence_dt < (now - timedelta(hours=18)) or commence_dt > (now + timedelta(hours=36)):
                     continue
 
                 if event_id not in structured_odds:

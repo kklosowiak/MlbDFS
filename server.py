@@ -20,6 +20,7 @@ is_refreshing = False
 refresh_progress = "Idle"
 last_refresh_time = None
 last_refresh_timestamp_raw = 0  # epoch time of last refresh run
+last_scheduled_hour_key = None  # YYYY-MM-DD HH of last completed refresh
 refresh_lock = threading.Lock()
 
 # Timezone engine helper to convert naive datetimes (which are UTC on Render) to Eastern Time (ET)
@@ -51,8 +52,13 @@ try:
                 dt = datetime.datetime.fromisoformat(cached_ts)
                 dt_et = get_eastern_time(dt)
                 last_refresh_time = dt_et.strftime("%Y-%m-%d %I:%M %p ET")
+                last_scheduled_hour_key = dt_et.strftime("%Y-%m-%d %H")
             else:
                 last_refresh_time = cached_ts
+                mtime = os.path.getmtime(results_path)
+                dt_mtime = datetime.datetime.fromtimestamp(mtime)
+                dt_et = get_eastern_time(dt_mtime)
+                last_scheduled_hour_key = dt_et.strftime("%Y-%m-%d %H")
 except Exception as init_err:
     print(f"[INIT WARNING]: Failed to load cached timestamp: {init_err}")
 
@@ -63,7 +69,7 @@ COOKIE_VALUE = "active"
 
 # Thread-safe background runner
 def perform_refresh_sync():
-    global is_refreshing, refresh_progress, last_refresh_time, last_refresh_timestamp_raw
+    global is_refreshing, refresh_progress, last_refresh_time, last_refresh_timestamp_raw, last_scheduled_hour_key
     with refresh_lock:
         if is_refreshing:
             return
@@ -92,6 +98,7 @@ def perform_refresh_sync():
             et_now = get_eastern_time(datetime.datetime.now())
             last_refresh_time = et_now.strftime("%Y-%m-%d %I:%M %p ET")
             last_refresh_timestamp_raw = time.time()
+            last_scheduled_hour_key = et_now.strftime("%Y-%m-%d %H")
             refresh_progress = "Idle"
             is_refreshing = False
         print("[SERVER BG-THREAD]: Refresh completed successfully!")
@@ -104,60 +111,33 @@ def perform_refresh_sync():
 
 # Background scheduler thread
 def scheduler_loop():
-    global is_refreshing, last_refresh_timestamp_raw
-    print("[SERVER]: Auto-Refresh Hybrid Scheduler thread started (Active: 9AM-8PM EST, hourly interval).")
+    global is_refreshing, last_refresh_timestamp_raw, last_scheduled_hour_key
+    print("[SERVER]: Auto-Refresh Hourly Scheduler thread started (Active: 8AM-8PM EST).")
     
-    # Initialize last refresh epoch from existing results file to prevent double-refresh on restart
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    results_path = os.path.join(base_dir, "reports", "latest_results.json")
-    if os.path.exists(results_path):
-        try:
-            with open(results_path, "r", encoding="utf-8") as f:
-                cached_data = json.load(f)
-            cached_ts = cached_data.get("timestamp")
-            if cached_ts and "T" in cached_ts:
-                dt = datetime.datetime.fromisoformat(cached_ts)
-                last_refresh_timestamp_raw = dt.timestamp()
-            else:
-                last_refresh_timestamp_raw = os.path.getmtime(results_path)
-        except Exception as e:
-            print(f"[SERVER SCHEDULER WARNING]: Failed to parse JSON timestamp: {e}")
-            try:
-                last_refresh_timestamp_raw = os.path.getmtime(results_path)
-            except:
-                last_refresh_timestamp_raw = 0
-    else:
-        last_refresh_timestamp_raw = 0
-            
     while True:
         # Check current US/Eastern Time dynamically (DST compliant)
         try:
             from zoneinfo import ZoneInfo
             utc_now = datetime.datetime.now(datetime.timezone.utc)
             et_now = utc_now.astimezone(ZoneInfo("America/New_York"))
-            et_hour = et_now.hour
         except Exception:
             # Fallback to -4 offset (EDT)
             utc_now = datetime.datetime.now(datetime.timezone.utc)
             et_now = utc_now - datetime.timedelta(hours=4)
-            et_hour = et_now.hour
             
-        # Is Eastern Time between 9:00 AM (9) and 8:00 PM (20)?
-        is_active_window = (9 <= et_hour < 20)
+        et_hour = et_now.hour
+        current_hour_key = et_now.strftime("%Y-%m-%d %H")
+        
+        # Is Eastern Time between 8:00 AM (8) and 8:00 PM (20) inclusive?
+        is_active_window = (8 <= et_hour <= 20)
         
         if is_active_window:
-            now_epoch = time.time()
-            # Run every hour (3600 seconds)
-            if now_epoch - last_refresh_timestamp_raw >= (60 * 60):
-                print(f"[SERVER]: Active Window Auto-Refresh triggered (EST Hour: {et_hour}).")
+            if current_hour_key != last_scheduled_hour_key:
+                print(f"[SERVER]: Scheduled Auto-Refresh triggered for hour: {et_now.strftime('%I:%M %p ET')}.")
                 perform_refresh_sync()
-                last_refresh_timestamp_raw = time.time()
-        else:
-            # Outside active hours, stay in standby
-            pass
             
-        # Sleep for 5 minutes before checking time again
-        time.sleep(5 * 60)
+        # Sleep for 10 seconds before checking time again
+        time.sleep(10)
 
 # Start scheduler in daemon thread
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)

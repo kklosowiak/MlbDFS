@@ -9,6 +9,17 @@ import time
 from datetime import datetime, timedelta, timezone
 from config import config
 
+def get_slate_date(dt_utc=None):
+    """OMEGA v9.4: Timezone-aware DFS slate rollover (4:00 AM US/Eastern Time)"""
+    from zoneinfo import ZoneInfo
+    if dt_utc is None:
+        dt_utc = datetime.now(timezone.utc)
+    dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+    if dt_et.hour < 4:
+        return (dt_et - timedelta(days=1)).date()
+    else:
+        return dt_et.date()
+
 def perform_fetch(custom_date_from=None):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
     
@@ -26,16 +37,8 @@ def perform_fetch(custom_date_from=None):
     statcast = StatcastBridge()
     
     # 1. New V4 Bulk Ingestion (Odds + Props)
-    # OMEGA v6.1: Dynamic Slate Isolation
-    # Slates typically run from 04:00 UTC (Midnight ET) to the next day.
-    now_utc = datetime.now(timezone.utc)
-    if now_utc.hour < 4:
-        # If running in the early morning before 4am UTC, we might still be looking at "today"
-        # But usually, we want the current day's slate.
-        base_date = now_utc.date()
-    else:
-        # If running after 4am UTC, we are targeting the next game window.
-        base_date = now_utc.date()
+    # OMEGA v9.4: Dynamic Slate Isolation (Timezone-Aware)
+    base_date = get_slate_date()
         
     date_from = custom_date_from or f"{base_date}T04:00:00Z"
     date_to = (base_date + timedelta(days=1)).strftime("%Y-%m-%dT04:00:00Z")
@@ -98,8 +101,8 @@ if __name__ == "__main__":
     
     if args.main_slate:
         # 7:05 PM ET is 23:05 UTC. OMEGA v6.1 Main Slate Isolation.
-        now_utc = datetime.now(timezone.utc)
-        main_slate_start = f"{now_utc.date()}T23:05:00Z"
+        base_date = get_slate_date()
+        main_slate_start = f"{base_date}T23:05:00Z"
         print(f"[SLATE]: ISOLATING MAIN SLATE (Starting {main_slate_start})...")
         perform_fetch(custom_date_from=main_slate_start)
     elif args.audit:
