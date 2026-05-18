@@ -32,8 +32,8 @@
     "temp": 76,
     "wind_speed": 15,
     "wind_dir": "In from Right",
-    "status": "Delay Likely, Chance For a Postponement",
-    "notes": "ORANGE - Just annoying timing of the rain here, with a storm line expected to move in shortly after first pitch. They can try to start on time, but it almost definitely will mean starting pitchers get yoinked early... or they could late start to avoid that, but then they might not be able to start until around 8pm. I still think they probably play one way or another despite the delay, but I can't promise it. Winds in from right at 10-15mph."
+    "status": "Chance For Delay",
+    "notes": "YELLOW - Increasingly confident in a Late Start and Play. Winds in from right at 10-15mph."
   },
   {
     "home": "Washington Nationals",
@@ -47,7 +47,7 @@
   {
     "home": "New York Yankees",
     "away": "Toronto Blue Jays",
-    "temp": 84,
+    "temp": 83,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -56,16 +56,16 @@
   {
     "home": "Kansas City Royals",
     "away": "Boston Red Sox",
-    "temp": 83,
+    "temp": 77,
     "wind_speed": 5,
-    "wind_dir": "Out to Left",
+    "wind_dir": "Neutral",
     "status": "Delay Likely, Chance For a Postponement",
-    "notes": "ORANGE - This game should start dry, but I'm worried it won't finish that way (in fact, I'm worried it might not even finish at all). A nearby storm line will slowly be pushing towards the ballpark this evening, so it will be a race against time to get the game in before the lightning arrives. Best guess is that I think we've got a good shot of seeing 5+ innings before it gets dicey, but the latter half of this game is a question mark. Warm, humid, winds blowing out to left, solid hitting weather for KC."
+    "notes": "YELLOW/ORANGE - KC moved the start time up, which is a nice little helper in a race against time. The short forecast here is: I think they at least get most of the game in, maybe all of it... but I really can't promise you anything more than 5 innings or so. The longer forecast is: My favorite forecast model holds off rain until 9-10pm or so, which would allow a full game. A newer high-res forecast model, which is actually replacing my old trusted model, shows earlier arriving storms. That could mean a game that doesn't go 9. It's a good case study here in these two models, but that's more for my information than for yours. The end result for y'all is some later-inning uncertainty."
   },
   {
     "home": "Minnesota Twins",
     "away": "Houston Astros",
-    "temp": 66,
+    "temp": 68,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Delay Likely, Chance For a Postponement",
@@ -83,7 +83,7 @@
   {
     "home": "Colorado Rockies",
     "away": "Texas Rangers",
-    "temp": 42,
+    "temp": 41,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Chance For Delay",
@@ -92,7 +92,7 @@
   {
     "home": "Los Angeles Angels",
     "away": "Oakland Athletics",
-    "temp": 74,
+    "temp": 72,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -119,7 +119,7 @@
   {
     "home": "Arizona Diamondbacks",
     "away": "San Francisco Giants",
-    "temp": 88,
+    "temp": 86,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
