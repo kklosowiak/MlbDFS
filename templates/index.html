@@ -1517,6 +1517,13 @@
                 const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
                 const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
 
+                // OMEGA v9.2: Opposing Pitcher Physics Styling (Terrible <= 20.0, Elite >= 25.0)
+                const oppPhys = t.opp_pitcher_physics || 0;
+                const oppPhysColor = oppPhys <= 20.0 ? '#ff4d4d' : (oppPhys >= 25.0 ? '#4d7cff' : '#00e673');
+                const oppPhysBg = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
+                const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
+                const oppPhysBadge = `<span class="badge-mini" style="background: ${oppPhysBg}; border: 1px solid ${oppPhysBorder}; color: ${oppPhysColor}; border-radius: 4px; padding: 1px 5px; font-size: 0.75em; font-family: monospace; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px ${oppPhysBg};">PHYS ${oppPhys.toFixed(1)}</span>`;
+
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}</td>
                     <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
@@ -1542,7 +1549,7 @@
                         </div>
                     </td>
                     <td><strong>${t.team}</strong></td>
-                    <td><span class="vs">vs</span>${t.opp_pitcher} <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span></td>
+                    <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge}</td>
                     <td class="metric val-up">${t.implied_total || '-'}</td>
                     <td class="metric ${mlClass}">${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}</td>
                     <td class="metric ${ttClass}">${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}</td>

@@ -550,6 +550,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'confidence': res.get('confidence', 'low'),
                 'is_burst': is_burst,
                 'is_opp_debut': is_opp_debut,
+                'opp_pitcher_physics': opp_pitcher_physics,
                 'implied_total': round(curr_itt, 2),  # v6.3: ITT exported for trend validation
                 'total_signal': total_signal  # v8.0: Now applies Mechanical Boosts
             })
