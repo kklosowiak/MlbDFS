@@ -1,0 +1,45 @@
+=== CHICAGO WHITE SOX DFS PLATOON ANALYSIS ===
+1. Sam Antonacci (LB) - OF $3.9K
+   Score: 67.3 | xwOBA: 0.3204 | Platoon: 2026 split vs RHP (+11% OPS)
+   Props -> Hits: 0.5 (-190) | TB: 0.5 (-189) | HR: 4900
+   Tags -> 🥤 JUICED
+
+2. Munetaka Murakami (LB) - 1B $5.7K
+   Score: 102.0 | xwOBA: 0.37360000000000004 | Platoon: 2026 split vs RHP (+3% OPS)
+   Props -> Hits: 0.5 (-140) | TB: 0.5 (-162) | HR: 250
+   Tags -> 🔥 HOT, 🥤 JUICED
+
+3. Miguel Vargas (RB) - 3B $4.9K
+   Score: 56.1 | xwOBA: 0.352 | Platoon: 2026 split vs RHP (-16% OPS)
+   Props -> Hits: 0.5 (-125) | TB: 0.5 (-160) | HR: 539
+   Tags -> 🥤 JUICED
+
+4. Colson Montgomery (LB) - SS $4.3K
+   Score: 82.5 | xwOBA: 0.3436 | Platoon: 2026 split vs RHP (+1% OPS)
+   Props -> Hits: 0.5 (-155) | TB: 0.5 (-153) | HR: 350
+   Tags -> 🥤 JUICED
+
+5. Andrew Benintendi (LB) - OF $3.2K
+   Score: 58.0 | xwOBA: 0.27759999999999996 | Platoon: 2026 split vs RHP (+5% OPS)
+   Props -> Hits: 0.5 (-135) | TB: 0.5 (-141) | HR: 500
+   Tags -> 🥤 JUICED
+
+6. Jarred Kelenic (LB) - OF $2.2K
+   Score: 66.3 | xwOBA: 0.33 | Platoon: 2026 split vs RHP (-6% OPS)
+   Props -> Hits: 0.5 (-110) | TB: 0.5 (-104) | HR: 450
+   Tags -> 🥤 JUICED
+
+7. Tristan Peters (LB) - OF $2.5K
+   Score: 41.4 | xwOBA: 0.266 | Platoon: 2026 split vs RHP (+5% OPS)
+   Props -> Hits: 0.5 (-110) | TB: 0.5 (-112) | HR: 4900
+   Tags -> 🥤 JUICED
+
+8. Drew Romo (SB) - C $3.7K
+   Score: 57.0 | xwOBA: 0.33 | Platoon: 2026 split vs RHP (+4% OPS)
+   Props -> Hits: 0.5 (-110) | TB: 0.5 (-111) | HR: 900
+   Tags -> 🥤 JUICED
+
+9. Luisangel Acuna (RB) - OF/SS $2.1K
+   Score: 57.1 | xwOBA: 0.1716 | Platoon: 2026 split vs RHP (+21% OPS)
+   Props -> Hits: - (0) | TB: - (0) | HR: 450
+   Tags -> None

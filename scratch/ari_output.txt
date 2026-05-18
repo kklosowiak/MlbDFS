@@ -1,0 +1,43 @@
+=== ARIZONA TEAM REPORT ===
+team: Arizona Diamondbacks
+opponent: San Francisco Giants
+opp_pitcher: Robbie Ray
+ml_move: 1.0
+tt_move: 0.0
+stack_score: 81.5
+physics_score: 15.8
+market_score: 9.1
+team_xwoba: 0.322
+power_concentration: 0.310155
+weather_label: 🟢 86° / Neutral
+umpire_name: TBD
+bullpen_fatigue: 54.5
+is_gassed: False
+is_fatigued: False
+is_shark: False
+is_whale: False
+is_sharp: False
+is_storm: False
+is_steam: False
+divergence: -24
+trend: STABLE
+confidence: high
+is_burst: False
+is_opp_debut: False
+opp_pitcher_physics: 24.9
+implied_total: 5.28
+total_signal: 
+
+=== ARIZONA HITTERS ===
+Corbin Carroll (Score: 82.5) | Hits: 0.5 (-210) | TB: 1.5 (-104) | HR: 3400 | Platoon: 2026 split vs LHP (+20% OPS) (L vs LHP)
+Ildemaro Vargas (Score: 80.2) | Hits: 0.5 (-220) | TB: 1.5 (118) | HR: 3400 | Platoon: 2026 split vs LHP (+19% OPS) (S vs LHP)
+Jorge Barrosa (Score: 53.5) | Hits: - (0) | TB: - (0) | HR: 450 | Platoon: 2026 split vs LHP (+27% OPS) (S vs LHP)
+Alek Thomas (Score: 43.3) | Hits: - (0) | TB: - (0) | HR: 450 | Platoon: 2025 split vs LHP (-9% OPS) (L vs LHP)
+Adrian Del Castillo (Score: 43.3) | Hits: - (0) | TB: - (0) | HR: 450 | Platoon: 2025 split vs LHP (-84% OPS) (L vs LHP)
+Tim Tawa (Score: 43.3) | Hits: - (0) | TB: - (0) | HR: 450 | Platoon: 2025 split vs LHP (+1% OPS) (R vs LHP)
+Ketel Marte (Score: 42.5) | Hits: 1.5 (185) | TB: 1.5 (-127) | HR: 336 | Platoon: 2026 split vs LHP (-5% OPS) (S vs LHP)
+Lourdes Gurriel (Score: 41.4) | Hits: 0.5 (-220) | TB: 1.5 (112) | HR: 500 | Platoon: 2025 split vs LHP (+10% OPS) (R vs LHP)
+Geraldo Perdomo (Score: 30.7) | Hits: 0.5 (-250) | TB: 1.5 (143) | HR: 900 | Platoon: 2026 split vs LHP (+5% OPS) (S vs LHP)
+Nolan Arenado (Score: 28.5) | Hits: 0.5 (-210) | TB: 1.5 (119) | HR: 3400 | Platoon: 2026 split vs LHP (-11% OPS) (R vs LHP)
+Jose Fernandez (Score: 27.1) | Hits: 0.5 (-155) | TB: 0.5 (-194) | HR: 700 | Platoon: 2026 split vs LHP (-16% OPS) (R vs LHP)
+Gabriel Moreno (Score: 27.1) | Hits: 0.5 (-200) | TB: 1.5 (128) | HR: 4400 | Platoon: 2025 split vs LHP (-5% OPS) (R vs LHP)

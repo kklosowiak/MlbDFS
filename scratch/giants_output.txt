@@ -1,0 +1,40 @@
+=== GIANTS TEAM REPORT ===
+team: San Francisco Giants
+opponent: Arizona Diamondbacks
+opp_pitcher: Zac Gallen
+ml_move: -1.0
+tt_move: 0.0
+stack_score: 97.6
+physics_score: 10.8
+market_score: 4.8
+team_xwoba: 0.303
+power_concentration: 0.293584
+weather_label: 🟢 86° / Neutral
+umpire_name: TBD
+bullpen_fatigue: 44.1
+is_gassed: False
+is_fatigued: False
+is_shark: False
+is_whale: True
+is_sharp: True
+is_storm: False
+is_steam: False
+divergence: 24
+trend: STABLE
+confidence: high
+is_burst: False
+is_opp_debut: False
+opp_pitcher_physics: 21.2
+implied_total: 4.13
+total_signal: 
+
+=== GIANTS HITTERS ===
+Casey Schmitt (Score: 60.4) | Hits: 0.5 (-250) | TB: 1.5 (-105) | HR: 2900 | Platoon: 2026 split vs RHP (+1% OPS) (R vs RHP)
+Heliot Ramos (Score: 50.2) | Hits: - (0) | TB: - (0) | HR: 450 | Platoon: 2026 split vs RHP (-7% OPS) (R vs RHP)
+Willy Adames (Score: 49.7) | Hits: 0.5 (-190) | TB: 1.5 (121) | HR: 500 | Platoon: 2026 split vs RHP (+15% OPS) (R vs RHP)
+Drew Gilbert (Score: 44.1) | Hits: 0.5 (-190) | TB: 0.5 (-166) | HR: 700 | Platoon: 2026 split vs RHP (+29% OPS) (L vs RHP)
+Luis Arraez (Score: 36.4) | Hits: 1.5 (125) | TB: 1.5 (-106) | HR: 900 | Platoon: 2026 split vs RHP (+2% OPS) (L vs RHP)
+Rafael Devers (Score: 35.7) | Hits: 0.5 (-200) | TB: 1.5 (124) | HR: 2900 | Platoon: 2026 split vs RHP (+6% OPS) (L vs RHP)
+Harrison Bader (Score: 33.5) | Hits: 0.5 (-150) | TB: 0.5 (-150) | HR: 900 | Platoon: 2026 split vs RHP (-26% OPS) (R vs RHP)
+Matt Chapman (Score: 33.5) | Hits: 0.5 (-175) | TB: 0.5 (-174) | HR: 3900 | Platoon: 2026 split vs RHP (-9% OPS) (R vs RHP)
+Jung Hoo Lee (Score: 28.4) | Hits: 1.5 (160) | TB: 1.5 (-105) | HR: 900 | Platoon: 2026 split vs RHP (+4% OPS) (L vs RHP)
