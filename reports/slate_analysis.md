@@ -1,5 +1,5 @@
 # ⚾ OMEGA Deep-Dive Slate Analysis (14 Games)
-**Generated:** 2026-05-17 10:47 PM ET
+**Generated:** 2026-05-17 11:10 PM ET
 
 ---
 
@@ -62,8 +62,8 @@
 | **Drew Rasmussen** (Tampa Bay Rays) | 55.3 | 28.7 | 2.5 | 4.5 | 14.5 | LOW-K | Baltimore Orioles (87.8) |
 | **Michael Soroka** (Arizona Diamondbacks) | 55.3 | 26.0 | 0.0 | 4.5 | 14.5 | LOW-K | San Francisco Giants (71.1) |
 | **Grayson Rodriguez** (Los Angeles Angels) | 54.8 | 26.4 | 0.0 | 4.5 | 14.5 | LOW-K | Athletics (94.6) |
-| **Grant Holmes** (Atlanta Braves) | 54.6 | 25.1 | 0.0 | 4.5 | 14.5 | LOW-K | Miami Marlins (91.3) |
-| **Zack Wheeler** (Philadelphia Phillies) | 54.1 | 28.6 | 0.0 | 4.5 | 14.5 | LOW-K | Cincinnati Reds (87.0) |
+| **Grant Holmes** (Atlanta Braves) | 54.6 | 25.1 | 0.0 | 4.5 | 14.5 | LOW-K | Miami Marlins (93.8) |
+| **Zack Wheeler** (Philadelphia Phillies) | 54.1 | 28.6 | 0.0 | 4.5 | 14.5 | LOW-K | Cincinnati Reds (86.9) |
 | **George Kirby** (Seattle Mariners) | 54.1 | 29.6 | 0.0 | 4.5 | 14.5 | LOW-K | Chicago White Sox (66.3) |
 | **Peter Lambert** (Houston Astros) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Minnesota Twins (91.2) |
 | **Erick Fedde** (Chicago White Sox) | 52.8 | 25.5 | 0.0 | 4.5 | 14.5 | LOW-K | Seattle Mariners (82.5) |
@@ -72,7 +72,7 @@
 | **Robert Gasser** (Milwaukee Brewers) | 50.9 | 23.2 | 2.0 | 4.5 | 14.5 | LOW-K | Chicago Cubs (119.4) |
 | **Jack Flaherty** (Detroit Tigers) | 49.9 | 23.9 | 0.0 | 4.5 | 14.5 | LOW-K | Cleveland Guardians (82.4) |
 | **Stephen Kolek** (Kansas City Royals) | 48.6 | 22.0 | 0.0 | 4.5 | 14.5 | LOW-K | Boston Red Sox (95.6) |
-| **Brady Singer** (Cincinnati Reds) | 48.2 | 20.2 | 0.0 | 4.5 | 14.5 | LOW-K | Philadelphia Phillies (91.9) |
+| **Brady Singer** (Cincinnati Reds) | 48.2 | 20.2 | 0.0 | 4.5 | 14.5 | LOW-K | Philadelphia Phillies (91.7) |
 | **Brandon Young** (Baltimore Orioles) | 48.0 | 21.2 | 0.0 | 4.5 | 14.5 | LOW-K | Tampa Bay Rays (94.2) |
 | **Brayan Bello** (Boston Red Sox) | 46.3 | 18.8 | 0.0 | 4.5 | 14.5 | LOW-K | Kansas City Royals (111.9) |
 | **Elmer Rodríguez** (New York Yankees) | 45.6 | 17.9 | 0.0 | 4.5 | 14.5 | LOW-K | Toronto Blue Jays (103.9) |
@@ -100,13 +100,13 @@
 | 12 | **Boston Red Sox** | 95.6 | .287 | 4.75 | +0 | BURST, GASSED BP | Stephen Kolek | 90 🔥 |
 | 13 | **Athletics** | 94.6 | .274 | 5.10 | +4 | SHARP, BURST, GASSED BP | Grayson Rodriguez | 100 🔥 |
 | 14 | **Tampa Bay Rays** | 94.2 | .284 | 4.48 | +0 | BURST, GASSED BP | Brandon Young | 82 🔥 |
-| 15 | **Los Angeles Dodgers** | 93.3 | .317 | 4.58 | -9 | SHARP, BURST, GASSED BP | Lucas Giolito | 100 🔥 |
-| 16 | **Philadelphia Phillies** | 91.9 | .291 | 5.28 | +2 | BURST, GASSED BP | Brady Singer | 100 🔥 |
-| 17 | **Los Angeles Angels** | 91.4 | .271 | 4.33 | +9 | BURST, GASSED BP | Jeffrey Springs | 100 🔥 |
-| 18 | **Miami Marlins** | 91.3 | .295 | 4.49 | +0 | BURST, GASSED BP | Grant Holmes | 80 🔥 |
+| 15 | **Miami Marlins** | 93.8 | .299 | 4.49 | +0 | BURST, GASSED BP | Grant Holmes | 80 🔥 |
+| 16 | **Los Angeles Dodgers** | 93.3 | .317 | 4.58 | -9 | SHARP, BURST, GASSED BP | Lucas Giolito | 100 🔥 |
+| 17 | **Philadelphia Phillies** | 91.7 | .291 | 5.28 | +2 | BURST, GASSED BP | Brady Singer | 100 🔥 |
+| 18 | **Los Angeles Angels** | 91.4 | .271 | 4.33 | +9 | BURST, GASSED BP | Jeffrey Springs | 100 🔥 |
 | 19 | **Minnesota Twins** | 91.2 | .282 | 5.06 | +10 | BURST, GASSED BP | Peter Lambert | 91 🔥 |
 | 20 | **Baltimore Orioles** | 87.8 | .273 | 3.36 | -11 | BURST, GASSED BP | Drew Rasmussen | 96 🔥 |
-| 21 | **Cincinnati Reds** | 87.0 | .304 | 4.66 | +3 | BURST, GASSED BP | Zack Wheeler | 87 🔥 |
+| 21 | **Cincinnati Reds** | 86.9 | .304 | 4.66 | +3 | BURST, GASSED BP | Zack Wheeler | 87 🔥 |
 | 22 | **San Diego Padres** | 84.2 | .274 | 3.26 | +23 | WHALE, BURST, GASSED BP | Roki Sasaki | 100 🔥 |
 | 23 | **Seattle Mariners** | 82.5 | .294 | 4.50 | -23 | BURST, GASSED BP | Erick Fedde | 100 🔥 |
 | 24 | **Cleveland Guardians** | 82.4 | .282 | 3.81 | -3 | SHARP, BURST, GASSED BP | Jack Flaherty | 100 🔥 |
@@ -305,14 +305,14 @@
 
 ---
 
-### Game 5: Atlanta Braves (117.8) vs Miami Marlins (91.3)
+### Game 5: Atlanta Braves (117.8) vs Miami Marlins (93.8)
 
 **Pitching:** Grant Holmes (54.6) vs Eury Pérez (51.8)
 
 | Metric | Atlanta Braves | Miami Marlins |
 |--------|----------------|---------------|
-| Stack Score | **117.8** | 91.3 |
-| xwOBA | 0.324 | 0.295 |
+| Stack Score | **117.8** | 93.8 |
+| xwOBA | 0.324 | 0.299 |
 | ITT | 4.41 | 4.49 |
 | ML Move | +0.0 | +0.0 |
 | TT Move | +0.0 | +0.0 |
@@ -330,19 +330,19 @@
 |-------|--------|-------|-----|----------|-------|
 | 84.7 | Matt Olson | .378 | +450 | 0.5@-145 | 🔥 HOT, JUICED |
 | 79.1 | Drake Baldwin | .37120000000000003 | +450 | 1.5@-125 | 🔥 HOT |
-| 68.2 | Michael Harris | .324 | +450 | 0.5@-145 | JUICED |
 | 66.6 | Jorge Mateo | .32839999999999997 | +450 | 1.5@-110 | — |
+| 65.6 | Michael Harris | .324 | +450 | 1.5@-135 | — |
 | 65.0 | Ozzie Albies | .3116 | +450 | 0.5@-165 | JUICED |
 
 **Miami Marlins Top Hitters:**
 
 | OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
 |-------|--------|-------|-----|----------|-------|
-| 70.6 | Xavier Edwards | .3488 | +450 | 0.5@-185 | JUICED |
-| 67.6 | Otto Lopez | .3508 | +450 | 1.5@-145 | — |
-| 66.5 | Liam Hicks | .33399999999999996 | +450 | 0.5@-180 | JUICED |
-| 50.0 | Owen Caissie | .2448 | +450 | 0.5@-120 | — |
-| 42.8 | Connor Norby | .2864 | +450 | 0.5@+141 | JUICED |
+| 71.4 | Xavier Edwards | .3488 | +450 | 0.5@-185 | JUICED |
+| 68.5 | Otto Lopez | .3508 | +450 | 1.5@-145 | — |
+| 67.4 | Liam Hicks | .33399999999999996 | +450 | 0.5@-180 | JUICED |
+| 63.3 | Leo Jimenez | .33 | +450 | 1.5@-110 | — |
+| 50.9 | Owen Caissie | .2448 | +450 | 0.5@-120 | — |
 
 ---
 
@@ -596,20 +596,20 @@
 
 ---
 
-### Game 12: Philadelphia Phillies (91.9) vs Cincinnati Reds (87.0)
+### Game 12: Philadelphia Phillies (91.7) vs Cincinnati Reds (86.9)
 
 **Pitching:** Zack Wheeler (54.1) vs Brady Singer (48.2)
 
 | Metric | Philadelphia Phillies | Cincinnati Reds |
 |--------|-----------------------|-----------------|
-| Stack Score | **91.9** | 87.0 |
+| Stack Score | **91.7** | 86.9 |
 | xwOBA | 0.291 | 0.304 |
 | ITT | 5.28 | 4.66 |
 | ML Move | +1.0 | +0.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | +2 | +3 |
 | Opp BP | 100 🔥 | 87 🔥 |
-| Weather | 🟢 81° / In 4mph | 🟢 81° / In 4mph |
+| Weather | 🟢 77° / In 5mph | 🟢 77° / In 5mph |
 | Umpire | Unknown | Unknown |
 | Signals | BURST, GASSED BP | BURST, GASSED BP |
 | Total Signal | 📉 U-DIV +21 | 📉 U-DIV +21 |
@@ -620,10 +620,10 @@
 
 | OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
 |-------|--------|-------|-----|----------|-------|
-| 92.6 | Kyle Schwarber | .39239999999999997 | +450 | 0.5@-125 | 🔥 HOT, JUICED |
+| 92.5 | Kyle Schwarber | .39239999999999997 | +450 | 0.5@-125 | 🔥 HOT, JUICED |
 | 86.8 | Bryce Harper | .374 | +450 | 0.5@-145 | 🔥 HOT, JUICED |
-| 71.4 | Brandon Marsh | .33199999999999996 | +450 | 0.5@-190 | JUICED |
-| 57.3 | Justin Crawford | .29159999999999997 | +450 | 1.5@-110 | — |
+| 71.3 | Brandon Marsh | .33199999999999996 | +450 | 0.5@-190 | JUICED |
+| 57.2 | Justin Crawford | .29159999999999997 | +450 | 1.5@-110 | — |
 | 56.0 | Adolis Garcia | .254 | +450 | 0.5@-150 | JUICED |
 
 **Cincinnati Reds Top Hitters:**
@@ -729,7 +729,7 @@
 | 2 | **Michael Conforto** | 97.5 | Chicago Cubs | .4444 | +450 | Robert Gasser | 🔥 HOT |
 | 3 | **Aaron Judge** | 94.8 | New York Yankees | .3996 | +450 | Kevin Gausman | 🔥 HOT, JUICED |
 | 4 | **Jj Bleday** | 93.0 | Cincinnati Reds | .44000000000000006 | +450 | Zack Wheeler | 🔥 HOT, JUICED |
-| 5 | **Kyle Schwarber** | 92.6 | Philadelphia Phillies | .39239999999999997 | +450 | Brady Singer | 🔥 HOT, JUICED |
+| 5 | **Kyle Schwarber** | 92.5 | Philadelphia Phillies | .39239999999999997 | +450 | Brady Singer | 🔥 HOT, JUICED |
 | 6 | **Justin Foscue** | 91.3 | Texas Rangers | .33 | +450 | Michael Lorenzen | JUICED |
 | 7 | **Yordan Alvarez** | 88.3 | Houston Astros | .4244 | +450 | Bailey Ober | 🔥 HOT |
 | 8 | **Bryce Harper** | 86.8 | Philadelphia Phillies | .374 | +450 | Brady Singer | 🔥 HOT, JUICED |
