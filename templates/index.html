@@ -346,6 +346,16 @@
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
         }
+        
+        .sortable-th {
+            cursor: pointer;
+            transition: color 0.2s, background-color 0.2s;
+            user-select: none;
+        }
+        .sortable-th:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         td {
             padding: 16px;
@@ -1256,16 +1266,16 @@
                 <table id="platoons-table">
                     <thead>
                         <tr>
-                            <th>TEAM</th>
-                            <th>vs PITCHER</th>
-                            <th>TEAM vs HAND</th>
-                            <th>OPS</th>
-                            <th>wOBA</th>
-                            <th>OPS DIFF</th>
-                            <th>P vs LHH</th>
-                            <th>P vs RHH</th>
-                            <th>EDGE</th>
-                            <th>OMEGA</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 0, false)">TEAM ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 1, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 2, false)">TEAM vs HAND ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 3, true)">OPS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 4, true)">wOBA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 5, true)">OPS DIFF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 6, true)">P vs LHH ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 7, true)">P vs RHH ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 8, false)">EDGE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 9, true)">OMEGA ↕</th>
                         </tr>
                     </thead>
                     <tbody id="platoons-body">
@@ -1548,6 +1558,45 @@
                 cb.checked = checkAll;
                 cb.dispatchEvent(new Event('change'));
             });
+        }
+
+        // Generic Table Sorter
+        function sortTable(tableId, colIndex, isNumeric) {
+            const table = document.getElementById(tableId);
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            // Determine current sort direction from table attribute
+            let dir = table.getAttribute(`data-sort-dir-${colIndex}`) === 'asc' ? 'desc' : 'asc';
+            table.setAttribute(`data-sort-dir-${colIndex}`, dir);
+
+            rows.sort((a, b) => {
+                let cellA = a.cells[colIndex].innerText.trim();
+                let cellB = b.cells[colIndex].innerText.trim();
+
+                // Strip '+' sign for diffs
+                if (cellA.startsWith('+')) cellA = cellA.substring(1);
+                if (cellB.startsWith('+')) cellB = cellB.substring(1);
+
+                if (isNumeric) {
+                    let valA = parseFloat(cellA);
+                    let valB = parseFloat(cellB);
+                    if (isNaN(valA)) valA = -9999;
+                    if (isNaN(valB)) valB = -9999;
+                    
+                    if (valA < valB) return dir === 'asc' ? -1 : 1;
+                    if (valA > valB) return dir === 'asc' ? 1 : -1;
+                    return 0;
+                } else {
+                    if (cellA.toLowerCase() < cellB.toLowerCase()) return dir === 'asc' ? -1 : 1;
+                    if (cellA.toLowerCase() > cellB.toLowerCase()) return dir === 'asc' ? 1 : -1;
+                    return 0;
+                }
+            });
+
+            // Re-append sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
         }
 
         // Tab Switching
