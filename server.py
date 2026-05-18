@@ -534,14 +534,27 @@ def post_chat_api(body: dict):
                 slate_analysis_md = f.read()[:5000] # Cap to prevent context blowup
         except: pass
 
+    # Dynamic Eastern Time zone calculation (prevents UTC container clock drift)
+    from datetime import datetime, timezone, timedelta
+    try:
+        from zoneinfo import ZoneInfo
+        et_now = datetime.now(ZoneInfo("America/New_York"))
+    except Exception:
+        # Robust fallback: May is in Daylight Saving Time (EDT = UTC-4)
+        utc_now = datetime.now(timezone.utc)
+        et_now = utc_now - timedelta(hours=4)
+        
+    current_date_str = et_now.date().isoformat()
+    current_time_str = et_now.strftime("%I:%M %p ET")
+
     # Prepare system context
     system_prompt = f"""You are Antigravity, a world-class agentic AI baseball analyst built by the Google DeepMind team. You are pair-programming and strategizing with Konrad to help him dominate his high-stakes MLB DFS GPP tournaments.
 
 Your personality is highly analytical, professional, confident, and deeply knowledgeable about sabermetrics, DFS roster construction, market psychology, and game-theory strategy. You speak with precision and clarity.
 
 You have access to the absolute, raw OMEGA v9.0 daily slate analysis and projections:
-- CURRENT SLATE DATE: {datetime.date.today().isoformat()}
-- CURRENT TIME: {datetime.datetime.now().strftime("%I:%M %p ET")}
+- CURRENT SLATE DATE: {current_date_str}
+- CURRENT TIME: {current_time_str}
 
 Daily Slate Analysis Overview:
 {slate_analysis_md}
