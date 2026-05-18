@@ -2,8 +2,6 @@ import os
 import json
 import time
 import re
-from playwright.sync_api import sync_playwright
-
 class PropfinderScraper:
     def __init__(self, data_dir="data"):
         self.url = "https://propfinder.app/weather"
@@ -62,6 +60,7 @@ class PropfinderScraper:
         print(f"[WEATHER]: Scraping Propfinder Expert Overlay (Roth Reports)...")
         results = []
         try:
+            from playwright.sync_api import sync_playwright
             with sync_playwright() as p:
                 # Launching with stealth-like settings to ensure render
                 browser = p.chromium.launch(headless=True)
