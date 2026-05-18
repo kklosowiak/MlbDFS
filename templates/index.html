@@ -1741,12 +1741,12 @@
                 const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
                 const oppPhysBadge = `<span class="badge-mini" style="background: ${oppPhysBg}; border: 1px solid ${oppPhysBorder}; color: ${oppPhysColor}; border-radius: 4px; padding: 1px 5px; font-size: 0.75em; font-family: monospace; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px ${oppPhysBg};">PHYS ${oppPhys.toFixed(1)}</span>`;
 
-                // Glowing divergence pills
+                // Glowing divergence pills (Separated from Over/Under Game Totals to prevent confusion)
                 let divPill = '';
                 if (t.divergence >= 15) {
-                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 O-DIV (+${t.divergence}%)</span>`;
+                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 ML-DIV (+${t.divergence}%)</span>`;
                 } else if (t.divergence <= -15) {
-                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 U-DIV (${t.divergence}%)</span>`;
+                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 ML-FADE (${t.divergence}%)</span>`;
                 }
 
                 tr.innerHTML = `
