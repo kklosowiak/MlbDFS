@@ -157,7 +157,7 @@ class DashboardGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLB Omega Engine</title>
+    <title>MLB Ωmega Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -622,7 +622,7 @@ class DashboardGenerator:
     <div class="container">
         <div class="header">
             <div class="header-title">
-                <h1>OMEGA Engine</h1>
+                <h1>ΩMEGA Engine</h1>
                 <div class="header-subtitle">MLB Daily Fantasy & Market Divergence</div>
             </div>
             <div class="header-meta">
