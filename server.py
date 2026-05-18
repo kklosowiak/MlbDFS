@@ -658,6 +658,146 @@ def post_trends_resolve_api(body: dict):
             raise e
         raise HTTPException(status_code=500, detail=f"Database writeback failure: {str(e)}")
 
+@app.get("/api/platoons", dependencies=[Depends(get_current_user)])
+def get_platoons_api():
+    """Platoon Matrix: Cross-reference team/pitcher splits with today's matchups."""
+    from utils.normalization import normalize_player_name
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Load data sources
+    platoon_path = os.path.join(base_dir, "data", "platoon_cache.json")
+    probables_path = os.path.join(base_dir, "data", "probable_pitchers.json")
+    statcast_path = os.path.join(base_dir, "data", "statcast_cache.json")
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    
+    platoon_data = {}
+    probables = {}
+    statcast = {}
+    results_data = {}
+    
+    try:
+        if os.path.exists(platoon_path):
+            with open(platoon_path, "r", encoding="utf-8") as f:
+                platoon_data = json.load(f)
+        if os.path.exists(probables_path):
+            with open(probables_path, "r", encoding="utf-8") as f:
+                probables = json.load(f)
+        if os.path.exists(statcast_path):
+            with open(statcast_path, "r", encoding="utf-8") as f:
+                statcast = json.load(f)
+        if os.path.exists(results_path):
+            with open(results_path, "r", encoding="utf-8") as f:
+                results_data = json.load(f)
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to load data: {str(e)}", "matchups": []}, status_code=500)
+    
+    teams_splits = platoon_data.get("teams", {})
+    pitchers_splits = platoon_data.get("pitchers", {})
+    teams_results = results_data.get("teams", [])
+    
+    # Build a lookup: team_name -> team result row
+    results_lookup = {t["team"]: t for t in teams_results}
+    
+    matchups = []
+    seen_games = set()
+    
+    for team_result in teams_results:
+        team_name = team_result.get("team", "")
+        opponent = team_result.get("opponent", "")
+        opp_pitcher_name = team_result.get("opp_pitcher", "TBD")
+        stack_score = team_result.get("stack_score", 0)
+        implied_total = team_result.get("implied_total", 0)
+        
+        if not team_name or not opponent or opp_pitcher_name == "TBD":
+            continue
+        
+        # Avoid duplicate games (we want each team row independently)
+        game_key = tuple(sorted([team_name, opponent]))
+        
+        # Resolve pitcher handedness from statcast cache
+        norm_pitcher = normalize_player_name(opp_pitcher_name)
+        pitcher_profile = statcast.get(norm_pitcher, {})
+        pitcher_hand = pitcher_profile.get("pitch_hand", "R")
+        pitcher_hand_label = "LHP" if pitcher_hand == "L" else "RHP"
+        
+        # Team splits vs the pitcher's hand
+        # vl = vs left-handed pitching, vr = vs right-handed pitching
+        team_split_key = "vl" if pitcher_hand == "L" else "vr"
+        team_split_data = teams_splits.get(team_name, {}).get(team_split_key, {})
+        team_vs_hand_ops = team_split_data.get("ops", 0)
+        team_vs_hand_woba = team_split_data.get("wOBA_proxy", 0)
+        team_vs_hand_avg = team_split_data.get("avg", 0)
+        team_vs_hand_slg = team_split_data.get("slg", 0)
+        team_vs_hand_pa = team_split_data.get("pa", 0)
+        
+        # Also get the team's OTHER split for comparison
+        team_other_key = "vr" if pitcher_hand == "L" else "vl"
+        team_other_data = teams_splits.get(team_name, {}).get(team_other_key, {})
+        team_other_ops = team_other_data.get("ops", 0)
+        
+        # OPS differential (how much better/worse vs this hand)
+        ops_diff = round((team_vs_hand_ops - team_other_ops) * 1000) if team_other_ops else 0
+        
+        # Pitcher splits (how hittable by LHH vs RHH)
+        pitcher_split_data = pitchers_splits.get(norm_pitcher, {})
+        pitcher_vs_lhh = pitcher_split_data.get("vl", {})
+        pitcher_vs_rhh = pitcher_split_data.get("vr", {})
+        pitcher_vs_lhh_ops = pitcher_vs_lhh.get("ops", 0)
+        pitcher_vs_lhh_woba = pitcher_vs_lhh.get("wOBA_proxy", 0)
+        pitcher_vs_rhh_ops = pitcher_vs_rhh.get("ops", 0)
+        pitcher_vs_rhh_woba = pitcher_vs_rhh.get("wOBA_proxy", 0)
+        
+        # Determine advantage label
+        if team_vs_hand_ops >= 0.780:
+            advantage = "ELITE PLATOON"
+        elif team_vs_hand_ops >= 0.730:
+            advantage = "STRONG EDGE"
+        elif team_vs_hand_ops >= 0.700:
+            advantage = "NEUTRAL"
+        elif team_vs_hand_ops >= 0.650:
+            advantage = "SLIGHT FADE"
+        else:
+            advantage = "PLATOON TRAP"
+        
+        # Pitcher weakness side
+        pitcher_weak_side = "LHH" if pitcher_vs_lhh_ops > pitcher_vs_rhh_ops else "RHH"
+        pitcher_max_ops = max(pitcher_vs_lhh_ops, pitcher_vs_rhh_ops)
+        
+        matchups.append({
+            "team": team_name,
+            "opponent": opponent,
+            "opp_pitcher": opp_pitcher_name,
+            "pitcher_hand": pitcher_hand,
+            "pitcher_hand_label": pitcher_hand_label,
+            "team_vs_hand_ops": round(team_vs_hand_ops, 3),
+            "team_vs_hand_woba": round(team_vs_hand_woba, 3),
+            "team_vs_hand_avg": round(team_vs_hand_avg, 3),
+            "team_vs_hand_slg": round(team_vs_hand_slg, 3),
+            "team_vs_hand_pa": team_vs_hand_pa,
+            "ops_diff": ops_diff,
+            "pitcher_vs_lhh_ops": round(pitcher_vs_lhh_ops, 3),
+            "pitcher_vs_lhh_woba": round(pitcher_vs_lhh_woba, 3),
+            "pitcher_vs_rhh_ops": round(pitcher_vs_rhh_ops, 3),
+            "pitcher_vs_rhh_woba": round(pitcher_vs_rhh_woba, 3),
+            "pitcher_weak_side": pitcher_weak_side,
+            "pitcher_max_vulnerability_ops": round(pitcher_max_ops, 3),
+            "advantage": advantage,
+            "stack_score": stack_score,
+            "implied_total": implied_total
+        })
+    
+    # Sort by team OPS vs hand (best platoon advantages first)
+    matchups.sort(key=lambda x: x["team_vs_hand_ops"], reverse=True)
+    
+    return JSONResponse(
+        content={"matchups": matchups, "count": len(matchups)},
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        }
+    )
+
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
 def post_chat_api(body: dict):

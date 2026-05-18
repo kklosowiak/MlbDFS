@@ -1050,6 +1050,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     Hitters Matrix
                 </li>
+                <li class="nav-item" onclick="switchTab(this, 'platoons')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Platoon Matrix
+                </li>
                 <li class="nav-item" onclick="switchTab(this, 'analysis')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Model Analysis
@@ -1230,6 +1234,41 @@
                         <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody id="teams-body">
+                        <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PLATOON MATRIX PANEL -->
+        <div id="platoons-panel" class="tab-panel">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                    <h2 style="margin:0;">Platoon Splits Matrix</h2>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <span style="font-size:0.7rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Color Key:</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(50,215,75,0.15); color:#32d74b;">≥.780 ELITE</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(10,132,255,0.12); color:#0a84ff;">≥.730 STRONG</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,255,255,0.06); color:var(--text-secondary);">NEUTRAL</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,69,58,0.15); color:#ff453a;">≤.650 TRAP</span>
+                    </div>
+                </div>
+                <table id="platoons-table">
+                    <thead>
+                        <tr>
+                            <th>TEAM</th>
+                            <th>vs PITCHER</th>
+                            <th>TEAM vs HAND</th>
+                            <th>OPS</th>
+                            <th>wOBA</th>
+                            <th>OPS DIFF</th>
+                            <th>P vs LHH</th>
+                            <th>P vs RHH</th>
+                            <th>EDGE</th>
+                            <th>OMEGA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="platoons-body">
                         <!-- Dynamic Ingestion -->
                     </tbody>
                 </table>
@@ -1526,6 +1565,7 @@
                 'pitchers': ['Pitchers Matrix', 'Premium Slate Alpha Matrix'],
                 'hitters': ['Hitters Matrix', 'Power & Matchup Alpha Matrix'],
                 'teams': ['Teams Matrix', 'Market Sentiment & Stack Matrix'],
+                'platoons': ['Platoon Matrix', 'Team & Pitcher Handedness Splits Intelligence'],
                 'analysis': ['Model Analysis', 'Slate Intelligence Overview'],
                 'trends': ['Trend Audit Panel', 'Historical GPP Trend Tag Post-Mortem Audit']
             };
@@ -1534,6 +1574,9 @@
 
             if (tabId === 'trends') {
                 loadTrends();
+            }
+            if (tabId === 'platoons') {
+                loadPlatoons();
             }
 
             // Re-run filter/counter
@@ -1835,6 +1878,95 @@
             });
 
             document.getElementById('counter-box').innerText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
+        }
+
+        async function loadPlatoons() {
+            try {
+                const res = await fetch('/api/platoons');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                const data = await res.json();
+                const matchups = data.matchups || [];
+                const body = document.getElementById('platoons-body');
+                body.innerHTML = '';
+
+                if (matchups.length === 0) {
+                    body.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--text-secondary); padding:40px;">No platoon data available. Run a slate refresh to populate.</td></tr>';
+                    return;
+                }
+
+                matchups.forEach(m => {
+                    const tr = document.createElement('tr');
+
+                    // OPS color helper
+                    function opsColor(ops) {
+                        if (ops >= 0.780) return 'color:#32d74b; text-shadow:0 0 8px rgba(50,215,75,0.4);';
+                        if (ops >= 0.730) return 'color:#0a84ff;';
+                        if (ops >= 0.700) return 'color:var(--text-primary);';
+                        if (ops >= 0.650) return 'color:#ff9f0a;';
+                        return 'color:#ff453a; text-shadow:0 0 8px rgba(255,69,58,0.3);';
+                    }
+
+                    // Pitcher vulnerability color (higher = more hittable = green for offense)
+                    function pVulnColor(ops) {
+                        if (ops >= 0.800) return 'color:#32d74b; text-shadow:0 0 6px rgba(50,215,75,0.3);';
+                        if (ops >= 0.730) return 'color:#ff9f0a;';
+                        if (ops >= 0.680) return 'color:var(--text-primary);';
+                        return 'color:#0a84ff;';
+                    }
+
+                    // Advantage pill
+                    let advPill = '';
+                    if (m.advantage === 'ELITE PLATOON') {
+                        advPill = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); box-shadow:0 0 8px rgba(50,215,75,0.2);">⚡ ELITE</span>`;
+                    } else if (m.advantage === 'STRONG EDGE') {
+                        advPill = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25);">🎯 STRONG</span>`;
+                    } else if (m.advantage === 'NEUTRAL') {
+                        advPill = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary);">— NEUTRAL</span>`;
+                    } else if (m.advantage === 'SLIGHT FADE') {
+                        advPill = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25);">⚠️ FADE</span>`;
+                    } else {
+                        advPill = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); box-shadow:0 0 8px rgba(255,69,58,0.2);">🚫 TRAP</span>`;
+                    }
+
+                    // OPS diff badge
+                    let diffColor = m.ops_diff > 0 ? '#32d74b' : m.ops_diff < -30 ? '#ff453a' : '#ff9f0a';
+                    let diffPrefix = m.ops_diff > 0 ? '+' : '';
+
+                    // Hand label pill
+                    let handColor = m.pitcher_hand === 'L' ? '#ff9f0a' : '#0a84ff';
+                    let handPill = `<span style="font-size:0.7rem; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(${m.pitcher_hand === 'L' ? '255,159,10' : '10,132,255'},0.15); color:${handColor};">${m.pitcher_hand_label}</span>`;
+
+                    // Pitcher LHH/RHH - highlight the weak side
+                    let lhhStyle = pVulnColor(m.pitcher_vs_lhh_ops);
+                    let rhhStyle = pVulnColor(m.pitcher_vs_rhh_ops);
+                    let lhhBold = m.pitcher_weak_side === 'LHH' ? 'font-weight:800;' : 'font-weight:600;';
+                    let rhhBold = m.pitcher_weak_side === 'RHH' ? 'font-weight:800;' : 'font-weight:600;';
+
+                    // Score class
+                    let scoreClass = m.stack_score >= 120 ? 'elite' : m.stack_score >= 90 ? 'high' : m.stack_score >= 60 ? 'med' : 'low';
+
+                    tr.innerHTML = `
+                        <td style="font-weight:700;">${getTeamAbbr(m.team)}<span class="team-label">${m.team.split(' ').pop()}</span></td>
+                        <td>${m.opp_pitcher} ${handPill}</td>
+                        <td style="font-weight:700; font-size:0.85rem; color:${handColor};">vs ${m.pitcher_hand_label}</td>
+                        <td style="font-weight:800; font-size:1.05rem; ${opsColor(m.team_vs_hand_ops)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_ops.toFixed(3)}</td>
+                        <td style="font-weight:700; ${opsColor(m.team_vs_hand_woba / 0.78 * 0.73)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_woba.toFixed(3)}</td>
+                        <td style="font-weight:700; color:${diffColor}; font-variant-numeric:tabular-nums;">${diffPrefix}${m.ops_diff}</td>
+                        <td style="${lhhStyle} ${lhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_lhh_ops.toFixed(3)}</td>
+                        <td style="${rhhStyle} ${rhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_rhh_ops.toFixed(3)}</td>
+                        <td>${advPill}</td>
+                        <td><span class="score ${scoreClass}">${m.stack_score.toFixed(1)}</span></td>
+                    `;
+
+                    body.appendChild(tr);
+                });
+
+            } catch (err) {
+                console.error("Error loading platoons:", err);
+            }
         }
 
         async function loadTrends() {

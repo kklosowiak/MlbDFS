@@ -97,6 +97,15 @@ def perform_fetch(custom_date_from=None):
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
 
+    # 5. OMEGA v9.5: Platoon Splits Cache Refresh
+    print("\n[STEP 5]: Refreshing Platoon Splits Cache...")
+    try:
+        from data.platoon_fetcher import PlatoonFetcher
+        platoon = PlatoonFetcher(config.DATA_DIR)
+        platoon.fetch_platoon_data()
+    except Exception as e:
+        print(f"  - WARNING: Platoon splits refresh failed (non-critical): {e}")
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
