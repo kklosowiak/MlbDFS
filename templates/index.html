@@ -675,25 +675,166 @@
             fill: #fff;
         }
 
-        /* Model Analysis Markdown container */
+        /* Model Analysis Premium Banner & Cards */
         #analysis-markdown {
-            line-height: 1.7;
-            font-size: 1rem;
+            line-height: 1.75;
+            font-size: 0.98rem;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .analysis-banner {
+            background: linear-gradient(135deg, rgba(10, 132, 255, 0.08) 0%, rgba(0, 242, 254, 0.03) 100%);
+            border: 1px solid rgba(10, 132, 255, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 35px 40px;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+        .analysis-banner h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 20px rgba(10, 132, 255, 0.3);
+        }
+        .analysis-banner .banner-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(10, 132, 255, 0.12);
+            border: 1px solid rgba(10, 132, 255, 0.3);
+            color: var(--accent-blue);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(10, 132, 255, 0.15);
+        }
+        .analysis-banner .banner-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 500;
+        }
+        .analysis-card {
+            margin-bottom: 0px;
+            padding: 0 !important;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(20px);
+        }
+        .analysis-card-header {
+            background: rgba(255, 255, 255, 0.01);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 22px 30px;
+        }
+        .analysis-card-header h2 {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            color: #fff !important;
+            margin: 0 !important;
+            border-bottom: none !important;
+            padding: 0 !important;
+            letter-spacing: -0.01em !important;
+        }
+        .analysis-card-body {
+            padding: 30px;
+        }
+        #analysis-markdown h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            letter-spacing: -0.01em;
+        }
+        #analysis-markdown p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.3em;
+        }
+        #analysis-markdown blockquote {
+            background: rgba(10, 132, 255, 0.04);
+            border-left: 3px solid var(--accent-blue);
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin: 1.5em 0;
             color: var(--text-primary);
         }
-        #analysis-markdown h1, #analysis-markdown h2, #analysis-markdown h3 {
-            font-weight: 700;
-            margin-top: 1.8em;
-            margin-bottom: 0.6em;
+        #analysis-markdown blockquote p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--text-primary);
         }
-        #analysis-markdown h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-        #analysis-markdown h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        #analysis-markdown p { color: rgba(255,255,255,0.8); margin-bottom: 1.3em; }
-        #analysis-markdown ul { padding-left: 20px; margin-bottom: 1.3em; }
-        #analysis-markdown li { margin-bottom: 6px; color: rgba(255,255,255,0.85); }
-        #analysis-markdown table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-        #analysis-markdown th, #analysis-markdown td { padding: 12px 16px; border: 1px solid var(--border); }
-        #analysis-markdown th { background: rgba(255,255,255,0.04); font-weight: 700; }
+        #analysis-markdown ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1.5em;
+        }
+        #analysis-markdown li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 8px;
+            font-size: 0.96rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        #analysis-markdown li::before {
+            content: "•";
+            position: absolute;
+            left: 6px;
+            color: var(--accent-blue);
+            font-weight: 900;
+            font-size: 1.2rem;
+            top: -2px;
+        }
+        #analysis-markdown table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 2em;
+            background: rgba(255, 255, 255, 0.005);
+        }
+        #analysis-markdown th {
+            background: rgba(255, 255, 255, 0.02);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 14px 16px;
+            text-align: left;
+        }
+        #analysis-markdown td {
+            padding: 14px 16px;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.93rem;
+            color: var(--text-primary);
+        }
+        #analysis-markdown tr:last-child td {
+            border-bottom: none;
+        }
+        #analysis-markdown tr:hover td {
+            background: rgba(255, 255, 255, 0.015);
+        }
+        #analysis-markdown strong {
+            color: #fff;
+            font-weight: 600;
+        }
 
         /* Sidebar Signal Guide */
         .sidebar-legend {
@@ -1077,10 +1218,8 @@
 
         <!-- ANALYSIS PANEL -->
         <div id="analysis-panel" class="tab-panel">
-            <div class="card" style="padding: 40px 50px;">
-                <div id="analysis-markdown">
-                    Loading slate intelligence...
-                </div>
+            <div id="analysis-markdown">
+                Loading slate intelligence...
             </div>
         </div>
     </div>
@@ -1219,7 +1358,64 @@
                 const analysisData = await analysisRes.json();
                 
                 if (window.marked) {
-                    document.getElementById('analysis-markdown').innerHTML = marked.parse(analysisData.markdown);
+                    const rawHTML = marked.parse(analysisData.markdown);
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = rawHTML;
+
+                    const container = document.getElementById('analysis-markdown');
+                    container.innerHTML = ''; // clear loading
+
+                    // Let's group children by H2 elements into separate visual cards!
+                    let currentCard = null;
+                    let cardBody = null;
+
+                    // Render banner first if H1 exists
+                    const h1 = tempDiv.querySelector('h1');
+                    if (h1) {
+                        const banner = document.createElement('div');
+                        banner.className = 'analysis-banner';
+                        banner.innerHTML = `
+                            <div class="banner-badge">SLATE INTELLIGENCE BRIEFING</div>
+                            <h1>${h1.innerText.replace('⚾ ', '').replace(' OMEGA ', ' ')}</h1>
+                            <div class="banner-subtitle">Dynamic quantitative signals, high-leverage pitcher tiers, and stadium physics calibrated live.</div>
+                        `;
+                        container.appendChild(banner);
+                    }
+
+                    // Loop through elements and create cards
+                    Array.from(tempDiv.children).forEach(el => {
+                        if (el.tagName === 'H1' || (el.tagName === 'P' && el === tempDiv.querySelector('p')) || (el.tagName === 'P' && el.innerText.startsWith('Generated:'))) {
+                            // skip banner elements and timestamp
+                            return;
+                        }
+
+                        if (el.tagName === 'H2') {
+                            // Start a new card!
+                            currentCard = document.createElement('div');
+                            currentCard.className = 'card analysis-card';
+                            
+                            const header = document.createElement('div');
+                            header.className = 'analysis-card-header';
+                            header.innerHTML = `<h2>${el.innerHTML}</h2>`;
+                            currentCard.appendChild(header);
+
+                            cardBody = document.createElement('div');
+                            cardBody.className = 'analysis-card-body';
+                            currentCard.appendChild(cardBody);
+
+                            container.appendChild(currentCard);
+                        } else if (el.tagName === 'HR') {
+                            // skip horizontal rules as cards act as dividers
+                            return;
+                        } else {
+                            // Append to active card body, or directly to container if no card yet
+                            if (cardBody) {
+                                cardBody.appendChild(el.cloneNode(true));
+                            } else {
+                                container.appendChild(el.cloneNode(true));
+                            }
+                        }
+                    });
                 } else {
                     document.getElementById('analysis-markdown').innerText = analysisData.markdown;
                 }
