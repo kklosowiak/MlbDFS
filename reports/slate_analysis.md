@@ -1,5 +1,5 @@
 # ⚾ OMEGA Deep-Dive Slate Analysis (10 Games)
-**Generated:** 2026-05-17 12:32 PM ET
+**Generated:** 2026-05-17 09:09 PM ET
 
 ---
 
@@ -7,76 +7,65 @@
 
 ### SP Targets
 
-1. **Paul Skenes** (146.4 OMEGA) — Phys: 35.0, K: 6.5, vs Philadelphia Phillies (46.9 stack)
-2. **Nathan Eovaldi** (95.4 OMEGA) — Phys: 25.0, K: 6.0, vs Houston Astros (73.4 stack)
-3. **Peter Lambert** (93.1 OMEGA) — Phys: 27.7, K: 4.5, vs Texas Rangers (70.8 stack) ⚠️ LOW-K
+1. **Freddy Peralta** (68.1 OMEGA) — Phys: 26.2, K: 4.5, vs Washington Nationals (109.7 stack) ⚠️ LOW-K
+2. **Bailey Ober** (56.3 OMEGA) — Phys: 24.3, K: 4.5, vs Houston Astros (98.3 stack) ⚠️ LOW-K
+3. **Richard Lovelady** (53.5 OMEGA) — Phys: 25.7, K: 4.5, vs New York Mets (123.6 stack) ⚠️ PARADOX, LOW-K
 
 ### Stack Priority
 
-1. **PRIMARY: St. Louis Cardinals** (117.8 OMEGA, 5.28 ITT) — SHARP, STORM
-   - Core bats: Jordan Walker, Ivan Herrera, Jj Wetherholt
-2. **SECONDARY: Chicago Cubs** (107.5 OMEGA, 5.10 ITT) — SHARP, GASSED BP
-   - Core bats: Michael Conforto, Seiya Suzuki, Ian Happ
-3. **TERTIARY: Chicago White Sox** (100.8 OMEGA, 4.31 ITT) — GASSED BP
-   - Core bats: Munetaka Murakami, Colson Montgomery, Miguel Vargas
-4. **GPP LEVERAGE: New York Mets** (96.5 OMEGA, 4.67 ITT) — WHALE, SHARP, SURGING
-   - Core bats: Juan Soto, Mark Vientos, Mj Melendez
+1. **PRIMARY: Texas Rangers** (134.8 OMEGA, 6.11 ITT) — BURST, GASSED BP, SURGING
+   - Core bats: Justin Foscue, Ezequiel Duran, Brandon Nimmo
+2. **SECONDARY: New York Mets** (123.6 OMEGA, 5.88 ITT) — WHALE, SHARP, BURST, GASSED BP
+   - Core bats: A.J. Ewing, Juan Soto, Brett Baty
+3. **TERTIARY: Chicago Cubs** (119.4 OMEGA, 6.58 ITT) — SHARP, BURST, GASSED BP, FADING
+   - Core bats: Michael Conforto, Ian Happ, Seiya Suzuki
+4. **GPP LEVERAGE: Atlanta Braves** (117.8 OMEGA, 4.41 ITT) — SHARP, BURST, GASSED BP
+   - Core bats: Matt Olson, Drake Baldwin, Michael Harris
 
 ### One-Off Power Targets
 
-- **Aaron Judge** (New York Yankees, 105.0 OMEGA, 0.407 xwOBA) [🔥 HOT, JUICED]
-- **Ben Rice** (New York Yankees, 104.7 OMEGA, 0.432 xwOBA) [🔥 HOT, JUICED]
-- **Yordan Alvarez** (Houston Astros, 95.4 OMEGA, 0.431 xwOBA) [🔥 HOT]
-- **Matt Olson** (Atlanta Braves, 94.8 OMEGA, 0.383 xwOBA) [🔥 HOT, JUICED]
+- **Kyle Schwarber** (Philadelphia Phillies, 101.8 OMEGA, 0.392 xwOBA) [🔥 HOT, JUICED]
+- **Ben Rice** (New York Yankees, 100.6 OMEGA, 0.431 xwOBA) [🔥 HOT, JUICED]
+- **Bryce Harper** (Philadelphia Phillies, 96.1 OMEGA, 0.374 xwOBA) [🔥 HOT, JUICED]
+- **Aaron Judge** (New York Yankees, 94.7 OMEGA, 0.400 xwOBA) [🔥 HOT, JUICED]
 
 ### ❌ Hard Fades
 
-- **Philadelphia Phillies stack** (46.9 OMEGA) (-15 divergence, FADING)
-- **Stephen Kolek** (63.3 OMEGA — PARADOX vs Top Stack)
-- **Colin Rea** (53.9 OMEGA — PARADOX vs Top Stack)
-- **Erick Fedde** (39.8 OMEGA — PARADOX vs Top Stack)
+- **Richard Lovelady** (53.5 OMEGA — PARADOX vs Top Stack)
+- **Robert Gasser** (42.0 OMEGA — PARADOX vs Top Stack)
+- **Michael Lorenzen** (33.0 OMEGA — PARADOX vs Top Stack)
 
 ## ⚡ Pitcher Tier Breakdown
-
-### Tier 1 — Elite Conviction (100+)
-
-| Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
-|---------|-------|------|-----|--------|------|-------|---------------------|
-| **Paul Skenes** (Pittsburgh Pirates) | 146.4 | 35.0 | 0.0 | 6.5 | 18.5 | Clean | Philadelphia Phillies (46.9) |
-
-### Tier 2 — Strong Plays (80-99)
-
-| Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
-|---------|-------|------|-----|--------|------|-------|---------------------|
-| **Nathan Eovaldi** (Texas Rangers) | 95.4 | 25.0 | 10.1 | 6.0 | 17.5 | Clean | Houston Astros (73.4) |
-| **Peter Lambert** (Houston Astros) | 93.1 | 27.7 | 7.1 | 4.5 | 17.5 | LOW-K | Texas Rangers (70.8) |
-| **Andre Pallante** (St. Louis Cardinals) | 90.2 | 21.5 | 12.6 | 3.5 | 17.5 | LOW-K | Kansas City Royals (81.5) |
-| **Kevin Gausman** (Toronto Blue Jays) | 84.4 | 26.9 | 7.6 | 5.5 | 17.5 | Clean | Detroit Tigers (71.7) |
-| **Freddy Peralta** (New York Mets) | 80.1 | 29.6 | 5.0 | 6.5 | 15.5 | HAZARD | New York Yankees (94.9) |
 
 ### Tier 3 — Risky / Situational (65-79)
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Jack Flaherty** (Detroit Tigers) | 79.3 | 24.6 | 7.1 | 4.5 | 15.5 | LOW-K | Toronto Blue Jays (80.8) |
-| **Zack Wheeler** (Philadelphia Phillies) | 71.7 | 28.1 | 5.0 | 6.5 | 17.5 | Clean | Pittsburgh Pirates (80.8) |
-| **Brandon Young** (Baltimore Orioles) | 67.8 | 22.8 | 7.1 | 3.5 | 15.5 | LOW-K | Washington Nationals (82.0) |
-| **Richard Lovelady** (Washington Nationals) | 66.9 | 30.6 | 11.1 | 4.5 | 14.5 | LOW-K | Baltimore Orioles (82.8) |
-| **Gavin Williams** (Cleveland Guardians) | 65.1 | 30.0 | 0.0 | 7.5 | 17.5 | Clean | Cincinnati Reds (80.9) |
+| **Freddy Peralta** (New York Mets) | 68.1 | 26.2 | 0.0 | 4.5 | 14.5 | LOW-K | Washington Nationals (109.7) |
 
 ### Fade Zone (<65)
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Stephen Kolek** (Kansas City Royals) | 63.3 | 20.8 | 7.1 | 3.5 | 17.5 | PARADOX, LOW-K | St. Louis Cardinals (117.8) |
-| **Bailey Ober** (Minnesota Twins) | 60.1 | 24.9 | 0.0 | 4.5 | 17.5 | LOW-K | Milwaukee Brewers (69.8) |
-| **Robert Gasser** (Milwaukee Brewers) | 60.1 | 26.0 | 3.5 | 3.5 | 14.5 | LOW-K | Minnesota Twins (80.0) |
-| **Colin Rea** (Chicago Cubs) | 53.9 | 25.8 | 7.1 | 4.5 | 15.5 | PARADOX, LOW-K | Chicago White Sox (100.8) |
-| **Elmer Rodríguez** (New York Yankees) | 53.5 | 21.5 | 0.0 | 3.5 | 14.5 | LOW-K | New York Mets (96.5) |
-| **Brayan Bello** (Boston Red Sox) | 43.7 | 18.4 | 0.0 | 3.5 | 15.5 | LOW-K, COORS | Atlanta Braves (82.8) |
-| **Brady Singer** (Cincinnati Reds) | 43.2 | 19.6 | 3.5 | 3.5 | 15.5 | LOW-K | Cleveland Guardians (82.0) |
-| **Erick Fedde** (Chicago White Sox) | 39.8 | 21.5 | 12.1 | 3.5 | 15.5 | PARADOX, LOW-K | Chicago Cubs (107.5) |
-| **Grant Holmes** (Atlanta Braves) | 33.7 | 21.0 | 0.0 | 4.5 | 15.5 | LOW-K, COORS | Boston Red Sox (66.0) |
+| **Bailey Ober** (Minnesota Twins) | 56.3 | 24.3 | 0.0 | 4.5 | 14.5 | LOW-K | Houston Astros (98.3) |
+| **Richard Lovelady** (Washington Nationals) | 53.5 | 25.7 | 0.0 | 4.5 | 14.5 | PARADOX, LOW-K | New York Mets (123.6) |
+| **Drew Rasmussen** (Tampa Bay Rays) | 53.5 | 28.7 | 0.0 | 4.5 | 14.5 | LOW-K | Baltimore Orioles (88.1) |
+| **Zack Wheeler** (Philadelphia Phillies) | 53.5 | 27.8 | 0.0 | 4.5 | 14.5 | LOW-K | Cincinnati Reds (89.6) |
+| **Gavin Williams** (Cleveland Guardians) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Detroit Tigers (76.3) |
+| **Peter Lambert** (Houston Astros) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Minnesota Twins (91.2) |
+| **Kevin Gausman** (Toronto Blue Jays) | 52.7 | 26.7 | 0.0 | 4.5 | 14.5 | LOW-K | New York Yankees (113.5) |
+| **Eury Pérez** (Miami Marlins) | 51.8 | 26.4 | 0.0 | 4.5 | 14.5 | LOW-K | Atlanta Braves (117.8) |
+| **Grant Holmes** (Atlanta Braves) | 50.8 | 25.1 | 0.0 | 4.5 | 14.5 | LOW-K | Miami Marlins (91.3) |
+| **Jack Flaherty** (Detroit Tigers) | 49.9 | 23.9 | 0.0 | 4.5 | 14.5 | LOW-K | Cleveland Guardians (80.5) |
+| **Colin Rea** (Chicago Cubs) | 48.8 | 22.3 | 0.0 | 4.5 | 14.5 | LOW-K | Milwaukee Brewers (98.4) |
+| **Stephen Kolek** (Kansas City Royals) | 48.6 | 22.0 | 0.0 | 4.5 | 14.5 | LOW-K | Boston Red Sox (95.6) |
+| **Brandon Young** (Baltimore Orioles) | 48.0 | 21.2 | 0.0 | 4.5 | 14.5 | LOW-K | Tampa Bay Rays (92.4) |
+| **Brady Singer** (Cincinnati Reds) | 47.7 | 19.6 | 0.0 | 4.5 | 14.5 | LOW-K | Philadelphia Phillies (115.9) |
+| **Brayan Bello** (Boston Red Sox) | 46.3 | 18.8 | 0.0 | 4.5 | 14.5 | LOW-K | Kansas City Royals (111.9) |
+| **Elmer Rodríguez** (New York Yankees) | 45.7 | 18.0 | 0.0 | 4.5 | 14.5 | LOW-K | Toronto Blue Jays (103.1) |
+| **Nathan Eovaldi** (Texas Rangers) | 43.1 | 26.0 | 0.0 | 4.5 | 14.5 | LOW-K, COORS | Colorado Rockies (80.3) |
+| **Robert Gasser** (Milwaukee Brewers) | 42.0 | 23.2 | 0.0 | 4.5 | 14.5 | PARADOX, LOW-K | Chicago Cubs (119.4) |
+| **Michael Lorenzen** (Colorado Rockies) | 33.0 | 18.6 | 0.0 | 4.5 | 14.5 | PARADOX, LOW-K, COORS | Texas Rangers (134.8) |
 
 ---
 
@@ -84,26 +73,26 @@
 
 | Rank | Team | OMEGA | xwOBA | ITT | Div | Signals | vs SP | Opp BP |
 |------|------|-------|-------|-----|-----|---------|-------|--------|
-| 1 | **St. Louis Cardinals** | 117.8 | .28 | 5.28 | +10 | SHARP, STORM | Stephen Kolek | 70 |
-| 2 | **Chicago Cubs** | 107.5 | .312 | 5.10 | -2 | SHARP, GASSED BP | Erick Fedde | 91 🔥 |
-| 3 | **Chicago White Sox** | 100.8 | .298 | 4.31 | +2 | GASSED BP | Colin Rea | 86 🔥 |
-| 4 | **New York Mets** | 96.5 | .288 | 4.67 | +37 | WHALE, SHARP, SURGING | Elmer Rodríguez | 55 |
-| 5 | **New York Yankees** | 94.9 | .322 | 4.23 | -37 | GASSED BP, FADING | Freddy Peralta | 100 🔥 |
-| 6 | **Atlanta Braves** | 82.8 | .323 | 5.18 | +4 | SHARP | Brayan Bello | 60 |
-| 7 | **Baltimore Orioles** | 82.8 | .269 | 5.45 | -2 | BURST, GASSED BP | Richard Lovelady | 84 🔥 |
-| 8 | **Washington Nationals** | 82.0 | .295 | 5.00 | +2 | — | Brandon Young | 41 |
-| 9 | **Cleveland Guardians** | 82.0 | .274 | 5.24 | -3 | SHARP, GASSED BP | Brady Singer | 100 🔥 |
-| 10 | **Kansas City Royals** | 81.5 | .276 | 4.66 | -10 | — | Andre Pallante | 74 |
-| 11 | **Cincinnati Reds** | 80.9 | .306 | 3.65 | +3 | — | Gavin Williams | 42 |
-| 12 | **Pittsburgh Pirates** | 80.8 | .286 | 3.97 | +15 | WHALE, SHARP, SURGING | Zack Wheeler | 76 |
-| 13 | **Toronto Blue Jays** | 80.8 | .277 | 4.25 | +6 | SHARP, GASSED BP, SURGING | Jack Flaherty | 100 🔥 |
-| 14 | **Minnesota Twins** | 80.0 | .29 | 3.86 | +28 | WHALE, SHARP | Robert Gasser | 78 |
-| 15 | **Houston Astros** | 73.4 | .323 | 3.92 | -3 | — | Nathan Eovaldi | 22 |
-| 16 | **Detroit Tigers** | 71.7 | .283 | 3.61 | -6 | GASSED BP, FADING | Kevin Gausman | 82 🔥 |
-| 17 | **Texas Rangers** | 70.8 | .282 | 4.46 | +3 | — | Peter Lambert | 68 |
-| 18 | **Milwaukee Brewers** | 69.8 | .285 | 4.51 | -28 | — | Bailey Ober | 64 |
-| 19 | **Boston Red Sox** | 66.0 | .293 | 3.71 | -4 | — | Grant Holmes | 62 |
-| 20 | **Philadelphia Phillies** | 46.9 | .29 | 3.35 | -15 | GASSED BP, FADING | Paul Skenes | 100 🔥 |
+| 1 | **Texas Rangers** | 134.8 | .286 | 6.11 | +7 | BURST, GASSED BP, SURGING | Michael Lorenzen | 100 🔥 |
+| 2 | **New York Mets** | 123.6 | .28 | 5.88 | +32 | WHALE, SHARP, BURST, GASSED BP | Richard Lovelady | 100 🔥 |
+| 3 | **Chicago Cubs** | 119.4 | .314 | 6.58 | -5 | SHARP, BURST, GASSED BP, FADING | Robert Gasser | 100 🔥 |
+| 4 | **Atlanta Braves** | 117.8 | .324 | 4.41 | +0 | SHARP, BURST, GASSED BP | Eury Pérez | 100 🔥 |
+| 5 | **Philadelphia Phillies** | 115.9 | .291 | 5.30 | +2 | BURST, GASSED BP | Brady Singer | 100 🔥 |
+| 6 | **New York Yankees** | 113.5 | .319 | 6.05 | -32 | BURST, GASSED BP | Kevin Gausman | 100 🔥 |
+| 7 | **Kansas City Royals** | 111.9 | .276 | 4.67 | -9 | BURST, GASSED BP | Brayan Bello | 82 🔥 |
+| 8 | **Washington Nationals** | 109.7 | .295 | 4.57 | +11 | BURST, GASSED BP, SURGING | Freddy Peralta | 100 🔥 |
+| 9 | **Toronto Blue Jays** | 103.1 | .275 | 3.36 | +2 | SHARP, BURST, GASSED BP | Elmer Rodríguez | 100 🔥 |
+| 10 | **Milwaukee Brewers** | 98.4 | .289 | 4.39 | -10 | BURST, GASSED BP | Colin Rea | 100 🔥 |
+| 11 | **Houston Astros** | 98.3 | .319 | 4.87 | -7 | BURST, GASSED BP, FADING | Bailey Ober | 96 🔥 |
+| 12 | **Boston Red Sox** | 95.6 | .287 | 4.75 | +0 | BURST, GASSED BP | Stephen Kolek | 90 🔥 |
+| 13 | **Tampa Bay Rays** | 92.4 | .284 | 4.41 | +0 | BURST, GASSED BP | Brandon Young | 82 🔥 |
+| 14 | **Miami Marlins** | 91.3 | .295 | 4.49 | +0 | BURST, GASSED BP | Grant Holmes | 80 🔥 |
+| 15 | **Minnesota Twins** | 91.2 | .282 | 5.06 | +10 | BURST, GASSED BP | Peter Lambert | 91 🔥 |
+| 16 | **Cincinnati Reds** | 89.6 | .304 | 4.66 | +3 | BURST, GASSED BP | Zack Wheeler | 87 🔥 |
+| 17 | **Baltimore Orioles** | 88.1 | .273 | 3.42 | -11 | BURST, GASSED BP, FADING | Drew Rasmussen | 96 🔥 |
+| 18 | **Cleveland Guardians** | 80.5 | .282 | 3.71 | -3 | SHARP, BURST, GASSED BP | Jack Flaherty | 100 🔥 |
+| 19 | **Colorado Rockies** | 80.3 | .3 | 4.35 | +8 | — | Nathan Eovaldi | 30 |
+| 20 | **Detroit Tigers** | 76.3 | .282 | 5.18 | -2 | — | Gavin Williams | 63 |
 
 ---
 
@@ -111,435 +100,432 @@
 
 | Game | Combined ITT | Park Factor | BP Fatigue (Higher=Runs) | Projection |
 |------|-------------|-------------|--------------------------|------------|
-| Baltimore Orioles vs Washington Nationals | 10.45 | 1.01 | 84 | 🔴 HIGH 📈 O-DIV +8 |
-| St. Louis Cardinals vs Kansas City Royals | 9.94 | 0.98 | 74 | 🔴 HIGH ↑ OVER 59%$ |
-| Chicago Cubs vs Chicago White Sox | 9.41 | 1.02 | 91 | 🔴 HIGH ↑ OVER 48%$ |
-| New York Mets vs New York Yankees | 8.90 | 0.96 | 100 | 🟠 MODERATE-HIGH ↑ OVER 86%$ |
-| Atlanta Braves vs Boston Red Sox | 8.89 | 1.02 | 62 | 🟠 MODERATE-HIGH ↑ OVER 48%$ |
-| Cleveland Guardians vs Cincinnati Reds | 8.89 | 0.98 | 100 | 🟠 MODERATE-HIGH ↑ OVER 84%$ |
-| Houston Astros vs Texas Rangers | 8.38 | 0.98 | 68 | 🟠 MODERATE-HIGH |
-| Minnesota Twins vs Milwaukee Brewers | 8.37 | 0.99 | 78 | 🟠 MODERATE-HIGH |
-| Toronto Blue Jays vs Detroit Tigers | 7.86 | 1.01 | 100 | 🟠 MODERATE-HIGH |
-| Pittsburgh Pirates vs Philadelphia Phillies | 7.32 | 0.97 | 100 | 🟠 MODERATE-HIGH 📉 U-DIV +15 |
+| Chicago Cubs vs Milwaukee Brewers | 10.97 | 1.02 | 100 | 🔴 HIGH |
+| Texas Rangers vs Colorado Rockies | 10.46 | 1.04 | 100 | 🔴 HIGH |
+| New York Mets vs Washington Nationals | 10.45 | 0.96 | 100 | 🔴 HIGH ↑ OVER 61%$ |
+| Philadelphia Phillies vs Cincinnati Reds | 9.96 | 1.03 | 100 | 🔴 HIGH 📉 U-DIV +21 |
+| Houston Astros vs Minnesota Twins | 9.93 | 0.98 | 96 | 🔴 HIGH 📉 U-DIV +14 |
+| Kansas City Royals vs Boston Red Sox | 9.42 | 1.02 | 90 | 🔴 HIGH ↑ OVER 53%$ |
+| New York Yankees vs Toronto Blue Jays | 9.41 | 1.02 | 100 | 🔴 HIGH |
+| Atlanta Braves vs Miami Marlins | 8.90 | 1.02 | 100 | 🟠 MODERATE-HIGH |
+| Cleveland Guardians vs Detroit Tigers | 8.89 | 0.98 | 100 | 🟠 MODERATE-HIGH |
+| Tampa Bay Rays vs Baltimore Orioles | 7.83 | 0.96 | 96 | 🟠 MODERATE-HIGH |
 
 ---
 
 ## 📊 Game-by-Game Breakdown
 
-### Game 1: St. Louis Cardinals (117.8) vs Kansas City Royals (81.5)
+### Game 1: Texas Rangers (134.8) vs Colorado Rockies (80.3)
 
-**Pitching:** Andre Pallante (90.2) vs Stephen Kolek (63.3)
+**Pitching:** Nathan Eovaldi (43.1) vs Michael Lorenzen (33.0)
 
-| Metric | St. Louis Cardinals | Kansas City Royals |
-|--------|---------------------|--------------------|
-| Stack Score | **117.8** | 81.5 |
-| xwOBA | 0.280 | 0.276 |
-| ITT | 5.28 | 4.66 |
-| ML Move | -11.0 | +9.0 |
-| TT Move | +0.5 | +0.5 |
-| Divergence | +10 | -10 |
-| Opp BP | 70  | 74  |
-| Weather | 🟢 86° / Out to Left | 🟢 86° / Out to Left |
-| Umpire | Ryan Wills | Ryan Wills |
-| Signals | SHARP, STORM | — |
-| Total Signal | ↑ OVER 59%$ | ↑ OVER 59%$ |
-
-**OMEGA Analysis:** Proceed with caution on Stephen Kolek (PARADOX trap). The Kansas City Royals form an elite stack that can ruin a good pitcher's day. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Stephen Kolek (63.3 OMEGA) is in the Fade Zone, making the Kansas City Royals a strong stacking target in this environment.
-
-**St. Louis Cardinals Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 98.7 | Jordan Walker | .3908 | +400 | 0.5@-160 | 🔥 HOT, JUICED |
-| 66.7 | Ivan Herrera | .32320000000000004 | +500 | 0.5@-160 | — |
-| 64.6 | Jj Wetherholt | .3064 | +500 | 0.5@-175 | JUICED |
-| 60.0 | Alec Burleson | .3148 | +567 | 0.5@-155 | — |
-| 52.0 | Nolan Gorman | .2716 | +400 | 0.5@+140 | JUICED |
-
-**Kansas City Royals Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 69.6 | Bobby Witt | .3544 | +400 | 0.5@-110 | JUICED |
-| 50.2 | Salvador Perez | .22400000000000003 | +398 | 0.5@-160 | JUICED |
-| 38.5 | Vinnie Pasquantino | .2508 | +556 | 0.5@-165 | JUICED |
-| 31.3 | Maikel Garcia | .294 | +4900 | 0.5@-150 | — |
-| 31.0 | Carter Jensen | .2964 | +612 | 0.5@+130 | JUICED |
-
----
-
-### Game 2: Chicago Cubs (107.5) vs Chicago White Sox (100.8)
-
-**Pitching:** Colin Rea (53.9) vs Erick Fedde (39.8)
-
-| Metric | Chicago Cubs | Chicago White Sox |
-|--------|--------------|-------------------|
-| Stack Score | **107.5** | 100.8 |
-| xwOBA | 0.312 | 0.298 |
-| ITT | 5.10 | 4.31 |
-| ML Move | +12.0 | -10.0 |
-| TT Move | +0.5 | +0.5 |
-| Divergence | -2 | +2 |
-| Opp BP | 91 🔥 | 86 🔥 |
-| Weather | 🟢 75° / Neutral | 🟢 75° / Neutral |
-| Umpire | Chris Segal | Chris Segal |
-| Signals | SHARP, GASSED BP | GASSED BP |
-| Total Signal | ↑ OVER 48%$ | ↑ OVER 48%$ |
-
-**OMEGA Analysis:** This is an absolute warzone. Both pitchers are flagged for Paradox traps against top-tier opposing stacks. Fade the pitching entirely. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Erick Fedde (39.8 OMEGA) is in the Fade Zone, making the Chicago White Sox a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Colin Rea (53.9 OMEGA) is in the Fade Zone, making the Chicago Cubs a strong stacking target in this environment. ⚡ **Bullpen Fatigue Alert:** Opposing bullpen fatigue (91) combined with high ITT (9.4) creates a late-game ceiling spot for the Chicago Cubs. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Erick Fedde 39.8, Colin Rea 53.9). This is a premium game-stack target — consider stacking both sides.
-
-**Chicago Cubs Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 80.4 | Michael Conforto | .4208 | +400 | 0.5@+135 | 🔥 HOT, JUICED |
-| 78.8 | Seiya Suzuki | .3384 | +350 | 0.5@-155 | JUICED |
-| 78.4 | Ian Happ | .3372 | +350 | 0.5@-185 | JUICED |
-| 67.4 | Michael Busch | .28159999999999996 | +300 | 0.5@-140 | JUICED |
-| 60.6 | Pete Crowarmstrong | .2772 | +400 | 0.5@-190 | JUICED, SPEED |
-
-**Chicago White Sox Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 105.0 | Munetaka Murakami | .3772 | +200 | 0.5@-155 | 🔥 HOT, JUICED |
-| 84.6 | Colson Montgomery | .3456 | +300 | 0.5@-160 | JUICED |
-| 62.8 | Miguel Vargas | .3516 | +400 | 0.5@+135 | JUICED |
-| 55.1 | Sam Antonacci | .322 | +600 | 0.5@-160 | JUICED |
-| 45.5 | Derek Hill | .3148 | +4900 | 0.5@-115 | JUICED |
-
----
-
-### Game 3: New York Mets (96.5) vs New York Yankees (94.9)
-
-**Pitching:** Freddy Peralta (80.1) vs Elmer Rodríguez (53.5)
-
-| Metric | New York Mets | New York Yankees |
+| Metric | Texas Rangers | Colorado Rockies |
 |--------|---------------|------------------|
-| Stack Score | **96.5** | 94.9 |
-| xwOBA | 0.288 | 0.322 |
-| ITT | 4.67 | 4.23 |
-| ML Move | -10.0 | +8.0 |
-| TT Move | +0.0 | +0.0 |
-| Divergence | +37 | -37 |
-| Opp BP | 55  | 100 🔥 |
-| Weather | 🟢 83° / Neutral | 🟢 83° / Neutral |
-| Umpire | Jeremie Rehak | Jeremie Rehak |
-| Signals | WHALE, SHARP, SURGING | GASSED BP, FADING |
-| Total Signal | ↑ OVER 86%$ | ↑ OVER 86%$ |
-
-**OMEGA Analysis:** The engine detects major institutional backing for the New York Mets. Professional syndicates are actively attacking this side. ⚡ **Bullpen Fatigue Alert:** Opposing bullpen fatigue (100) combined with high ITT (8.9) creates a late-game ceiling spot for the New York Mets.
-
-**New York Mets Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 85.6 | Juan Soto | .3552 | +300 | 0.5@-155 | JUICED |
-| 57.4 | Mark Vientos | .27959999999999996 | +400 | 0.5@-190 | JUICED |
-| 48.6 | Mj Melendez | .32 | +500 | 0.5@+100 | JUICED |
-| 48.1 | Hayden Senger | .33 | +900 | 0.5@-110 | JUICED |
-| 41.4 | Bo Bichette | .21400000000000002 | +600 | 0.5@-155 | — |
-
-**New York Yankees Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 105.0 | Aaron Judge | .4072 | +200 | 0.5@-145 | 🔥 HOT, JUICED |
-| 104.7 | Ben Rice | .4316 | +250 | 0.5@-165 | 🔥 HOT, JUICED |
-| 59.2 | Spencer Jones | .33 | +500 | 0.5@-105 | JUICED |
-| 52.0 | Anthony Volpe | .33 | +600 | 0.5@-110 | JUICED |
-| 47.7 | Cody Bellinger | .32839999999999997 | +488 | 0.5@+140 | JUICED |
-
----
-
-### Game 4: Atlanta Braves (82.8) vs Boston Red Sox (66.0)
-
-**Pitching:** Grant Holmes (33.7) vs Brayan Bello (43.7)
-
-| Metric | Atlanta Braves | Boston Red Sox |
-|--------|----------------|----------------|
-| Stack Score | **82.8** | 66.0 |
-| xwOBA | 0.323 | 0.293 |
-| ITT | 5.18 | 3.71 |
+| Stack Score | **134.8** | 80.3 |
+| xwOBA | 0.286 | 0.300 |
+| ITT | 6.11 | 4.35 |
 | ML Move | +0.0 | +0.0 |
 | TT Move | +0.0 | +0.0 |
-| Divergence | +4 | -4 |
-| Opp BP | 60  | 62  |
-| Weather | 🟡 82° / Neutral | 🟡 82° / Neutral |
-| Umpire | Hunter Wendelstedt | Hunter Wendelstedt |
-| Signals | SHARP | — |
-| Total Signal | ↑ OVER 48%$ | ↑ OVER 48%$ |
+| Divergence | +7 | +8 |
+| Opp BP | 100 🔥 | 30  |
+| Weather | 🟡 62° / Neutral | 🟡 62° / Neutral |
+| Umpire | Nick Mahrley | Nick Mahrley |
+| Signals | BURST, GASSED BP, SURGING | — |
 
-**OMEGA Analysis:** 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Brayan Bello 43.7, Grant Holmes 33.7). This is a premium game-stack target — consider stacking both sides.
-
-**Atlanta Braves Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 94.8 | Matt Olson | .3828 | +300 | 0.5@-139 | 🔥 HOT, JUICED |
-| 87.8 | Drake Baldwin | .37360000000000004 | +350 | 0.5@-110 | 🔥 HOT, JUICED |
-| 63.2 | Michael Harris | .3324 | +471 | 0.5@-145 | JUICED |
-| 48.6 | Dominic Smith | .35960000000000003 | +600 | 0.5@+159 | JUICED |
-| 48.4 | Ozzie Albies | .316 | +600 | 0.5@-177 | JUICED |
-
-**Boston Red Sox Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 61.1 | Wilyer Abreu | .33999999999999997 | +400 | 0.5@-153 | JUICED |
-| 43.9 | Mickey Gasper | .33 | +600 | 0.5@-205 | JUICED |
-| 35.2 | Jarren Duran | .2136 | +541 | 0.5@-162 | JUICED |
-| 35.1 | Willson Contreras | .3308 | +602 | 0.5@+132 | JUICED |
-| 29.3 | Nick Sogard | .33 | +900 | 0.5@+109 | JUICED |
-
----
-
-### Game 5: Baltimore Orioles (82.8) vs Washington Nationals (82.0)
-
-**Pitching:** Brandon Young (67.8) vs Richard Lovelady (66.9)
-
-| Metric | Baltimore Orioles | Washington Nationals |
-|--------|-------------------|----------------------|
-| Stack Score | **82.8** | 82.0 |
-| xwOBA | 0.269 | 0.295 |
-| ITT | 5.45 | 5.00 |
-| ML Move | +11.0 | -8.0 |
-| TT Move | -0.5 | -0.5 |
-| Divergence | -2 | +2 |
-| Opp BP | 84 🔥 | 41  |
-| Weather | 🟢 82° / Neutral | 🟢 82° / Neutral |
-| Umpire | Brennan Miller | Brennan Miller |
-| Signals | BURST, GASSED BP | — |
-| Total Signal | 📈 O-DIV +8 | 📈 O-DIV +8 |
-
-**OMEGA Analysis:** 🚨 **Elite Run Environment**: Massive Over-Divergence combined with late-game BURST conditions. This game is a prime target for full game-stacks.
-
-**Baltimore Orioles Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 66.0 | Pete Alonso | .292 | +250 | 0.5@-125 | JUICED |
-| 65.8 | Samuel Basallo | .3332 | +400 | 0.5@-165 | JUICED |
-| 62.8 | Tyler Oneill | .2352 | +250 | 0.5@-135 | JUICED |
-| 62.5 | Taylor Ward | .3196 | +350 | 0.5@-135 | — |
-| 59.0 | Gunnar Henderson | .2596 | +300 | 0.5@-115 | JUICED |
-
-**Washington Nationals Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 86.1 | James Wood | .358 | +225 | 0.5@-140 | JUICED |
-| 84.1 | Cj Abrams | .37320000000000003 | +350 | 0.5@-140 | 🔥 HOT, JUICED |
-| 50.7 | Daylen Lile | .31520000000000004 | +540 | 0.5@-140 | JUICED |
-| 44.2 | Brady House | .27440000000000003 | +500 | 0.5@-190 | JUICED |
-| 40.6 | Jose Tena | .304 | +500 | 0.5@+145 | JUICED |
-
----
-
-### Game 6: Cleveland Guardians (82.0) vs Cincinnati Reds (80.9)
-
-**Pitching:** Gavin Williams (65.1) vs Brady Singer (43.2)
-
-| Metric | Cleveland Guardians | Cincinnati Reds |
-|--------|---------------------|-----------------|
-| Stack Score | **82.0** | 80.9 |
-| xwOBA | 0.274 | 0.306 |
-| ITT | 5.24 | 3.65 |
-| ML Move | +9.0 | -7.0 |
-| TT Move | +0.0 | +0.0 |
-| Divergence | -3 | +3 |
-| Opp BP | 100 🔥 | 42  |
-| Weather | 🟢 79° / Neutral | 🟢 79° / Neutral |
-| Umpire | David Rackley | David Rackley |
-| Signals | SHARP, GASSED BP | — |
-| Total Signal | ↑ OVER 84%$ | ↑ OVER 84%$ |
-
-**OMEGA Analysis:** ⚡ **Bullpen Fatigue Alert:** Opposing bullpen fatigue (100) combined with high ITT (8.9) creates a late-game ceiling spot for the Cincinnati Reds.
-
-**Cleveland Guardians Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 73.2 | Chase Delauter | .3372 | +400 | 0.5@-150 | JUICED |
-| 66.4 | Jose Ramirez | .2948 | +331 | 0.5@-135 | JUICED |
-| 61.4 | Daniel Schneemann | .3136 | +459 | 0.5@-175 | JUICED |
-| 60.8 | Kyle Manzardo | .244 | +346 | 0.5@-165 | JUICED |
-| 41.9 | Angel Martinez | .3236 | +604 | 0.5@+135 | JUICED |
-
-**Cincinnati Reds Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 72.3 | Jj Bleday | .4664 | +400 | 0.5@+100 | 🔥 HOT, JUICED |
-| 55.4 | Elly De La Cruz | .354 | +400 | 0.5@+135 | JUICED |
-| 41.4 | Sal Stewart | .3128 | +491 | 0.5@+145 | JUICED |
-| 40.9 | Spencer Steer | .3128 | +500 | 0.5@+120 | JUICED |
-| 35.2 | Will Benson | .26280000000000003 | +479 | 0.5@+105 | JUICED |
-
----
-
-### Game 7: Pittsburgh Pirates (80.8) vs Philadelphia Phillies (46.9)
-
-**Pitching:** Paul Skenes (146.4) vs Zack Wheeler (71.7)
-
-| Metric | Pittsburgh Pirates | Philadelphia Phillies |
-|--------|--------------------|-----------------------|
-| Stack Score | **80.8** | 46.9 |
-| xwOBA | 0.286 | 0.290 |
-| ITT | 3.97 | 3.35 |
-| ML Move | +12.0 | -10.0 |
-| TT Move | +0.0 | +0.0 |
-| Divergence | +15 | -15 |
-| Opp BP | 76  | 100 🔥 |
-| Weather | 🟢 76° / Neutral | 🟢 76° / Neutral |
-| Umpire | Dexter Kelley | Dexter Kelley |
-| Signals | WHALE, SHARP, SURGING | GASSED BP, FADING |
-| Total Signal | 📉 U-DIV +15 | 📉 U-DIV +15 |
-
-**OMEGA Analysis:** The engine detects major institutional backing for the Pittsburgh Pirates. Professional syndicates are actively attacking this side. Heavy sharp money is fading the run total here (U-DIV). This is a strong environment for starting pitching and a hard fade for hitters.
-
-**Pittsburgh Pirates Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 78.1 | Brandon Lowe | .3592 | +350 | 0.5@-175 | JUICED |
-| 66.7 | Oneil Cruz | .318 | +350 | 0.5@-165 | JUICED |
-| 37.2 | Bryan Reynolds | .3148 | +600 | 0.5@+130 | JUICED |
-| 34.7 | Nick Gonzales | .3 | +900 | 0.5@-200 | JUICED |
-| 32.6 | Spencer Horwitz | .3224 | +4400 | 0.5@+135 | JUICED |
-
-**Philadelphia Phillies Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 65.2 | Kyle Schwarber | .40279999999999994 | +250 | 0.5@+100 | 🔥 HOT, JUICED |
-| 45.0 | Bryce Harper | .3704 | +477 | 0.5@+140 | 🔥 HOT, JUICED |
-| 23.2 | Brandon Marsh | .3328 | +4400 | 0.5@+140 | JUICED |
-| 16.7 | Justin Crawford | .3 | +4900 | 0.5@+100 | JUICED |
-| 15.9 | Trea Turner | .2532 | +700 | 0.5@-190 | JUICED |
-
----
-
-### Game 8: Toronto Blue Jays (80.8) vs Detroit Tigers (71.7)
-
-**Pitching:** Kevin Gausman (84.4) vs Jack Flaherty (79.3)
-
-| Metric | Toronto Blue Jays | Detroit Tigers |
-|--------|-------------------|----------------|
-| Stack Score | **80.8** | 71.7 |
-| xwOBA | 0.277 | 0.283 |
-| ITT | 4.25 | 3.61 |
-| ML Move | -1.0 | +0.0 |
-| TT Move | -0.5 | -0.5 |
-| Divergence | +6 | -6 |
-| Opp BP | 100 🔥 | 82 🔥 |
-| Weather | 🟡 69° / Neutral | 🟡 69° / Neutral |
-| Umpire | Dan Bellino | Dan Bellino |
-| Signals | SHARP, GASSED BP, SURGING | GASSED BP, FADING |
-
-**OMEGA Analysis:** This game grades out as a relatively neutral environment. Pitching leans slightly ahead, but no elite alpha signals have fired for either side.
-
-**Toronto Blue Jays Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 42.1 | Daulton Varsho | .2928 | +400 | 0.5@+130 | JUICED |
-| 40.7 | Davis Schneider | .22599999999999998 | +500 | 0.5@-140 | — |
-| 32.3 | Yohendrick Pinango | .33 | +4400 | 0.5@+120 | JUICED |
-| 32.2 | Brandon Valenzuela | .2984 | +3900 | 0.5@-105 | JUICED |
-| 30.3 | Vladimir Guerrero | .292 | +2900 | 0.5@-140 | — |
-
-**Detroit Tigers Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 65.9 | Riley Greene | .36160000000000003 | +464 | 0.5@-175 | 🔥 HOT, JUICED |
-| 46.1 | Dillon Dingler | .3144 | +535 | 0.5@-175 | JUICED |
-| 37.8 | Kevin Mcgonigle | .32839999999999997 | +4400 | 0.5@-140 | JUICED |
-| 35.9 | Spencer Torkelson | .2792 | +554 | 0.5@-115 | JUICED |
-| 30.6 | Gage Workman | .33 | +4400 | 0.5@+100 | JUICED |
-
----
-
-### Game 9: Minnesota Twins (80.0) vs Milwaukee Brewers (69.8)
-
-**Pitching:** Bailey Ober (60.1) vs Robert Gasser (60.1)
-
-| Metric | Minnesota Twins | Milwaukee Brewers |
-|--------|-----------------|-------------------|
-| Stack Score | **80.0** | 69.8 |
-| xwOBA | 0.290 | 0.285 |
-| ITT | 3.86 | 4.51 |
-| ML Move | +5.0 | -7.0 |
-| TT Move | +0.0 | +0.0 |
-| Divergence | +28 | -28 |
-| Opp BP | 78  | 64  |
-| Weather | 🟢 64° / Neutral | 🟢 64° / Neutral |
-| Umpire | Junior Valentine | Junior Valentine |
-| Signals | WHALE, SHARP | — |
-
-**OMEGA Analysis:** The engine detects major institutional backing for the Minnesota Twins. Professional syndicates are actively attacking this side. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Robert Gasser 60.1, Bailey Ober 60.1). This is a premium game-stack target — consider stacking both sides.
-
-**Minnesota Twins Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 48.3 | Ryan Jeffers | .36360000000000003 | +600 | 0.5@+147 | 🔥 HOT, JUICED |
-| 43.7 | Austin Martin | .3368 | +4900 | 0.5@-190 | JUICED |
-| 42.7 | Ryan Kreidler | .33 | +4400 | 0.5@-101 | 🔥 HOT, JUICED |
-| 40.6 | James Outman | .33 | +4900 | 0.5@-139 | — |
-| 28.7 | Royce Lewis | .22160000000000002 | +600 | 0.5@+122 | JUICED |
-
-**Milwaukee Brewers Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 58.2 | Jackson Chourio | .33 | +350 | 0.5@-120 | — |
-| 54.4 | Brice Turang | .3644 | +3400 | 0.5@-165 | 🔥 HOT, JUICED |
-| 46.9 | Jake Bauers | .33199999999999996 | +400 | 0.5@+121 | JUICED |
-| 42.6 | William Contreras | .2968 | +500 | 0.5@-150 | JUICED |
-| 31.1 | Christian Yelich | .30720000000000003 | +3400 | 0.5@-190 | JUICED |
-
----
-
-### Game 10: Houston Astros (73.4) vs Texas Rangers (70.8)
-
-**Pitching:** Peter Lambert (93.1) vs Nathan Eovaldi (95.4)
-
-| Metric | Houston Astros | Texas Rangers |
-|--------|----------------|---------------|
-| Stack Score | **73.4** | 70.8 |
-| xwOBA | 0.323 | 0.282 |
-| ITT | 3.92 | 4.46 |
-| ML Move | +4.0 | -6.0 |
-| TT Move | -0.5 | -0.5 |
-| Divergence | -3 | +3 |
-| Opp BP | 22  | 68  |
-| Weather | 🟢 85° / Neutral | 🟢 85° / Neutral |
-| Umpire | Manny Gonzalez | Manny Gonzalez |
-| Signals | — | — |
-
-**OMEGA Analysis:** This game grades out as a relatively neutral environment. Pitching leans slightly ahead, but no elite alpha signals have fired for either side.
-
-**Houston Astros Top Hitters:**
-
-| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
-|-------|--------|-------|-----|----------|-------|
-| 95.4 | Yordan Alvarez | .4312 | +250 | 0.5@-124 | 🔥 HOT |
-| 70.1 | Christian Walker | .3452 | +350 | 0.5@-189 | JUICED |
-| 49.8 | Zach Cole | .33 | +400 | 0.5@+109 | JUICED |
-| 39.0 | Braden Shewmake | .33 | +600 | 0.5@+126 | 🔥 HOT, JUICED |
-| 38.8 | Nick Allen | .33 | +4900 | 0.5@-132 | — |
+**OMEGA Analysis:** Proceed with caution on Michael Lorenzen (PARADOX trap). The Colorado Rockies form an elite stack that can ruin a good pitcher's day. We have a ⚡ BURST condition triggered for the Texas Rangers, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (10.5) projects elite run production. Michael Lorenzen (33.0 OMEGA) is in the Fade Zone, making the Colorado Rockies a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (10.5) projects elite run production. Nathan Eovaldi (43.1 OMEGA) is in the Fade Zone, making the Texas Rangers a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Michael Lorenzen 33.0, Nathan Eovaldi 43.1). This is a premium game-stack target — consider stacking both sides.
 
 **Texas Rangers Top Hitters:**
 
 | OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
 |-------|--------|-------|-----|----------|-------|
-| 46.6 | Josh Jung | .3368 | +584 | 0.5@-144 | JUICED |
-| 44.3 | Brandon Nimmo | .3008 | +489 | 0.5@-152 | JUICED |
-| 43.8 | Justin Foscue | .33 | +600 | 0.5@-103 | JUICED |
-| 39.0 | Jake Burger | .2612 | +350 | 0.5@+142 | JUICED |
-| 38.3 | Kyle Higashioka | .2056 | +500 | 0.5@-109 | JUICED |
+| 91.3 | Justin Foscue | .33 | +450 | 0.5@-180 | JUICED |
+| 85.6 | Ezequiel Duran | .3116 | +450 | 0.5@-170 | JUICED |
+| 79.7 | Brandon Nimmo | .3008 | +450 | 1.5@-125 | — |
+| 75.8 | Evan Carter | .242 | +450 | 0.5@-165 | JUICED |
+| 74.7 | Alejandro Osuna | .2828 | +450 | 1.5@-110 | — |
+
+**Colorado Rockies Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 85.1 | Mickey Moniak | .3984 | +450 | 0.5@-180 | 🔥 HOT, JUICED |
+| 62.4 | Hunter Goodman | .3288 | +450 | 0.5@-135 | JUICED |
+| 61.6 | Troy Johnston | .3376 | +450 | 1.5@-110 | — |
+| 59.2 | Tj Rumfield | .3176 | +450 | 0.5@-165 | JUICED |
+| 52.3 | Jake Mccarthy | .3396 | +450 | 0.5@+120 | JUICED |
+
+---
+
+### Game 2: New York Mets (123.6) vs Washington Nationals (109.7)
+
+**Pitching:** Freddy Peralta (68.1) vs Richard Lovelady (53.5)
+
+| Metric | New York Mets | Washington Nationals |
+|--------|---------------|----------------------|
+| Stack Score | **123.6** | 109.7 |
+| xwOBA | 0.280 | 0.295 |
+| ITT | 5.88 | 4.57 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | +32 | +11 |
+| Opp BP | 100 🔥 | 100 🔥 |
+| Weather | 🟢 77° / Neutral | 🟢 77° / Neutral |
+| Umpire | Brennan Miller | Brennan Miller |
+| Signals | WHALE, SHARP, BURST, GASSED BP | BURST, GASSED BP, SURGING |
+| Total Signal | ↑ OVER 61%$ | ↑ OVER 61%$ |
+
+**OMEGA Analysis:** Proceed with caution on Richard Lovelady (PARADOX trap). The Washington Nationals form an elite stack that can ruin a good pitcher's day. The engine detects major institutional backing for the New York Mets. Professional syndicates are actively attacking this side. We have a ⚡ BURST condition triggered for the New York Mets, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (10.4) projects elite run production. Richard Lovelady (53.5 OMEGA) is in the Fade Zone, making the Washington Nationals a strong stacking target in this environment.
+
+**New York Mets Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 77.5 | A.J. Ewing | .33 | +450 | 0.5@-190 | 🔥 HOT, JUICED |
+| 76.6 | Juan Soto | .3468 | +450 | 1.5@-120 | — |
+| 62.0 | Brett Baty | .2592 | +450 | 0.5@-160 | JUICED |
+| 62.0 | Marcus Semien | .2448 | +450 | 0.5@-150 | JUICED |
+| 60.6 | Mark Vientos | .2812 | +450 | 1.5@-120 | — |
+
+**Washington Nationals Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 79.9 | Cj Abrams | .3672 | +450 | 0.5@-165 | 🔥 HOT, JUICED |
+| 75.5 | James Wood | .36 | +450 | 0.5@-135 | JUICED |
+| 63.2 | Daylen Lile | .3124 | +450 | 0.5@-165 | JUICED |
+| 56.8 | Keibert Ruiz | .2952 | +450 | 1.5@-110 | — |
+| 54.9 | Brady House | .27080000000000004 | +450 | 0.5@-170 | JUICED |
+
+---
+
+### Game 3: Chicago Cubs (119.4) vs Milwaukee Brewers (98.4)
+
+**Pitching:** Colin Rea (48.8) vs Robert Gasser (42.0)
+
+| Metric | Chicago Cubs | Milwaukee Brewers |
+|--------|--------------|-------------------|
+| Stack Score | **119.4** | 98.4 |
+| xwOBA | 0.314 | 0.289 |
+| ITT | 6.58 | 4.39 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | -5 | -10 |
+| Opp BP | 100 🔥 | 100 🔥 |
+| Weather | 🟢 82° / In 15mph | 🟢 82° / In 15mph |
+| Umpire | Unknown | Unknown |
+| Signals | SHARP, BURST, GASSED BP, FADING | BURST, GASSED BP |
+
+**OMEGA Analysis:** Proceed with caution on Robert Gasser (PARADOX trap). The Milwaukee Brewers form an elite stack that can ruin a good pitcher's day. We have a ⚡ BURST condition triggered for the Chicago Cubs, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Robert Gasser (42.0 OMEGA) is in the Fade Zone, making the Milwaukee Brewers a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Colin Rea (48.8 OMEGA) is in the Fade Zone, making the Chicago Cubs a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Robert Gasser 42.0, Colin Rea 48.8). This is a premium game-stack target — consider stacking both sides.
+
+**Chicago Cubs Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 97.5 | Michael Conforto | .4444 | +450 | 1.5@-110 | 🔥 HOT |
+| 71.6 | Ian Happ | .3292 | +450 | 1.5@-110 | — |
+| 71.6 | Seiya Suzuki | .3292 | +450 | 1.5@-110 | — |
+| 69.1 | Carson Kelly | .31920000000000004 | +450 | 1.5@-110 | — |
+| 62.5 | Nico Hoerner | .2924 | +450 | 1.5@-110 | — |
+
+**Milwaukee Brewers Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 71.7 | Brice Turang | .3572 | +450 | 1.5@-110 | — |
+| 67.2 | Jake Bauers | .3388 | +450 | 1.5@-110 | — |
+| 64.0 | Jackson Chourio | .32599999999999996 | +450 | 1.5@-110 | — |
+| 61.3 | Christian Yelich | .31520000000000004 | +450 | 1.5@-110 | — |
+| 56.9 | William Contreras | .2976 | +450 | 1.5@-110 | — |
+
+---
+
+### Game 4: Atlanta Braves (117.8) vs Miami Marlins (91.3)
+
+**Pitching:** Grant Holmes (50.8) vs Eury Pérez (51.8)
+
+| Metric | Atlanta Braves | Miami Marlins |
+|--------|----------------|---------------|
+| Stack Score | **117.8** | 91.3 |
+| xwOBA | 0.324 | 0.295 |
+| ITT | 4.41 | 4.49 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | +0 | +0 |
+| Opp BP | 100 🔥 | 80 🔥 |
+| Weather | 🟢 81° / Indoor | 🟢 81° / Indoor |
+| Umpire | Unknown | Unknown |
+| Signals | SHARP, BURST, GASSED BP | BURST, GASSED BP |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Atlanta Braves, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Eury Pérez 51.8, Grant Holmes 50.8). This is a premium game-stack target — consider stacking both sides.
+
+**Atlanta Braves Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 84.7 | Matt Olson | .378 | +450 | 0.5@-145 | 🔥 HOT, JUICED |
+| 79.1 | Drake Baldwin | .37120000000000003 | +450 | 1.5@-125 | 🔥 HOT |
+| 68.2 | Michael Harris | .324 | +450 | 0.5@-145 | JUICED |
+| 66.6 | Jorge Mateo | .32839999999999997 | +450 | 1.5@-110 | — |
+| 65.0 | Ozzie Albies | .3116 | +450 | 0.5@-165 | JUICED |
+
+**Miami Marlins Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 70.6 | Xavier Edwards | .3488 | +450 | 0.5@-185 | JUICED |
+| 67.6 | Otto Lopez | .3508 | +450 | 1.5@-145 | — |
+| 66.5 | Liam Hicks | .33399999999999996 | +450 | 0.5@-180 | JUICED |
+| 50.0 | Owen Caissie | .2448 | +450 | 0.5@-120 | — |
+| 42.8 | Connor Norby | .2864 | +450 | 0.5@+141 | JUICED |
+
+---
+
+### Game 5: Philadelphia Phillies (115.9) vs Cincinnati Reds (89.6)
+
+**Pitching:** Zack Wheeler (53.5) vs Brady Singer (47.7)
+
+| Metric | Philadelphia Phillies | Cincinnati Reds |
+|--------|-----------------------|-----------------|
+| Stack Score | **115.9** | 89.6 |
+| xwOBA | 0.291 | 0.304 |
+| ITT | 5.30 | 4.66 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | +2 | +3 |
+| Opp BP | 100 🔥 | 87 🔥 |
+| Weather | 🟢 87° / In 5mph | 🟢 87° / In 5mph |
+| Umpire | Unknown | Unknown |
+| Signals | BURST, GASSED BP | BURST, GASSED BP |
+| Total Signal | 📉 U-DIV +21 | 📉 U-DIV +21 |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Philadelphia Phillies, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (10.0) projects elite run production. Brady Singer (47.7 OMEGA) is in the Fade Zone, making the Cincinnati Reds a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (10.0) projects elite run production. Zack Wheeler (53.5 OMEGA) is in the Fade Zone, making the Philadelphia Phillies a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Brady Singer 47.7, Zack Wheeler 53.5). This is a premium game-stack target — consider stacking both sides.
+
+**Philadelphia Phillies Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 101.8 | Kyle Schwarber | .39239999999999997 | +450 | 0.5@-125 | 🔥 HOT, JUICED |
+| 96.1 | Bryce Harper | .374 | +450 | 0.5@-145 | 🔥 HOT, JUICED |
+| 80.6 | Brandon Marsh | .33199999999999996 | +450 | 0.5@-190 | JUICED |
+| 66.5 | Justin Crawford | .29159999999999997 | +450 | 1.5@-110 | — |
+| 65.3 | Adolis Garcia | .254 | +450 | 0.5@-150 | JUICED |
+
+**Cincinnati Reds Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 94.0 | Jj Bleday | .44000000000000006 | +450 | 0.5@-180 | 🔥 HOT, JUICED |
+| 76.8 | Elly De La Cruz | .36160000000000003 | +450 | 0.5@-145 | 🔥 HOT, JUICED |
+| 66.5 | Nathaniel Lowe | .33399999999999996 | +450 | 0.5@-185 | JUICED |
+| 62.1 | Sal Stewart | .318 | +450 | 0.5@-150 | JUICED |
+| 61.2 | Spencer Steer | .3148 | +450 | 0.5@-165 | JUICED |
+
+---
+
+### Game 6: New York Yankees (113.5) vs Toronto Blue Jays (103.1)
+
+**Pitching:** Elmer Rodríguez (45.7) vs Kevin Gausman (52.7)
+
+| Metric | New York Yankees | Toronto Blue Jays |
+|--------|------------------|-------------------|
+| Stack Score | **113.5** | 103.1 |
+| xwOBA | 0.319 | 0.275 |
+| ITT | 6.05 | 3.36 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | -32 | +2 |
+| Opp BP | 100 🔥 | 100 🔥 |
+| Weather | 🟢 79° / In 7mph | 🟢 79° / In 7mph |
+| Umpire | Unknown | Unknown |
+| Signals | BURST, GASSED BP | SHARP, BURST, GASSED BP |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the New York Yankees, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Kevin Gausman (52.7 OMEGA) is in the Fade Zone, making the Toronto Blue Jays a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Elmer Rodríguez (45.7 OMEGA) is in the Fade Zone, making the New York Yankees a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Kevin Gausman 52.7, Elmer Rodríguez 45.7). This is a premium game-stack target — consider stacking both sides.
+
+**New York Yankees Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 100.6 | Ben Rice | .43079999999999996 | +450 | 0.5@-135 | 🔥 HOT, JUICED |
+| 94.7 | Aaron Judge | .3996 | +450 | 0.5@-120 | 🔥 HOT, JUICED |
+| 73.5 | Cody Bellinger | .3332 | +450 | 0.5@-165 | JUICED |
+| 58.1 | Anthony Volpe | .33 | +450 | 0.5@+130 | JUICED |
+| 57.4 | Ryan Mcmahon | .2164 | +450 | 1.5@-110 | — |
+
+**Toronto Blue Jays Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 65.2 | Yohendrick Pinango | .3244 | +450 | 1.5@-110 | — |
+| 61.9 | Vladimir Guerrero | .3016 | +450 | 0.5@-160 | JUICED |
+| 57.4 | Brandon Valenzuela | .2928 | +450 | 1.5@-110 | — |
+| 56.0 | Ernie Clement | .27759999999999996 | +450 | 0.5@-210 | JUICED |
+| 54.6 | Jesus Sanchez | .28159999999999996 | +450 | 1.5@-110 | — |
+
+---
+
+### Game 7: Kansas City Royals (111.9) vs Boston Red Sox (95.6)
+
+**Pitching:** Stephen Kolek (48.6) vs Brayan Bello (46.3)
+
+| Metric | Kansas City Royals | Boston Red Sox |
+|--------|--------------------|----------------|
+| Stack Score | **111.9** | 95.6 |
+| xwOBA | 0.276 | 0.287 |
+| ITT | 4.67 | 4.75 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | -9 | +0 |
+| Opp BP | 82 🔥 | 90 🔥 |
+| Weather | 🟢 84° / Cross 18mph | 🟢 84° / Cross 18mph |
+| Umpire | Unknown | Unknown |
+| Signals | BURST, GASSED BP | BURST, GASSED BP |
+| Total Signal | ↑ OVER 53%$ | ↑ OVER 53%$ |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Kansas City Royals, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Brayan Bello (46.3 OMEGA) is in the Fade Zone, making the Boston Red Sox a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Stephen Kolek (48.6 OMEGA) is in the Fade Zone, making the Kansas City Royals a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Brayan Bello 46.3, Stephen Kolek 48.6). This is a premium game-stack target — consider stacking both sides.
+
+**Kansas City Royals Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 76.2 | Bobby Witt | .3472 | +450 | 1.5@-120 | — |
+| 64.7 | Carter Jensen | .29359999999999997 | +450 | 0.5@-170 | JUICED |
+| 61.8 | Maikel Garcia | .2908 | +450 | 1.5@-150 | — |
+| 60.8 | Vinnie Pasquantino | .2496 | +450 | 0.5@-160 | JUICED |
+| 60.8 | Salvador Perez | .238 | +450 | 0.5@-150 | JUICED |
+
+**Boston Red Sox Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 67.5 | Willson Contreras | .33199999999999996 | +450 | 0.5@-145 | JUICED |
+| 64.6 | Wilyer Abreu | .3324 | +450 | 1.5@-120 | — |
+| 64.0 | Mickey Gasper | .33 | +450 | 1.5@-130 | — |
+| 60.1 | Ceddanne Rafaela | .3144 | +450 | 1.5@-145 | — |
+| 53.3 | Marcelo Mayer | .24 | +450 | 0.5@-160 | JUICED |
+
+---
+
+### Game 8: Houston Astros (98.3) vs Minnesota Twins (91.2)
+
+**Pitching:** Peter Lambert (53.3) vs Bailey Ober (56.3)
+
+| Metric | Houston Astros | Minnesota Twins |
+|--------|----------------|-----------------|
+| Stack Score | **98.3** | 91.2 |
+| xwOBA | 0.319 | 0.282 |
+| ITT | 4.87 | 5.06 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | -7 | +10 |
+| Opp BP | 96 🔥 | 91 🔥 |
+| Weather | 🟢 63° / Neutral | 🟢 63° / Neutral |
+| Umpire | Junior Valentine | Junior Valentine |
+| Signals | BURST, GASSED BP, FADING | BURST, GASSED BP |
+| Total Signal | 📉 U-DIV +14 | 📉 U-DIV +14 |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Houston Astros, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Bailey Ober (56.3 OMEGA) is in the Fade Zone, making the Minnesota Twins a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Peter Lambert (53.3 OMEGA) is in the Fade Zone, making the Houston Astros a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Bailey Ober 56.3, Peter Lambert 53.3). This is a premium game-stack target — consider stacking both sides.
+
+**Houston Astros Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 88.3 | Yordan Alvarez | .4244 | +450 | 1.5@-125 | 🔥 HOT |
+| 69.3 | Christian Walker | .3428 | +450 | 0.5@-145 | JUICED |
+| 52.7 | Zach Dezenzo | .33 | +450 | 0.5@+131 | JUICED |
+| 52.7 | Zach Cole | .33 | +450 | 0.5@+112 | JUICED |
+| 52.6 | Brice Matthews | .2468 | +450 | 0.5@-185 | JUICED |
+
+**Minnesota Twins Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 78.6 | Ryan Jeffers | .3792 | +450 | 0.5@-170 | 🔥 HOT, JUICED |
+| 51.3 | Austin Martin | .3348 | +450 | 0.5@+150 | JUICED |
+| 49.7 | Luke Keaschall | .2508 | +450 | 0.5@-190 | JUICED |
+| 48.0 | Victor Caratini | .21000000000000002 | +450 | 1.5@-110 | — |
+| 47.0 | Kody Clemens | .3144 | +450 | 0.5@+114 | JUICED |
+
+---
+
+### Game 9: Tampa Bay Rays (92.4) vs Baltimore Orioles (88.1)
+
+**Pitching:** Drew Rasmussen (53.5) vs Brandon Young (48.0)
+
+| Metric | Tampa Bay Rays | Baltimore Orioles |
+|--------|----------------|-------------------|
+| Stack Score | **92.4** | 88.1 |
+| xwOBA | 0.284 | 0.273 |
+| ITT | 4.41 | 3.42 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | +0 | -11 |
+| Opp BP | 82 🔥 | 96 🔥 |
+| Weather | 🟢 87° / Neutral | 🟢 87° / Neutral |
+| Umpire | Ramon De Jesus | Ramon De Jesus |
+| Signals | BURST, GASSED BP | BURST, GASSED BP, FADING |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Tampa Bay Rays, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot.
+
+**Tampa Bay Rays Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 63.2 | Jonathan Aranda | .33399999999999996 | +450 | 1.5@-110 | — |
+| 63.1 | Yandy Diaz | .3336 | +450 | 1.5@-110 | — |
+| 62.7 | Junior Caminero | .33199999999999996 | +450 | 1.5@-110 | — |
+| 53.1 | Jonny Deluca | .2932 | +450 | 1.5@-110 | — |
+| 49.9 | Richie Palacios | .2716 | +450 | 1.5@-110 | — |
+
+**Baltimore Orioles Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 57.5 | Samuel Basallo | .3292 | +450 | 1.5@-110 | — |
+| 53.9 | Taylor Ward | .314 | +450 | 1.5@-110 | — |
+| 51.0 | Leody Taveras | .3016 | +450 | 1.5@-110 | — |
+| 47.1 | Pete Alonso | .2848 | +450 | 1.5@-110 | — |
+| 46.0 | Gunnar Henderson | .2768 | +450 | 1.5@-110 | — |
+
+---
+
+### Game 10: Cleveland Guardians (80.5) vs Detroit Tigers (76.3)
+
+**Pitching:** Gavin Williams (53.3) vs Jack Flaherty (49.9)
+
+| Metric | Cleveland Guardians | Detroit Tigers |
+|--------|---------------------|----------------|
+| Stack Score | **80.5** | 76.3 |
+| xwOBA | 0.282 | 0.282 |
+| ITT | 3.71 | 5.18 |
+| ML Move | +0.0 | +0.0 |
+| TT Move | +0.0 | +0.0 |
+| Divergence | -3 | -2 |
+| Opp BP | 100 🔥 | 63  |
+| Weather | 🟡 76° / Neutral | 🟡 76° / Neutral |
+| Umpire | Dan Bellino | Dan Bellino |
+| Signals | SHARP, BURST, GASSED BP | — |
+
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Cleveland Guardians, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Jack Flaherty 49.9, Gavin Williams 53.3). This is a premium game-stack target — consider stacking both sides.
+
+**Cleveland Guardians Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 62.3 | Chase Delauter | .3444 | +450 | 0.5@-200 | JUICED |
+| 58.2 | Angel Martinez | .3288 | +450 | 0.5@-170 | JUICED |
+| 49.4 | Jose Ramirez | .3032 | +450 | 1.5@-145 | — |
+| 49.0 | Daniel Schneemann | .3016 | +450 | 1.5@-110 | — |
+| 43.9 | Kyle Manzardo | .2652 | +450 | 1.5@-110 | — |
+
+**Detroit Tigers Top Hitters:**
+
+| OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
+|-------|--------|-------|-----|----------|-------|
+| 63.8 | Riley Greene | .3532 | +450 | 0.5@-150 | JUICED |
+| 57.7 | Gage Workman | .33 | +450 | 0.5@-190 | JUICED |
+| 53.8 | Kevin Mcgonigle | .3256 | +450 | 1.5@-145 | — |
+| 52.5 | Dillon Dingler | .3204 | +450 | 1.5@-145 | — |
+| 44.6 | Colt Keith | .2772 | +450 | 0.5@-190 | JUICED |
 
 ---
 
@@ -547,20 +533,20 @@
 
 | Rank | Player | OMEGA | Team | xwOBA | AHR | vs Pitcher | Flags |
 |------|--------|-------|------|-------|-----|------------|-------|
-| 1 | **Munetaka Murakami** | 105.0 | Chicago White Sox | .3772 | +200 | Colin Rea | 🔥 HOT, JUICED |
-| 2 | **Aaron Judge** | 105.0 | New York Yankees | .4072 | +200 | Freddy Peralta | 🔥 HOT, JUICED |
-| 3 | **Ben Rice** | 104.7 | New York Yankees | .4316 | +250 | Freddy Peralta | 🔥 HOT, JUICED |
-| 4 | **Jordan Walker** | 98.7 | St. Louis Cardinals | .3908 | +400 | Stephen Kolek | 🔥 HOT, JUICED |
-| 5 | **Yordan Alvarez** | 95.4 | Houston Astros | .4312 | +250 | Nathan Eovaldi | 🔥 HOT |
-| 6 | **Matt Olson** | 94.8 | Atlanta Braves | .3828 | +300 | Brayan Bello | 🔥 HOT, JUICED |
-| 7 | **Drake Baldwin** | 87.8 | Atlanta Braves | .37360000000000004 | +350 | Brayan Bello | 🔥 HOT, JUICED |
-| 8 | **James Wood** | 86.1 | Washington Nationals | .358 | +225 | Brandon Young | JUICED |
-| 9 | **Juan Soto** | 85.6 | New York Mets | .3552 | +300 | Elmer Rodríguez | JUICED |
-| 10 | **Colson Montgomery** | 84.6 | Chicago White Sox | .3456 | +300 | Colin Rea | JUICED |
-| 11 | **Cj Abrams** | 84.1 | Washington Nationals | .37320000000000003 | +350 | Brandon Young | 🔥 HOT, JUICED |
-| 12 | **Michael Conforto** | 80.4 | Chicago Cubs | .4208 | +400 | Erick Fedde | 🔥 HOT, JUICED |
-| 13 | **Seiya Suzuki** | 78.8 | Chicago Cubs | .3384 | +350 | Erick Fedde | JUICED |
-| 14 | **Ian Happ** | 78.4 | Chicago Cubs | .3372 | +350 | Erick Fedde | JUICED |
-| 15 | **Brandon Lowe** | 78.1 | Pittsburgh Pirates | .3592 | +350 | Zack Wheeler | JUICED |
+| 1 | **Kyle Schwarber** | 101.8 | Philadelphia Phillies | .39239999999999997 | +450 | Brady Singer | 🔥 HOT, JUICED |
+| 2 | **Ben Rice** | 100.6 | New York Yankees | .43079999999999996 | +450 | Kevin Gausman | 🔥 HOT, JUICED |
+| 3 | **Michael Conforto** | 97.5 | Chicago Cubs | .4444 | +450 | Robert Gasser | 🔥 HOT |
+| 4 | **Bryce Harper** | 96.1 | Philadelphia Phillies | .374 | +450 | Brady Singer | 🔥 HOT, JUICED |
+| 5 | **Aaron Judge** | 94.7 | New York Yankees | .3996 | +450 | Kevin Gausman | 🔥 HOT, JUICED |
+| 6 | **Jj Bleday** | 94.0 | Cincinnati Reds | .44000000000000006 | +450 | Zack Wheeler | 🔥 HOT, JUICED |
+| 7 | **Justin Foscue** | 91.3 | Texas Rangers | .33 | +450 | Michael Lorenzen | JUICED |
+| 8 | **Yordan Alvarez** | 88.3 | Houston Astros | .4244 | +450 | Bailey Ober | 🔥 HOT |
+| 9 | **Ezequiel Duran** | 85.6 | Texas Rangers | .3116 | +450 | Michael Lorenzen | JUICED |
+| 10 | **Mickey Moniak** | 85.1 | Colorado Rockies | .3984 | +450 | Nathan Eovaldi | 🔥 HOT, JUICED |
+| 11 | **Matt Olson** | 84.7 | Atlanta Braves | .378 | +450 | Eury Pérez | 🔥 HOT, JUICED |
+| 12 | **Brandon Marsh** | 80.6 | Philadelphia Phillies | .33199999999999996 | +450 | Brady Singer | JUICED |
+| 13 | **Cj Abrams** | 79.9 | Washington Nationals | .3672 | +450 | Freddy Peralta | 🔥 HOT, JUICED |
+| 14 | **Brandon Nimmo** | 79.7 | Texas Rangers | .3008 | +450 | Michael Lorenzen | — |
+| 15 | **Drake Baldwin** | 79.1 | Atlanta Braves | .37120000000000003 | +450 | Eury Pérez | 🔥 HOT |
 
 ---
