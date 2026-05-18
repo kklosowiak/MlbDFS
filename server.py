@@ -22,6 +22,21 @@ last_refresh_time = None
 last_refresh_timestamp_raw = 0  # epoch time of last refresh run
 refresh_lock = threading.Lock()
 
+# Timezone engine helper to convert naive datetimes (which are UTC on Render) to Eastern Time (ET)
+def get_eastern_time(dt_naive):
+    import time
+    is_utc = (time.tzname[0] == 'UTC' or time.timezone == 0)
+    if is_utc:
+        try:
+            from zoneinfo import ZoneInfo
+            dt_utc = dt_naive.replace(tzinfo=datetime.timezone.utc)
+            return dt_utc.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            # Fallback to -4 offset (EDT)
+            return dt_naive - datetime.timedelta(hours=4)
+    else:
+        return dt_naive
+
 # Load last refresh time from cached results on startup
 try:
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +49,8 @@ try:
             if "T" in cached_ts:
                 # Parse ISO timestamp format
                 dt = datetime.datetime.fromisoformat(cached_ts)
-                last_refresh_time = dt.strftime("%Y-%m-%d %I:%M %p ET")
+                dt_et = get_eastern_time(dt)
+                last_refresh_time = dt_et.strftime("%Y-%m-%d %I:%M %p ET")
             else:
                 last_refresh_time = cached_ts
 except Exception as init_err:
@@ -47,7 +63,7 @@ COOKIE_VALUE = "active"
 
 # Thread-safe background runner
 def perform_refresh_sync():
-    global is_refreshing, refresh_progress, last_refresh_time
+    global is_refreshing, refresh_progress, last_refresh_time, last_refresh_timestamp_raw
     with refresh_lock:
         if is_refreshing:
             return
@@ -73,7 +89,9 @@ def perform_refresh_sync():
             print(f"[SERVER BG-THREAD WARNING]: Trend auto-resolution failed: {trend_e}")
             
         with refresh_lock:
-            last_refresh_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET")
+            et_now = get_eastern_time(datetime.datetime.now())
+            last_refresh_time = et_now.strftime("%Y-%m-%d %I:%M %p ET")
+            last_refresh_timestamp_raw = time.time()
             refresh_progress = "Idle"
             is_refreshing = False
         print("[SERVER BG-THREAD]: Refresh completed successfully!")
@@ -94,9 +112,22 @@ def scheduler_loop():
     results_path = os.path.join(base_dir, "reports", "latest_results.json")
     if os.path.exists(results_path):
         try:
-            last_refresh_timestamp_raw = os.path.getmtime(results_path)
-        except:
-            last_refresh_timestamp_raw = 0
+            with open(results_path, "r", encoding="utf-8") as f:
+                cached_data = json.load(f)
+            cached_ts = cached_data.get("timestamp")
+            if cached_ts and "T" in cached_ts:
+                dt = datetime.datetime.fromisoformat(cached_ts)
+                last_refresh_timestamp_raw = dt.timestamp()
+            else:
+                last_refresh_timestamp_raw = os.path.getmtime(results_path)
+        except Exception as e:
+            print(f"[SERVER SCHEDULER WARNING]: Failed to parse JSON timestamp: {e}")
+            try:
+                last_refresh_timestamp_raw = os.path.getmtime(results_path)
+            except:
+                last_refresh_timestamp_raw = 0
+    else:
+        last_refresh_timestamp_raw = 0
             
     while True:
         # Check current US/Eastern Time dynamically (DST compliant)
