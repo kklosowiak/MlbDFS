@@ -81,7 +81,7 @@ def perform_refresh_sync():
 # Background scheduler thread
 def scheduler_loop():
     global is_refreshing, last_refresh_timestamp_raw
-    print("[SERVER]: Auto-Refresh Hybrid Scheduler thread started (Active: 9AM-8PM EST, 45-min interval).")
+    print("[SERVER]: Auto-Refresh Hybrid Scheduler thread started (Active: 9AM-8PM EST, hourly interval).")
     
     # Initialize last refresh epoch from existing results file to prevent double-refresh on restart
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -110,8 +110,8 @@ def scheduler_loop():
         
         if is_active_window:
             now_epoch = time.time()
-            # Run every 45 minutes (2700 seconds)
-            if now_epoch - last_refresh_timestamp_raw >= (45 * 60):
+            # Run every hour (3600 seconds)
+            if now_epoch - last_refresh_timestamp_raw >= (60 * 60):
                 print(f"[SERVER]: Active Window Auto-Refresh triggered (EST Hour: {et_hour}).")
                 perform_refresh_sync()
                 last_refresh_timestamp_raw = time.time()
