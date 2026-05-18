@@ -66,6 +66,12 @@ def perform_refresh_sync():
         from main import run_full_analysis
         run_full_analysis()
         
+        print("[SERVER BG-THREAD]: Running automated trend resolution for past games...")
+        try:
+            auto_resolve_trends()
+        except Exception as trend_e:
+            print(f"[SERVER BG-THREAD WARNING]: Trend auto-resolution failed: {trend_e}")
+            
         with refresh_lock:
             last_refresh_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET")
             refresh_progress = "Idle"
@@ -380,6 +386,122 @@ def post_refresh_api(background_tasks: BackgroundTasks):
     # Trigger refresh in background task so API returns instantly
     background_tasks.add_task(perform_refresh_sync)
     return {"status": "started", "message": "Slate analysis triggered in background."}
+
+def auto_resolve_trends():
+    import csv
+    import tempfile
+    import shutil
+    import datetime
+    from config import config
+    from utils.audit_engine import AuditEngine
+    
+    log_path = os.path.join(config.LOG_DIR, "trend_tag_log.csv")
+    if not os.path.exists(log_path):
+        return {"status": "error", "message": "Trend log file not found"}
+        
+    # 1. Read unresolved entries in the past
+    unresolved_dates = set()
+    rows = []
+    
+    try:
+        with open(log_path, "r", newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            fieldnames = reader.fieldnames
+            for row in reader:
+                rows.append(row)
+                actual_runs = row.get("actual_runs", "").strip()
+                hit = row.get("hit", "").strip()
+                if actual_runs == "" or hit == "":
+                    row_date = row.get("date", "").strip()
+                    if row_date:
+                        today_str = datetime.date.today().strftime("%Y-%m-%d")
+                        if row_date != today_str:
+                            unresolved_dates.add(row_date)
+                            
+        if not unresolved_dates:
+            return {"status": "success", "message": "All past trend tags are already resolved!", "resolved_count": 0}
+            
+        # 2. Fetch results for each past date
+        audit = AuditEngine()
+        results_by_date = {}
+        for date_str in unresolved_dates:
+            print(f"[AUTO-RESOLVE]: Fetching MLB results for {date_str}...")
+            day_results = audit.fetch_results(date=date_str)
+            if day_results:
+                results_by_date[date_str] = day_results
+                
+        # 3. Resolve the rows
+        resolved_count = 0
+        updated_rows = []
+        for row in rows:
+            actual_runs_val = row.get("actual_runs", "").strip()
+            hit_val = row.get("hit", "").strip()
+            
+            if actual_runs_val == "" or hit_val == "":
+                row_date = row.get("date", "").strip()
+                row_team = row.get("team", "").strip()
+                
+                if row_date in results_by_date:
+                    day_results = results_by_date[row_date]
+                    team_match = None
+                    if row_team in day_results:
+                        team_match = row_team
+                    else:
+                        for full_team_name in day_results.keys():
+                            if row_team.lower() in full_team_name.lower() or full_team_name.lower() in row_team.lower():
+                                team_match = full_team_name
+                                break
+                                
+                    if team_match:
+                        team_data = day_results[team_match]
+                        status = team_data.get("status", "Unknown")
+                        if "Final" in status or status == "Completed Early":
+                            runs = team_data.get("runs", 0)
+                            implied_total = float(row.get("implied_total", 4.5) or 4.5)
+                            tag = row.get("tag", "SURGING")
+                            
+                            row["actual_runs"] = str(runs)
+                            if tag == "SURGING":
+                                hit = 1 if runs >= implied_total else 0
+                            else: # FADING
+                                hit = 1 if runs < implied_total else 0
+                                
+                            row["hit"] = str(hit)
+                            resolved_count += 1
+                            print(f"[AUTO-RESOLVE]: Resolved {row_date} {row_team} -> {runs} runs ({'HIT' if hit else 'MISS'})")
+                            
+            updated_rows.append(row)
+            
+        # 4. Save CSV back atomically
+        if resolved_count > 0:
+            temp_fd, temp_path = tempfile.mkstemp()
+            try:
+                with os.fdopen(temp_fd, 'w', newline='', encoding='utf-8') as temp_file:
+                    writer = csv.DictWriter(temp_file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    for row in updated_rows:
+                        writer.writerow(row)
+                shutil.move(temp_path, log_path)
+            except Exception as save_err:
+                if os.path.exists(temp_path):
+                    os.remove(temp_path)
+                raise save_err
+                
+        return {
+            "status": "success",
+            "message": f"Successfully auto-resolved {resolved_count} trend tag(s)!",
+            "resolved_count": resolved_count
+        }
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return {"status": "error", "message": f"Auto-resolve error: {str(e)}"}
+
+@app.post("/api/trends/auto-resolve", dependencies=[Depends(get_current_user)])
+def post_trends_auto_resolve_api():
+    res = auto_resolve_trends()
+    return JSONResponse(content=res)
 
 @app.get("/api/trends", dependencies=[Depends(get_current_user)])
 def get_trends_api():
