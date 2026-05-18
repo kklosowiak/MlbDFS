@@ -19,6 +19,7 @@ app = FastAPI(title="OMEGA Cockpit v9.0")
 is_refreshing = False
 refresh_progress = "Idle"
 last_refresh_time = None
+last_refresh_timestamp_raw = 0  # epoch time of last refresh run
 refresh_lock = threading.Lock()
 
 # Load last refresh time from cached results on startup
@@ -79,18 +80,47 @@ def perform_refresh_sync():
 
 # Background scheduler thread
 def scheduler_loop():
-    print("[SERVER]: Auto-Refresh Scheduler thread started (45-minute intervals).")
-    # Initial load if no data exists
-    results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports", "latest_results.json")
-    if not os.path.exists(results_path):
-        print("[SERVER]: No cached results found. Triggering initial fetch...")
-        perform_refresh_sync()
-        
+    global is_refreshing, last_refresh_timestamp_raw
+    print("[SERVER]: Auto-Refresh Hybrid Scheduler thread started (Active: 9AM-8PM EST, 45-min interval).")
+    
+    # Initialize last refresh epoch from existing results file to prevent double-refresh on restart
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    if os.path.exists(results_path):
+        try:
+            last_refresh_timestamp_raw = os.path.getmtime(results_path)
+        except:
+            last_refresh_timestamp_raw = 0
+            
     while True:
-        # Sleep for 45 minutes
-        time.sleep(45 * 60)
-        print("[SERVER]: Auto-Refresh interval triggered.")
-        perform_refresh_sync()
+        # Check current US/Eastern Time dynamically (DST compliant)
+        try:
+            from zoneinfo import ZoneInfo
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now.astimezone(ZoneInfo("America/New_York"))
+            et_hour = et_now.hour
+        except Exception:
+            # Fallback to -4 offset (EDT)
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now - datetime.timedelta(hours=4)
+            et_hour = et_now.hour
+            
+        # Is Eastern Time between 9:00 AM (9) and 8:00 PM (20)?
+        is_active_window = (9 <= et_hour < 20)
+        
+        if is_active_window:
+            now_epoch = time.time()
+            # Run every 45 minutes (2700 seconds)
+            if now_epoch - last_refresh_timestamp_raw >= (45 * 60):
+                print(f"[SERVER]: Active Window Auto-Refresh triggered (EST Hour: {et_hour}).")
+                perform_refresh_sync()
+                last_refresh_timestamp_raw = time.time()
+        else:
+            # Outside active hours, stay in standby
+            pass
+            
+        # Sleep for 5 minutes before checking time again
+        time.sleep(5 * 60)
 
 # Start scheduler in daemon thread
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)
