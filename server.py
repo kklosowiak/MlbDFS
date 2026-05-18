@@ -916,16 +916,34 @@ def post_chat_api(body: dict):
                 
             # Extract simple summaries for low token usage
             teams = sorted(res.get("teams", []), key=lambda x: x.get("stack_score", 0), reverse=True)
-            team_summary = "\n".join([
-                f"- {t['team']}: OMEGA {t['stack_score']} | ITT {t['implied_total']} | vs {t['opp_pitcher']} | Div {t.get('divergence', 0)}%"
-                for t in teams[:10]
-            ])
+            teams_itt = {t['team']: t.get('implied_total', 'TBD') for t in teams}
+            
+            team_summary_items = []
+            for t in teams[:10]:
+                signals = []
+                if t.get('is_shark'): signals.append('SHARK')
+                if t.get('is_whale'): signals.append('WHALE')
+                if t.get('is_sharp'): signals.append('SHARP')
+                if t.get('is_steam'): signals.append('STEAM')
+                if t.get('is_storm'): signals.append('STORM')
+                if t.get('is_trap'): signals.append('TRAP')
+                sig_str = ", ".join(signals) if signals else "None"
+                team_summary_items.append(f"- {t['team']}: OMEGA {t['stack_score']} | ITT {t['implied_total']} | vs {t['opp_pitcher']} | Div {t.get('divergence', 0)}% | Signals: {sig_str}")
+            team_summary = "\n".join(team_summary_items)
             
             pitchers = sorted(res.get("pitchers", []), key=lambda x: x.get("alpha_score", 0), reverse=True)
-            pitcher_summary = "\n".join([
-                f"- {p['pitcher']} ({p['team']}): OMEGA {p['alpha_score']} | Opp ITT {teams_itt.get(p['opponent'], 'TBD') if 'teams_itt' in locals() else 'TBD'} | SIERA {p.get('siera', 'TBD')} | CSW {p.get('csw', 'TBD')}"
-                for p in pitchers[:8]
-            ])
+            pitcher_summary_items = []
+            for p in pitchers[:8]:
+                signals = []
+                if p.get('is_shark'): signals.append('SHARK')
+                if p.get('is_whale'): signals.append('WHALE')
+                if p.get('is_sharp'): signals.append('SHARP')
+                if p.get('is_steam'): signals.append('STEAM')
+                if p.get('is_storm'): signals.append('STORM')
+                if p.get('is_trap'): signals.append('TRAP')
+                sig_str = ", ".join(signals) if signals else "None"
+                pitcher_summary_items.append(f"- {p['pitcher']} ({p['team']}): OMEGA {p['alpha_score']} | Opp ITT {teams_itt.get(p['opponent'], 'TBD')} | SIERA {p.get('siera', 'TBD')} | CSW {p.get('csw', 'TBD')} | Signals: {sig_str}")
+            pitcher_summary = "\n".join(pitcher_summary_items)
             
             hitters = sorted(res.get("hitters", []), key=lambda x: x.get("player_score", 0), reverse=True)
             hitter_summary = "\n".join([
@@ -979,7 +997,7 @@ When Konrad asks you questions:
 1. Refer directly to the OMEGA v9.0 metrics, stacks, and pitching rankings listed above. Explain the physics-vs-market variables, weather overlays (like wind out to left), and bullpen fatigue factors in play.
 2. Provide concrete, mathematically optimal GPP roster strategies (e.g., recommend specific 5-man or 3-man stacks, high-floor pitcher anchors like Skenes, and high-leverage pitcher values like Pallante).
 3. If Konrad asks about lineup decisions, analyze the xwOBA matchups and market pricing (AHR prices) of the hitters to give him highly actionable suggestions.
-4. Maintain full awareness of structural traps (e.g., the St. Louis contact trap, Wheeler's previous negative divergence markdown which we solved under v9.0, etc.).
+4. Maintain full awareness of structural public traps and chalk traps (flagged in the dataset and UI as TRAP, which Konrad visualizes using the 🚨 TRAP badge). Highlight these high-danger public chalk traps (like Robbie Ray or Shota Imanaga if they have negative divergence) and explain why Konrad should fade them.
 
 Keep your tone engaging, sharp, and focused on finding maximum expected value (EV) and leverage to win single-entry and multi-entry GPPs!"""
 

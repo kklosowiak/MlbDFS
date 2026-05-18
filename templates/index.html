@@ -1119,7 +1119,7 @@
                     <span>GPP low-owned explosion plays</span>
                 </div>
                 <div class="legend-item">
-                    <span class="badge pill-trap">⚠️ TRAP</span>
+                    <span class="badge pill-trap">🚨 TRAP</span>
                     <span>Heavy public chalk fade alerts</span>
                 </div>
                 <div class="legend-item">
@@ -1838,7 +1838,7 @@
                         <div class="signals-container">
                             ${p.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${p.is_hazard ? '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>' : ''}
-                            ${p.is_trap ? '<span class="signal-pill pill-trap">⚠️ TRAP</span>' : ''}
+                            ${p.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
                             ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
                             <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
                         </div>
@@ -1949,7 +1949,7 @@
                     <td>
                         <div class="signals-container">
                             ${divPill}
-                            ${t.is_trap ? '<span class="signal-pill pill-trap">⚠️ TRAP</span>' : ''}
+                            ${t.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
                             ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 70 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
                             ${t.total_signal ? `<span class="signal-pill pill-neutral">${t.total_signal}</span>` : ''}
@@ -2060,7 +2060,7 @@
                     } else if (m.advantage === 'SLIGHT FADE') {
                         advPill = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25);">⚠️ FADE</span>`;
                     } else {
-                        advPill = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); box-shadow:0 0 8px rgba(255,69,58,0.2);">🚫 TRAP</span>`;
+                        advPill = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); box-shadow:0 0 8px rgba(255,69,58,0.2);">🚨 TRAP</span>`;
                     }
 
                     // OPS diff badge
