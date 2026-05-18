@@ -387,6 +387,34 @@ def get_refresh_status_api():
             "last_refresh_time": last_refresh_time or "Never"
         }
 
+@app.get("/api/debug-env", dependencies=[Depends(get_current_user)])
+def get_debug_env_api():
+    import os
+    apiKey = os.getenv("ODDS_API_KEY", "")
+    key_status = "Missing"
+    if apiKey:
+        key_status = f"Present (Len: {len(apiKey)}, Start: {apiKey[:4]}...)"
+        
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(base_dir, "data")
+    reports_dir = os.path.join(base_dir, "reports")
+    
+    data_files = os.listdir(data_dir) if os.path.exists(data_dir) else []
+    reports_files = os.listdir(reports_dir) if os.path.exists(reports_dir) else []
+    
+    from run_fetch import get_slate_date
+    try:
+        slate_date = str(get_slate_date())
+    except Exception as e:
+        slate_date = f"Error: {e}"
+        
+    return {
+        "odds_api_key_status": key_status,
+        "data_files": data_files,
+        "reports_files": reports_files,
+        "base_date_slate": slate_date
+    }
+
 @app.post("/api/refresh", dependencies=[Depends(get_current_user)])
 def post_refresh_api(background_tasks: BackgroundTasks):
     global is_refreshing

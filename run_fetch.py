@@ -11,10 +11,15 @@ from config import config
 
 def get_slate_date(dt_utc=None):
     """OMEGA v9.4: Timezone-aware DFS slate rollover (4:00 AM US/Eastern Time)"""
-    from zoneinfo import ZoneInfo
     if dt_utc is None:
         dt_utc = datetime.now(timezone.utc)
-    dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+    try:
+        from zoneinfo import ZoneInfo
+        dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+    except Exception:
+        # Fallback to -4 offset (EDT) or -5 (EST). May 18 is EDT (UTC-4)
+        dt_et = dt_utc - timedelta(hours=4)
+        
     if dt_et.hour < 4:
         return (dt_et - timedelta(days=1)).date()
     else:
