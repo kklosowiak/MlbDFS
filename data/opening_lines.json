@@ -40,9 +40,9 @@
         "team_away": "Cleveland Guardians",
         "team_home": "Detroit Tigers",
         "away_opening_ml": 129,
-        "away_current_ml": 129,
+        "away_current_ml": 123,
         "home_opening_ml": -156,
-        "home_current_ml": -156,
+        "home_current_ml": -149,
         "opening_total": 8.5,
         "current_total": 8.5,
         "commence_time": "2026-05-18T22:41:00Z"
@@ -54,7 +54,7 @@
         "away_opening_ml": 104,
         "away_current_ml": 104,
         "home_opening_ml": -126,
-        "home_current_ml": -126,
+        "home_current_ml": -125,
         "opening_total": 9.5,
         "current_total": 9.5,
         "commence_time": "2026-05-18T22:41:00Z"
@@ -80,7 +80,7 @@
         "home_opening_ml": 119,
         "home_current_ml": 119,
         "opening_total": 10.0,
-        "current_total": 10.0,
+        "current_total": 10.5,
         "commence_time": "2026-05-18T22:46:00Z"
     },
     {
@@ -112,9 +112,9 @@
         "team_away": "Milwaukee Brewers",
         "team_home": "Chicago Cubs",
         "away_opening_ml": 139,
-        "away_current_ml": 138,
+        "away_current_ml": 135,
         "home_opening_ml": -168,
-        "home_current_ml": -167,
+        "home_current_ml": -163,
         "opening_total": 10.5,
         "current_total": 10.5,
         "commence_time": "2026-05-18T23:41:00Z"

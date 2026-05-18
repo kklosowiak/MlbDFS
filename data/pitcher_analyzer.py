@@ -264,7 +264,8 @@ class PitcherAnalyzer:
                     opponent_k_boost=opponent_k_boost,
                     is_low_ceiling=is_low_ceiling,
                     projected_outs=float(outs_line),
-                    is_trap=is_trap
+                    is_trap=is_trap,
+                    is_sharp=is_sharp
                 )
 
                 if is_death_sentence:

@@ -8,7 +8,7 @@ class SharpsWeighting:
         self.TT_MOVE_MIN = 0.3 # 0.3 runs
         self.PUBLIC_BET_MAX = 50 # 50%
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False):
         """
         OMEGA v6.0 SE: Tiered Alpha/Beta Pitcher Scoring (Trap-Aware v7.8).
         """
@@ -68,7 +68,10 @@ class SharpsWeighting:
         if divergence < -10 and physics_raw_base > 60:
             market_anchor = 0.90 # -10% institutional anchor
             
-        final_alpha = score * multiplier * div_boost * volume_factor * trap_multiplier * market_anchor
+        # OMEGA v8.7.7: Pitcher Sharp Premium (+7.5%)
+        sharp_multiplier = 1.075 if is_sharp else 1.0
+            
+        final_alpha = score * multiplier * div_boost * volume_factor * trap_multiplier * market_anchor * sharp_multiplier
         
         if is_low_ceiling and not is_target:
             final_alpha *= 0.90

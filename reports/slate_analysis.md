@@ -1,5 +1,5 @@
 # ⚾ OMEGA Deep-Dive Slate Analysis (14 Games)
-**Generated:** 2026-05-17 09:57 PM ET
+**Generated:** 2026-05-17 10:38 PM ET
 
 ---
 
@@ -53,7 +53,7 @@
 | **Jeffrey Springs** (Athletics) | 55.2 | 29.2 | 0.0 | 4.5 | 14.5 | LOW-K | Los Angeles Angels (91.4) |
 | **Grayson Rodriguez** (Los Angeles Angels) | 54.8 | 26.4 | 0.0 | 4.5 | 14.5 | LOW-K | Athletics (94.6) |
 | **Zack Wheeler** (Philadelphia Phillies) | 54.1 | 28.6 | 0.0 | 4.5 | 14.5 | LOW-K | Cincinnati Reds (87.0) |
-| **George Kirby** (Seattle Mariners) | 54.1 | 29.6 | 0.0 | 4.5 | 14.5 | LOW-K | Chicago White Sox (75.6) |
+| **George Kirby** (Seattle Mariners) | 54.1 | 29.6 | 0.0 | 4.5 | 14.5 | LOW-K | Chicago White Sox (66.3) |
 | **Richard Lovelady** (Washington Nationals) | 53.5 | 25.7 | 0.0 | 4.5 | 14.5 | PARADOX, LOW-K | New York Mets (123.6) |
 | **Gavin Williams** (Cleveland Guardians) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Detroit Tigers (76.3) |
 | **Peter Lambert** (Houston Astros) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Minnesota Twins (91.2) |
@@ -107,8 +107,8 @@
 | 24 | **Cleveland Guardians** | 80.5 | .282 | 3.71 | -3 | SHARP, BURST, GASSED BP | Jack Flaherty | 100 🔥 |
 | 25 | **Colorado Rockies** | 80.3 | .3 | 4.35 | +8 | — | Nathan Eovaldi | 30 |
 | 26 | **Detroit Tigers** | 76.3 | .282 | 5.18 | -2 | — | Gavin Williams | 63 |
-| 27 | **Chicago White Sox** | 75.6 | .3 | 2.82 | +5 | BURST, GASSED BP | George Kirby | 85 🔥 |
-| 28 | **San Francisco Giants** | 71.1 | .271 | 4.11 | -4 | — | Michael Soroka | 44 |
+| 27 | **San Francisco Giants** | 71.1 | .271 | 4.11 | -4 | — | Michael Soroka | 44 |
+| 28 | **Chicago White Sox** | 66.3 | .3 | 2.82 | +5 | BURST, GASSED BP | George Kirby | 91 🔥 |
 
 ---
 
@@ -562,7 +562,7 @@
 | TT Move | +0.0 | +0.0 |
 | Divergence | -9 | +23 |
 | Opp BP | 100 🔥 | 100 🔥 |
-| Weather | 🟢 65° / Cross 12mph | 🟢 65° / Cross 12mph |
+| Weather | 🟢 64° / Cross 11mph | 🟢 64° / Cross 11mph |
 | Umpire | Unknown | Unknown |
 | Signals | SHARP, BURST, GASSED BP | WHALE, BURST, GASSED BP |
 | Total Signal | 📉 U-DIV +17 | 📉 U-DIV +17 |
@@ -633,19 +633,19 @@
 
 ---
 
-### Game 13: Seattle Mariners (82.9) vs Chicago White Sox (75.6)
+### Game 13: Seattle Mariners (82.9) vs Chicago White Sox (66.3)
 
 **Pitching:** George Kirby (54.1) vs Erick Fedde (52.8)
 
 | Metric | Seattle Mariners | Chicago White Sox |
 |--------|------------------|-------------------|
-| Stack Score | **82.9** | 75.6 |
+| Stack Score | **82.9** | 66.3 |
 | xwOBA | 0.296 | 0.300 |
 | ITT | 4.50 | 2.82 |
 | ML Move | +0.0 | +0.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | -23 | +5 |
-| Opp BP | 100 🔥 | 85 🔥 |
+| Opp BP | 100 🔥 | 91 🔥 |
 | Weather | 🟢 60° / Neutral | 🟢 60° / Neutral |
 | Umpire | Chad Fairchild | Chad Fairchild |
 | Signals | BURST, GASSED BP | BURST, GASSED BP |
@@ -667,11 +667,11 @@
 
 | OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
 |-------|--------|-------|-----|----------|-------|
-| 63.6 | Munetaka Murakami | .37360000000000004 | +450 | 1.5@-110 | 🔥 HOT |
-| 56.2 | Miguel Vargas | .352 | +450 | 1.5@-110 | — |
-| 54.3 | Colson Montgomery | .3436 | +450 | 1.5@-110 | — |
-| 49.1 | Sam Antonacci | .3204 | +450 | 1.5@-110 | — |
-| 42.6 | Derek Hill | .2912 | +450 | 1.5@-110 | — |
+| 58.7 | Munetaka Murakami | .37360000000000004 | +450 | 1.5@-110 | 🔥 HOT |
+| 51.7 | Miguel Vargas | .352 | +450 | 1.5@-110 | — |
+| 49.9 | Colson Montgomery | .3436 | +450 | 1.5@-110 | — |
+| 44.9 | Sam Antonacci | .3204 | +450 | 1.5@-110 | — |
+| 38.7 | Derek Hill | .2912 | +450 | 1.5@-110 | — |
 
 ---
 
@@ -732,8 +732,8 @@
 | 10 | **Mickey Moniak** | 85.1 | Colorado Rockies | .3984 | +450 | Nathan Eovaldi | 🔥 HOT, JUICED |
 | 11 | **Matt Olson** | 84.7 | Atlanta Braves | .378 | +450 | Eury Pérez | 🔥 HOT, JUICED |
 | 12 | **Corbin Carroll** | 82.8 | Arizona Diamondbacks | .37320000000000003 | +450 | Adrian Houser | 🔥 HOT |
-| 13 | **Cj Abrams** | 79.9 | Washington Nationals | .3672 | +450 | Freddy Peralta | 🔥 HOT, JUICED |
-| 14 | **Ildemaro Vargas** | 79.9 | Arizona Diamondbacks | .3612 | +450 | Adrian Houser | 🔥 HOT |
+| 13 | **Ildemaro Vargas** | 79.9 | Arizona Diamondbacks | .3612 | +450 | Adrian Houser | 🔥 HOT |
+| 14 | **Cj Abrams** | 79.9 | Washington Nationals | .3672 | +450 | Freddy Peralta | 🔥 HOT, JUICED |
 | 15 | **Brandon Nimmo** | 79.7 | Texas Rangers | .3008 | +450 | Michael Lorenzen | — |
 
 ---
