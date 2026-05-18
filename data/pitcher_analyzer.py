@@ -247,6 +247,7 @@ class PitcherAnalyzer:
                 park_factor = (base_stadium_factor * 100.0) + ump_boost + weather_boost
                 is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
                 is_whale = (divergence >= 15)
+                is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
                 opponent = away if side == 'home' else home
                 opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) 
                 is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
@@ -285,6 +286,9 @@ class PitcherAnalyzer:
                     'confidence': physics.get('confidence', 'low'),
                     'is_confirmed': team_name in confirmed_list,
                     'is_juiced_target': is_juiced_target,
+                    'is_shark': is_shark,
+                    'is_whale': is_whale,
+                    'is_sharp': is_sharp,
                     'ml_move': ml_move,
                     'tt_move': tt_move,
                     'money_gap': money_gap,
