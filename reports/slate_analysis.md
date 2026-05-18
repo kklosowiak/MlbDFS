@@ -1,5 +1,5 @@
 # ⚾ OMEGA Deep-Dive Slate Analysis (14 Games)
-**Generated:** 2026-05-17 10:42 PM ET
+**Generated:** 2026-05-17 10:47 PM ET
 
 ---
 
@@ -7,7 +7,7 @@
 
 ### SP Targets
 
-1. **Freddy Peralta** (78.1 OMEGA) — Phys: 26.2, K: 4.5, vs Washington Nationals (126.3 stack) ⚠️ LOW-K
+1. **Freddy Peralta** (83.9 OMEGA) — Phys: 26.2, K: 4.5, vs Washington Nationals (124.2 stack) ⚠️ LOW-K
 2. **Lucas Giolito** (67.4 OMEGA) — Phys: 25.4, K: 4.5, vs Los Angeles Dodgers (93.3 stack) ⚠️ LOW-K
 3. **Richard Lovelady** (61.7 OMEGA) — Phys: 25.7, K: 4.5, vs New York Mets (130.5 stack) ⚠️ PARADOX, LOW-K
 
@@ -19,7 +19,7 @@
    - Core bats: Juan Soto, A.J. Ewing, Brett Baty
 3. **TERTIARY: Arizona Diamondbacks** (127.5 OMEGA, 5.30 ITT) — SHARP
    - Core bats: Corbin Carroll, Ildemaro Vargas, Nolan Arenado
-4. **GPP LEVERAGE: Washington Nationals** (126.3 OMEGA, 4.79 ITT) — STORM, BURST, GASSED BP
+4. **GPP LEVERAGE: Washington Nationals** (124.2 OMEGA, 4.79 ITT) — STORM, BURST, GASSED BP
    - Core bats: Cj Abrams, James Wood, Daylen Lile
 
 ### One-Off Power Targets
@@ -37,11 +37,16 @@
 
 ## ⚡ Pitcher Tier Breakdown
 
+### Tier 2 — Strong Plays (80-99)
+
+| Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
+|---------|-------|------|-----|--------|------|-------|---------------------|
+| **Freddy Peralta** (New York Mets) | 83.9 | 26.2 | 7.1 | 4.5 | 14.5 | LOW-K | Washington Nationals (124.2) |
+
 ### Tier 3 — Risky / Situational (65-79)
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Freddy Peralta** (New York Mets) | 78.1 | 26.2 | 7.1 | 4.5 | 14.5 | LOW-K | Washington Nationals (126.3) |
 | **Lucas Giolito** (San Diego Padres) | 67.4 | 25.4 | 0.0 | 4.5 | 14.5 | LOW-K | Los Angeles Dodgers (93.3) |
 
 ### Fade Zone (<65)
@@ -49,23 +54,23 @@
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
 | **Richard Lovelady** (Washington Nationals) | 61.7 | 25.7 | 7.1 | 4.5 | 14.5 | PARADOX, LOW-K | New York Mets (130.5) |
+| **Gavin Williams** (Cleveland Guardians) | 59.6 | 28.5 | 3.0 | 4.5 | 14.5 | LOW-K | Detroit Tigers (76.0) |
+| **Jeffrey Springs** (Athletics) | 59.4 | 29.2 | 0.0 | 4.5 | 14.5 | LOW-K | Los Angeles Angels (91.4) |
+| **Roki Sasaki** (Los Angeles Dodgers) | 57.0 | 28.1 | 0.0 | 4.5 | 14.5 | LOW-K | San Diego Padres (84.2) |
+| **Kevin Gausman** (Toronto Blue Jays) | 56.6 | 26.6 | 0.0 | 4.5 | 14.5 | LOW-K | New York Yankees (113.8) |
 | **Bailey Ober** (Minnesota Twins) | 56.3 | 24.3 | 0.0 | 4.5 | 14.5 | LOW-K | Houston Astros (98.3) |
-| **Gavin Williams** (Cleveland Guardians) | 55.4 | 28.5 | 3.0 | 4.5 | 14.5 | LOW-K | Detroit Tigers (76.0) |
 | **Drew Rasmussen** (Tampa Bay Rays) | 55.3 | 28.7 | 2.5 | 4.5 | 14.5 | LOW-K | Baltimore Orioles (87.8) |
-| **Jeffrey Springs** (Athletics) | 55.2 | 29.2 | 0.0 | 4.5 | 14.5 | LOW-K | Los Angeles Angels (91.4) |
+| **Michael Soroka** (Arizona Diamondbacks) | 55.3 | 26.0 | 0.0 | 4.5 | 14.5 | LOW-K | San Francisco Giants (71.1) |
 | **Grayson Rodriguez** (Los Angeles Angels) | 54.8 | 26.4 | 0.0 | 4.5 | 14.5 | LOW-K | Athletics (94.6) |
+| **Grant Holmes** (Atlanta Braves) | 54.6 | 25.1 | 0.0 | 4.5 | 14.5 | LOW-K | Miami Marlins (91.3) |
 | **Zack Wheeler** (Philadelphia Phillies) | 54.1 | 28.6 | 0.0 | 4.5 | 14.5 | LOW-K | Cincinnati Reds (87.0) |
 | **George Kirby** (Seattle Mariners) | 54.1 | 29.6 | 0.0 | 4.5 | 14.5 | LOW-K | Chicago White Sox (66.3) |
 | **Peter Lambert** (Houston Astros) | 53.3 | 28.5 | 0.0 | 4.5 | 14.5 | LOW-K | Minnesota Twins (91.2) |
-| **Roki Sasaki** (Los Angeles Dodgers) | 53.0 | 28.1 | 0.0 | 4.5 | 14.5 | LOW-K | San Diego Padres (84.2) |
 | **Erick Fedde** (Chicago White Sox) | 52.8 | 25.5 | 0.0 | 4.5 | 14.5 | LOW-K | Seattle Mariners (82.5) |
-| **Kevin Gausman** (Toronto Blue Jays) | 52.6 | 26.6 | 0.0 | 4.5 | 14.5 | LOW-K | New York Yankees (113.8) |
+| **Colin Rea** (Chicago Cubs) | 52.5 | 22.3 | 0.0 | 4.5 | 14.5 | LOW-K | Milwaukee Brewers (99.8) |
 | **Eury Pérez** (Miami Marlins) | 51.8 | 26.4 | 0.0 | 4.5 | 14.5 | LOW-K | Atlanta Braves (117.8) |
-| **Michael Soroka** (Arizona Diamondbacks) | 51.5 | 26.0 | 0.0 | 4.5 | 14.5 | LOW-K | San Francisco Giants (71.1) |
 | **Robert Gasser** (Milwaukee Brewers) | 50.9 | 23.2 | 2.0 | 4.5 | 14.5 | LOW-K | Chicago Cubs (119.4) |
-| **Grant Holmes** (Atlanta Braves) | 50.8 | 25.1 | 0.0 | 4.5 | 14.5 | LOW-K | Miami Marlins (91.3) |
 | **Jack Flaherty** (Detroit Tigers) | 49.9 | 23.9 | 0.0 | 4.5 | 14.5 | LOW-K | Cleveland Guardians (82.4) |
-| **Colin Rea** (Chicago Cubs) | 48.8 | 22.3 | 0.0 | 4.5 | 14.5 | LOW-K | Milwaukee Brewers (99.8) |
 | **Stephen Kolek** (Kansas City Royals) | 48.6 | 22.0 | 0.0 | 4.5 | 14.5 | LOW-K | Boston Red Sox (95.6) |
 | **Brady Singer** (Cincinnati Reds) | 48.2 | 20.2 | 0.0 | 4.5 | 14.5 | LOW-K | Philadelphia Phillies (91.9) |
 | **Brandon Young** (Baltimore Orioles) | 48.0 | 21.2 | 0.0 | 4.5 | 14.5 | LOW-K | Tampa Bay Rays (94.2) |
@@ -84,7 +89,7 @@
 | 1 | **Texas Rangers** | 134.8 | .286 | 6.11 | +7 | BURST, GASSED BP | Michael Lorenzen | 100 🔥 |
 | 2 | **New York Mets** | 130.5 | .28 | 6.18 | +32 | WHALE, SHARP, STORM, BURST, GASSED BP | Richard Lovelady | 100 🔥 |
 | 3 | **Arizona Diamondbacks** | 127.5 | .294 | 5.30 | -8 | SHARP | Adrian Houser | 76 |
-| 4 | **Washington Nationals** | 126.3 | .295 | 4.79 | +11 | STORM, BURST, GASSED BP | Freddy Peralta | 100 🔥 |
+| 4 | **Washington Nationals** | 124.2 | .295 | 4.79 | +11 | STORM, BURST, GASSED BP | Freddy Peralta | 100 🔥 |
 | 5 | **Chicago Cubs** | 119.4 | .314 | 6.51 | -5 | SHARP, BURST, GASSED BP | Robert Gasser | 100 🔥 |
 | 6 | **Atlanta Braves** | 117.8 | .324 | 4.41 | +0 | SHARP, BURST, GASSED BP | Eury Pérez | 100 🔥 |
 | 7 | **New York Yankees** | 113.8 | .319 | 6.05 | -32 | BURST, GASSED BP | Kevin Gausman | 100 🔥 |
@@ -176,13 +181,13 @@
 
 ---
 
-### Game 2: New York Mets (130.5) vs Washington Nationals (126.3)
+### Game 2: New York Mets (130.5) vs Washington Nationals (124.2)
 
-**Pitching:** Freddy Peralta (78.1) vs Richard Lovelady (61.7)
+**Pitching:** Freddy Peralta (83.9) vs Richard Lovelady (61.7)
 
 | Metric | New York Mets | Washington Nationals |
 |--------|---------------|----------------------|
-| Stack Score | **130.5** | 126.3 |
+| Stack Score | **130.5** | 124.2 |
 | xwOBA | 0.280 | 0.295 |
 | ITT | 6.18 | 4.79 |
 | ML Move | +0.0 | +0.0 |
@@ -210,17 +215,17 @@
 
 | OMEGA | Player | xwOBA | AHR | Hit Line | Flags |
 |-------|--------|-------|-----|----------|-------|
-| 85.5 | Cj Abrams | .3672 | +450 | 0.5@-165 | 🔥 HOT, JUICED |
-| 81.0 | James Wood | .36 | +450 | 0.5@-120 | JUICED |
-| 68.8 | Daylen Lile | .3124 | +450 | 0.5@-165 | JUICED |
-| 62.4 | Keibert Ruiz | .2952 | +450 | 1.5@-110 | — |
-| 60.5 | Brady House | .27080000000000004 | +450 | 0.5@-170 | JUICED |
+| 84.8 | Cj Abrams | .3672 | +450 | 0.5@-165 | 🔥 HOT, JUICED |
+| 80.3 | James Wood | .36 | +450 | 0.5@-120 | JUICED |
+| 68.1 | Daylen Lile | .3124 | +450 | 0.5@-165 | JUICED |
+| 61.7 | Keibert Ruiz | .2952 | +450 | 1.5@-110 | — |
+| 59.7 | Brady House | .27080000000000004 | +450 | 0.5@-170 | JUICED |
 
 ---
 
 ### Game 3: Arizona Diamondbacks (127.5) vs San Francisco Giants (71.1)
 
-**Pitching:** Michael Soroka (51.5) vs Adrian Houser (39.0)
+**Pitching:** Michael Soroka (55.3) vs Adrian Houser (39.0)
 
 | Metric | Arizona Diamondbacks | San Francisco Giants |
 |--------|----------------------|----------------------|
@@ -235,7 +240,7 @@
 | Umpire | Unknown | Unknown |
 | Signals | SHARP | — |
 
-**OMEGA Analysis:** Proceed with caution on Adrian Houser (PARADOX trap). The San Francisco Giants form an elite stack that can ruin a good pitcher's day. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Adrian Houser (39.0 OMEGA) is in the Fade Zone, making the San Francisco Giants a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Michael Soroka (51.5 OMEGA) is in the Fade Zone, making the Arizona Diamondbacks a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Adrian Houser 39.0, Michael Soroka 51.5). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** Proceed with caution on Adrian Houser (PARADOX trap). The San Francisco Giants form an elite stack that can ruin a good pitcher's day. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Adrian Houser (39.0 OMEGA) is in the Fade Zone, making the San Francisco Giants a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Michael Soroka (55.3 OMEGA) is in the Fade Zone, making the Arizona Diamondbacks a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Adrian Houser 39.0, Michael Soroka 55.3). This is a premium game-stack target — consider stacking both sides.
 
 **Arizona Diamondbacks Top Hitters:**
 
@@ -261,7 +266,7 @@
 
 ### Game 4: Chicago Cubs (119.4) vs Milwaukee Brewers (99.8)
 
-**Pitching:** Colin Rea (48.8) vs Robert Gasser (50.9)
+**Pitching:** Colin Rea (52.5) vs Robert Gasser (50.9)
 
 | Metric | Chicago Cubs | Milwaukee Brewers |
 |--------|--------------|-------------------|
@@ -276,7 +281,7 @@
 | Umpire | Unknown | Unknown |
 | Signals | SHARP, BURST, GASSED BP | BURST, GASSED BP |
 
-**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Chicago Cubs, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Robert Gasser (50.9 OMEGA) is in the Fade Zone, making the Milwaukee Brewers a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Colin Rea (48.8 OMEGA) is in the Fade Zone, making the Chicago Cubs a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Robert Gasser 50.9, Colin Rea 48.8). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Chicago Cubs, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Robert Gasser (50.9 OMEGA) is in the Fade Zone, making the Milwaukee Brewers a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (11.0) projects elite run production. Colin Rea (52.5 OMEGA) is in the Fade Zone, making the Chicago Cubs a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Robert Gasser 50.9, Colin Rea 52.5). This is a premium game-stack target — consider stacking both sides.
 
 **Chicago Cubs Top Hitters:**
 
@@ -302,7 +307,7 @@
 
 ### Game 5: Atlanta Braves (117.8) vs Miami Marlins (91.3)
 
-**Pitching:** Grant Holmes (50.8) vs Eury Pérez (51.8)
+**Pitching:** Grant Holmes (54.6) vs Eury Pérez (51.8)
 
 | Metric | Atlanta Braves | Miami Marlins |
 |--------|----------------|---------------|
@@ -317,7 +322,7 @@
 | Umpire | Unknown | Unknown |
 | Signals | SHARP, BURST, GASSED BP | BURST, GASSED BP |
 
-**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Atlanta Braves, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Eury Pérez 51.8, Grant Holmes 50.8). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Atlanta Braves, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Eury Pérez 51.8, Grant Holmes 54.6). This is a premium game-stack target — consider stacking both sides.
 
 **Atlanta Braves Top Hitters:**
 
@@ -343,7 +348,7 @@
 
 ### Game 6: New York Yankees (113.8) vs Toronto Blue Jays (103.9)
 
-**Pitching:** Elmer Rodríguez (45.6) vs Kevin Gausman (52.6)
+**Pitching:** Elmer Rodríguez (45.6) vs Kevin Gausman (56.6)
 
 | Metric | New York Yankees | Toronto Blue Jays |
 |--------|------------------|-------------------|
@@ -358,7 +363,7 @@
 | Umpire | Unknown | Unknown |
 | Signals | BURST, GASSED BP | SHARP, BURST, GASSED BP |
 
-**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the New York Yankees, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Kevin Gausman (52.6 OMEGA) is in the Fade Zone, making the Toronto Blue Jays a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Elmer Rodríguez (45.6 OMEGA) is in the Fade Zone, making the New York Yankees a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Kevin Gausman 52.6, Elmer Rodríguez 45.6). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the New York Yankees, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Kevin Gausman (56.6 OMEGA) is in the Fade Zone, making the Toronto Blue Jays a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Elmer Rodríguez (45.6 OMEGA) is in the Fade Zone, making the New York Yankees a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Kevin Gausman 56.6, Elmer Rodríguez 45.6). This is a premium game-stack target — consider stacking both sides.
 
 **New York Yankees Top Hitters:**
 
@@ -468,7 +473,7 @@
 
 ### Game 9: Athletics (94.6) vs Los Angeles Angels (91.4)
 
-**Pitching:** Jeffrey Springs (55.2) vs Grayson Rodriguez (54.8)
+**Pitching:** Jeffrey Springs (59.4) vs Grayson Rodriguez (54.8)
 
 | Metric | Athletics | Los Angeles Angels |
 |--------|-----------|--------------------|
@@ -484,7 +489,7 @@
 | Signals | SHARP, BURST, GASSED BP | BURST, GASSED BP |
 | Total Signal | ↑ OVER 71%$ | ↑ OVER 71%$ |
 
-**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Athletics, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Grayson Rodriguez (54.8 OMEGA) is in the Fade Zone, making the Los Angeles Angels a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Jeffrey Springs (55.2 OMEGA) is in the Fade Zone, making the Athletics a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Grayson Rodriguez 54.8, Jeffrey Springs 55.2). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Athletics, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Grayson Rodriguez (54.8 OMEGA) is in the Fade Zone, making the Los Angeles Angels a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.4) projects elite run production. Jeffrey Springs (59.4 OMEGA) is in the Fade Zone, making the Athletics a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Grayson Rodriguez 54.8, Jeffrey Springs 59.4). This is a premium game-stack target — consider stacking both sides.
 
 **Athletics Top Hitters:**
 
@@ -551,7 +556,7 @@
 
 ### Game 11: Los Angeles Dodgers (93.3) vs San Diego Padres (84.2)
 
-**Pitching:** Roki Sasaki (53.0) vs Lucas Giolito (67.4)
+**Pitching:** Roki Sasaki (57.0) vs Lucas Giolito (67.4)
 
 | Metric | Los Angeles Dodgers | San Diego Padres |
 |--------|---------------------|------------------|
@@ -677,7 +682,7 @@
 
 ### Game 14: Cleveland Guardians (82.4) vs Detroit Tigers (76.0)
 
-**Pitching:** Gavin Williams (55.4) vs Jack Flaherty (49.9)
+**Pitching:** Gavin Williams (59.6) vs Jack Flaherty (49.9)
 
 | Metric | Cleveland Guardians | Detroit Tigers |
 |--------|---------------------|----------------|
@@ -692,7 +697,7 @@
 | Umpire | Dan Bellino | Dan Bellino |
 | Signals | SHARP, BURST, GASSED BP | — |
 
-**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Cleveland Guardians, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Jack Flaherty 49.9, Gavin Williams 55.4). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Cleveland Guardians, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Jack Flaherty 49.9, Gavin Williams 59.6). This is a premium game-stack target — consider stacking both sides.
 
 **Cleveland Guardians Top Hitters:**
 
@@ -729,11 +734,11 @@
 | 7 | **Yordan Alvarez** | 88.3 | Houston Astros | .4244 | +450 | Bailey Ober | 🔥 HOT |
 | 8 | **Bryce Harper** | 86.8 | Philadelphia Phillies | .374 | +450 | Brady Singer | 🔥 HOT, JUICED |
 | 9 | **Ezequiel Duran** | 85.6 | Texas Rangers | .3116 | +450 | Michael Lorenzen | JUICED |
-| 10 | **Cj Abrams** | 85.5 | Washington Nationals | .3672 | +450 | Freddy Peralta | 🔥 HOT, JUICED |
-| 11 | **Mickey Moniak** | 85.1 | Colorado Rockies | .3984 | +450 | Nathan Eovaldi | 🔥 HOT, JUICED |
+| 10 | **Mickey Moniak** | 85.1 | Colorado Rockies | .3984 | +450 | Nathan Eovaldi | 🔥 HOT, JUICED |
+| 11 | **Cj Abrams** | 84.8 | Washington Nationals | .3672 | +450 | Freddy Peralta | 🔥 HOT, JUICED |
 | 12 | **Matt Olson** | 84.7 | Atlanta Braves | .378 | +450 | Eury Pérez | 🔥 HOT, JUICED |
 | 13 | **Corbin Carroll** | 82.8 | Arizona Diamondbacks | .37320000000000003 | +450 | Adrian Houser | 🔥 HOT |
 | 14 | **Juan Soto** | 82.4 | New York Mets | .3468 | +450 | Richard Lovelady | JUICED |
-| 15 | **James Wood** | 81.0 | Washington Nationals | .36 | +450 | Freddy Peralta | JUICED |
+| 15 | **James Wood** | 80.3 | Washington Nationals | .36 | +450 | Freddy Peralta | JUICED |
 
 ---

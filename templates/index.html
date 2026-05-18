@@ -1518,7 +1518,11 @@
                 const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
 
                 // OMEGA v9.2: Opposing Pitcher Physics Styling (Terrible <= 20.0, Elite >= 25.0)
-                const oppPhys = t.opp_pitcher_physics || 0;
+                let oppPhys = t.opp_pitcher_physics || 0;
+                if (!oppPhys && latestData.pitchers && t.opp_pitcher) {
+                    const match = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
+                    if (match) oppPhys = match.physics_score || 0;
+                }
                 const oppPhysColor = oppPhys <= 20.0 ? '#ff4d4d' : (oppPhys >= 25.0 ? '#4d7cff' : '#00e673');
                 const oppPhysBg = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
                 const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
