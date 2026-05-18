@@ -206,7 +206,16 @@ class DashboardGenerator:
             vertical-align: middle;
         }}
         tr:last-child td {{ border-bottom: none; }}
-        tr:hover td {{ background: rgba(255, 255, 255, 0.02); }}
+        tr {{
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
+        }}
+        tr:hover {{
+            transform: translateX(4px);
+        }}
+        tr:hover td {{
+            background: rgba(255, 255, 255, 0.035) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }}
         
         .score {{ 
             font-weight: 700; 
@@ -513,6 +522,8 @@ class DashboardGenerator:
                                   f"{ '<span class=\"signal-pill pill-sharp\">🎰 SHARP</span>' if t.get('is_sharp') else '' }"
                                   f"{ '<span class=\"signal-pill pill-steam\">💨 STEAM</span>' if t.get('is_steam') else '' }"
                                   f"{ '<span class=\"signal-pill pill-burst\">⚡ BURST</span>' if t.get('is_burst') else '' }"
+                                  f"{ '<span class=\"signal-pill pill-neutral\" style=\"background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);\">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 25 else '' }"
+                                  f"{ '<span class=\"signal-pill pill-storm\">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }"
                                   f"</div></td>"
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if t.get('is_trap') else '' }"

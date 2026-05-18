@@ -1,5 +1,53 @@
 [
     {
+        "game_id": "a8e5153e31f262e9df1bef1566519c3f",
+        "team_away": "Athletics",
+        "team_home": "Los Angeles Angels",
+        "away_opening_ml": -131,
+        "away_current_ml": -131,
+        "home_opening_ml": 108,
+        "home_current_ml": 108,
+        "opening_total": 9.0,
+        "current_total": 9.0,
+        "commence_time": "2026-05-19T01:39:00Z"
+    },
+    {
+        "game_id": "42fd4ebc22c3536132b84d9c0a55ef29",
+        "team_away": "Houston Astros",
+        "team_home": "Minnesota Twins",
+        "away_opening_ml": -105,
+        "away_current_ml": -105,
+        "home_opening_ml": -114,
+        "home_current_ml": -114,
+        "opening_total": 9.5,
+        "current_total": 9.5,
+        "commence_time": "2026-05-18T23:41:00Z"
+    },
+    {
+        "game_id": "13c307bac70250bed56ce2a649cc492e",
+        "team_away": "Texas Rangers",
+        "team_home": "Colorado Rockies",
+        "away_opening_ml": -157,
+        "away_current_ml": -157,
+        "home_opening_ml": 130,
+        "home_current_ml": 130,
+        "opening_total": 10.0,
+        "current_total": 10.0,
+        "commence_time": "2026-05-19T00:41:00Z"
+    },
+    {
+        "game_id": "6990aa317792d95bc36b258c5662a9b4",
+        "team_away": "Cleveland Guardians",
+        "team_home": "Detroit Tigers",
+        "away_opening_ml": 129,
+        "away_current_ml": 129,
+        "home_opening_ml": -156,
+        "home_current_ml": -156,
+        "opening_total": 8.5,
+        "current_total": 8.5,
+        "commence_time": "2026-05-18T22:41:00Z"
+    },
+    {
         "game_id": "0659b2fd47b200a2c0fe612b8a32e5b1",
         "team_away": "Cincinnati Reds",
         "team_home": "Philadelphia Phillies",
@@ -24,18 +72,6 @@
         "commence_time": "2026-05-18T23:06:00Z"
     },
     {
-        "game_id": "a18a19981ef7d4e6c9f6244dc08e597a",
-        "team_away": "Milwaukee Brewers",
-        "team_home": "Chicago Cubs",
-        "away_opening_ml": 139,
-        "away_current_ml": 139,
-        "home_opening_ml": -168,
-        "home_current_ml": -168,
-        "opening_total": 10.5,
-        "current_total": 10.5,
-        "commence_time": "2026-05-18T23:41:00Z"
-    },
-    {
         "game_id": "8bf07e3c1ae5450be5661196332a989f",
         "team_away": "New York Mets",
         "team_home": "Washington Nationals",
@@ -46,54 +82,6 @@
         "opening_total": 10.0,
         "current_total": 10.0,
         "commence_time": "2026-05-18T22:46:00Z"
-    },
-    {
-        "game_id": "5d7782b4079153d44f30c8b3b9ccf495",
-        "team_away": "Baltimore Orioles",
-        "team_home": "Tampa Bay Rays",
-        "away_opening_ml": 119,
-        "away_current_ml": 119,
-        "home_opening_ml": -143,
-        "home_current_ml": -143,
-        "opening_total": 7.5,
-        "current_total": 7.5,
-        "commence_time": "2026-05-18T22:41:00Z"
-    },
-    {
-        "game_id": "60ea4be5f7a9bd97fd35cbbbe9e208fa",
-        "team_away": "Atlanta Braves",
-        "team_home": "Miami Marlins",
-        "away_opening_ml": -108,
-        "away_current_ml": -108,
-        "home_opening_ml": -112,
-        "home_current_ml": -112,
-        "opening_total": 8.5,
-        "current_total": 8.5,
-        "commence_time": "2026-05-18T22:41:00Z"
-    },
-    {
-        "game_id": "13c307bac70250bed56ce2a649cc492e",
-        "team_away": "Texas Rangers",
-        "team_home": "Colorado Rockies",
-        "away_opening_ml": -157,
-        "away_current_ml": -157,
-        "home_opening_ml": 130,
-        "home_current_ml": 130,
-        "opening_total": 10.0,
-        "current_total": 10.0,
-        "commence_time": "2026-05-19T00:41:00Z"
-    },
-    {
-        "game_id": "42fd4ebc22c3536132b84d9c0a55ef29",
-        "team_away": "Houston Astros",
-        "team_home": "Minnesota Twins",
-        "away_opening_ml": -105,
-        "away_current_ml": -105,
-        "home_opening_ml": -114,
-        "home_current_ml": -114,
-        "opening_total": 9.5,
-        "current_total": 9.5,
-        "commence_time": "2026-05-18T23:41:00Z"
     },
     {
         "game_id": "82ca2e0ae47260f1183ee3abf8a69169",
@@ -108,15 +96,75 @@
         "commence_time": "2026-05-18T23:41:00Z"
     },
     {
-        "game_id": "6990aa317792d95bc36b258c5662a9b4",
-        "team_away": "Cleveland Guardians",
-        "team_home": "Detroit Tigers",
-        "away_opening_ml": 129,
-        "away_current_ml": 129,
-        "home_opening_ml": -156,
-        "home_current_ml": -156,
+        "game_id": "d98976061eadebf5d9ba5c0632212976",
+        "team_away": "Los Angeles Dodgers",
+        "team_home": "San Diego Padres",
+        "away_opening_ml": -157,
+        "away_current_ml": -157,
+        "home_opening_ml": 130,
+        "home_current_ml": 130,
+        "opening_total": 7.5,
+        "current_total": 7.5,
+        "commence_time": "2026-05-19T01:41:00Z"
+    },
+    {
+        "game_id": "a18a19981ef7d4e6c9f6244dc08e597a",
+        "team_away": "Milwaukee Brewers",
+        "team_home": "Chicago Cubs",
+        "away_opening_ml": 139,
+        "away_current_ml": 138,
+        "home_opening_ml": -168,
+        "home_current_ml": -167,
+        "opening_total": 10.5,
+        "current_total": 10.5,
+        "commence_time": "2026-05-18T23:41:00Z"
+    },
+    {
+        "game_id": "daf39ff0f5f85b7da76274b743b1ab1f",
+        "team_away": "San Francisco Giants",
+        "team_home": "Arizona Diamondbacks",
+        "away_opening_ml": 119,
+        "away_current_ml": 119,
+        "home_opening_ml": -143,
+        "home_current_ml": -143,
+        "opening_total": 9.0,
+        "current_total": 9.0,
+        "commence_time": "2026-05-19T01:41:00Z"
+    },
+    {
+        "game_id": "60ea4be5f7a9bd97fd35cbbbe9e208fa",
+        "team_away": "Atlanta Braves",
+        "team_home": "Miami Marlins",
+        "away_opening_ml": -108,
+        "away_current_ml": -108,
+        "home_opening_ml": -112,
+        "home_current_ml": -112,
         "opening_total": 8.5,
         "current_total": 8.5,
         "commence_time": "2026-05-18T22:41:00Z"
+    },
+    {
+        "game_id": "5d7782b4079153d44f30c8b3b9ccf495",
+        "team_away": "Baltimore Orioles",
+        "team_home": "Tampa Bay Rays",
+        "away_opening_ml": 119,
+        "away_current_ml": 123,
+        "home_opening_ml": -143,
+        "home_current_ml": -148,
+        "opening_total": 7.5,
+        "current_total": 7.5,
+        "commence_time": "2026-05-18T22:41:00Z"
+    },
+    {
+        "game_id": "14c70bb665938baff9719079a82cbb93",
+        "team_away": "Chicago White Sox",
+        "team_home": "Seattle Mariners",
+        "away_opening_ml": 148,
+        "away_current_ml": 148,
+        "home_opening_ml": -180,
+        "home_current_ml": -180,
+        "opening_total": 7.0,
+        "current_total": 7.0,
+        "commence_time": "2026-05-19T01:41:00Z"
     }
 ]

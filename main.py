@@ -523,6 +523,13 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                             total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
                         break
             
+            # OMEGA v9.1: Apply +10% Stack Boost against uncalibrated Debut/Rookie pitchers
+            is_opp_debut = False
+            if opp_pitcher_rep and opp_pitcher_rep.get('is_debut', False):
+                is_opp_debut = True
+                final_stack_score = round(final_stack_score * 1.10, 1)
+                print(f"  - DEBUT BOOST: Applied +10% stack multiplier vs. debut pitcher {opp_pitcher_name} (new score: {final_stack_score})")
+
             # OMEGA v8.0: Apply U-DIV as multiplier
             final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
 
@@ -539,6 +546,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
                 'confidence': res.get('confidence', 'low'),
                 'is_burst': is_burst,
+                'is_opp_debut': is_opp_debut,
                 'implied_total': round(curr_itt, 2),  # v6.3: ITT exported for trend validation
                 'total_signal': total_signal  # v8.0: Now applies Mechanical Boosts
             })

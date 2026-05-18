@@ -366,8 +366,17 @@
             border-left: 3px solid var(--accent-blue);
         }
 
+        tr {
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
+        }
+
+        tr:hover {
+            transform: translateX(4px);
+        }
+
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02) !important;
+            background: rgba(255, 255, 255, 0.035) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.08);
         }
 
         /* Pill styling */
@@ -1322,6 +1331,8 @@
                             ${t.is_sharp ? '<span class="signal-pill pill-sharp">🎰 SHARP</span>' : ''}
                             ${t.is_steam ? '<span class="signal-pill pill-steam">💨 STEAM</span>' : ''}
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
+                            ${(t.physics_score - t.market_score) >= 25 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
+                            ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
                         </div>
                     </td>
                     <td>
