@@ -1,32 +1,149 @@
 {
-  "pitchers": {
-    "Gausman, Kevin": {"FF": 54.2, "SI": 0, "SL": 0, "CU": 0, "CH": 0},
-    "Pérez, Eury": {"FF": 51.9, "SI": 0, "SL": 0, "CU": 0, "CH": 0},
-    "Nelson, Ryne": {"FF": 61.4, "SI": 0, "SL": 19.1, "CU": 0, "CH": 0},
-    "Singer, Brady": {"FF": 0, "SI": 47.3, "SL": 33.5, "CU": 0, "CH": 0},
-    "Misiorowski, Jacob": {"FF": 61.3, "SI": 0, "SL": 22.6, "CU": 13.9, "CH": 0},
-    "Abbott, Andrew": {"FF": 47.1, "SI": 0, "SL": 0, "CU": 0, "CH": 20.2},
-    "Sánchez, Cristopher": {"FF": 0, "SI": 45.2, "SL": 18.4, "CU": 0, "CH": 36.5},
-    "Valdez, Framber": {"FF": 0, "SI": 46.7, "SL": 0, "CU": 30.5, "CH": 20.6},
-    "Williams, Gavin": {"FF": 58.2, "SI": 4.1, "SL": 18.5, "CU": 12.2, "CH": 7.0},
-    "Tolle, Payton": {"FF": 52.0, "SI": 0, "SL": 25.0, "CU": 10.0, "CH": 13.0}
-  },
-  "hitters": {
-    "Trout, Mike": {"FF": 0.470, "SI": 0.533, "SL": 0.280, "CU": 0.250, "CH": 0.290},
-    "Alvarez, Yordan": {"FF": 0.589, "SI": 0.410, "SL": 0.350, "CU": 0.320, "CH": 0.310},
-    "Rice, Ben": {"FF": 0.552, "SI": 0.320, "SL": 0.300, "CU": 0.280, "CH": 0.250},
-    "Wood, James": {"FF": 0.514, "SI": 0.567, "SL": 0.340, "CU": 0.310, "CH": 0.290},
-    "Olson, Matt": {"FF": 0.478, "SI": 0.394, "SL": 0.310, "CU": 0.340, "CH": 0.280},
-    "Ohtani, Shohei": {"FF": 0.512, "SI": 0.488, "SL": 0.420, "CU": 0.380, "CH": 0.350},
-    "Judge, Aaron": {"FF": 0.545, "SI": 0.510, "SL": 0.450, "CU": 0.410, "CH": 0.390},
-    "Walker, Jordan": {"FF": 0.420, "SI": 0.380, "SL": 0.290, "CU": 0.250, "CH": 0.220},
-    "Cruz, Oneil": {"FF": 0.490, "SI": 0.410, "SL": 0.280, "CU": 0.310, "CH": 0.250}
-  },
-  "league_avg": {
-    "FF": 0.335,
-    "SI": 0.330,
-    "SL": 0.290,
-    "CU": 0.280,
-    "CH": 0.285
-  }
+    "pitchers": {
+        "Gausman, Kevin": {
+            "FF": 54.2,
+            "SI": 0,
+            "SL": 0,
+            "CU": 0,
+            "CH": 0
+        },
+        "P\u00c3\u00a9rez, Eury": {
+            "FF": 51.9,
+            "SI": 0,
+            "SL": 0,
+            "CU": 0,
+            "CH": 0
+        },
+        "Nelson, Ryne": {
+            "FF": 61.4,
+            "SI": 0,
+            "SL": 19.1,
+            "CU": 0,
+            "CH": 0
+        },
+        "Singer, Brady": {
+            "FF": 0,
+            "SI": 47.3,
+            "SL": 33.5,
+            "CU": 0,
+            "CH": 0
+        },
+        "Misiorowski, Jacob": {
+            "FF": 61.3,
+            "SI": 0,
+            "SL": 22.6,
+            "CU": 13.9,
+            "CH": 0
+        },
+        "Abbott, Andrew": {
+            "FF": 47.1,
+            "SI": 0,
+            "SL": 0,
+            "CU": 0,
+            "CH": 20.2
+        },
+        "S\u00c3\u00a1nchez, Cristopher": {
+            "FF": 0,
+            "SI": 45.2,
+            "SL": 18.4,
+            "CU": 0,
+            "CH": 36.5
+        },
+        "Valdez, Framber": {
+            "FF": 0,
+            "SI": 46.7,
+            "SL": 0,
+            "CU": 30.5,
+            "CH": 20.6
+        },
+        "Williams, Gavin": {
+            "FF": 58.2,
+            "SI": 4.1,
+            "SL": 18.5,
+            "CU": 12.2,
+            "CH": 7.0
+        },
+        "Tolle, Payton": {
+            "FF": 52.0,
+            "SI": 0,
+            "SL": 25.0,
+            "CU": 10.0,
+            "CH": 13.0
+        }
+    },
+    "hitters": {
+        "Trout, Mike": {
+            "FF": 0.47,
+            "SI": 0.533,
+            "SL": 0.28,
+            "CU": 0.25,
+            "CH": 0.29
+        },
+        "Alvarez, Yordan": {
+            "FF": 0.589,
+            "SI": 0.41,
+            "SL": 0.35,
+            "CU": 0.32,
+            "CH": 0.31
+        },
+        "Rice, Ben": {
+            "FF": 0.552,
+            "SI": 0.32,
+            "SL": 0.3,
+            "CU": 0.28,
+            "CH": 0.25
+        },
+        "Wood, James": {
+            "FF": 0.514,
+            "SI": 0.567,
+            "SL": 0.34,
+            "CU": 0.31,
+            "CH": 0.29
+        },
+        "Olson, Matt": {
+            "FF": 0.478,
+            "SI": 0.394,
+            "SL": 0.31,
+            "CU": 0.34,
+            "CH": 0.28
+        },
+        "Ohtani, Shohei": {
+            "FF": 0.512,
+            "SI": 0.488,
+            "SL": 0.42,
+            "CU": 0.38,
+            "CH": 0.35
+        },
+        "Judge, Aaron": {
+            "FF": 0.545,
+            "SI": 0.51,
+            "SL": 0.45,
+            "CU": 0.41,
+            "CH": 0.39
+        },
+        "Walker, Jordan": {
+            "FF": 0.42,
+            "SI": 0.38,
+            "SL": 0.29,
+            "CU": 0.25,
+            "CH": 0.22
+        },
+        "Cruz, Oneil": {
+            "FF": 0.49,
+            "SI": 0.41,
+            "SL": 0.28,
+            "CU": 0.31,
+            "CH": 0.25
+        }
+    },
+    "league_avg": {
+        "FF": 0.335,
+        "SI": 0.33,
+        "SL": 0.29,
+        "CU": 0.28,
+        "CH": 0.285
+    },
+    "meta": {
+        "last_refresh": "2026-05-17"
+    }
 }

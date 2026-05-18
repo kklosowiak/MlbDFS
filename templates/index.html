@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ω OMEGA COCKPIT v9.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(20, 20, 25, 0.7);
+            --surface-hover: rgba(35, 35, 45, 0.85);
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent-blue: #0a84ff;
+            --accent-green: #32d74b;
+            --accent-red: #ff453a;
+            --accent-orange: #ff9f0a;
+            --accent-purple: #bf5af2;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Outfit', -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-image: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #030303 60%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* App Layout */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 15, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 40px 50px;
+            width: calc(100% - 280px);
+            min-height: 100vh;
+            transition: width 0.3s ease;
+        }
+
+        /* Sidebar Logo & Menu */
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 45px;
+        }
+
+        .logo-sym {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            text-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
+        }
+
+        .logo-txt {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* System Health Widget */
+        .system-widget {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .widget-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .widget-label {
+            color: var(--text-secondary);
+        }
+
+        .widget-val {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-green);
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Action Buttons */
+        .btn-refresh {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-refresh:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(10, 132, 255, 0.5);
+        }
+
+        .btn-refresh:active {
+            transform: translateY(0);
+        }
+
+        .btn-refresh.loading {
+            background: var(--surface-hover);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header Area */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .title-group h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .title-group p {
+            margin: 4px 0 0 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .meta-group {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .meta-group span {
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        /* Search Controls */
+        .controls-card {
+            background: var(--surface);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.25s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 10px rgba(10, 132, 255, 0.15);
+        }
+
+        /* Main Data Cards */
+        .tab-panel {
+            display: none;
+            width: 100%;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: panelFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        /* Beautiful Dynamic Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.95rem;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.row-highlight td {
+            background: rgba(10, 132, 255, 0.03);
+        }
+        tr.row-highlight td:first-child {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        /* Pill styling */
+        .score {
+            font-weight: 800;
+            font-size: 1.1rem;
+            font-variant-numeric: tabular-nums;
+        }
+        .score.elite { color: var(--accent-blue); text-shadow: 0 0 12px rgba(10, 132, 255, 0.35); }
+        .score.high { color: var(--accent-green); text-shadow: 0 0 10px rgba(50, 215, 75, 0.3); }
+        .score.med { color: var(--text-primary); }
+        .score.low { color: var(--text-secondary); }
+        
+        .score-physics { color: var(--accent-green); font-weight: 700; }
+        .score-market { color: var(--accent-purple); font-weight: 700; }
+
+        .signals-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 250px;
+        }
+
+        .signal-pill {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .pill-target { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
+        .pill-shark { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
+        .pill-storm { background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }
+        .pill-sharp { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }
+        .pill-whale { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }
+        .pill-steam { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
+        .pill-burst { background: rgba(255, 214, 10, 0.15); color: #ffd60a; }
+        .pill-lowconf { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
+        .pill-paradox { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
+        .pill-trap { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
+        .pill-exhausted { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
+        .pill-gassed { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
+        .pill-weary { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
+        .pill-neutral { background: rgba(255, 255, 255, 0.06); color: var(--text-secondary); }
+
+        .team-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: rgba(255,255,255,0.04);
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .metric {
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+        }
+        .val-up { color: var(--accent-green); }
+        .val-down { color: var(--accent-red); }
+        .val-even { color: var(--text-secondary); }
+
+        .vs {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin: 0 6px;
+        }
+
+        /* AI Chat Slide-in Drawer */
+        .chat-drawer {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 420px;
+            height: 100vh;
+            background: rgba(15, 15, 20, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .chat-drawer.open {
+            right: 0;
+        }
+
+        .chat-header {
+            padding: 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 0;
+        }
+
+        .close-chat:hover {
+            color: var(--text-primary);
+        }
+
+        .api-key-box {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .api-key-input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #fff;
+            font-family: inherit;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .chat-bubble.user {
+            background: var(--accent-blue);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chat-bubble.bot {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+
+        .chat-bubble p {
+            margin: 0 0 10px 0;
+        }
+        .chat-bubble p:last-child {
+            margin-bottom: 0;
+        }
+        .chat-bubble strong {
+            font-weight: 700;
+            color: #fff;
+        }
+        .chat-bubble ul, .chat-bubble ol {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        .chat-bubble li {
+            margin-bottom: 6px;
+        }
+
+        .chat-chips {
+            display: flex;
+            gap: 8px;
+            padding: 10px 30px;
+            overflow-x: auto;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.1);
+        }
+
+        .chat-chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .chat-chip:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .chat-input-area {
+            padding: 20px 30px 30px 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.95rem;
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.25s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-send {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+        }
+
+        /* Floating AI Toggle FAB */
+        .ai-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(10, 132, 255, 0.5);
+            z-index: 150;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ai-fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 40px rgba(10, 132, 255, 0.7);
+        }
+
+        .ai-fab svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+
+        /* Model Analysis Markdown container */
+        #analysis-markdown {
+            line-height: 1.7;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        #analysis-markdown h1, #analysis-markdown h2, #analysis-markdown h3 {
+            font-weight: 700;
+            margin-top: 1.8em;
+            margin-bottom: 0.6em;
+        }
+        #analysis-markdown h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        #analysis-markdown h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        #analysis-markdown p { color: rgba(255,255,255,0.8); margin-bottom: 1.3em; }
+        #analysis-markdown ul { padding-left: 20px; margin-bottom: 1.3em; }
+        #analysis-markdown li { margin-bottom: 6px; color: rgba(255,255,255,0.85); }
+        #analysis-markdown table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+        #analysis-markdown th, #analysis-markdown td { padding: 12px 16px; border: 1px solid var(--border); }
+        #analysis-markdown th { background: rgba(255,255,255,0.04); font-weight: 700; }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR NAVIGATION -->
+    <div class="sidebar">
+        <div>
+            <div class="logo-group">
+                <span class="logo-sym">Ω</span>
+                <span class="logo-txt">OMEGA COCKPIT</span>
+            </div>
+            
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="switchTab(this, 'pitchers')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Pitchers Matrix
+                </li>
+                <li class="nav-item" onclick="switchTab(this, 'hitters')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Hitters Matrix
+                </li>
+                <li class="nav-item" onclick="switchTab(this, 'teams')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                    Teams Matrix
+                </li>
+                <li class="nav-item" onclick="switchTab(this, 'analysis')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Model Analysis
+                </li>
+            </ul>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- System Health Widget -->
+            <div class="system-widget">
+                <div class="widget-row">
+                    <span class="widget-label">System Status</span>
+                    <span class="widget-val" style="color: var(--accent-green);">
+                        <span class="status-dot status-pulse"></span>LIVE
+                    </span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Refresh Mode</span>
+                    <span class="widget-val">Auto (45m)</span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Last Refresh</span>
+                    <span class="widget-val" id="last-refresh-time">Never</span>
+                </div>
+            </div>
+
+            <!-- Manual Refresh Button -->
+            <button class="btn-refresh" id="btn-refresh" onclick="triggerRefresh()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span id="btn-text">Refresh Slate</span>
+            </button>
+            
+            <a href="/logout" style="text-decoration:none; text-align:center; font-size:0.85rem; font-weight:700; color:var(--accent-red); opacity:0.8; margin-top:5px;">SECURE LOGOUT</a>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD VIEW -->
+    <div class="main-content">
+        <div class="main-header">
+            <div class="title-group">
+                <h1 id="page-title">Pitchers Matrix</h1>
+                <p id="page-subtitle">Premium Slate Alpha Matrix</p>
+            </div>
+            <div class="meta-group">
+                OMEGA MASTER ENGINE v9.0<br>
+                SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
+            </div>
+        </div>
+
+        <!-- SEARCH AND FILTER CONTROLS -->
+        <div class="controls-card">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="search-bar" placeholder="SEARCH PLAYER OR TEAM..." oninput="filterData()">
+            </div>
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-secondary);" id="counter-box">
+                SHOWING 0 PLAYS
+            </div>
+        </div>
+
+        <!-- PITCHERS PANEL -->
+        <div id="pitchers-panel" class="tab-panel active">
+            <div class="card">
+                <h2>Starting Pitcher Alpha Rankings</h2>
+                <table id="pitchers-table">
+                    <thead>
+                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
+                    </thead>
+                    <tbody id="pitchers-body">
+                        <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- HITTERS PANEL -->
+        <div id="hitters-panel" class="tab-panel">
+            <div class="card">
+                <h2>Hitter Core Power Rankings</h2>
+                <table id="hitters-table">
+                    <thead>
+                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
+                    </thead>
+                    <tbody id="hitters-body">
+                        <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TEAMS PANEL -->
+        <div id="teams-panel" class="tab-panel">
+            <div class="card">
+                <h2>Team Stack Sentiment Rankings</h2>
+                <table id="teams-table">
+                    <thead>
+                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                    </thead>
+                    <tbody id="teams-body">
+                        <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ANALYSIS PANEL -->
+        <div id="analysis-panel" class="tab-panel">
+            <div class="card" style="padding: 40px 50px;">
+                <div id="analysis-markdown">
+                    Loading slate intelligence...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI CHAT FLOATING FAB -->
+    <div class="ai-fab" onclick="toggleChat()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 2.02.6 3.9 1.63 5.48L2.05 22l4.64-1.54C8.16 21.43 9.98 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+        </svg>
+    </div>
+
+    <!-- AI CHAT SLIDE-IN PANEL -->
+    <div class="chat-drawer" id="chat-drawer">
+        <div class="chat-header">
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Antigravity AI Analyst
+            </h3>
+            <button class="close-chat" onclick="toggleChat()">×</button>
+        </div>
+        
+        <div class="api-key-box">
+            <span style="font-size:0.75rem; font-weight:700; color:var(--text-secondary);">GEMINI API KEY:</span>
+            <input type="password" class="api-key-input" id="api-key-input" placeholder="PASTE KEY HERE TO ACTIVATE CHAT" oninput="saveApiKey()">
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-bubble bot">
+                <strong>Hello Konrad!</strong> I am Antigravity, your expert agentic AI baseball analyst. I am loaded with the live <strong>OMEGA v9.0 Pitching & Stack database</strong>.
+                <br><br>
+                Paste your API key above or add it to `.env` to activate my live AI. Let's crush this slate!
+            </div>
+        </div>
+
+        <div class="chat-chips">
+            <div class="chat-chip" onclick="sendQuickPrompt('Summarize today\'s top 3 slate-winning stacks.')">Analyze Stacks</div>
+            <div class="chat-chip" onclick="sendQuickPrompt('Who is the absolute best starting pitcher to anchor in GPPs today?')">Best Pitchers</div>
+            <div class="chat-chip" onclick="sendQuickPrompt('Find a low-owned OMEGA Burst team that can explode tonight.')">GPP Leverage Burst</div>
+            <div class="chat-chip" onclick="sendQuickPrompt('Explain why St. Louis is a contact trap.')">Cardinals Trap?</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chat-input" placeholder="ASK ANYTHING..." onkeydown="handleChatKey(event)">
+            <button class="btn-send" onclick="sendChatMessage()">SEND</button>
+        </div>
+    </div>
+
+    <!-- CLIENT FRONTEND CONTROLLER -->
+    <script>
+        let currentTab = 'pitchers';
+        let latestData = null;
+        let chatHistory = [];
+
+        // Dynamic Abbreviations Map
+        const abbrevMap = {
+            'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',
+            'Boston Red Sox': 'BOS', 'Chicago Cubs': 'CHC', 'Chicago White Sox': 'CWS',
+            'Cincinnati Reds': 'CIN', 'Cleveland Guardians': 'CLE', 'Colorado Rockies': 'COL',
+            'Detroit Tigers': 'DET', 'Houston Astros': 'HOU', 'Kansas City Royals': 'KC',
+            'Los Angeles Angels': 'LAA', 'Los Angeles Dodgers': 'LAD', 'Miami Marlins': 'MIA',
+            'Milwaukee Brewers': 'MIL', 'Minnesota Twins': 'MIN', 'New York Mets': 'NYM',
+            'New York Yankees': 'NYY', 'Oakland Athletics': 'OAK', 'Philadelphia Phillies': 'PHI',
+            'Pittsburgh Pirates': 'PIT', 'San Diego Padres': 'SD', 'San Francisco Giants': 'SF',
+            'Seattle Mariners': 'SEA', 'St. Louis Cardinals': 'STL', 'Tampa Bay Rays': 'TB',
+            'Texas Rangers': 'TEX', 'Toronto Blue Jays': 'TOR', 'Washington Nationals': 'WSH',
+            'Diamondbacks': 'ARI', 'Braves': 'ATL', 'Orioles': 'BAL', 'Red Sox': 'BOS',
+            'Cubs': 'CHC', 'White Sox': 'CWS', 'Reds': 'CIN', 'Guardians': 'CLE',
+            'Rockies': 'COL', 'Tigers': 'DET', 'Astros': 'HOU', 'Royals': 'KC',
+            'Angels': 'LAA', 'Dodgers': 'LAD', 'Marlins': 'MIA', 'Brewers': 'MIL',
+            'Twins': 'MIN', 'Mets': 'NYM', 'Yankees': 'NYY', 'Athletics': 'OAK',
+            'Phillies': 'PHI', 'Pirates': 'PIT', 'Padres': 'SD', 'Giants': 'SF',
+            'Mariners': 'SEA', 'Cardinals': 'STL', 'Rays': 'TB', 'Rangers': 'TEX',
+            'Blue Jays': 'TOR', 'Nationals': 'WSH'
+        };
+
+        // Initialize API key from local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) {
+                document.getElementById('api-key-input').value = savedKey;
+            }
+            loadData();
+            pollRefreshStatus();
+            // Start polling refresh status every 2 seconds
+            setInterval(pollRefreshStatus, 2000);
+        });
+
+        function saveApiKey() {
+            const key = document.getElementById('api-key-input').value.trim();
+            localStorage.setItem('gemini_api_key', key);
+        }
+
+        // Tab Switching
+        function switchTab(el, tabId) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(tabId + '-panel').classList.add('active');
+
+            currentTab = tabId;
+
+            // Update titles
+            const titles = {
+                'pitchers': ['Pitchers Matrix', 'Premium Slate Alpha Matrix'],
+                'hitters': ['Hitters Matrix', 'Power & Matchup Alpha Matrix'],
+                'teams': ['Teams Matrix', 'Market Sentiment & Stack Matrix'],
+                'analysis': ['Model Analysis', 'Slate Intelligence Overview']
+            };
+            document.getElementById('page-title').innerText = titles[tabId][0];
+            document.getElementById('page-subtitle').innerText = titles[tabId][1];
+
+            // Re-run filter/counter
+            filterData();
+        }
+
+        // Load all data from API
+        async function loadData() {
+            try {
+                // Fetch projections
+                const res = await fetch('/api/results');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                latestData = await res.json();
+                
+                // Update slate date in header
+                if (latestData && latestData.timestamp) {
+                    const dateObj = new Date(latestData.timestamp);
+                    document.getElementById('slate-date').innerText = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                }
+
+                // Fetch markdown analysis
+                const analysisRes = await fetch('/api/analysis');
+                const analysisData = await analysisRes.json();
+                
+                if (window.marked) {
+                    document.getElementById('analysis-markdown').innerHTML = marked.parse(analysisData.markdown);
+                } else {
+                    document.getElementById('analysis-markdown').innerText = analysisData.markdown;
+                }
+
+                renderTables();
+            } catch (err) {
+                console.error("Failed to load data:", err);
+            }
+        }
+
+        // Render dynamic tables
+        function renderTables() {
+            if (!latestData) return;
+
+            // 1. Render Pitchers
+            const pBody = document.getElementById('pitchers-body');
+            pBody.innerHTML = '';
+            const pitchers = latestData.pitchers || [];
+            pitchers.forEach(p => {
+                const tr = document.createElement('tr');
+                if (p.alpha_score >= 85) tr.classList.add('row-highlight');
+                
+                const scoreClass = p.alpha_score >= 100 ? 'score elite' : (p.alpha_score >= 85 ? 'score high' : 'score med');
+                
+                tr.innerHTML = `
+                    <td class="${scoreClass}">${p.alpha_score}</td>
+                    <td class="metric" style="color: var(--accent-green);">${p.physics_score || '-'}</td>
+                    <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
+                    <td>
+                        <div class="signals-container">
+                            ${p.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
+                            ${p.is_shark ? '<span class="signal-pill pill-shark">🦈 SHARK</span>' : ''}
+                            ${p.is_debut ? '<span class="signal-pill pill-storm">✨ DEBUT</span>' : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="signals-container">
+                            ${p.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
+                            ${p.is_hazard ? '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>' : ''}
+                            ${p.is_trap ? '<span class="signal-pill pill-trap">⚠️ TRAP</span>' : ''}
+                            ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
+                            <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
+                        </div>
+                    </td>
+                    <td><strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span></td>
+                    <td><span class="vs">vs</span>${p.opponent}</td>
+                    <td class="metric"><b>${p.k_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></td>
+                    <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
+                `;
+                pBody.appendChild(tr);
+            });
+
+            // 2. Render Hitters
+            const hBody = document.getElementById('hitters-body');
+            hBody.innerHTML = '';
+            const hitters = latestData.hitters || [];
+            hitters.forEach(h => {
+                const tr = document.createElement('tr');
+                if (h.player_score >= 85) tr.classList.add('row-highlight');
+                
+                const scoreClass = h.player_score >= 100 ? 'score elite' : (h.player_score >= 85 ? 'score high' : 'score med');
+                
+                tr.innerHTML = `
+                    <td class="${scoreClass}">${h.player_score}</td>
+                    <td>
+                        <div class="signals-container">
+                            ${h.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="signals-container">
+                            ${h.matchup_xwoba >= 0.360 ? '<span class="signal-pill pill-neutral">🔋 POWER</span>' : ''}
+                            ${h.is_speed_target ? '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>' : ''}
+                            ${h.is_hot ? '<span class="signal-pill pill-target">♨️ HOT</span>' : ''}
+                            ${h.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' : ''}
+                        </div>
+                    </td>
+                    <td><strong>${h.name}</strong> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
+                    <td><span class="vs">vs</span>${h.opp_pitcher} <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span></td>
+                    <td class="metric">${h.ahr_price > 0 ? '+' : ''}${h.ahr_price || '-'}</td>
+                    <td class="metric"><b>${h.hit_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
+                `;
+                hBody.appendChild(tr);
+            });
+
+            // 3. Render Teams
+            const tBody = document.getElementById('teams-body');
+            tBody.innerHTML = '';
+            const teams = latestData.teams || [];
+            teams.forEach(t => {
+                const tr = document.createElement('tr');
+                if (t.stack_score >= 85) tr.classList.add('row-highlight');
+                
+                const scoreClass = t.stack_score >= 100 ? 'score elite' : (t.stack_score >= 85 ? 'score high' : 'score med');
+                
+                const mlClass = t.ml_move < 0 ? 'val-up' : (t.ml_move > 0 ? 'val-down' : 'val-even');
+                const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
+                const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
+
+                tr.innerHTML = `
+                    <td class="${scoreClass}">${t.stack_score}</td>
+                    <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
+                    <td class="metric" style="color: var(--accent-purple);">${t.market_score || 0}</td>
+                    <td>
+                        <div class="signals-container">
+                            ${t.is_shark ? '<span class="signal-pill pill-shark">🦈 SHARK</span>' : ''}
+                            ${t.is_storm ? '<span class="signal-pill pill-storm">🌪️ STORM</span>' : ''}
+                            ${t.is_whale ? '<span class="signal-pill pill-whale">🐋 WHALE</span>' : ''}
+                            ${t.is_sharp ? '<span class="signal-pill pill-sharp">🎰 SHARP</span>' : ''}
+                            ${t.is_steam ? '<span class="signal-pill pill-steam">💨 STEAM</span>' : ''}
+                            ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="signals-container">
+                            ${t.is_trap ? '<span class="signal-pill pill-trap">⚠️ TRAP</span>' : ''}
+                            ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
+                            ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 70 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
+                            ${t.total_signal ? `<span class="signal-pill pill-neutral">${t.total_signal}</span>` : ''}
+                        </div>
+                    </td>
+                    <td><strong>${t.team}</strong></td>
+                    <td><span class="vs">vs</span>${t.opp_pitcher} <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span></td>
+                    <td class="metric val-up">${t.implied_total || '-'}</td>
+                    <td class="metric ${mlClass}">${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}</td>
+                    <td class="metric ${ttClass}">${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}</td>
+                    <td class="metric ${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</td>
+                `;
+                tBody.appendChild(tr);
+            });
+
+            filterData();
+        }
+
+        // Search Filter Control
+        function filterData() {
+            const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            let showingCount = 0;
+
+            const selector = {
+                'pitchers': '#pitchers-body tr',
+                'hitters': '#hitters-body tr',
+                'teams': '#teams-body tr',
+                'analysis': null
+            }[currentTab];
+
+            if (!selector) {
+                document.getElementById('counter-box').innerText = "SYSTEM ACTIVE";
+                return;
+            }
+
+            const rows = document.querySelectorAll(selector);
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                    showingCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('counter-box').innerText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
+        }
+
+        // Trigger manual refresh via API
+        async function triggerRefresh() {
+            const btn = document.getElementById('btn-refresh');
+            const btnText = document.getElementById('btn-text');
+            
+            try {
+                const res = await fetch('/api/refresh', { method: 'POST' });
+                const data = await res.json();
+                
+                if (data.status === 'started' || data.status === 'already_refreshing') {
+                    btn.classList.add('loading');
+                    btn.disabled = true;
+                    btnText.innerText = "Analyzing Slate...";
+                    btn.innerHTML = `<span class="spinner"></span> <span id="btn-text">Analyzing Slate...</span>`;
+                }
+            } catch (err) {
+                console.error("Refresh failed:", err);
+            }
+        }
+
+        // Poll background status
+        async function pollRefreshStatus() {
+            try {
+                const res = await fetch('/api/refresh-status');
+                if (res.status === 401) return;
+                const status = await res.json();
+
+                // Update widgets
+                document.getElementById('last-refresh-time').innerText = status.last_refresh_time || "Never";
+
+                const btn = document.getElementById('btn-refresh');
+                const btnText = document.getElementById('btn-text');
+
+                if (status.is_refreshing) {
+                    btn.classList.add('loading');
+                    btn.disabled = true;
+                    btn.innerHTML = `<span class="spinner"></span> <span id="btn-text">${status.progress || 'Analyzing...'}</span>`;
+                } else {
+                    if (btn.classList.contains('loading')) {
+                        // Just finished reloading! Load fresh data!
+                        btn.classList.remove('loading');
+                        btn.disabled = false;
+                        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> <span id="btn-text">Refresh Slate</span>`;
+                        loadData();
+                    }
+                }
+            } catch (err) {
+                console.error("Status check failed:", err);
+            }
+        }
+
+        // Chat UI toggle
+        function toggleChat() {
+            const chat = document.getElementById('chat-drawer');
+            chat.classList.toggle('open');
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('chat-input').value = promptText;
+            sendChatMessage();
+        }
+
+        // Send chat message
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            
+            // Add user bubble
+            appendChatBubble(text, 'user');
+            
+            // Add bot thinking bubble
+            const thinkingId = appendChatBubble('Thinking...', 'bot thinking');
+
+            const apiKey = localStorage.getItem('gemini_api_key') || '';
+
+            // Post chat API
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        history: chatHistory,
+                        api_key: apiKey
+                    })
+                });
+                
+                const data = await res.json();
+                
+                // Remove thinking bubble
+                document.getElementById(thinkingId).remove();
+                
+                // Append bot response
+                appendChatBubble(data.reply, 'bot');
+                
+                // Update history
+                chatHistory.push({ role: 'user', text: text });
+                chatHistory.push({ role: 'model', text: data.reply });
+                
+                // Keep history trimmed to save tokens
+                if (chatHistory.length > 10) {
+                    chatHistory.shift();
+                    chatHistory.shift();
+                }
+
+            } catch (err) {
+                document.getElementById(thinkingId).remove();
+                appendChatBubble('⚠️ Error connecting to chatbot services.', 'bot');
+            }
+        }
+
+        function appendChatBubble(text, sender) {
+            const box = document.getElementById('chat-messages');
+            const bubble = document.createElement('div');
+            const uniqueId = 'bubble-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+            bubble.id = uniqueId;
+            bubble.className = `chat-bubble ${sender}`;
+            
+            if (sender.includes('thinking')) {
+                bubble.innerText = text;
+            } else {
+                // Parse simple markdown tags
+                if (window.marked) {
+                    bubble.innerHTML = marked.parse(text);
+                } else {
+                    bubble.innerText = text;
+                }
+            }
+            
+            box.appendChild(bubble);
+            box.scrollTop = box.scrollHeight;
+            return uniqueId;
+        }
+    </script>
+</body>
+</html>

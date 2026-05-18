@@ -287,6 +287,8 @@ class DashboardGenerator:
         .pill-paradox {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
         .pill-trap {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
         .pill-exhausted {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
+        .pill-weary {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
+        .pill-gassed {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
         .pill-neutral {{ background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }}
 
         /* Legend */
@@ -408,8 +410,9 @@ class DashboardGenerator:
                 <div class="legend-group">
                     <div class="legend-title">Risk & Context</div>
                     <div class="legend-item"><span class="signal-pill pill-paradox">⚠️ PARADOX</span> Conflict (Pitcher vs. Stack)</div>
-                    <div class="legend-item"><span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span> Bullpen completely taxed</div>
-                    <div class="legend-item"><span class="signal-pill pill-weary">♨️ WEARY</span> Bullpen fatigue</div>
+                    <div class="legend-item"><span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span> <b>90+:</b> Relievers Taxed (198+ pitches)</div>
+                    <div class="legend-item"><span class="signal-pill pill-gassed">♨️ GASSED</span> <b>80+:</b> Heavy Fatigue (176+ pitches)</div>
+                    <div class="legend-item"><span class="signal-pill pill-weary">♨️ WEARY</span> <b>70+:</b> Bullpen Weary (154+ pitches)</div>
                     <div class="legend-item"><span class="signal-pill pill-trap">⚠️ TRAP</span> Suspicious prop lines</div>
                 </div>
             </div>
@@ -514,7 +517,7 @@ class DashboardGenerator:
                                   f"<td><div class='signals-container'>"
                                   f"{ '<span class=\"signal-pill pill-trap\">⚠️ TRAP</span>' if t.get('is_trap') else '' }"
                                   f"{ '<span class=\"signal-pill pill-paradox\">⚠️ PARADOX</span>' if t.get('is_paradox') else '' }"
-                                  f"{ '<span class=\"signal-pill pill-exhausted\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 100 else ('<span class=\"signal-pill pill-gassed\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill pill-weary\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 80 else '')) }"
+                                  f"{ '<span class=\"signal-pill pill-exhausted\">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class=\"signal-pill pill-gassed\">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 80 else ('<span class=\"signal-pill pill-weary\">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 70 else '')) }"
                                   + (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '')
                                   + "</div></td>"
                                   f"<td><span class='team-label' style='font-size:1rem; font-weight:700; margin-left:0;'>{t['team']}</span></td>"

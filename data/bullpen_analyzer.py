@@ -75,8 +75,8 @@ class BullpenAnalyzer:
             "score": round(score, 1),
             "pitches": pitches,
             "relievers_used": count,
-            "is_gassed": score >= 100,
-            "is_fatigued": score >= 80
+            "is_gassed": score >= 80,
+            "is_fatigued": score >= 70
         }
 
 if __name__ == "__main__":

@@ -101,10 +101,19 @@ class SharpsWeighting:
         
         bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
 
-        # OMEGA v6.8: Market Pillar (Delta-Based)
+        # OMEGA v8.9: Absolute-Delta Hybrid Market Pillar
+        # Incorporate absolute Vegas ITT (scale 3.0 to 5.5 -> 0 to 100 pts) so flat high-total stacks are rewarded
+        eff_itt = implied_total if implied_total is not None else curr_itt
+        absolute_total_score = max(0, min(100, ((eff_itt - 3.0) / 2.5) * 100))
+        
+        # Calculate delta-based movement scores
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
         tt_score = max(0, min(100, (tt_move / 0.5) * 100)) if tt_move > 0 else 0
-        market_raw = (ml_score + tt_score) / 2
+        delta_score = (ml_score + tt_score) / 2
+        
+        # OMEGA v8.9.1: Golden Ratio Blend (50% Absolute Total / 50% Delta Movement)
+        # Perfectly balanced to reward flat high-totals while fully preserving sharp line-movement indicators.
+        market_raw = (absolute_total_score * 0.50) + (delta_score * 0.50)
 
         # OMEGA v6.9: Pitcher Vulnerability
         vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
@@ -139,26 +148,50 @@ class SharpsWeighting:
         if tt_move > 0.5: beta_signals += 1
         if bullpen_fatigue >= 65: beta_signals += 1 
         
+        # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
+        # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums
+        # dynamically dampened to prevent bet-volume spikes (traps) from overtaking physical capability.
+        anchor_ratio = 1.0
+        if team_xwoba < 0.295:
+            anchor_ratio = max(0.5, (team_xwoba / 0.295) ** 2.0)
+
         # Multiplier Calculation: Alpha (+15%), Beta (+5%)
         # OMEGA v8.7.7: 'Balanced Sharp Premium' (+7.5% for Smart Money)
-        multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05)
+        market_premium = (alpha_signals * 0.15) + (beta_signals * 0.05)
         if is_sharp:
-            multiplier += 0.025 # Add 2.5% specifically for Sharp (Total 7.5% boost)
+            market_premium += 0.025 # Add 2.5% specifically for Sharp (Total 7.5% boost)
+            
+        # Apply the Statcast Anchor dampener to the market premium!
+        dampened_market_premium = market_premium * anchor_ratio
+        multiplier = 1.0 + dampened_market_premium
         
         # OMEGA v6.7: The 'Detmers Patch' (Stopper Penalty Refined)
         if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
             multiplier -= 0.10 
         
         # Dynamic Divergence Multiplier: Capped at 10%
-        div_multiplier = 1.0 + min(0.10, (max(0, divergence) / 150.0))
+        div_premium = min(0.10, (max(0, divergence) / 150.0))
+        dampened_div_premium = div_premium * anchor_ratio
+        div_multiplier = 1.0 + dampened_div_premium
         
-        # OMEGA v8.6: The 'Whale Trap' Defensive Gate
-        # If physics is weak (< 30.0, i.e., Weighted < 12.0) and market steam is extreme (> 80), apply 0.80x penalty
+        # OMEGA v8.8: The 'Talent Floor Gate' (Prevents low-physics team inflation)
+        # If raw physics is weak (< 36.0, i.e., Weighted < 14.4) and the stack is heavily backed
+        # by market multipliers (Whale, Storm, Shark, Steam, etc.), apply a 0.95x defensive penalty.
+        has_market_inflation = is_whale or is_storm or is_shark or is_steam or is_sharp or (divergence > 12)
         trap_multiplier = 1.0
-        if physics_raw < 30.0 and market_raw > 80.0:
-            trap_multiplier = 0.80
+        if physics_raw < 36.0 and has_market_inflation:
+            trap_multiplier = 0.95
 
-        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier
+        # OMEGA v8.9: Strategy 1 - The 'Defensive Gut Gate' (Matchup Magnetism)
+        # If opposing pitcher physics is extremely low (below 20.0), we apply an authoritative Matchup Magnetism Boost
+        # that is proportional to the pitcher's weakness and amplified by bullpen fatigue.
+        magnetism_boost = 1.0
+        if opp_pitcher_physics < 20.0:
+            vulnerability_gap = (20.0 - opp_pitcher_physics) / 10.0
+            fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30  # Up to +30% boost for gassed bullpens
+            magnetism_boost = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
+
+        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier * magnetism_boost
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt
@@ -184,7 +217,7 @@ class SharpsWeighting:
             "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence,
-            "is_trap": trap_multiplier < 1.0
+            "is_trap": trap_multiplier < 1.0 or anchor_ratio < 1.0
         }
 
     def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0):

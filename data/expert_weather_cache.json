@@ -1,137 +1,137 @@
 [
   {
-    "home": "Pittsburgh Pirates",
-    "away": "Philadelphia Phillies",
-    "temp": 67,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
-  },
-  {
-    "home": "Washington Nationals",
-    "away": "Baltimore Orioles",
-    "temp": 72,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
-  },
-  {
-    "home": "Detroit Tigers",
-    "away": "Toronto Blue Jays",
-    "temp": 60,
-    "wind_speed": 10,
-    "wind_dir": "In from Right",
-    "status": "Clear",
-    "notes": ""
-  },
-  {
     "home": "Tampa Bay Rays",
     "away": "Miami Marlins",
-    "temp": 86,
+    "temp": 87,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
     "notes": "Closed dome \u2014 weather has no effect at this ballpark."
   },
   {
-    "home": "Minnesota Twins",
-    "away": "Milwaukee Brewers",
-    "temp": 89,
-    "wind_speed": 10,
+    "home": "Washington Nationals",
+    "away": "Baltimore Orioles",
+    "temp": 77,
+    "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Clear",
-    "notes": ""
+    "notes": "Pressure\t1020.6\t1020.3\t1019.8\t1019.2\t1018.6"
   },
   {
-    "home": "Cleveland Guardians",
-    "away": "Cincinnati Reds",
-    "temp": 69,
+    "home": "Pittsburgh Pirates",
+    "away": "Philadelphia Phillies",
+    "temp": 77,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
-  },
-  {
-    "home": "New York Mets",
-    "away": "New York Yankees",
-    "temp": 65,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
+    "status": "Clear",
+    "notes": "Pressure\t1020.6\t1020.1\t1019.3\t1019\t1018.9"
   },
   {
     "home": "Atlanta Braves",
     "away": "Boston Red Sox",
-    "temp": 79,
+    "temp": 85,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": ""
+    "status": "Chance For Delay",
+    "notes": "Pressure\t1020\t1019.7\t1019.1\t1018.7\t1017.8"
   },
   {
-    "home": "Chicago White Sox",
-    "away": "Chicago Cubs",
-    "temp": 73,
+    "home": "New York Mets",
+    "away": "New York Yankees",
+    "temp": 81,
     "wind_speed": 15,
-    "wind_dir": "In from Right",
+    "wind_dir": "Neutral",
     "status": "Clear",
-    "notes": ""
+    "notes": "Pressure\t1017.5\t1017.5\t1016.9\t1016.5\t1016.1"
+  },
+  {
+    "home": "Detroit Tigers",
+    "away": "Toronto Blue Jays",
+    "temp": 76,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Chance For Delay",
+    "notes": "Pressure\t1016.3\t1016.1\t1015.4\t1014.9\t1014.2"
+  },
+  {
+    "home": "Cleveland Guardians",
+    "away": "Cincinnati Reds",
+    "temp": 74,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Clear",
+    "notes": "Pressure\t1017.7\t1017.1\t1016.8\t1016.1\t1015.6"
+  },
+  {
+    "home": "Minnesota Twins",
+    "away": "Milwaukee Brewers",
+    "temp": 63,
+    "wind_speed": 20,
+    "wind_dir": "Neutral",
+    "status": "Clear",
+    "notes": "Pressure\t1008.6\t1007.7\t1007\t1006.2\t1005.3"
   },
   {
     "home": "Houston Astros",
     "away": "Texas Rangers",
-    "temp": 87,
+    "temp": 83,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
-    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
+    "notes": "Pressure\t1012.4\t1012.3\t1012.1\t1011.3\t1010.6"
+  },
+  {
+    "home": "Chicago White Sox",
+    "away": "Chicago Cubs",
+    "temp": 80,
+    "wind_speed": 20,
+    "wind_dir": "Neutral",
+    "status": "Clear",
+    "notes": "Pressure\t1011.5\t1010.5\t1008.5\t1009\t1008.6"
   },
   {
     "home": "St. Louis Cardinals",
     "away": "Kansas City Royals",
-    "temp": 83,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
+    "temp": 82,
+    "wind_speed": 15,
+    "wind_dir": "Out to Left",
+    "status": "Clear",
+    "notes": "Pressure\t1011.9\t1011.3\t1010.8\t1010.4\t1010.1"
   },
   {
     "home": "Colorado Rockies",
     "away": "Arizona Diamondbacks",
-    "temp": 84,
+    "temp": 62,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "7:00 PM\t8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM"
-  },
-  {
-    "home": "Los Angeles Angels",
-    "away": "Los Angeles Dodgers",
-    "temp": 70,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Neutral",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
-  },
-  {
-    "home": "Seattle Mariners",
-    "away": "San Diego Padres",
-    "temp": 53,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Roof",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "status": "Chance For Delay",
+    "notes": "YELLOW - The hardest YELLOW of all the YELLOW's today, there are scattered showers and storms in the area most of the day. That said, COL just seems to always get these kinds of games in one way or another, oftentimes without any issues at all. I'll just put this down for a chance of a delay at any point, and assume they will figure things out."
   },
   {
     "home": "Oakland Athletics",
     "away": "San Francisco Giants",
-    "temp": 91,
+    "temp": 71,
+    "wind_speed": 5,
+    "wind_dir": "Cross",
+    "status": "Clear",
+    "notes": "Pressure\t1010.8\t1009.9\t1009.1\t1008.6\t1007.9"
+  },
+  {
+    "home": "Los Angeles Angels",
+    "away": "Los Angeles Dodgers",
+    "temp": 67,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
-    "notes": "8:00 PM\t9:00 PM\t10:00 PM\t11:00 PM\t12:00 AM"
+    "notes": "Pressure\t1009.3\t1008.3\t1007.7\t1007.2\t1006.6"
+  },
+  {
+    "home": "Seattle Mariners",
+    "away": "San Diego Padres",
+    "temp": 60,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": ""
   }
 ]
