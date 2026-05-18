@@ -1215,7 +1215,17 @@
                 <h2>Starting Pitcher Alpha Rankings</h2>
                 <table id="pitchers-table">
                     <thead>
-                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PITCHER</th><th>vs OPPONENT</th><th>K-PROP</th><th>OUTS</th></tr>
+                        <tr>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">vs OPPONENT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, true)">K-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, true)">OUTS ↕</th>
+                        </tr>
                     </thead>
                     <tbody id="pitchers-body">
                         <!-- Dynamic Ingestion -->
@@ -1230,7 +1240,15 @@
                 <h2>Hitter Core Power Rankings</h2>
                 <table id="hitters-table">
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
+                        <tr>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 1, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 2, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLAYER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 5, true)">HR-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, true)">BASES ↕</th>
+                        </tr>
                     </thead>
                     <tbody id="hitters-body">
                         <!-- Dynamic Ingestion -->
@@ -1245,7 +1263,19 @@
                 <h2>Team Stack Sentiment Rankings</h2>
                 <table id="teams-table">
                     <thead>
-                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                        <tr>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TEAM ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 7, true)">ITT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 8, true)">ML MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">TT MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">DIVERGENCE ↕</th>
+                        </tr>
                     </thead>
                     <tbody id="teams-body">
                         <!-- Dynamic Ingestion -->
