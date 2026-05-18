@@ -1364,7 +1364,9 @@
                 const gameKey = [team, opp].sort().join('_');
                 if (!seenGames.has(gameKey)) {
                     seenGames.add(gameKey);
-                    matchups.push({ teamA: team, teamB: opp });
+                    const away = p.is_home ? opp : team;
+                    const home = p.is_home ? team : opp;
+                    matchups.push({ teamA: away, teamB: home });
                 }
             });
 

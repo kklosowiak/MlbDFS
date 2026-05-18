@@ -295,7 +295,9 @@ class PitcherAnalyzer:
                     'money_gap': money_gap,
                     'divergence': divergence,
                     'weather_label': weather_label,
-                    'umpire_name': ump_data['name']
+                    'umpire_name': ump_data['name'],
+                    'is_home': side == 'home',
+                    'side': side
                 })
         
         return pitcher_reports

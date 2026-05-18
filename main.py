@@ -256,6 +256,8 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['is_sharp'] = report.get('is_sharp', False)
         report['is_whale'] = report.get('is_whale', False)
         report['is_shark'] = report.get('is_shark', False)
+        report['is_home'] = report.get('is_home', False)
+        report['side'] = report.get('side', 'away')
     
     # OMEGA v4.6.1: Backfill rosters with discovered pitchers
     for report in p_reports:
