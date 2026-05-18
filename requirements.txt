@@ -7,4 +7,6 @@ fastapi
 uvicorn
 python-multipart
 beautifulsoup4
+MLB-StatsAPI
+pybaseball
 
