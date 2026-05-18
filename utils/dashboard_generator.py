@@ -119,6 +119,14 @@ class DashboardGenerator:
             else:
                 div_pill = ''
 
+            trend = t.get('trend', 'STABLE')
+            if trend == 'SURGING':
+                trend_pill = '<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 69, 58, 0.25) 100%); border: 1px solid #ff9f0a; color: #ff9f0a; font-weight:800; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);">🔥 SURGING</span>'
+            elif trend == 'FADING':
+                trend_pill = '<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(134, 134, 139, 0.2) 100%); border: 1px solid #ff453a; color: #ff453a; font-weight:800; box-shadow: 0 0 8px rgba(255, 69, 58, 0.3);">📉 FADING</span>'
+            else:
+                trend_pill = ''
+
             row = f"""<tr class="{'god-tier' if t['stack_score'] >= 85 else ''}">
 <td class="score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}">{t['stack_score']}</td>
 <td class="score-physics">{t.get('physics_score', 0)}</td>
@@ -139,6 +147,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' if t.get('bullpen_fatigue',0) >= 90 else ('<span class="signal-pill pill-gassed">♨️ GASSED</span>' if t.get('bullpen_fatigue',0) >= 80 else ('<span class="signal-pill pill-weary">♨️ WEARY</span>' if t.get('bullpen_fatigue',0) >= 70 else '')) }
 { (f'<span class="signal-pill pill-neutral">{t["total_signal"]}</span>' if t.get('total_signal') else '') }
 { div_pill }
+{ trend_pill }
 </div></td>
 <td><span class="team-label" style="font-size:1rem; font-weight:700; margin-left:0;">{t['team']}</span></td>
 <td><span class="vs">vs</span>{t['opp_pitcher']} <span class="team-label">({abbrev_map.get(t['opponent'], 'TBD')})</span></td>

@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 load_dotenv()
 
 # Initialize FastAPI
-app = FastAPI(title="OMEGA Cockpit v9.0")
+app = FastAPI(title="ΩMEGA Engine v9.0")
 
 # Session state
 is_refreshing = False
@@ -173,7 +173,7 @@ def get_login_page(request: Request):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>OMEGA ENGINE - SECURE PORTAL</title>
+        <title>ΩMEGA ENGINE - SECURE PORTAL</title>
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -288,7 +288,7 @@ def get_login_page(request: Request):
     <body>
         <div class="login-card">
             <div class="logo">Ω</div>
-            <h2>OMEGA COCKPIT</h2>
+            <h2>ΩMEGA ENGINE</h2>
             <p>v9.0 Secure Analytical Gateway</p>
             <form method="POST" action="/login">
                 <input type="password" name="password" placeholder="ENTER ACCESS CODE" required autofocus>

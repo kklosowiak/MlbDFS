@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ω OMEGA COCKPIT v9.0</title>
+    <title>ΩMEGA Engine v9.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -1044,7 +1044,7 @@
         <div>
             <div class="logo-group">
                 <span class="logo-sym">Ω</span>
-                <span class="logo-txt">OMEGA COCKPIT</span>
+                <span class="logo-txt">MEGA ENGINE</span>
             </div>
             
             <ul class="nav-list">
@@ -1940,6 +1940,13 @@
                     divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 ML-FADE (${t.divergence}%)</span>`;
                 }
 
+                let trendPill = '';
+                if (t.trend === 'SURGING') {
+                    trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 69, 58, 0.25) 100%); border: 1px solid #ff9f0a; color: #ff9f0a; font-weight:800; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);">🔥 SURGING</span>`;
+                } else if (t.trend === 'FADING') {
+                    trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(134, 134, 139, 0.2) 100%); border: 1px solid #ff453a; color: #ff453a; font-weight:800; box-shadow: 0 0 8px rgba(255, 69, 58, 0.3);">📉 FADING</span>`;
+                }
+
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}</td>
                     <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
@@ -1959,6 +1966,7 @@
                     <td>
                         <div class="signals-container">
                             ${divPill}
+                            ${trendPill}
                             ${t.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
                             ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 70 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
