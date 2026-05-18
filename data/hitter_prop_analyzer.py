@@ -234,16 +234,15 @@ class HitterPropAnalyzer:
                                     hitter_map[found_key]['ahr_price'] = min(current_price, price)
                             
                         elif m_key == 'batter_hits':
-                            new_line = entry.get('point', 0.5)
-                            hitter_map[found_key]['hits_line'] = new_line
-                            
-                            hits_price = entry.get('price', 0)
-                            if 1.0 < hits_price < 100.0: hits_price = self.decimal_to_american(hits_price)
-                            hitter_map[found_key]['hits_price'] = hits_price
+                            if entry.get('side') == 'Over':
+                                new_line = entry.get('point', 0.5)
+                                hitter_map[found_key]['hits_line'] = new_line
+                                
+                                hits_price = entry.get('price', 0)
+                                if 1.0 < hits_price < 100.0: hits_price = self.decimal_to_american(hits_price)
+                                hitter_map[found_key]['hits_price'] = hits_price
 
-                            # Juice Target Detection for hits
-                            side = entry.get('side')
-                            if side == 'Over':
+                                # Juice Target Detection for hits
                                 o_price = hits_price
                                 pt = entry.get('point')
                                 book = entry.get('bookmaker')
@@ -255,16 +254,15 @@ class HitterPropAnalyzer:
                                         hitter_map[found_key]['is_juiced_target'] = True
 
                         elif m_key == 'batter_total_bases':
-                            new_line = entry.get('point', 1.5)
-                            hitter_map[found_key]['tb_line'] = new_line
-                            
-                            tb_price = entry.get('price', 0)
-                            if 1.0 < tb_price < 100.0: tb_price = self.decimal_to_american(tb_price)
-                            hitter_map[found_key]['tb_price'] = tb_price
+                            if entry.get('side') == 'Over':
+                                new_line = entry.get('point', 1.5)
+                                hitter_map[found_key]['tb_line'] = new_line
+                                
+                                tb_price = entry.get('price', 0)
+                                if 1.0 < tb_price < 100.0: tb_price = self.decimal_to_american(tb_price)
+                                hitter_map[found_key]['tb_price'] = tb_price
 
-                            # Juice Target Detection for total bases
-                            side = entry.get('side')
-                            if side == 'Over':
+                                # Juice Target Detection for total bases
                                 o_price = tb_price
                                 pt = entry.get('point')
                                 book = entry.get('bookmaker')
