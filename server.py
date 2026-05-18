@@ -798,6 +798,93 @@ def get_platoons_api():
         }
     )
 
+@app.get("/api/weather", dependencies=[Depends(get_current_user)])
+def get_weather_api():
+    """Weather Matrix: Merge expert weather cache with live game totals and starters."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    weather_path = os.path.join(base_dir, "data", "expert_weather_cache.json")
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    
+    weather_data = []
+    results_data = {}
+    
+    try:
+        if os.path.exists(weather_path):
+            with open(weather_path, "r", encoding="utf-8") as f:
+                weather_data = json.load(f)
+        if os.path.exists(results_path):
+            with open(results_path, "r", encoding="utf-8") as f:
+                results_data = json.load(f)
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to load data: {str(e)}", "games": []}, status_code=500)
+        
+    pitchers_list = results_data.get("pitchers", [])
+    teams_list = results_data.get("teams", [])
+    
+    # Create lookups
+    pitcher_by_team = {p["team"]: p for p in pitchers_list}
+    team_info = {t["team"]: t for t in teams_list}
+    
+    games = []
+    for w in weather_data:
+        home_team = w.get("home", "")
+        away_team = w.get("away", "")
+        
+        # Resolve pitchers
+        home_pitcher = pitcher_by_team.get(home_team, {}).get("pitcher", "TBD")
+        away_pitcher = pitcher_by_team.get(away_team, {}).get("pitcher", "TBD")
+        
+        # Get team stats
+        home_stats = team_info.get(home_team, {})
+        away_stats = team_info.get(away_team, {})
+        
+        home_implied = home_stats.get("implied_total", 0)
+        away_implied = away_stats.get("implied_total", 0)
+        total_line = round(home_implied + away_implied, 2) if (home_implied and away_implied) else 0.0
+        
+        total_signal = home_stats.get("total_signal", "") or away_stats.get("total_signal", "")
+        
+        # Risk Priority for sorting (Postponement / Rainout > Delay > Dome > Clear)
+        status = w.get("status", "Neutral").lower()
+        risk_priority = 0
+        if "postpone" in status or "cancel" in status or "red" in status or "hazard" in status:
+            risk_priority = 3
+        elif "delay" in status or "yellow" in status or "orange" in status:
+            risk_priority = 2
+        elif "dome" in status or "roof" in status or "indoor" in status:
+            risk_priority = 0 # Safe
+        elif "clear" in status or "green" in status:
+            risk_priority = 1 # Open air active
+            
+        games.append({
+            "home": home_team,
+            "away": away_team,
+            "home_pitcher": home_pitcher,
+            "away_pitcher": away_pitcher,
+            "home_implied": home_implied,
+            "away_implied": away_implied,
+            "total_line": total_line,
+            "total_signal": total_signal,
+            "temp": w.get("temp", 70),
+            "wind_speed": w.get("wind_speed", 5),
+            "wind_dir": w.get("wind_dir", "Neutral"),
+            "status": w.get("status", "Neutral"),
+            "notes": w.get("notes", ""),
+            "risk_priority": risk_priority
+        })
+        
+    # Sort games by highest risk priority first, then by temperature
+    games.sort(key=lambda x: (-x["risk_priority"], -x["temp"]))
+    
+    return JSONResponse(
+        content={"games": games, "count": len(games)},
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        }
+    )
+
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
 def post_chat_api(body: dict):

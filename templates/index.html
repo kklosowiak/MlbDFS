@@ -1064,6 +1064,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     Platoon Matrix
                 </li>
+                <li class="nav-item" onclick="switchTab(this, 'weather')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v2M4.22 4.22l1.42 1.42M1 12h2M4.22 19.78l1.42-1.42M12 20v2M17.66 17.66l1.42 1.42M21 12h2M17.66 6.34l1.42-1.42M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+                    Weather Matrix
+                </li>
                 <li class="nav-item" onclick="switchTab(this, 'analysis')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     Model Analysis
@@ -1279,6 +1283,51 @@
                         </tr>
                     </thead>
                     <tbody id="platoons-body">
+                        <!-- Dynamic Ingestion -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- WEATHER MATRIX PANEL -->
+        <div id="weather-panel" class="tab-panel">
+            <!-- Weather Summary Cards -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:30px;">
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Total Games</span>
+                    <span style="font-size:2rem; font-weight:800; color:var(--text-primary);" id="weather-total-val">0</span>
+                </div>
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">🏟️ Indoors / Domes</span>
+                    <span style="font-size:2rem; font-weight:800; color:#0a84ff;" id="weather-domes-val">0</span>
+                </div>
+                <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">🌧️ Weather Hazards</span>
+                    <span style="font-size:2rem; font-weight:800; color:#ff453a; text-shadow:0 0 10px rgba(255,69,58,0.4);" id="weather-hazards-val">0</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                    <h2 style="margin:0;">Ballpark Weather Matrix</h2>
+                    <div style="font-size:0.75rem; color:var(--text-secondary);">
+                        Live forecasts matched to starting pitchers and Vegas totals. Click any header to sort.
+                    </div>
+                </div>
+                <table id="weather-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 0, false)">MATCHUP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 1, false)">STATUS / RISK ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 2, false)">AWAY STARTER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 3, false)">HOME STARTER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 4, true)">TEMP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 5, true)">WIND ↕</th>
+                            <th class="sortable-th" onclick="sortTable('weather-table', 6, true)">VEGAS LINE ↕</th>
+                            <th>ROTH'S FORECASTER NOTES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weather-body">
                         <!-- Dynamic Ingestion -->
                     </tbody>
                 </table>
@@ -1615,6 +1664,7 @@
                 'hitters': ['Hitters Matrix', 'Power & Matchup Alpha Matrix'],
                 'teams': ['Teams Matrix', 'Market Sentiment & Stack Matrix'],
                 'platoons': ['Platoon Matrix', 'Team & Pitcher Handedness Splits Intelligence'],
+                'weather': ['Weather Matrix', 'Slate Ballpark Weather & Rainout Hazard Intelligence'],
                 'analysis': ['Model Analysis', 'Slate Intelligence Overview'],
                 'trends': ['Trend Audit Panel', 'Historical GPP Trend Tag Post-Mortem Audit']
             };
@@ -1626,6 +1676,9 @@
             }
             if (tabId === 'platoons') {
                 loadPlatoons();
+            }
+            if (tabId === 'weather') {
+                loadWeather();
             }
 
             // Re-run filter/counter
@@ -2015,6 +2068,110 @@
 
             } catch (err) {
                 console.error("Error loading platoons:", err);
+            }
+        }
+
+        async function loadWeather() {
+            try {
+                const res = await fetch('/api/weather');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                const data = await res.json();
+                const games = data.games || [];
+                const body = document.getElementById('weather-body');
+                body.innerHTML = '';
+
+                if (games.length === 0) {
+                    body.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary); padding:40px;">No weather data available. Run slate ingestion to scrape ballpark parameters.</td></tr>';
+                    return;
+                }
+
+                let domeCount = 0;
+                let hazardCount = 0;
+
+                games.forEach(g => {
+                    const tr = document.createElement('tr');
+                    
+                    // Count statuses
+                    const statusLower = g.status.toLowerCase();
+                    if (statusLower.includes('dome') || statusLower.includes('roof') || statusLower.includes('indoor')) {
+                        domeCount++;
+                    } else if (g.risk_priority >= 2) {
+                        hazardCount++;
+                    }
+
+                    // Risk Pill Style
+                    let riskPill = '';
+                    if (g.risk_priority === 3) {
+                        riskPill = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-weight:800; box-shadow:0 0 10px rgba(255,69,58,0.2); animation: pulse 2s infinite;">🌧️ POSTPONE HAZARD</span>`;
+                    } else if (g.risk_priority === 2) {
+                        riskPill = `<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid rgba(255,159,10,0.3); font-weight:800; box-shadow:0 0 8px rgba(255,159,10,0.15);">⛅ DELAY RISK</span>`;
+                    } else if (statusLower.includes('dome') || statusLower.includes('roof') || statusLower.includes('indoor')) {
+                        riskPill = `<span class="signal-pill" style="background:rgba(10,132,255,0.15); color:#0a84ff; border:1px solid rgba(10,132,255,0.3); font-weight:800;">🏟️ DOME</span>`;
+                    } else {
+                        riskPill = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-weight:800;">☀️ CLEAR</span>`;
+                    }
+
+                    // Temperature styling (red-hot, regular, chilly)
+                    let tempStyle = 'font-weight:700;';
+                    if (g.temp >= 85) {
+                        tempStyle += 'color:#ff453a; text-shadow:0 0 6px rgba(255,69,58,0.2);';
+                    } else if (g.temp >= 72) {
+                        tempStyle += 'color:#32d74b;';
+                    } else {
+                        tempStyle += 'color:#0a84ff;';
+                    }
+
+                    // Wind Direction & Vector highlight
+                    let windVectorStyle = 'font-weight:700;';
+                    const windLower = g.wind_dir.toLowerCase();
+                    if (windLower.includes('out to')) {
+                        windVectorStyle += 'color:#32d74b; text-shadow:0 0 6px rgba(50,215,75,0.2);'; // Hitter boost!
+                    } else if (windLower.includes('in from')) {
+                        windVectorStyle += 'color:#ff9f0a;'; // Pitcher boost, hitter penalty
+                    } else {
+                        windVectorStyle += 'color:var(--text-secondary);';
+                    }
+
+                    // Vegas Over/Under moves decoration
+                    let vegasMoveBadge = '';
+                    if (g.total_signal) {
+                        const sigColor = g.total_signal.includes('+') || g.total_signal.includes('O-') ? '#32d74b' : '#ff453a';
+                        vegasMoveBadge = `<span style="font-size:0.68rem; font-weight:800; margin-left:6px; color:${sigColor}; font-family:monospace;">${g.total_signal}</span>`;
+                    }
+
+                    tr.innerHTML = `
+                        <td style="font-weight:700;">
+                            <span style="color:var(--text-secondary); font-size:0.75rem;">${getTeamAbbr(g.away)}</span> 
+                            <span style="color:var(--text-primary); font-size:0.85rem;">@</span> 
+                            <span style="color:var(--text-primary); font-size:0.95rem; font-weight:800;">${getTeamAbbr(g.home)}</span>
+                        </td>
+                        <td>${riskPill}</td>
+                        <td style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">${g.away_pitcher}</td>
+                        <td style="font-size:0.85rem; font-weight:600; color:var(--text-primary);">${g.home_pitcher}</td>
+                        <td style="${tempStyle}">${g.temp}°F</td>
+                        <td style="${windVectorStyle}">${g.wind_speed} mph <span style="font-size:0.75rem; font-weight:500; opacity:0.85;">(${g.wind_dir})</span></td>
+                        <td style="font-weight:800; font-variant-numeric:tabular-nums;">
+                            ${g.total_line > 0 ? g.total_line.toFixed(1) : 'TBD'} ${vegasMoveBadge}
+                        </td>
+                        <td>
+                            <div style="font-size:0.82rem; color:var(--text-secondary); max-width:480px; white-space:normal; font-style:italic; line-height:1.4;">
+                                ${g.notes || '<span style="opacity:0.4;">No forecaster notes available.</span>'}
+                            </div>
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+
+                // Update summary counters
+                document.getElementById('weather-total-val').innerText = games.length;
+                document.getElementById('weather-domes-val').innerText = domeCount;
+                document.getElementById('weather-hazards-val').innerText = hazardCount;
+
+            } catch (err) {
+                console.error("Error loading weather:", err);
             }
         }
 
