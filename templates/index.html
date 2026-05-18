@@ -1247,7 +1247,8 @@
                             <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLAYER ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">vs PITCHER ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 5, true)">HR-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, true)">BASES ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, true)">HITS ↕</th>
+                             <th class="sortable-th" onclick="sortTable('hitters-table', 7, true)">BASES ↕</th>
                         </tr>
                     </thead>
                     <tbody id="hitters-body">
@@ -1891,7 +1892,8 @@
                     <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
                     <td><span class="vs">vs</span><strong>${h.opp_pitcher}</strong> <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span> <span class="team-label" style="background:rgba(10, 132, 255, 0.12); border-color:rgba(10, 132, 255, 0.3); color:#0a84ff; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.pitch_hand}HP</span></td>
                     <td class="metric">${h.ahr_price > 0 ? '+' : ''}${h.ahr_price || '-'}</td>
-                    <td class="metric"><b>${h.hit_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
+                    <td class="metric"><b>${h.hits_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
+                    <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>
                 `;
                 hBody.appendChild(tr);
             });

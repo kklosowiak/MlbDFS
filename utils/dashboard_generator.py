@@ -104,7 +104,8 @@ class DashboardGenerator:
 <td><strong>{h['name']}</strong> <span class="team-label" style="font-weight: 800; color: #ff9f0a;">({h.get('bat_side', 'R')}B)</span> <span class="team-label">({abbrev_map.get(h['team'], h['team'])})</span></td>
 <td><span class="vs">vs</span>{h.get('opp_pitcher', 'TBD')} <span class="team-label" style="font-weight: 800; color: #0a84ff;">({h.get('pitch_hand', 'R')}HP)</span> <span class="team-label">({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>
 <td class="metric">{'+' if isinstance(h.get('ahr_price'), (int, float)) and h['ahr_price'] > 0 else ''}{h.get('ahr_price', '-')}</td>
-<td class="metric"><b>{h.get('hit_line', '-')}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(h.get('hits_price'), (int, float)) and h['hits_price'] > 0 else ''}{h.get('hits_price') or '-'})</span></td>
+<td class="metric"><b>{h.get('hits_line', '-')}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(h.get('hits_price'), (int, float)) and h['hits_price'] > 0 else ''}{h.get('hits_price') or '-'})</span></td>
+<td class="metric"><b>{h.get('tb_line', '-')}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(h.get('tb_price'), (int, float)) and h['tb_price'] > 0 else ''}{h.get('tb_price') or '-'})</span></td>
 </tr>"""
             hitter_rows.append(row)
 
@@ -685,7 +686,7 @@ class DashboardGenerator:
                 <h2>Power & Alpha Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>BASES</th></tr>
+                        <tr><th>OMEGA</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>PLAYER</th><th>vs PITCHER</th><th>HR-PROP</th><th>HITS</th><th>BASES</th></tr>
                     </thead>
                     <tbody>
                         {"".join(hitter_rows)}

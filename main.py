@@ -662,7 +662,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
 
         # OMEGA v8.0: ICE_COLD_MARKET penalty
         try:
-            if float(h.get('hit_line', 0)) >= 0.5 and float(h.get('hits_price', 0)) >= 100:
+            h_line = h.get('hits_line')
+            h_price = h.get('hits_price')
+            if h_line != '-' and float(h_line) >= 0.5 and float(h_price) >= 100:
                 res['final'] = round(res['final'] * 0.80, 1)
         except (ValueError, TypeError):
             pass
@@ -673,8 +675,12 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'opp_pitcher': team_data['opp_pitcher'].title() if team_data else "TBD",
             'player_score': res['final'], 'physics_score': res['physics'],
             'market_score': res['market'], 'matchup_xwoba': h.get('matchup_xwoba', 0.330),
-            'ahr_price': h.get('ahr_price', 400), 'hit_line': h.get('hit_line', '-'),
-            'hits_price': h.get('hits_price', 0), 'bullpen_fatigue': team_data['bullpen_fatigue'] if team_data else 0,
+            'ahr_price': h.get('ahr_price', 400),
+            'hits_line': h.get('hits_line', '-'),
+            'hits_price': h.get('hits_price', 0),
+            'tb_line': h.get('tb_line', '-'),
+            'tb_price': h.get('tb_price', 0),
+            'bullpen_fatigue': team_data['bullpen_fatigue'] if team_data else 0,
             'is_hot': is_hot, 'is_juiced_target': h.get('is_juiced_target', False),
             'is_speed_target': h.get('is_speed_target', False),
             'platoon_multiplier': res.get('platoon_multiplier', 1.0),

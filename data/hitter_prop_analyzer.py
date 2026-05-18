@@ -154,8 +154,10 @@ class HitterPropAnalyzer:
                         'home_team': match_home,
                         'away_team': match_away,
                         'ahr_price': 450,
-                        'hit_line': 1.5,
-                        'hits_price': -110,
+                        'hits_line': '-',
+                        'hits_price': 0,
+                        'tb_line': '-',
+                        'tb_price': 0,
                         'is_juiced_target': False,
                         'is_speed_target': False,
                         'matchup_xwoba': xwoba
@@ -212,8 +214,10 @@ class HitterPropAnalyzer:
                                 'home_team': matchup.get('home', "TBD"),
                                 'away_team': matchup.get('away', "TBD"),
                                 'ahr_price': 450,
-                                'hit_line': 1.5,
-                                'hits_price': -110,
+                                'hits_line': '-',
+                                'hits_price': 0,
+                                'tb_line': '-',
+                                'tb_price': 0,
                                 'is_juiced_target': False,
                                 'is_speed_target': False,
                                 'matchup_xwoba': xwoba
@@ -229,20 +233,39 @@ class HitterPropAnalyzer:
                                 else:
                                     hitter_map[found_key]['ahr_price'] = min(current_price, price)
                             
-                        elif m_key in ['batter_hits', 'batter_total_bases']:
+                        elif m_key == 'batter_hits':
                             new_line = entry.get('point', 0.5)
-                            current_line = hitter_map[found_key].get('hit_line', 1.5)
-                            if current_line > 0.5:
-                                hitter_map[found_key]['hit_line'] = new_line
+                            hitter_map[found_key]['hits_line'] = new_line
                             
                             hits_price = entry.get('price', 0)
                             if 1.0 < hits_price < 100.0: hits_price = self.decimal_to_american(hits_price)
                             hitter_map[found_key]['hits_price'] = hits_price
 
-                            # Juice Target Detection
+                            # Juice Target Detection for hits
                             side = entry.get('side')
                             if side == 'Over':
                                 o_price = hits_price
+                                pt = entry.get('point')
+                                book = entry.get('bookmaker')
+                                matching = [e for e in market_data if e.get('player_name') == player_name and e.get('side') == 'Under' and e.get('bookmaker') == book and e.get('point') == pt]
+                                if matching:
+                                    u_price = matching[0].get('price', 0)
+                                    if 1.0 < u_price < 100.0: u_price = self.decimal_to_american(u_price)
+                                    if o_price < u_price:
+                                        hitter_map[found_key]['is_juiced_target'] = True
+
+                        elif m_key == 'batter_total_bases':
+                            new_line = entry.get('point', 1.5)
+                            hitter_map[found_key]['tb_line'] = new_line
+                            
+                            tb_price = entry.get('price', 0)
+                            if 1.0 < tb_price < 100.0: tb_price = self.decimal_to_american(tb_price)
+                            hitter_map[found_key]['tb_price'] = tb_price
+
+                            # Juice Target Detection for total bases
+                            side = entry.get('side')
+                            if side == 'Over':
+                                o_price = tb_price
                                 pt = entry.get('point')
                                 book = entry.get('bookmaker')
                                 matching = [e for e in market_data if e.get('player_name') == player_name and e.get('side') == 'Under' and e.get('bookmaker') == book and e.get('point') == pt]
@@ -310,8 +333,10 @@ class HitterPropAnalyzer:
                             'home_team': next((g['home'] for g in game_map.values() if g['home'] == team or g['away'] == team), "TBD"),
                             'away_team': next((g['away'] for g in game_map.values() if g['home'] == team or g['away'] == team), "TBD"),
                             'ahr_price': 450,
-                            'hit_line': 1.5,
-                            'hits_price': -110,
+                            'hits_line': '-',
+                            'hits_price': 0,
+                            'tb_line': '-',
+                            'tb_price': 0,
                             'is_juiced_target': False,
                             'is_speed_target': False,
                             'matchup_xwoba': xwoba
@@ -430,8 +455,10 @@ class HitterPropAnalyzer:
                         'home_team': game['home_team'],
                         'away_team': game['away_team'],
                         'ahr_price': 800, # Conservative neutral baseline
-                        'hit_line': 0.5,
-                        'hits_price': -110,
+                        'hits_line': '-',
+                        'hits_price': 0,
+                        'tb_line': '-',
+                        'tb_price': 0,
                         'is_speed_target': False,
                         'matchup_xwoba': self.xwoba_registry.get(name, 0.330),
                         'is_fallback': True
