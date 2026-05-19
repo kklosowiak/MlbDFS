@@ -1993,6 +1993,67 @@
         }
 
         // Render dynamic tables
+        
+          function updateWelcomeHub(data) {
+              if (!data) return;
+
+              // Top Pitcher
+              if (data.pitchers && data.pitchers.length > 0) {
+                  let p = [...data.pitchers].sort((a,b) => b.alpha_score - a.alpha_score)[0];
+                  document.getElementById('hub-top-pitcher').innerText = p.pitcher || p.name || "---";
+                  document.getElementById('hub-top-pitcher-score').innerText = 'Omega: ' + (p.alpha_score ? p.alpha_score.toFixed(1) : '--');
+              }
+
+              // Top Stack
+              if (data.teams && data.teams.length > 0) {
+                  let t = [...data.teams].sort((a,b) => b.stack_score - a.stack_score)[0];
+                  document.getElementById('hub-top-stack').innerText = t.team || "---";
+                  document.getElementById('hub-top-stack-score').innerText = 'Omega: ' + (t.stack_score ? t.stack_score.toFixed(1) : '--');
+                  
+                  // Top Divergence
+                  let div = [...data.teams].sort((a,b) => Math.abs(parseFloat(b.divergence||0)) - Math.abs(parseFloat(a.divergence||0)))[0];
+                  if (div && div.divergence !== undefined) {
+                      document.getElementById('hub-top-div').innerText = div.team || "---";
+                      document.getElementById('hub-top-div-score').innerText = 'Gap: ' + (div.divergence > 0 ? '+' : '') + div.divergence + '%';
+                  }
+              }
+
+              // Top Hitter
+              if (data.hitters && data.hitters.length > 0) {
+                  let h = [...data.hitters].sort((a,b) => b.player_score - a.player_score)[0];
+                  document.getElementById('hub-top-hitter').innerText = h.name || "---";
+                  document.getElementById('hub-top-hitter-score').innerText = 'Omega: ' + (h.player_score ? h.player_score.toFixed(1) : '--');
+              }
+
+              // Populate Ticker
+              let tickerItems = [];
+              if (data.pitchers) {
+                  data.pitchers.forEach(p => {
+                      if (p.is_whale) tickerItems.push(`🐳 WHALE MONEY on ${p.pitcher}`);
+                      if (p.is_trap) tickerItems.push(`🚨 TRAP ALERT: Avoid ${p.pitcher}`);
+                      if (p.is_shark) tickerItems.push(`🦈 SHARK ACTION on ${p.pitcher}`);
+                  });
+              }
+              if (data.teams) {
+                  data.teams.forEach(t => {
+                      if (t.is_whale) tickerItems.push(`🐳 WHALE SIGHTING: ${t.team} Stack`);
+                      if (t.is_storm) tickerItems.push(`⚡ STORM WARNING: ${t.team} Offense`);
+                      if (t.is_fatigued || t.is_gassed) tickerItems.push(`🔥 BULLPEN FATIGUE: Attack ${t.opp || t.opponent}`);
+                  });
+              }
+
+              // Fallback if no signals
+              if (tickerItems.length === 0) tickerItems.push('OMEGA ENGINE CALIBRATED. ALL SYSTEMS NOMINAL.');
+              
+              // Duplicate items to ensure smooth scrolling
+              tickerItems = [...tickerItems, ...tickerItems];
+
+              const tickerEl = document.getElementById('omega-ticker');
+              if (tickerEl) {
+                  tickerEl.innerHTML = tickerItems.map(item => `<span>${item}</span>`).join(' <span style="color:var(--text-secondary); margin: 0 10px;">•</span> ');
+              }
+          }
+
         function renderTables() {
             if (!latestData) return;
 
