@@ -255,24 +255,40 @@ class SharpsWeighting:
                 split_pa_other_2025 = int(hitter_splits.get("vs_left_pa_2025", 0) or 0)
                 opp_label = "RHP"
             
-            # Select best split data based on sample size
-            # 1. 2026 Season Splits (qualifying sample size >= 30 plate appearances)
-            if split_pa >= 30 and split_ops > 0:
-                platoon_multiplier = split_ops / overall_ops
-                platoon_percent = round((platoon_multiplier - 1.0) * 100)
-                platoon_label = f"2026 split vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}% OPS)"
-            # 2. Fallback to 2025 Season Splits (qualifying sample size >= 50 plate appearances)
-            elif (split_pa_2025 + split_pa_other_2025) >= 50 and split_ops_2025 > 0:
+            # Compute 2026 Ratio
+            ratio_2026 = 1.0
+            if overall_ops > 0 and split_ops > 0:
+                ratio_2026 = split_ops / overall_ops
+
+            # Compute 2025 Ratio
+            ratio_2025 = 1.0
+            has_2025 = False
+            if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
                 total_pa_2025 = split_pa_2025 + split_pa_other_2025
                 overall_ops_2025 = ((split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)) / total_pa_2025
-                if overall_ops_2025 <= 0.200: overall_ops_2025 = 0.720
-                platoon_multiplier = split_ops_2025 / overall_ops_2025
+                if overall_ops_2025 > 0.200:
+                    ratio_2025 = split_ops_2025 / overall_ops_2025
+                    has_2025 = True
+
+            # OMEGA v9.7: Bayesian Platoon Stabilization (Sample-Size Weighted Blend)
+            # Linearly transition from prior year to current year as 2026 sample grows to 100 PA.
+            # If split_pa is small, prior-year (2025) data acts as the anchor.
+            weight_2026 = min(1.0, split_pa / 100.0)
+            
+            if has_2025:
+                # Blend 2026 and 2025 ratios
+                platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
                 platoon_percent = round((platoon_multiplier - 1.0) * 100)
-                platoon_label = f"2025 split vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}% OPS)"
+                platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
+            elif split_pa >= 20:
+                # Blend 2026 with neutral (1.0) if no 2025 data exists
+                platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
+                platoon_percent = round((platoon_multiplier - 1.0) * 100)
+                platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
             else:
                 platoon_multiplier = 1.0
                 platoon_label = f"Neutral vs {opp_label}"
-            
+
             # Bound split-scaling to stay within realistic sabermetric bounds [0.70, 1.30]
             platoon_multiplier = max(0.70, min(1.30, platoon_multiplier))
             matchup_xwoba = matchup_xwoba * platoon_multiplier
