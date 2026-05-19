@@ -371,8 +371,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 except Exception:
                     pass
 
-            # Delta Calc
+            # Delta Calc & Price Stabilization
             if game_started:
+                # Force curr_ml and curr_total to fallback to stable pre-game opening lines
+                curr_ml = open_ml if open_ml is not None else -110
+                curr_total = open_total if open_total is not None else 8.5
                 ml_move = 0.0
                 tt_move = 0.0
             else:
