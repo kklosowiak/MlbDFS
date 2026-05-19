@@ -2418,7 +2418,7 @@
                     activeBtn.style.borderColor = 'var(--accent-blue)';
                 }
 
-                const newSrc = https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=9&overlay=radar&product=radar&level=surface&lat=&lon=&detailLat=&detailLon=&detail=true&marker=true&message=true;
+                const newSrc = `https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=9&overlay=radar&product=radar&level=surface&lat=${coords.lat}&lon=${coords.lon}&detailLat=${coords.lat}&detailLon=${coords.lon}&detail=true&marker=true&message=true`;
                 iframe.src = newSrc;
             }
         }
@@ -2436,11 +2436,11 @@
                 let abbr2 = getTeamAbbr(t.opp || t.opponent);
                 
                 if (abbr1 && STADIUM_COORDS[abbr1] && !addedTeams.has(abbr1)) {
-                    teamsHTML += <button class="radar-btn" id="radar-btn-" onclick="retargetRadar('')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;"></button>;
+                    teamsHTML += `<button class="radar-btn" id="radar-btn-${abbr1}" onclick="retargetRadar('${abbr1}')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;">${abbr1}</button>`;
                     addedTeams.add(abbr1);
                 }
                 if (abbr2 && STADIUM_COORDS[abbr2] && !addedTeams.has(abbr2)) {
-                    teamsHTML += <button class="radar-btn" id="radar-btn-" onclick="retargetRadar('')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;"></button>;
+                    teamsHTML += `<button class="radar-btn" id="radar-btn-${abbr2}" onclick="retargetRadar('${abbr2}')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;">${abbr2}</button>`;
                     addedTeams.add(abbr2);
                 }
             });
