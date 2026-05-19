@@ -2297,9 +2297,9 @@
                     const match = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
                     if (match) oppPhys = match.physics_score || 0;
                 }
-                const oppPhysColor = oppPhys < 35.0 ? '#ff4d4d' : (oppPhys >= 45.0 ? '#4d7cff' : '#00e673');
-                const oppPhysBg = oppPhys < 35.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 45.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
-                const oppPhysBorder = oppPhys < 35.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 45.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
+                const oppPhysColor = oppPhys <= 20.0 ? '#ff4d4d' : (oppPhys >= 25.0 ? '#4d7cff' : '#00e673');
+                const oppPhysBg = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
+                const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
                 const oppPhysBadge = `<span class="badge-mini" style="background: ${oppPhysBg}; border: 1px solid ${oppPhysBorder}; color: ${oppPhysColor}; border-radius: 4px; padding: 1px 5px; font-size: 0.75em; font-family: monospace; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px ${oppPhysBg};">PHYS ${oppPhys.toFixed(1)}</span>`;
 
                 // Glowing divergence pills (Separated from Over/Under Game Totals to prevent confusion)
@@ -2322,7 +2322,7 @@
                 if (t.divergence >= 10) {
                     let positiveFactors = [];
                     let positivePoints = 0;
-                    if (oppPhys < 35.0) { positiveFactors.push("🔥 Low-Phys SP"); positivePoints += 20; }
+                    if (oppPhys <= 20.0) { positiveFactors.push("🔥 Low-Phys SP"); positivePoints += 20; }
                     if (t.bullpen_fatigue >= 65) { positiveFactors.push("♨ Gassed Pen"); positivePoints += 20; }
                     if (t.tt_move > 0 || t.ml_move < 0) { positiveFactors.push("📈 Market Steam"); positivePoints += 15; }
                     if (t.is_storm) { positiveFactors.push("🌪 Storm Physics"); positivePoints += 15; }

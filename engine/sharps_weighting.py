@@ -186,15 +186,13 @@ class SharpsWeighting:
             trap_multiplier = 0.95
 
         # OMEGA v8.9: Strategy 1 - The 'Defensive Gut Gate' (Matchup Magnetism)
-        # If opposing pitcher physics is extremely low (below 35.0), we apply an authoritative Matchup Magnetism Boost
+        # If opposing pitcher physics is extremely low (below 20.0), we apply an authoritative Matchup Magnetism Boost
         # that is proportional to the pitcher's weakness and amplified by bullpen fatigue.
         magnetism_boost = 1.0
-        if opp_pitcher_physics < 35.0:
-            # Scale the gap so it maxes at 1.0 (when physics = 0)
-            vulnerability_gap = (35.0 - opp_pitcher_physics) / 35.0
-            fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.20  # Up to +20% boost for gassed bullpens
-            # Base 1.0 + flat 0.05 + scaled max of 0.25 = Max ~1.35x multiplier
-            magnetism_boost = 1.0 + 0.05 + (vulnerability_gap * 0.25) * fatigue_boost
+        if opp_pitcher_physics < 20.0:
+            vulnerability_gap = (20.0 - opp_pitcher_physics) / 10.0
+            fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30  # Up to +30% boost for gassed bullpens
+            magnetism_boost = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
 
         final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier * magnetism_boost
         

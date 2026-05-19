@@ -2,7 +2,7 @@
   {
     "home": "Tampa Bay Rays",
     "away": "Baltimore Orioles",
-    "temp": 88,
+    "temp": 90,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
@@ -11,7 +11,7 @@
   {
     "home": "Philadelphia Phillies",
     "away": "Cincinnati Reds",
-    "temp": 93,
+    "temp": 96,
     "wind_speed": 10,
     "wind_dir": "Out to Center",
     "status": "Clear",
@@ -20,7 +20,7 @@
   {
     "home": "Miami Marlins",
     "away": "Atlanta Braves",
-    "temp": 82,
+    "temp": 80,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
@@ -29,7 +29,7 @@
   {
     "home": "Detroit Tigers",
     "away": "Cleveland Guardians",
-    "temp": 76,
+    "temp": 80,
     "wind_speed": 15,
     "wind_dir": "In from Right",
     "status": "Chance For Delay",
@@ -38,7 +38,7 @@
   {
     "home": "Washington Nationals",
     "away": "New York Mets",
-    "temp": 94,
+    "temp": 93,
     "wind_speed": 10,
     "wind_dir": "Neutral",
     "status": "Clear",
@@ -47,7 +47,7 @@
   {
     "home": "New York Yankees",
     "away": "Toronto Blue Jays",
-    "temp": 83,
+    "temp": 81,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -56,20 +56,20 @@
   {
     "home": "Kansas City Royals",
     "away": "Boston Red Sox",
-    "temp": 77,
+    "temp": 80,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Delay Likely, Chance For a Postponement",
-    "notes": "YELLOW/ORANGE - KC moved the start time up, which is a nice little helper in a race against time. The short forecast here is: I think they at least get most of the game in, maybe all of it... but I really can't promise you anything more than 5 innings or so. The longer forecast is: My favorite forecast model holds off rain until 9-10pm or so, which would allow a full game. A newer high-res forecast model, which is actually replacing my old trusted model, shows earlier arriving storms. That could mean a game that doesn't go 9. It's a good case study here in these two models, but that's more for my information than for yours. The end result for y'all is some later-inning uncertainty."
+    "status": "Chance For Delay",
+    "notes": "YELLOW - I think the earlier start time likely saved us here. Best guess is 9 innings before the storms arrive, can't rule out later-inning issues."
   },
   {
     "home": "Minnesota Twins",
     "away": "Houston Astros",
-    "temp": 68,
+    "temp": 60,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Delay Likely, Chance For a Postponement",
-    "notes": "ORANGE - Looks a bit like KC in that we start dry but are in a race against time with storm chances building as the game goes on. Rain might arrive here a touch earlier than KC, but also may initially be light enough to play through (tough to tell). There are some subtle differences between this forecast and KC's, but nothing I'm super confident in, so it gets the same general tag of \"I don't know what happens in the latter half of this game\"."
+    "notes": "YELLOW/ORANGE - Pregame radar looks decent. First half of the game should be fine, the later innings might get a bit dicey, but I'm hopeful they can finish out 9 even if it means playing through some rain."
   },
   {
     "home": "Chicago Cubs",
@@ -83,7 +83,7 @@
   {
     "home": "Colorado Rockies",
     "away": "Texas Rangers",
-    "temp": 41,
+    "temp": 42,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Chance For Delay",
@@ -92,7 +92,7 @@
   {
     "home": "Los Angeles Angels",
     "away": "Oakland Athletics",
-    "temp": 72,
+    "temp": 74,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -101,7 +101,7 @@
   {
     "home": "Seattle Mariners",
     "away": "Chicago White Sox",
-    "temp": 68,
+    "temp": 67,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
@@ -110,7 +110,7 @@
   {
     "home": "San Diego Padres",
     "away": "Los Angeles Dodgers",
-    "temp": 67,
+    "temp": 66,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -119,7 +119,7 @@
   {
     "home": "Arizona Diamondbacks",
     "away": "San Francisco Giants",
-    "temp": 86,
+    "temp": 88,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",

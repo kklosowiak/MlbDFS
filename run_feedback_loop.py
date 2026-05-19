@@ -113,7 +113,7 @@ def run_feedback_loop(days=7):
             if div >= 10:
                 opp_phys = float(t.get('opp_pitcher_physics', 0.0) or 0.0)
                 pos_pts = 0
-                if opp_phys < 35.0: pos_pts += 20
+                if opp_phys <= 20.0: pos_pts += 20
                 if int(t.get('bullpen_fatigue', 0) or 0) >= 65: pos_pts += 20
                 if float(t.get('tt_move', 0) or 0) > 0 or float(t.get('ml_move', 0) or 0) < 0: pos_pts += 15
                 if t.get('is_storm'): pos_pts += 15
