@@ -371,13 +371,22 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 except Exception:
                     pass
 
+            # Try to preserve exact pre-game metrics from disk (latest_results.json)
+            prev_team_data = previous_results.get(team)
+            has_prev = prev_team_data is not None
+
             # Delta Calc & Price Stabilization
             if game_started:
-                # Force curr_ml and curr_total to fallback to stable pre-game opening lines
-                curr_ml = open_ml if open_ml is not None else -110
-                curr_total = open_total if open_total is not None else 8.5
-                ml_move = 0.0
-                tt_move = 0.0
+                if has_prev:
+                    ml_move = prev_team_data.get('ml_move', 0.0)
+                    tt_move = prev_team_data.get('tt_move', 0.0)
+                    curr_ml = open_ml + ml_move if (open_ml is not None and ml_move is not None) else -110
+                    curr_total = open_total + tt_move if (open_total is not None and tt_move is not None) else 8.5
+                else:
+                    curr_ml = open_ml if open_ml is not None else -110
+                    curr_total = open_total if open_total is not None else 8.5
+                    ml_move = 0.0
+                    tt_move = 0.0
             else:
                 ml_move = calculate_ml_move(open_ml, curr_ml)
                 tt_move = (curr_total - open_total) if (open_total and curr_total) else 0.0
@@ -394,12 +403,20 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             
             # Market Divergence & Signal Detection
             if game_started:
-                divergence = 0
-                is_shark = False
-                is_whale = False
-                is_sharp = False
-                is_storm = False
-                is_steam = False
+                if has_prev:
+                    divergence = prev_team_data.get('divergence', 0)
+                    is_shark = prev_team_data.get('is_shark', False)
+                    is_whale = prev_team_data.get('is_whale', False)
+                    is_sharp = prev_team_data.get('is_sharp', False)
+                    is_storm = prev_team_data.get('is_storm', False)
+                    is_steam = prev_team_data.get('is_steam', False)
+                else:
+                    divergence = 0
+                    is_shark = False
+                    is_whale = False
+                    is_sharp = False
+                    is_storm = False
+                    is_steam = False
             else:
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
@@ -504,65 +521,77 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 if opp_pitcher_alpha > 80:
                     dominance_penalty = (opp_pitcher_alpha - 80) * 0.5
             
-            final_stack_score = round((res['final'] - dominance_penalty) * sentiment_mod * env_synergy, 1)
-            if is_shark: final_stack_score = round(final_stack_score * 1.15, 1)
+            if game_started and has_prev:
+                final_stack_score = prev_team_data.get('stack_score', 50.0)
+            else:
+                final_stack_score = round((res['final'] - dominance_penalty) * sentiment_mod * env_synergy, 1)
+                if is_shark: final_stack_score = round(final_stack_score * 1.15, 1)
 
             # Trend Analysis (OMEGA v6.3: Velocity-Gated Momentum)
             # PATCH (4/19/26): SURGING/FADING now requires BOTH a meaningful delta
             # AND a directionally-consistent current divergence to prevent false
             # signals near zero (e.g. -8 → -5 delta firing SURGING on a net-fade).
             trend = "STABLE"
-            prev_div = previous_results.get(team, {}).get('divergence')
-            if prev_div is not None:
-                delta = divergence - prev_div
-                # Must have velocity (delta) AND current divergence must confirm direction
-                if delta >= 3.0 and divergence >= 5:
-                    trend = "SURGING"
-                elif delta <= -3.0 and divergence <= -5:
-                    trend = "FADING"
+            if game_started and has_prev:
+                trend = prev_team_data.get('trend', 'STABLE')
+            else:
+                prev_div = previous_results.get(team, {}).get('divergence')
+                if prev_div is not None:
+                    delta = divergence - prev_div
+                    # Must have velocity (delta) AND current divergence must confirm direction
+                    if delta >= 3.0 and divergence >= 5:
+                        trend = "SURGING"
+                    elif delta <= -3.0 and divergence <= -5:
+                        trend = "FADING"
             
             # OMEGA v7.6: Total Divergence Signal (Active Scoring Suppression)
             total_signal = ""
             ud_penalty = 0.0
             od_boost = 0.0
-            if totals_data:
-                # Match game by searching for both team names in the key
-                home_key = home.split()[-1].upper()  # e.g. 'DODGERS'
-                away_key = away.split()[-1].upper()  # e.g. 'ROCKIES'
-                for gk, gv in totals_data.items():
-                    gk_up = gk.upper()
-                    if home_key in gk_up or away_key in gk_up:
-                        od = gv.get('over_divergence', 0)
-                        ud = gv.get('under_divergence', 0)
-                        
-                        if ud >= 15:
-                            ud_penalty = 0.15 # OMEGA v8.1: 15% multiplier
-                        elif ud >= 10:
-                            ud_penalty = 0.05
+            if game_started and has_prev:
+                total_signal = prev_team_data.get('total_signal', '')
+            else:
+                if totals_data:
+                    # Match game by searching for both team names in the key
+                    home_key = home.split()[-1].upper()  # e.g. 'DODGERS'
+                    away_key = away.split()[-1].upper()  # e.g. 'ROCKIES'
+                    for gk, gv in totals_data.items():
+                        gk_up = gk.upper()
+                        if home_key in gk_up or away_key in gk_up:
+                            od = gv.get('over_divergence', 0)
+                            ud = gv.get('under_divergence', 0)
                             
-                        # OMEGA v8.0: Mechanicalize O-DIV
-                        if od >= 15:
-                            od_boost = 8.0
-                        elif od >= 8:
-                            od_boost = 5.0
-                            
-                        if od >= 8:
-                            total_signal = f"📈 O-DIV +{od}"
-                        elif ud >= 8:
-                            total_signal = f"📉 U-DIV +{ud}"
-                        elif od >= 4:
-                            total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
-                        break
+                            if ud >= 15:
+                                ud_penalty = 0.15 # OMEGA v8.1: 15% multiplier
+                            elif ud >= 10:
+                                ud_penalty = 0.05
+                                
+                            # OMEGA v8.0: Mechanicalize O-DIV
+                            if od >= 15:
+                                od_boost = 8.0
+                            elif od >= 8:
+                                od_boost = 5.0
+                                
+                            if od >= 8:
+                                total_signal = f"📈 O-DIV +{od}"
+                            elif ud >= 8:
+                                total_signal = f"📉 U-DIV +{ud}"
+                            elif od >= 4:
+                                total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
+                            break
             
             # OMEGA v9.1: Apply +10% Stack Boost against uncalibrated Debut/Rookie pitchers
             is_opp_debut = False
-            if opp_pitcher_rep and opp_pitcher_rep.get('is_debut', False):
-                is_opp_debut = True
-                final_stack_score = round(final_stack_score * 1.10, 1)
-                print(f"  - DEBUT BOOST: Applied +10% stack multiplier vs. debut pitcher {opp_pitcher_name} (new score: {final_stack_score})")
+            if game_started and has_prev:
+                is_opp_debut = prev_team_data.get('is_opp_debut', False)
+            else:
+                if opp_pitcher_rep and opp_pitcher_rep.get('is_debut', False):
+                    is_opp_debut = True
+                    final_stack_score = round(final_stack_score * 1.10, 1)
+                    print(f"  - DEBUT BOOST: Applied +10% stack multiplier vs. debut pitcher {opp_pitcher_name} (new score: {final_stack_score})")
 
-            # OMEGA v8.0: Apply U-DIV as multiplier
-            final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
+                # OMEGA v8.0: Apply U-DIV as multiplier
+                final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
 
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
