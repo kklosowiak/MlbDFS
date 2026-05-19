@@ -1622,8 +1622,8 @@
                         <div>
                             <strong style="color: var(--accent-blue); display: block; margin-bottom: 6px;">⏰ Recommended Operational Workflow</strong>
                             <ul style="margin: 0; padding-left: 18px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
-                                <li><strong>1. Projections Ingestion</strong>: Run a normal <code>Refresh Slate</code> as you optimize lineups up to slate lock.</li>
-                                <li><strong>2. Capture Projections Snapshot</strong>: <em>Right before the slate locks</em>, click the green <code>🔒 Snapshot Lock</code> button on the sidebar. This locks in what the model projected.</li>
+                                <li><strong>1. Projections Ingestion</strong>: Run a normal <code>Refresh Slate</code> as you analyze the board in your building window.</li>
+                                <li><strong>2. Capture Projections Snapshot</strong>: Once you finalize your GPP lineups with the active signals <strong>60–90 min before lock</strong>, click the green <code>🔒 Snapshot Lock</code> button on the sidebar to record exactly what you saw.</li>
                                 <li><strong>3. Nightly Resolution</strong>: The system automatically resolves past games in the background as results become official.</li>
                                 <li><strong>4. Run Feedback Audit</strong>: Once a day (usually the next morning), click the <code>Run Backtest Audit</code> button above to compare actual outcomes against your locked projections.</li>
                             </ul>
@@ -1634,7 +1634,8 @@
                                 Clicking the <code>Snapshot Lock</code> captures a complete structural time-capsule of the active OMEGA dataset. This includes:
                             </p>
                             <ul style="margin: 6px 0 0 0; padding-left: 18px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                                <li><strong>Team Matrix</strong>: Vegas odds, ML & TT movements, Implied Totals, and model/market scores.</li>
+                                <li><strong>OMEGA Master Scores</strong>: Raw OMEGA Pitcher Score (Alpha Score) and OMEGA Stack Score.</li>
+                                <li><strong>Team Matrix</strong>: Vegas odds, ML & TT movements, Implied Totals, and physics/market scores.</li>
                                 <li><strong>Pitcher Matrix</strong>: Baseline projections, physics metrics, and Sharp/Whale signals.</li>
                                 <li><strong>Hitter Props</strong>: Total Bases lines, prices, matchup wOBAs, and blind spot projections.</li>
                                 <li><strong>Stadium Physics & Weather</strong>: Wind velocities, temp overlays, and delays.</li>
