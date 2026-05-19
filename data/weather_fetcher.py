@@ -60,9 +60,9 @@ class WeatherFetcher:
             return {
                 'temp': int(expert['temp']),
                 'wind_speed': int(expert['wind_speed']),
-                'wind_deg': 0, # expert provides direction as string
+                'wind_deg': expert.get('wind_deg', 0),
                 'wind_dir_str': expert['wind_dir'],
-                'humidity': 50, # Default for expert data
+                'humidity': expert.get('humidity', 50),
                 'desc': expert['notes'],
                 'status': expert['status']
             }
