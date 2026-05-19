@@ -1,8 +1,17 @@
 [
   {
+    "home": "Miami Marlins",
+    "away": "Atlanta Braves",
+    "temp": 70,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Roof",
+    "notes": ""
+  },
+  {
     "home": "Tampa Bay Rays",
     "away": "Baltimore Orioles",
-    "temp": 90,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
@@ -11,43 +20,43 @@
   {
     "home": "Philadelphia Phillies",
     "away": "Cincinnati Reds",
-    "temp": 96,
-    "wind_speed": 10,
-    "wind_dir": "Out to Center",
-    "status": "Clear",
-    "notes": "Warm temps and winds blowing out to center at 10mph."
-  },
-  {
-    "home": "Miami Marlins",
-    "away": "Atlanta Braves",
-    "temp": 80,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Roof",
+    "status": "Neutral",
     "notes": ""
   },
   {
     "home": "Detroit Tigers",
     "away": "Cleveland Guardians",
-    "temp": 80,
-    "wind_speed": 15,
-    "wind_dir": "In from Right",
-    "status": "Chance For Delay",
-    "notes": "YELLOW - Increasingly confident in a Late Start and Play. Winds in from right at 10-15mph."
+    "temp": 70,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Washington Nationals",
     "away": "New York Mets",
-    "temp": 93,
-    "wind_speed": 10,
+    "temp": 70,
+    "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Clear",
-    "notes": "Hot temps with winds blowing out at 10mph, nice hitting weather."
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "New York Yankees",
     "away": "Toronto Blue Jays",
-    "temp": 81,
+    "temp": 70,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
+  },
+  {
+    "home": "Minnesota Twins",
+    "away": "Houston Astros",
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -56,43 +65,43 @@
   {
     "home": "Kansas City Royals",
     "away": "Boston Red Sox",
-    "temp": 80,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Chance For Delay",
-    "notes": "YELLOW - I think the earlier start time likely saved us here. Best guess is 9 innings before the storms arrive, can't rule out later-inning issues."
-  },
-  {
-    "home": "Minnesota Twins",
-    "away": "Houston Astros",
-    "temp": 60,
-    "wind_speed": 5,
-    "wind_dir": "Neutral",
-    "status": "Delay Likely, Chance For a Postponement",
-    "notes": "YELLOW/ORANGE - Pregame radar looks decent. First half of the game should be fine, the later innings might get a bit dicey, but I'm hopeful they can finish out 9 even if it means playing through some rain."
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Chicago Cubs",
     "away": "Milwaukee Brewers",
-    "temp": 77,
-    "wind_speed": 20,
-    "wind_dir": "Out to Left",
-    "status": "Clear",
-    "notes": "Windy Wrigley! Winds blowing out to left or left-center at 15-20mph with warm weather, great hitting conditions."
+    "temp": 70,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
+  },
+  {
+    "home": "St. Louis Cardinals",
+    "away": "Pittsburgh Pirates",
+    "temp": 70,
+    "wind_speed": 5,
+    "wind_dir": "Neutral",
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Colorado Rockies",
     "away": "Texas Rangers",
-    "temp": 42,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
-    "status": "Chance For Delay",
-    "notes": "YELLOW - There's a little bit of rain around and temps are in the 40s, so these aren't ideal conditions... but I think they manage to play ball here tonight. There's a chance of some sort of delay or late start, but if anything I think it's more likely they play through a few cold rain showers."
+    "status": "Neutral",
+    "notes": ""
   },
   {
     "home": "Los Angeles Angels",
     "away": "Oakland Athletics",
-    "temp": 74,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -101,7 +110,7 @@
   {
     "home": "Seattle Mariners",
     "away": "Chicago White Sox",
-    "temp": 67,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
@@ -110,7 +119,7 @@
   {
     "home": "San Diego Padres",
     "away": "Los Angeles Dodgers",
-    "temp": 66,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Neutral",
@@ -119,7 +128,7 @@
   {
     "home": "Arizona Diamondbacks",
     "away": "San Francisco Giants",
-    "temp": 88,
+    "temp": 70,
     "wind_speed": 5,
     "wind_dir": "Neutral",
     "status": "Roof",
