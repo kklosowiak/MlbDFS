@@ -1219,7 +1219,7 @@
                         <button onclick="toggleAllMatchups(false)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Clear All</button>
                     </div>
                 </div>
-                <div id="matchups-checkbox-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 120px; overflow-y: auto; padding-right: 5px;">
+                <div id="matchups-checkbox-container" style="display: grid; grid-template-rows: auto auto; grid-auto-flow: column; gap: 8px; overflow-x: auto; padding-bottom: 5px;">
                     <!-- Dynamically Populated Matchups -->
                 </div>
             </div>
@@ -1266,6 +1266,7 @@
                 </div>
             </div>
 
+            
             <!-- QUICK PORTALS -->
             <h2 style="margin-bottom: 15px;">Command Portals</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
@@ -1279,6 +1280,46 @@
                             <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Analyze pitching physics, traps, and prop lines.</div>
                         </div>
                     </div>
+                </div>
+                
+                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="document.querySelectorAll('.nav-item')[2].click()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-green)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="background: rgba(50,215,75,0.1); padding: 15px; border-radius: 12px; color: var(--accent-green);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Teams Matrix</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Identify elite GPP stacks and bullpen exhaustion.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="document.querySelectorAll('.nav-item')[3].click()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-purple)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="background: rgba(191,90,242,0.1); padding: 15px; border-radius: 12px; color: var(--accent-purple);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Hitters Matrix</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Evaluate individual hitter power and props.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="openHandbook()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#00f2fe';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="background: rgba(0,242,254,0.1); padding: 15px; border-radius: 12px; color: #00f2fe;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Omega Knowledge Base</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Read the operational playbook to understand signals.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
                 </div>
                 
                 <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="document.querySelectorAll('.nav-item')[2].click()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-green)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
@@ -1431,11 +1472,17 @@
             </div>
         </div>
 
-        <!-- WEATHER MATRIX PANEL -->
+                <!-- WEATHER MATRIX PANEL -->
         <div id="weather-panel" class="tab-panel">
+            <!-- Doppler Radar Targeting Bar -->
+            <div id="radar-targeting-bar" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px;">
+                <!-- Dynamically populated buttons -->
+                <span style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">Awaiting Doppler Coordinates...</span>
+            </div>
+
             <!-- Doppler Radar Map -->
             <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius-lg); height: 350px; margin-bottom: 20px;">
-                <iframe width="100%" height="100%" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°F&metricWind=mph&zoom=4&overlay=radar&product=radar&level=surface&lat=38.000&lon=-97.000&detailLat=38.000&detailLon=-97.000&detail=true&marker=true&message=true" frameborder="0"></iframe>
+                <iframe id="doppler-iframe" width="100%" height="100%" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=4&overlay=radar&product=radar&level=surface&lat=38.000&lon=-97.000&detailLat=38.000&detailLon=-97.000&detail=true&marker=true&message=true" frameborder="0"></iframe>
             </div>
 
             <!-- Weather Summary Cards -->
@@ -2364,7 +2411,93 @@
             }
         }
 
+        async 
+        const STADIUM_COORDS = {
+            'ARI': { lat: 33.4455, lon: -112.0667 },
+            'ATL': { lat: 33.8907, lon: -84.4677 },
+            'BAL': { lat: 39.2840, lon: -76.6215 },
+            'BOS': { lat: 42.3467, lon: -71.0972 },
+            'CHC': { lat: 41.9484, lon: -87.6553 },
+            'CWS': { lat: 41.8299, lon: -87.6338 },
+            'CIN': { lat: 39.0979, lon: -84.5072 },
+            'CLE': { lat: 41.4962, lon: -81.6852 },
+            'COL': { lat: 39.7559, lon: -104.9942 },
+            'DET': { lat: 42.3390, lon: -83.0485 },
+            'HOU': { lat: 29.7573, lon: -95.3555 },
+            'KC':  { lat: 39.0517, lon: -94.4803 },
+            'LAA': { lat: 33.8003, lon: -117.8827 },
+            'LAD': { lat: 34.0739, lon: -118.2400 },
+            'MIA': { lat: 25.7781, lon: -80.2197 },
+            'MIL': { lat: 43.0280, lon: -87.9712 },
+            'MIN': { lat: 44.9817, lon: -93.2778 },
+            'NYM': { lat: 40.7569, lon: -73.8458 },
+            'NYY': { lat: 40.8296, lon: -73.9262 },
+            'OAK': { lat: 37.7516, lon: -122.2005 },
+            'PHI': { lat: 39.9061, lon: -75.1665 },
+            'PIT': { lat: 40.4469, lon: -80.0057 },
+            'SD':  { lat: 32.7076, lon: -117.1570 },
+            'SF':  { lat: 37.7786, lon: -122.3893 },
+            'SEA': { lat: 47.5914, lon: -122.3325 },
+            'STL': { lat: 38.6226, lon: -90.1928 },
+            'TB':  { lat: 27.7682, lon: -82.6534 },
+            'TEX': { lat: 32.7473, lon: -97.0818 },
+            'TOR': { lat: 43.6414, lon: -79.3894 },
+            'WAS': { lat: 38.8730, lon: -77.0074 }
+        };
+
+        function retargetRadar(abbr) {
+            const coords = STADIUM_COORDS[abbr];
+            if (!coords) return;
+            const iframe = document.getElementById('doppler-iframe');
+            if (iframe) {
+                document.querySelectorAll('.radar-btn').forEach(b => {
+                    b.style.opacity = '0.4';
+                    b.style.borderColor = 'transparent';
+                });
+                const activeBtn = document.getElementById('radar-btn-' + abbr);
+                if (activeBtn) {
+                    activeBtn.style.opacity = '1';
+                    activeBtn.style.borderColor = 'var(--accent-blue)';
+                }
+
+                const newSrc = https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=9&overlay=radar&product=radar&level=surface&lat=&lon=&detailLat=&detailLon=&detail=true&marker=true&message=true;
+                iframe.src = newSrc;
+            }
+        }
+        
+        function populateRadarTargeting(data) {
+            if (!data || !data.teams) return;
+            const bar = document.getElementById('radar-targeting-bar');
+            if (!bar) return;
+            
+            // Extract unique home teams from matchups (assuming team is away and opponent is home, or vice versa)
+            // Let's use the teams data directly. We'll show all teams that are in the slate.
+            // A better way is to find matchups to prevent duplicates, but providing all team buttons is fine.
+            let teamsHTML = '';
+            let addedTeams = new Set();
+            
+            data.teams.forEach(t => {
+                // If it's a home team or away team, just add a button for the team's city.
+                // Actually, let's just use the opponent if we don't know who is home.
+                // We can just add all unique teams that have a coordinate.
+                let abbr1 = getTeamAbbr(t.team);
+                let abbr2 = getTeamAbbr(t.opp || t.opponent);
+                
+                if (abbr1 && STADIUM_COORDS[abbr1] && !addedTeams.has(abbr1)) {
+                    teamsHTML += <button class="radar-btn" id="radar-btn-" onclick="retargetRadar('')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;"></button>;
+                    addedTeams.add(abbr1);
+                }
+                if (abbr2 && STADIUM_COORDS[abbr2] && !addedTeams.has(abbr2)) {
+                    teamsHTML += <button class="radar-btn" id="radar-btn-" onclick="retargetRadar('')" style="background: rgba(10,132,255,0.15); border: 1px solid transparent; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; cursor: pointer; opacity: 0.4; transition: all 0.2s;"></button>;
+                    addedTeams.add(abbr2);
+                }
+            });
+            
+            bar.innerHTML = teamsHTML;
+        }
+
         async function loadWeather() {
+            populateRadarTargeting(latestData);
             try {
                 const res = await fetch('/api/weather');
                 if (res.status === 401) {
