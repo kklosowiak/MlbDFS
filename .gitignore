@@ -12,13 +12,17 @@ data/statcast_cache.json
 data/expert_weather_cache.json
 data/probable_pitchers.json
 data/opening_lines.json
+data/consensus_*_live.json
+data/platoon_cache.json
 
 # Local Dev
 .vscode/
 .idea/
 .gemini/
 logs/
+scratch/
 
 # Analysis Results
 reports/latest_results.json
 reports/dashboard.html
+reports/learning_feedback.*
