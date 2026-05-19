@@ -1002,6 +1002,7 @@ def get_weather_api():
             "risk_priority": risk_priority
         })
         
+        
     # Sort games by highest risk priority first, then by temperature
     games.sort(key=lambda x: (-x["risk_priority"], -x["temp"]))
     
@@ -1013,6 +1014,71 @@ def get_weather_api():
             "Expires": "0"
         }
     )
+
+# OMEGA Feedback Loop: Slate Lock Snapshotting Route
+@app.post("/api/snapshot/lock", dependencies=[Depends(get_current_user)])
+def post_snapshot_lock_api():
+    """Clones the active latest_results.json to a dedicated results_[date]_lock.json snapshot."""
+    import shutil
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    
+    if not os.path.exists(results_path):
+        raise HTTPException(status_code=404, detail="Active projections file (latest_results.json) not found.")
+        
+    try:
+        from datetime import datetime, timezone, timedelta
+        try:
+            from zoneinfo import ZoneInfo
+            et_now = datetime.now(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.now(timezone.utc)
+            et_now = utc_now - timedelta(hours=4)
+            
+        date_str = et_now.strftime("%Y-%m-%d")
+        
+        archive_dir = os.path.join(base_dir, "reports", "archive")
+        os.makedirs(archive_dir, exist_ok=True)
+        snapshot_path = os.path.join(archive_dir, f"results_{date_str}_lock.json")
+        
+        shutil.copy2(results_path, snapshot_path)
+        
+        print(f"[LOCK SNAPSHOT]: Saved lock snapshot to {snapshot_path}")
+        return {"status": "success", "message": f"Lock snapshot saved successfully for {date_str}!", "file": f"results_{date_str}_lock.json"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save lock snapshot: {str(e)}")
+
+# OMEGA Feedback Loop: Serve compiled feedback data
+@app.get("/api/learning-feedback", dependencies=[Depends(get_current_user)])
+def get_learning_feedback_api():
+    """Serves the latest systematic learning loop JSON if it exists."""
+    from config import config
+    json_path = os.path.join(config.REPORTS_DIR, "learning_feedback.json")
+    if not os.path.exists(json_path):
+        return JSONResponse(content={"status": "empty", "message": "No learning feedback compiled yet."})
+        
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return JSONResponse(content={"status": "success", "data": data})
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to read learning loop data: {str(e)}"}, status_code=500)
+
+# OMEGA Feedback Loop: Run feedback loop scraping & compilation
+@app.post("/api/learning/run", dependencies=[Depends(get_current_user)])
+def post_run_learning_loop_api(background_tasks: BackgroundTasks):
+    """Triggers background execution of the learning loop audit script."""
+    def run_loop_bg():
+        try:
+            print("[SERVER BG-THREAD]: Running OMEGA Systematic Feedback Loop...")
+            from run_feedback_loop import run_feedback_loop
+            run_feedback_loop(7) # audit last 7 slates
+            print("[SERVER BG-THREAD]: OMEGA Feedback Loop completed successfully.")
+        except Exception as bg_err:
+            print(f"[SERVER BG-THREAD ERROR]: Feedback loop failed: {bg_err}")
+            
+    background_tasks.add_task(run_loop_bg)
+    return {"status": "started", "message": "Feedback loop learning analysis started in the background."}
 
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
@@ -1082,10 +1148,19 @@ def post_chat_api(body: dict):
         except Exception as ex:
             print(f"[CHAT ERROR]: Failed to load database summary. {ex}")
 
+    feedback_path = os.path.join(base_dir, "reports", "learning_feedback.md")
+    feedback_md = "No performance feedback report compiled yet. Run the feedback audit script to generate."
+    
     if os.path.exists(analysis_path):
         try:
             with open(analysis_path, "r", encoding="utf-8") as f:
                 slate_analysis_md = f.read()[:5000] # Cap to prevent context blowup
+        except: pass
+        
+    if os.path.exists(feedback_path):
+        try:
+            with open(feedback_path, "r", encoding="utf-8") as f:
+                feedback_md = f.read()[:4000]
         except: pass
 
     # Dynamic Eastern Time zone calculation (prevents UTC container clock drift)
@@ -1122,11 +1197,15 @@ Top Starting Pitcher Projections (v9.0 Cy Young Patch):
 Top Individual Hitter Projections:
 {hitter_summary}
 
+### OMEGA HISTORICAL ACCURACY & LEARNING LOOP:
+{feedback_md}
+
 When Konrad asks you questions:
 1. Refer directly to the OMEGA v9.0 metrics, stacks, and pitching rankings listed above. Explain the physics-vs-market variables, weather overlays (like wind out to left), and bullpen fatigue factors in play.
-2. Provide concrete, mathematically optimal GPP roster strategies (e.g., recommend specific 5-man or 3-man stacks, high-floor pitcher anchors like Skenes, and high-leverage pitcher values like Pallante).
-3. If Konrad asks about lineup decisions, analyze the xwOBA matchups and market pricing (AHR prices) of the hitters to give him highly actionable suggestions.
-4. Maintain full awareness of structural public traps and chalk traps (flagged in the dataset and UI as TRAP, which Konrad visualizes using the 🚨 TRAP badge). Highlight these high-danger public chalk traps (like Robbie Ray or Shota Imanaga if they have negative divergence) and explain why Konrad should fade them.
+2. Review the OMEGA HISTORICAL ACCURACY report above. Proactively integrate these empirical hit-rates directly into your recommendations! If a specific stack type (like STORM) or signal (like WHALE money on pitchers) has been hot recently, lean heavier into it. If a signal has been underperforming, warn him to scale back exposure. Talk about the "Lessons & What We Missed" outliers from recent slates.
+3. Provide concrete, mathematically optimal GPP roster strategies (e.g., recommend specific 5-man or 3-man stacks, high-floor pitcher anchors like Skenes, and high-leverage pitcher values like Pallante).
+4. If Konrad asks about lineup decisions, analyze the xwOBA matchups and market pricing (AHR prices) of the hitters to give him highly actionable suggestions.
+5. Maintain full awareness of structural public traps and chalk traps (flagged in the dataset and UI as TRAP, which Konrad visualizes using the 🚨 TRAP badge). Highlight these high-danger public chalk traps (like Robbie Ray or Shota Imanaga if they have negative divergence) and explain why Konrad should fade them.
 
 Keep your tone engaging, sharp, and focused on finding maximum expected value (EV) and leverage to win single-entry and multi-entry GPPs!"""
 
