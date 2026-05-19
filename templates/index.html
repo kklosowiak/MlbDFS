@@ -1582,7 +1582,7 @@
                         </div>
                         
                         <div style="margin-top:20px; padding:15px; background:rgba(255,255,255,0.01); border:1px solid var(--border); border-radius:var(--radius-md);">
-                            <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">Core Targets Hit Rates</span>
+                            <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">Core Targets & Verification Index</span>
                             <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:0.85rem;">
                                 <span>Top 3 OMEGA Pitchers (QS%):</span>
                                 <strong id="core-stat-pitcher" style="color:var(--accent-blue);">0% (0/0)</strong>
@@ -1590,6 +1590,18 @@
                             <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem;">
                                 <span>Top 3 OMEGA Stacks (5+ Runs%):</span>
                                 <strong id="core-stat-stack" style="color:var(--accent-green);">0% (0/0)</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top:6px;">
+                                <span>🟢 TRUST Divergences (DQI >= 75% | 5+ Runs):</span>
+                                <strong id="core-stat-dqi-trust" style="color:#32d74b;">0% (0/0)</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem;">
+                                <span>🔴 FADE Traps (DQI < 50% | Under 4 Runs):</span>
+                                <strong id="core-stat-dqi-fade" style="color:#ff453a;">0% (0/0)</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem;">
+                                <span>💸 STEAM Support (Vegas backing | 5+ Runs):</span>
+                                <strong id="core-stat-steam-support" style="color:#ff9f0a;">0% (0/0)</strong>
                             </div>
                         </div>
                     </div>
@@ -2814,6 +2826,19 @@
                     const tCore = core.top3_stacks || {total: 0, hit: 0};
                     const tCoreRate = tCore.total > 0 ? Math.round((tCore.hit / tCore.total) * 100) : 0;
                     document.getElementById('core-stat-stack').innerText = `${tCoreRate}% (${tCore.hit}/${tCore.total})`;
+
+                    // Render DQI Verification & Steam Support Metrics
+                    const dqiTrust = sig.DQI_TRUST || {fired: 0, hit: 0};
+                    const dqiTrustRate = dqiTrust.fired > 0 ? Math.round((dqiTrust.hit / dqiTrust.fired) * 100) : 0;
+                    document.getElementById('core-stat-dqi-trust').innerText = `${dqiTrustRate}% (${dqiTrust.hit}/${dqiTrust.fired})`;
+
+                    const dqiFade = sig.DQI_FADE || {fired: 0, hit: 0};
+                    const dqiFadeRate = dqiFade.fired > 0 ? Math.round((dqiFade.hit / dqiFade.fired) * 100) : 0;
+                    document.getElementById('core-stat-dqi-fade').innerText = `${dqiFadeRate}% (${dqiFade.hit}/${dqiFade.fired})`;
+
+                    const steamSupport = sig.STEAM_SUPPORT || {fired: 0, hit: 0};
+                    const steamSupportRate = steamSupport.fired > 0 ? Math.round((steamSupport.hit / steamSupport.fired) * 100) : 0;
+                    document.getElementById('core-stat-steam-support').innerText = `${steamSupportRate}% (${steamSupport.hit}/${steamSupport.fired})`;
                     
                     // Render recommendations
                     const recContainer = document.getElementById('learning-recommendations');

@@ -1,7 +1,7 @@
 """
 OMEGA Feedback & Systematic Learning Loop (v9.5)
 Analyzes lock-time projections against actual MLB Stats API boxscores.
-Aggregates signal hit-rates (WHALE, SHARK, STORM, TRAP) over N days,
+Aggregates signal hit-rates (WHALE, SHARK, STORM, TRAP, DQI, STEAM) over N days,
 flags "what we missed" (divergences/weather anomalies), and auto-generates GPP calibrations.
 """
 
@@ -29,6 +29,9 @@ def run_feedback_loop(days=7):
         'TEAM_WHALE': {'fired': 0, 'hit': 0},
         'TEAM_STORM': {'fired': 0, 'hit': 0},
         'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},  # Success = Attacked team scored 5+ runs
+        'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
+        'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
+        'STEAM_SUPPORT': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
     }
     
     projection_stats = {
@@ -105,8 +108,42 @@ def run_feedback_loop(days=7):
                 if runs >= 5:
                     signal_stats['GASSED_BULLPEN_ATTACK']['hit'] += 1
                     
-            # Divergence Misses: Positive divergence >= 15% but underperformed (< 3 runs)
+            # 🟢 DQI TRUST, 🔴 DQI FADE calculation
             div = float(t.get('divergence', 0))
+            if div >= 10:
+                opp_phys = float(t.get('opp_pitcher_physics', 0.0) or 0.0)
+                pos = []
+                if opp_phys <= 20.0: pos.append(1)
+                if int(t.get('bullpen_fatigue', 0) or 0) >= 80: pos.append(1)
+                if float(t.get('tt_move', 0) or 0) > 0 or float(t.get('ml_move', 0) or 0) < 0: pos.append(1)
+                if t.get('is_storm'): pos.append(1)
+                
+                warn = []
+                if t.get('is_trap'): warn.append(1)
+                if float(t.get('tt_move', 0) or 0) < 0 and float(t.get('ml_move', 0) or 0) > 0: warn.append(1)
+                
+                dqi = 50 + (len(pos) * 15) - (len(warn) * 20)
+                dqi = max(0, min(100, dqi))
+                
+                if dqi >= 75:
+                    signal_stats['DQI_TRUST']['fired'] += 1
+                    if is_hit_5:
+                        signal_stats['DQI_TRUST']['hit'] += 1
+                elif dqi < 50:
+                    signal_stats['DQI_FADE']['fired'] += 1
+                    if runs < 4:
+                        signal_stats['DQI_FADE']['hit'] += 1
+            
+            # 💸 STEAM Support Metric
+            ml_move = float(t.get('ml_move', 0) or 0)
+            tt_move = float(t.get('tt_move', 0) or 0)
+            if abs(ml_move) >= 10 or abs(tt_move) >= 0.1:
+                if ml_move < 0 or tt_move > 0:
+                    signal_stats['STEAM_SUPPORT']['fired'] += 1
+                    if is_hit_5:
+                        signal_stats['STEAM_SUPPORT']['hit'] += 1
+
+            # Divergence Misses: Positive divergence >= 15% but underperformed (< 3 runs)
             if div >= 15 and runs < 3:
                 what_we_missed.append({
                     'date': date_str,
@@ -166,12 +203,24 @@ def run_feedback_loop(days=7):
     
     # Auto-adjust advice logic
     for signal, data in signal_stats.items():
+        # Exclude DQI & STEAM from basic card recommendations to keep advice focused on actionable multipliers
+        if signal in ['DQI_TRUST', 'DQI_FADE', 'STEAM_SUPPORT']:
+            continue
+            
         if data['fired'] >= 3:
             rate = (data['hit'] / data['fired']) * 100
             if rate >= 65:
                 recommendations.append(f"✅ **{signal}** is highly profitable at **{rate:.0f}%** hit rate. Increase projection weight and trust indicators.")
             elif rate < 40:
                 recommendations.append(f"⚠️ **{signal}** has been cold at **{rate:.0f}%** hit rate. Downweight exposure and recommend faded caution.")
+
+    # Explicit DQI Tuning Logic
+    if signal_stats['DQI_TRUST']['fired'] >= 3:
+        dqi_rate = (signal_stats['DQI_TRUST']['hit'] / signal_stats['DQI_TRUST']['fired']) * 100
+        if dqi_rate >= 70:
+            recommendations.append(f"🟢 **DQI TRUST Grade** is executing perfectly at **{dqi_rate:.0f}%** success rate. Highly recommend boosting PHY/MKT weights.")
+        elif dqi_rate < 50:
+            recommendations.append(f"⚠️ **DQI TRUST Grade** is showing convergence volatility at **{dqi_rate:.0f}%** success rate. Recommend widening margins.")
 
     if not recommendations:
         recommendations.append("🔍 Signal sample size too small for adjustment thresholds. Keep baseline parameters active.")
@@ -186,12 +235,19 @@ def run_feedback_loop(days=7):
         'recommendations': recommendations
     }
 
-    # Save JSON
+    # Save JSON to active dashboard report
     json_path = os.path.join(config.REPORTS_DIR, "learning_feedback.json")
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(feedback_payload, f, indent=4)
 
-    # Save Markdown
+    # 💾 Chronological Archiving for Adaptive Learning Layer
+    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    archive_json_path = os.path.join(archive_dir, f"feedback_{today_str}.json")
+    with open(archive_json_path, 'w', encoding='utf-8') as f:
+        json.dump(feedback_payload, f, indent=4)
+    print(f"  - Chronological learning feedback archived to {archive_json_path}")
+
+    # Save Markdown Report
     md_lines = [
         f"# 📊 OMEGA Learning Loop & Performance Audit",
         f"**Generated:** {feedback_payload['generated_at']}",
