@@ -1081,6 +1081,41 @@ def post_run_learning_loop_api(background_tasks: BackgroundTasks):
     background_tasks.add_task(run_loop_bg)
     return {"status": "started", "message": "Feedback loop learning analysis started in the background."}
 
+def calculate_dqi(t):
+    opp_phys = t.get('opp_pitcher_physics', 50.0)
+    bullpen = t.get('bullpen_fatigue', 0)
+    tt_move = t.get('tt_move', 0.0)
+    ml_move = t.get('ml_move', 0.0)
+    is_storm = t.get('is_storm', False)
+    is_trap = t.get('is_trap', False)
+    
+    pos_pts = 0
+    pos_factors = []
+    if opp_phys <= 20.0:
+        pos_pts += 20
+        pos_factors.append("Low-Phys SP")
+    if bullpen >= 65:
+        pos_pts += 20
+        pos_factors.append("Gassed Pen")
+    if tt_move > 0 or ml_move < 0:
+        pos_pts += 15
+        pos_factors.append("Market Steam")
+    if is_storm:
+        pos_pts += 15
+        pos_factors.append("Storm Physics")
+        
+    warn_factors = []
+    if is_trap:
+        warn_factors.append("Public Chalk")
+    if tt_move < 0 and ml_move > 0:
+        warn_factors.append("Reverse Steam")
+        
+    dqi_score = 50 + pos_pts - (len(warn_factors) * 20)
+    dqi_score = max(0, min(100, dqi_score))
+    
+    status = "TRUST" if dqi_score >= 75 else ("CAUTION" if dqi_score >= 50 else "FADE")
+    return dqi_score, status, pos_factors, warn_factors
+
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
 def post_chat_api(body: dict):
@@ -1124,7 +1159,17 @@ def post_chat_api(body: dict):
                 if t.get('is_storm'): signals.append('STORM')
                 if t.get('is_trap'): signals.append('TRAP')
                 sig_str = ", ".join(signals) if signals else "None"
-                team_summary_items.append(f"- {t['team']}: OMEGA {t['stack_score']} | ITT {t['implied_total']} | vs {t['opp_pitcher']} | Div {t.get('divergence', 0)}% | Signals: {sig_str}")
+                
+                # Calculate DQI
+                dqi_score, dqi_status, pos_f, warn_f = calculate_dqi(t)
+                dqi_str = f"DQI: {dqi_score}% [{dqi_status}]"
+                if pos_f: dqi_str += f" (Strengths: {', '.join(pos_f)})"
+                if warn_f: dqi_str += f" (Warnings: {', '.join(warn_f)})"
+                
+                team_summary_items.append(
+                    f"- {t['team']}: OMEGA {t['stack_score']} | ITT {t['implied_total']} | vs {t['opp_pitcher']} | "
+                    f"Div {t.get('divergence', 0)}% | {dqi_str} | Signals: {sig_str}"
+                )
             team_summary = "\n".join(team_summary_items)
             
             pitchers = sorted(res.get("pitchers", []), key=lambda x: x.get("alpha_score", 0), reverse=True)
@@ -1182,17 +1227,17 @@ def post_chat_api(body: dict):
 
 Your personality is highly analytical, professional, confident, and deeply knowledgeable about sabermetrics, DFS roster construction, market psychology, and game-theory strategy. You speak with precision and clarity.
 
-You have access to the absolute, raw OMEGA v9.0 daily slate analysis and projections:
+You have access to the absolute, raw OMEGA daily slate analysis and projections:
 - CURRENT SLATE DATE: {current_date_str}
 - CURRENT TIME: {current_time_str}
 
 Daily Slate Analysis Overview:
 {slate_analysis_md}
 
-Top Team Stack Projections (v8.9.1 Golden Ratio):
+Top Team Stack Projections (with Divergence Quality Index - DQI):
 {team_summary}
 
-Top Starting Pitcher Projections (v9.0 Cy Young Patch):
+Top Starting Pitcher Projections:
 {pitcher_summary}
 
 Top Individual Hitter Projections:
@@ -1201,12 +1246,29 @@ Top Individual Hitter Projections:
 ### OMEGA HISTORICAL ACCURACY & LEARNING LOOP:
 {feedback_md}
 
+### 🧠 UNDERSTANDING DQI (Divergence Quality Index):
+DQI was introduced in OMEGA v9.5 as a rigorous gate to separate genuine, high-leverage opportunities from retail public traps when a team shows a high divergence between our math projections and public betting lines:
+- **Baseline:** Starts at 50%
+- **🟢 Positive Strengths (+Points):**
+  - `Low-Phys SP` (+20%): Facing a starting pitcher with weak physical ratings (Physics Score <= 20.0).
+  - `Gassed Pen` (+20%): Facing a highly fatigued opposing bullpen (Fatigue score >= 65).
+  - `Market Steam` (+15%): Implied Team Total moving up or Moneyline moving down.
+  - `Storm Physics` (+15%): Environmental/weather indicators support hitting.
+- **🔴 Warning Flags (-20%):**
+  - `Public Chalk` (-20%): Retail public volume backing the play (indicating a high-danger "Whale Trap").
+  - `Reverse Steam` (-20%): Line movement that runs contrary to consensus split percentages.
+- **🚥 DQI Recommendations:**
+  - `🟢 75% - 100% [TRUST]`: Extremely high quality. High expected value (EV) stack of 5+ runs.
+  - `🟡 50% - 74% [CAUTION]`: Moderate convergence. Conflicting data present. Proceed with care.
+  - `🔴 Under 50% [FADE]`: High-danger trap. Aggressively fade these retail chalk plays.
+
 When Konrad asks you questions:
-1. Refer directly to the OMEGA v9.0 metrics, stacks, and pitching rankings listed above. Explain the physics-vs-market variables, weather overlays (like wind out to left), and bullpen fatigue factors in play.
-2. Review the OMEGA HISTORICAL ACCURACY report above. Proactively integrate these empirical hit-rates directly into your recommendations! If a specific stack type (like STORM) or signal (like WHALE money on pitchers) has been hot recently, lean heavier into it. If a signal has been underperforming, warn him to scale back exposure. Talk about the "Lessons & What We Missed" outliers from recent slates.
-3. Provide concrete, mathematically optimal GPP roster strategies (e.g., recommend specific 5-man or 3-man stacks, high-floor pitcher anchors like Skenes, and high-leverage pitcher values like Pallante).
-4. If Konrad asks about lineup decisions, analyze the xwOBA matchups and market pricing (AHR prices) of the hitters to give him highly actionable suggestions.
-5. Maintain full awareness of structural public traps and chalk traps (flagged in the dataset and UI as TRAP, which Konrad visualizes using the 🚨 TRAP badge). Highlight these high-danger public chalk traps (like Robbie Ray or Shota Imanaga if they have negative divergence) and explain why Konrad should fade them.
+1. Proactively refer to the **DQI (Divergence Quality Index)** scores, strengths, and warning factors of each team! For instance, if a team has DQI TRUST, highlight it as a top high-conviction play for today. If it has DQI CAUTION or FADE, explain the specific warning factors (like Public Chalk or weak opposing SP) causing the flag.
+2. Refer directly to the OMEGA metrics, stacks, and pitching rankings listed above. Explain the physics-vs-market variables, weather overlays (like wind out to left), and bullpen fatigue factors in play.
+3. Review the OMEGA HISTORICAL ACCURACY report above. Proactively integrate these empirical hit-rates directly into your recommendations! If a specific stack type (like STORM) or signal (like WHALE money on pitchers) has been hot recently, lean heavier into it.
+4. Provide concrete, mathematically optimal GPP roster strategies (e.g., recommend specific 5-man or 3-man stacks, high-floor pitcher anchors like Skenes, and high-leverage pitcher values).
+5. If Konrad asks about lineup decisions, analyze the xwOBA matchups and market pricing (AHR prices) of the hitters to give him highly actionable suggestions.
+6. Maintain full awareness of structural public traps and chalk traps (flagged in the dataset and UI as TRAP, which Konrad visualizes using the 🚨 TRAP badge). Highlight these high-danger public chalk traps and explain why Konrad should fade them.
 
 Keep your tone engaging, sharp, and focused on finding maximum expected value (EV) and leverage to win single-entry and multi-entry GPPs!"""
 
