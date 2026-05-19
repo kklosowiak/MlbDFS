@@ -1158,6 +1158,32 @@
             </ul>
         </div>
 
+            <!-- Server Status / Refresh Control -->
+            <div class="system-widget">
+                <div class="widget-row">
+                    <span class="widget-label">System Status</span>
+                    <span class="widget-val" style="color: var(--accent-green);">
+                        <span class="status-dot status-pulse"></span>LIVE
+                    </span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Refresh Mode</span>
+                    <span class="widget-val">Auto (1 hour)</span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Last Refresh</span>
+                    <span class="widget-val" id="last-refresh-time">Never</span>
+                </div>
+            </div>
+
+            <!-- Manual Refresh Button -->
+            <button class="btn-refresh" id="btn-refresh" onclick="triggerRefresh()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span id="btn-text">Refresh Slate</span>
+            </button>
+            
+            <a href="/logout" style="text-decoration:none; text-align:center; font-size:0.85rem; font-weight:700; color:var(--accent-red); opacity:0.8; margin-top:5px;">SECURE LOGOUT</a>
+
         </div>
 
     <!-- MAIN DASHBOARD VIEW -->
