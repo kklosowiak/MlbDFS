@@ -2035,7 +2035,6 @@
               if (data.pitchers) {
                   data.pitchers.forEach(p => {
                       if (p.is_whale) tickerItems.push(`🐳 WHALE MONEY on ${p.pitcher}`);
-                      if (p.is_trap) tickerItems.push(`🚨 TRAP ALERT: Avoid ${p.pitcher}`);
                       if (p.is_shark) tickerItems.push(`🦈 SHARK ACTION on ${p.pitcher}`);
                   });
               }
@@ -2043,7 +2042,15 @@
                   data.teams.forEach(t => {
                       if (t.is_whale) tickerItems.push(`🐳 WHALE SIGHTING: ${t.team} Stack`);
                       if (t.is_storm) tickerItems.push(`⚡ STORM WARNING: ${t.team} Offense`);
-                      if (t.is_fatigued || t.is_gassed) tickerItems.push(`🔥 BULLPEN FATIGUE: Attack ${t.opp || t.opponent}`);
+                      
+                      if (t.weather_label && (t.weather_label.includes('🔴') || t.weather_label.includes('🟠') || t.weather_label.includes('RAIN') || t.weather_label.includes('DELAY'))) {
+                          tickerItems.push(`☔ WEATHER ALERT: ${t.team} (${t.weather_label})`);
+                      }
+                      
+                      if (t.ml_move && Math.abs(t.ml_move) >= 10) {
+                          let direction = t.ml_move < 0 ? 'moved in favor' : 'moved against';
+                          tickerItems.push(`📈 STEAM MOVE: ${t.team} line ${direction} by ${Math.abs(t.ml_move)} points`);
+                      }
                   });
               }
 
