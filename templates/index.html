@@ -2321,16 +2321,17 @@
                 let divBadgeHtml = '';
                 if (t.divergence >= 10) {
                     let positiveFactors = [];
-                    if (oppPhys <= 20.0) positiveFactors.push("🔥 Low-Phys SP");
-                    if (t.bullpen_fatigue >= 80) positiveFactors.push("♨ Gassed Pen");
-                    if (t.tt_move > 0 || t.ml_move < 0) positiveFactors.push("📈 Market Steam");
-                    if (t.is_storm) positiveFactors.push("🌪 Storm Physics");
+                    let positivePoints = 0;
+                    if (oppPhys < 35.0) { positiveFactors.push("🔥 Low-Phys SP"); positivePoints += 20; }
+                    if (t.bullpen_fatigue >= 65) { positiveFactors.push("♨ Gassed Pen"); positivePoints += 20; }
+                    if (t.tt_move > 0 || t.ml_move < 0) { positiveFactors.push("📈 Market Steam"); positivePoints += 15; }
+                    if (t.is_storm) { positiveFactors.push("🌪 Storm Physics"); positivePoints += 15; }
                     
                     let warningFactors = [];
                     if (t.is_trap) warningFactors.push("🚨 Public Chalk");
                     if (t.tt_move < 0 && t.ml_move > 0) warningFactors.push("📉 Reverse Steam");
                     
-                    let score = 50 + (positiveFactors.length * 15) - (warningFactors.length * 20);
+                    let score = 50 + positivePoints - (warningFactors.length * 20);
                     score = Math.max(0, Math.min(100, score)); // Clamp 0-100
                     let scoreColor = score >= 75 ? '#32d74b' : (score >= 50 ? '#ff9f0a' : '#ff453a');
                     let scoreStatus = score >= 75 ? 'TRUST' : (score >= 50 ? 'CAUTION' : 'FADE');

@@ -112,17 +112,17 @@ def run_feedback_loop(days=7):
             div = float(t.get('divergence', 0))
             if div >= 10:
                 opp_phys = float(t.get('opp_pitcher_physics', 0.0) or 0.0)
-                pos = []
-                if opp_phys <= 20.0: pos.append(1)
-                if int(t.get('bullpen_fatigue', 0) or 0) >= 80: pos.append(1)
-                if float(t.get('tt_move', 0) or 0) > 0 or float(t.get('ml_move', 0) or 0) < 0: pos.append(1)
-                if t.get('is_storm'): pos.append(1)
+                pos_pts = 0
+                if opp_phys < 35.0: pos_pts += 20
+                if int(t.get('bullpen_fatigue', 0) or 0) >= 65: pos_pts += 20
+                if float(t.get('tt_move', 0) or 0) > 0 or float(t.get('ml_move', 0) or 0) < 0: pos_pts += 15
+                if t.get('is_storm'): pos_pts += 15
                 
                 warn = []
                 if t.get('is_trap'): warn.append(1)
                 if float(t.get('tt_move', 0) or 0) < 0 and float(t.get('ml_move', 0) or 0) > 0: warn.append(1)
                 
-                dqi = 50 + (len(pos) * 15) - (len(warn) * 20)
+                dqi = 50 + pos_pts - (len(warn) * 20)
                 dqi = max(0, min(100, dqi))
                 
                 if dqi >= 75:

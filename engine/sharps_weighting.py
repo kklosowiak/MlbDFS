@@ -65,7 +65,7 @@ class SharpsWeighting:
         # If divergence is negative (market fading) and it's a high-alpha target,
         # apply a multiplicative penalty to simulate institutional skepticism.
         market_anchor = 1.0
-        if divergence < -10 and physics_raw_base > 60:
+        if divergence < -10 and physics_raw_base > 60 and is_trap:
             market_anchor = 0.90 # -10% institutional anchor
             
         # OMEGA v8.7.7: Pitcher Sharp Premium (+7.5%)
@@ -156,7 +156,7 @@ class SharpsWeighting:
         # dynamically dampened to prevent bet-volume spikes (traps) from overtaking physical capability.
         anchor_ratio = 1.0
         if team_xwoba < 0.295:
-            anchor_ratio = max(0.5, (team_xwoba / 0.295) ** 2.0)
+            anchor_ratio = max(0.75, (team_xwoba / 0.295) ** 2.0)
 
         # Multiplier Calculation: Alpha (+15%), Beta (+5%)
         # OMEGA v8.7.7: 'Balanced Sharp Premium' (+7.5% for Smart Money)
@@ -186,11 +186,11 @@ class SharpsWeighting:
             trap_multiplier = 0.95
 
         # OMEGA v8.9: Strategy 1 - The 'Defensive Gut Gate' (Matchup Magnetism)
-        # If opposing pitcher physics is extremely low (below 20.0), we apply an authoritative Matchup Magnetism Boost
+        # If opposing pitcher physics is extremely low (below 35.0), we apply an authoritative Matchup Magnetism Boost
         # that is proportional to the pitcher's weakness and amplified by bullpen fatigue.
         magnetism_boost = 1.0
-        if opp_pitcher_physics < 20.0:
-            vulnerability_gap = (20.0 - opp_pitcher_physics) / 10.0
+        if opp_pitcher_physics < 35.0:
+            vulnerability_gap = (35.0 - opp_pitcher_physics) / 10.0
             fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30  # Up to +30% boost for gassed bullpens
             magnetism_boost = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
 
