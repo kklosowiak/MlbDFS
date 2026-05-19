@@ -179,6 +179,9 @@ class StatcastBridge:
                 "rolling_k": r.get('rolling_k', 0),
                 "ip": s.get('ip', 0.0),
                 "pitch_hand": pitch_hand,
+                "bb": s.get('bb', 0),
+                "hr": s.get('hr', 0),
+                "whip": s.get('whip', 1.20),
                 "timestamp": datetime.now().isoformat()
             }
         
@@ -254,6 +257,9 @@ class StatcastBridge:
                         "rolling_k": 0,
                         "ip": float(stat.get('inningsPitched', '0.0')),
                         "pitch_hand": pitch_hand,
+                        "bb": int(stat.get('baseOnBalls', 0)),
+                        "hr": int(stat.get('homeRuns', 0)),
+                        "whip": float(stat.get('whip', '1.20')),
                         "timestamp": datetime.now().isoformat()
                     }
                     print(f"    + {pitcher_name} ({team}): ERA={stat.get('era')}, K={stat.get('strikeOuts')}, IP={stat.get('inningsPitched')}, Pitch Hand={pitch_hand}")
@@ -343,7 +349,9 @@ class StatcastBridge:
                     "k": int(stat.get('strikeOuts', 0)),
                     "ip": safe_float(stat.get('inningsPitched', '0.0')),
                     "hr": int(stat.get('homeRuns', 0)),
-                    "pa": int(stat.get('plateAppearances', 0))
+                    "pa": int(stat.get('plateAppearances', 0)),
+                    "bb": int(stat.get('baseOnBalls', 0)),
+                    "whip": safe_float(stat.get('whip', '1.20'))
                 }
             return results
         except Exception as e:

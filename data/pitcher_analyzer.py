@@ -473,51 +473,46 @@ class PitcherAnalyzer:
         return "TBD"
 
 
-    def _calculate_proxy_physics(self, era, k, ip):
+    def _calculate_proxy_physics(self, era, k, ip, bb=0, hr=0, whip=1.20):
         """
-        OMEGA v7.2: Unified proxy physics calculator.
-        Derives SIERA and CSW estimates from real MLB StatsAPI data (ERA, K, IP).
+        OMEGA v10.0: Enhanced Sabermetric Proxy Physics Calculator.
+        Derives SIERA, CSW, and FIP estimates using K, BB, HR, WHIP, and ERA.
         
-        The proxy blends two signals:
-        - K/IP ratio (strongest single predictor of future SIERA)  
-        - ERA (captures run prevention not visible in K rate alone)
+        Blends:
+        - Sabermetric FIP (Fielding Independent Pitching) to isolate pitcher-controlled outcomes
+        - WHIP to capture baserunner congestion stress and physical volatility
+        - K/IP ratio and Season ERA
         
         Returns: (proxy_siera, proxy_csw, confidence)
         """
         era = float(era or 4.00)
         k = float(k or 0)
         ip = float(ip or 0)
+        bb = float(bb or 0)
+        hr = float(hr or 0)
+        whip = float(whip or 1.20)
         
         if ip > 5.0:
+            # 1. Sabermetric FIP (Fielding Independent Pitching)
+            # FIP = (13*HR + 3*BB - 2*K) / IP + Constant (centered around 3.15 to regress to average)
+            raw_fip = ((13.0 * hr) + (3.0 * bb) - (2.0 * k)) / ip + 3.15
+            fip = max(2.00, min(6.00, raw_fip))
+            
+            # 2. Skill-Interactive ERA (SIERA) proxy blending FIP, WHIP, and ERA
+            siera_est = (0.5 * fip) + (0.3 * era) + (0.2 * (whip * 3.0))
+            proxy_siera = max(2.20, min(5.80, siera_est))
+            
+            # 3. CSW% estimate adjusted for control/congestion (WHIP)
             k_per_ip = k / ip
+            proxy_csw = 0.25 + (k_per_ip - 0.85) * 0.1 - (whip - 1.20) * 0.05
+            proxy_csw = max(0.15, min(0.38, proxy_csw))
             
-            # K/IP-based SIERA estimate (Baseline: 4.00 @ 0.85 K/IP)
-            k_siera = 4.00 - (k_per_ip - 0.85) * 1.2
-            
-            # ERA-based SIERA estimate (ERA and SIERA correlate ~0.7)
-            # Regress ERA toward league mean (4.00) to reduce noise
-            era_siera = (era * 0.6) + (4.00 * 0.4)
-            
-            # Blend: Weight K/IP more heavily (60/40) — it's more predictive
-            proxy_siera = (k_siera * 0.6) + (era_siera * 0.4)
-            proxy_siera = max(2.50, min(5.50, proxy_siera))
-            
-            # CSW proxy from K/IP (Baseline: 25% @ 0.85 K/IP)
-            proxy_csw = 0.25 + (k_per_ip - 0.85) * 0.1
-            proxy_csw = max(0.18, min(0.35, proxy_csw))
-            
-            # Confidence based on sample size
-            if ip >= 20.0:
-                confidence = "high"
-            elif ip >= 10.0:
-                confidence = "med"
-            else:
-                confidence = "med"  # Small sample but still real data
+            confidence = "high" if ip >= 20.0 else "med"
         else:
             # Insufficient sample — use league-average defaults
-            proxy_siera = 4.00
+            proxy_siera = 4.10
             proxy_csw = 0.25
-            confidence = "med"  # Still has SOME data, better than nothing
+            confidence = "med"
         
         return proxy_siera, proxy_csw, confidence
 
@@ -574,7 +569,8 @@ class PitcherAnalyzer:
                 p_data = cache.get(p_norm)
                 if p_data and p_data.get('type') == 'pitcher' and float(p_data.get('ip', 0)) > 0:
                     siera, csw, confidence = self._calculate_proxy_physics(
-                        p_data.get('era', 4.00), p_data.get('k', 0), p_data.get('ip', 0)
+                        p_data.get('era', 4.00), p_data.get('k', 0), p_data.get('ip', 0),
+                        bb=p_data.get('bb', 0), hr=p_data.get('hr', 0), whip=p_data.get('whip', 1.20)
                     )
                     bm_score = max(0, min(25, (csw / 0.30) * 25))
                     return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
@@ -605,9 +601,14 @@ class PitcherAnalyzer:
                             era = float(stat.get('era', '4.00'))
                             k = int(stat.get('strikeOuts', 0))
                             ip = float(stat.get('inningsPitched', '0.0'))
+                            bb = int(stat.get('baseOnBalls', 0))
+                            hr = int(stat.get('homeRuns', 0))
+                            whip = float(stat.get('whip', '1.20'))
                             
-                            siera, csw, confidence = self._calculate_proxy_physics(era, k, ip)
-                            print(f"  - LIVE API: Fetched physics for {pitcher_name} (ERA: {era:.2f}, K: {k}, IP: {ip})")
+                            siera, csw, confidence = self._calculate_proxy_physics(
+                                era, k, ip, bb=bb, hr=hr, whip=whip
+                            )
+                            print(f"  - LIVE API: Fetched physics for {pitcher_name} (ERA: {era:.2f}, K: {k}, IP: {ip}, BB: {bb}, HR: {hr}, WHIP: {whip:.2f})")
                             
                             bm_score = max(0, min(25, (csw / 0.30) * 25))
                             return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
