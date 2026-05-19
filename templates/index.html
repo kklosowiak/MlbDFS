@@ -1266,7 +1266,6 @@
                 </div>
             </div>
 
-            
             <!-- QUICK PORTALS -->
             <h2 style="margin-bottom: 15px;">Command Portals</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
@@ -1294,6 +1293,18 @@
                     </div>
                 </div>
 
+                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="openHandbook()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#00f2fe';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="background: rgba(0,242,254,0.1); padding: 15px; border-radius: 12px; color: #00f2fe;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Omega Knowledge Base</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Read the operational playbook to understand signals.</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="document.querySelectorAll('.nav-item')[3].click()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-purple)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div style="background: rgba(191,90,242,0.1); padding: 15px; border-radius: 12px; color: var(--accent-purple);">
@@ -1302,58 +1313,6 @@
                         <div>
                             <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Hitters Matrix</div>
                             <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Evaluate individual hitter power and props.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="openHandbook()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#00f2fe';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: rgba(0,242,254,0.1); padding: 15px; border-radius: 12px; color: #00f2fe;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Omega Knowledge Base</div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Read the operational playbook to understand signals.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-                </div>
-                
-                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="document.querySelectorAll('.nav-item')[2].click()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-green)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: rgba(50,215,75,0.1); padding: 15px; border-radius: 12px; color: var(--accent-green);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Teams Matrix</div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Identify elite GPP stacks and bullpen exhaustion.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="openHandbook()" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#00f2fe';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: rgba(0,242,254,0.1); padding: 15px; border-radius: 12px; color: #00f2fe;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Omega Knowledge Base</div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Read the operational playbook to understand signals.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" style="margin: 0; cursor: pointer; transition: all 0.2s;" onclick="window.location.href=\'/bankroll\'" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--accent-red)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: rgba(255,69,58,0.1); padding: 15px; border-radius: 12px; color: var(--accent-red);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">Bankroll Vault</div>
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 3px;">Manage your bankroll and analyze daily ROI.</div>
                         </div>
                     </div>
                 </div>
@@ -1476,7 +1435,6 @@
         <div id="weather-panel" class="tab-panel">
             <!-- Doppler Radar Targeting Bar -->
             <div id="radar-targeting-bar" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px;">
-                <!-- Dynamically populated buttons -->
                 <span style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">Awaiting Doppler Coordinates...</span>
             </div>
 
@@ -2411,7 +2369,7 @@
             }
         }
 
-        async 
+        
         const STADIUM_COORDS = {
             'ARI': { lat: 33.4455, lon: -112.0667 },
             'ATL': { lat: 33.8907, lon: -84.4677 },
@@ -2470,16 +2428,10 @@
             const bar = document.getElementById('radar-targeting-bar');
             if (!bar) return;
             
-            // Extract unique home teams from matchups (assuming team is away and opponent is home, or vice versa)
-            // Let's use the teams data directly. We'll show all teams that are in the slate.
-            // A better way is to find matchups to prevent duplicates, but providing all team buttons is fine.
             let teamsHTML = '';
             let addedTeams = new Set();
             
             data.teams.forEach(t => {
-                // If it's a home team or away team, just add a button for the team's city.
-                // Actually, let's just use the opponent if we don't know who is home.
-                // We can just add all unique teams that have a coordinate.
                 let abbr1 = getTeamAbbr(t.team);
                 let abbr2 = getTeamAbbr(t.opp || t.opponent);
                 
@@ -2497,8 +2449,8 @@
         }
 
         async function loadWeather() {
-            populateRadarTargeting(latestData);
             try {
+                populateRadarTargeting(latestData);
                 const res = await fetch('/api/weather');
                 if (res.status === 401) {
                     window.location.href = '/login';
