@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ΩMEGA Bankroll Ledger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(20, 20, 25, 0.7);
+            --text-primary: #f5f5f7;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent-blue: #0a84ff;
+            --accent-green: #32d74b;
+            --accent-red: #ff453a;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 16px;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 50%, #0d2a1b 0%, #030303 80%);
+            background-attachment: fixed;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            width: 100%;
+            max-width: 1000px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--text-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .val-up { color: var(--accent-green); }
+        .val-down { color: var(--accent-red); }
+        input, button {
+            font-family: inherit;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            outline: none;
+        }
+        input:focus { border-color: var(--accent-blue); }
+        button {
+            background: var(--accent-green);
+            color: #000;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover { background: #28b83e; }
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="display:flex; align-items:center; gap:15px;">
+            <span style="font-size: 3rem;">🏦</span>
+            <div>
+                <h1 style="margin:0; font-size: 2rem;">BANKROLL VAULT</h1>
+                <div style="color:var(--accent-green); font-weight:700; letter-spacing:0.05em;">SECURE LEDGER</div>
+            </div>
+        </div>
+        <a href="/" class="back-btn">← Back to Engine</a>
+    </div>
+
+    <div class="card grid">
+        <div class="stat-box">
+            <div class="stat-value" id="tot-profit">$0.00</div>
+            <div class="stat-label">Net Profit</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value" id="tot-roi">0%</div>
+            <div class="stat-label">Total ROI</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value" id="tot-bet">$0.00</div>
+            <div class="stat-label">Total Risked</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">Log New Slate Result</h3>
+        <form id="entry-form" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="date" id="input-date" required style="flex:1;">
+            <input type="number" id="input-bet" step="0.01" placeholder="Amount Bet ($)" required style="flex:1;">
+            <input type="number" id="input-won" step="0.01" placeholder="Amount Won ($)" required style="flex:1;">
+            <input type="text" id="input-stack" placeholder="Stack / Players Used" required style="flex:2;">
+            <button type="submit" style="flex:1;">Save Ledger Entry</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">Ledger History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>DFS Strategy / Stack</th>
+                    <th>Risked</th>
+                    <th>Returned</th>
+                    <th>Net Profit</th>
+                </tr>
+            </thead>
+            <tbody id="ledger-body">
+                <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('input-date').valueAsDate = new Date();
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/bankroll');
+                if (res.status === 401) {
+                    window.location.href = '/bankroll/login';
+                    return;
+                }
+                const data = await res.json();
+                renderData(data.entries || []);
+            } catch (err) {
+                console.error("Failed to load bankroll data", err);
+            }
+        }
+
+        function renderData(entries) {
+            const tbody = document.getElementById('ledger-body');
+            tbody.innerHTML = '';
+            
+            if (entries.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-secondary); padding: 30px;">No ledger entries found. Start logging your results above.</td></tr>';
+                return;
+            }
+
+            let totBet = 0;
+            let totWon = 0;
+
+            // Render in reverse chronological
+            [...entries].reverse().forEach(e => {
+                const bet = parseFloat(e.bet || 0);
+                const won = parseFloat(e.won || 0);
+                const prof = parseFloat(e.profit || 0);
+                
+                totBet += bet;
+                totWon += won;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:600;">${e.date}</td>
+                    <td><strong style="color:#0a84ff;">${e.stack}</strong></td>
+                    <td>$${bet.toFixed(2)}</td>
+                    <td>$${won.toFixed(2)}</td>
+                    <td class="${prof > 0 ? 'val-up' : (prof < 0 ? 'val-down' : '')}">
+                        <strong>${prof > 0 ? '+' : ''}$${prof.toFixed(2)}</strong>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const netProfit = totWon - totBet;
+            const roi = totBet > 0 ? (netProfit / totBet) * 100 : 0;
+
+            const elProf = document.getElementById('tot-profit');
+            elProf.innerText = `${netProfit > 0 ? '+' : ''}$${netProfit.toFixed(2)}`;
+            elProf.style.color = netProfit >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+
+            const elRoi = document.getElementById('tot-roi');
+            elRoi.innerText = `${roi > 0 ? '+' : ''}${roi.toFixed(1)}%`;
+            elRoi.style.color = roi >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+
+            document.getElementById('tot-bet').innerText = `$${totBet.toFixed(2)}`;
+        }
+
+        document.getElementById('entry-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const date = document.getElementById('input-date').value;
+            const bet = parseFloat(document.getElementById('input-bet').value);
+            const won = parseFloat(document.getElementById('input-won').value);
+            const stack = document.getElementById('input-stack').value;
+
+            const res = await fetch('/api/bankroll', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({date, bet, won, stack})
+            });
+
+            if (res.ok) {
+                document.getElementById('input-bet').value = '';
+                document.getElementById('input-won').value = '';
+                document.getElementById('input-stack').value = '';
+                loadData();
+            } else {
+                alert('Failed to save entry.');
+            }
+        };
+
+        loadData();
+    </script>
+</body>
+</html>

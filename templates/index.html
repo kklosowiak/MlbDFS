@@ -6,6 +6,7 @@
     <title>ΩMEGA Engine v9.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg: #030303;
@@ -1036,17 +1037,76 @@
             font-size: 1.1rem;
             font-weight: 700;
         }
+
+        /* Granular Team Modal */
+        .team-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -45%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            background: rgba(15, 15, 20, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            z-index: 1050;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(10, 132, 255, 0.15);
+            color: var(--text-primary);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        .team-modal.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%);
+        }
+        .team-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .team-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .team-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .team-modal-close:hover { color: #fff; }
     </style>
 </head>
 <body>
     <!-- SIDEBAR NAVIGATION -->
     <div class="sidebar">
         <div>
-            <div class="logo-group">
-                <span class="logo-sym">Ω</span>
-                <span class="logo-txt" style="margin-left: 2px;">MEGA</span>
-                <span class="logo-txt" style="margin-left: 10px;">ENGINE</span>
-            </div>
+            <a href="/" style="text-decoration: none;">
+                <div class="logo-group">
+                    <span class="logo-sym">Ω</span>
+                    <span class="logo-txt" style="margin-left: 2px;">MEGA</span>
+                    <span class="logo-txt" style="margin-left: 10px;">ENGINE</span>
+                </div>
+            </a>
             
             <ul class="nav-list">
                 <li class="nav-item active" onclick="switchTab(this, 'pitchers')">
@@ -1079,7 +1139,11 @@
                 </li>
                 <li class="nav-item" onclick="openHandbook()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
-                    System Handbook
+                    First Time Buyer Guide
+                </li>
+                <li class="nav-item" onclick="window.location.href='/bankroll'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+                    Bankroll Vault
                 </li>
             </ul>
         </div>
@@ -1323,6 +1387,11 @@
 
         <!-- WEATHER MATRIX PANEL -->
         <div id="weather-panel" class="tab-panel">
+            <!-- Doppler Radar Map -->
+            <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius-lg); height: 350px; margin-bottom: 20px;">
+                <iframe width="100%" height="100%" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°F&metricWind=mph&zoom=4&overlay=radar&product=radar&level=surface&lat=38.000&lon=-97.000&detailLat=38.000&detailLon=-97.000&detail=true&marker=true&message=true" frameborder="0"></iframe>
+            </div>
+
             <!-- Weather Summary Cards -->
             <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:30px;">
                 <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
@@ -1381,6 +1450,12 @@
                 <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
                     <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">GPP Hits</span>
                     <span style="font-size:2rem; font-weight:800; color:var(--accent-green);" id="trends-hits-val">0</span>
+                </div>
+                <div class="card" style="padding: 15px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px;">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Hit Rate Visual</span>
+                    <div style="position:relative; width: 100px; height: 100px;">
+                        <canvas id="trendPieChart"></canvas>
+                    </div>
                 </div>
                 <div class="card" style="padding: 25px; margin-bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; background:radial-gradient(circle at 50% 50%, rgba(10, 132, 255, 0.05) 0%, rgba(0,0,0,0) 80%); border-color:rgba(10, 132, 255, 0.25);">
                     <span style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">GPP Accuracy</span>
@@ -1772,6 +1847,16 @@
                         container.appendChild(banner);
                     }
 
+                    // Create Tabs Container
+                    const tabsContainer = document.createElement('div');
+                    tabsContainer.style.cssText = 'display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;';
+                    container.appendChild(tabsContainer);
+
+                    const cardsContainer = document.createElement('div');
+                    container.appendChild(cardsContainer);
+
+                    let firstTab = true;
+
                     // Loop through elements and create cards
                     Array.from(tempDiv.children).forEach(el => {
                         if (el.tagName === 'H1' || (el.tagName === 'P' && el === tempDiv.querySelector('p')) || (el.tagName === 'P' && el.innerText.startsWith('Generated:'))) {
@@ -1780,9 +1865,33 @@
                         }
 
                         if (el.tagName === 'H2') {
+                            let matchupName = el.innerText.trim();
+                            if (matchupName.length > 25) matchupName = matchupName.substring(0, 25) + '...';
+                            
+                            // Create Tab
+                            const tab = document.createElement('button');
+                            tab.innerText = matchupName || "Overview";
+                            tab.style.cssText = `
+                                padding: 10px 16px;
+                                background: rgba(255, 255, 255, 0.05);
+                                border: 1px solid var(--border);
+                                border-radius: 8px;
+                                color: var(--text-secondary);
+                                font-weight: 700;
+                                cursor: pointer;
+                                white-space: nowrap;
+                                transition: all 0.2s;
+                            `;
+                            if (firstTab) {
+                                tab.style.background = 'rgba(10, 132, 255, 0.15)';
+                                tab.style.borderColor = 'var(--accent-blue)';
+                                tab.style.color = '#fff';
+                            }
+                            
                             // Start a new card!
                             currentCard = document.createElement('div');
                             currentCard.className = 'card analysis-card';
+                            currentCard.style.display = firstTab ? 'block' : 'none';
                             
                             const header = document.createElement('div');
                             header.className = 'analysis-card-header';
@@ -1793,7 +1902,27 @@
                             cardBody.className = 'analysis-card-body';
                             currentCard.appendChild(cardBody);
 
-                            container.appendChild(currentCard);
+                            cardsContainer.appendChild(currentCard);
+
+                            tab.onclick = () => {
+                                // Hide all cards
+                                Array.from(cardsContainer.children).forEach(c => c.style.display = 'none');
+                                // Show this card
+                                currentCard.style.display = 'block';
+                                // Reset all tabs
+                                Array.from(tabsContainer.children).forEach(t => {
+                                    t.style.background = 'rgba(255, 255, 255, 0.05)';
+                                    t.style.borderColor = 'var(--border)';
+                                    t.style.color = 'var(--text-secondary)';
+                                });
+                                // Highlight this tab
+                                tab.style.background = 'rgba(10, 132, 255, 0.15)';
+                                tab.style.borderColor = 'var(--accent-blue)';
+                                tab.style.color = '#fff';
+                            };
+
+                            tabsContainer.appendChild(tab);
+                            firstTab = false;
                         } else if (el.tagName === 'HR') {
                             // skip horizontal rules as cards act as dividers
                             return;
@@ -1802,7 +1931,7 @@
                             if (cardBody) {
                                 cardBody.appendChild(el.cloneNode(true));
                             } else {
-                                container.appendChild(el.cloneNode(true));
+                                cardsContainer.appendChild(el.cloneNode(true));
                             }
                         }
                     });
@@ -1914,6 +2043,8 @@
             teams.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
+                tr.style.cursor = 'pointer';
+                tr.onclick = () => openTeamModal(encodeURIComponent(JSON.stringify(t)));
                 if (t.stack_score >= 85) tr.classList.add('row-highlight');
                 
                 const scoreClass = t.stack_score >= 100 ? 'score elite' : (t.stack_score >= 85 ? 'score high' : 'score med');
@@ -2297,10 +2428,12 @@
             }
         }
         
+        let trendChartInstance = null;
         function updateTrendsSummary(trends) {
             const total = trends.length;
             const resolved = trends.filter(t => t.hit !== '').length;
             const hits = trends.filter(t => t.hit === '1').length;
+            const misses = resolved - hits;
             
             const hitRate = resolved > 0 ? Math.round((hits / resolved) * 100) : 0;
             
@@ -2308,6 +2441,36 @@
             document.getElementById('trends-resolved-val').innerText = resolved;
             document.getElementById('trends-hits-val').innerText = hits;
             document.getElementById('trends-rate-val').innerText = hitRate + '%';
+            
+            // Update Pie Chart
+            const ctx = document.getElementById('trendPieChart');
+            if (ctx) {
+                if (trendChartInstance) {
+                    trendChartInstance.data.datasets[0].data = [hits, misses];
+                    trendChartInstance.update();
+                } else {
+                    trendChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Hits', 'Misses'],
+                            datasets: [{
+                                data: [hits, misses || 1], // Show gray circle if no resolved data
+                                backgroundColor: resolved > 0 ? ['#32d74b', '#ff453a'] : ['#888', '#888'],
+                                borderWidth: 0,
+                                cutout: '65%'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { enabled: resolved > 0 }
+                            }
+                        }
+                    });
+                }
+            }
         }
         
         async function resolveTrend(date, team) {
@@ -2548,14 +2711,90 @@
                 if (activeItem) activeItem.classList.add('active');
             }
         }
+
+        // Granular Team Modal logic
+        function openTeamModal(tStr) {
+            const t = JSON.parse(decodeURIComponent(tStr));
+            document.getElementById('tm-name').innerText = t.team;
+            document.getElementById('tm-matchup').innerText = `vs ${t.opp_pitcher} (${abbrevMap[t.opponent] || t.opponent})`;
+            document.getElementById('tm-score').innerText = t.stack_score;
+            document.getElementById('tm-phys').innerText = t.physics_score || 0;
+            document.getElementById('tm-opp-phys').innerText = t.opp_pitcher_physics || 0;
+            document.getElementById('tm-pen').innerText = t.bullpen_fatigue || 0;
+            document.getElementById('tm-itt').innerText = t.implied_total || 0;
+            document.getElementById('tm-mkt').innerText = t.market_score || 0;
+            document.getElementById('tm-div').innerText = `${t.divergence || 0}%`;
+            document.getElementById('tm-vegas').innerText = t.total_signal || 'N/A';
+            
+            let badgesHTML = '';
+            if (t.is_shark) badgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
+            if (t.is_storm) badgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+            if (t.is_whale) badgesHTML += '<span class="signal-pill pill-whale">🐋 WHALE</span>';
+            if (t.is_sharp) badgesHTML += '<span class="signal-pill pill-sharp">🎰 SHARP</span>';
+            if (t.is_steam) badgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
+            if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
+            if (t.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
+            if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
+            if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
+            if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
+
+            document.getElementById('tm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
+
+            document.getElementById('team-modal').classList.add('open');
+            document.getElementById('team-modal-overlay').classList.add('open');
+        }
+
+        function closeTeamModal() {
+            document.getElementById('team-modal').classList.remove('open');
+            document.getElementById('team-modal-overlay').classList.remove('open');
+        }
     </script>
+
+    <!-- GRANULAR TEAM MODAL -->
+    <div class="team-modal-overlay" id="team-modal-overlay" onclick="closeTeamModal()"></div>
+    <div class="team-modal" id="team-modal">
+        <button class="team-modal-close" onclick="closeTeamModal()">×</button>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px;">
+            <div>
+                <h2 id="tm-name" style="margin:0; font-size:2rem; font-weight:800; color:#fff;">Team Name</h2>
+                <div id="tm-matchup" style="color:var(--text-secondary); font-weight:600; font-size:1rem; margin-top:5px;">vs Opponent</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:0.8rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase;">Omega Score</div>
+                <div id="tm-score" style="font-size:2.5rem; font-weight:800; color:var(--accent-blue); line-height:1;">100.0</div>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px; margin-bottom:20px;">
+            <div class="card" style="padding:20px; margin:0;">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-green);">Physics & Performance</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Physics Score</span><strong id="tm-phys">0.0</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Opp Pitcher Phys</span><strong id="tm-opp-phys">0.0</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Bullpen Fatigue</span><strong id="tm-pen">0</strong></div>
+            </div>
+            <div class="card" style="padding:20px; margin:0;">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-purple);">Market Signals</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Implied Total</span><strong id="tm-itt">0.0</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Market Score</span><strong id="tm-mkt">0.0</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Divergence</span><strong id="tm-div">0%</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Vegas Total Signal</span><strong id="tm-vegas">N/A</strong></div>
+            </div>
+        </div>
+        
+        <div class="card" style="padding:20px; margin:0;">
+            <h4 style="margin:0 0 15px 0; color:var(--accent-blue);">Active Alpha Badges</h4>
+            <div id="tm-badges" style="display:flex; flex-wrap:wrap; gap:8px;">
+                <!-- Badges injected here -->
+            </div>
+        </div>
+    </div>
 
     <!-- 📖 SYSTEM HANDBOOK MODAL OVERLAY -->
     <div class="handbook-modal" id="handbook-modal">
-        <button class="handbook-close-btn" onclick="closeHandbook()">CLOSE HANDBOOK ×</button>
+        <button class="handbook-close-btn" onclick="closeHandbook()">CLOSE GUIDE ×</button>
         
         <div class="handbook-sidebar">
-            <h2>🔱 OMEGA Handbook</h2>
+            <h2 style="font-size:1.5rem;">🔱 First Time Buyer Guide</h2>
             <p style="font-size: 0.72rem; color: var(--text-secondary); margin: -10px 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">GPP OPERATIONAL GUIDE</p>
             <hr style="border: 0; border-top: 1px solid var(--border); width: 100%; margin: 0 0 10px 0;">
             
@@ -2567,6 +2806,7 @@
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-environment')">5. Ballpark Weather Matrix</li>
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-definitions')">6. Cockpit Signals Glossary</li>
                 <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-playbook')">7. Our GPP Drafting Playbook</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-contact')">8. Support & Contact</li>
             </ul>
         </div>
         
@@ -2746,5 +2986,21 @@
                     </p>
                 </div>
             </div>
-        </div>\n</body>
+            
+            <!-- SECTION 8 -->
+            <div id="sec-contact" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
+                    <span>8.</span> Support & Contact
+                </h3>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
+                    If you encounter any issues, need billing assistance, or want to report a bug with the Omega Engine terminal, please reach out to our team at:
+                </p>
+                <div style="background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.3); padding: 20px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; color: #fff; text-align: center; margin-top: 20px; box-shadow: 0 0 15px rgba(10, 132, 255, 0.1);">
+                    <a href="mailto:XYZ@gmail.com" style="color: #00f2fe; text-decoration: none;">XYZ@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
+
