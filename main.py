@@ -360,9 +360,24 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             open_ml = open_data.get(f'{field_key}_opening_ml')
             open_total = open_data.get('opening_total')
             
+            # Check if game has commenced to prevent live-betting/in-progress odds shifts
+            game_started = False
+            commence_str = game.get('commence_time')
+            if commence_str:
+                try:
+                    commence_dt = datetime.datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
+                    if datetime.datetime.utcnow() >= commence_dt:
+                        game_started = True
+                except Exception:
+                    pass
+
             # Delta Calc
-            ml_move = calculate_ml_move(open_ml, curr_ml)
-            tt_move = (curr_total - open_total) if (open_total and curr_total) else 0.0
+            if game_started:
+                ml_move = 0.0
+                tt_move = 0.0
+            else:
+                ml_move = calculate_ml_move(open_ml, curr_ml)
+                tt_move = (curr_total - open_total) if (open_total and curr_total) else 0.0
             
             # ITT Calc
             prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
@@ -375,12 +390,20 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_bullpen = bullpen_analyzer.get_fatigue_score(opponent)
             
             # Market Divergence & Signal Detection
-            divergence = consensus_fetcher.get_divergence(team, splits_data)
-            is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
-            is_whale = consensus_fetcher.detect_whale(team, splits_data)
-            is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
-            is_storm = (divergence >= 10 and tt_move >= 0.3)
-            is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
+            if game_started:
+                divergence = 0
+                is_shark = False
+                is_whale = False
+                is_sharp = False
+                is_storm = False
+                is_steam = False
+            else:
+                divergence = consensus_fetcher.get_divergence(team, splits_data)
+                is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
+                is_whale = consensus_fetcher.detect_whale(team, splits_data)
+                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
+                is_storm = (divergence >= 10 and tt_move >= 0.3)
+                is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
 
             # Opponent Physics discovery
             opp_pitcher_physics = 0.0
