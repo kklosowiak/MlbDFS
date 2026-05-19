@@ -128,8 +128,9 @@ def scheduler_loop():
         et_hour = et_now.hour
         current_hour_key = et_now.strftime("%Y-%m-%d %H")
         
-        # Is Eastern Time between 8:00 AM (8) and 8:00 PM (20) inclusive?
-        is_active_window = (8 <= et_hour <= 20)
+        # Is Eastern Time between 8:00 AM (8) and 7:00 PM (19) exclusive?
+        # This stops scheduled auto-refreshes starting at 7:00 PM EST.
+        is_active_window = (8 <= et_hour <= 18)
         
         if is_active_window:
             if current_hour_key != last_scheduled_hour_key:

@@ -25,8 +25,21 @@ class ProbablePitcherFetcher:
         """
         print("[INGEST]: Synchronizing MLB Probable Pitchers (Dynamic Slate)...")
         
-        # Use current date (local time corresponds to the slate usually)
-        fetch_date = datetime.now().strftime("%Y-%m-%d")
+        # OMEGA v9.6: Timezone-aware DFS slate rollover (4:00 AM US/Eastern Time)
+        from datetime import datetime, timedelta, timezone
+        dt_utc = datetime.now(timezone.utc)
+        try:
+            from zoneinfo import ZoneInfo
+            dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            dt_et = dt_utc - timedelta(hours=4)
+            
+        if dt_et.hour < 4:
+            slate_date = (dt_et - timedelta(days=1)).date()
+        else:
+            slate_date = dt_et.date()
+            
+        fetch_date = slate_date.strftime("%Y-%m-%d")
         print(f"  - TARGET DATE: {fetch_date}")
         params = {
             'sportId': 1,
