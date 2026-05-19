@@ -135,27 +135,29 @@ def run_full_analysis():
     movement_tracker = MovementTracker()
     movement_data = movement_tracker.calculate_movement() or []
 
-    # 2. Ranking Pitcher Alpha
-    p_reports = _get_pitcher_alpha(
-        p_analyzer, snapshot_path, opening_lines_path, splits_data, 
-        snapshot.get('props', {}), rosters, weather_fetcher, umpire_fetcher,
-        movement_data=movement_data
-    )
-    
-    # OMEGA v6.21: The Integrity Gate
-    p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
- 
-    # Trend Analysis Initialization
+    # OMEGA v9.8: Load Previous Results Early for Both Pitchers and Teams
+    prev_pitcher_results = {}
     previous_results = {}
     results_path = os.path.join(config.REPORTS_DIR, "latest_results.json")
     if os.path.exists(results_path):
         try:
             with open(results_path, 'r') as f:
                 prev_data = json.load(f)
+                prev_pitcher_results = {p['pitcher']: p for p in prev_data.get('pitchers', [])}
                 previous_results = {t['team']: t for t in prev_data.get('teams', [])}
         except Exception:
             print("[WARNING]: Could not load previous results for trend analysis.")
 
+    # 2. Ranking Pitcher Alpha
+    p_reports = _get_pitcher_alpha(
+        p_analyzer, snapshot_path, opening_lines_path, splits_data, 
+        snapshot.get('props', {}), rosters, weather_fetcher, umpire_fetcher,
+        movement_data=movement_data, previous_results=prev_pitcher_results
+    )
+    
+    # OMEGA v6.21: The Integrity Gate
+    p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
+ 
     # 3. Extract Hitters Early for Team Analysis (v6.8)
     raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=confirmed_lineups)
     
@@ -178,6 +180,8 @@ def run_full_analysis():
                     purged_hitters.append(h)
             else:
                 purged_hitters.append(h) # Keep projected if no official data exists
+        raw_hitters = purged_hitters
+        print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
         raw_hitters = purged_hitters
         print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
 
@@ -225,7 +229,7 @@ def run_full_analysis():
         json.dump(summary, f, indent=4)
     print(f"[ARCHIVE]: Results archived to {archive_path}")
 
-def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher, movement_data=None):
+def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher, movement_data=None, previous_results=None):
     """STEP 1: Ranking Pitcher Alpha (Hybrid Core)"""
     print("[STEP 1]: Ranking Pitcher Alpha...")
     p_reports = p_analyzer.analyze_slate(
@@ -236,7 +240,8 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         rosters=rosters,
         weather_fetcher=weather_fetcher,
         umpire_fetcher=umpire_fetcher,
-        movement_data=movement_data
+        movement_data=movement_data,
+        previous_results=previous_results
     )
     
     # OMEGA v4.5: Component Translation

@@ -85,7 +85,7 @@ class PitcherAnalyzer:
         _load_market(outs_path, 'pitcher_outs', 'outs', 15.5)
         return external_props
 
-    def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[], movement_data=None):
+    def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[], movement_data=None, previous_results=None):
         if props_data is None: props_data = {}
         if rosters is None: rosters = {}
         if splits_data is None: splits_data = {}
@@ -132,6 +132,18 @@ class PitcherAnalyzer:
             home = game['home_team']
             away = game['away_team']
             
+            # Check if game has commenced to prevent live-betting/in-progress odds shifts
+            game_started = False
+            commence_str = game.get('commence_time')
+            if commence_str:
+                try:
+                    from datetime import datetime
+                    commence_dt = datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
+                    if datetime.utcnow() >= commence_dt:
+                        game_started = True
+                except Exception:
+                    pass
+            
             for side in ['home', 'away']:
                 team_name = game[f'{side}_team']
                 vi_name = self.team_map.get(team_name)
@@ -149,9 +161,6 @@ class PitcherAnalyzer:
                 open_total = float(open_total or 8.5)
                 curr_total = float(curr_total or open_total)
                 
-                ml_move = calculate_ml_move(open_ml, curr_ml)
-                tt_move = curr_total - open_total
-                
                 # Splits / Divergence Ingestion
                 from data.consensus_fetcher import ConsensusFetcher
                 fetcher = ConsensusFetcher()
@@ -159,77 +168,111 @@ class PitcherAnalyzer:
                 pub_bets = float(split.get('ticket', 50)) if split else 50.0
                 money_handle = float(split.get('money', 50)) if split else 50.0
                 money_gap = money_handle - pub_bets
-                divergence = fetcher.get_divergence(team_name, splits_data)
-                
-                k_line = None 
-                outs_line = None
-                k_odds = None
-                outs_odds = None
                 
                 if not pitcher_name or pitcher_name == "TBD":
                     pitcher_name = self.discover_starter_from_props(props_data, gid, team_name, opponent=(away if side == 'home' else home))
                 
-                gid_props = props_data.get(gid, {})
-                
-                # Strikeouts recovery
-                is_juiced_target = False
-                if 'pitcher_strikeouts' in gid_props:
-                    p_k = [o for o in gid_props['pitcher_strikeouts'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
-                    if p_k:
-                        points = [o.get('point', 0) for o in p_k if o.get('point')]
-                        if points: 
-                            k_line = statistics.median(points)
-                            o_odds = next((o.get('price') for o in p_k if o.get('point') == k_line and o.get('side') == 'Over'), None)
-                            if o_odds: k_odds = o_odds
-                        
-                        for o in p_k:
-                            if o.get('side') == 'Over':
-                                o_price = o.get('price', 0)
-                                book = o.get('bookmaker')
-                                pt = o.get('point')
-                                matching = [u for u in p_k if u.get('side') == 'Under' and u.get('bookmaker') == book and u.get('point') == pt]
-                                if matching:
-                                    u_price = matching[0].get('price', 0)
-                                    if o_price < u_price: 
-                                        is_juiced_target = True
-                                        break
-                
-                # Outs recovery
-                if 'pitcher_outs' in gid_props:
-                    p_outs = [o for o in gid_props['pitcher_outs'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
-                    if p_outs:
-                        points = [o.get('point', 0) for o in p_outs if o.get('point')]
-                        if points: 
-                            outs_line = statistics.median(points)
-                            o_odds = next((o.get('price') for o in p_outs if o.get('point') == outs_line and o.get('side') == 'Over'), None)
-                            if o_odds: outs_odds = o_odds
-                
-                norm_pitcher = normalize_player_name(pitcher_name)
-                if k_line is None and ext_props.get(norm_pitcher):
-                    k_line = ext_props[norm_pitcher].get('ks')
-                if outs_line is None and ext_props.get(norm_pitcher):
-                    outs_line = ext_props[norm_pitcher].get('outs')
-                
-                if k_line is None: k_line = 4.5
-                if outs_line is None: outs_line = 14.5
-                
-                # OMEGA v7.8: Prop Trap Detection (The Gavin Filter)
-                is_trap = False
-                p_move = next((m for m in movement_data if m.get('player') == pitcher_name), None)
-                k_move = p_move.get('k_move', 0) if p_move else 0
-                
-                # Logic: Team ML is favored (+ml_move), but K-prop is dropping (-k_move)
-                if ml_move > 10 and k_move < 0:
-                    is_trap = True
-                # Logic: K-line hasn't moved but juice has shifted Under (Synthetically detected via volatility)
-                if k_odds and k_odds > 110: # Getting "Longer" = Inviting Over
-                    is_trap = True
+                # OMEGA v9.8: Try to preserve exact pre-game metrics from disk (latest_results.json)
+                prev_pitcher_data = None
+                if previous_results and pitcher_name:
+                    p_norm = normalize_player_name(pitcher_name)
+                    for k, v in previous_results.items():
+                        if normalize_player_name(k) == p_norm:
+                            prev_pitcher_data = v
+                            break
 
-                # OMEGA v8.0: MARKET_DEATH_SENTENCE
+                has_prev = prev_pitcher_data is not None
+
+                k_line = None 
+                outs_line = None
+                k_odds = None
+                outs_odds = None
+                is_juiced_target = False
+                is_trap = False
                 is_death_sentence = False
-                if outs_line is not None and float(outs_line) <= 15.5 and outs_odds is not None and float(outs_odds) >= 100:
-                    is_trap = True
-                    is_death_sentence = True
+                divergence = 0
+
+                # Recover props and movement only if game has not started or we have no pre-game snapshot
+                if game_started and has_prev:
+                    ml_move = float(prev_pitcher_data.get('ml_move', 0.0))
+                    tt_move = float(prev_pitcher_data.get('tt_move', 0.0))
+                    divergence = int(prev_pitcher_data.get('divergence', 0))
+                    is_sharp = bool(prev_pitcher_data.get('is_sharp', False))
+                    is_shark = bool(prev_pitcher_data.get('is_shark', False))
+                    is_whale = bool(prev_pitcher_data.get('is_whale', False))
+                    k_line = prev_pitcher_data.get('k_line')
+                    outs_line = prev_pitcher_data.get('outs_line')
+                    is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
+                    is_trap = bool(prev_pitcher_data.get('is_trap', False))
+                    is_death_sentence = bool(prev_pitcher_data.get('is_death_sentence', False))
+                    curr_ml = open_ml + ml_move if (open_ml is not None and ml_move is not None) else -110
+                    curr_total = open_total + tt_move if (open_total is not None and tt_move is not None) else 8.5
+                else:
+                    ml_move = calculate_ml_move(open_ml, curr_ml)
+                    tt_move = curr_total - open_total
+                    divergence = fetcher.get_divergence(team_name, splits_data)
+                    
+                    gid_props = props_data.get(gid, {})
+                    
+                    # Strikeouts recovery
+                    if 'pitcher_strikeouts' in gid_props:
+                        p_k = [o for o in gid_props['pitcher_strikeouts'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
+                        if p_k:
+                            points = [o.get('point', 0) for o in p_k if o.get('point')]
+                            if points: 
+                                k_line = statistics.median(points)
+                                o_odds = next((o.get('price') for o in p_k if o.get('point') == k_line and o.get('side') == 'Over'), None)
+                                if o_odds: k_odds = o_odds
+                            
+                            for o in p_k:
+                                if o.get('side') == 'Over':
+                                    o_price = o.get('price', 0)
+                                    book = o.get('bookmaker')
+                                    pt = o.get('point')
+                                    matching = [u for u in p_k if u.get('side') == 'Under' and u.get('bookmaker') == book and u.get('point') == pt]
+                                    if matching:
+                                        u_price = matching[0].get('price', 0)
+                                        if o_price < u_price: 
+                                            is_juiced_target = True
+                                            break
+                    
+                    # Outs recovery
+                    if 'pitcher_outs' in gid_props:
+                        p_outs = [o for o in gid_props['pitcher_outs'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
+                        if p_outs:
+                            points = [o.get('point', 0) for o in p_outs if o.get('point')]
+                            if points: 
+                                outs_line = statistics.median(points)
+                                o_odds = next((o.get('price') for o in p_outs if o.get('point') == outs_line and o.get('side') == 'Over'), None)
+                                if o_odds: outs_odds = o_odds
+                    
+                    norm_pitcher = normalize_player_name(pitcher_name)
+                    if k_line is None and ext_props.get(norm_pitcher):
+                        k_line = ext_props[norm_pitcher].get('ks')
+                    if outs_line is None and ext_props.get(norm_pitcher):
+                        outs_line = ext_props[norm_pitcher].get('outs')
+                    
+                    if k_line is None: k_line = 4.5
+                    if outs_line is None: outs_line = 14.5
+                    
+                    # Prop Trap Detection
+                    is_trap = False
+                    p_move = next((m for m in movement_data if m.get('player') == pitcher_name), None)
+                    k_move = p_move.get('k_move', 0) if p_move else 0
+                    
+                    if ml_move > 10 and k_move < 0:
+                        is_trap = True
+                    if k_odds and k_odds > 110:
+                        is_trap = True
+                        
+                    is_death_sentence = False
+                    if outs_line is not None and float(outs_line) <= 15.5 and outs_odds is not None and float(outs_odds) >= 100:
+                        is_trap = True
+                        is_death_sentence = True
+                        
+                    is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
+                    is_whale = (divergence >= 15)
+                    is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
 
                 physics = self.fetch_pitcher_physics(pitcher_name)
                 venue_team = home 
@@ -245,9 +288,6 @@ class PitcherAnalyzer:
                     weather_label = w_res['label']
                 
                 park_factor = (base_stadium_factor * 100.0) + ump_boost + weather_boost
-                is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
-                is_whale = (divergence >= 15)
-                is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
                 opponent = away if side == 'home' else home
                 opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) 
                 is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
