@@ -567,11 +567,46 @@ class PitcherAnalyzer:
                 with open(statcast_path, 'r') as f:
                     cache = json.load(f)
                 p_data = cache.get(p_norm)
-                if p_data and p_data.get('type') == 'pitcher' and float(p_data.get('ip', 0)) > 0:
-                    siera, csw, confidence = self._calculate_proxy_physics(
-                        p_data.get('era', 4.00), p_data.get('k', 0), p_data.get('ip', 0),
-                        bb=p_data.get('bb', 0), hr=p_data.get('hr', 0), whip=p_data.get('whip', 1.20)
-                    )
+                if p_data and p_data.get('type') == 'pitcher':
+                    ip_26 = float(p_data.get('ip', 0.0))
+                    era_26 = float(p_data.get('era', 4.00))
+                    k_26 = float(p_data.get('k', 0))
+                    bb_26 = float(p_data.get('bb', 0))
+                    hr_26 = float(p_data.get('hr', 0))
+                    whip_26 = float(p_data.get('whip', 1.20))
+                    
+                    # 2025 seasonal stats for stabilization
+                    ip_25 = float(p_data.get('ip_25', 0.0))
+                    era_25 = float(p_data.get('era_25', 4.00))
+                    k_25 = float(p_data.get('k_25', 0))
+                    bb_25 = float(p_data.get('bb_25', 0))
+                    hr_25 = float(p_data.get('hr_25', 0))
+                    whip_25 = float(p_data.get('whip_25', 1.20))
+                    
+                    # Stabilized Empirical Blend
+                    if ip_26 < 30.0 and ip_25 > 5.0:
+                        total_ip = ip_26 + ip_25
+                        w_26 = ip_26 / total_ip
+                        w_25 = ip_25 / total_ip
+                        
+                        blended_era = (era_26 * w_26) + (era_25 * w_25)
+                        blended_k = k_26 + k_25
+                        blended_bb = bb_26 + bb_25
+                        blended_hr = hr_26 + hr_25
+                        blended_whip = (whip_26 * w_26) + (whip_25 * w_25)
+                        
+                        siera, csw, confidence = self._calculate_proxy_physics(
+                            blended_era, blended_k, total_ip, bb=blended_bb, hr=blended_hr, whip=blended_whip
+                        )
+                        confidence = "med" # blended sample is stabilized but multi-year
+                    elif ip_26 > 0:
+                        siera, csw, confidence = self._calculate_proxy_physics(
+                            era_26, k_26, ip_26, bb=bb_26, hr=hr_26, whip=whip_26
+                        )
+                    else:
+                        # Fallback if both 2026 and 2025 are missing from cache
+                        siera, csw, confidence = 4.10, 0.25, "low"
+                        
                     bm_score = max(0, min(25, (csw / 0.30) * 25))
                     return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
             except Exception:

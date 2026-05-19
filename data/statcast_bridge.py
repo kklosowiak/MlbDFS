@@ -58,6 +58,7 @@ class StatcastBridge:
         
         # 2. Fetch Pitching Data
         p_seasonal = self._fetch_api_stats(group='pitching', stats='season', season=season)
+        p_seasonal_2025 = self._fetch_api_stats(group='pitching', stats='season', season=2025)
         p_rolling = self._fetch_api_stats(
             group='pitching', 
             stats='byDateRange', 
@@ -162,9 +163,10 @@ class StatcastBridge:
             }
             
         # Merge Pitchers
-        for name in set(list(p_seasonal.keys()) + list(p_rolling.keys())):
+        for name in set(list(p_seasonal.keys()) + list(p_rolling.keys()) + list(p_seasonal_2025.keys())):
             s = p_seasonal.get(name, {})
             r = p_rolling.get(name, {})
+            s25 = p_seasonal_2025.get(name, {})
             
             # Match handedness
             p_hand = handedness_map.get(name, {})
@@ -172,7 +174,7 @@ class StatcastBridge:
             
             cache[name] = {
                 "type": "pitcher",
-                "team": s.get('team') or r.get('team') or "UNK",
+                "team": s.get('team') or r.get('team') or s25.get('team') or "UNK",
                 "era": s.get('era', 0.0),
                 "rolling_era": r.get('era', 0.0),
                 "k": s.get('k', 0),
@@ -182,6 +184,15 @@ class StatcastBridge:
                 "bb": s.get('bb', 0),
                 "hr": s.get('hr', 0),
                 "whip": s.get('whip', 1.20),
+                
+                # 2025 stats for multi-year blending
+                "era_2025": s25.get('era', 0.0),
+                "k_2025": s25.get('k', 0),
+                "ip_2025": s25.get('ip', 0.0),
+                "bb_2025": s25.get('bb', 0),
+                "hr_2025": s25.get('hr', 0),
+                "whip_2025": s25.get('whip', 1.20),
+                
                 "timestamp": datetime.now().isoformat()
             }
         
