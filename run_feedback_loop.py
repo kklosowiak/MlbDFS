@@ -28,6 +28,7 @@ def run_feedback_loop(days=7):
         'PITCHER_TRAP_FADE': {'fired': 0, 'hit': 0},  # Success = Trap pitcher gave up >= 4 ER or failed QS
         'TEAM_WHALE': {'fired': 0, 'hit': 0},
         'TEAM_STORM': {'fired': 0, 'hit': 0},
+        'TEAM_SURGING': {'fired': 0, 'hit': 0},       # Success = Surging team scored 5+ runs
         'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},  # Success = Attacked team scored 5+ runs
         'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
         'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
@@ -102,6 +103,11 @@ def run_feedback_loop(days=7):
                 signal_stats['TEAM_STORM']['fired'] += 1
                 if is_hit_5:
                     signal_stats['TEAM_STORM']['hit'] += 1
+                    
+            if t.get('trend') == 'SURGING':
+                signal_stats['TEAM_SURGING']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['TEAM_SURGING']['hit'] += 1
                     
             if t.get('is_gassed'):
                 signal_stats['GASSED_BULLPEN_ATTACK']['fired'] += 1

@@ -1558,26 +1558,36 @@
                     <!-- Left Column: Signal Hit Rates -->
                     <div>
                         <h3 style="margin-top:0; margin-bottom:16px; font-size:1rem; color:var(--accent-blue);">🎯 Signal & Projection Accuracy</h3>
-                        <div id="learning-stats-container" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div class="card" style="padding:15px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700;">WHALE PITCHER</span>
-                                <div style="font-size:1.5rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-whale-p">0%</div>
-                                <span style="font-size:0.7rem; color:var(--text-secondary);" id="stat-whale-p-sub">0/0 starts</span>
+                        <div id="learning-stats-container" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;">
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🐳 WHALE PITCHER</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-whale-p">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-whale-p-sub">0/0 starts</span>
                             </div>
-                            <div class="card" style="padding:15px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700;">SHARK PITCHER</span>
-                                <div style="font-size:1.5rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-shark-p">0%</div>
-                                <span style="font-size:0.7rem; color:var(--text-secondary);" id="stat-shark-p-sub">0/0 starts</span>
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🦈 SHARK PITCHER</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-shark-p">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-shark-p-sub">0/0 starts</span>
                             </div>
-                            <div class="card" style="padding:15px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700;">STORM STACKS</span>
-                                <div style="font-size:1.5rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-storm-t">0%</div>
-                                <span style="font-size:0.7rem; color:var(--text-secondary);" id="stat-storm-t-sub">0/0 slates</span>
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🚨 TRAP FADE</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-trap-fade">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-trap-fade-sub">0/0 fades</span>
                             </div>
-                            <div class="card" style="padding:15px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:700;">TRAP FADE SUCCESS</span>
-                                <div style="font-size:1.5rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-trap-fade">0%</div>
-                                <span style="font-size:0.7rem; color:var(--text-secondary);" id="stat-trap-fade-sub">0/0 fades</span>
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🐳 WHALE STACKS</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-whale-t">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-whale-t-sub">0/0 starts</span>
+                            </div>
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">⚡ STORM STACKS</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-storm-t">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-storm-t-sub">0/0 slates</span>
+                            </div>
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🔥 SURGING STEAM</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-surging-t">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-surging-t-sub">0/0 moves</span>
                             </div>
                         </div>
                         
@@ -2848,17 +2858,29 @@
                     document.getElementById('stat-shark-p').innerText = sharkPRate + '%';
                     document.getElementById('stat-shark-p-sub').innerText = `${sharkP.hit}/${sharkP.fired} starts`;
                     
+                    // Render TRAP Fade
+                    const trapFade = sig.PITCHER_TRAP_FADE || {fired: 0, hit: 0};
+                    const trapFadeRate = trapFade.fired > 0 ? Math.round((trapFade.hit / trapFade.fired) * 100) : 0;
+                    document.getElementById('stat-trap-fade').innerText = trapFadeRate + '%';
+                    document.getElementById('stat-trap-fade-sub').innerText = `${trapFade.hit}/${trapFade.fired} fades`;
+
+                    // Render WHALE Stacks
+                    const whaleT = sig.TEAM_WHALE || {fired: 0, hit: 0};
+                    const whaleTRate = whaleT.fired > 0 ? Math.round((whaleT.hit / whaleT.fired) * 100) : 0;
+                    document.getElementById('stat-whale-t').innerText = whaleTRate + '%';
+                    document.getElementById('stat-whale-t-sub').innerText = `${whaleT.hit}/${whaleT.fired} starts`;
+                    
                     // Render STORM Stacks
                     const stormT = sig.TEAM_STORM || {fired: 0, hit: 0};
                     const stormTRate = stormT.fired > 0 ? Math.round((stormT.hit / stormT.fired) * 100) : 0;
                     document.getElementById('stat-storm-t').innerText = stormTRate + '%';
                     document.getElementById('stat-storm-t-sub').innerText = `${stormT.hit}/${stormT.fired} slates`;
                     
-                    // Render TRAP Fade
-                    const trapFade = sig.PITCHER_TRAP_FADE || {fired: 0, hit: 0};
-                    const trapFadeRate = trapFade.fired > 0 ? Math.round((trapFade.hit / trapFade.fired) * 100) : 0;
-                    document.getElementById('stat-trap-fade').innerText = trapFadeRate + '%';
-                    document.getElementById('stat-trap-fade-sub').innerText = `${trapFade.hit}/${trapFade.fired} fades`;
+                    // Render SURGING Steam
+                    const surgingT = sig.TEAM_SURGING || {fired: 0, hit: 0};
+                    const surgingTRate = surgingT.fired > 0 ? Math.round((surgingT.hit / surgingT.fired) * 100) : 0;
+                    document.getElementById('stat-surging-t').innerText = surgingTRate + '%';
+                    document.getElementById('stat-surging-t-sub').innerText = `${surgingT.hit}/${surgingT.fired} moves`;
                     
                     // Render Core targets
                     const pCore = core.top3_pitchers || {total: 0, hit: 0};
