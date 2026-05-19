@@ -1714,6 +1714,7 @@
         let currentTab = 'hub';
         let latestData = null;
         let chatHistory = [];
+        window.platoonMatchups = [];
 
         // Dynamic Abbreviations Map
         const abbrevMap = {
@@ -1980,7 +1981,18 @@
                 }
                 latestData = await res.json();
                 populateMatchupFilter(latestData);
-                  updateWelcomeHub(latestData);
+                updateWelcomeHub(latestData);
+
+                // Fetch platoon splits globally to support popovers
+                try {
+                    const platRes = await fetch('/api/platoons');
+                    if (platRes.ok) {
+                        const platData = await platRes.json();
+                        window.platoonMatchups = platData.matchups || [];
+                    }
+                } catch (platErr) {
+                    console.error("Failed to pre-load platoons:", platErr);
+                }
                 
                 // Update slate date in header
                 if (latestData && latestData.timestamp) {
@@ -2471,6 +2483,7 @@
                 }
                 const data = await res.json();
                 const matchups = data.matchups || [];
+                window.platoonMatchups = matchups;
                 const body = document.getElementById('platoons-body');
                 body.innerHTML = '';
 
@@ -3154,6 +3167,60 @@
                 document.getElementById('tm-opp-pitcher-card').style.display = 'none';
             }
 
+            // Platoon splits profile integration
+            let platoon = null;
+            if (window.platoonMatchups) {
+                platoon = window.platoonMatchups.find(m => getTeamAbbr(m.team) === getTeamAbbr(t.team));
+            }
+            
+            const platOpsEl = document.getElementById('tm-plat-ops');
+            const platWobaEl = document.getElementById('tm-plat-woba');
+            const platOpsDiffEl = document.getElementById('tm-plat-ops-diff');
+            const platPSplitsEl = document.getElementById('tm-plat-p-splits');
+            const platAdvEl = document.getElementById('tm-plat-advantage');
+            
+            if (platoon) {
+                platOpsEl.innerText = platoon.team_vs_hand_ops.toFixed(3);
+                
+                // Color Team vs Hand OPS dynamically
+                if (platoon.team_vs_hand_ops >= 0.780) {
+                    platOpsEl.style.color = '#32d74b';
+                } else if (platoon.team_vs_hand_ops >= 0.730) {
+                    platOpsEl.style.color = '#0a84ff';
+                } else if (platoon.team_vs_hand_ops >= 0.700) {
+                    platOpsEl.style.color = 'var(--text-primary)';
+                } else if (platoon.team_vs_hand_ops >= 0.650) {
+                    platOpsEl.style.color = '#ff9f0a';
+                } else {
+                    platOpsEl.style.color = '#ff453a';
+                }
+                
+                platWobaEl.innerText = platoon.team_vs_hand_woba.toFixed(3);
+                
+                const sign = platoon.ops_diff > 0 ? '+' : '';
+                platOpsDiffEl.innerText = `${sign}${platoon.ops_diff}`;
+                platOpsDiffEl.style.color = platoon.ops_diff > 0 ? '#32d74b' : (platoon.ops_diff < -30 ? '#ff453a' : '#ff9f0a');
+                
+                platPSplitsEl.innerText = `${platoon.pitcher_vs_lhh_ops.toFixed(3)} / ${platoon.pitcher_vs_rhh_ops.toFixed(3)}`;
+                
+                let advBadge = '';
+                if (platoon.advantage === 'ELITE PLATOON') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-size:0.75rem; padding:2px 6px;">⚡ ELITE</span>`;
+                } else if (platoon.advantage === 'STRONG EDGE') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25); font-size:0.75rem; padding:2px 6px;">🎯 STRONG</span>`;
+                } else if (platoon.advantage === 'NEUTRAL') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 6px;">— NEUTRAL</span>`;
+                } else if (platoon.advantage === 'SLIGHT FADE') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25); font-size:0.75rem; padding:2px 6px;">⚠️ FADE</span>`;
+                } else {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-size:0.75rem; padding:2px 6px;">🚨 TRAP</span>`;
+                }
+                platAdvEl.innerHTML = advBadge;
+                document.getElementById('tm-platoon-card').style.display = 'block';
+            } else {
+                document.getElementById('tm-platoon-card').style.display = 'none';
+            }
+
             document.getElementById('team-modal').classList.add('open');
             document.getElementById('team-modal-overlay').classList.add('open');
         }
@@ -3260,6 +3327,59 @@
                 document.getElementById('pm-opp-badges-card').style.display = 'none';
             }
 
+            // Platoon splits profile integration for Starting Pitcher
+            let platoon = null;
+            if (window.platoonMatchups) {
+                platoon = window.platoonMatchups.find(m => m.opp_pitcher.toLowerCase() === p.pitcher.toLowerCase());
+            }
+            
+            const platHandEl = document.getElementById('pm-plat-hand');
+            const platVlEl = document.getElementById('pm-plat-vl');
+            const platVrEl = document.getElementById('pm-plat-vr');
+            const platOppOpsEl = document.getElementById('pm-plat-opp-ops');
+            const platAdvEl = document.getElementById('pm-plat-advantage');
+            
+            if (platoon) {
+                platHandEl.innerText = `${platoon.pitcher_hand_label}`;
+                platHandEl.style.color = platoon.pitcher_hand === 'L' ? '#ff9f0a' : '#0a84ff';
+                
+                platVlEl.innerText = `${platoon.pitcher_vs_lhh_ops.toFixed(3)} / .${Math.round(platoon.pitcher_vs_lhh_woba * 1000)}`;
+                platVrEl.innerText = `${platoon.pitcher_vs_rhh_ops.toFixed(3)} / .${Math.round(platoon.pitcher_vs_rhh_woba * 1000)}`;
+                
+                // Highlight weak side
+                if (platoon.pitcher_weak_side === 'LHH') {
+                    platVlEl.style.fontWeight = '800';
+                    platVlEl.style.color = '#ff453a';
+                    platVrEl.style.fontWeight = 'normal';
+                    platVrEl.style.color = 'var(--text-primary)';
+                } else {
+                    platVrEl.style.fontWeight = '800';
+                    platVrEl.style.color = '#ff453a';
+                    platVlEl.style.fontWeight = 'normal';
+                    platVlEl.style.color = 'var(--text-primary)';
+                }
+                
+                platOppOpsEl.innerText = platoon.team_vs_hand_ops.toFixed(3);
+                
+                let advBadge = '';
+                // Since this is the PITCHER modal, a high offense advantage is bad for the pitcher!
+                if (platoon.advantage === 'ELITE PLATOON') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-size:0.75rem; padding:2px 6px;">🚨 HIGH RISK</span>`;
+                } else if (platoon.advantage === 'STRONG EDGE') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25); font-size:0.75rem; padding:2px 6px;">⚠️ SLIGHT RISK</span>`;
+                } else if (platoon.advantage === 'NEUTRAL') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 6px;">— NEUTRAL</span>`;
+                } else if (platoon.advantage === 'SLIGHT FADE') {
+                    advBadge = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25); font-size:0.75rem; padding:2px 6px;">🎯 GOOD (FADE)</span>`;
+                } else {
+                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-size:0.75rem; padding:2px 6px;">⚡ ELITE FADE</span>`;
+                }
+                platAdvEl.innerHTML = advBadge;
+                document.getElementById('pm-platoon-card').style.display = 'block';
+            } else {
+                document.getElementById('pm-platoon-card').style.display = 'none';
+            }
+
             document.getElementById('pitcher-modal').classList.add('open');
             document.getElementById('pitcher-modal-overlay').classList.add('open');
         }
@@ -3312,6 +3432,14 @@
                     </div>
                 </div>
             </div>
+            <div class="card" style="padding:20px; margin:0;" id="tm-platoon-card">
+                <h4 style="margin:0 0 15px 0; color:#00f2fe;">Platoon Splits & Edge</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Team vs Hand OPS</span><strong id="tm-plat-ops">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Team vs Hand wOBA</span><strong id="tm-plat-woba">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>OPS Differential</span><strong id="tm-plat-ops-diff">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>SP vs LHH / RHH OPS</span><strong id="tm-plat-p-splits">-</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Platoon Advantage</span><strong id="tm-plat-advantage">-</strong></div>
+            </div>
         </div>
         
         <div class="card" style="padding:20px; margin:0;">
@@ -3351,6 +3479,14 @@
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Implied Total</span><strong id="pm-opp-itt">0.0</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Divergence</span><strong id="pm-opp-div">0%</strong></div>
                 <div style="display:flex; justify-content:space-between;"><span>DQI Verification</span><strong id="pm-opp-dqi">N/A</strong></div>
+            </div>
+            <div class="card" style="padding:20px; margin:0;" id="pm-platoon-card">
+                <h4 style="margin:0 0 15px 0; color:#00f2fe;">Platoon Splits & Edge</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Pitcher Hand</span><strong id="pm-plat-hand">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>vs LHH OPS / wOBA</span><strong id="pm-plat-vl">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>vs RHH OPS / wOBA</span><strong id="pm-plat-vr">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Opp vs Hand OPS</span><strong id="pm-plat-opp-ops">-</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Platoon Advantage</span><strong id="pm-plat-advantage">-</strong></div>
             </div>
         </div>
         
