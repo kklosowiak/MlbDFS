@@ -45,7 +45,7 @@ def calculate_dqi_for_audit(t, pitchers):
     pos_pts += 5.0 + 15.0 * div_factor
 
     # Layer 2: Pitcher Environment Slider
-    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 21.0))
+    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 25.0))
     pos_pts += 20.0 * phys_factor
 
     pen_factor = min(1.0, max(0.0, (float(bullpen) - 50.0) / 50.0))

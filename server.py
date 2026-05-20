@@ -1256,9 +1256,9 @@ def calculate_dqi(t):
     pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
 
     # ─── LAYER 2: PITCHER ENVIRONMENT SLIDER ──────────────────────────────────
-    # SP Physics: Bounded linear scaling from 40.0 (0 pts) down to 19.0 (+20 pts)
-    # Threshold at 19 covers highly targetable starters (in the red, under 20)
-    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 21.0))
+    # SP Physics: Bounded linear scaling from 40.0 (0 pts) down to 15.0 (+20 pts)
+    # Threshold at 15 covers elite targetable starters (worse physics = more points)
+    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 25.0))
     phys_pts = 20.0 * phys_factor
     if phys_pts > 0:
         pos_pts += phys_pts
