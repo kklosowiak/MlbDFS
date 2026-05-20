@@ -140,9 +140,66 @@ def scheduler_loop():
         # Sleep for 10 seconds before checking time again
         time.sleep(10)
 
-# Start scheduler in daemon thread
+# Start hourly scheduler in daemon thread
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)
 scheduler_thread.start()
+
+# --- v9.5: 1:00 AM ET Opening Lines Capture ---
+# This dedicated background thread fires exactly once per night at 1:00 AM
+# Eastern Time to lock in the true opening lines for the next day's slate.
+# Runs 24/7 — safe for Render $25/mo always-on tier.
+opening_lines_last_date_triggered = None
+opening_lines_lock = threading.Lock()
+
+def opening_lines_capture_loop():
+    """Background thread: fires perform_refresh_sync() once per night at 1:00 AM ET."""
+    global opening_lines_last_date_triggered
+    print("[SERVER]: 1:00 AM ET Opening Lines Capture thread started.")
+    
+    while True:
+        try:
+            from zoneinfo import ZoneInfo
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now - datetime.timedelta(hours=4)
+        
+        et_hour = et_now.hour
+        et_minute = et_now.minute
+        today_date_str = et_now.strftime("%Y-%m-%d")
+        
+        # Target window: exactly 1:00 AM ET (within the 1:00–1:01 minute window)
+        is_capture_window = (et_hour == 1 and et_minute == 0)
+        
+        with opening_lines_lock:
+            already_triggered_today = (opening_lines_last_date_triggered == today_date_str)
+        
+        if is_capture_window and not already_triggered_today:
+            print(f"[1AM-CAPTURE]: Opening lines capture triggered at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            with opening_lines_lock:
+                opening_lines_last_date_triggered = today_date_str
+            # Run in same thread (blocking) — this is a low-frequency, 1x/night event
+            # We do NOT use perform_refresh_sync here to avoid clobbering the hourly lock.
+            # Instead, do a lightweight fetch + analysis run.
+            try:
+                print("[1AM-CAPTURE]: Starting overnight opening lines ingestion scrape...")
+                from run_fetch import perform_fetch
+                perform_fetch()
+                print("[1AM-CAPTURE]: Starting OMEGA opening lines analysis...")
+                from main import run_full_analysis
+                run_full_analysis()
+                print("[1AM-CAPTURE]: ✅ Opening lines capture completed successfully!")
+            except Exception as cap_err:
+                import traceback
+                print(f"[1AM-CAPTURE ERROR]: {cap_err}")
+                traceback.print_exc()
+        
+        # Sleep 45 seconds between checks to catch the 1:00 minute window reliably
+        time.sleep(45)
+
+opening_lines_thread = threading.Thread(target=opening_lines_capture_loop, daemon=True)
+opening_lines_thread.start()
 
 # Auth validation dependency
 def get_current_user(request: Request):
@@ -485,6 +542,23 @@ def get_results_api():
     if os.path.exists(results_path):
         with open(results_path, "r", encoding="utf-8") as f:
             data = json.load(f)
+        
+        # v9.5: Pre-calculate and inject DQI fields into each team record.
+        # DQI only fires when divergence >= 10% (gated inside calculate_dqi).
+        # When the gate is not met, calculate_dqi returns None and we skip
+        # injection entirely — the frontend detects absence and shows a dash.
+        teams = data.get("teams", [])
+        for t in teams:
+            dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(t)
+            if dqi_score is not None:
+                t["dqi_score"] = dqi_score
+                t["dqi_status"] = dqi_status
+                t["dqi_pos_factors"] = dqi_pos_factors
+                t["dqi_warn_factors"] = dqi_warn_factors
+            # If None: leave the fields absent so frontend shows no DQI
+        data["teams"] = teams
+
+        
         return JSONResponse(
             content=data,
             headers={
@@ -1082,39 +1156,132 @@ def post_run_learning_loop_api(background_tasks: BackgroundTasks):
     return {"status": "started", "message": "Feedback loop learning analysis started in the background."}
 
 def calculate_dqi(t):
-    opp_phys = t.get('opp_pitcher_physics', 50.0)
-    bullpen = t.get('bullpen_fatigue', 0)
-    tt_move = t.get('tt_move', 0.0)
-    ml_move = t.get('ml_move', 0.0)
-    is_storm = t.get('is_storm', False)
-    is_trap = t.get('is_trap', False)
-    
-    pos_pts = 0
-    pos_factors = []
-    if opp_phys <= 20.0:
-        pos_pts += 20
-        pos_factors.append("Low-Phys SP")
-    if bullpen >= 65:
-        pos_pts += 20
-        pos_factors.append("Gassed Pen")
-    if tt_move > 0 or ml_move < 0:
-        pos_pts += 15
-        pos_factors.append("Market Steam")
-    if is_storm:
-        pos_pts += 15
-        pos_factors.append("Storm Physics")
-        
+    """
+    OMEGA v9.5: Multi-Layer Divergence Quality Index (DQI)
+
+    GATE: Only fires when team divergence >= 10%. Below this threshold,
+    returns None — no DQI is shown. Divergence is the prerequisite signal
+    (sharps are already on this team). DQI then measures the QUALITY and
+    CLARITY of that signal across 6 independent evidence layers.
+
+    Base: 30 (teams start in FADE — must earn their way to TRUST).
+    TRUST >= 75 | CAUTION >= 50 | FADE < 50
+    """
+    divergence = t.get('divergence', 0) or 0
+
+    # ─── DIVERGENCE GATE ──────────────────────────────────────────────────────
+    # No divergence signal = no DQI. Return sentinel None so API skips it.
+    if divergence < 10:
+        return None, None, [], []
+
+    # ─── RAW INPUTS ───────────────────────────────────────────────────────────
+    opp_phys           = t.get('opp_pitcher_physics', 50.0) or 50.0
+    bullpen            = t.get('bullpen_fatigue', 0) or 0
+    tt_move            = t.get('tt_move', 0.0) or 0.0
+    ml_move            = t.get('ml_move', 0.0) or 0.0
+    is_storm           = t.get('is_storm', False)
+    is_trap            = t.get('is_trap', False)
+    implied_total      = t.get('implied_total', 0.0) or 0.0
+    team_xwoba         = t.get('team_xwoba', 0.0) or 0.0
+    power_conc         = t.get('power_concentration', 0.0) or 0.0
+    total_signal       = t.get('total_signal', '') or ''
+    trend              = t.get('trend', 'STABLE') or 'STABLE'
+    is_opp_debut       = t.get('is_opp_debut', False)
+
+    pos_pts    = 0
+    warn_pts   = 0
+    pos_factors  = []
     warn_factors = []
-    if is_trap:
-        warn_factors.append("Public Chalk")
-    if tt_move < 0 and ml_move > 0:
+
+    # ─── LAYER 1: DIVERGENCE MAGNITUDE ────────────────────────────────────────
+    # The strength of the sharp-vs-public gap itself. Higher divergence = more
+    # conviction in the signal. Only the highest tier applies.
+    if divergence >= 25:
+        pos_pts += 20
+        pos_factors.append(f"Strong Divergence (+{divergence}%)")
+    elif divergence >= 15:
+        pos_pts += 12
+        pos_factors.append(f"Moderate Divergence (+{divergence}%)")
+    else:
+        pos_pts += 5
+        pos_factors.append(f"Base Divergence (+{divergence}%)")
+
+    # ─── LAYER 2: PITCHER ENVIRONMENT ─────────────────────────────────────────
+    # How beatable is the pitcher this stack is facing? Lower physics = more fade.
+    if opp_phys <= 15:
+        pos_pts += 20
+        pos_factors.append("Elite Fade SP")
+    elif opp_phys <= 25:
+        pos_pts += 10
+        pos_factors.append("Low-Phys SP")
+
+    if bullpen >= 65:
+        pos_pts += 15
+        pos_factors.append("Gassed Pen")
+
+    # ─── LAYER 3: MARKET CONFIRMATION ─────────────────────────────────────────
+    # Do market line movements confirm the sharp signal?
+    if tt_move > 0 or ml_move < 0:
+        pos_pts += 12
+        pos_factors.append("Market Steam")
+    elif tt_move < 0 and ml_move > 0:
+        warn_pts += 15
         warn_factors.append("Reverse Steam")
-        
-    dqi_score = 50 + pos_pts - (len(warn_factors) * 20)
+
+    if 'O-DIV' in total_signal:
+        pos_pts += 10
+        pos_factors.append("Market O-DIV")
+    elif 'U-DIV' in total_signal:
+        warn_pts += 12
+        warn_factors.append("Market U-DIV")
+
+    # ─── LAYER 4: OFFENSE QUALITY ──────────────────────────────────────────────
+    # How dangerous is this lineup regardless of run total?
+    if team_xwoba > 0.350:
+        pos_pts += 12
+        pos_factors.append("Elite Contact (xwOBA)")
+    if power_conc > 0.355:
+        pos_pts += 8
+        pos_factors.append("Power Stack")
+
+    if trend == 'SURGING':
+        pos_pts += 10
+        pos_factors.append("Surging Trend")
+    elif trend == 'FADING':
+        warn_pts += 15
+        warn_factors.append("Fading Trend")
+
+    # ─── LAYER 5: RUN ENVIRONMENT ──────────────────────────────────────────────
+    # Bonus-only. Low ITT does NOT penalize — a low-total game can still be a
+    # great spot if the other layers are aligned. High totals just add confidence.
+    if implied_total > 5.5:
+        pos_pts += 15
+        pos_factors.append(f"Elite Run Env ({implied_total:.1f})")
+    elif implied_total > 5.0:
+        pos_pts += 8
+        pos_factors.append(f"Strong Run Env ({implied_total:.1f})")
+    elif implied_total > 4.5:
+        pos_pts += 3
+        pos_factors.append(f"Avg Run Env ({implied_total:.1f})")
+
+    # ─── LAYER 6: SITUATIONAL BONUSES / TRAPS ─────────────────────────────────
+    if is_storm:
+        pos_pts += 8
+        pos_factors.append("Storm Physics")
+    if is_opp_debut:
+        pos_pts += 10
+        pos_factors.append("Debut Trap SP")
+    if is_trap:
+        warn_pts += 20
+        warn_factors.append("Public Chalk Trap")
+
+    # ─── FINAL SCORE ──────────────────────────────────────────────────────────
+    dqi_score = 30 + pos_pts - warn_pts
     dqi_score = max(0, min(100, dqi_score))
-    
+
     status = "TRUST" if dqi_score >= 75 else ("CAUTION" if dqi_score >= 50 else "FADE")
     return dqi_score, status, pos_factors, warn_factors
+
 
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])

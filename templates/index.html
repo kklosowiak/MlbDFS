@@ -2236,7 +2236,16 @@
                         oppStackBadge = `<span class="badge-mini" style="background: rgba(10, 132, 255, 0.12); border: 1px solid rgba(10, 132, 255, 0.3); color: #0a84ff; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🐳 SHARP TARGET</span>`;
                     }
                 }
-                
+                let ouDivBadge = '';
+                if (oppT && oppT.total_signal) {
+                    const ts = oppT.total_signal;
+                    if (ts.includes('O-DIV')) {
+                        ouDivBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.4); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;">📈 ${ts}</span>`;
+                    } else if (ts.includes('U-DIV')) {
+                        ouDivBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.12); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;">📉 ${ts}</span>`;
+                    }
+                }
+
                 tr.innerHTML = `
                     <td class="${scoreClass}">${p.alpha_score}</td>
                     <td class="metric" style="color: var(--accent-green);">${p.physics_score || '-'}</td>
@@ -2257,6 +2266,7 @@
                             ${p.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
                             ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
                             <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
+                            ${ouDivBadge}
                         </div>
                     </td>
                     <td><strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span></td>
@@ -2367,33 +2377,23 @@
                     trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(144, 224, 239, 0.2) 100%); border: 1px solid #00b4d8; color: #00b4d8; font-weight:800; box-shadow: 0 0 8px rgba(0, 180, 216, 0.35);">❄️ FADING</span>`;
                 }
 
-                // OMEGA v9.5: Divergence Quality Index (DQI) Verification to separate real opportunity from chalk/trap
+                // v9.5: DQI — render from backend-injected fields (single source of truth).
+                // Only shown when backend confirmed divergence >= 10% (dqi_score present).
                 let divBadgeHtml = '';
-                if (t.divergence >= 10) {
-                    let positiveFactors = [];
-                    let positivePoints = 0;
-                    if (oppPhys <= 20.0) { positiveFactors.push("🔥 Low-Phys SP"); positivePoints += 20; }
-                    if (t.bullpen_fatigue >= 65) { positiveFactors.push("♨ Gassed Pen"); positivePoints += 20; }
-                    if (t.tt_move > 0 || t.ml_move < 0) { positiveFactors.push("📈 Market Steam"); positivePoints += 15; }
-                    if (t.is_storm) { positiveFactors.push("🌪 Storm Physics"); positivePoints += 15; }
-                    
-                    let warningFactors = [];
-                    if (t.is_trap) warningFactors.push("🚨 Public Chalk");
-                    if (t.tt_move < 0 && t.ml_move > 0) warningFactors.push("📉 Reverse Steam");
-                    
-                    let score = 50 + positivePoints - (warningFactors.length * 20);
-                    score = Math.max(0, Math.min(100, score)); // Clamp 0-100
-                    let scoreColor = score >= 75 ? '#32d74b' : (score >= 50 ? '#ff9f0a' : '#ff453a');
-                    let scoreStatus = score >= 75 ? 'TRUST' : (score >= 50 ? 'CAUTION' : 'FADE');
-                    
+                if (t.dqi_score !== undefined && t.dqi_score !== null) {
+                    const dqiScore  = t.dqi_score;
+                    const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                    const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                    const posList  = (t.dqi_pos_factors  || []).map(f => `<span style="color:#32d74b; font-size:0.63rem;">• ${f}</span>`).join('');
+                    const warnList = (t.dqi_warn_factors || []).map(f => `<span style="color:#ff453a; font-size:0.63rem;">• ${f}</span>`).join('');
                     divBadgeHtml = `
                         <div style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; min-width:110px;">
-                            <div style="color:${scoreColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">DQI: ${score}% [${scoreStatus}]</div>
-                            ${positiveFactors.map(f => `<span style="color:#32d74b; font-size:0.65rem;">• ${f}</span>`).join('')}
-                            ${warningFactors.map(f => `<span style="color:#ff453a; font-size:0.65rem;">• ${f}</span>`).join('')}
+                            <div style="color:${scoreColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">DQI: ${dqiScore}% [${dqiStatus}]</div>
+                            ${posList}${warnList}
                         </div>
                     `;
                 }
+
 
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}</td>
@@ -3302,30 +3302,39 @@
                 document.getElementById('pm-opp-stack').innerText = oppT.stack_score || 0;
                 document.getElementById('pm-opp-itt').innerText = oppT.implied_total || 0;
                 document.getElementById('pm-opp-div').innerText = `${oppT.divergence || 0}%`;
-                
-                // Calculate dynamic DQI score
+
+                // v9.5: Render O-DIV / U-DIV market divergence signal from backend data
+                const totalSig = oppT.total_signal || '';
+                let totalSigHtml = '';
+                if (totalSig.includes('O-DIV')) {
+                    totalSigHtml = `<span class="signal-pill" style="background:rgba(255,69,58,0.18); color:#ff453a; border:1px solid rgba(255,69,58,0.45); font-size:0.78rem; padding:2px 7px; font-weight:700;">📈 ${totalSig}</span>`;
+                } else if (totalSig.includes('U-DIV')) {
+                    totalSigHtml = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.78rem; padding:2px 7px; font-weight:700;">📉 ${totalSig}</span>`;
+                } else if (totalSig) {
+                    totalSigHtml = `<span class="signal-pill pill-neutral" style="font-size:0.78rem; padding:2px 7px;">${totalSig}</span>`;
+                } else {
+                    totalSigHtml = `<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>`;
+                }
+                document.getElementById('pm-opp-total-signal').innerHTML = totalSigHtml;
+
+                // v9.5: Use pre-calculated DQI from the backend (injected in /api/results)
                 let dqiHtml = 'N/A';
-                if (oppT.divergence >= 10) {
-                    let positivePoints = 0;
-                    let oppPhysVal = oppT.opp_pitcher_physics || 0;
-                    if (!oppPhysVal && latestData.pitchers && oppT.opp_pitcher) {
-                        const match = latestData.pitchers.find(x => x.pitcher.toLowerCase() === oppT.opp_pitcher.toLowerCase());
-                        if (match) oppPhysVal = match.physics_score || 0;
+                if (oppT.dqi_score !== undefined) {
+                    const dqiScore = oppT.dqi_score;
+                    const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                    const dqiColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                    let dqiFactorStr = '';
+                    if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
+                        dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
                     }
-                    if (oppPhysVal <= 20.0) positivePoints += 20;
-                    if (oppT.bullpen_fatigue >= 65) positivePoints += 20;
-                    if (oppT.tt_move > 0 || oppT.ml_move < 0) positivePoints += 15;
-                    if (oppT.is_storm) positivePoints += 15;
-                    
-                    let warningCount = 0;
-                    if (oppT.is_trap) warningCount += 1;
-                    if (oppT.tt_move < 0 && oppT.ml_move > 0) warningCount += 1;
-                    
-                    let dqiScore = 50 + positivePoints - (warningCount * 20);
-                    dqiScore = Math.max(0, Math.min(100, dqiScore));
-                    let dqiColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
-                    let dqiStatus = dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE');
-                    dqiHtml = `<span style="color:${dqiColor}; font-weight:bold;">${dqiScore}% [${dqiStatus}]</span>`;
+                    if (oppT.dqi_warn_factors && oppT.dqi_warn_factors.length > 0) {
+                        dqiFactorStr += `<div style="color:#ff9f0a; font-size:0.72rem; margin-top:2px;">⚠️ ${oppT.dqi_warn_factors.join(' · ')}</div>`;
+                    }
+                    dqiHtml = `<span style="color:${dqiColor}; font-weight:bold;">${dqiScore}% [${dqiStatus}]</span>${dqiFactorStr}`;
+                } else if (oppT.divergence >= 10) {
+                    // Fallback if not yet injected
+                    const dqiScore = Math.max(0, Math.min(100, 50));
+                    dqiHtml = `<span style="color:#ff9f0a; font-weight:bold;">${dqiScore}% [CAUTION]</span>`;
                 }
                 document.getElementById('pm-opp-dqi').innerHTML = dqiHtml;
 
@@ -3383,24 +3392,174 @@
                 
                 platOppOpsEl.innerText = platoon.team_vs_hand_ops.toFixed(3);
                 
+                // v9.5 CORRECTED badge logic:
+                // Since this is the PITCHER modal, the platoon advantage is from the OFFENSE's perspective.
+                // ELITE PLATOON for offense = worst case for pitcher (ELITE FADE = dark red)
+                // PLATOON TRAP for offense = best case for pitcher (ELITE PLAY = green)
                 let advBadge = '';
-                // Since this is the PITCHER modal, a high offense advantage is bad for the pitcher!
                 if (platoon.advantage === 'ELITE PLATOON') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-size:0.75rem; padding:2px 6px;">🚨 HIGH RISK</span>`;
+                    advBadge = `<span class="signal-pill" style="background:rgba(139,0,0,0.25); color:#ff453a; border:1px solid rgba(255,69,58,0.5); font-size:0.75rem; padding:2px 8px; font-weight:800;">🚨 ELITE FADE</span>`;
                 } else if (platoon.advantage === 'STRONG EDGE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25); font-size:0.75rem; padding:2px 6px;">⚠️ SLIGHT RISK</span>`;
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.18); color:#ff9f0a; border:1px solid rgba(255,159,10,0.4); font-size:0.75rem; padding:2px 8px; font-weight:700;">⚠️ HIGH RISK</span>`;
                 } else if (platoon.advantage === 'NEUTRAL') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 6px;">— NEUTRAL</span>`;
+                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 8px;">— NEUTRAL</span>`;
                 } else if (platoon.advantage === 'SLIGHT FADE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25); font-size:0.75rem; padding:2px 6px;">🎯 GOOD (FADE)</span>`;
+                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.75rem; padding:2px 8px; font-weight:700;">✅ STRONG PLAY</span>`;
                 } else {
-                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-size:0.75rem; padding:2px 6px;">⚡ ELITE FADE</span>`;
+                    // PLATOON TRAP = pitcher's best case
+                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.2); color:#32d74b; border:1px solid rgba(50,215,75,0.45); font-size:0.75rem; padding:2px 8px; font-weight:800;">⚡ ELITE PLAY</span>`;
                 }
                 platAdvEl.innerHTML = advBadge;
                 document.getElementById('pm-platoon-card').style.display = 'block';
             } else {
                 document.getElementById('pm-platoon-card').style.display = 'none';
             }
+
+            // ============================================================
+            // v9.5: Build the 4-Square "Roster Intel" Grid
+            // ============================================================
+            const alphaScore = p.alpha_score || 0;
+            const physScore = p.physics_score || 0;
+            const isTrap = p.is_trap || false;
+            const isParadox = p.is_paradox || false;
+            const isShark = p.is_shark || false;
+            const isWhale = p.is_whale || false;
+            const isDebut = p.is_debut || false;
+
+            // --- Card 1: DFS Verdict ---
+            let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
+            if ((isTrap || isParadox) && physScore < 15) {
+                verdictLabel = 'HARD FADE';
+                verdictColor = '#ff453a';
+                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictIcon = '🚫';
+                verdictDesc = 'Multiple risk flags. Strong fade candidate.';
+            } else if (alphaScore >= 90 && !isTrap && physScore >= 18) {
+                verdictLabel = 'ELITE PLAY';
+                verdictColor = '#32d74b';
+                verdictBg = 'rgba(50,215,75,0.15)';
+                verdictIcon = '⚡';
+                verdictDesc = 'Top-tier score + clean signals. Core play.';
+            } else if (isDebut || (!isTrap && alphaScore >= 75)) {
+                verdictLabel = 'GPP DART';
+                verdictColor = '#ff9f0a';
+                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictIcon = '🎯';
+                verdictDesc = 'High-upside contrarian leverage opportunity.';
+            } else if (isTrap) {
+                verdictLabel = 'HARD FADE';
+                verdictColor = '#ff453a';
+                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictIcon = '🚫';
+                verdictDesc = 'Public chalk. Let the field roster this.';
+            } else {
+                verdictLabel = 'GPP DART';
+                verdictColor = '#ff9f0a';
+                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictIcon = '🎯';
+                verdictDesc = 'Situational leverage—use in select lineups.';
+            }
+
+            // --- Card 2: Ownership Signal ---
+            let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
+            if (isTrap && alphaScore >= 80) {
+                ownLabel = 'CHALK TRAP';
+                ownColor = '#ff453a';
+                ownBg = 'rgba(255,69,58,0.12)';
+                ownIcon = '🚨';
+                ownDesc = 'High projected ownership with hidden risk.';
+            } else if (isShark || isWhale || (alphaScore < 75 && physScore >= 16)) {
+                ownLabel = 'CONTRARIAN';
+                ownColor = '#32d74b';
+                ownBg = 'rgba(50,215,75,0.12)';
+                ownIcon = '📊';
+                ownDesc = 'Sharp-backed low-ownership GPP leverage.';
+            } else if (alphaScore >= 85 && !isTrap) {
+                ownLabel = 'CHALK PLAY';
+                ownColor = '#ff9f0a';
+                ownBg = 'rgba(255,159,10,0.12)';
+                ownIcon = '👥';
+                ownDesc = 'Popular play—pair with low-owned lineup builds.';
+            } else {
+                ownLabel = 'CONTRARIAN';
+                ownColor = '#32d74b';
+                ownBg = 'rgba(50,215,75,0.12)';
+                ownIcon = '📊';
+                ownDesc = 'Low projected ownership. GPP separation.';
+            }
+
+            // --- Card 3: Leverage Grade ---
+            let lvGrade, lvColor, lvBg, lvDesc;
+            const lvScore = alphaScore + (physScore * 0.5) - (isTrap ? 20 : 0) - (isParadox ? 10 : 0) + (isShark || isWhale ? 10 : 0);
+            if (lvScore >= 105) {
+                lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max leverage. Play in all lineups.';
+            } else if (lvScore >= 90) {
+                lvGrade = 'B'; lvColor = '#0a84ff'; lvBg = 'rgba(10,132,255,0.12)'; lvDesc = 'Strong play. Target in most lineups.';
+            } else if (lvScore >= 75) {
+                lvGrade = 'C'; lvColor = '#ff9f0a'; lvBg = 'rgba(255,159,10,0.12)'; lvDesc = 'Situational. Use in 2-3 lineups max.';
+            } else {
+                lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Risk outweighs upside.';
+            }
+
+            // --- Card 4: Environment ---
+            const weatherLabel = p.weather_label || 'Weather: N/A';
+            const parkFactor = p.park_factor !== undefined ? p.park_factor : null;
+            let envIcon = '🌤️';
+            let envColor = 'var(--text-primary)';
+            let envDesc = weatherLabel;
+            if (weatherLabel.includes('POSTPONE') || weatherLabel.includes('🔴')) {
+                envIcon = '🌧️'; envColor = '#ff453a';
+            } else if (weatherLabel.includes('DELAY') || weatherLabel.includes('🟠')) {
+                envIcon = '⛅'; envColor = '#ff9f0a';
+            } else if (weatherLabel.includes('DOME') || weatherLabel.includes('🟢') || weatherLabel.includes('CLEAR')) {
+                envIcon = '🏟️'; envColor = '#32d74b';
+            }
+            let parkStr = '';
+            if (parkFactor !== null) {
+                const pfVal = parseFloat(parkFactor);
+                if (pfVal > 1.08) parkStr = `<div style="font-size:0.75rem; color:#ff9f0a; margin-top:4px;">🏟️ Hitter-Friendly Park (${pfVal.toFixed(2)}x)</div>`;
+                else if (pfVal < 0.93) parkStr = `<div style="font-size:0.75rem; color:#32d74b; margin-top:4px;">🏟️ Pitcher's Park (${pfVal.toFixed(2)}x)</div>`;
+                else parkStr = `<div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">🏟️ Neutral Park (${pfVal.toFixed(2)}x)</div>`;
+            }
+            // Show O-DIV / U-DIV if opponent data available
+            let envMarketStr = '';
+            if (oppT && oppT.total_signal) {
+                const ts = oppT.total_signal;
+                if (ts.includes('O-DIV')) {
+                    envMarketStr = `<div style="font-size:0.75rem; color:#ff453a; margin-top:4px; font-weight:700;">📈 ${ts} — Sharps leaning OVER</div>`;
+                } else if (ts.includes('U-DIV')) {
+                    envMarketStr = `<div style="font-size:0.75rem; color:#32d74b; margin-top:4px; font-weight:700;">📉 ${ts} — Sharps leaning UNDER</div>`;
+                }
+            }
+
+            document.getElementById('pm-roster-intel').innerHTML = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <!-- DFS Verdict -->
+                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                        <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
+                    </div>
+                    <!-- Ownership Signal -->
+                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Ownership Signal</div>
+                        <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
+                    </div>
+                    <!-- Leverage Grade -->
+                    <div style="background:${lvBg}; border:1px solid ${lvColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Leverage Grade</div>
+                        <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
+                    </div>
+                    <!-- Environment -->
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Environment</div>
+                        <div style="font-size:1.1rem; font-weight:800; color:${envColor}; line-height:1.3; margin-bottom:2px;">${envIcon} ${envDesc}</div>
+                        ${parkStr}${envMarketStr}
+                    </div>
+                </div>
+            `;
 
             document.getElementById('pitcher-modal').classList.add('open');
             document.getElementById('pitcher-modal-overlay').classList.add('open');
@@ -3467,12 +3626,10 @@
         <div class="card" style="padding:20px; margin:0;">
             <h4 style="margin:0 0 15px 0; color:var(--accent-blue);">Active Alpha Badges</h4>
             <div id="tm-badges" style="display:flex; flex-wrap:wrap; gap:8px;">
-                <!-- Badges injected here -->
             </div>
         </div>
     </div>
 
-    <!-- GRANULAR PITCHER MODAL -->
     <div class="team-modal-overlay" id="pitcher-modal-overlay" onclick="closePitcherModal()"></div>
     <div class="team-modal" id="pitcher-modal">
         <button class="team-modal-close" onclick="closePitcherModal()">×</button>
@@ -3500,7 +3657,8 @@
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Stack Score</span><strong id="pm-opp-stack">0.0</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Implied Total</span><strong id="pm-opp-itt">0.0</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Divergence</span><strong id="pm-opp-div">0%</strong></div>
-                <div style="display:flex; justify-content:space-between;"><span>DQI Verification</span><strong id="pm-opp-dqi">N/A</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px; align-items:center;"><span>Market Signal</span><span id="pm-opp-total-signal">—</span></div>
+                <div style="display:flex; justify-content:space-between; flex-direction:column; gap:4px;"><span style="margin-bottom:3px;">DQI Verification</span><div id="pm-opp-dqi">N/A</div></div>
             </div>
             <div class="card" style="padding:20px; margin:0;" id="pm-platoon-card">
                 <h4 style="margin:0 0 15px 0; color:#00f2fe;">Platoon Splits & Edge</h4>
@@ -3515,15 +3673,21 @@
         <div class="card" style="padding:20px; margin:0; margin-bottom:20px;">
             <h4 style="margin:0 0 15px 0; color:var(--accent-blue);">Active Pitcher Badges</h4>
             <div id="pm-badges" style="display:flex; flex-wrap:wrap; gap:8px;">
-                <!-- Badges injected here -->
+            </div>
+        </div>
+
+        <div class="card" style="padding:20px; margin:0; margin-bottom:20px; background: linear-gradient(135deg, rgba(10,132,255,0.05), rgba(50,215,75,0.03)); border: 1px solid rgba(255,255,255,0.12);">
+            <h4 style="margin:0 0 15px 0; color:#fff; font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px;">
+                <span style="background:linear-gradient(135deg,#0a84ff,#32d74b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">🧠 Roster Intel</span>
+                <span style="font-size:0.65rem; font-weight:700; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.06em; -webkit-text-fill-color:rgba(255,255,255,0.35);">v9.5 AI Analysis</span>
+            </h4>
+            <div id="pm-roster-intel">
             </div>
         </div>
 
         <div class="card" style="padding:20px; margin:0; display:none;" id="pm-opp-badges-card">
             <h4 style="margin:0 0 15px 0; color:var(--accent-orange);">Opposing Offense Active Badges</h4>
             <div id="pm-opp-badges" style="display:flex; flex-wrap:wrap; gap:8px;">
-                <!-- Badges injected here -->
-            </div>
         </div>
     </div>
 
