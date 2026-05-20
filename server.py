@@ -1276,10 +1276,10 @@ def calculate_dqi(t):
 
     # ─── LAYER 3: MARKET CONFIRMATION ─────────────────────────────────────────
     # Do market line movements confirm the sharp signal?
-    if tt_move > 0 or ml_move < 0:
+    if tt_move >= 0.3 or ml_move <= -10.0:
         pos_pts += 12
         pos_factors.append("Market Steam")
-    elif tt_move < 0 and ml_move > 0:
+    elif tt_move <= -0.3 and ml_move >= 10.0:
         warn_pts += 15
         warn_factors.append("Reverse Steam")
 
