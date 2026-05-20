@@ -181,6 +181,7 @@ def run_feedback_loop(days=7):
         for t in t_audit:
             runs = t.get('actual_runs', 0)
             is_hit_5 = runs >= 5
+            div = float(t.get('divergence', 0) or 0)
             
             if t.get('is_whale'):
                 signal_stats['TEAM_WHALE']['fired'] += 1

@@ -3243,6 +3243,115 @@
                 document.getElementById('tm-platoon-card').style.display = 'none';
             }
 
+            // ============================================================
+            // v9.5: Build the 3-Column "Roster Intel" Grid for Team Stacks
+            // ============================================================
+            const stackScore = t.stack_score || 0;
+            const physScore = t.physics_score || 0;
+            const isTrap = t.is_trap || false;
+            const isParadox = t.is_paradox || false;
+            const isShark = t.is_shark || false;
+            const isWhale = t.is_whale || false;
+            const isDebut = t.is_opp_debut || false;
+
+            // --- Card 1: DFS Verdict ---
+            let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
+            if ((isTrap || isParadox) && physScore < 85) {
+                verdictLabel = 'HARD FADE';
+                verdictColor = '#ff453a';
+                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictIcon = '🚫';
+                verdictDesc = 'Multiple risk flags or high-probability trap. Avoid this stack.';
+            } else if (stackScore >= 110 && !isTrap && physScore >= 95) {
+                verdictLabel = 'ELITE PLAY';
+                verdictColor = '#32d74b';
+                verdictBg = 'rgba(50,215,75,0.15)';
+                verdictIcon = '⚡';
+                verdictDesc = 'Top-tier physics + market support. Premium play.';
+            } else if (isDebut || (!isTrap && stackScore >= 98)) {
+                verdictLabel = 'STRONG GPP';
+                verdictColor = '#ff9f0a';
+                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictIcon = '🎯';
+                verdictDesc = 'Excellent tournament leverage. High run-scoring upside.';
+            } else if (isTrap) {
+                verdictLabel = 'HARD FADE';
+                verdictColor = '#ff453a';
+                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictIcon = '🚫';
+                verdictDesc = 'Public trap stack. Pivot to contrarian alternatives.';
+            } else {
+                verdictLabel = 'GPP DART';
+                verdictColor = '#ff9f0a';
+                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictIcon = '🎯';
+                verdictDesc = 'Situational leverage—consider for multi-entry builds.';
+            }
+
+            // --- Card 2: Ownership Signal ---
+            let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
+            if (isTrap && stackScore >= 100) {
+                ownLabel = 'CHALK TRAP';
+                ownColor = '#ff453a';
+                ownBg = 'rgba(255,69,58,0.12)';
+                ownIcon = '🚨';
+                ownDesc = 'Heavy public backing with minimal underlying physics.';
+            } else if (isShark || isWhale || (stackScore < 98 && physScore >= 90)) {
+                ownLabel = 'CONTRARIAN';
+                ownColor = '#32d74b';
+                ownBg = 'rgba(50,215,75,0.12)';
+                ownIcon = '📊';
+                ownDesc = 'Sharp or Whale backed low-ownership GPP leverage.';
+            } else if (stackScore >= 105 && !isTrap) {
+                ownLabel = 'CHALK PLAY';
+                ownColor = '#ff9f0a';
+                ownBg = 'rgba(255,159,10,0.12)';
+                ownIcon = '👥';
+                ownDesc = 'Popular play—pair with contrarian value pivots.';
+            } else {
+                ownLabel = 'CONTRARIAN';
+                ownColor = '#32d74b';
+                ownBg = 'rgba(50,215,75,0.12)';
+                ownIcon = '📊';
+                ownDesc = 'Low ownership profile. Offers clean leverage.';
+            }
+
+            // --- Card 3: Leverage Grade ---
+            let lvGrade, lvColor, lvBg, lvDesc;
+            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 15 : 0) - (isParadox ? 10 : 0) + (isShark || isWhale ? 12 : 0);
+            if (lvScore >= 120) {
+                lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max stack leverage. Target heavily.';
+            } else if (lvScore >= 105) {
+                lvGrade = 'B'; lvColor = '#0a84ff'; lvBg = 'rgba(10,132,255,0.12)'; lvDesc = 'Strong play. Target in most lineups.';
+            } else if (lvScore >= 90) {
+                lvGrade = 'C'; lvColor = '#ff9f0a'; lvBg = 'rgba(255,159,10,0.12)'; lvDesc = 'Situational. Use in selective stacks.';
+            } else {
+                lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Extreme risk of underperforming.';
+            }
+
+            document.getElementById('tm-roster-intel').innerHTML = `
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                    <!-- DFS Verdict -->
+                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                        <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
+                    </div>
+                    <!-- Ownership Signal -->
+                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Ownership Signal</div>
+                        <div style="font-size:1.35rem; font-weight:900; color:${ownIcon} ${ownLabel}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
+                    </div>
+                    <!-- Leverage Grade -->
+                    <div style="background:${lvBg}; border:1px solid ${lvColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Leverage Grade</div>
+                        <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
+                    </div>
+                </div>
+            `;
+
             document.getElementById('team-modal').classList.add('open');
             document.getElementById('team-modal-overlay').classList.add('open');
         }
@@ -3416,7 +3525,7 @@
             }
 
             // ============================================================
-            // v9.5: Build the 4-Square "Roster Intel" Grid
+            // v9.5: Build the 3-Column "Roster Intel" Grid & Populate the 4th Grid Card "Game Environment"
             // ============================================================
             const alphaScore = p.alpha_score || 0;
             const physScore = p.physics_score || 0;
@@ -3501,39 +3610,9 @@
                 lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Risk outweighs upside.';
             }
 
-            // --- Card 4: Environment ---
-            const weatherLabel = p.weather_label || 'Weather: N/A';
-            const parkFactor = p.park_factor !== undefined ? p.park_factor : null;
-            let envIcon = '🌤️';
-            let envColor = 'var(--text-primary)';
-            let envDesc = weatherLabel;
-            if (weatherLabel.includes('POSTPONE') || weatherLabel.includes('🔴')) {
-                envIcon = '🌧️'; envColor = '#ff453a';
-            } else if (weatherLabel.includes('DELAY') || weatherLabel.includes('🟠')) {
-                envIcon = '⛅'; envColor = '#ff9f0a';
-            } else if (weatherLabel.includes('DOME') || weatherLabel.includes('🟢') || weatherLabel.includes('CLEAR')) {
-                envIcon = '🏟️'; envColor = '#32d74b';
-            }
-            let parkStr = '';
-            if (parkFactor !== null) {
-                const pfVal = parseFloat(parkFactor);
-                if (pfVal > 1.08) parkStr = `<div style="font-size:0.75rem; color:#ff9f0a; margin-top:4px;">🏟️ Hitter-Friendly Park (${pfVal.toFixed(2)}x)</div>`;
-                else if (pfVal < 0.93) parkStr = `<div style="font-size:0.75rem; color:#32d74b; margin-top:4px;">🏟️ Pitcher's Park (${pfVal.toFixed(2)}x)</div>`;
-                else parkStr = `<div style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">🏟️ Neutral Park (${pfVal.toFixed(2)}x)</div>`;
-            }
-            // Show O-DIV / U-DIV if opponent data available
-            let envMarketStr = '';
-            if (oppT && oppT.total_signal) {
-                const ts = oppT.total_signal;
-                if (ts.includes('O-DIV')) {
-                    envMarketStr = `<div style="font-size:0.75rem; color:#ff453a; margin-top:4px; font-weight:700;">📈 ${ts} — Sharps leaning OVER</div>`;
-                } else if (ts.includes('U-DIV')) {
-                    envMarketStr = `<div style="font-size:0.75rem; color:#32d74b; margin-top:4px; font-weight:700;">📉 ${ts} — Sharps leaning UNDER</div>`;
-                }
-            }
-
+            // --- Populate Roster Intel ---
             document.getElementById('pm-roster-intel').innerHTML = `
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
                     <!-- DFS Verdict -->
                     <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
                         <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
@@ -3552,14 +3631,60 @@
                         <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
                     </div>
-                    <!-- Environment -->
-                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Environment</div>
-                        <div style="font-size:1.1rem; font-weight:800; color:${envColor}; line-height:1.3; margin-bottom:2px;">${envIcon} ${envDesc}</div>
-                        ${parkStr}${envMarketStr}
-                    </div>
                 </div>
             `;
+
+            // --- Populate Card 4: Game Environment ---
+            const weatherLabel = p.weather_label || 'Weather: N/A';
+            const parkFactor = p.park_factor !== undefined ? p.park_factor : null;
+            let envIcon = '🌤️';
+            let envColor = 'var(--text-primary)';
+            if (weatherLabel.includes('POSTPONE') || weatherLabel.includes('🔴')) {
+                envIcon = '🌧️'; envColor = '#ff453a';
+            } else if (weatherLabel.includes('DELAY') || weatherLabel.includes('🟠')) {
+                envIcon = '⛅'; envColor = '#ff9f0a';
+            } else if (weatherLabel.includes('DOME') || weatherLabel.includes('🟢') || weatherLabel.includes('CLEAR')) {
+                envIcon = '🏟️'; envColor = '#32d74b';
+            }
+            document.getElementById('pm-env-weather').innerHTML = `<span style="color:${envColor}; font-weight:700;">${envIcon} ${weatherLabel}</span>`;
+
+            let parkStr = 'Neutral (1.00x)';
+            if (parkFactor !== null) {
+                const pfVal = parseFloat(parkFactor);
+                if (pfVal > 1.08) parkStr = `<span style="color:#ff9f0a; font-weight:700;">🏟️ Hitter-Friendly (${pfVal.toFixed(2)}x)</span>`;
+                else if (pfVal < 0.93) parkStr = `<span style="color:#32d74b; font-weight:700;">🏟️ Pitcher's Park (${pfVal.toFixed(2)}x)</span>`;
+                else parkStr = `<span style="color:var(--text-secondary); font-weight:700;">🏟️ Neutral (${pfVal.toFixed(2)}x)</span>`;
+            }
+            document.getElementById('pm-env-park').innerHTML = parkStr;
+
+            // Umpire Assignment
+            const umpName = p.umpire_name || 'TBD';
+            let umpStr = `<span style="color:var(--text-secondary);">${umpName}</span>`;
+            let umpFactor = 1.0;
+            let home = p.side === 'home' ? p.team : p.opponent;
+            if (window.umpireAssignments && window.umpireAssignments[home]) {
+                const ud = window.umpireAssignments[home];
+                umpFactor = ud.factor || 1.0;
+            }
+            if (umpFactor !== 1.0) {
+                const isPitcherUmp = umpFactor < 1.0;
+                umpStr = `<span style="color:${isPitcherUmp ? '#32d74b' : '#ff453a'}; font-weight:700;">${umpName} (${isPitcherUmp ? '🟢 Pitcher' : '🔴 Hitter'}: ${umpFactor.toFixed(2)}x)</span>`;
+            }
+            document.getElementById('pm-env-umpire').innerHTML = umpStr;
+
+            // Vegas Total Signal
+            let envMarketStr = '<span style="color:var(--text-secondary);">—</span>';
+            if (oppT && oppT.total_signal) {
+                const ts = oppT.total_signal;
+                if (ts.includes('O-DIV')) {
+                    envMarketStr = `<span style="color:#ff453a; font-weight:700;">📈 ${ts}</span>`;
+                } else if (ts.includes('U-DIV')) {
+                    envMarketStr = `<span style="color:#32d74b; font-weight:700;">📉 ${ts}</span>`;
+                } else {
+                    envMarketStr = `<span style="color:var(--text-secondary);">${ts}</span>`;
+                }
+            }
+            document.getElementById('pm-env-vegas').innerHTML = envMarketStr;
 
             document.getElementById('pitcher-modal').classList.add('open');
             document.getElementById('pitcher-modal-overlay').classList.add('open');
@@ -3628,6 +3753,15 @@
             <div id="tm-badges" style="display:flex; flex-wrap:wrap; gap:8px;">
             </div>
         </div>
+
+        <div class="card" style="padding:20px; margin:0; margin-top:20px; background: linear-gradient(135deg, rgba(10,132,255,0.05), rgba(50,215,75,0.03)); border: 1px solid rgba(255,255,255,0.12);">
+            <h4 style="margin:0 0 15px 0; color:#fff; font-size:1rem; font-weight:800; display:flex; align-items:center; gap:8px;">
+                <span style="background:linear-gradient(135deg,#0a84ff,#32d74b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">🧠 Roster Intel</span>
+                <span style="font-size:0.65rem; font-weight:700; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.06em; -webkit-text-fill-color:rgba(255,255,255,0.35);">v9.5 AI Analysis</span>
+            </h4>
+            <div id="tm-roster-intel">
+            </div>
+        </div>
     </div>
 
     <div class="team-modal-overlay" id="pitcher-modal-overlay" onclick="closePitcherModal()"></div>
@@ -3667,6 +3801,13 @@
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>vs RHH OPS / wOBA</span><strong id="pm-plat-vr">-</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Opp vs Hand OPS</span><strong id="pm-plat-opp-ops">-</strong></div>
                 <div style="display:flex; justify-content:space-between;"><span>Platoon Advantage</span><strong id="pm-plat-advantage">-</strong></div>
+            </div>
+            <div class="card" style="padding:20px; margin:0;" id="pm-env-card">
+                <h4 style="margin:0 0 15px 0; color:#e0aaff;">Game Environment & Weather</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Weather Conditions</span><strong id="pm-env-weather">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Ballpark Factor</span><strong id="pm-env-park">-</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Umpire Assignment</span><strong id="pm-env-umpire">-</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Vegas Total Signal</span><strong id="pm-env-vegas">-</strong></div>
             </div>
         </div>
         

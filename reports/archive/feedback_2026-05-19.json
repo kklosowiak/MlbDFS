@@ -1,0 +1,107 @@
+{
+    "generated_at": "2026-05-19 11:11 PM ET",
+    "dates_analyzed": [
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-16",
+        "2026-05-17",
+        "2026-05-18"
+    ],
+    "signal_stats": {
+        "PITCHER_WHALE": {
+            "fired": 6,
+            "hit": 0
+        },
+        "PITCHER_SHARK": {
+            "fired": 1,
+            "hit": 0
+        },
+        "PITCHER_TRAP_FADE": {
+            "fired": 32,
+            "hit": 23
+        },
+        "TEAM_WHALE": {
+            "fired": 22,
+            "hit": 8
+        },
+        "TEAM_STORM": {
+            "fired": 3,
+            "hit": 1
+        },
+        "TEAM_SURGING": {
+            "fired": 2,
+            "hit": 0
+        },
+        "GASSED_BULLPEN_ATTACK": {
+            "fired": 56,
+            "hit": 31
+        },
+        "DQI_TRUST": {
+            "fired": 3,
+            "hit": 3
+        },
+        "DQI_FADE": {
+            "fired": 7,
+            "hit": 4
+        },
+        "STEAM_SUPPORT": {
+            "fired": 30,
+            "hit": 14
+        }
+    },
+    "projection_stats": {
+        "top3_pitchers": {
+            "total": 21,
+            "hit": 10
+        },
+        "top3_stacks": {
+            "total": 21,
+            "hit": 11
+        },
+        "top5_hitters": {
+            "total": 35,
+            "hit": 9
+        }
+    },
+    "what_we_missed": [
+        {
+            "date": "2026-05-12",
+            "type": "Team Divergence Fail",
+            "name": "Detroit Tigers",
+            "detail": "OMEGA showed +20.0% divergence vs market, but they scored only 2 runs vs Freddy Peralta."
+        },
+        {
+            "date": "2026-05-13",
+            "type": "Team Divergence Fail",
+            "name": "St. Louis Cardinals",
+            "detail": "OMEGA showed +29.0% divergence vs market, but they scored only 2 runs vs J.T. Ginn."
+        },
+        {
+            "date": "2026-05-14",
+            "type": "Team Divergence Fail",
+            "name": "Kansas City Royals",
+            "detail": "OMEGA showed +16.0% divergence vs market, but they scored only 2 runs vs Michael Mcgreevy."
+        },
+        {
+            "date": "2026-05-14",
+            "type": "Team Divergence Fail",
+            "name": "Chicago Cubs",
+            "detail": "OMEGA showed +15.0% divergence vs market, but they scored only 2 runs vs Anthony Kay."
+        },
+        {
+            "date": "2026-05-15",
+            "type": "Team Divergence Fail",
+            "name": "Los Angeles Angels",
+            "detail": "OMEGA showed +29.0% divergence vs market, but they scored only 0 runs vs Will Klein."
+        }
+    ],
+    "recommendations": [
+        "\u26a0\ufe0f **PITCHER_WHALE** has been cold at **0%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u2705 **PITCHER_TRAP_FADE** is highly profitable at **72%** hit rate. Increase projection weight and trust indicators.",
+        "\u26a0\ufe0f **TEAM_WHALE** has been cold at **36%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **TEAM_STORM** has been cold at **33%** hit rate. Downweight exposure and recommend faded caution.",
+        "\ud83d\udfe2 **DQI TRUST Grade** is executing perfectly at **100%** success rate. Highly recommend boosting PHY/MKT weights."
+    ]
+}

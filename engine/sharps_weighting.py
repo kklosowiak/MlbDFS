@@ -84,8 +84,8 @@ class SharpsWeighting:
             "is_trap": is_trap
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False):
-        """OMEGA v8.0: Tiered Alpha/Beta Stack Scoring (Flattened Multipliers)."""
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None):
+        """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
@@ -179,22 +179,44 @@ class SharpsWeighting:
         
         # OMEGA v8.8: The 'Talent Floor Gate' (Prevents low-physics team inflation)
         # If raw physics is weak (< 36.0, i.e., Weighted < 14.4) and the stack is heavily backed
-        # by market multipliers (Whale, Storm, Shark, Steam, etc.), apply a 0.95x defensive penalty.
+        # by market multipliers (Whale, Storm, Shark, Steam, etc.), apply a 0.90x defensive penalty.
         has_market_inflation = is_whale or is_storm or is_shark or is_steam or is_sharp or (divergence > 12)
         trap_multiplier = 1.0
         if physics_raw < 36.0 and has_market_inflation:
-            trap_multiplier = 0.95
+            trap_multiplier = 0.90
 
-        # OMEGA v8.9: Strategy 1 - The 'Defensive Gut Gate' (Matchup Magnetism)
-        # If opposing pitcher physics is extremely low (below 20.0), we apply an authoritative Matchup Magnetism Boost
-        # that is proportional to the pitcher's weakness and amplified by bullpen fatigue.
+        # OMEGA v9.8: Matchup Magnetism with cap and talent dampening
+        # If opposing pitcher physics is extremely low (below 20.0), we apply a matchup boost.
+        # We cap the raw boost at 1.30 (max 30% boost) and scale it by the team's anchor_ratio 
+        # to ensure weak offenses don't over-inflate.
         magnetism_boost = 1.0
         if opp_pitcher_physics < 20.0:
             vulnerability_gap = (20.0 - opp_pitcher_physics) / 10.0
-            fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30  # Up to +30% boost for gassed bullpens
-            magnetism_boost = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
+            fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30
+            raw_magnetism = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
+            raw_magnetism_capped = min(1.30, raw_magnetism)
+            magnetism_boost = 1.0 + (raw_magnetism_capped - 1.0) * anchor_ratio
 
-        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier * magnetism_boost
+        # OMEGA v9.8: Bullpen Skill Grades
+        bullpen_skill_mult = 1.0
+        if opponent:
+            opp_name = str(opponent).strip()
+            elite_pens = {
+                'Cleveland Guardians', 'Milwaukee Brewers', 'New York Yankees', 
+                'Atlanta Braves', 'Los Angeles Dodgers', 'Seattle Mariners', 
+                'San Diego Padres', 'Philadelphia Phillies'
+            }
+            weak_pens = {
+                'Colorado Rockies', 'Chicago White Sox', 'Miami Marlins', 
+                'Oakland Athletics', 'Athletics', 'Washington Nationals', 
+                'Detroit Tigers', 'Los Angeles Angels', 'Toronto Blue Jays'
+            }
+            if opp_name in elite_pens:
+                bullpen_skill_mult = 0.95
+            elif opp_name in weak_pens:
+                bullpen_skill_mult = 1.10
+
+        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier * magnetism_boost * bullpen_skill_mult
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt

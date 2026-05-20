@@ -278,7 +278,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         # If we have a real name, but no lines/odds, it is likely a late callup/debut
         if report['pitcher'] != "TBD" and (not report.get('k_line') or report.get('k_line') == '-'):
             report['is_debut'] = True
-            report['alpha_score'] = round(report['alpha_score'] * 1.10, 1) # 10% Visibility boost for debuts
+            report['alpha_score'] = round(report['alpha_score'] * 1.00, 1) # Removed visibility boost for debuts
         else:
             report['is_debut'] = False
 
@@ -332,6 +332,17 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
 def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
     print("\n[STEP 2]: Ranking Team Omega...")
+    
+    # Load Statcast Cache for platoon resolution
+    cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+    cache = {}
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                cache = json.load(f)
+        except Exception:
+            pass
+
     confirmed_lineups = confirmed_lineups or {}
     if totals_data is None:
         totals_data = {}
@@ -474,8 +485,67 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             team_xwoba = 0.330
             power_concentration = 0.330
             if team_h:
-                # Sort by matchup_xwoba descending
-                sorted_h = sorted(team_h, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
+                # Resolve opposing pitcher throw hand
+                pitch_hand = "R"
+                if opp_pitcher_name and opp_pitcher_name != "TBD":
+                    opp_pitcher_norm = normalize_player_name(opp_pitcher_name)
+                    p_profile = cache.get(opp_pitcher_norm, {})
+                    pitch_hand = p_profile.get("pitch_hand", "R") if p_profile.get("type") == "pitcher" else "R"
+
+                # Apply Platoon Splits to Team Stack xwOBA Calculations
+                adjusted_h_list = []
+                for h in team_h:
+                    hitter_norm = normalize_player_name(h['name'])
+                    h_profile = cache.get(hitter_norm, {})
+                    
+                    platoon_multiplier = 1.0
+                    if pitch_hand and h_profile:
+                        opp_hand = str(pitch_hand).upper()
+                        overall_ops = float(h_profile.get("ops", 0.720) or 0.720)
+                        if overall_ops <= 0.200: overall_ops = 0.720
+                        
+                        if opp_hand == "L":
+                            split_ops = float(h_profile.get("vs_left_ops", 0.0) or 0.0)
+                            split_pa = int(h_profile.get("vs_left_pa", 0) or 0)
+                            split_ops_2025 = float(h_profile.get("vs_left_ops_2025", 0.0) or 0.0)
+                            split_pa_2025 = int(h_profile.get("vs_left_pa_2025", 0) or 0)
+                            split_ops_other_2025 = float(h_profile.get("vs_right_ops_2025", 0.0) or 0.0)
+                            split_pa_other_2025 = int(h_profile.get("vs_right_pa_2025", 0) or 0)
+                        else:
+                            split_ops = float(h_profile.get("vs_right_ops", 0.0) or 0.0)
+                            split_pa = int(h_profile.get("vs_right_pa", 0) or 0)
+                            split_ops_2025 = float(h_profile.get("vs_right_ops_2025", 0.0) or 0.0)
+                            split_pa_2025 = int(h_profile.get("vs_right_pa_2025", 0) or 0)
+                            split_ops_other_2025 = float(h_profile.get("vs_left_ops_2025", 0.0) or 0.0)
+                            split_pa_other_2025 = int(h_profile.get("vs_left_pa_2025", 0) or 0)
+                        
+                        ratio_2026 = split_ops / overall_ops if overall_ops > 0 and split_ops > 0 else 1.0
+                        
+                        ratio_2025 = 1.0
+                        has_2025 = False
+                        if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
+                            total_pa_2025 = split_pa_2025 + split_pa_other_2025
+                            overall_ops_2025 = ((split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)) / total_pa_2025
+                            if overall_ops_2025 > 0.200:
+                                ratio_2025 = split_ops_2025 / overall_ops_2025
+                                has_2025 = True
+                                
+                        weight_2026 = min(1.0, split_pa / 100.0)
+                        
+                        if has_2025:
+                            platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
+                        elif split_pa >= 20:
+                            platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
+                    
+                    base_xwoba = h.get('matchup_xwoba', 0.330)
+                    adj_xwoba = base_xwoba * platoon_multiplier
+                    adjusted_h_list.append({
+                        'name': h['name'],
+                        'matchup_xwoba': adj_xwoba
+                    })
+
+                # Sort by adjusted matchup_xwoba descending
+                sorted_h = sorted(adjusted_h_list, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
                 # For confirmed lineups, we use all confirmed players. For projected, top 5.
                 sample_size = 5 if not confirmed else len(sorted_h)
                 target_h = sorted_h[:sample_size]
@@ -487,7 +557,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 rest = statistics.mean([h.get('matchup_xwoba', 0.330) for h in sorted_h[4:]]) if len(sorted_h) > 4 else next_2
                 power_concentration = (top_2 * 0.4) + (next_2 * 0.3) + (rest * 0.3)
                 
-                print(f"  - Calculated {team} xwOBA: {team_xwoba:.3f} | Conc: {power_concentration:.3f} ({lineup_status})")
+                print(f"  - Calculated {team} Platoon-Adjusted xwOBA: {team_xwoba:.3f} | Conc: {power_concentration:.3f} ({lineup_status})")
 
             from engine.sharps_weighting import SharpsWeighting
             sharps_weighting = SharpsWeighting()
@@ -507,7 +577,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
                 opp_pitcher_physics=opp_pitcher_physics,
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
-                is_burst=is_burst
+                is_burst=is_burst, opponent=opponent
             )
             
             # Sentiment Divergence (Venue-Based)
