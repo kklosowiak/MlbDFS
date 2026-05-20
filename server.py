@@ -1273,13 +1273,17 @@ def calculate_dqi(t):
     if bullpen >= 65:
         pos_pts += 15
         pos_factors.append("Gassed Pen")
+    elif bullpen >= 55:  # v9.6: Added fatigued bullpen tier
+        pos_pts += 7
+        pos_factors.append("Fatigued Pen")
 
     # ─── LAYER 3: MARKET CONFIRMATION ─────────────────────────────────────────
     # Do market line movements confirm the sharp signal?
     if tt_move >= 0.3 or ml_move <= -10.0:
         pos_pts += 12
         pos_factors.append("Market Steam")
-    elif tt_move <= -0.3 and ml_move >= 10.0:
+    # v9.6: Added extreme single-variable safeguards to Reverse Steam
+    elif (tt_move <= -0.3 and ml_move >= 10.0) or (ml_move >= 15.0) or (tt_move <= -0.5):
         warn_pts += 15
         warn_factors.append("Reverse Steam")
 
@@ -1295,6 +1299,10 @@ def calculate_dqi(t):
     if team_xwoba > 0.350:
         pos_pts += 12
         pos_factors.append("Elite Contact (xwOBA)")
+    elif team_xwoba > 0.320:  # v9.6: Added strong contact tier
+        pos_pts += 6
+        pos_factors.append("Strong Contact (xwOBA)")
+        
     if power_conc > 0.355:
         pos_pts += 8
         pos_factors.append("Power Stack")

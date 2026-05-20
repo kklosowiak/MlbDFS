@@ -56,11 +56,14 @@ def calculate_dqi_for_audit(t, pitchers):
 
     if bullpen >= 65:
         pos_pts += 15
+    elif bullpen >= 55:  # v9.6: Added fatigued bullpen tier
+        pos_pts += 7
 
     # Layer 3: Market Confirmation
-    if tt_move > 0 or ml_move < 0:
+    if tt_move >= 0.3 or ml_move <= -10.0:
         pos_pts += 12
-    elif tt_move < 0 and ml_move > 0:
+    # v9.6: Added extreme single-variable safeguards to Reverse Steam
+    elif (tt_move <= -0.3 and ml_move >= 10.0) or (ml_move >= 15.0) or (tt_move <= -0.5):
         warn_pts += 15
 
     if 'O-DIV' in total_signal:
@@ -71,6 +74,9 @@ def calculate_dqi_for_audit(t, pitchers):
     # Layer 4: Offense Quality
     if team_xwoba > 0.350:
         pos_pts += 12
+    elif team_xwoba > 0.320:  # v9.6: Added strong contact tier
+        pos_pts += 6
+        
     if power_conc > 0.355:
         pos_pts += 8
 
