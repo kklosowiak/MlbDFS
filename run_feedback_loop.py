@@ -12,6 +12,94 @@ from datetime import timedelta
 from utils.audit_engine import AuditEngine
 from config import config
 
+def calculate_dqi_for_audit(t, pitchers):
+    """
+    OMEGA v9.5 Dynamic DQI audit calculation to backtest our new 6-layer logic.
+    """
+    divergence = t.get('divergence', 0) or 0
+    if divergence < 10:
+        return None, None
+
+    opp_phys           = t.get('opp_pitcher_physics', 50.0) or 50.0
+    bullpen            = t.get('bullpen_fatigue', 0) or 0
+    tt_move            = t.get('tt_move', 0.0) or 0.0
+    ml_move            = t.get('ml_move', 0.0) or 0.0
+    is_storm           = t.get('is_storm', False)
+    implied_total      = t.get('implied_total', 0.0) or 0.0
+    team_xwoba         = t.get('team_xwoba', 0.0) or 0.0
+    power_conc         = t.get('power_concentration', 0.0) or 0.0
+    total_signal       = t.get('total_signal', '') or ''
+    trend              = t.get('trend', 'STABLE') or 'STABLE'
+    is_opp_debut       = t.get('is_opp_debut', False)
+
+    # Cross-reference opposing pitcher is_trap
+    opp_p_name = t.get('opp_pitcher', '').lower().strip()
+    opp_p_obj = next((p for p in pitchers if p.get('pitcher', '').lower().strip() == opp_p_name), None)
+    is_trap = opp_p_obj.get('is_trap', False) if opp_p_obj else False
+
+    pos_pts    = 0
+    warn_pts   = 0
+
+    # Layer 1: Divergence Magnitude
+    if divergence >= 25:
+        pos_pts += 20
+    elif divergence >= 15:
+        pos_pts += 12
+    else:
+        pos_pts += 5
+
+    # Layer 2: Pitcher Environment
+    if opp_phys <= 15:
+        pos_pts += 20
+    elif opp_phys <= 25:
+        pos_pts += 10
+
+    if bullpen >= 65:
+        pos_pts += 15
+
+    # Layer 3: Market Confirmation
+    if tt_move > 0 or ml_move < 0:
+        pos_pts += 12
+    elif tt_move < 0 and ml_move > 0:
+        warn_pts += 15
+
+    if 'O-DIV' in total_signal:
+        pos_pts += 10
+    elif 'U-DIV' in total_signal:
+        warn_pts += 12
+
+    # Layer 4: Offense Quality
+    if team_xwoba > 0.350:
+        pos_pts += 12
+    if power_conc > 0.355:
+        pos_pts += 8
+
+    if trend == 'SURGING':
+        pos_pts += 10
+    elif trend == 'FADING':
+        warn_pts += 15
+
+    # Layer 5: Run Environment
+    if implied_total > 5.5:
+        pos_pts += 15
+    elif implied_total > 5.0:
+        pos_pts += 8
+    elif implied_total > 4.5:
+        pos_pts += 3
+
+    # Layer 6: Situational Bonuses / Traps
+    if is_storm:
+        pos_pts += 8
+    if is_opp_debut:
+        pos_pts += 10
+    if is_trap:
+        warn_pts += 20
+
+    dqi_score = 30 + pos_pts - warn_pts
+    dqi_score = max(0, min(100, dqi_score))
+    status = "TRUST" if dqi_score >= 75 else ("CAUTION" if dqi_score >= 50 else "FADE")
+    return dqi_score, status
+
 def run_feedback_loop(days=7):
     print("\n" + "="*60)
     print(f"    OMEGA v9.5: FEEDBACK & SYSTEMATIC LEARNING LOOP")
@@ -114,28 +202,14 @@ def run_feedback_loop(days=7):
                 if runs >= 5:
                     signal_stats['GASSED_BULLPEN_ATTACK']['hit'] += 1
                     
-            # 🟢 DQI TRUST, 🔴 DQI FADE calculation
-            div = float(t.get('divergence', 0))
-            if div >= 10:
-                opp_phys = float(t.get('opp_pitcher_physics', 0.0) or 0.0)
-                pos_pts = 0
-                if opp_phys <= 20.0: pos_pts += 20
-                if int(t.get('bullpen_fatigue', 0) or 0) >= 65: pos_pts += 20
-                if float(t.get('tt_move', 0) or 0) > 0 or float(t.get('ml_move', 0) or 0) < 0: pos_pts += 15
-                if t.get('is_storm'): pos_pts += 15
-                
-                warn = []
-                if t.get('is_trap'): warn.append(1)
-                if float(t.get('tt_move', 0) or 0) < 0 and float(t.get('ml_move', 0) or 0) > 0: warn.append(1)
-                
-                dqi = 50 + pos_pts - (len(warn) * 20)
-                dqi = max(0, min(100, dqi))
-                
-                if dqi >= 75:
+            # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
+            dqi_score, dqi_status = calculate_dqi_for_audit(t, pitchers)
+            if dqi_score is not None:
+                if dqi_status == 'TRUST':
                     signal_stats['DQI_TRUST']['fired'] += 1
                     if is_hit_5:
                         signal_stats['DQI_TRUST']['hit'] += 1
-                elif dqi < 50:
+                elif dqi_status == 'FADE':
                     signal_stats['DQI_FADE']['fired'] += 1
                     if runs < 4:
                         signal_stats['DQI_FADE']['hit'] += 1
