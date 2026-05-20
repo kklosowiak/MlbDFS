@@ -8,9 +8,9 @@ class SharpsWeighting:
         self.TT_MOVE_MIN = 0.3 # 0.3 runs
         self.PUBLIC_BET_MAX = 50 # 50%
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110):
         """
-        OMEGA v6.0 SE: Tiered Alpha/Beta Pitcher Scoring (Trap-Aware v7.8).
+        OMEGA v10.0 SE: Tiered Alpha/Beta Pitcher Scoring (Win Prob Base Market).
         """
         s_score = max(0, min(100, (6.0 - siera) * 20))
         c_score = max(0, min(100, (csw / 0.35) * 100))
@@ -24,9 +24,21 @@ class SharpsWeighting:
         env_mod = (100.0 - park_factor + k_mod) / 100.0
         physics_raw = physics_raw_base * (1.0 + env_mod)
         
+        # OMEGA v10.0: Market Win Probability Base
+        def _ml_to_prob(ml):
+            if ml == 0: return 0.5
+            if ml < 0: return abs(ml) / (abs(ml) + 100)
+            return 100 / (ml + 100)
+            
+        win_prob = _ml_to_prob(curr_ml)
+        # Scale probability from 40% to 70% -> 0 to 100
+        base_market_score = max(0, min(100, ((win_prob - 0.40) / 0.30) * 100))
+        
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
         tt_score = max(0, min(100, (abs(tt_move) / 0.7) * 100))
-        market_raw = (ml_score + tt_score) / 2
+        
+        market_raw = base_market_score + (ml_score * 0.20) + (tt_score * 0.20)
+        market_raw = max(0, min(100, market_raw))
         
         # OMEGA v6.8.6: Talent-First Weighting
         score = 45.0 + (physics_raw * 0.45) + (market_raw * 0.20)
@@ -107,16 +119,16 @@ class SharpsWeighting:
         # OMEGA v8.9: Absolute-Delta Hybrid Market Pillar
         # Incorporate absolute Vegas ITT (scale 3.0 to 5.5 -> 0 to 100 pts) so flat high-total stacks are rewarded
         eff_itt = implied_total if implied_total is not None else curr_itt
-        absolute_total_score = max(0, min(100, ((eff_itt - 3.0) / 2.5) * 100))
+        base_market_score = max(0, min(100, ((eff_itt - 3.0) / 2.5) * 100))
         
         # Calculate delta-based movement scores
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
         tt_score = max(0, min(100, (tt_move / 0.5) * 100)) if tt_move > 0 else 0
-        delta_score = (ml_score + tt_score) / 2
         
-        # OMEGA v8.9.1: Golden Ratio Blend (50% Absolute Total / 50% Delta Movement)
-        # Perfectly balanced to reward flat high-totals while fully preserving sharp line-movement indicators.
-        market_raw = (absolute_total_score * 0.50) + (delta_score * 0.50)
+        # OMEGA v10.0: Base + Bonus Model
+        # Base is the implied total. Movement acts as an additive bonus rather than averaging out.
+        market_raw = base_market_score + (ml_score * 0.25) + (tt_score * 0.25)
+        market_raw = max(0, min(100, market_raw))
 
         # OMEGA v6.9: Pitcher Vulnerability
         vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
