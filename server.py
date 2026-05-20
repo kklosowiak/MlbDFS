@@ -1212,7 +1212,7 @@ def post_run_learning_loop_api(background_tasks: BackgroundTasks):
 
 def calculate_dqi(t):
     """
-    OMEGA v9.5: Multi-Layer Divergence Quality Index (DQI)
+    OMEGA v9.7: Continuous Multi-Layer Divergence Quality Index (DQI) Slider Model
 
     GATE: Only fires when team divergence >= 10%. Below this threshold,
     returns None — no DQI is shown. Divergence is the prerequisite signal
@@ -1243,107 +1243,97 @@ def calculate_dqi(t):
     trend              = t.get('trend', 'STABLE') or 'STABLE'
     is_opp_debut       = t.get('is_opp_debut', False)
 
-    pos_pts    = 0
-    warn_pts   = 0
+    pos_pts    = 0.0
+    warn_pts   = 0.0
     pos_factors  = []
     warn_factors = []
 
-    # ─── LAYER 1: DIVERGENCE MAGNITUDE ────────────────────────────────────────
-    # The strength of the sharp-vs-public gap itself. Higher divergence = more
-    # conviction in the signal. Only the highest tier applies.
-    if divergence >= 25:
-        pos_pts += 20
-        pos_factors.append(f"Strong Divergence (+{divergence}%)")
-    elif divergence >= 15:
-        pos_pts += 12
-        pos_factors.append(f"Moderate Divergence (+{divergence}%)")
-    else:
-        pos_pts += 5
-        pos_factors.append(f"Base Divergence (+{divergence}%)")
+    # ─── LAYER 1: DIVERGENCE SLIDER ───────────────────────────────────────────
+    # Bounded linear scaling from 10% (+5 pts) to 25% (+20 pts)
+    div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 15.0))
+    div_pts = 5.0 + 15.0 * div_factor
+    pos_pts += div_pts
+    pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
 
-    # ─── LAYER 2: PITCHER ENVIRONMENT ─────────────────────────────────────────
-    # How beatable is the pitcher this stack is facing? Lower physics = more fade.
-    if opp_phys <= 15:
-        pos_pts += 20
-        pos_factors.append("Elite Fade SP")
-    elif opp_phys <= 25:
-        pos_pts += 10
-        pos_factors.append("Low-Phys SP")
+    # ─── LAYER 2: PITCHER ENVIRONMENT SLIDER ──────────────────────────────────
+    # SP Physics: Bounded linear scaling from 40.0 (0 pts) down to 19.0 (+20 pts)
+    # Threshold at 19 covers highly targetable starters (in the red, under 20)
+    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 21.0))
+    phys_pts = 20.0 * phys_factor
+    if phys_pts > 0:
+        pos_pts += phys_pts
+        pos_factors.append(f"Targetable Starter SP (+{round(phys_pts, 1)} pts)")
 
-    if bullpen >= 65:
-        pos_pts += 15
-        pos_factors.append("Gassed Pen")
-    elif bullpen >= 55:  # v9.6: Added fatigued bullpen tier
-        pos_pts += 7
-        pos_factors.append("Fatigued Pen")
+    # Bullpen Fatigue: Bounded linear scaling from 50.0 (0 pts) to 100.0 (+15 pts)
+    # Calibrated up to 100 to represent a completely exhausted bullpen
+    pen_factor = min(1.0, max(0.0, (float(bullpen) - 50.0) / 50.0))
+    pen_pts = 15.0 * pen_factor
+    if pen_pts > 0:
+        pos_pts += pen_pts
+        pos_factors.append(f"Vulnerable Bullpen (+{round(pen_pts, 1)} pts)")
 
     # ─── LAYER 3: MARKET CONFIRMATION ─────────────────────────────────────────
     # Do market line movements confirm the sharp signal?
     if tt_move >= 0.3 or ml_move <= -10.0:
-        pos_pts += 12
-        pos_factors.append("Market Steam")
-    # v9.6: Added extreme single-variable safeguards to Reverse Steam
+        pos_pts += 12.0
+        pos_factors.append("Market Steam (+12 pts)")
+    # v9.6/v9.7: Extreme single-variable safeguards to Reverse Steam
     elif (tt_move <= -0.3 and ml_move >= 10.0) or (ml_move >= 15.0) or (tt_move <= -0.5):
-        warn_pts += 15
-        warn_factors.append("Reverse Steam")
+        warn_pts += 15.0
+        warn_factors.append("Reverse Steam (-15 pts)")
 
     if 'O-DIV' in total_signal:
-        pos_pts += 10
-        pos_factors.append("Market O-DIV")
+        pos_pts += 10.0
+        pos_factors.append("Market O-DIV (+10 pts)")
     elif 'U-DIV' in total_signal:
-        warn_pts += 12
-        warn_factors.append("Market U-DIV")
+        warn_pts += 12.0
+        warn_factors.append("Market U-DIV (-12 pts)")
 
-    # ─── LAYER 4: OFFENSE QUALITY ──────────────────────────────────────────────
-    # How dangerous is this lineup regardless of run total?
-    if team_xwoba > 0.350:
-        pos_pts += 12
-        pos_factors.append("Elite Contact (xwOBA)")
-    elif team_xwoba > 0.320:  # v9.6: Added strong contact tier
-        pos_pts += 6
-        pos_factors.append("Strong Contact (xwOBA)")
+    # ─── LAYER 4: OFFENSE QUALITY SLIDER ──────────────────────────────────────
+    # xwOBA Contact: Bounded linear scaling from 0.300 (0 pts) to 0.350 (+12 pts)
+    xwoba_factor = min(1.0, max(0.0, (float(team_xwoba) - 0.300) / 0.050))
+    xwoba_pts = 12.0 * xwoba_factor
+    if xwoba_pts > 0:
+        pos_pts += xwoba_pts
+        pos_factors.append(f"Offense xwOBA Hitting (+{round(xwoba_pts, 1)} pts)")
         
     if power_conc > 0.355:
-        pos_pts += 8
-        pos_factors.append("Power Stack")
+        pos_pts += 8.0
+        pos_factors.append("Power Stack (+8 pts)")
 
     if trend == 'SURGING':
-        pos_pts += 10
-        pos_factors.append("Surging Trend")
+        pos_pts += 10.0
+        pos_factors.append("Surging Trend (+10 pts)")
     elif trend == 'FADING':
-        warn_pts += 15
-        warn_factors.append("Fading Trend")
+        warn_pts += 15.0
+        warn_factors.append("Fading Trend (-15 pts)")
 
-    # ─── LAYER 5: RUN ENVIRONMENT ──────────────────────────────────────────────
-    # Bonus-only. Low ITT does NOT penalize — a low-total game can still be a
-    # great spot if the other layers are aligned. High totals just add confidence.
-    if implied_total > 5.5:
-        pos_pts += 15
-        pos_factors.append(f"Elite Run Env ({implied_total:.1f})")
-    elif implied_total > 5.0:
-        pos_pts += 8
-        pos_factors.append(f"Strong Run Env ({implied_total:.1f})")
-    elif implied_total > 4.5:
-        pos_pts += 3
-        pos_factors.append(f"Avg Run Env ({implied_total:.1f})")
+    # ─── LAYER 5: RUN ENVIRONMENT SLIDER ──────────────────────────────────────
+    # Implied Team Total: Bounded linear scaling from 4.0 runs (0 pts) to 5.5 runs (+15 pts)
+    run_factor = min(1.0, max(0.0, (float(implied_total) - 4.0) / 1.5))
+    run_pts = 15.0 * run_factor
+    if run_pts > 0:
+        pos_pts += run_pts
+        pos_factors.append(f"Implied Run Env (+{round(run_pts, 1)} pts)")
 
     # ─── LAYER 6: SITUATIONAL BONUSES / TRAPS ─────────────────────────────────
     if is_storm:
-        pos_pts += 8
-        pos_factors.append("Storm Physics")
+        pos_pts += 8.0
+        pos_factors.append("Storm Physics (+8 pts)")
     if is_opp_debut:
-        pos_pts += 10
-        pos_factors.append("Debut Trap SP")
+        pos_pts += 10.0
+        pos_factors.append("Debut Trap SP (+10 pts)")
     if is_trap:
-        warn_pts += 20
-        warn_factors.append("Public Chalk Trap")
+        warn_pts += 20.0
+        warn_factors.append("Public Chalk Trap (-20 pts)")
 
     # ─── FINAL SCORE ──────────────────────────────────────────────────────────
-    dqi_score = 30 + pos_pts - warn_pts
-    dqi_score = max(0, min(100, dqi_score))
+    dqi_score = 30.0 + pos_pts - warn_pts
+    dqi_score = max(0.0, min(100.0, dqi_score))
+    dqi_score_int = int(round(dqi_score))
 
-    status = "TRUST" if dqi_score >= 75 else ("CAUTION" if dqi_score >= 50 else "FADE")
-    return dqi_score, status, pos_factors, warn_factors
+    status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
+    return dqi_score_int, status, pos_factors, warn_factors
 
 
 # Chatbot endpoint
