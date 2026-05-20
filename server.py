@@ -147,17 +147,17 @@ def scheduler_loop():
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)
 scheduler_thread.start()
 
-# --- v9.5: 2:00 AM ET Opening Lines Capture ---
-# This dedicated background thread fires exactly once per night at 2:00 AM
+# --- v9.5: 3:00 AM ET Opening Lines Capture ---
+# This dedicated background thread fires exactly once per night at 3:00 AM
 # Eastern Time to lock in the true opening lines for the next day's slate.
 # Runs 24/7 — safe for Render $25/mo always-on tier.
 opening_lines_last_date_triggered = None
 opening_lines_lock = threading.Lock()
 
 def opening_lines_capture_loop():
-    """Background thread: fires perform_refresh_sync() once per night at 2:00 AM ET."""
+    """Background thread: fires perform_refresh_sync() once per night at 3:00 AM ET."""
     global opening_lines_last_date_triggered
-    print("[SERVER]: 2:00 AM ET Opening Lines Capture thread started.")
+    print("[SERVER]: 3:00 AM ET Opening Lines Capture thread started.")
     
     while True:
         try:
@@ -172,8 +172,8 @@ def opening_lines_capture_loop():
         et_minute = et_now.minute
         today_date_str = et_now.strftime("%Y-%m-%d")
         
-        # Target window: exactly 2:00 AM ET (within the 2:00–2:01 minute window)
-        is_capture_window = (et_hour == 2 and et_minute == 0)
+        # Target window: exactly 3:00 AM ET (within the 3:00–3:01 minute window)
+        is_capture_window = (et_hour == 3 and et_minute == 0)
         
         with opening_lines_lock:
             already_triggered_today = (opening_lines_last_date_triggered == today_date_str)
