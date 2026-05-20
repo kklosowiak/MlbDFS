@@ -204,6 +204,56 @@ def opening_lines_capture_loop():
 opening_lines_thread = threading.Thread(target=opening_lines_capture_loop, daemon=True)
 opening_lines_thread.start()
 
+# --- v9.5: 7:00 AM ET Auto-Audit Feedback Loop ---
+# Automatically runs the performance audit feedback loop daily at 7:00 AM ET.
+# Updates the dashboard with the previous day's final boxscores and grades automatically.
+auto_audit_last_date_triggered = None
+auto_audit_lock = threading.Lock()
+
+def auto_audit_capture_loop():
+    """Background thread: fires the backtest audit feedback loop once per night at 7:00 AM ET."""
+    global auto_audit_last_date_triggered
+    print("[SERVER]: 7:00 AM ET Auto-Audit Feedback Loop thread started.")
+    
+    while True:
+        try:
+            from zoneinfo import ZoneInfo
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now - datetime.timedelta(hours=4)
+        
+        et_hour = et_now.hour
+        et_minute = et_now.minute
+        today_date_str = et_now.strftime("%Y-%m-%d")
+        
+        # Target window: exactly 7:00 AM ET (within the 7:00–7:01 minute window)
+        is_capture_window = (et_hour == 7 and et_minute == 0)
+        
+        with auto_audit_lock:
+            already_triggered_today = (auto_audit_last_date_triggered == today_date_str)
+        
+        if is_capture_window and not already_triggered_today:
+            print(f"[7AM-AUDIT]: Auto-audit feedback loop triggered at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            with auto_audit_lock:
+                auto_audit_last_date_triggered = today_date_str
+            try:
+                from run_feedback_loop import run_feedback_loop
+                run_feedback_loop(7)
+                print("[7AM-AUDIT]: ✅ Auto-audit feedback loop completed successfully!")
+            except Exception as aud_err:
+                import traceback
+                print(f"[7AM-AUDIT ERROR]: {aud_err}")
+                traceback.print_exc()
+        
+        # Sleep 45 seconds between checks to catch the 7:00 minute window reliably
+        time.sleep(45)
+
+auto_audit_thread = threading.Thread(target=auto_audit_capture_loop, daemon=True)
+auto_audit_thread.start()
+
+
 # Auth validation dependency
 def get_current_user(request: Request):
     cookie = request.cookies.get(COOKIE_NAME)
