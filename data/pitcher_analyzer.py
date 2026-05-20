@@ -262,7 +262,7 @@ class PitcherAnalyzer:
                     
                     if ml_move > 10 and k_move < 0:
                         is_trap = True
-                    if k_odds and k_odds > 110:
+                    if k_odds and k_odds > 125:
                         is_trap = True
                         
                     is_death_sentence = False

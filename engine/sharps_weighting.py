@@ -242,7 +242,7 @@ class SharpsWeighting:
             "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence,
-            "is_trap": trap_multiplier < 1.0 or anchor_ratio < 1.0
+            "is_trap": trap_multiplier < 1.0
         }
 
     def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None):

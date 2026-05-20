@@ -3256,30 +3256,30 @@
 
             // --- Card 1: DFS Verdict ---
             let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap || isParadox) && physScore < 85) {
+            if ((isTrap && physScore < 50) || (isParadox && physScore < 50)) {
                 verdictLabel = 'HARD FADE';
                 verdictColor = '#ff453a';
                 verdictBg = 'rgba(139,0,0,0.2)';
                 verdictIcon = '🚫';
-                verdictDesc = 'Multiple risk flags or high-probability trap. Avoid this stack.';
-            } else if (stackScore >= 110 && !isTrap && physScore >= 95) {
+                verdictDesc = 'Weak physics matched with public trap or paradox signals. Avoid.';
+            } else if (stackScore >= 110 && physScore >= 85) {
                 verdictLabel = 'ELITE PLAY';
                 verdictColor = '#32d74b';
                 verdictBg = 'rgba(50,215,75,0.15)';
                 verdictIcon = '⚡';
                 verdictDesc = 'Top-tier physics + market support. Premium play.';
-            } else if (isDebut || (!isTrap && stackScore >= 98)) {
+            } else if (isDebut || stackScore >= 98) {
                 verdictLabel = 'STRONG GPP';
                 verdictColor = '#ff9f0a';
                 verdictBg = 'rgba(255,159,10,0.12)';
                 verdictIcon = '🎯';
                 verdictDesc = 'Excellent tournament leverage. High run-scoring upside.';
             } else if (isTrap) {
-                verdictLabel = 'HARD FADE';
+                verdictLabel = 'CONTRARIAN FADE';
                 verdictColor = '#ff453a';
-                verdictBg = 'rgba(139,0,0,0.2)';
-                verdictIcon = '🚫';
-                verdictDesc = 'Public trap stack. Pivot to contrarian alternatives.';
+                verdictBg = 'rgba(255,69,58,0.1)';
+                verdictIcon = '⚠️';
+                verdictDesc = 'Chalky play with mediocre underlying physics. Pivot for leverage.';
             } else {
                 verdictLabel = 'GPP DART';
                 verdictColor = '#ff9f0a';
@@ -3318,7 +3318,7 @@
 
             // --- Card 3: Leverage Grade ---
             let lvGrade, lvColor, lvBg, lvDesc;
-            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 15 : 0) - (isParadox ? 10 : 0) + (isShark || isWhale ? 12 : 0);
+            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 8 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 12 : 0);
             if (lvScore >= 120) {
                 lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max stack leverage. Target heavily.';
             } else if (lvScore >= 105) {
@@ -3327,6 +3327,21 @@
                 lvGrade = 'C'; lvColor = '#ff9f0a'; lvBg = 'rgba(255,159,10,0.12)'; lvDesc = 'Situational. Use in selective stacks.';
             } else {
                 lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Extreme risk of underperforming.';
+            }
+
+            // Check for ITT (Implied Team Total) Sanity Gate Bypass Warning
+            let warningHTML = '';
+            const isSharpBacked = isWhale || isStorm || (t.divergence > 15);
+            const impliedTotalVal = parseFloat(t.implied_total || 0);
+            if (impliedTotalVal > 0 && impliedTotalVal < 4.0 && isSharpBacked) {
+                warningHTML = `
+                    <div style="background:rgba(255,159,10,0.1); border:1px dashed #ff9f0a; border-radius:12px; padding:12px; margin-top:14px; display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:1.2rem; margin-right:4px;">⚠️</span>
+                        <div style="font-size:0.75rem; color:#ff9f0a; line-height:1.3; font-weight:500; text-align:left;">
+                            <strong>Vegas Low-Total Alert:</strong> Implied total is low (${impliedTotalVal} runs). Sharp/whale steam is bypassing the safety gate, but physical floor risk remains high.
+                        </div>
+                    </div>
+                `;
             }
 
             document.getElementById('tm-roster-intel').innerHTML = `
@@ -3340,7 +3355,7 @@
                     <!-- Ownership Signal -->
                     <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
                         <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Ownership Signal</div>
-                        <div style="font-size:1.35rem; font-weight:900; color:${ownIcon} ${ownLabel}</div>
+                        <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
                     </div>
                     <!-- Leverage Grade -->
@@ -3350,6 +3365,7 @@
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
                     </div>
                 </div>
+                ${warningHTML}
             `;
 
             document.getElementById('team-modal').classList.add('open');
@@ -3537,30 +3553,30 @@
 
             // --- Card 1: DFS Verdict ---
             let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap || isParadox) && physScore < 15) {
+            if ((isTrap && physScore < 10) || (isParadox && physScore < 10)) {
                 verdictLabel = 'HARD FADE';
                 verdictColor = '#ff453a';
                 verdictBg = 'rgba(139,0,0,0.2)';
                 verdictIcon = '🚫';
-                verdictDesc = 'Multiple risk flags. Strong fade candidate.';
-            } else if (alphaScore >= 90 && !isTrap && physScore >= 18) {
+                verdictDesc = 'Chalk pitcher with low underlying raw metrics. Avoid.';
+            } else if (alphaScore >= 90 && physScore >= 16) {
                 verdictLabel = 'ELITE PLAY';
                 verdictColor = '#32d74b';
                 verdictBg = 'rgba(50,215,75,0.15)';
                 verdictIcon = '⚡';
-                verdictDesc = 'Top-tier score + clean signals. Core play.';
-            } else if (isDebut || (!isTrap && alphaScore >= 75)) {
-                verdictLabel = 'GPP DART';
+                verdictDesc = 'Top-tier core play. Elite physics and high projection.';
+            } else if (isDebut || alphaScore >= 75) {
+                verdictLabel = 'STRONG GPP';
                 verdictColor = '#ff9f0a';
                 verdictBg = 'rgba(255,159,10,0.12)';
                 verdictIcon = '🎯';
-                verdictDesc = 'High-upside contrarian leverage opportunity.';
+                verdictDesc = 'High-strikeout or leverage play for GPP formats.';
             } else if (isTrap) {
-                verdictLabel = 'HARD FADE';
+                verdictLabel = 'CONTRARIAN FADE';
                 verdictColor = '#ff453a';
-                verdictBg = 'rgba(139,0,0,0.2)';
-                verdictIcon = '🚫';
-                verdictDesc = 'Public chalk. Let the field roster this.';
+                verdictBg = 'rgba(255,69,58,0.1)';
+                verdictIcon = '⚠️';
+                verdictDesc = 'Mediocre metrics but high projected ownership. Pivot target.';
             } else {
                 verdictLabel = 'GPP DART';
                 verdictColor = '#ff9f0a';
@@ -3599,7 +3615,7 @@
 
             // --- Card 3: Leverage Grade ---
             let lvGrade, lvColor, lvBg, lvDesc;
-            const lvScore = alphaScore + (physScore * 0.5) - (isTrap ? 20 : 0) - (isParadox ? 10 : 0) + (isShark || isWhale ? 10 : 0);
+            const lvScore = alphaScore + (physScore * 0.5) - (isTrap ? 10 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 10 : 0);
             if (lvScore >= 105) {
                 lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max leverage. Play in all lineups.';
             } else if (lvScore >= 90) {
