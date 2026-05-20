@@ -147,17 +147,19 @@ def scheduler_loop():
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)
 scheduler_thread.start()
 
-# --- v9.5: 3:00 AM ET Opening Lines Capture ---
-# This dedicated background thread fires exactly once per night at 3:00 AM
-# Eastern Time to lock in the true opening lines for the next day's slate.
+# --- v9.5: 4:30 AM ET Opening Lines Capture ---
+# This dedicated background thread fires exactly once per night at 4:30 AM
+# Eastern Time to lock in the true opening lines for the day's slate.
+# Firing after 4:00 AM ET ensures that the timezone-aware rollover window
+# matches today's slate date, preventing yesterday's lines from clobbering.
 # Runs 24/7 — safe for Render $25/mo always-on tier.
 opening_lines_last_date_triggered = None
 opening_lines_lock = threading.Lock()
 
 def opening_lines_capture_loop():
-    """Background thread: fires perform_refresh_sync() once per night at 3:00 AM ET."""
+    """Background thread: fires perform_refresh_sync() once per night at 4:30 AM ET."""
     global opening_lines_last_date_triggered
-    print("[SERVER]: 3:00 AM ET Opening Lines Capture thread started.")
+    print("[SERVER]: 4:30 AM ET Opening Lines Capture thread started.")
     
     while True:
         try:
@@ -172,30 +174,30 @@ def opening_lines_capture_loop():
         et_minute = et_now.minute
         today_date_str = et_now.strftime("%Y-%m-%d")
         
-        # Target window: exactly 3:00 AM ET (within the 3:00–3:01 minute window)
-        is_capture_window = (et_hour == 3 and et_minute == 0)
+        # Target window: exactly 4:30 AM ET (within the 4:30–4:31 minute window)
+        is_capture_window = (et_hour == 4 and et_minute == 30)
         
         with opening_lines_lock:
             already_triggered_today = (opening_lines_last_date_triggered == today_date_str)
         
         if is_capture_window and not already_triggered_today:
-            print(f"[1AM-CAPTURE]: Opening lines capture triggered at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            print(f"[4:30AM-CAPTURE]: Opening lines capture triggered at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
             with opening_lines_lock:
                 opening_lines_last_date_triggered = today_date_str
             # Run in same thread (blocking) — this is a low-frequency, 1x/night event
             # We do NOT use perform_refresh_sync here to avoid clobbering the hourly lock.
             # Instead, do a lightweight fetch + analysis run.
             try:
-                print("[1AM-CAPTURE]: Starting overnight opening lines ingestion scrape...")
+                print("[4:30AM-CAPTURE]: Starting overnight opening lines ingestion scrape...")
                 from run_fetch import perform_fetch
                 perform_fetch()
-                print("[1AM-CAPTURE]: Starting OMEGA opening lines analysis...")
+                print("[4:30AM-CAPTURE]: Starting OMEGA opening lines analysis...")
                 from main import run_full_analysis
                 run_full_analysis()
-                print("[1AM-CAPTURE]: ✅ Opening lines capture completed successfully!")
+                print("[4:30AM-CAPTURE]: ✅ Opening lines capture completed successfully!")
             except Exception as cap_err:
                 import traceback
-                print(f"[1AM-CAPTURE ERROR]: {cap_err}")
+                print(f"[4:30AM-CAPTURE ERROR]: {cap_err}")
                 traceback.print_exc()
         
         # Sleep 45 seconds between checks to catch the 1:00 minute window reliably

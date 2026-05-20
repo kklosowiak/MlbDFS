@@ -3202,28 +3202,43 @@
             const platAdvEl = document.getElementById('tm-plat-advantage');
             
             if (platoon) {
-                platOpsEl.innerText = platoon.team_vs_hand_ops.toFixed(3);
+                const teamOps = typeof platoon.team_vs_hand_ops === 'number' ? platoon.team_vs_hand_ops : parseFloat(platoon.team_vs_hand_ops);
+                platOpsEl.innerText = !isNaN(teamOps) ? teamOps.toFixed(3) : '-';
                 
                 // Color Team vs Hand OPS dynamically
-                if (platoon.team_vs_hand_ops >= 0.780) {
-                    platOpsEl.style.color = '#32d74b';
-                } else if (platoon.team_vs_hand_ops >= 0.730) {
-                    platOpsEl.style.color = '#0a84ff';
-                } else if (platoon.team_vs_hand_ops >= 0.700) {
-                    platOpsEl.style.color = 'var(--text-primary)';
-                } else if (platoon.team_vs_hand_ops >= 0.650) {
-                    platOpsEl.style.color = '#ff9f0a';
+                if (!isNaN(teamOps)) {
+                    if (teamOps >= 0.780) {
+                        platOpsEl.style.color = '#32d74b';
+                    } else if (teamOps >= 0.730) {
+                        platOpsEl.style.color = '#0a84ff';
+                    } else if (teamOps >= 0.700) {
+                        platOpsEl.style.color = 'var(--text-primary)';
+                    } else if (teamOps >= 0.650) {
+                        platOpsEl.style.color = '#ff9f0a';
+                    } else {
+                        platOpsEl.style.color = '#ff453a';
+                    }
                 } else {
-                    platOpsEl.style.color = '#ff453a';
+                    platOpsEl.style.color = 'var(--text-primary)';
                 }
                 
-                platWobaEl.innerText = platoon.team_vs_hand_woba.toFixed(3);
+                const teamWoba = typeof platoon.team_vs_hand_woba === 'number' ? platoon.team_vs_hand_woba : parseFloat(platoon.team_vs_hand_woba);
+                platWobaEl.innerText = !isNaN(teamWoba) ? teamWoba.toFixed(3) : '-';
                 
-                const sign = platoon.ops_diff > 0 ? '+' : '';
-                platOpsDiffEl.innerText = `${sign}${platoon.ops_diff}`;
-                platOpsDiffEl.style.color = platoon.ops_diff > 0 ? '#32d74b' : (platoon.ops_diff < -30 ? '#ff453a' : '#ff9f0a');
+                const opsDiff = typeof platoon.ops_diff === 'number' ? platoon.ops_diff : parseFloat(platoon.ops_diff);
+                const sign = opsDiff > 0 ? '+' : '';
+                platOpsDiffEl.innerText = !isNaN(opsDiff) ? `${sign}${opsDiff}` : '-';
+                if (!isNaN(opsDiff)) {
+                    platOpsDiffEl.style.color = opsDiff > 0 ? '#32d74b' : (opsDiff < -30 ? '#ff453a' : '#ff9f0a');
+                } else {
+                    platOpsDiffEl.style.color = 'var(--text-primary)';
+                }
                 
-                platPSplitsEl.innerText = `${platoon.pitcher_vs_lhh_ops.toFixed(3)} / ${platoon.pitcher_vs_rhh_ops.toFixed(3)}`;
+                const pitcherLhhOps = typeof platoon.pitcher_vs_lhh_ops === 'number' ? platoon.pitcher_vs_lhh_ops : parseFloat(platoon.pitcher_vs_lhh_ops);
+                const pitcherRhhOps = typeof platoon.pitcher_vs_rhh_ops === 'number' ? platoon.pitcher_vs_rhh_ops : parseFloat(platoon.pitcher_vs_rhh_ops);
+                const lhhStr = !isNaN(pitcherLhhOps) ? pitcherLhhOps.toFixed(3) : '-';
+                const rhhStr = !isNaN(pitcherRhhOps) ? pitcherRhhOps.toFixed(3) : '-';
+                platPSplitsEl.innerText = `${lhhStr} / ${rhhStr}`;
                 
                 let advBadge = '';
                 if (platoon.advantage === 'ELITE PLATOON') {
@@ -3252,6 +3267,10 @@
             const isParadox = t.is_paradox || false;
             const isShark = t.is_shark || false;
             const isWhale = t.is_whale || false;
+            const isStorm = t.is_storm || false;
+            const isSteam = t.is_steam || false;
+            const isSharp = t.is_sharp || false;
+            const isBurst = t.is_burst || false;
             const isDebut = t.is_opp_debut || false;
 
             // --- Card 1: DFS Verdict ---
