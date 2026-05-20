@@ -112,7 +112,7 @@ def perform_refresh_sync():
 # Background scheduler thread
 def scheduler_loop():
     global is_refreshing, last_refresh_timestamp_raw, last_scheduled_hour_key
-    print("[SERVER]: Auto-Refresh Hourly Scheduler thread started (Active: 8AM-8PM EST).")
+    print("[SERVER]: Auto-Refresh Hourly Scheduler thread started (Active: 8AM ET, last trigger by 5:59PM ET).")
     
     while True:
         # Check current US/Eastern Time dynamically (DST compliant)
@@ -128,9 +128,11 @@ def scheduler_loop():
         et_hour = et_now.hour
         current_hour_key = et_now.strftime("%Y-%m-%d %H")
         
-        # Is Eastern Time between 8:00 AM (8) and 7:00 PM (19) exclusive?
-        # This stops scheduled auto-refreshes starting at 7:00 PM EST.
-        is_active_window = (8 <= et_hour <= 18)
+        # Active window: 8:00 AM ET through 5:59 PM ET (hour <= 17).
+        # Last trigger fires at 5:xx PM so even a slow refresh (45-60 min)
+        # completes before 7:00 PM ET with no bleed-over visible to the user.
+        # Hard cutoff: hour 18+ (6 PM+) — scheduler goes completely silent.
+        is_active_window = (8 <= et_hour <= 17)
         
         if is_active_window:
             if current_hour_key != last_scheduled_hour_key:
@@ -139,6 +141,7 @@ def scheduler_loop():
             
         # Sleep for 10 seconds before checking time again
         time.sleep(10)
+
 
 # Start hourly scheduler in daemon thread
 scheduler_thread = threading.Thread(target=scheduler_loop, daemon=True)
