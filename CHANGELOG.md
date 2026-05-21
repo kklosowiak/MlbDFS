@@ -1,5 +1,13 @@
 # OMEGA Changelog
 
+## 2026-05-21 — Automatic opening lines (safe ML movement)
+
+### Opening lines (automatic)
+- **4:30 AM ET capture** freezes true opens (`capture_opening=True`) into `opening_lines_YYYY-MM-DD.json`.
+- **Routine refresh** never overwrites `opening_*`; only updates current lines.
+- **Late games / game_id changes:** backfill from earliest same-day `snapshot_*` (max 30 files) or inherit by matchup `pair_key`.
+- **`vegas_opens_manual.json`** remains optional override when capture/snapshots miss a game.
+
 ## 2026-05-21 — P0 + Safe P1 Audit Cleanup
 
 ### Security

@@ -113,9 +113,11 @@ def run_full_analysis():
         ]
         print(f"[SLATE]: FILTER ACTIVE ({datetime.date.today()}). Isolated {len(snapshot['odds'])} of {original_count} matchups.")
 
+    from utils.opening_lines import load_opening_lines_for_slate
+    from utils.slate_date import get_slate_date_iso
+
+    opening_lines = load_opening_lines_for_slate(get_slate_date_iso())
     opening_lines_path = os.path.join(config.DATA_DIR, "opening_lines.json")
-    with open(opening_lines_path, 'r') as f:
-        opening_lines = json.load(f)
         
     # OMEGA v5.2: Load Consensus Splits for SHARK Detection
     splits_data = snapshot.get('splits', {})

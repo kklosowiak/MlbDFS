@@ -25,7 +25,7 @@ def get_slate_date(dt_utc=None):
     else:
         return dt_et.date()
 
-def perform_fetch(custom_date_from=None):
+def perform_fetch(custom_date_from=None, capture_opening=False):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
     
     # OMEGA v6.6.5: Live Weather Overlay Sync
@@ -49,7 +49,9 @@ def perform_fetch(custom_date_from=None):
     date_to = (base_date + timedelta(days=1)).strftime("%Y-%m-%dT04:00:00Z")
     
     print(f"[INGEST]: Targeting Active Slate (Window: {date_from} to {date_to})")
-    snapshot_path = fetcher.run_bulk_ingestion(date_from=date_from, date_to=date_to)
+    snapshot_path = fetcher.run_bulk_ingestion(
+        date_from=date_from, date_to=date_to, capture_opening=capture_opening
+    )
 
     
     if not snapshot_path or not os.path.exists(snapshot_path):

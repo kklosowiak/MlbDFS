@@ -205,7 +205,7 @@ def opening_lines_capture_loop():
             try:
                 print("[4:30AM-CAPTURE]: Starting overnight opening lines ingestion scrape...")
                 from run_fetch import perform_fetch
-                perform_fetch()
+                perform_fetch(capture_opening=True)
                 print("[4:30AM-CAPTURE]: Starting OMEGA opening lines analysis...")
                 from main import run_full_analysis
                 run_full_analysis()
