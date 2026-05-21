@@ -2364,7 +2364,8 @@
                 let pitcherTrapBadge = '';
                 if (oppP) {
                     if (oppP.is_trap) {
-                        pitcherTrapBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.15); border: 1px solid rgba(255, 69, 58, 0.45); color: #ff453a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.25); animation: pulse 2s infinite;">🚨 TRAP SP</span>`;
+                        const trapType = oppP.trap_type ? ` — ${oppP.trap_type}` : '';
+                        pitcherTrapBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.15); border: 1px solid rgba(255, 69, 58, 0.45); color: #ff453a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.25); animation: pulse 2s infinite;">🚨 TRAP SP${trapType}</span>`;
                     } else if (oppP.is_paradox) {
                         pitcherTrapBadge = `<span class="badge-mini" style="background: rgba(255, 159, 10, 0.15); border: 1px solid rgba(255, 159, 10, 0.45); color: #ff9f0a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 159, 10, 0.25);">⚠️ PARADOX SP</span>`;
                     }
@@ -2400,6 +2401,15 @@
                             ${posList}${warnList}
                         </div>
                     `;
+                } else if (t.dqi_faded) {
+                    // v10.1: DQI Faded Ghost Tag — signal was active earlier today but has since dropped
+                    const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
+                    divBadgeHtml = `
+                        <div style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.15); padding:4px 6px; border-radius:4px; min-width:110px; opacity:0.65;">
+                            <div style="color:${fadedColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">⏱️ DQI FADED (was ${t.dqi_faded_score}% [${t.dqi_faded_status}])</div>
+                            <span style="color:rgba(255,255,255,0.45); font-size:0.62rem;">Signal active earlier today, dropped at lock</span>
+                        </div>
+                    `;
                 }
 
 
@@ -2417,6 +2427,8 @@
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
                             ${(t.physics_score - t.market_score) >= 15 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
                             ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
+                            ${t.is_physics_override ? '<span class="signal-pill pill-neutral" style="background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;">⚡ PHY OVERRIDE</span>' : ''}
+                            ${t.is_cold_streak ? `<span class="signal-pill pill-neutral" style="background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;">🥶 COLD STREAK (+${t.rolling_k_delta}% K)</span>` : ''}
                         </div>
                     </td>
                     <td>
@@ -3351,7 +3363,10 @@
 
             // --- Card 3: Leverage Grade ---
             let lvGrade, lvColor, lvBg, lvDesc;
-            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 8 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 12 : 0);
+            // v10.1: Platoon advantage from platoon panel boosts leverage grade
+            const platoonAdv = t._platoon_advantage || '';
+            const platoonBoost = (platoonAdv === 'ELITE PLATOON') ? 15 : (platoonAdv === 'STRONG EDGE' ? 8 : 0);
+            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 8 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 12 : 0) + platoonBoost;
             if (lvScore >= 120) {
                 lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max stack leverage. Target heavily.';
             } else if (lvScore >= 105) {
@@ -3397,8 +3412,12 @@
                         <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
                     </div>
+                    <!-- Ump Intel (v10.1) -->
+                    ${ (() => { const ul = t.umpire_label || 'Neutral'; const uc = ul === 'Hitter-Friendly' ? '#32d74b' : (ul === 'Pitcher-Friendly' ? '#ff453a' : '#8e8e93'); const ubg = ul === 'Hitter-Friendly' ? 'rgba(50,215,75,0.1)' : (ul === 'Pitcher-Friendly' ? 'rgba(255,69,58,0.1)' : 'rgba(100,100,100,0.1)'); const uicon = ul === 'Hitter-Friendly' ? '🟢' : (ul === 'Pitcher-Friendly' ? '🔴' : '⚪'); return `<div style="background:${ubg}; border:1px solid ${uc}40; border-radius:12px; padding:16px;"><div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire</div><div style="font-size:1rem; font-weight:900; color:${uc}; line-height:1; margin-bottom:4px;">${uicon} ${ul}</div><div style="font-size:0.72rem; color:rgba(255,255,255,0.55);">${t.umpire_name || 'TBD'}</div></div>`; })() }
                 </div>
                 ${warningHTML}
+                ${t.is_cold_streak ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(0,180,216,0.08); border:1px dashed #00b4d8; border-radius:10px; font-size:0.75rem; color:#00b4d8;"><strong>🥶 COLD STREAK:</strong> This lineup is striking out ${t.rolling_k_delta}% more than their season average recently. Consider reducing stack size.</div>` : ''}
+                ${t.is_physics_override ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(255,214,0,0.08); border:1px dashed #ffd600; border-radius:10px; font-size:0.75rem; color:#ffd600;"><strong>⚡ PHY OVERRIDE:</strong> This lineup grades out physically stronger than the market is pricing. Potential hidden value — check official lineup confirmation.</div>` : ''}
             `;
 
             document.getElementById('team-modal').classList.add('open');

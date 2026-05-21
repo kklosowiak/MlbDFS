@@ -603,17 +603,67 @@ def get_results_api():
         # When the gate is not met, calculate_dqi returns None and we skip
         # injection entirely — the frontend detects absence and shows a dash.
         teams = data.get("teams", [])
+
+        # v10.1: Load DQI history for Faded Ghost Tag detection
+        dqi_history_path = os.path.join(base_dir, "reports", "dqi_history.json")
+        dqi_history = {}
+        if os.path.exists(dqi_history_path):
+            try:
+                with open(dqi_history_path, "r", encoding="utf-8") as dh:
+                    dqi_history = json.load(dh)
+            except Exception:
+                dqi_history = {}
+
+        import datetime as _dt
+        now_et = _dt.datetime.now()
+
         for t in teams:
+            team_key = t.get("team", "")
+
+            # --- DQI injection ---
             dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(t)
             if dqi_score is not None:
                 t["dqi_score"] = dqi_score
                 t["dqi_status"] = dqi_status
                 t["dqi_pos_factors"] = dqi_pos_factors
                 t["dqi_warn_factors"] = dqi_warn_factors
-            # If None: leave the fields absent so frontend shows no DQI
+                # Record into history
+                dqi_history[team_key] = {
+                    "score": dqi_score, "status": dqi_status,
+                    "recorded_at": now_et.isoformat()
+                }
+            else:
+                # DQI not firing now — check if it fired earlier today (Faded Ghost Tag)
+                hist = dqi_history.get(team_key)
+                if hist:
+                    try:
+                        recorded = _dt.datetime.fromisoformat(hist["recorded_at"])
+                        hours_ago = (now_et - recorded).total_seconds() / 3600
+                        if hours_ago <= 4:  # Was active within last 4 hours
+                            t["dqi_faded"] = True
+                            t["dqi_faded_score"] = hist["score"]
+                            t["dqi_faded_status"] = hist["status"]
+                    except Exception:
+                        pass
+
+            # --- v10.1: Ump Label (Hitter-Friendly / Pitcher-Friendly / Neutral) ---
+            ump_factor = t.get("umpire_factor", 1.0)
+            if ump_factor >= 1.03:
+                t["umpire_label"] = "Hitter-Friendly"
+            elif ump_factor <= 0.97:
+                t["umpire_label"] = "Pitcher-Friendly"
+            else:
+                t["umpire_label"] = "Neutral"
+
+        # Save updated DQI history
+        try:
+            with open(dqi_history_path, "w", encoding="utf-8") as dh:
+                json.dump(dqi_history, dh)
+        except Exception:
+            pass
+
         data["teams"] = teams
 
-        
         return JSONResponse(
             content=data,
             headers={

@@ -255,20 +255,35 @@ class PitcherAnalyzer:
                     if k_line is None: k_line = 4.5
                     if outs_line is None: outs_line = 14.5
                     
-                    # Prop Trap Detection
+                    # Prop Trap Detection — Logic untouched, sub-label added
                     is_trap = False
+                    trap_is_short_leash = False  # Outs line triggered
+                    trap_is_vulnerable = False   # Opponent/market edge triggered
                     p_move = next((m for m in movement_data if m.get('player') == pitcher_name), None)
                     k_move = p_move.get('k_move', 0) if p_move else 0
                     
                     if ml_move > 10 and k_move < 0:
                         is_trap = True
+                        trap_is_vulnerable = True
                     if k_odds and k_odds > 125:
                         is_trap = True
+                        trap_is_vulnerable = True
                         
                     is_death_sentence = False
                     if outs_line is not None and float(outs_line) <= 15.5 and outs_odds is not None and float(outs_odds) >= 100:
                         is_trap = True
                         is_death_sentence = True
+                        trap_is_short_leash = True
+                    
+                    # Derive human-readable sub-label
+                    if trap_is_short_leash and trap_is_vulnerable:
+                        trap_type = 'Both'
+                    elif trap_is_short_leash:
+                        trap_type = 'Short Leash'
+                    elif trap_is_vulnerable:
+                        trap_type = 'Vulnerable'
+                    else:
+                        trap_type = None
                         
                     is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
                     is_whale = (divergence >= 15)
@@ -337,6 +352,8 @@ class PitcherAnalyzer:
                     'divergence': divergence,
                     'weather_label': weather_label,
                     'umpire_name': ump_data['name'],
+                    'umpire_factor': ump_data.get('factor', 1.0),  # Exposed for hitter/pitcher label
+                    'trap_type': trap_type if is_trap else None,   # Sub-label: Short Leash / Vulnerable / Both
                     'is_home': side == 'home',
                     'side': side
                 })

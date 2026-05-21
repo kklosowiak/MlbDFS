@@ -668,13 +668,56 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 # OMEGA v8.0: Apply U-DIV as multiplier
                 final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
 
+            # OMEGA v10.1: Physics Override Detection
+            # When our lineup's PHY beats the opponent's PHY by 10+ pts but the market
+            # (stack score) ranks them much lower, flag a potential market mispricing.
+            opp_physics = opp_pitcher_physics if opp_pitcher_physics else 0
+            is_physics_override = (
+                res['physics'] > opp_physics + 10 and
+                res['physics'] > 40 and
+                final_stack_score < 80
+            )
+
+            # OMEGA v10.1: Team Rolling K% Cold Streak Detection
+            # Compare rolling K rate vs season K rate across confirmed lineup hitters.
+            # If the team is striking out at 25%+ above their season average, flag cold streak.
+            rolling_k_delta = 0.0
+            is_cold_streak = False
+            try:
+                cache_path = os.path.join(config.DATA_DIR, 'statcast_cache.json')
+                if os.path.exists(cache_path):
+                    with open(cache_path, 'r', encoding='utf-8') as fc:
+                        hitter_cache = json.load(fc)
+                    team_season_k_rates = []
+                    team_rolling_k_rates = []
+                    for hname, hdata in hitter_cache.items():
+                        if hdata.get('type') == 'hitter' and hdata.get('team') == team:
+                            pa = hdata.get('pa', 0)
+                            k = hdata.get('k', 0)
+                            r_pa = hdata.get('rolling_pa', 0)
+                            r_k = hdata.get('rolling_k', 0)
+                            if pa >= 20:
+                                team_season_k_rates.append(k / pa)
+                            if r_pa >= 5:
+                                team_rolling_k_rates.append(r_k / r_pa)
+                    if team_season_k_rates and team_rolling_k_rates:
+                        avg_season_k = sum(team_season_k_rates) / len(team_season_k_rates)
+                        avg_rolling_k = sum(team_rolling_k_rates) / len(team_rolling_k_rates)
+                        if avg_season_k > 0:
+                            rolling_k_delta = round((avg_rolling_k - avg_season_k) / avg_season_k * 100, 1)
+                            is_cold_streak = rolling_k_delta >= 25.0
+            except Exception:
+                pass
+
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
                 'ml_move': ml_move, 'tt_move': tt_move, 'stack_score': final_stack_score,
                 'physics_score': res['physics'], 'market_score': res['market'],
                 'team_xwoba': res.get('team_xwoba', 0.330),
                 'power_concentration': power_concentration,
-                'weather_label': weather_data['label'], 'umpire_name': ump_data.get('name', 'Unknown'),
+                'weather_label': weather_data['label'],
+                'umpire_name': ump_data.get('name', 'Unknown'),
+                'umpire_factor': ump_data.get('factor', 1.0),  # v10.1: Exposed for hitter/pitcher label
                 'bullpen_fatigue': opp_bullpen['score'], 'is_gassed': opp_bullpen['is_gassed'],
                 'is_fatigued': opp_bullpen.get('is_fatigued', False), 'is_shark': is_shark,
                 'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
@@ -684,8 +727,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_opp_debut': is_opp_debut,
                 'is_trap': res.get('is_trap', False),
                 'opp_pitcher_physics': opp_pitcher_physics,
-                'implied_total': round(curr_itt, 2),  # v6.3: ITT exported for trend validation
-                'total_signal': total_signal  # v8.0: Now applies Mechanical Boosts
+                'implied_total': round(curr_itt, 2),
+                'total_signal': total_signal,
+                'is_physics_override': is_physics_override,  # v10.1: PHY beats market signal
+                'is_cold_streak': is_cold_streak,            # v10.1: Rolling K% elevated 25%+
+                'rolling_k_delta': rolling_k_delta           # v10.1: % above season K rate
             })
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
