@@ -97,6 +97,9 @@ When scanning the dashboards, look for these custom OMEGA badges. They represent
 *   `💨 STEAM (Rapid Money Flow)`
     *   *What it means:* Extreme, late-breaking money is flooding in on this line just hours before lock.
     *   *How to use it:* Pay close attention to these late shifts. They indicate late-breaking sharp news (like a lineup change or bullpen fatigue confirmation).
+*   `🎰 HEAVY $` (field: `is_sharp`)
+    *   *What it means:* Money handle >= 65% **and** divergence (money minus tickets) >= 10%. Not chalk alone.
+    *   *How to use it:* Confirms institutional money concentration without the full SHARK RLM pattern.
 *   `⚡ BURST (GPP Explosive Pivot)`
     *   *What it means:* A player who has massive statistical upside but is projected for extremely low ownership in GPP tournaments.
     *   *How to use it:* The ultimate tournament secret. Pair a `⚡ BURST` player with a popular stack to make your lineup unique.
@@ -117,6 +120,19 @@ When scanning the dashboards, look for these custom OMEGA badges. They represent
 *   `🔥 EXHAUSTED / ♨️ GASSED / ♨️ WEARY (Bullpen Alert)`
     *   *What it means:* The opposing team's bullpen has been heavily overworked over the past 3 days. Their top, high-leverage relief pitchers are completely fatigued.
     *   *How to use it:* A massive **BUY signal for the opposing stack**. Once the starting pitcher leaves the game, the offense will feast on tired, backup relief arms, resulting in late-inning run explosions!
+
+---
+
+## 📊 Divergence Quality Index (DQI)
+
+DQI only appears when a team has **divergence >= 10%** (money% minus tickets%). It grades whether that sharp interest is high quality or a trap.
+
+*   **Baseline:** 30 points (teams must earn TRUST)
+*   **TRUST (75-100):** Strong convergence — targetable SP, gassed pen, market steam, offense quality
+*   **CAUTION (50-74):** Mixed evidence — size down or wait
+*   **FADE (under 50):** Likely public chalk trap despite divergence — fade aggressively
+
+Positive factors include targetable opposing SP physics, vulnerable bullpen, O-DIV totals, xwOBA, power stack, surging trend, and run environment. Warnings include reverse steam, U-DIV, fading trend, and public chalk trap.
 
 ---
 

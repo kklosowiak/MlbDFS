@@ -62,8 +62,8 @@ try:
 except Exception as init_err:
     print(f"[INIT WARNING]: Failed to load cached timestamp: {init_err}")
 
-# Auth config
-PASSWORD = os.getenv("OMEGA_PASSWORD", "omega2026")
+# Auth config (no defaults — set OMEGA_PASSWORD in environment)
+PASSWORD = os.getenv("OMEGA_PASSWORD") or ""
 COOKIE_NAME = "omega_session"
 COOKIE_VALUE = "active"
 
@@ -87,6 +87,21 @@ def perform_refresh_sync():
         print("[SERVER BG-THREAD]: Starting model calculations...")
         from main import run_full_analysis
         run_full_analysis()
+
+        try:
+            from utils.dqi import persist_dqi_history
+            from config import config
+            results_path = os.path.join(config.REPORTS_DIR, "latest_results.json")
+            if os.path.exists(results_path):
+                with open(results_path, "r", encoding="utf-8") as f:
+                    res = json.load(f)
+                persist_dqi_history(
+                    res.get("teams", []),
+                    config.REPORTS_DIR,
+                    pitchers=res.get("pitchers", []),
+                )
+        except Exception as dqi_e:
+            print(f"[SERVER BG-THREAD WARNING]: DQI history persist failed: {dqi_e}")
         
         print("[SERVER BG-THREAD]: Running automated trend resolution for past games...")
         try:
@@ -423,7 +438,7 @@ def get_login_page(request: Request):
 
 @app.post("/login")
 def post_login_page(password: str = Form(...)):
-    if password == PASSWORD:
+    if PASSWORD and password == PASSWORD:
         response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
         # Set persistent session cookie (lasts 30 days)
         response.set_cookie(
@@ -444,7 +459,7 @@ def get_logout():
     return response
 
 # ----------------- BANKROLL ROUTES -----------------
-BANKROLL_PIN = os.getenv("BANKROLL_PIN", "1234")
+BANKROLL_PIN = os.getenv("BANKROLL_PIN") or ""
 BANKROLL_COOKIE = "omega_bankroll_session"
 
 def check_bankroll_auth(request: Request):
@@ -501,7 +516,7 @@ def get_bankroll_login(request: Request):
 
 @app.post("/bankroll/login")
 def post_bankroll_login(pin: str = Form(...)):
-    if pin == BANKROLL_PIN:
+    if BANKROLL_PIN and pin == BANKROLL_PIN:
         response = RedirectResponse(url="/bankroll", status_code=status.HTTP_303_SEE_OTHER)
         response.set_cookie(key=BANKROLL_COOKIE, value="active", max_age=30*24*3600, httponly=True, samesite="lax")
         return response
@@ -598,21 +613,11 @@ def get_results_api():
         with open(results_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         
-        # v9.5: Pre-calculate and inject DQI fields into each team record.
-        # DQI only fires when divergence >= 10% (gated inside calculate_dqi).
-        # When the gate is not met, calculate_dqi returns None and we skip
-        # injection entirely — the frontend detects absence and shows a dash.
-        teams = data.get("teams", [])
+        from utils.dqi import calculate_dqi, load_dqi_history
 
-        # v10.1: Load DQI history for Faded Ghost Tag detection
-        dqi_history_path = os.path.join(base_dir, "reports", "dqi_history.json")
-        dqi_history = {}
-        if os.path.exists(dqi_history_path):
-            try:
-                with open(dqi_history_path, "r", encoding="utf-8") as dh:
-                    dqi_history = json.load(dh)
-            except Exception:
-                dqi_history = {}
+        teams = data.get("teams", [])
+        pitchers = data.get("pitchers", [])
+        dqi_history = load_dqi_history(os.path.join(base_dir, "reports"))
 
         import datetime as _dt
         now_et = _dt.datetime.now()
@@ -620,33 +625,25 @@ def get_results_api():
         for t in teams:
             team_key = t.get("team", "")
 
-            # --- DQI injection ---
-            dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(t)
+            dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(t, pitchers=pitchers)
             if dqi_score is not None:
                 t["dqi_score"] = dqi_score
                 t["dqi_status"] = dqi_status
                 t["dqi_pos_factors"] = dqi_pos_factors
                 t["dqi_warn_factors"] = dqi_warn_factors
-                # Record into history
-                dqi_history[team_key] = {
-                    "score": dqi_score, "status": dqi_status,
-                    "recorded_at": now_et.isoformat()
-                }
             else:
-                # DQI not firing now — check if it fired earlier today (Faded Ghost Tag)
                 hist = dqi_history.get(team_key)
                 if hist:
                     try:
                         recorded = _dt.datetime.fromisoformat(hist["recorded_at"])
                         hours_ago = (now_et - recorded).total_seconds() / 3600
-                        if hours_ago <= 4:  # Was active within last 4 hours
+                        if hours_ago <= 4:
                             t["dqi_faded"] = True
                             t["dqi_faded_score"] = hist["score"]
                             t["dqi_faded_status"] = hist["status"]
                     except Exception:
                         pass
 
-            # --- v10.1: Ump Label (Hitter-Friendly / Pitcher-Friendly / Neutral) ---
             ump_factor = t.get("umpire_factor", 1.0)
             if ump_factor >= 1.03:
                 t["umpire_label"] = "Hitter-Friendly"
@@ -654,13 +651,6 @@ def get_results_api():
                 t["umpire_label"] = "Pitcher-Friendly"
             else:
                 t["umpire_label"] = "Neutral"
-
-        # Save updated DQI history
-        try:
-            with open(dqi_history_path, "w", encoding="utf-8") as dh:
-                json.dump(dqi_history, dh)
-        except Exception:
-            pass
 
         data["teams"] = teams
 
@@ -686,6 +676,83 @@ def get_analysis_api():
     else:
         return {"markdown": "No analysis available yet."}
 
+@app.get("/api/data-health", dependencies=[Depends(get_current_user)])
+def get_data_health_api():
+    """Safe operational health for the live dashboard (no secrets)."""
+    from config import config
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = config.DATA_DIR
+    reports_dir = config.REPORTS_DIR
+
+    latest_snap = None
+    snapshot_age_minutes = None
+    splits_status = "unknown"
+    splits_teams_count = 0
+
+    if os.path.exists(data_dir):
+        for f in os.listdir(data_dir):
+            if f.startswith("snapshot_") and f.endswith(".json"):
+                if not latest_snap or f > latest_snap:
+                    latest_snap = f
+    if latest_snap:
+        snap_path = os.path.join(data_dir, latest_snap)
+        if os.path.exists(snap_path):
+            snapshot_age_minutes = int((time.time() - os.path.getmtime(snap_path)) / 60)
+            try:
+                with open(snap_path, "r", encoding="utf-8") as f:
+                    snap = json.load(f)
+                splits = snap.get("splits", {})
+                if isinstance(splits, dict):
+                    notes = str(splits.get("notes", ""))
+                    if notes and "pending" in notes.lower():
+                        splits_status = "placeholder"
+                    elif len(splits) > 0:
+                        splits_status = "ok"
+                        splits_teams_count = len([k for k in splits if k != "notes"])
+                    else:
+                        splits_status = "empty"
+            except Exception:
+                splits_status = "error"
+
+    results_timestamp = None
+    lineups_confirmed_pct = None
+    teams_total = 0
+    teams_confirmed = 0
+    results_path = os.path.join(reports_dir, "latest_results.json")
+    if os.path.exists(results_path):
+        try:
+            with open(results_path, "r", encoding="utf-8") as f:
+                res = json.load(f)
+            results_timestamp = res.get("timestamp")
+            for t in res.get("teams", []):
+                teams_total += 1
+                if t.get("lineup_status") == "CONFIRMED":
+                    teams_confirmed += 1
+            if teams_total > 0:
+                lineups_confirmed_pct = round((teams_confirmed / teams_total) * 100)
+        except Exception:
+            pass
+
+    return JSONResponse(
+        content={
+            "latest_snapshot": latest_snap,
+            "snapshot_age_minutes": snapshot_age_minutes,
+            "splits_status": splits_status,
+            "splits_teams_count": splits_teams_count,
+            "results_timestamp": results_timestamp,
+            "lineups_confirmed_pct": lineups_confirmed_pct,
+            "teams_confirmed": teams_confirmed,
+            "teams_total": teams_total,
+            "odds_api_configured": bool(config.ODDS_API_KEY),
+        },
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
+
+
 @app.get("/api/refresh-status", dependencies=[Depends(get_current_user)])
 def get_refresh_status_api():
     global is_refreshing, refresh_progress, last_refresh_time
@@ -698,49 +765,61 @@ def get_refresh_status_api():
 
 @app.get("/api/debug-env", dependencies=[Depends(get_current_user)])
 def get_debug_env_api():
-    import os
-    apiKey = os.getenv("ODDS_API_KEY", "")
-    key_status = "Missing"
-    if apiKey:
-        key_status = f"Present (Len: {len(apiKey)}, Start: {apiKey[:4]}...)"
-        
     base_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(base_dir, "data")
     reports_dir = os.path.join(base_dir, "reports")
-    
-    data_files = os.listdir(data_dir) if os.path.exists(data_dir) else []
-    reports_files = os.listdir(reports_dir) if os.path.exists(reports_dir) else []
-    
+
     latest_snap = None
-    snap_size = 0
-    snap_content = ""
-    for f in data_files:
-        if f.startswith("snapshot_") and f.endswith(".json"):
-            if not latest_snap or f > latest_snap:
-                latest_snap = f
+    snapshot_age_minutes = None
+    if os.path.exists(data_dir):
+        for f in os.listdir(data_dir):
+            if f.startswith("snapshot_") and f.endswith(".json"):
+                if not latest_snap or f > latest_snap:
+                    latest_snap = f
     if latest_snap:
         snap_path = os.path.join(data_dir, latest_snap)
-        snap_size = os.path.getsize(snap_path) if os.path.exists(snap_path) else 0
+        if os.path.exists(snap_path):
+            snapshot_age_minutes = int((time.time() - os.path.getmtime(snap_path)) / 60)
+
+    results_timestamp = None
+    results_path = os.path.join(reports_dir, "latest_results.json")
+    if os.path.exists(results_path):
         try:
-            with open(snap_path, "r", encoding="utf-8") as f_snap:
-                snap_content = f_snap.read()[:500]
-        except Exception as e:
-            snap_content = f"Error reading: {e}"
+            with open(results_path, "r", encoding="utf-8") as f:
+                results_timestamp = json.load(f).get("timestamp")
+        except Exception:
+            pass
+
+    splits_teams_count = 0
+    splits_placeholder = False
+    if latest_snap:
+        try:
+            with open(os.path.join(data_dir, latest_snap), "r", encoding="utf-8") as f:
+                snap = json.load(f)
+            splits = snap.get("splits", {})
+            if isinstance(splits, dict):
+                notes = splits.get("notes", "")
+                if notes and "pending" in str(notes).lower():
+                    splits_placeholder = True
+                else:
+                    splits_teams_count = len([k for k in splits.keys() if k != "notes"])
+        except Exception:
+            pass
 
     from run_fetch import get_slate_date
     try:
         slate_date = str(get_slate_date())
     except Exception as e:
         slate_date = f"Error: {e}"
-        
+
     return {
-        "odds_api_key_status": key_status,
-        "data_files": data_files,
-        "reports_files": reports_files,
+        "odds_api_configured": bool(os.getenv("ODDS_API_KEY")),
         "base_date_slate": slate_date,
         "latest_snapshot": latest_snap,
-        "snapshot_size": snap_size,
-        "snapshot_preview": snap_content
+        "snapshot_age_minutes": snapshot_age_minutes,
+        "results_timestamp": results_timestamp,
+        "splits_teams_count": splits_teams_count,
+        "splits_placeholder": splits_placeholder,
     }
 
 @app.post("/api/refresh", dependencies=[Depends(get_current_user)])
@@ -1222,6 +1301,19 @@ def post_snapshot_lock_api():
         snapshot_path = os.path.join(archive_dir, f"results_{date_str}_lock.json")
         
         shutil.copy2(results_path, snapshot_path)
+
+        try:
+            from utils.dqi import persist_dqi_history
+            from config import config
+            with open(snapshot_path, "r", encoding="utf-8") as f:
+                locked = json.load(f)
+            persist_dqi_history(
+                locked.get("teams", []),
+                config.REPORTS_DIR,
+                pitchers=locked.get("pitchers", []),
+            )
+        except Exception as lock_dqi_e:
+            print(f"[LOCK SNAPSHOT WARNING]: DQI persist failed: {lock_dqi_e}")
         
         print(f"[LOCK SNAPSHOT]: Saved lock snapshot to {snapshot_path}")
         return {"status": "success", "message": f"Lock snapshot saved successfully for {date_str}!", "file": f"results_{date_str}_lock.json"}
@@ -1259,132 +1351,6 @@ def post_run_learning_loop_api(background_tasks: BackgroundTasks):
             
     background_tasks.add_task(run_loop_bg)
     return {"status": "started", "message": "Feedback loop learning analysis started in the background."}
-
-def calculate_dqi(t):
-    """
-    OMEGA v9.7: Continuous Multi-Layer Divergence Quality Index (DQI) Slider Model
-
-    GATE: Only fires when team divergence >= 10%. Below this threshold,
-    returns None — no DQI is shown. Divergence is the prerequisite signal
-    (sharps are already on this team). DQI then measures the QUALITY and
-    CLARITY of that signal across 6 independent evidence layers.
-
-    Base: 30 (teams start in FADE — must earn their way to TRUST).
-    TRUST >= 75 | CAUTION >= 50 | FADE < 50
-    """
-    divergence = t.get('divergence', 0) or 0
-
-    # ─── DIVERGENCE GATE ──────────────────────────────────────────────────────
-    # No divergence signal = no DQI. Return sentinel None so API skips it.
-    if divergence < 10:
-        return None, None, [], []
-
-    # ─── RAW INPUTS ───────────────────────────────────────────────────────────
-    opp_phys           = t.get('opp_pitcher_physics', 50.0) or 50.0
-    bullpen            = t.get('bullpen_fatigue', 0) or 0
-    tt_move            = t.get('tt_move', 0.0) or 0.0
-    ml_move            = t.get('ml_move', 0.0) or 0.0
-    is_storm           = t.get('is_storm', False)
-    is_trap            = t.get('is_trap', False)
-    implied_total      = t.get('implied_total', 0.0) or 0.0
-    team_xwoba         = t.get('team_xwoba', 0.0) or 0.0
-    power_conc         = t.get('power_concentration', 0.0) or 0.0
-    total_signal       = t.get('total_signal', '') or ''
-    trend              = t.get('trend', 'STABLE') or 'STABLE'
-    is_opp_debut       = t.get('is_opp_debut', False)
-
-    pos_pts    = 0.0
-    warn_pts   = 0.0
-    pos_factors  = []
-    warn_factors = []
-
-    # ─── LAYER 1: DIVERGENCE SLIDER ───────────────────────────────────────────
-    # Bounded linear scaling from 10% (+5 pts) to 25% (+20 pts)
-    div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 15.0))
-    div_pts = 5.0 + 15.0 * div_factor
-    pos_pts += div_pts
-    pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
-
-    # ─── LAYER 2: PITCHER ENVIRONMENT SLIDER ──────────────────────────────────
-    # SP Physics: Bounded linear scaling from 40.0 (0 pts) down to 15.0 (+20 pts)
-    # Threshold at 15 covers elite targetable starters (worse physics = more points)
-    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 25.0))
-    phys_pts = 20.0 * phys_factor
-    if phys_pts > 0:
-        pos_pts += phys_pts
-        pos_factors.append(f"Targetable Starter SP (+{round(phys_pts, 1)} pts)")
-
-    # Bullpen Fatigue: Bounded linear scaling from 50.0 (0 pts) to 100.0 (+15 pts)
-    # Calibrated up to 100 to represent a completely exhausted bullpen
-    pen_factor = min(1.0, max(0.0, (float(bullpen) - 50.0) / 50.0))
-    pen_pts = 15.0 * pen_factor
-    if pen_pts > 0:
-        pos_pts += pen_pts
-        pos_factors.append(f"Vulnerable Bullpen (+{round(pen_pts, 1)} pts)")
-
-    # ─── LAYER 3: MARKET CONFIRMATION ─────────────────────────────────────────
-    # Do market line movements confirm the sharp signal?
-    if tt_move >= 0.3 or ml_move <= -10.0:
-        pos_pts += 12.0
-        pos_factors.append("Market Steam (+12 pts)")
-    # v9.6/v9.7: Extreme single-variable safeguards to Reverse Steam
-    elif (tt_move <= -0.3 and ml_move >= 10.0) or (ml_move >= 15.0) or (tt_move <= -0.5):
-        warn_pts += 15.0
-        warn_factors.append("Reverse Steam (-15 pts)")
-
-    if 'O-DIV' in total_signal:
-        pos_pts += 10.0
-        pos_factors.append("Market O-DIV (+10 pts)")
-    elif 'U-DIV' in total_signal:
-        warn_pts += 12.0
-        warn_factors.append("Market U-DIV (-12 pts)")
-
-    # ─── LAYER 4: OFFENSE QUALITY SLIDER ──────────────────────────────────────
-    # xwOBA Contact: Bounded linear scaling from 0.300 (0 pts) to 0.350 (+12 pts)
-    xwoba_factor = min(1.0, max(0.0, (float(team_xwoba) - 0.300) / 0.050))
-    xwoba_pts = 12.0 * xwoba_factor
-    if xwoba_pts > 0:
-        pos_pts += xwoba_pts
-        pos_factors.append(f"Offense xwOBA Hitting (+{round(xwoba_pts, 1)} pts)")
-        
-    if power_conc > 0.355:
-        pos_pts += 8.0
-        pos_factors.append("Power Stack (+8 pts)")
-
-    if trend == 'SURGING':
-        pos_pts += 10.0
-        pos_factors.append("Surging Trend (+10 pts)")
-    elif trend == 'FADING':
-        warn_pts += 15.0
-        warn_factors.append("Fading Trend (-15 pts)")
-
-    # ─── LAYER 5: RUN ENVIRONMENT SLIDER ──────────────────────────────────────
-    # Implied Team Total: Bounded linear scaling from 4.0 runs (0 pts) to 5.5 runs (+15 pts)
-    run_factor = min(1.0, max(0.0, (float(implied_total) - 4.0) / 1.5))
-    run_pts = 15.0 * run_factor
-    if run_pts > 0:
-        pos_pts += run_pts
-        pos_factors.append(f"Implied Run Env (+{round(run_pts, 1)} pts)")
-
-    # ─── LAYER 6: SITUATIONAL BONUSES / TRAPS ─────────────────────────────────
-    if is_storm:
-        pos_pts += 8.0
-        pos_factors.append("Storm Physics (+8 pts)")
-    if is_opp_debut:
-        pos_pts += 10.0
-        pos_factors.append("Debut Trap SP (+10 pts)")
-    if is_trap:
-        warn_pts += 20.0
-        warn_factors.append("Public Chalk Trap (-20 pts)")
-
-    # ─── FINAL SCORE ──────────────────────────────────────────────────────────
-    dqi_score = 30.0 + pos_pts - warn_pts
-    dqi_score = max(0.0, min(100.0, dqi_score))
-    dqi_score_int = int(round(dqi_score))
-
-    status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
-    return dqi_score_int, status, pos_factors, warn_factors
-
 
 # Chatbot endpoint
 @app.post("/api/chat", dependencies=[Depends(get_current_user)])
@@ -1430,8 +1396,8 @@ def post_chat_api(body: dict):
                 if t.get('is_trap'): signals.append('TRAP')
                 sig_str = ", ".join(signals) if signals else "None"
                 
-                # Calculate DQI
-                dqi_score, dqi_status, pos_f, warn_f = calculate_dqi(t)
+                from utils.dqi import calculate_dqi as _calc_dqi
+                dqi_score, dqi_status, pos_f, warn_f = _calc_dqi(t, pitchers=res.get("pitchers", []))
                 dqi_str = f"DQI: {dqi_score}% [{dqi_status}]"
                 if pos_f: dqi_str += f" (Strengths: {', '.join(pos_f)})"
                 if warn_f: dqi_str += f" (Warnings: {', '.join(warn_f)})"
@@ -1517,20 +1483,16 @@ Top Individual Hitter Projections:
 {feedback_md}
 
 ### 🧠 UNDERSTANDING DQI (Divergence Quality Index):
-DQI was introduced in OMEGA v9.5 as a rigorous gate to separate genuine, high-leverage opportunities from retail public traps when a team shows a high divergence between our math projections and public betting lines:
-- **Baseline:** Starts at 50%
-- **🟢 Positive Strengths (+Points):**
-  - `Low-Phys SP` (+20%): Facing a starting pitcher with weak physical ratings (Physics Score <= 20.0).
-  - `Gassed Pen` (+20%): Facing a highly fatigued opposing bullpen (Fatigue score >= 65).
-  - `Market Steam` (+15%): Implied Team Total moving up or Moneyline moving down.
-  - `Storm Physics` (+15%): Environmental/weather indicators support hitting.
-- **🔴 Warning Flags (-20%):**
-  - `Public Chalk` (-20%): Retail public volume backing the play (indicating a high-danger "Whale Trap").
-  - `Reverse Steam` (-20%): Line movement that runs contrary to consensus split percentages.
-- **🚥 DQI Recommendations:**
-  - `🟢 75% - 100% [TRUST]`: Extremely high quality. High expected value (EV) stack of 5+ runs.
-  - `🟡 50% - 74% [CAUTION]`: Moderate convergence. Conflicting data present. Proceed with care.
-  - `🔴 Under 50% [FADE]`: High-danger trap. Aggressively fade these retail chalk plays.
+DQI fires only when team divergence >= 10% (sharp money interest). Base score starts at 30 points; teams earn TRUST through layered evidence:
+- **Baseline:** 30 points (must earn up to TRUST)
+- **Gate:** No divergence >= 10% = no DQI shown
+- **Positive layers:** Targetable SP physics, gassed bullpen, market steam, O-DIV, xwOBA, power stack, surging trend, run environment, storm/debut bonuses
+- **Warning layers:** Reverse steam, U-DIV, fading trend, public chalk trap (-20 pts)
+- **🚥 DQI Grades:**
+  - `TRUST` (75-100): High-conviction divergence play
+  - `CAUTION` (50-74): Mixed signals — proceed carefully
+  - `FADE` (under 50): Likely retail trap despite divergence
+- **HEAVY $ (`is_sharp`):** Money >= 65% AND divergence >= 10% (not chalk alone)
 
 When Konrad asks you questions:
 1. Proactively refer to the **DQI (Divergence Quality Index)** scores, strengths, and warning factors of each team! For instance, if a team has DQI TRUST, highlight it as a top high-conviction play for today. If it has DQI CAUTION or FADE, explain the specific warning factors (like Public Chalk or weak opposing SP) causing the flag.

@@ -10,87 +10,8 @@ import json
 import datetime
 from datetime import timedelta
 from utils.audit_engine import AuditEngine
+from utils.dqi import calculate_dqi
 from config import config
-
-def calculate_dqi_for_audit(t, pitchers):
-    """
-    OMEGA v9.7: Continuous Multi-Layer Divergence Quality Index (DQI) Slider Model for historical audit and performance tracking.
-    """
-    divergence = t.get('divergence', 0) or 0
-    if divergence < 10:
-        return None, None
-
-    opp_phys           = t.get('opp_pitcher_physics', 50.0) or 50.0
-    bullpen            = t.get('bullpen_fatigue', 0) or 0
-    tt_move            = t.get('tt_move', 0.0) or 0.0
-    ml_move            = t.get('ml_move', 0.0) or 0.0
-    is_storm           = t.get('is_storm', False)
-    implied_total      = t.get('implied_total', 0.0) or 0.0
-    team_xwoba         = t.get('team_xwoba', 0.0) or 0.0
-    power_conc         = t.get('power_concentration', 0.0) or 0.0
-    total_signal       = t.get('total_signal', '') or ''
-    trend              = t.get('trend', 'STABLE') or 'STABLE'
-    is_opp_debut       = t.get('is_opp_debut', False)
-
-    # Cross-reference opposing pitcher is_trap
-    opp_p_name = t.get('opp_pitcher', '').lower().strip()
-    opp_p_obj = next((p for p in pitchers if p.get('pitcher', '').lower().strip() == opp_p_name), None)
-    is_trap = opp_p_obj.get('is_trap', False) if opp_p_obj else False
-
-    pos_pts    = 0.0
-    warn_pts   = 0.0
-
-    # Layer 1: Divergence Slider
-    div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 15.0))
-    pos_pts += 5.0 + 15.0 * div_factor
-
-    # Layer 2: Pitcher Environment Slider
-    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 25.0))
-    pos_pts += 20.0 * phys_factor
-
-    pen_factor = min(1.0, max(0.0, (float(bullpen) - 50.0) / 50.0))
-    pos_pts += 15.0 * pen_factor
-
-    # Layer 3: Market Confirmation
-    if tt_move >= 0.3 or ml_move <= -10.0:
-        pos_pts += 12.0
-    elif (tt_move <= -0.3 and ml_move >= 10.0) or (ml_move >= 15.0) or (tt_move <= -0.5):
-        warn_pts += 15.0
-
-    if 'O-DIV' in total_signal:
-        pos_pts += 10.0
-    elif 'U-DIV' in total_signal:
-        warn_pts += 12.0
-
-    # Layer 4: Offense Quality Slider
-    xwoba_factor = min(1.0, max(0.0, (float(team_xwoba) - 0.300) / 0.050))
-    pos_pts += 12.0 * xwoba_factor
-        
-    if power_conc > 0.355:
-        pos_pts += 8.0
-
-    if trend == 'SURGING':
-        pos_pts += 10.0
-    elif trend == 'FADING':
-        warn_pts += 15.0
-
-    # Layer 5: Run Environment Slider
-    run_factor = min(1.0, max(0.0, (float(implied_total) - 4.0) / 1.5))
-    pos_pts += 15.0 * run_factor
-
-    # Layer 6: Situational Bonuses / Traps
-    if is_storm:
-        pos_pts += 8.0
-    if is_opp_debut:
-        pos_pts += 10.0
-    if is_trap:
-        warn_pts += 20.0
-
-    dqi_score = 30.0 + pos_pts - warn_pts
-    dqi_score = max(0.0, min(100.0, dqi_score))
-    dqi_score_int = int(round(dqi_score))
-    status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
-    return dqi_score_int, status
 
 def run_feedback_loop(days=7):
     print("\n" + "="*60)
@@ -196,7 +117,7 @@ def run_feedback_loop(days=7):
                     signal_stats['GASSED_BULLPEN_ATTACK']['hit'] += 1
                     
             # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
-            dqi_score, dqi_status = calculate_dqi_for_audit(t, pitchers)
+            dqi_score, dqi_status, _, _ = calculate_dqi(t, pitchers)
             if dqi_score is not None:
                 if dqi_status == 'TRUST':
                     signal_stats['DQI_TRUST']['fired'] += 1

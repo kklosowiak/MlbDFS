@@ -135,7 +135,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-shark">🦈 SHARK</span>' if t.get('is_shark') else '' }
 { '<span class="signal-pill pill-storm">🌪️ STORM</span>' if t.get('is_storm') else '' }
 { '<span class="signal-pill pill-whale">🐋 WHALE</span>' if t.get('is_whale') else '' }
-{ '<span class="signal-pill pill-sharp">🎰 SHARP</span>' if t.get('is_sharp') else '' }
+{ '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>' if t.get('is_sharp') and not t.get('is_shark') else '' }
 { '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
 { '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }
 { '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 15 else '' }
@@ -646,7 +646,7 @@ class DashboardGenerator:
                 <div class="legend-group">
                     <div class="legend-title">Market Alpha</div>
                     <div class="legend-item"><span class="signal-pill pill-whale">🐋 WHALE</span> <b>+15%:</b> Major Conviction</div>
-                    <div class="legend-item"><span class="signal-pill pill-sharp">🎰 SHARP</span> <b>Smart Money:</b> Pro Confirmed</div>
+                    <div class="legend-item"><span class="signal-pill pill-sharp">🎰 HEAVY $</span> <b>Heavy Money:</b> 65%+ money & 10%+ divergence</div>
                     <div class="legend-item"><span class="signal-pill pill-storm">🌪️ STORM</span> Correlated Sharp Action</div>
                     <div class="legend-item"><span class="signal-pill pill-steam">💨 STEAM</span> Heavy Line Movement</div>
                 </div>

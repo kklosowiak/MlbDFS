@@ -6,9 +6,6 @@ load_dotenv()
 
 class Config:
     ODDS_API_KEY = os.getenv("ODDS_API_KEY")
-    # OMEGA v9.6.1: Active Key Fallback to prevent stale credentials on Render
-    if not ODDS_API_KEY or ODDS_API_KEY.startswith("295f") or ODDS_API_KEY == "omega2026":
-        ODDS_API_KEY = "ee63704270d2603e35d6234e53c65d66"
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
     
@@ -60,12 +57,12 @@ class Config:
 
     @classmethod
     def validate(cls):
-        """Simple validation to ensure keys are present."""
+        """Ensure required keys are present. ODDS_API_KEY is mandatory for ingestion."""
         missing = []
-        if not cls.ODDS_API_KEY: missing.append("ODDS_API_KEY")
-        if not cls.TELEGRAM_TOKEN: missing.append("TELEGRAM_BOT_TOKEN")
+        if not cls.ODDS_API_KEY:
+            missing.append("ODDS_API_KEY")
         if missing:
-            print(f"WARNING: Missing environment variables: {', '.join(missing)}")
+            print(f"ERROR: Missing required environment variables: {', '.join(missing)}")
             return False
         return True
 

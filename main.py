@@ -182,8 +182,6 @@ def run_full_analysis():
                 purged_hitters.append(h) # Keep projected if no official data exists
         raw_hitters = purged_hitters
         print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
-        raw_hitters = purged_hitters
-        print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
 
     # 4. Analyze Teams
     team_reports = _get_team_reports(
@@ -228,6 +226,16 @@ def run_full_analysis():
     with open(archive_path, 'w', encoding='utf-8') as f:
         json.dump(summary, f, indent=4)
     print(f"[ARCHIVE]: Results archived to {archive_path}")
+
+    try:
+        from utils.dqi import persist_dqi_history
+        persist_dqi_history(
+            team_reports,
+            config.REPORTS_DIR,
+            pitchers=p_reports,
+        )
+    except Exception as dqi_e:
+        print(f"[WARNING]: DQI history persist failed: {dqi_e}")
 
 def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_data, props_data, rosters, weather_fetcher, umpire_fetcher, movement_data=None, previous_results=None):
     """STEP 1: Ranking Pitcher Alpha (Hybrid Core)"""
@@ -711,6 +719,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
+                'lineup_status': lineup_status,
                 'ml_move': ml_move, 'tt_move': tt_move, 'stack_score': final_stack_score,
                 'physics_score': res['physics'], 'market_score': res['market'],
                 'team_xwoba': res.get('team_xwoba', 0.330),

@@ -1217,6 +1217,18 @@
                     <span class="widget-label">Last Refresh</span>
                     <span class="widget-val" id="last-refresh-time">Never</span>
                 </div>
+                <div class="widget-row">
+                    <span class="widget-label">Snapshot</span>
+                    <span class="widget-val" id="health-snapshot-age">—</span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Splits</span>
+                    <span class="widget-val" id="health-splits-status">—</span>
+                </div>
+                <div class="widget-row">
+                    <span class="widget-label">Lineups</span>
+                    <span class="widget-val" id="health-lineups-pct">—</span>
+                </div>
             </div>
 
             <!-- Manual Refresh Button -->
@@ -1547,6 +1559,7 @@
                         </h2>
                         <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-secondary);">Empirical signal verification, anomaly tracking, and automated model calibrations over the last 7 slates.</p>
                         <p id="learning-last-updated" style="margin:4px 0 0 0; font-size:0.78rem; color:var(--text-secondary); font-style:italic;">Last audited: —</p>
+                        <p id="learning-empty-banner" style="display:none; margin:8px 0 0 0; font-size:0.8rem; color:var(--accent-orange); font-weight:600;">No backtest data yet — click Run Backtest Audit to populate signal hit rates.</p>
                     </div>
                     <button class="btn-refresh" id="btn-run-learning" onclick="triggerRunLearningLoop()" style="margin:0; padding:8px 16px; font-size:0.8rem; height:auto; width:auto; gap:6px; background:rgba(10, 132, 255, 0.15); border:1px solid rgba(10, 132, 255, 0.35);">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -1749,6 +1762,77 @@
             'Blue Jays': 'TOR', 'Nationals': 'WSH'
         };
 
+        function computeScoreRankMap(items, scoreKey, idKey) {
+            const sorted = [...items].sort((a, b) => (b[scoreKey] || 0) - (a[scoreKey] || 0));
+            const map = {};
+            sorted.forEach((item, idx) => {
+                const id = item[idKey] || item.team || item.pitcher || item.name;
+                map[id] = { rank: idx + 1, total: sorted.length };
+            });
+            return map;
+        }
+
+        function slatePercentileHtml(rankInfo) {
+            if (!rankInfo || rankInfo.total < 2) return '';
+            const pct = Math.round(((rankInfo.total - rankInfo.rank) / (rankInfo.total - 1)) * 100);
+            return `<div style="font-size:0.65rem; opacity:0.72; font-weight:600; margin-top:2px;">#${rankInfo.rank} · P${pct}</div>`;
+        }
+
+        function buildMarketSignalPills(entity, isTeamRow) {
+            let html = '';
+            if (entity.is_shark) html += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
+            if (entity.is_whale) html += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
+            if (isTeamRow) {
+                if (entity.is_steam) html += '<span class="signal-pill pill-steam">💨 STEAM</span>';
+                else if (entity.is_storm) html += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+            } else if (entity.is_storm) {
+                html += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+            }
+            if (entity.is_sharp && !entity.is_shark) {
+                html += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
+            }
+            if (isTeamRow && entity.is_steam) { /* steam shown above */ }
+            return html;
+        }
+
+        function formatLearningSub(fired, hit, unit) {
+            const base = `${hit}/${fired} ${unit}`;
+            if (fired < 3) return `${base} · low sample`;
+            return base;
+        }
+
+        async function pollDataHealth() {
+            try {
+                const res = await fetch('/api/data-health');
+                if (res.status === 401) return;
+                const h = await res.json();
+                const snapEl = document.getElementById('health-snapshot-age');
+                const splitsEl = document.getElementById('health-splits-status');
+                const lineupsEl = document.getElementById('health-lineups-pct');
+                if (snapEl) {
+                    snapEl.innerText = h.snapshot_age_minutes != null
+                        ? `${h.snapshot_age_minutes}m ago`
+                        : (h.latest_snapshot ? 'OK' : 'Missing');
+                    snapEl.style.color = (h.snapshot_age_minutes != null && h.snapshot_age_minutes <= 90)
+                        ? 'var(--accent-green)' : 'var(--accent-orange)';
+                }
+                if (splitsEl) {
+                    const ok = h.splits_status === 'ok';
+                    splitsEl.innerText = ok
+                        ? `OK (${h.splits_teams_count || 0})`
+                        : (h.splits_status || '—');
+                    splitsEl.style.color = ok ? 'var(--accent-green)' : 'var(--accent-orange)';
+                }
+                if (lineupsEl) {
+                    lineupsEl.innerText = h.lineups_confirmed_pct != null
+                        ? `${h.lineups_confirmed_pct}% confirmed`
+                        : '—';
+                }
+            } catch (e) {
+                console.error('Data health poll failed:', e);
+            }
+        }
+
         // Initialize API key from local storage
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
@@ -1757,8 +1841,9 @@
             }
             loadData();
             pollRefreshStatus();
-            // Start polling refresh status every 2 seconds
+            pollDataHealth();
             setInterval(pollRefreshStatus, 2000);
+            setInterval(pollDataHealth, 15000);
         });
 
         function saveApiKey() {
@@ -2217,10 +2302,16 @@
         function renderTables() {
             if (!latestData) return;
 
+            const pitchers = latestData.pitchers || [];
+            const hitters = latestData.hitters || [];
+            const teams = latestData.teams || [];
+            const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
+            const hRanks = computeScoreRankMap(hitters, 'player_score', 'name');
+            const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
+
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
             pBody.innerHTML = '';
-            const pitchers = latestData.pitchers || [];
             pitchers.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
@@ -2254,16 +2345,15 @@
                     }
                 }
 
+                const pRank = pRanks[p.pitcher];
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${p.alpha_score}</td>
+                    <td class="${scoreClass}">${p.alpha_score}${slatePercentileHtml(pRank)}</td>
                     <td class="metric" style="color: var(--accent-green);">${p.physics_score || '-'}</td>
                     <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
                     <td>
                         <div class="signals-container">
                             ${p.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
-                            ${p.is_shark ? '<span class="signal-pill pill-shark">🦈 SHARK</span>' : ''}
-                            ${p.is_sharp ? '<span class="signal-pill pill-sharp">🎰 SHARP</span>' : ''}
-                            ${p.is_whale ? '<span class="signal-pill pill-whale">🐳 WHALE</span>' : ''}
+                            ${buildMarketSignalPills(p, false)}
                             ${p.is_debut ? '<span class="signal-pill pill-storm">✨ DEBUT</span>' : ''}
                         </div>
                     </td>
@@ -2292,7 +2382,6 @@
             // 2. Render Hitters
             const hBody = document.getElementById('hitters-body');
             hBody.innerHTML = '';
-            const hitters = latestData.hitters || [];
             hitters.forEach(h => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
@@ -2310,8 +2399,9 @@
                     platoonBadge = `<span class="signal-pill" style="background:rgba(255, 69, 58, 0.15); border-color:#ff453a; color:#ff453a; font-weight:800;">📉 VS ${h.pitch_hand}HP (-${pct}%)</span>`;
                 }
 
+                const hRank = hRanks[h.name];
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${h.player_score}</td>
+                    <td class="${scoreClass}">${h.player_score}${slatePercentileHtml(hRank)}</td>
                     <td>
                         <div class="signals-container">
                             ${h.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
@@ -2338,7 +2428,6 @@
             // 3. Render Teams
             const tBody = document.getElementById('teams-body');
             tBody.innerHTML = '';
-            const teams = latestData.teams || [];
             teams.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
@@ -2423,17 +2512,14 @@
                 }
 
 
+                const tRank = tRanks[t.team];
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${t.stack_score}</td>
+                    <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
                     <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
                     <td class="metric" style="color: var(--accent-purple);">${t.market_score || 0}</td>
                     <td>
                         <div class="signals-container">
-                            ${t.is_shark ? '<span class="signal-pill pill-shark">🦈 SHARK</span>' : ''}
-                            ${t.is_storm ? '<span class="signal-pill pill-storm">🌪️ STORM</span>' : ''}
-                            ${t.is_whale ? '<span class="signal-pill pill-whale">🐋 WHALE</span>' : ''}
-                            ${t.is_sharp ? '<span class="signal-pill pill-sharp">🎰 SHARP</span>' : ''}
-                            ${t.is_steam ? '<span class="signal-pill pill-steam">💨 STEAM</span>' : ''}
+                            ${buildMarketSignalPills(t, true)}
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
                             ${(t.physics_score - t.market_score) >= 15 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
                             ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
@@ -2870,9 +2956,11 @@
             try {
                 const res = await fetch('/api/learning-feedback');
                 const result = await res.json();
-                
+                const emptyBanner = document.getElementById('learning-empty-banner');
+
                 if (result.status === 'success' && result.data) {
                     const data = result.data;
+                    if (emptyBanner) emptyBanner.style.display = (!data.dates_analyzed || data.dates_analyzed.length === 0) ? 'block' : 'none';
 
                     // Show last-audited timestamp
                     if (data.generated_at) {
@@ -2886,37 +2974,37 @@
                     const whaleP = sig.PITCHER_WHALE || {fired: 0, hit: 0};
                     const whalePRate = whaleP.fired > 0 ? Math.round((whaleP.hit / whaleP.fired) * 100) : 0;
                     document.getElementById('stat-whale-p').innerText = whalePRate + '%';
-                    document.getElementById('stat-whale-p-sub').innerText = `${whaleP.hit}/${whaleP.fired} starts`;
+                    document.getElementById('stat-whale-p-sub').innerText = formatLearningSub(whaleP.fired, whaleP.hit, 'starts');
                     
                     // Render SHARK Pitcher
                     const sharkP = sig.PITCHER_SHARK || {fired: 0, hit: 0};
                     const sharkPRate = sharkP.fired > 0 ? Math.round((sharkP.hit / sharkP.fired) * 100) : 0;
                     document.getElementById('stat-shark-p').innerText = sharkPRate + '%';
-                    document.getElementById('stat-shark-p-sub').innerText = `${sharkP.hit}/${sharkP.fired} starts`;
+                    document.getElementById('stat-shark-p-sub').innerText = formatLearningSub(sharkP.fired, sharkP.hit, 'starts');
                     
                     // Render TRAP Fade
                     const trapFade = sig.PITCHER_TRAP_FADE || {fired: 0, hit: 0};
                     const trapFadeRate = trapFade.fired > 0 ? Math.round((trapFade.hit / trapFade.fired) * 100) : 0;
                     document.getElementById('stat-trap-fade').innerText = trapFadeRate + '%';
-                    document.getElementById('stat-trap-fade-sub').innerText = `${trapFade.hit}/${trapFade.fired} fades`;
+                    document.getElementById('stat-trap-fade-sub').innerText = formatLearningSub(trapFade.fired, trapFade.hit, 'fades');
 
                     // Render WHALE Stacks
                     const whaleT = sig.TEAM_WHALE || {fired: 0, hit: 0};
                     const whaleTRate = whaleT.fired > 0 ? Math.round((whaleT.hit / whaleT.fired) * 100) : 0;
                     document.getElementById('stat-whale-t').innerText = whaleTRate + '%';
-                    document.getElementById('stat-whale-t-sub').innerText = `${whaleT.hit}/${whaleT.fired} starts`;
+                    document.getElementById('stat-whale-t-sub').innerText = formatLearningSub(whaleT.fired, whaleT.hit, 'slates');
                     
                     // Render STORM Stacks
                     const stormT = sig.TEAM_STORM || {fired: 0, hit: 0};
                     const stormTRate = stormT.fired > 0 ? Math.round((stormT.hit / stormT.fired) * 100) : 0;
                     document.getElementById('stat-storm-t').innerText = stormTRate + '%';
-                    document.getElementById('stat-storm-t-sub').innerText = `${stormT.hit}/${stormT.fired} slates`;
+                    document.getElementById('stat-storm-t-sub').innerText = formatLearningSub(stormT.fired, stormT.hit, 'slates');
                     
                     // Render SURGING Steam
                     const surgingT = sig.TEAM_SURGING || {fired: 0, hit: 0};
                     const surgingTRate = surgingT.fired > 0 ? Math.round((surgingT.hit / surgingT.fired) * 100) : 0;
                     document.getElementById('stat-surging-t').innerText = surgingTRate + '%';
-                    document.getElementById('stat-surging-t-sub').innerText = `${surgingT.hit}/${surgingT.fired} moves`;
+                    document.getElementById('stat-surging-t-sub').innerText = formatLearningSub(surgingT.fired, surgingT.hit, 'moves');
                     
                     // Render Core targets
                     const pCore = core.top3_pitchers || {total: 0, hit: 0};
@@ -2969,9 +3057,14 @@
                             missContainer.appendChild(item);
                         });
                     }
+                } else {
+                    const emptyBanner = document.getElementById('learning-empty-banner');
+                    if (emptyBanner) emptyBanner.style.display = 'block';
                 }
             } catch (err) {
                 console.error("Error loading learning feedback:", err);
+                const emptyBanner = document.getElementById('learning-empty-banner');
+                if (emptyBanner) emptyBanner.style.display = 'block';
             }
         }
         
@@ -3030,6 +3123,7 @@
                         btn.disabled = false;
                         btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> <span id="btn-text">Refresh Slate</span>`;
                         loadData();
+                        pollDataHealth();
                     }
                 }
             } catch (err) {
@@ -3166,12 +3260,7 @@
             document.getElementById('tm-div').innerText = `${t.divergence || 0}%`;
             document.getElementById('tm-vegas').innerText = t.total_signal || 'N/A';
             
-            let badgesHTML = '';
-            if (t.is_shark) badgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
-            if (t.is_storm) badgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
-            if (t.is_whale) badgesHTML += '<span class="signal-pill pill-whale">🐋 WHALE</span>';
-            if (t.is_sharp) badgesHTML += '<span class="signal-pill pill-sharp">🎰 SHARP</span>';
-            if (t.is_steam) badgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
+            let badgesHTML = buildMarketSignalPills(t, true);
             if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
             if (t.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
             if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
@@ -3211,7 +3300,7 @@
                 let pBadgesHTML = '';
                 if (oppP.is_juiced_target) pBadgesHTML += '<span class="signal-pill pill-target" style="font-size: 0.65rem; padding: 2px 6px;">🎯 TARGET</span>';
                 if (oppP.is_shark) pBadgesHTML += '<span class="signal-pill pill-shark" style="font-size: 0.65rem; padding: 2px 6px;">🦈 SHARK</span>';
-                if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 SHARP</span>';
+                if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 HEAVY $</span>';
                 if (oppP.is_whale) pBadgesHTML += '<span class="signal-pill pill-whale" style="font-size: 0.65rem; padding: 2px 6px;">🐳 WHALE</span>';
                 if (oppP.is_debut) pBadgesHTML += '<span class="signal-pill pill-storm" style="font-size: 0.65rem; padding: 2px 6px;">✨ DEBUT</span>';
                 if (oppP.is_paradox) pBadgesHTML += '<span class="signal-pill pill-paradox" style="font-size: 0.65rem; padding: 2px 6px;">⚠️ PARADOX</span>';
@@ -3468,9 +3557,7 @@
 
             let badgesHTML = '';
             if (p.is_juiced_target) badgesHTML += '<span class="signal-pill pill-target">🎯 TARGET</span>';
-            if (p.is_shark) badgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
-            if (p.is_sharp) badgesHTML += '<span class="signal-pill pill-sharp">🎰 SHARP</span>';
-            if (p.is_whale) badgesHTML += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
+            badgesHTML += buildMarketSignalPills(p, false);
             if (p.is_debut) badgesHTML += '<span class="signal-pill pill-storm">✨ DEBUT</span>';
             if (p.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
             if (p.is_hazard) badgesHTML += '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>';
@@ -3529,7 +3616,7 @@
                 if (oppT.is_shark) tBadgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
                 if (oppT.is_storm) tBadgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
                 if (oppT.is_whale) tBadgesHTML += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
-                if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 SHARP</span>';
+                if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
                 if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
                 if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
                 if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
