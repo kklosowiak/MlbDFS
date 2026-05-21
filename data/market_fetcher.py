@@ -10,6 +10,83 @@ if __name__ == "__main__":
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import config
+from utils.market_utils import get_market_prices
+
+
+def _slate_date_et():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")
+    except Exception:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _pair_key(away_team, home_team):
+    return f"{away_team}|{home_team}"
+
+
+def _load_manual_vegas_opens():
+    path = os.path.join(config.DATA_DIR, "vegas_opens_manual.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return []
+    slate = _slate_date_et()
+    if data.get("slate_date") and data.get("slate_date") != slate:
+        return []
+    return data.get("games", [])
+
+
+def _apply_manual_vegas_opens(open_lookup, structured_odds):
+    """Override frozen opens from vegas_opens_manual.json (no scrape; safe on refresh)."""
+    manuals = _load_manual_vegas_opens()
+    if not manuals:
+        return 0
+
+    manual_by_pair = {
+        _pair_key(g["away"], g["home"]): g for g in manuals if g.get("away") and g.get("home")
+    }
+    applied = 0
+
+    for g_id, game in structured_odds.items():
+        away = game["away_team"]
+        home = game["home_team"]
+        manual = manual_by_pair.get(_pair_key(away, home))
+        if not manual:
+            continue
+
+        if g_id not in open_lookup:
+            away_ml, _ = get_market_prices(game, away)
+            home_ml, total = get_market_prices(game, home)
+            open_lookup[g_id] = {
+                "game_id": g_id,
+                "team_away": away,
+                "team_home": home,
+                "away_opening_ml": away_ml or -110,
+                "away_current_ml": away_ml or -110,
+                "home_opening_ml": home_ml or -110,
+                "home_current_ml": home_ml or -110,
+                "opening_total": total or 8.5,
+                "current_total": total or 8.5,
+                "commence_time": game.get("commence_time"),
+            }
+
+        row = open_lookup[g_id]
+        if manual.get("away_opening_ml") is not None:
+            row["away_opening_ml"] = manual["away_opening_ml"]
+        if manual.get("home_opening_ml") is not None:
+            row["home_opening_ml"] = manual["home_opening_ml"]
+        if manual.get("opening_total") is not None:
+            row["opening_total"] = manual["opening_total"]
+        applied += 1
+
+    if applied:
+        print(f"  - [LINES]: Applied manual Vegas opens for {applied} game(s).")
+    return applied
+
 
 class MarketFetcher:
     """
@@ -363,8 +440,6 @@ class MarketFetcher:
         Ensures `opening_lines.json` matches the current active slate and uses game_id
         to prevent data collisions (especially doubleheaders).
         """
-        from utils.market_utils import get_market_prices
-        
         opening_path = os.path.join(config.DATA_DIR, "opening_lines.json")
         if os.path.exists(opening_path):
             with open(opening_path, 'r') as f:
@@ -418,6 +493,8 @@ class MarketFetcher:
                 open_lookup[g_id]["home_current_ml"] = home_ml
                 open_lookup[g_id]["current_total"] = total
         
+        _apply_manual_vegas_opens(open_lookup, structured_odds)
+
         # Prune stale games (keep only games from active slate)
         final_opening = [open_lookup[gid] for gid in slate_ids if gid in open_lookup]
         
