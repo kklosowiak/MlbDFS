@@ -2275,9 +2275,13 @@
                             ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
                             <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
                             ${ouDivBadge}
+                            ${p.form_status === 'SURGING' ? `<span class="signal-pill" style="background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;">🔥 SURGING</span>` : (p.form_status === 'COLD' ? `<span class="signal-pill" style="background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;">🧊 COLD</span>` : '')}
                         </div>
                     </td>
-                    <td><strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span></td>
+                    <td>
+                        <strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span>
+                        ${p.form_status === 'SURGING' ? `<div style="font-size:0.75em; color:#ff9f0a; margin-top:2px; font-weight:bold;">🔥 ${p.recent_k9} K/9 (L3)</div>` : (p.form_status === 'COLD' ? `<div style="font-size:0.75em; color:#00b4d8; margin-top:2px; font-weight:bold;">🧊 ${p.recent_era} ERA (L3)</div>` : '')}
+                    </td>
                     <td><span class="vs">vs</span><strong>${p.opponent}</strong>${oppStackBadge}</td>
                     <td class="metric"><b>${p.k_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></td>
                     <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
@@ -2368,6 +2372,12 @@
                         pitcherTrapBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.15); border: 1px solid rgba(255, 69, 58, 0.45); color: #ff453a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.25); animation: pulse 2s infinite;">🚨 TRAP SP${trapType}</span>`;
                     } else if (oppP.is_paradox) {
                         pitcherTrapBadge = `<span class="badge-mini" style="background: rgba(255, 159, 10, 0.15); border: 1px solid rgba(255, 159, 10, 0.45); color: #ff9f0a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 159, 10, 0.25);">⚠️ PARADOX SP</span>`;
+                    }
+                    
+                    if (oppP.form_status === 'SURGING') {
+                        pitcherTrapBadge += `<span class="badge-mini" style="background: rgba(255, 159, 10, 0.15); border: 1px solid rgba(255, 159, 10, 0.45); color: #ff9f0a; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🔥 SURGING</span>`;
+                    } else if (oppP.form_status === 'COLD') {
+                        pitcherTrapBadge += `<span class="badge-mini" style="background: rgba(0, 180, 216, 0.15); border: 1px solid rgba(0, 180, 216, 0.45); color: #00b4d8; border-radius: 4px; padding: 1px 5.5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🧊 COLD</span>`;
                     }
                 }
 

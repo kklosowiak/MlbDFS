@@ -114,6 +114,16 @@ class PitcherAnalyzer:
             with open(probables_path, 'r') as f:
                 probables = json.load(f)
 
+        # OMEGA v10.2: Load Pitcher Recent Form Cache
+        form_cache_path = os.path.join(self.config.DATA_DIR, "pitcher_form_cache.json")
+        form_cache = {}
+        if os.path.exists(form_cache_path):
+            try:
+                with open(form_cache_path, 'r') as f:
+                    form_cache = json.load(f)
+            except Exception:
+                pass
+
         pitcher_reports = []
         
         allowed_teams = self.config.get_slate_filter()
@@ -189,6 +199,7 @@ class PitcherAnalyzer:
                 outs_odds = None
                 is_juiced_target = False
                 is_trap = False
+                trap_type = None
                 is_death_sentence = False
                 divergence = 0
 
@@ -204,6 +215,7 @@ class PitcherAnalyzer:
                     outs_line = prev_pitcher_data.get('outs_line')
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
                     is_trap = bool(prev_pitcher_data.get('is_trap', False))
+                    trap_type = prev_pitcher_data.get('trap_type')
                     is_death_sentence = bool(prev_pitcher_data.get('is_death_sentence', False))
                     curr_ml = open_ml + ml_move if (open_ml is not None and ml_move is not None) else -110
                     curr_total = open_total + tt_move if (open_total is not None and tt_move is not None) else 8.5
@@ -307,6 +319,28 @@ class PitcherAnalyzer:
                 opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) 
                 is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
 
+                # OMEGA v10.2: Pitcher Recent Form Assessment (Conservative)
+                p_form = form_cache.get(normalize_player_name(pitcher_name))
+                recent_k9 = None
+                recent_era = None
+                form_boost = 0.0
+                form_status = None
+                
+                if p_form and p_form.get('recent_ip', 0) >= 8.0:
+                    recent_k9 = p_form.get('recent_k9', 0)
+                    recent_era = p_form.get('recent_era', 0)
+                    # Get baseline from our statcast physics dict (cached during ingest)
+                    s_k = physics.get('k', 0)
+                    s_ip = physics.get('ip', 1.0)
+                    season_k9 = (s_k / s_ip) * 9.0 if s_ip > 0 else 7.0
+                    
+                    if recent_k9 >= (season_k9 + 1.5) and recent_era < 3.50:
+                        form_boost = 5.0
+                        form_status = "SURGING"
+                    elif recent_k9 <= (season_k9 - 1.5) and recent_era > 5.00:
+                        form_boost = -5.0
+                        form_status = "COLD"
+
                 # Scoring (v7.8 Trap-Aware)
                 alpha_results = self.analyzer.calculate_pitcher_score(
                     pitcher_name, ml_move, tt_move, money_gap, k_line,
@@ -326,6 +360,9 @@ class PitcherAnalyzer:
 
                 if is_death_sentence:
                     alpha_results['final'] = round(alpha_results['final'] * 0.85, 1)
+                    
+                # Apply conservative form boost to final score
+                alpha_results['final'] = round(alpha_results['final'] + form_boost, 1)
                 
                 pitcher_reports.append({
                     'pitcher': pitcher_name,
@@ -352,8 +389,11 @@ class PitcherAnalyzer:
                     'divergence': divergence,
                     'weather_label': weather_label,
                     'umpire_name': ump_data['name'],
-                    'umpire_factor': ump_data.get('factor', 1.0),  # Exposed for hitter/pitcher label
-                    'trap_type': trap_type if is_trap else None,   # Sub-label: Short Leash / Vulnerable / Both
+                    'umpire_factor': ump_data.get('factor', 1.0),
+                    'trap_type': trap_type if is_trap else None,
+                    'form_status': form_status,
+                    'recent_k9': recent_k9,
+                    'recent_era': recent_era,
                     'is_home': side == 'home',
                     'side': side
                 })

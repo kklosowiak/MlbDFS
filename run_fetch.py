@@ -94,6 +94,9 @@ def perform_fetch(custom_date_from=None):
     try:
         bridge = StatcastBridge(config.DATA_DIR)
         bridge.refresh_momentum_data()
+        
+        # v10.2: Refresh Pitcher Recent Form Cache
+        bridge.refresh_pitcher_form_cache()
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
 

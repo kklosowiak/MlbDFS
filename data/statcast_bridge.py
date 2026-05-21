@@ -22,6 +22,18 @@ class StatcastBridge:
         """Public accessor for the unified momentum cache."""
         return self._load_cache_to_memory()
 
+    def get_pitcher_form(self, pitcher_name):
+        """OMEGA v10.2: Returns recent form data for a pitcher."""
+        form_path = os.path.join(os.path.dirname(self.cache_path), "pitcher_form_cache.json")
+        if not os.path.exists(form_path):
+            return None
+        try:
+            with open(form_path, 'r') as f:
+                form_cache = json.load(f)
+            return form_cache.get(normalize_player_name(pitcher_name))
+        except Exception:
+            return None
+
     def _load_cache_to_memory(self):
         """Loads cache into memory once."""
         if self._memory_cache is not None:
@@ -279,6 +291,92 @@ class StatcastBridge:
                 print(f"    ! Failed to pre-fetch {pitcher_name}: {e}")
         
         return cache
+
+    def refresh_pitcher_form_cache(self, season=2026):
+        """
+        OMEGA v10.2: Pulls the last 3 game logs for all probable pitchers
+        to calculate Recent K/9 and Recent ERA.
+        """
+        print("[STATCAST]: Refreshing pitcher recent form (L3 starts)...")
+        probables_path = os.path.join(os.path.dirname(self.cache_path), "probable_pitchers.json")
+        form_path = os.path.join(os.path.dirname(self.cache_path), "pitcher_form_cache.json")
+        
+        if not os.path.exists(probables_path):
+            print("  - WARNING: No probable pitchers found. Skipping form cache.")
+            return {}
+            
+        try:
+            with open(probables_path, 'r') as f:
+                probables = json.load(f)
+        except Exception:
+            return {}
+            
+        form_cache = {}
+        for team, pitcher_name in probables.items():
+            norm = normalize_player_name(pitcher_name)
+            try:
+                search_url = f"https://statsapi.mlb.com/api/v1/people/search?names={pitcher_name}&sportId=1"
+                resp = requests.get(search_url, timeout=10)
+                if resp.status_code != 200: continue
+                people = resp.json().get('people', [])
+                if not people: continue
+                player_id = people[0]['id']
+                
+                log_url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=gameLog&group=pitching&season={season}"
+                log_resp = requests.get(log_url, timeout=10)
+                if log_resp.status_code != 200: continue
+                
+                stats_data = log_resp.json().get('stats', [])
+                if not stats_data: continue
+                splits = stats_data[0].get('splits', [])
+                if not splits: continue
+                
+                # Get last 3 games (assumes chronological order)
+                # Some players might have relief appearances. For starters, we just take last 3 appearances.
+                recent_games = splits[-3:]
+                
+                total_outs = 0
+                total_k = 0
+                total_er = 0
+                
+                for g in recent_games:
+                    stat = g.get('stat', {})
+                    ip_str = str(stat.get('inningsPitched', '0.0'))
+                    try:
+                        parts = ip_str.split('.')
+                        full_innings = int(parts[0])
+                        partial = int(parts[1]) if len(parts) > 1 else 0
+                        total_outs += (full_innings * 3) + partial
+                    except: pass
+                    
+                    total_k += int(stat.get('strikeOuts', 0))
+                    total_er += int(stat.get('earnedRuns', 0))
+                
+                total_ip = total_outs / 3.0
+                recent_k9 = (total_k / total_ip * 9.0) if total_ip > 0 else 0.0
+                recent_era = (total_er / total_ip * 9.0) if total_ip > 0 else 0.0
+                
+                form_cache[norm] = {
+                    "pitcher": pitcher_name,
+                    "team": team,
+                    "games_sampled": len(recent_games),
+                    "recent_ip": round(total_ip, 1),
+                    "recent_k": total_k,
+                    "recent_er": total_er,
+                    "recent_k9": round(recent_k9, 2),
+                    "recent_era": round(recent_era, 2),
+                    "timestamp": datetime.now().isoformat()
+                }
+                print(f"    + {pitcher_name} Form: {len(recent_games)}G, {round(total_ip,1)} IP, {total_k} K (K/9: {round(recent_k9,2)}), {total_er} ER (ERA: {round(recent_era,2)})")
+                time.sleep(random.uniform(0.2, 0.4))
+            except Exception as e:
+                print(f"    ! Failed to fetch form for {pitcher_name}: {e}")
+                
+        with open(form_path, 'w') as f:
+            json.dump(form_cache, f, indent=4)
+            
+        print(f"  - SUCCESS: Pitcher form cache saved with {len(form_cache)} profiles.")
+        return form_cache
 
     def get_team_roster(self, team_name, player_type='hitter'):
         """

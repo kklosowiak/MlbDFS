@@ -1,5 +1,5 @@
 # ⚾ OMEGA Deep-Dive Slate Analysis (12 Games)
-**Generated:** 2026-05-20 06:12 PM ET
+**Generated:** 2026-05-20 10:06 PM ET
 
 ---
 
@@ -7,8 +7,8 @@
 
 ### SP Targets
 
-1. **Shohei Ohtani** (155.2 OMEGA) — Phys: 40.3, K: 7.5, vs San Diego Padres (16.2 stack)
-2. **Cam Schlittler** (137.0 OMEGA) — Phys: 30.6, K: 5.5, vs Toronto Blue Jays (50.8 stack)
+1. **Shohei Ohtani** (160.2 OMEGA) — Phys: 40.3, K: 7.5, vs San Diego Padres (16.2 stack)
+2. **Cam Schlittler** (142.0 OMEGA) — Phys: 30.6, K: 5.5, vs Toronto Blue Jays (50.8 stack)
 3. **Emerson Hancock** (127.1 OMEGA) — Phys: 35.6, K: 5.5, vs Chicago White Sox (65.7 stack)
 
 ### Stack Priority
@@ -34,7 +34,7 @@
 - **Toronto Blue Jays stack** (50.8 OMEGA)
 - **San Diego Padres stack** (16.2 OMEGA) (.264 xwOBA)
 - **Jack Kochanowicz** (58.9 OMEGA — PARADOX vs Top Stack)
-- **Zack Littell** (43.9 OMEGA — PARADOX vs Top Stack)
+- **Zack Littell** (48.1 OMEGA — PARADOX vs Top Stack)
 - **Kyle Freeland** (40.9 OMEGA — PARADOX vs Top Stack)
 
 ## ⚡ Pitcher Tier Breakdown
@@ -43,32 +43,33 @@
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Shohei Ohtani** (Los Angeles Dodgers) | 155.2 | 40.3 | 20.0 | 7.5 | 18.5 | Clean | San Diego Padres (16.2) |
-| **Cam Schlittler** (New York Yankees) | 137.0 | 30.6 | 18.6 | 5.5 | 17.5 | Clean | Toronto Blue Jays (50.8) |
+| **Shohei Ohtani** (Los Angeles Dodgers) | 160.2 | 40.3 | 20.0 | 7.5 | 18.5 | Clean | San Diego Padres (16.2) |
+| **Cam Schlittler** (New York Yankees) | 142.0 | 30.6 | 18.6 | 5.5 | 17.5 | Clean | Toronto Blue Jays (50.8) |
 | **Emerson Hancock** (Seattle Mariners) | 127.1 | 35.6 | 13.2 | 5.5 | 17.5 | Clean | Chicago White Sox (65.7) |
-| **Chris Sale** (Atlanta Braves) | 121.7 | 32.4 | 20.0 | 7.5 | 18.5 | Clean | Miami Marlins (56.6) |
-| **Michael Mcgreevy** (St. Louis Cardinals) | 116.7 | 31.5 | 11.8 | 3.5 | 17.5 | LOW-K | Pittsburgh Pirates (61.1) |
+| **Chris Sale** (Atlanta Braves) | 126.7 | 32.4 | 20.0 | 7.5 | 18.5 | Clean | Miami Marlins (56.6) |
+| **Michael Mcgreevy** (St. Louis Cardinals) | 121.7 | 31.5 | 11.8 | 3.5 | 17.5 | LOW-K | Pittsburgh Pirates (61.1) |
+| **Trey Yesavage** (Toronto Blue Jays) | 103.8 | 34.6 | 4.3 | 5.5 | 14.5 | Clean | New York Yankees (117.5) |
 
 ### Tier 2 — Strong Plays (80-99)
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Trey Yesavage** (Toronto Blue Jays) | 98.8 | 34.6 | 4.3 | 5.5 | 14.5 | Clean | New York Yankees (117.5) |
-| **Connelly Early** (Boston Red Sox) | 88.1 | 25.6 | 9.5 | 4.5 | 16.5 | LOW-K | Kansas City Royals (79.8) |
-| **Randy Vásquez** (San Diego Padres) | 87.9 | 30.4 | 0.0 | 3.5 | 16.0 | LOW-K | Los Angeles Dodgers (96.3) |
-| **Jack Leiter** (Texas Rangers) | 80.1 | 23.0 | 13.4 | 5.5 | 16.5 | COORS | Colorado Rockies (104.6) |
+| **Connelly Early** (Boston Red Sox) | 93.1 | 25.6 | 9.5 | 4.5 | 16.5 | LOW-K | Kansas City Royals (79.8) |
+| **Randy Vásquez** (San Diego Padres) | 92.9 | 30.4 | 0.0 | 3.5 | 16.0 | LOW-K | Los Angeles Dodgers (96.3) |
+| **Aaron Civale** (Athletics) | 85.3 | 27.4 | 12.9 | 4.5 | 15.5 | LOW-K | Los Angeles Angels (95.4) |
+| **Jack Leiter** (Texas Rangers) | 85.1 | 23.0 | 13.4 | 5.5 | 16.5 | COORS | Colorado Rockies (104.6) |
+| **Michael Wacha** (Kansas City Royals) | 84.3 | 27.1 | 12.6 | 4.5 | 17.5 | LOW-K | Boston Red Sox (77.6) |
+| **Tanner Bibee** (Cleveland Guardians) | 82.6 | 25.8 | 9.0 | 4.5 | 17.5 | LOW-K | Detroit Tigers (86.7) |
+| **Kyle Harrison** (Milwaukee Brewers) | 81.0 | 33.9 | 6.0 | 5.5 | 15.5 | Clean | Chicago Cubs (75.9) |
 
 ### Tier 3 — Risky / Situational (65-79)
 
 | Pitcher | OMEGA | Phys | Mkt | K-Prop | Outs | Flags | vs Opponent (Stack) |
 |---------|-------|------|-----|--------|------|-------|---------------------|
-| **Michael Wacha** (Kansas City Royals) | 79.3 | 27.1 | 12.6 | 4.5 | 17.5 | LOW-K | Boston Red Sox (77.6) |
 | **Sean Burke** (Chicago White Sox) | 78.9 | 30.6 | 4.1 | 5.5 | 15.5 | Clean | Seattle Mariners (119.5) |
-| **Tanner Bibee** (Cleveland Guardians) | 77.6 | 25.8 | 9.0 | 4.5 | 17.5 | LOW-K | Detroit Tigers (86.7) |
+| **Merrill Kelly** (Arizona Diamondbacks) | 78.2 | 14.5 | 14.6 | 4.5 | 17.5 | LOW-K | San Francisco Giants (91.2) |
 | **Janson Junk** (Miami Marlins) | 74.8 | 23.7 | 4.7 | 3.5 | 17.5 | HAZARD, LOW-K | Atlanta Braves (118.8) |
-| **Merrill Kelly** (Arizona Diamondbacks) | 73.2 | 14.5 | 14.6 | 4.5 | 17.5 | LOW-K | San Francisco Giants (91.2) |
-| **Aaron Civale** (Athletics) | 68.3 | 27.4 | 12.9 | 4.5 | 15.5 | LOW-K | Los Angeles Angels (95.4) |
-| **Carmen Mlodzinski** (Pittsburgh Pirates) | 67.6 | 27.2 | 10.9 | 4.5 | 15.5 | LOW-K | St. Louis Cardinals (75.5) |
+| **Carmen Mlodzinski** (Pittsburgh Pirates) | 72.6 | 27.2 | 10.9 | 4.5 | 15.5 | LOW-K | St. Louis Cardinals (75.5) |
 
 ### Fade Zone (<65)
 
@@ -76,11 +77,10 @@
 |---------|-------|------|-----|--------|------|-------|---------------------|
 | **Tyler Mahle** (San Francisco Giants) | 64.7 | 17.2 | 7.5 | 4.0 | 15.5 | LOW-K | Arizona Diamondbacks (113.0) |
 | **Tbd** (Detroit Tigers) | 64.7 | 23.6 | 10.1 | 4.5 | 14.5 | LOW-K | Cleveland Guardians (80.0) |
-| **Kyle Harrison** (Milwaukee Brewers) | 64.6 | 33.9 | 6.0 | 5.5 | 15.5 | Clean | Chicago Cubs (75.9) |
 | **Zach Thornton** (New York Mets) | 63.2 | 22.9 | 10.5 | 3.5 | 14.5 | LOW-K | Washington Nationals (85.6) |
 | **Edward Cabrera** (Chicago Cubs) | 61.6 | 22.7 | 11.4 | 5.5 | 16.5 | Clean | Milwaukee Brewers (85.8) |
 | **Jack Kochanowicz** (Los Angeles Angels) | 58.9 | 20.9 | 5.4 | 3.5 | 17.5 | PARADOX, HAZARD, LOW-K | Athletics (144.6) |
-| **Zack Littell** (Washington Nationals) | 43.9 | 12.3 | 5.9 | 2.5 | 14.5 | PARADOX, LOW-K | New York Mets (176.3) |
+| **Zack Littell** (Washington Nationals) | 48.1 | 12.3 | 5.9 | 2.5 | 14.5 | PARADOX, LOW-K | New York Mets (176.3) |
 | **Kyle Freeland** (Colorado Rockies) | 40.9 | 13.3 | 10.3 | 4.5 | 16.5 | PARADOX, LOW-K, COORS | Texas Rangers (133.4) |
 
 ---
@@ -90,27 +90,27 @@
 | Rank | Team | OMEGA | xwOBA | ITT | Div | Signals | vs SP | Opp BP |
 |------|------|-------|-------|-----|-----|---------|-------|--------|
 | 1 | **New York Mets** | 176.3 | .292 | 5.30 | -2 | BURST, GASSED BP | Zack Littell | 100 🔥 |
-| 2 | **Athletics** | 144.6 | .35 | 5.39 | +6 | SHARP, GASSED BP, SURGING | Jack Kochanowicz | 90 🔥 |
+| 2 | **Athletics** | 144.6 | .325 | 5.39 | +6 | SHARP, GASSED BP, SURGING | Jack Kochanowicz | 90 🔥 |
 | 3 | **Texas Rangers** | 133.4 | .299 | 5.58 | +0 | SHARP, GASSED BP | Kyle Freeland | 100 🔥 |
 | 4 | **Seattle Mariners** | 119.5 | .314 | 4.49 | +12 | SHARP, GASSED BP | Sean Burke | 100 🔥 |
 | 5 | **Atlanta Braves** | 118.8 | .329 | 4.61 | +0 | GASSED BP | Janson Junk | 100 🔥 |
 | 6 | **New York Yankees** | 117.5 | .314 | 4.77 | -5 | SHARP, BURST, GASSED BP | Trey Yesavage | 80 🔥 |
 | 7 | **Arizona Diamondbacks** | 113.0 | .256 | 4.90 | -4 | SHARP, GASSED BP | Tyler Mahle | 87 🔥 |
 | 8 | **Colorado Rockies** | 104.6 | .305 | 4.88 | +0 | GASSED BP | Jack Leiter | 100 🔥 |
-| 9 | **Los Angeles Dodgers** | 96.3 | .3 | 4.94 | -14 | SHARP, STEAM, GASSED BP | Randy Vásquez | 84 🔥 |
-| 10 | **Los Angeles Angels** | 95.4 | .3 | 4.57 | -6 | FADING | Aaron Civale | 72 |
+| 9 | **Los Angeles Dodgers** | 96.3 | .3 | 4.94 | -14 | SHARP, STEAM, GASSED BP | Randy Vásquez | 88 🔥 |
+| 10 | **Los Angeles Angels** | 95.4 | .266 | 4.57 | -6 | FADING | Aaron Civale | 72 |
 | 11 | **San Francisco Giants** | 91.2 | .296 | 3.99 | +4 | — | Merrill Kelly | 74 |
-| 12 | **Detroit Tigers** | 86.7 | .302 | 3.84 | +12 | — | Tanner Bibee | 70 |
-| 13 | **Milwaukee Brewers** | 85.8 | .301 | 3.19 | +6 | GASSED BP | Edward Cabrera | 93 🔥 |
+| 12 | **Detroit Tigers** | 86.7 | .302 | 3.85 | +12 | GASSED BP | Tanner Bibee | 87 🔥 |
+| 13 | **Milwaukee Brewers** | 85.8 | .301 | 3.18 | +6 | GASSED BP | Edward Cabrera | 100 🔥 |
 | 14 | **Washington Nationals** | 85.6 | .308 | 4.63 | +2 | BURST, GASSED BP | Zach Thornton | 100 🔥 |
-| 15 | **Cleveland Guardians** | 80.0 | .282 | 4.01 | -12 | — | Tbd | 74 |
-| 16 | **Kansas City Royals** | 79.8 | .292 | 4.09 | +3 | — | Connelly Early | 66 |
-| 17 | **Boston Red Sox** | 77.6 | .27 | 3.75 | -3 | GASSED BP | Michael Wacha | 93 🔥 |
-| 18 | **Chicago Cubs** | 75.9 | .3 | 3.61 | -6 | — | Kyle Harrison | 77 |
-| 19 | **St. Louis Cardinals** | 75.5 | .288 | 4.01 | +8 | SHARP | Carmen Mlodzinski | 51 |
+| 15 | **Cleveland Guardians** | 80.0 | .282 | 4.01 | -12 | BURST, GASSED BP | Tbd | 100 🔥 |
+| 16 | **Kansas City Royals** | 79.8 | .292 | 4.09 | +3 | — | Connelly Early | 76 |
+| 17 | **Boston Red Sox** | 77.6 | .27 | 3.75 | -3 | GASSED BP | Michael Wacha | 100 🔥 |
+| 18 | **Chicago Cubs** | 75.9 | .3 | 3.61 | -6 | GASSED BP | Kyle Harrison | 82 🔥 |
+| 19 | **St. Louis Cardinals** | 75.5 | .288 | 4.01 | +8 | SHARP | Carmen Mlodzinski | 69 |
 | 20 | **Chicago White Sox** | 65.7 | .295 | 3.35 | -12 | GASSED BP | Emerson Hancock | 100 🔥 |
-| 21 | **Pittsburgh Pirates** | 61.1 | .312 | 3.84 | -8 | — | Michael Mcgreevy | 59 |
-| 22 | **Miami Marlins** | 56.6 | .291 | 2.71 | +0 | GASSED BP | Chris Sale | 91 🔥 |
+| 21 | **Pittsburgh Pirates** | 61.1 | .312 | 3.84 | -8 | — | Michael Mcgreevy | 70 |
+| 22 | **Miami Marlins** | 56.6 | .291 | 2.71 | +0 | GASSED BP | Chris Sale | 100 🔥 |
 | 23 | **Toronto Blue Jays** | 50.8 | .286 | 3.07 | +5 | GASSED BP | Cam Schlittler | 100 🔥 |
 | 24 | **San Diego Padres** | 16.2 | .264 | 2.91 | +14 | — | Shohei Ohtani | 46 |
 
@@ -124,14 +124,14 @@
 | Athletics vs Los Angeles Angels | 9.96 | 0.99 | 90 | 🔴 HIGH |
 | New York Mets vs Washington Nationals | 9.93 | 0.96 | 100 | 🔴 HIGH ↑ OVER 92%$ |
 | Arizona Diamondbacks vs San Francisco Giants | 8.89 | 0.98 | 87 | 🟠 MODERATE-HIGH |
-| Los Angeles Dodgers vs San Diego Padres | 7.85 | 1.03 | 84 | 🟠 MODERATE-HIGH |
-| Detroit Tigers vs Cleveland Guardians | 7.85 | 0.97 | 74 | 🟠 MODERATE-HIGH |
-| St. Louis Cardinals vs Pittsburgh Pirates | 7.85 | 0.98 | 59 | 🟠 MODERATE-HIGH |
+| Detroit Tigers vs Cleveland Guardians | 7.86 | 0.97 | 100 | 🟠 MODERATE-HIGH |
+| Los Angeles Dodgers vs San Diego Padres | 7.85 | 1.03 | 88 | 🟠 MODERATE-HIGH |
+| St. Louis Cardinals vs Pittsburgh Pirates | 7.85 | 0.98 | 70 | 🟠 MODERATE-HIGH |
 | Seattle Mariners vs Chicago White Sox | 7.84 | 0.92 | 100 | 🟠 MODERATE-HIGH |
 | New York Yankees vs Toronto Blue Jays | 7.84 | 1.02 | 100 | 🟠 MODERATE-HIGH 📉 U-DIV +9 |
-| Kansas City Royals vs Boston Red Sox | 7.84 | 1.02 | 93 | 🟠 MODERATE-HIGH |
+| Kansas City Royals vs Boston Red Sox | 7.84 | 1.02 | 100 | 🟠 MODERATE-HIGH |
 | Atlanta Braves vs Miami Marlins | 7.32 | 1.02 | 100 | 🟠 MODERATE-HIGH |
-| Milwaukee Brewers vs Chicago Cubs | 6.80 | 1.01 | 93 | 🟠 MODERATE-HIGH |
+| Milwaukee Brewers vs Chicago Cubs | 6.79 | 1.01 | 100 | 🟠 MODERATE-HIGH |
 
 ---
 
@@ -139,7 +139,7 @@
 
 ### Game 1: New York Mets (176.3) vs Washington Nationals (85.6)
 
-**Pitching:** Zach Thornton (63.2) vs Zack Littell (43.9)
+**Pitching:** Zach Thornton (63.2) vs Zack Littell (48.1)
 
 | Metric | New York Mets | Washington Nationals |
 |--------|---------------|----------------------|
@@ -155,7 +155,7 @@
 | Signals | BURST, GASSED BP | BURST, GASSED BP |
 | Total Signal | ↑ OVER 92%$ | ↑ OVER 92%$ |
 
-**OMEGA Analysis:** Proceed with caution on Zack Littell (PARADOX trap). The Washington Nationals form an elite stack that can ruin a good pitcher's day. We have a ⚡ BURST condition triggered for the New York Mets, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Zack Littell (43.9 OMEGA) is in the Fade Zone, making the Washington Nationals a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Zach Thornton (63.2 OMEGA) is in the Fade Zone, making the New York Mets a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Zack Littell 43.9, Zach Thornton 63.2). This is a premium game-stack target — consider stacking both sides.
+**OMEGA Analysis:** Proceed with caution on Zack Littell (PARADOX trap). The Washington Nationals form an elite stack that can ruin a good pitcher's day. We have a ⚡ BURST condition triggered for the New York Mets, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Zack Littell (48.1 OMEGA) is in the Fade Zone, making the Washington Nationals a strong stacking target in this environment. 🔴 **High-Run Alert:** Combined ITT (9.9) projects elite run production. Zach Thornton (63.2 OMEGA) is in the Fade Zone, making the New York Mets a strong stacking target in this environment. 🔥 **Game-Stack Environment:** Both pitchers are in the Fade Zone (Zack Littell 48.1, Zach Thornton 63.2). This is a premium game-stack target — consider stacking both sides.
 
 **New York Mets Top Hitters:**
 
@@ -181,19 +181,19 @@
 
 ### Game 2: Athletics (144.6) vs Los Angeles Angels (95.4)
 
-**Pitching:** Aaron Civale (68.3) vs Jack Kochanowicz (58.9)
+**Pitching:** Aaron Civale (85.3) vs Jack Kochanowicz (58.9)
 
 | Metric | Athletics | Los Angeles Angels |
 |--------|-----------|--------------------|
 | Stack Score | **144.6** | 95.4 |
-| xwOBA | 0.350 | 0.300 |
+| xwOBA | 0.325 | 0.266 |
 | ITT | 5.39 | 4.57 |
 | ML Move | -9.0 | +7.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | +6 | -6 |
 | Opp BP | 90 🔥 | 72  |
 | Weather | 🟢 76° / In from Center | 🟢 76° / In from Center |
-| Umpire | TBD | TBD |
+| Umpire | Chris Guccione | Chris Guccione |
 | Signals | SHARP, GASSED BP, SURGING | FADING |
 
 **OMEGA Analysis:** Proceed with caution on Jack Kochanowicz (PARADOX trap). The Los Angeles Angels form an elite stack that can ruin a good pitcher's day. 🔴 **High-Run Alert:** Combined ITT (10.0) projects elite run production. Jack Kochanowicz (58.9 OMEGA) is in the Fade Zone, making the Los Angeles Angels a strong stacking target in this environment. ⚡ **Bullpen Fatigue Alert:** Opposing bullpen fatigue (90) combined with high ITT (10.0) creates a late-game ceiling spot for the Los Angeles Angels.
@@ -205,8 +205,8 @@
 | 122.0 | Nick Kurtz | .36760000000000004 | +250 | -@-250 | 🔥 HOT, JUICED |
 | 89.0 | Zack Gelof | .32999999999999996 | +450 | -@-185 | JUICED |
 | 87.5 | Shea Langeliers | .3928 | +300 | -@+180 | 🔥 HOT |
+| 82.0 | Henry Bolte | .33 | +450 | -@-190 | JUICED |
 | 78.9 | Brent Rooker | .27080000000000004 | +350 | -@-220 | JUICED |
-| 76.1 | Max Muncy | .284 | +350 | -@-152 | JUICED |
 
 **Los Angeles Angels Top Hitters:**
 
@@ -216,13 +216,13 @@
 | 63.4 | Jo Adell | .2696 | +300 | -@-200 | JUICED |
 | 59.9 | Zach Neto | .3008 | +350 | -@-225 | JUICED |
 | 57.4 | Jorge Soler | .288 | +400 | -@-165 | JUICED |
-| 55.9 | Yoan Moncada | .244 | +400 | -@-155 | JUICED |
+| 55.9 | Logan Ohoppe | .2212 | +400 | -@-160 | JUICED |
 
 ---
 
 ### Game 3: Texas Rangers (133.4) vs Colorado Rockies (104.6)
 
-**Pitching:** Jack Leiter (80.1) vs Kyle Freeland (40.9)
+**Pitching:** Jack Leiter (85.1) vs Kyle Freeland (40.9)
 
 | Metric | Texas Rangers | Colorado Rockies |
 |--------|---------------|------------------|
@@ -304,7 +304,7 @@
 
 ### Game 5: Atlanta Braves (118.8) vs Miami Marlins (56.6)
 
-**Pitching:** Chris Sale (121.7) vs Janson Junk (74.8)
+**Pitching:** Chris Sale (126.7) vs Janson Junk (74.8)
 
 | Metric | Atlanta Braves | Miami Marlins |
 |--------|----------------|---------------|
@@ -314,7 +314,7 @@
 | ML Move | +11.0 | -9.0 |
 | TT Move | -0.5 | -0.5 |
 | Divergence | +0 | +0 |
-| Opp BP | 100 🔥 | 91 🔥 |
+| Opp BP | 100 🔥 | 100 🔥 |
 | Weather | 🟢 82° / Indoor | 🟢 82° / Indoor |
 | Umpire | Lance Barrett | Lance Barrett |
 | Signals | GASSED BP | GASSED BP |
@@ -345,7 +345,7 @@
 
 ### Game 6: New York Yankees (117.5) vs Toronto Blue Jays (50.8)
 
-**Pitching:** Cam Schlittler (137.0) vs Trey Yesavage (98.8)
+**Pitching:** Cam Schlittler (142.0) vs Trey Yesavage (103.8)
 
 | Metric | New York Yankees | Toronto Blue Jays |
 |--------|------------------|-------------------|
@@ -387,7 +387,7 @@
 
 ### Game 7: Arizona Diamondbacks (113.0) vs San Francisco Giants (91.2)
 
-**Pitching:** Merrill Kelly (73.2) vs Tyler Mahle (64.7)
+**Pitching:** Merrill Kelly (78.2) vs Tyler Mahle (64.7)
 
 | Metric | Arizona Diamondbacks | San Francisco Giants |
 |--------|----------------------|----------------------|
@@ -428,7 +428,7 @@
 
 ### Game 8: Los Angeles Dodgers (96.3) vs San Diego Padres (16.2)
 
-**Pitching:** Shohei Ohtani (155.2) vs Randy Vásquez (87.9)
+**Pitching:** Shohei Ohtani (160.2) vs Randy Vásquez (92.9)
 
 | Metric | Los Angeles Dodgers | San Diego Padres |
 |--------|---------------------|------------------|
@@ -438,7 +438,7 @@
 | ML Move | -18.0 | +14.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | -14 | +14 |
-| Opp BP | 84 🔥 | 46  |
+| Opp BP | 88 🔥 | 46  |
 | Weather | 🟢 66° / Cross | 🟢 66° / Cross |
 | Umpire | Bruce Dreckman | Bruce Dreckman |
 | Signals | SHARP, STEAM, GASSED BP | — |
@@ -469,22 +469,22 @@
 
 ### Game 9: Detroit Tigers (86.7) vs Cleveland Guardians (80.0)
 
-**Pitching:** Tbd (64.7) vs Tanner Bibee (77.6)
+**Pitching:** Tbd (64.7) vs Tanner Bibee (82.6)
 
 | Metric | Detroit Tigers | Cleveland Guardians |
 |--------|----------------|---------------------|
 | Stack Score | **86.7** | 80.0 |
 | xwOBA | 0.302 | 0.282 |
-| ITT | 3.84 | 4.01 |
+| ITT | 3.85 | 4.01 |
 | ML Move | -13.0 | +16.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | +12 | -12 |
-| Opp BP | 70  | 74  |
+| Opp BP | 87 🔥 | 100 🔥 |
 | Weather | 🟢 53° / Cross | 🟢 53° / Cross |
 | Umpire | Scott Barry | Scott Barry |
-| Signals | — | — |
+| Signals | GASSED BP | BURST, GASSED BP |
 
-**OMEGA Analysis:** This game grades out as a relatively neutral environment. Pitching leans slightly ahead, but no elite alpha signals have fired for either side.
+**OMEGA Analysis:** We have a ⚡ BURST condition triggered for the Cleveland Guardians, targeting a highly fatigued opposing bullpen. This is an elite late-game ceiling spot.
 
 **Detroit Tigers Top Hitters:**
 
@@ -510,20 +510,20 @@
 
 ### Game 10: Milwaukee Brewers (85.8) vs Chicago Cubs (75.9)
 
-**Pitching:** Kyle Harrison (64.6) vs Edward Cabrera (61.6)
+**Pitching:** Kyle Harrison (81.0) vs Edward Cabrera (61.6)
 
 | Metric | Milwaukee Brewers | Chicago Cubs |
 |--------|-------------------|--------------|
 | Stack Score | **85.8** | 75.9 |
 | xwOBA | 0.301 | 0.300 |
-| ITT | 3.19 | 3.61 |
+| ITT | 3.18 | 3.61 |
 | ML Move | +5.0 | -5.0 |
 | TT Move | +0.0 | +0.0 |
 | Divergence | +6 | -6 |
-| Opp BP | 93 🔥 | 77  |
+| Opp BP | 100 🔥 | 82 🔥 |
 | Weather | 🟢 50° / In from Center | 🟢 50° / In from Center |
 | Umpire | Alex Tosi | Alex Tosi |
-| Signals | GASSED BP | — |
+| Signals | GASSED BP | GASSED BP |
 
 **OMEGA Analysis:** This game grades out as a relatively neutral environment. Pitching leans slightly ahead, but no elite alpha signals have fired for either side.
 
@@ -551,7 +551,7 @@
 
 ### Game 11: Kansas City Royals (79.8) vs Boston Red Sox (77.6)
 
-**Pitching:** Michael Wacha (79.3) vs Connelly Early (88.1)
+**Pitching:** Michael Wacha (84.3) vs Connelly Early (93.1)
 
 | Metric | Kansas City Royals | Boston Red Sox |
 |--------|--------------------|----------------|
@@ -561,7 +561,7 @@
 | ML Move | +0.0 | +1.0 |
 | TT Move | -0.5 | -0.5 |
 | Divergence | +3 | -3 |
-| Opp BP | 66  | 93 🔥 |
+| Opp BP | 76  | 100 🔥 |
 | Weather | 🟢 64° / Out to Center | 🟢 64° / Out to Center |
 | Umpire | Erich Bacchus | Erich Bacchus |
 | Signals | — | GASSED BP |
@@ -592,7 +592,7 @@
 
 ### Game 12: St. Louis Cardinals (75.5) vs Pittsburgh Pirates (61.1)
 
-**Pitching:** Michael Mcgreevy (116.7) vs Carmen Mlodzinski (67.6)
+**Pitching:** Michael Mcgreevy (121.7) vs Carmen Mlodzinski (72.6)
 
 | Metric | St. Louis Cardinals | Pittsburgh Pirates |
 |--------|---------------------|--------------------|
@@ -602,7 +602,7 @@
 | ML Move | +3.0 | -3.0 |
 | TT Move | -0.5 | -0.5 |
 | Divergence | +8 | -8 |
-| Opp BP | 51  | 59  |
+| Opp BP | 69  | 70  |
 | Weather | 🟢 66° / Cross | 🟢 66° / Cross |
 | Umpire | John Libka | John Libka |
 | Signals | SHARP | — |
