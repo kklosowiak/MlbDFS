@@ -52,19 +52,28 @@ class SlateReportGenerator:
 
         # 4a. The Ultimate Suggestion
         lines.append("## 👑 The Ultimate Suggestion")
-        best_p = scored_pitchers[0] if scored_pitchers else None
+        best_p1 = scored_pitchers[0] if len(scored_pitchers) > 0 else None
+        best_p2 = scored_pitchers[1] if len(scored_pitchers) > 1 else None
         best_t = scored_stacks[0] if scored_stacks else None
         
-        if best_p and best_t:
-            if best_p['attack_conf'] > best_t['attack_conf']:
-                lines.append(f"### Lock Pitcher: {best_p['pitcher']} ({best_p['attack_conf']}% Confidence)")
-                for r in best_p['attack_reasons']:
-                    lines.append(f"- {r}")
-            else:
-                lines.append(f"### Lock Stack: {best_t['team']} ({best_t['attack_conf']}% Confidence)")
-                for r in best_t['attack_reasons']:
-                    lines.append(f"- {r}")
-        lines.append("")
+        if best_t:
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} ({best_t['attack_conf']}% Confidence)")
+            for r in best_t['attack_reasons']:
+                lines.append(f"- {r}")
+            lines.append("")
+
+        if best_p1:
+            lines.append(f"### ⚾ SP1 Lock: {best_p1['pitcher']} ({best_p1['attack_conf']}% Confidence)")
+            for r in best_p1['attack_reasons']:
+                lines.append(f"- {r}")
+            lines.append("")
+
+        if best_p2:
+            lines.append(f"### ⚾ SP2 Lock: {best_p2['pitcher']} ({best_p2['attack_conf']}% Confidence)")
+            for r in best_p2['attack_reasons']:
+                lines.append(f"- {r}")
+            lines.append("")
+            
         lines.append("---")
         lines.append("")
 

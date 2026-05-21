@@ -1,5 +1,5 @@
 # 🔥 OMEGA Daily Attack Plan
-**Generated:** 2026-05-20 10:22 PM ET
+**Generated:** 2026-05-20 10:28 PM ET
 
 > [!TIP]
 > This Attack Plan evaluates all stacks and pitchers on a strict Confidence scale (0-100%). It ignores raw Omega scores and builds comprehensive arguments based on Physics, Platoon Edges, Traps, Recent Form, and Market Divergence.
@@ -7,10 +7,20 @@
 ---
 
 ## 👑 The Ultimate Suggestion
-### Lock Pitcher: Shohei Ohtani (100% Confidence)
+### 🏟️ Lock Stack: Athletics (95% Confidence)
+- Elite Team Physics: Massive .325 xwOBA projection.
+- Institutional/Sharp money is heavily backing this stack.
+- 🔥 GASSED BP: Opposing bullpen is exhausted. Great late-inning ceiling.
+
+### ⚾ SP1 Lock: Shohei Ohtani (100% Confidence)
 - 🔥 SURGING: Elite recent form with 9.47 K/9 and 0.95 ERA over last 3 starts.
 - Elite underlying Physics profile (Score: 40.0).
 - Elite Matchup: Facing a bottom-tier opposing lineup (San Diego Padres).
+- Institutional/Sharp money is backing this pitcher today.
+
+### ⚾ SP2 Lock: Cam Schlittler (90% Confidence)
+- 🔥 SURGING: Elite recent form with 11.34 K/9 and 0.54 ERA over last 3 starts.
+- Elite underlying Physics profile (Score: 30.9).
 - Institutional/Sharp money is backing this pitcher today.
 
 ---
