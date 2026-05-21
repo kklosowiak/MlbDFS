@@ -8,7 +8,7 @@
         "recent_er": 2,
         "recent_k9": 5.51,
         "recent_era": 1.1,
-        "timestamp": "2026-05-20T22:03:35.547580"
+        "timestamp": "2026-05-20T22:18:58.627097"
     },
     "aaron nola": {
         "pitcher": "Aaron Nola",
@@ -19,7 +19,7 @@
         "recent_er": 13,
         "recent_k9": 7.42,
         "recent_era": 8.78,
-        "timestamp": "2026-05-20T22:03:36.701050"
+        "timestamp": "2026-05-20T22:18:59.867257"
     },
     "shane baz": {
         "pitcher": "Shane Baz",
@@ -30,7 +30,7 @@
         "recent_er": 9,
         "recent_k9": 7.64,
         "recent_era": 4.58,
-        "timestamp": "2026-05-20T22:03:37.819031"
+        "timestamp": "2026-05-20T22:19:01.219052"
     },
     "steven matz": {
         "pitcher": "Steven Matz",
@@ -41,7 +41,7 @@
         "recent_er": 4,
         "recent_k9": 4.24,
         "recent_era": 2.12,
-        "timestamp": "2026-05-20T22:03:38.932466"
+        "timestamp": "2026-05-20T22:19:02.408535"
     },
     "mike burrows": {
         "pitcher": "Mike Burrows",
@@ -52,7 +52,7 @@
         "recent_er": 11,
         "recent_k9": 5.79,
         "recent_era": 5.3,
-        "timestamp": "2026-05-20T22:03:40.122964"
+        "timestamp": "2026-05-20T22:19:03.683752"
     },
     "joe ryan": {
         "pitcher": "Joe Ryan",
@@ -63,7 +63,7 @@
         "recent_er": 3,
         "recent_k9": 10.5,
         "recent_era": 1.5,
-        "timestamp": "2026-05-20T22:03:41.243950"
+        "timestamp": "2026-05-20T22:19:04.821627"
     },
     "jack leiter": {
         "pitcher": "Jack Leiter",
@@ -74,7 +74,7 @@
         "recent_er": 5,
         "recent_k9": 9.18,
         "recent_era": 2.7,
-        "timestamp": "2026-05-20T22:03:42.437645"
+        "timestamp": "2026-05-20T22:19:06.092419"
     },
     "kyle freeland": {
         "pitcher": "Kyle Freeland",
@@ -85,7 +85,7 @@
         "recent_er": 16,
         "recent_k9": 7.42,
         "recent_era": 10.8,
-        "timestamp": "2026-05-20T22:03:43.589651"
+        "timestamp": "2026-05-20T22:19:07.214427"
     },
     "tyler mahle": {
         "pitcher": "Tyler Mahle",
@@ -96,7 +96,7 @@
         "recent_er": 15,
         "recent_k9": 11.49,
         "recent_era": 8.62,
-        "timestamp": "2026-05-20T22:03:44.739618"
+        "timestamp": "2026-05-20T22:19:08.538721"
     },
     "merrill kelly": {
         "pitcher": "Merrill Kelly",
@@ -107,7 +107,7 @@
         "recent_er": 5,
         "recent_k9": 5.32,
         "recent_era": 2.05,
-        "timestamp": "2026-05-20T22:03:46.034743"
+        "timestamp": "2026-05-20T22:19:09.874155"
     },
     "sean burke": {
         "pitcher": "Sean Burke",
@@ -118,7 +118,7 @@
         "recent_er": 12,
         "recent_k9": 9.45,
         "recent_era": 8.1,
-        "timestamp": "2026-05-20T22:03:47.281458"
+        "timestamp": "2026-05-20T22:19:11.148668"
     },
     "emerson hancock": {
         "pitcher": "Emerson Hancock",
@@ -129,7 +129,7 @@
         "recent_er": 8,
         "recent_k9": 7.41,
         "recent_era": 4.24,
-        "timestamp": "2026-05-20T22:03:48.441351"
+        "timestamp": "2026-05-20T22:19:12.405462"
     },
     "tanner bibee": {
         "pitcher": "Tanner Bibee",
@@ -140,7 +140,7 @@
         "recent_er": 5,
         "recent_k9": 6.97,
         "recent_era": 2.18,
-        "timestamp": "2026-05-20T22:03:49.701360"
+        "timestamp": "2026-05-20T22:19:13.605319"
     },
     "chris sale": {
         "pitcher": "Chris Sale",
@@ -151,7 +151,7 @@
         "recent_er": 3,
         "recent_k9": 10.35,
         "recent_era": 1.35,
-        "timestamp": "2026-05-20T22:03:51.484889"
+        "timestamp": "2026-05-20T22:19:15.322875"
     },
     "janson junk": {
         "pitcher": "Janson Junk",
@@ -162,7 +162,7 @@
         "recent_er": 19,
         "recent_k9": 7.02,
         "recent_era": 10.26,
-        "timestamp": "2026-05-20T22:03:52.684502"
+        "timestamp": "2026-05-20T22:19:16.613209"
     },
     "zach thornton": {
         "pitcher": "Zach Thornton",
@@ -173,7 +173,7 @@
         "recent_er": 4,
         "recent_k9": 6.23,
         "recent_era": 8.31,
-        "timestamp": "2026-05-20T22:03:54.026381"
+        "timestamp": "2026-05-20T22:19:17.858091"
     },
     "zack littell": {
         "pitcher": "Zack Littell",
@@ -184,29 +184,29 @@
         "recent_er": 4,
         "recent_k9": 3.86,
         "recent_era": 2.57,
-        "timestamp": "2026-05-20T22:03:55.269731"
+        "timestamp": "2026-05-20T22:19:19.066482"
     },
     "trey yesavage": {
         "pitcher": "Trey Yesavage",
         "team": "Toronto Blue Jays",
         "games_sampled": 3,
-        "recent_ip": 13.0,
-        "recent_k": 15,
+        "recent_ip": 14.0,
+        "recent_k": 17,
         "recent_er": 2,
-        "recent_k9": 10.38,
-        "recent_era": 1.38,
-        "timestamp": "2026-05-20T22:03:56.501169"
+        "recent_k9": 10.93,
+        "recent_era": 1.29,
+        "timestamp": "2026-05-20T22:19:20.479449"
     },
     "cam schlittler": {
         "pitcher": "Cam Schlittler",
         "team": "New York Yankees",
         "games_sampled": 3,
-        "recent_ip": 16.0,
-        "recent_k": 19,
+        "recent_ip": 16.7,
+        "recent_k": 21,
         "recent_er": 1,
-        "recent_k9": 10.69,
-        "recent_era": 0.56,
-        "timestamp": "2026-05-20T22:03:57.716693"
+        "recent_k9": 11.34,
+        "recent_era": 0.54,
+        "timestamp": "2026-05-20T22:19:21.831393"
     },
     "connelly early": {
         "pitcher": "Connelly Early",
@@ -217,7 +217,7 @@
         "recent_er": 5,
         "recent_k9": 9.33,
         "recent_era": 2.45,
-        "timestamp": "2026-05-20T22:03:59.057598"
+        "timestamp": "2026-05-20T22:19:23.158293"
     },
     "michael wacha": {
         "pitcher": "Michael Wacha",
@@ -228,7 +228,7 @@
         "recent_er": 4,
         "recent_k9": 9.0,
         "recent_era": 1.89,
-        "timestamp": "2026-05-20T22:04:00.354187"
+        "timestamp": "2026-05-20T22:19:24.528582"
     },
     "kyle harrison": {
         "pitcher": "Kyle Harrison",
@@ -239,7 +239,7 @@
         "recent_er": 2,
         "recent_k9": 13.5,
         "recent_era": 1.12,
-        "timestamp": "2026-05-20T22:04:01.522763"
+        "timestamp": "2026-05-20T22:19:25.979721"
     },
     "edward cabrera": {
         "pitcher": "Edward Cabrera",
@@ -250,7 +250,7 @@
         "recent_er": 9,
         "recent_k9": 7.11,
         "recent_era": 6.39,
-        "timestamp": "2026-05-20T22:04:03.166898"
+        "timestamp": "2026-05-20T22:19:27.381491"
     },
     "carmen mlodzinski": {
         "pitcher": "Carmen Mlodzinski",
@@ -261,7 +261,7 @@
         "recent_er": 4,
         "recent_k9": 2.25,
         "recent_era": 2.25,
-        "timestamp": "2026-05-20T22:04:04.358333"
+        "timestamp": "2026-05-20T22:19:28.917940"
     },
     "michael mcgreevy": {
         "pitcher": "Michael McGreevy",
@@ -272,18 +272,18 @@
         "recent_er": 4,
         "recent_k9": 6.88,
         "recent_era": 2.12,
-        "timestamp": "2026-05-20T22:04:05.681932"
+        "timestamp": "2026-05-20T22:19:30.373352"
     },
     "shohei ohtani": {
         "pitcher": "Shohei Ohtani",
         "team": "Los Angeles Dodgers",
         "games_sampled": 3,
-        "recent_ip": 18.0,
+        "recent_ip": 19.0,
         "recent_k": 20,
         "recent_er": 2,
-        "recent_k9": 10.0,
-        "recent_era": 1.0,
-        "timestamp": "2026-05-20T22:04:06.903572"
+        "recent_k9": 9.47,
+        "recent_era": 0.95,
+        "timestamp": "2026-05-20T22:19:31.751713"
     },
     "randy vasquez": {
         "pitcher": "Randy V\u00e1squez",
@@ -294,28 +294,28 @@
         "recent_er": 3,
         "recent_k9": 5.28,
         "recent_era": 1.76,
-        "timestamp": "2026-05-20T22:04:08.230767"
+        "timestamp": "2026-05-20T22:19:33.151299"
     },
     "aaron civale": {
         "pitcher": "Aaron Civale",
         "team": "Athletics",
         "games_sampled": 3,
-        "recent_ip": 11.0,
+        "recent_ip": 11.3,
         "recent_k": 9,
-        "recent_er": 4,
-        "recent_k9": 7.36,
-        "recent_era": 3.27,
-        "timestamp": "2026-05-20T22:04:09.407975"
+        "recent_er": 7,
+        "recent_k9": 7.15,
+        "recent_era": 5.56,
+        "timestamp": "2026-05-20T22:19:34.561917"
     },
     "jack kochanowicz": {
         "pitcher": "Jack Kochanowicz",
         "team": "Los Angeles Angels",
         "games_sampled": 3,
-        "recent_ip": 11.0,
+        "recent_ip": 12.0,
         "recent_k": 5,
-        "recent_er": 14,
-        "recent_k9": 4.09,
-        "recent_era": 11.45,
-        "timestamp": "2026-05-20T22:04:10.653287"
+        "recent_er": 15,
+        "recent_k9": 3.75,
+        "recent_era": 11.25,
+        "timestamp": "2026-05-20T22:19:35.883700"
     }
 }
