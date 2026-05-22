@@ -402,17 +402,20 @@ class MarketFetcher:
             for o in open_lookup.values():
                 pk = o.get("pair_key") or _pair_key(o.get("team_away"), o.get("team_home"))
                 pair_lookup[pk] = o
-            bad_opens = sum(
+            historical_count = sum(
                 1
                 for o in open_lookup.values()
-                if str(o.get("opening_source", "")) in ("first_seen_late",)
-                or o.get("opening_captured_late")
+                if "odds_api_historical" in str(o.get("opening_source", ""))
             )
-            if not open_lookup or bad_opens > 0:
+            needs_historical = not open_lookup or historical_count < max(
+                1, len(structured_odds) // 2
+            )
+            if needs_historical:
                 historical_by_pair = self._historical_opens_by_pair(slate_date)
-                if historical_by_pair and bad_opens > 0:
+                if historical_by_pair:
                     print(
-                        f"  - [LINES]: Re-seeding {bad_opens} bad open(s) from Odds API historical."
+                        f"  - [LINES]: Applying Odds API historical opens "
+                        f"({len(historical_by_pair)} pairs, had {historical_count} historical rows)."
                     )
 
         for g_id, game in structured_odds.items():
@@ -455,27 +458,27 @@ class MarketFetcher:
                 open_lookup[g_id]["current_total"] = total
                 continue
 
-            if g_id not in open_lookup or (
-                historical_by_pair.get(pk)
-                and str(open_lookup.get(g_id, {}).get("opening_source", "")) == "first_seen_late"
+            hist = historical_by_pair.get(pk)
+            if hist and (
+                g_id not in open_lookup
+                or "odds_api_historical" not in str(open_lookup.get(g_id, {}).get("opening_source", ""))
             ):
-                if g_id in open_lookup and historical_by_pair.get(pk):
-                    hist = historical_by_pair[pk]
-                    open_lookup[g_id] = _game_entry(
-                        g_id,
-                        game,
-                        hist["away_opening_ml"],
-                        hist["home_opening_ml"],
-                        hist["opening_total"],
-                        hist.get("opening_source", "odds_api_historical"),
-                    )
-                    open_lookup[g_id]["away_current_ml"] = away_ml
-                    open_lookup[g_id]["home_current_ml"] = home_ml
-                    open_lookup[g_id]["current_total"] = total
-                    continue
+                open_lookup[g_id] = _game_entry(
+                    g_id,
+                    game,
+                    hist["away_opening_ml"],
+                    hist["home_opening_ml"],
+                    hist["opening_total"],
+                    hist.get("opening_source", "odds_api_historical"),
+                )
+                open_lookup[g_id]["away_current_ml"] = away_ml
+                open_lookup[g_id]["home_current_ml"] = home_ml
+                open_lookup[g_id]["current_total"] = total
+                continue
 
+            if g_id not in open_lookup:
                 inherited = pair_lookup.get(pk)
-                if inherited and g_id not in open_lookup:
+                if inherited:
                     row = dict(inherited)
                     row["game_id"] = g_id
                     row["away_current_ml"] = away_ml

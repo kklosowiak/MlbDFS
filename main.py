@@ -393,16 +393,30 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             prices = get_market_prices(game, team)
             curr_ml, curr_total = prices[0], prices[1]
             
-            # Opening Price Lookup (v5.3 ID-Based Master)
-            open_data = next((o for o in opening_lines if o.get('game_id') == gid), {})
-            
-            # Fallback for teams without ID match
+            # Opening Price Lookup (pair_key first — game_id changes across refreshes)
+            from utils.opening_lines import _pair_key
+            pk = _pair_key(away, home)
+            open_data = next((o for o in opening_lines if o.get("pair_key") == pk), {})
+            if not open_data:
+                open_data = next((o for o in opening_lines if o.get("game_id") == gid), {})
             if not open_data:
                 sh_team = p_analyzer.normalized_map.get(team, team)
-                open_data = next((o for o in opening_lines 
-                                if any(name == team or name == sh_team for name in [o['team_away'], o['team_home']])), {})
+                open_data = next(
+                    (
+                        o
+                        for o in opening_lines
+                        if team in (o.get("team_away"), o.get("team_home"))
+                        or sh_team in (o.get("team_away"), o.get("team_home"))
+                    ),
+                    {},
+                )
             
-            field_key = 'away' if (open_data.get('team_away') in [team]) else 'home'
+            if open_data.get("team_away") == team:
+                field_key = "away"
+            elif open_data.get("team_home") == team:
+                field_key = "home"
+            else:
+                field_key = "away" if team == away else "home"
             opponent = away if team == home else home
             
             open_ml = open_data.get(f'{field_key}_opening_ml')
@@ -423,21 +437,15 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             prev_team_data = previous_results.get(team)
             has_prev = prev_team_data is not None
 
-            # Delta Calc & Price Stabilization
-            if game_started:
-                if has_prev:
-                    ml_move = prev_team_data.get('ml_move', 0.0)
-                    tt_move = prev_team_data.get('tt_move', 0.0)
-                    curr_ml = open_ml + ml_move if (open_ml is not None and ml_move is not None) else -110
-                    curr_total = open_total + tt_move if (open_total is not None and tt_move is not None) else 8.5
-                else:
-                    curr_ml = open_ml if open_ml is not None else -110
-                    curr_total = open_total if open_total is not None else 8.5
-                    ml_move = 0.0
-                    tt_move = 0.0
-            else:
+            # Delta Calc — always use real opens when available (don't freeze stale 0 moves)
+            if open_ml is not None and curr_ml is not None:
                 ml_move = calculate_ml_move(open_ml, curr_ml)
-                tt_move = (curr_total - open_total) if (open_total and curr_total) else 0.0
+            else:
+                ml_move = 0.0
+            if open_total is not None and curr_total is not None:
+                tt_move = curr_total - open_total
+            else:
+                tt_move = 0.0
             
             # ITT Calc
             prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
