@@ -431,13 +431,9 @@ class SharpsWeighting:
         # Apply Park Factor Modifier
         final_alpha *= park_factor
         
-        from utils.xwoba_estimates import xwoba_to_phy_score
-        platoon_phy_bonus = max(0.0, min(12.0, (platoon_multiplier - 1.0) * 40.0))
-        physics_pillar = min(100.0, p_comp * 2.0 + platoon_phy_bonus)
         return {
             "final": round(max(0, final_alpha), 1),
-            "physics": round(physics_pillar, 1),
-            "physics_pillar": round(physics_pillar, 1),
+            "physics": round(p_comp, 1),
             "physics_component": round(p_comp, 1),
             "market": round(m_comp, 1),
             "market_pillar": round(m_comp, 1),
