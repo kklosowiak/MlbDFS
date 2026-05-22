@@ -27,7 +27,7 @@ def get_slate_date(dt_utc=None):
 
 def perform_fetch(custom_date_from=None, capture_opening=False):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
-    
+
     # OMEGA v6.6.5: Live Weather Overlay Sync
     try:
         PropfinderScraper().refresh()

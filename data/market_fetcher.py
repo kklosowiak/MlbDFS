@@ -184,7 +184,7 @@ class MarketFetcher:
     def run_bulk_ingestion(self, date_from=None, date_to=None, capture_opening=False):
         """
         Main Convergence Pipeline Entry Point. (Updated v4.5: Temporal Isolation)
-        capture_opening: True only for 4:30 AM ET — freezes true opens for the slate day.
+        capture_opening: True only for 4:30 AM ET — freezes opens via Odds API historical.
         """
         event_ids = self.fetch_event_ids(date_from=date_from, date_to=date_to)
         if not event_ids:
@@ -358,11 +358,20 @@ class MarketFetcher:
             print(f"  - FAILED: Could not save snapshot to disk. {e}")
             return None
 
+    def _historical_opens_by_pair(self, slate_date):
+        """Odds API historical snapshot (~4:30 AM ET). One paid call per slate day."""
+        try:
+            from utils.odds_api_opening import fetch_historical_opens
+            return fetch_historical_opens(slate_date)
+        except Exception as e:
+            print(f"  - [LINES WARNING]: Odds API historical opens failed: {e}")
+            return {}
+
     def manage_opening_lines(self, structured_odds, capture_opening=False):
         """
         Date-stamped opening lines.
-        - capture_opening=True (4:30 AM only): freeze today's opens from current prices.
-        - Normal refresh: never overwrite opening_*; backfill new games from earliest snapshot.
+        - capture_opening=True: Odds API historical @ 4:30 AM ET (paid endpoint).
+        - Normal refresh: never overwrite opening_*; backfill via historical, snapshot, then FL manual.
         """
         from utils.market_utils import get_market_prices
         from utils.slate_date import get_slate_date_iso
@@ -377,10 +386,12 @@ class MarketFetcher:
 
         slate_date = get_slate_date_iso()
         slate_ids = set()
+        historical_by_pair = {}
 
         if capture_opening:
             open_lookup = {}
-            print(f"  - [LINES]: 4:30 AM OPEN CAPTURE for slate {slate_date}.")
+            print(f"  - [LINES]: 4:30 AM OPEN CAPTURE for slate {slate_date} (Odds API historical).")
+            historical_by_pair = self._historical_opens_by_pair(slate_date)
         else:
             open_lookup = {
                 o["game_id"]: o
@@ -391,6 +402,18 @@ class MarketFetcher:
             for o in open_lookup.values():
                 pk = o.get("pair_key") or _pair_key(o.get("team_away"), o.get("team_home"))
                 pair_lookup[pk] = o
+            bad_opens = sum(
+                1
+                for o in open_lookup.values()
+                if str(o.get("opening_source", "")) in ("first_seen_late",)
+                or o.get("opening_captured_late")
+            )
+            if not open_lookup or bad_opens > 0:
+                historical_by_pair = self._historical_opens_by_pair(slate_date)
+                if historical_by_pair and bad_opens > 0:
+                    print(
+                        f"  - [LINES]: Re-seeding {bad_opens} bad open(s) from Odds API historical."
+                    )
 
         for g_id, game in structured_odds.items():
             home = game["home_team"]
@@ -406,16 +429,53 @@ class MarketFetcher:
             if not total:
                 total = 8.5
 
+            pk = _pair_key(away, home)
+
             if capture_opening:
-                open_lookup[g_id] = _game_entry(
-                    g_id, game, away_ml, home_ml, total, "4:30_capture"
-                )
+                hist = historical_by_pair.get(pk)
+                if hist:
+                    open_lookup[g_id] = _game_entry(
+                        g_id,
+                        game,
+                        hist["away_opening_ml"],
+                        hist["home_opening_ml"],
+                        hist["opening_total"],
+                        hist.get("opening_source", "odds_api_historical"),
+                    )
+                else:
+                    open_lookup[g_id] = _game_entry(
+                        g_id, game, away_ml, home_ml, total, "4:30_capture_live_fallback"
+                    )
+                    print(
+                        f"  - [LINES WARNING]: No historical open for {away} @ {home}; "
+                        f"used live line at capture time."
+                    )
+                open_lookup[g_id]["away_current_ml"] = away_ml
+                open_lookup[g_id]["home_current_ml"] = home_ml
+                open_lookup[g_id]["current_total"] = total
                 continue
 
-            if g_id not in open_lookup:
-                pk = _pair_key(away, home)
+            if g_id not in open_lookup or (
+                historical_by_pair.get(pk)
+                and str(open_lookup.get(g_id, {}).get("opening_source", "")) == "first_seen_late"
+            ):
+                if g_id in open_lookup and historical_by_pair.get(pk):
+                    hist = historical_by_pair[pk]
+                    open_lookup[g_id] = _game_entry(
+                        g_id,
+                        game,
+                        hist["away_opening_ml"],
+                        hist["home_opening_ml"],
+                        hist["opening_total"],
+                        hist.get("opening_source", "odds_api_historical"),
+                    )
+                    open_lookup[g_id]["away_current_ml"] = away_ml
+                    open_lookup[g_id]["home_current_ml"] = home_ml
+                    open_lookup[g_id]["current_total"] = total
+                    continue
+
                 inherited = pair_lookup.get(pk)
-                if inherited:
+                if inherited and g_id not in open_lookup:
                     row = dict(inherited)
                     row["game_id"] = g_id
                     row["away_current_ml"] = away_ml
@@ -424,38 +484,54 @@ class MarketFetcher:
                     open_lookup[g_id] = row
                     print(f"  - [LINES]: Mapped {away} @ {home} to prior open (game_id changed).")
                 else:
-                    backfill = find_earliest_lines_from_snapshots(away, home, slate_date)
-                    if backfill:
+                    hist = historical_by_pair.get(pk)
+                    if hist:
                         open_lookup[g_id] = _game_entry(
                             g_id,
                             game,
-                            backfill["away_opening_ml"],
-                            backfill["home_opening_ml"],
-                            backfill["opening_total"],
-                            f"snapshot_backfill:{backfill['snapshot_file']}",
+                            hist["away_opening_ml"],
+                            hist["home_opening_ml"],
+                            hist["opening_total"],
+                            hist.get("opening_source", "odds_api_historical"),
                         )
                         open_lookup[g_id]["away_current_ml"] = away_ml
                         open_lookup[g_id]["home_current_ml"] = home_ml
                         open_lookup[g_id]["current_total"] = total
-                        print(
-                            f"  - [LINES]: Backfilled open for {away} @ {home} "
-                            f"from {backfill['snapshot_file']}."
-                        )
+                        print(f"  - [LINES]: Historical 4:30 AM open for {away} @ {home}.")
                     else:
-                        open_lookup[g_id] = _game_entry(
-                            g_id, game, away_ml, home_ml, total, "first_seen_late"
-                        )
-                        open_lookup[g_id]["opening_captured_late"] = True
-                        print(
-                            f"  - [LINES WARNING]: Late first-seen open for {away} @ {home} "
-                            f"(no earlier snapshot). ml_move may be understated."
-                        )
+                        backfill = find_earliest_lines_from_snapshots(away, home, slate_date)
+                        if backfill:
+                            open_lookup[g_id] = _game_entry(
+                                g_id,
+                                game,
+                                backfill["away_opening_ml"],
+                                backfill["home_opening_ml"],
+                                backfill["opening_total"],
+                                f"snapshot_backfill:{backfill['snapshot_file']}",
+                            )
+                            open_lookup[g_id]["away_current_ml"] = away_ml
+                            open_lookup[g_id]["home_current_ml"] = home_ml
+                            open_lookup[g_id]["current_total"] = total
+                            print(
+                                f"  - [LINES]: Backfilled open for {away} @ {home} "
+                                f"from {backfill['snapshot_file']}."
+                            )
+                        else:
+                            open_lookup[g_id] = _game_entry(
+                                g_id, game, away_ml, home_ml, total, "first_seen_late"
+                            )
+                            open_lookup[g_id]["opening_captured_late"] = True
+                            print(
+                                f"  - [LINES WARNING]: Late first-seen open for {away} @ {home} "
+                                f"(no historical/snapshot). ml_move may be understated."
+                            )
             else:
                 open_lookup[g_id]["away_current_ml"] = away_ml
                 open_lookup[g_id]["home_current_ml"] = home_ml
                 open_lookup[g_id]["current_total"] = total
 
         if not capture_opening:
+            # FantasyLabs manual file only fills gaps after Odds API historical
             apply_manual_vegas_opens(open_lookup, structured_odds, slate_date)
 
         dated_path, count = persist_opening_db(open_lookup, slate_ids, slate_date)

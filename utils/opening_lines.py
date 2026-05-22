@@ -143,6 +143,12 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
             open_lookup[g_id] = _game_entry(
                 g_id, game, away_ml or -110, home_ml or -110, total or 8.5, "vegas_manual"
             )
+        else:
+            row = open_lookup[g_id]
+            # Only override when opens were not set by Odds API historical / snapshot
+            src = str(row.get("opening_source", ""))
+            if "odds_api_historical" in src or "snapshot_backfill" in src or "4:30_capture" in src:
+                continue
 
         row = open_lookup[g_id]
         if manual.get("away_opening_ml") is not None:
