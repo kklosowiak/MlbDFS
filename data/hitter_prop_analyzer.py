@@ -15,14 +15,16 @@ class HitterPropAnalyzer:
     def __init__(self):
         self.target_market = 'batter_home_runs'
         self.xwoba_registry = {
-            'Fernando Tatis Jr.': 0.395, 'Francisco Lindor': 0.370, 'Ketel Marte': 0.382,
-            'Christian Walker': 0.358, 'Xander Bogaerts': 0.345, 'Vinnie Pasquantino': 0.355,
-            'Jackson Merrill': 0.342, 'Brandon Nimmo': 0.348, 'Andrew Vaughn': 0.335,
-            'Luis Robert Jr.': 0.385, 'Bo Bichette': 0.368, 'Nolan Jones': 0.352,
-            'Ryan McMahon': 0.338, 'Ezequiel Tovar': 0.325, 'Edouard Julien': 0.345,
-            'Juan Soto': 0.425, 'Aaron Judge': 0.430, 'Shohei Ohtani': 0.420,
-            'Teoscar Hernandez': 0.375, 'Mookie Betts': 0.390,
-            'Royce Lewis': 0.385, 'Gunnar Henderson': 0.395, 'Pete Alonso': 0.415
+            normalize_player_name(k): v for k, v in {
+                'Fernando Tatis Jr.': 0.395, 'Francisco Lindor': 0.370, 'Ketel Marte': 0.382,
+                'Christian Walker': 0.358, 'Xander Bogaerts': 0.345, 'Vinnie Pasquantino': 0.355,
+                'Jackson Merrill': 0.342, 'Brandon Nimmo': 0.348, 'Andrew Vaughn': 0.335,
+                'Luis Robert Jr.': 0.385, 'Bo Bichette': 0.368, 'Nolan Jones': 0.352,
+                'Ryan McMahon': 0.338, 'Ezequiel Tovar': 0.325, 'Edouard Julien': 0.345,
+                'Juan Soto': 0.425, 'Aaron Judge': 0.430, 'Shohei Ohtani': 0.420,
+                'Teoscar Hernandez': 0.375, 'Mookie Betts': 0.390,
+                'Royce Lewis': 0.385, 'Gunnar Henderson': 0.395, 'Pete Alonso': 0.415,
+            }.items()
         }
         self.team_code_map = {
             'BAL': 'Baltimore Orioles', 'NYM': 'New York Mets', 'SF': 'San Francisco Giants', 'SFG': 'San Francisco Giants',
@@ -39,13 +41,20 @@ class HitterPropAnalyzer:
         self.statcast = StatcastBridge()
 
     def _resolve_xwoba(self, name, profile):
-        """Registry → Statcast OPS → ops_to_xwoba heuristic (replaces OPS/2.5)."""
-        reg = self.xwoba_registry.get(name)
+        """Registry → Statcast xwOBA → MLB wOBA → ops_to_xwoba heuristic."""
+        norm = normalize_player_name(name)
+        reg = self.xwoba_registry.get(norm)
         if reg is not None:
             return cap_matchup_xwoba(reg)
         if isinstance(profile, dict):
-            ops_val = float(profile.get("ops", 0.0) or 0.0)
             pa = int(profile.get("pa", 0) or 0)
+            xwoba_val = float(profile.get("xwoba", 0.0) or 0.0)
+            if pa >= 30 and xwoba_val >= 0.250:
+                return cap_matchup_xwoba(xwoba_val)
+            woba_val = float(profile.get("woba", 0.0) or 0.0)
+            if pa >= 50 and woba_val >= 0.250:
+                return cap_matchup_xwoba(woba_val)
+            ops_val = float(profile.get("ops", 0.0) or 0.0)
             if pa >= 50 and ops_val > 0:
                 return ops_to_xwoba(ops_val)
         return 0.310
@@ -461,7 +470,7 @@ class HitterPropAnalyzer:
                         'tb_line': '-',
                         'tb_price': 0,
                         'is_speed_target': False,
-                        'matchup_xwoba': self.xwoba_registry.get(name, 0.330),
+                        'matchup_xwoba': self.xwoba_registry.get(normalize_player_name(name), 0.330),
                         'is_fallback': True
                     })
         return fallback_reports

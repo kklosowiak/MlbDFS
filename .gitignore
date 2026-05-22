@@ -9,6 +9,7 @@ __pycache__/
 # Data & Snapshots
 data/snapshot_*.json
 data/statcast_cache.json
+data/statcast_xwoba_meta.json
 data/expert_weather_cache.json
 data/probable_pitchers.json
 data/opening_lines.json

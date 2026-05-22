@@ -1269,8 +1269,8 @@
     <div class="main-content">
         <div class="main-header">
             <div class="title-group">
-                <h1 id="page-title">Pitchers Matrix</h1>
-                <p id="page-subtitle">Premium Slate Alpha Matrix</p>
+                <h1 id="page-title">Command Hub</h1>
+                <p id="page-subtitle">Omega Tactical Command Center</p>
             </div>
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
@@ -2220,6 +2220,13 @@
             document.getElementById('page-title').innerText = titles[tabId][0];
             document.getElementById('page-subtitle').innerText = titles[tabId][1];
 
+            const chipBar = document.getElementById('signal-filter-chips');
+            if (chipBar) {
+                const showLens = ['pitchers', 'hitters', 'teams'].includes(tabId);
+                chipBar.style.display = showLens ? 'flex' : 'none';
+                if (!showLens && activeSignalFilter) setSignalFilter('');
+            }
+
             // Hide/Show matchup filter dynamically for static pages
             const filterPanel = document.getElementById('matchup-filter-panel');
             if (tabId === 'analysis' || tabId === 'trends') {
@@ -2524,8 +2531,8 @@
                 tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
                 tr.setAttribute('data-conf', (p.attack_conf >= 60) ? '1' : '0');
                 tr.setAttribute('data-shark', p.is_shark ? '1' : '0');
-                tr.setAttribute('data-steam', '0');
-                tr.setAttribute('data-exhausted', '0');
+                tr.setAttribute('data-steam', (oppT && oppT.is_steam) ? '1' : '0');
+                tr.setAttribute('data-exhausted', (oppT && oppT.bullpen_fatigue >= 90) ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openPitcherModal(encodeURIComponent(JSON.stringify(p)));
                 if (p.alpha_score >= 85) tr.classList.add('row-highlight');
@@ -2640,7 +2647,7 @@
                             ${h.matchup_xwoba >= 0.360 ? '<span class="signal-pill pill-neutral">🔋 POWER</span>' : ''}
                             ${h.is_speed_target ? '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>' : ''}
                             ${h.is_hot ? '<span class="signal-pill pill-target">♨️ HOT</span>' : ''}
-                            ${h.bullpen_fatigue >= 80 ? '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' : ''}
+                            ${h.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (h.bullpen_fatigue >= 75 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (h.bullpen_fatigue >= 65 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
                         </div>
                     </td>
                     <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
@@ -2701,14 +2708,6 @@
                     }
                 }
 
-                // Glowing divergence pills (Separated from Over/Under Game Totals to prevent confusion)
-                let divPill = '';
-                if (t.divergence >= 15) {
-                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 ML-DIV (+${t.divergence}%)</span>`;
-                } else if (t.divergence <= -15) {
-                    divPill = `<span class="signal-pill" style="background:linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border-color:#ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 10px rgba(255, 69, 58, 0.35);">🔴 ML-FADE (${t.divergence}%)</span>`;
-                }
-
                 let trendPill = '';
                 if (t.trend === 'SURGING') {
                     trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 69, 58, 0.25) 100%); border: 1px solid #ff9f0a; color: #ff9f0a; font-weight:800; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);">🔥 SURGING</span>`;
@@ -2761,7 +2760,6 @@
                     </td>
                     <td>
                         <div class="signals-container">
-                            ${divPill}
                             ${trendPill}
                             ${t.is_trap ? '<span class="signal-pill pill-chalk">⚠️ CHALK</span>' : ''}
                             ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}

@@ -96,6 +96,9 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
     try:
         bridge = StatcastBridge(config.DATA_DIR)
         bridge.refresh_momentum_data()
+
+        # Savant season xwOBA (once per slate day — safe with hourly MLB refresh)
+        bridge.refresh_statcast_xwoba(season=2026)
         
         # v10.2: Refresh Pitcher Recent Form Cache
         bridge.refresh_pitcher_form_cache()

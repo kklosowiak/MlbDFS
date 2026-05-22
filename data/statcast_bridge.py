@@ -15,8 +15,21 @@ from utils.normalization import normalize_player_name
 class StatcastBridge:
     def __init__(self, data_dir="data"):
         self.cache_path = os.path.join(data_dir, "statcast_cache.json")
+        self.xwoba_meta_path = os.path.join(data_dir, "statcast_xwoba_meta.json")
         self.api_url = "https://statsapi.mlb.com/api/v1/stats"
         self._memory_cache = None
+
+    @staticmethod
+    def _name_from_expected_stats_row(row, name_col):
+        """Parse 'Last, First' leaderboard rows into display names."""
+        raw = row.get(name_col, "")
+        if raw is None or (hasattr(raw, "__float__") and str(raw) == "nan"):
+            return None
+        text = str(raw).strip()
+        if ", " in text:
+            last, first = text.split(", ", 1)
+            return f"{first} {last}".strip()
+        return text or None
 
     def get_cache_data(self):
         """Public accessor for the unified momentum cache."""
@@ -157,6 +170,7 @@ class StatcastBridge:
                 "type": "hitter",
                 "team": s.get('team') or r.get('team') or "UNK",
                 "ops": s.get('ops', 0.0),
+                "woba": s.get('woba', 0.0),
                 "rolling_ops": r.get('ops', 0.0),
                 "pa": s.get('pa', 0),
                 "rolling_pa": r.get('pa', 0),
@@ -220,6 +234,91 @@ class StatcastBridge:
         pitchers_count = sum(1 for v in cache.values() if v.get('type') == 'pitcher')
         hitters_count = sum(1 for v in cache.values() if v.get('type') == 'hitter')
         print(f"  - SUCCESS: Unified cache synchronized ({len(cache)} profiles: {pitchers_count} pitchers, {hitters_count} hitters).")
+        self._memory_cache = cache
+        return cache
+
+    def refresh_statcast_xwoba(self, season=2026, min_pa=30, force=False):
+        """
+        Bulk-merge Baseball Savant season xwOBA (est_woba) into statcast_cache.json.
+        Uses one pybaseball leaderboard pull per season (free). Runs at most once per slate day
+        unless force=True, so hourly refreshes do not hammer Savant.
+        """
+        from utils.xwoba_estimates import cap_matchup_xwoba
+
+        today = datetime.now().strftime("%Y-%m-%d")
+        meta = {}
+        if os.path.exists(self.xwoba_meta_path):
+            try:
+                with open(self.xwoba_meta_path, "r", encoding="utf-8") as f:
+                    meta = json.load(f)
+            except Exception:
+                meta = {}
+
+        if not force and meta.get("last_refresh_date") == today:
+            print(f"[STATCAST-XWOBA]: Already refreshed for {today}; skipping (use force=True to override).")
+            return self._load_cache_to_memory()
+
+        print(f"[STATCAST-XWOBA]: Pulling Savant expected-stats leaderboard (min PA {min_pa})...")
+        try:
+            from pybaseball import statcast_batter_expected_stats
+        except ImportError:
+            print("  - WARNING: pybaseball unavailable; xwOBA refresh skipped.")
+            return self._load_cache_to_memory()
+
+        cache = self._load_cache_to_memory()
+        if not cache:
+            print("  - WARNING: statcast_cache.json empty; run refresh_momentum_data first.")
+            return {}
+
+        xwoba_map = {}
+        for yr in (season, season - 1):
+            try:
+                df = statcast_batter_expected_stats(yr, minPA=min_pa)
+                if df is None or df.empty:
+                    continue
+                name_col = next((c for c in df.columns if "first_name" in str(c)), None)
+                if not name_col or "est_woba" not in df.columns:
+                    print(f"  - WARNING: Unexpected leaderboard shape for {yr}.")
+                    continue
+                for _, row in df.iterrows():
+                    display_name = self._name_from_expected_stats_row(row, name_col)
+                    if not display_name:
+                        continue
+                    norm = normalize_player_name(display_name)
+                    try:
+                        xw = float(row["est_woba"])
+                    except (TypeError, ValueError):
+                        continue
+                    if xw < 0.200:
+                        continue
+                    if yr == season or norm not in xwoba_map:
+                        xwoba_map[norm] = cap_matchup_xwoba(xw)
+                print(f"  - Loaded {len(df)} Savant rows for {yr}.")
+            except Exception as e:
+                print(f"  - WARNING: Savant xwOBA ingest failed for {yr}: {e}")
+
+        updated = 0
+        for norm, profile in cache.items():
+            if profile.get("type") != "hitter":
+                continue
+            xw = xwoba_map.get(norm)
+            if xw:
+                profile["xwoba"] = xw
+                updated += 1
+
+        os.makedirs(os.path.dirname(self.cache_path), exist_ok=True)
+        with open(self.cache_path, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=4)
+        self._memory_cache = cache
+
+        meta["last_refresh_date"] = today
+        meta["last_refresh_at"] = datetime.now().isoformat()
+        meta["players_updated"] = updated
+        meta["leaderboard_size"] = len(xwoba_map)
+        with open(self.xwoba_meta_path, "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2)
+
+        print(f"  - SUCCESS: Merged Statcast xwOBA for {updated} hitters ({len(xwoba_map)} leaderboard entries).")
         return cache
 
     def _prefetch_probable_pitchers(self, cache, season=2026):
@@ -453,6 +552,7 @@ class StatcastBridge:
                 results[name] = {
                     "team": final_team,
                     "avg": safe_float(stat.get('avg', '0.000')),
+                    "woba": safe_float(stat.get('woba', '0.000')),
                     "ops": safe_float(stat.get('ops', '0.000')),
                     "era": safe_float(stat.get('era', '0.0')),
                     "k": int(stat.get('strikeOuts', 0)),

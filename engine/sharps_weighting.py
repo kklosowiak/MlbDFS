@@ -91,7 +91,9 @@ class SharpsWeighting:
         return {
             "final": round(final_alpha, 1),
             "physics": round(physics_raw * 0.45, 1),
+            "physics_talent": round(min(100.0, physics_raw), 1),
             "market": round(market_raw * 0.20, 1),
+            "csw": round(float(csw), 3),
             "is_coors": park_factor >= 114,
             "is_trap": is_trap
         }
@@ -319,64 +321,16 @@ class SharpsWeighting:
         platoon_label = "Neutral"
         
         if pitch_hand and hitter_splits:
-            opp_hand = str(pitch_hand).upper()  # "L" or "R"
-            overall_ops = float(hitter_splits.get("ops", 0.720) or 0.720)
-            if overall_ops <= 0.200: overall_ops = 0.720
-            
-            if opp_hand == "L":
-                split_ops = float(hitter_splits.get("vs_left_ops", 0.0) or 0.0)
-                split_pa = int(hitter_splits.get("vs_left_pa", 0) or 0)
-                split_ops_2025 = float(hitter_splits.get("vs_left_ops_2025", 0.0) or 0.0)
-                split_pa_2025 = int(hitter_splits.get("vs_left_pa_2025", 0) or 0)
-                split_ops_other_2025 = float(hitter_splits.get("vs_right_ops_2025", 0.0) or 0.0)
-                split_pa_other_2025 = int(hitter_splits.get("vs_right_pa_2025", 0) or 0)
-                opp_label = "LHP"
-            else:
-                split_ops = float(hitter_splits.get("vs_right_ops", 0.0) or 0.0)
-                split_pa = int(hitter_splits.get("vs_right_pa", 0) or 0)
-                split_ops_2025 = float(hitter_splits.get("vs_right_ops_2025", 0.0) or 0.0)
-                split_pa_2025 = int(hitter_splits.get("vs_right_pa_2025", 0) or 0)
-                split_ops_other_2025 = float(hitter_splits.get("vs_left_ops_2025", 0.0) or 0.0)
-                split_pa_other_2025 = int(hitter_splits.get("vs_left_pa_2025", 0) or 0)
-                opp_label = "RHP"
-            
-            # Compute 2026 Ratio
-            ratio_2026 = 1.0
-            if overall_ops > 0 and split_ops > 0:
-                ratio_2026 = split_ops / overall_ops
-
-            # Compute 2025 Ratio
-            ratio_2025 = 1.0
-            has_2025 = False
-            if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
-                total_pa_2025 = split_pa_2025 + split_pa_other_2025
-                overall_ops_2025 = ((split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)) / total_pa_2025
-                if overall_ops_2025 > 0.200:
-                    ratio_2025 = split_ops_2025 / overall_ops_2025
-                    has_2025 = True
-
-            # OMEGA v9.7: Bayesian Platoon Stabilization (Sample-Size Weighted Blend)
-            # Linearly transition from prior year to current year as 2026 sample grows to 100 PA.
-            # If split_pa is small, prior-year (2025) data acts as the anchor.
-            weight_2026 = min(1.0, split_pa / 100.0)
-            
-            if has_2025:
-                # Blend 2026 and 2025 ratios
-                platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
-                platoon_percent = round((platoon_multiplier - 1.0) * 100)
-                platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
-            elif split_pa >= 20:
-                # Blend 2026 with neutral (1.0) if no 2025 data exists
-                platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
-                platoon_percent = round((platoon_multiplier - 1.0) * 100)
-                platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
-            else:
-                platoon_multiplier = 1.0
-                platoon_label = f"Neutral vs {opp_label}"
-
-            # Bound split-scaling to stay within realistic sabermetric bounds [0.70, 1.30]
-            platoon_multiplier = max(0.70, min(1.30, platoon_multiplier))
+            from utils.platoon_math import compute_platoon_multiplier
             from utils.xwoba_estimates import cap_matchup_xwoba
+
+            opp_label = "LHP" if str(pitch_hand).upper() == "L" else "RHP"
+            platoon_multiplier = compute_platoon_multiplier(hitter_splits, pitch_hand)
+            platoon_percent = round((platoon_multiplier - 1.0) * 100)
+            if abs(platoon_percent) >= 3:
+                platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
+            else:
+                platoon_label = f"Neutral vs {opp_label}"
             matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * platoon_multiplier)
 
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)

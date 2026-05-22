@@ -10,8 +10,10 @@ class DashboardGenerator:
     def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5):
         """Generates a premium 3-Tab dashboard (Pitchers | Hitters | Teams)."""
         if skipped_events is None: skipped_events = []
-        from engine.hitter_alpha import HitterAlpha
-        emoji_key = HitterAlpha().get_emoji_key()
+        emoji_key = {
+            "elite": "🔥", "high": "⚡", "med": "📈", "low": "📉",
+            "trap": "🚨", "shark": "🦈", "whale": "🐳", "steam": "💨",
+        }
         
         abbrev_map = {
             'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',

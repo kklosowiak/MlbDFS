@@ -7,7 +7,6 @@ import statistics
 import time
 import datetime
 from data.pitcher_analyzer import PitcherAnalyzer
-from engine.hitter_alpha import HitterAlpha
 from data.hitter_prop_analyzer import HitterPropAnalyzer
 from data.movement_tracker import MovementTracker
 from data.weather_fetcher import WeatherFetcher
@@ -29,6 +28,8 @@ from config import config
 from utils.normalization import normalize_player_name
 from utils.market_utils import get_market_prices, calculate_ml_move
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
+from utils.matchup_physics import pitcher_physics_0_100
+from utils.platoon_math import compute_platoon_multiplier
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -195,7 +196,10 @@ def run_full_analysis():
     )
 
     # 5. Analyze Hitters
-    h_reports = _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=raw_hitters)
+    h_reports = _get_hitter_alpha(
+        h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar,
+        raw_hitters=raw_hitters, pitcher_reports=p_reports,
+    )
 
     # 5.5 OMEGA v6.8.5: Paradox Resolution
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
@@ -261,6 +265,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['pitcher'] = report['pitcher'].title() # Aesthetic Fix: Capitalization
         report['alpha_score'] = res['final'] # Flatten for display
         report['physics_score'] = res['physics']
+        report['physics_talent'] = res.get('physics_talent', 0)
         report['market_score'] = res['market']
         report['is_trap'] = res.get('is_trap', False)
         report['siera'] = report.get('siera', 4.10)
@@ -456,14 +461,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_pitcher_physics = 0.0
             opp_pitcher_rep = p_integrity_map.get((gid, opponent))
             if opp_pitcher_rep:
-                opp_pitcher_physics = opp_pitcher_rep['physics_score']
-                
-                # OMEGA v8.1: NEUTRALIZE ELITE SUPPRESSOR
+                opp_pitcher_physics = pitcher_physics_0_100(opp_pitcher_rep)
                 if opp_pitcher_rep.get('is_trap', False):
-                    prev_physics = opp_pitcher_physics
-                    opp_pitcher_physics = min(opp_pitcher_physics, 65.0)
-                    if prev_physics > 65.0:
-                        print(f"  - NEUTRALIZED: Capped {opp_pitcher_rep['pitcher']} physics score to 65.0 (was {prev_physics:.1f}) due to TRAP/DEATH SENTENCE flag")
+                    print(f"  - NEUTRALIZED: {opp_pitcher_rep['pitcher']} matchup physics capped at {opp_pitcher_physics:.0f} (TRAP)")
                     
                 opp_pitcher_name = opp_pitcher_rep['pitcher']
             else:
@@ -477,10 +477,12 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 if opp_pitcher_name != "TBD":
                     print(f"  [RESCUE]: Attempting fresh physics fetch for {opp_pitcher_name}...")
                     physics = p_analyzer.fetch_pitcher_physics(opp_pitcher_name)
-                    opp_pitcher_physics = round(physics['bm_score'] * 1.8, 1) # v6.8 scale
+                    rescue_phys = min(100.0, round(physics['bm_score'] * 1.8, 1))
+                    opp_pitcher_physics = pitcher_physics_0_100(physics_score=rescue_phys)
                     opp_pitcher_rep = {
                         'pitcher': opp_pitcher_name,
-                        'physics_score': opp_pitcher_physics,
+                        'physics_score': round(rescue_phys * 0.45, 1),
+                        'csw': physics.get('csw', 0.25),
                         'confidence': physics.get('confidence', 'low')
                     }
 
@@ -509,45 +511,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     hitter_norm = normalize_player_name(h['name'])
                     h_profile = cache.get(hitter_norm, {})
                     
-                    platoon_multiplier = 1.0
-                    if pitch_hand and h_profile:
-                        opp_hand = str(pitch_hand).upper()
-                        overall_ops = float(h_profile.get("ops", 0.720) or 0.720)
-                        if overall_ops <= 0.200: overall_ops = 0.720
-                        
-                        if opp_hand == "L":
-                            split_ops = float(h_profile.get("vs_left_ops", 0.0) or 0.0)
-                            split_pa = int(h_profile.get("vs_left_pa", 0) or 0)
-                            split_ops_2025 = float(h_profile.get("vs_left_ops_2025", 0.0) or 0.0)
-                            split_pa_2025 = int(h_profile.get("vs_left_pa_2025", 0) or 0)
-                            split_ops_other_2025 = float(h_profile.get("vs_right_ops_2025", 0.0) or 0.0)
-                            split_pa_other_2025 = int(h_profile.get("vs_right_pa_2025", 0) or 0)
-                        else:
-                            split_ops = float(h_profile.get("vs_right_ops", 0.0) or 0.0)
-                            split_pa = int(h_profile.get("vs_right_pa", 0) or 0)
-                            split_ops_2025 = float(h_profile.get("vs_right_ops_2025", 0.0) or 0.0)
-                            split_pa_2025 = int(h_profile.get("vs_right_pa_2025", 0) or 0)
-                            split_ops_other_2025 = float(h_profile.get("vs_left_ops_2025", 0.0) or 0.0)
-                            split_pa_other_2025 = int(h_profile.get("vs_left_pa_2025", 0) or 0)
-                        
-                        ratio_2026 = split_ops / overall_ops if overall_ops > 0 and split_ops > 0 else 1.0
-                        
-                        ratio_2025 = 1.0
-                        has_2025 = False
-                        if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
-                            total_pa_2025 = split_pa_2025 + split_pa_other_2025
-                            overall_ops_2025 = ((split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)) / total_pa_2025
-                            if overall_ops_2025 > 0.200:
-                                ratio_2025 = split_ops_2025 / overall_ops_2025
-                                has_2025 = True
-                                
-                        weight_2026 = min(1.0, split_pa / 100.0)
-                        
-                        if has_2025:
-                            platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
-                        elif split_pa >= 20:
-                            platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
-                    
+                    platoon_multiplier = compute_platoon_multiplier(h_profile, pitch_hand) if h_profile else 1.0
                     base_xwoba = h.get('matchup_xwoba', 0.310)
                     adj_xwoba = cap_matchup_xwoba(base_xwoba * platoon_multiplier)
                     adjusted_h_list.append({
@@ -588,7 +552,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
                 opp_pitcher_physics=opp_pitcher_physics,
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
-                is_burst=is_burst, opponent=opponent
+                implied_total=curr_itt, is_burst=is_burst, opponent=opponent
             )
             
             # Sentiment Divergence (Venue-Based)
@@ -796,7 +760,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
     return team_reports
 
-def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=None):
+def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=None, pitcher_reports=None):
     """STEP 3: Ranking Hitter Alpha"""
     print("\n[STEP 3]: Ranking Hitter Alpha...")
     if raw_hitters is None:
@@ -814,7 +778,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             print(f"[WARNING]: Could not load cache for splits: {e}")
             
     h_reports = []
-    
+    pitcher_csw_map = {}
+    for pr in (pitcher_reports or []):
+        pitcher_csw_map[normalize_player_name(pr.get('pitcher', ''))] = float(pr.get('csw', 0.25) or 0.25)
+
     for h in raw_hitters:
         team_score = 50.0
         team_data = next((tr for tr in team_reports if tr['team'] == h['team']), None)
@@ -852,13 +819,14 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         
         hitter_norm = normalize_player_name(h['name'])
         h_profile = cache.get(hitter_norm, {})
+        opp_csw = pitcher_csw_map.get(opp_pitcher_norm) or float(p_profile.get('csw', 0) or 0)
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, h.get('matchup_xwoba', 0.330), h.get('ahr_price', 400),
             park_factor=park_factor, is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
-            matchup_radar_boost=matchup_radar_boost,
+            matchup_radar_boost=matchup_radar_boost, opp_csw=opp_csw,
             pitch_hand=pitch_hand, hitter_splits=h_profile, smash_factor=smash_factor
         )
 
