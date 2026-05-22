@@ -5,7 +5,13 @@ def ops_to_xwoba(ops):
     """Map OPS to approximate xwOBA when Statcast xwOBA is unavailable."""
     if not ops or ops <= 0:
         return 0.320
-    return max(0.250, min(0.450, (float(ops) * 1.20) - 0.075))
+    return max(0.250, min(0.480, (float(ops) * 1.20) - 0.075))
+
+
+def xwoba_to_phy_score(xwoba):
+    """Map matchup/team xwOBA to a 0–100 PHY display score (slate-comparable)."""
+    x = float(xwoba or 0.330)
+    return round(max(0.0, min(100.0, ((x - 0.280) / 0.140) * 100)), 1)
 
 
 def woba_proxy_to_xwoba(woba_proxy, ops_fallback=0.0):

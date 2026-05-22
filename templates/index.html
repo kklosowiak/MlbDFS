@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: hitters-matrix</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: phy-scale-v2</span>
             </div>
         </div>
 
@@ -1510,10 +1510,10 @@
                     <h2 style="margin:0;">Platoon Splits Matrix</h2>
                     <div style="display:flex; gap:10px; align-items:center;">
                         <span style="font-size:0.7rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Color Key:</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(50,215,75,0.15); color:#32d74b;">≥.780 ELITE</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(10,132,255,0.12); color:#0a84ff;">≥.730 STRONG</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,255,255,0.06); color:var(--text-secondary);">NEUTRAL</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,69,58,0.15); color:#ff453a;">≤.650 TRAP</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(50,215,75,0.15); color:#32d74b;">xwOBA ≥.360 ELITE</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,159,10,0.15); color:#ff9f0a;">≥.330 AVG+</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,69,58,0.15); color:#ff453a;">&lt;.330 FADE</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,255,255,0.06); color:var(--text-secondary);">OPS: .780 / .720</span>
                     </div>
                 </div>
                 <table id="platoons-table">
@@ -1823,6 +1823,41 @@
             if (!rankInfo || rankInfo.total < 2) return '';
             const pct = Math.round(((rankInfo.total - rankInfo.rank) / (rankInfo.total - 1)) * 100);
             return `<div style="font-size:0.65rem; opacity:0.72; font-weight:600; margin-top:2px;">#${rankInfo.rank} · P${pct}</div>`;
+        }
+
+        /** Red / yellow / green tiers — no blue for "good" offense stats */
+        function xwobaTierStyle(x) {
+            const v = parseFloat(x) || 0;
+            if (v >= 0.360) return 'color:#32d74b; font-weight:800;';
+            if (v >= 0.330) return 'color:#ff9f0a; font-weight:700;';
+            return 'color:#ff453a; font-weight:700;';
+        }
+
+        function opsTierStyle(ops) {
+            const v = parseFloat(ops) || 0;
+            if (v >= 0.780) return 'color:#32d74b; font-weight:800;';
+            if (v >= 0.720) return 'color:#ff9f0a; font-weight:700;';
+            return 'color:#ff453a; font-weight:700;';
+        }
+
+        function phyScoreTierStyle(score) {
+            const v = parseFloat(score) || 0;
+            if (v >= 70) return 'color:#32d74b; font-weight:800;';
+            if (v >= 45) return 'color:#ff9f0a; font-weight:700;';
+            return 'color:#ff453a; font-weight:700;';
+        }
+
+        function slatePctTierStyle(rankInfo) {
+            if (!rankInfo || rankInfo.total < 2) return 'color:var(--text-primary); font-weight:600;';
+            const pct = ((rankInfo.total - rankInfo.rank) / (rankInfo.total - 1)) * 100;
+            if (pct >= 67) return 'color:#32d74b; font-weight:800;';
+            if (pct >= 33) return 'color:#ff9f0a; font-weight:700;';
+            return 'color:#ff453a; font-weight:700;';
+        }
+
+        function metricCellHtml(value, tierStyle, rankInfo) {
+            const sub = slatePercentileHtml(rankInfo);
+            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;">${value}${sub}</td>`;
         }
 
         function attackConfHtml(entity) {
@@ -2434,6 +2469,10 @@
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
             const hRanks = computeScoreRankMap(hitters, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
+            const tPhyRanks = computeScoreRankMap(teams, 'physics_score', 'team');
+            const tMktRanks = computeScoreRankMap(teams, 'market_score', 'team');
+            const hPhyRanks = computeScoreRankMap(hitters, 'physics_score', 'name');
+            const hXwRanks = computeScoreRankMap(hitters, 'matchup_xwoba', 'name');
 
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
@@ -2544,9 +2583,9 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${h.player_score}${slatePercentileHtml(hRank)}</td>
                     ${attackConfHtml(h)}
-                    <td class="metric" style="color: var(--accent-green);">${h.physics_score || '-'}</td>
-                    <td class="metric" style="color: var(--accent-purple);">${h.market_score || '-'}</td>
-                    <td class="metric" style="font-weight:800; font-variant-numeric:tabular-nums;">${xwoba}</td>
+                    ${metricCellHtml(h.physics_score ?? '—', phyScoreTierStyle(h.physics_score), hPhyRanks[h.name])}
+                    <td class="metric" style="color: var(--accent-purple); font-variant-numeric:tabular-nums;">${h.market_score || '-'}</td>
+                    ${metricCellHtml(xwoba, xwobaTierStyle(xwoba), hXwRanks[h.name])}
                     <td>${platoonBadge}</td>
                     <td>
                         <div class="signals-container">
@@ -2666,8 +2705,8 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
-                    <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
-                    <td class="metric" style="color: var(--accent-purple);">${t.market_score || 0}</td>
+                    ${metricCellHtml(t.physics_score ?? 0, phyScoreTierStyle(t.physics_score), tPhyRanks[t.team])}
+                    ${metricCellHtml(t.market_score ?? 0, slatePctTierStyle(tMktRanks[t.team]), tMktRanks[t.team])}
                     <td>
                         <div class="signals-container">
                             ${buildMarketSignalPills(t, true)}
@@ -2778,29 +2817,11 @@
                     tr.title = 'Open team stack';
                     tr.onclick = () => jumpToTeamStack(m.team);
 
-                    function xwobaColor(x) {
-                        if (x >= 0.360) return 'color:#32d74b; text-shadow:0 0 8px rgba(50,215,75,0.4);';
-                        if (x >= 0.335) return 'color:#0a84ff;';
-                        if (x >= 0.310) return 'color:var(--text-primary);';
-                        if (x >= 0.290) return 'color:#ff9f0a;';
-                        return 'color:#ff453a; text-shadow:0 0 8px rgba(255,69,58,0.3);';
-                    }
-
-                    // OPS color helper (secondary)
-                    function opsColor(ops) {
-                        if (ops >= 0.780) return 'color:#32d74b;';
-                        if (ops >= 0.730) return 'color:#0a84ff;';
-                        if (ops >= 0.700) return 'color:var(--text-primary);';
-                        if (ops >= 0.650) return 'color:#ff9f0a;';
-                        return 'color:#ff453a;';
-                    }
-
-                    // Pitcher vulnerability color (higher = more hittable = green for offense)
+                    // Pitcher split OPS allowed — higher = worse pitcher vs that hand (green for offense)
                     function pVulnColor(ops) {
-                        if (ops >= 0.800) return 'color:#32d74b; text-shadow:0 0 6px rgba(50,215,75,0.3);';
-                        if (ops >= 0.730) return 'color:#ff9f0a;';
-                        if (ops >= 0.680) return 'color:var(--text-primary);';
-                        return 'color:#0a84ff;';
+                        if (ops >= 0.800) return 'color:#32d74b; font-weight:800;';
+                        if (ops >= 0.730) return 'color:#ff9f0a; font-weight:700;';
+                        return 'color:#ff453a; font-weight:700;';
                     }
 
                     const edgeLabel = m.advantage_xwoba || m.advantage;
@@ -2831,12 +2852,12 @@
                         <td style="font-weight:700;">${getTeamAbbr(m.team)}<span class="team-label">${m.team.split(' ').pop()}</span></td>
                         <td>${m.opp_pitcher} ${handPill}</td>
                         <td style="font-weight:700; font-size:0.85rem; color:${handColor};">vs ${m.pitcher_hand_label}</td>
-                        <td style="font-weight:800; font-size:1.05rem; ${xwobaColor(teamXwoba)} font-variant-numeric:tabular-nums;">${Number(teamXwoba).toFixed(3)}</td>
-                        <td style="font-weight:600; opacity:0.85; ${opsColor(m.team_vs_hand_ops)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_ops.toFixed(3)}</td>
+                        <td style="font-weight:800; font-size:1.05rem; ${xwobaTierStyle(teamXwoba)} font-variant-numeric:tabular-nums;">${Number(teamXwoba).toFixed(3)}</td>
+                        <td style="font-weight:700; ${opsTierStyle(m.team_vs_hand_ops)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_ops.toFixed(3)}</td>
                         <td style="font-weight:700; color:${xDiffColor}; font-variant-numeric:tabular-nums;">${xDiffPrefix}${xDiff}</td>
                         <td style="font-weight:600; opacity:0.75; color:${diffColor}; font-variant-numeric:tabular-nums;">${diffPrefix}${m.ops_diff}</td>
-                        <td style="${lhhStyle} ${lhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_lhh_ops.toFixed(3)}<div style="font-size:0.65rem; opacity:0.6;">${(m.pitcher_vs_lhh_xwoba || 0).toFixed(3)} xw</div></td>
-                        <td style="${rhhStyle} ${rhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_rhh_ops.toFixed(3)}<div style="font-size:0.65rem; opacity:0.6;">${(m.pitcher_vs_rhh_xwoba || 0).toFixed(3)} xw</div></td>
+                        <td style="${lhhStyle} ${lhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_lhh_ops.toFixed(3)}<div style="font-size:0.65rem; ${xwobaTierStyle(m.pitcher_vs_lhh_xwoba)}">${(m.pitcher_vs_lhh_xwoba || 0).toFixed(3)} xw</div></td>
+                        <td style="${rhhStyle} ${rhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_rhh_ops.toFixed(3)}<div style="font-size:0.65rem; ${xwobaTierStyle(m.pitcher_vs_rhh_xwoba)}">${(m.pitcher_vs_rhh_xwoba || 0).toFixed(3)} xw</div></td>
                         <td>${advPill}</td>
                         <td><span class="score ${scoreClass}">${m.stack_score.toFixed(1)}</span></td>
                     `;
