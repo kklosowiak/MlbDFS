@@ -30,7 +30,7 @@ from utils.market_utils import get_market_prices, calculate_ml_move
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
-from utils.team_signals import apply_team_blind_spot
+from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -566,8 +566,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_confidence = opp_pitcher_rep.get('confidence', 'low') if opp_pitcher_rep else 'low'
             opp_outs = opp_pitcher_rep.get('outs_line', 15.5) if opp_pitcher_rep else 15.5
             
-            # OMEGA v8.0: Evaluate Burst Pre-Scoring
-            is_burst = (power_concentration > 0.355 or (opp_bullpen['score'] >= 80 and float(opp_outs) < 15.5))
+            # OMEGA v10.2: BURST — star-heavy power + targetable SP or cooked pen / short leash
+            is_burst, burst_conc_gap = evaluate_burst_signal(
+                power_concentration,
+                team_xwoba,
+                opp_bullpen['score'],
+                float(opp_outs),
+                opp_pitcher_physics,
+            )
             
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
@@ -734,9 +740,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
                 'confidence': res.get('confidence', 'low'),
                 'is_burst': is_burst,
+                'burst_conc_gap': burst_conc_gap,
                 'is_opp_debut': is_opp_debut,
                 'is_trap': res.get('is_trap', False),
                 'opp_pitcher_physics': opp_pitcher_physics,
+                'opp_pitcher_outs': float(opp_outs),
                 'implied_total': round(curr_itt, 2),
                 'total_signal': total_signal,
                 'is_physics_override': is_physics_override,  # v10.1: PHY beats market signal

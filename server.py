@@ -650,11 +650,12 @@ def get_results_api():
         import datetime as _dt
         now_et = _dt.datetime.now()
 
-        from utils.team_signals import apply_team_blind_spot
+        from utils.team_signals import apply_team_blind_spot, apply_team_burst
 
         for t in teams:
             team_key = t.get("team", "")
             apply_team_blind_spot(t)
+            apply_team_burst(t, opp_pitcher_outs=t.get("opp_pitcher_outs", 18.0))
 
             try:
                 dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(

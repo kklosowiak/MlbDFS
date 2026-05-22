@@ -1879,7 +1879,7 @@
             storm: 'Environmental or convergence accelerator (altitude, weather, multi-signal agreement). Use: prioritize offense/environment stacks.',
             steam: 'Late aggressive line move (often pre-lock). Use: confirm news (lineup, pen fatigue) before committing.',
             sharp: 'Heavy $: money% − tickets% ≥ 10 and strong handle. Use: confirms smart concentration without full SHARK pattern.',
-            burst: 'Elite power concentration vs soft spot — explosive stack ceiling. Use: GPP pivot on teams with targetable SP or tired pen.',
+            burst: 'Star-heavy lineup (power conc ≥0.370, +0.020 above team xwOBA) plus targetable SP (≤55 PHYS) or cooked pen (≥85 fatigue, SP <15 outs). Rare GPP ceiling spot.',
             blind_spot: 'PHY − MKT ≥ 55: lineup grades much stronger than the market pillar. Use: contrarian offense idea — confirm SP/park and lineup status.',
             phy_override: 'Lineup PHY beats opposing SP PHY by 10+ but stack score still modest. Use: hidden value if lineup is confirmed.',
             cold_streak: 'Confirmed hitters striking out ≥25% above season K% recently. Use: fade or downsize stack ceiling expectations.',
@@ -2016,7 +2016,14 @@
 
         function teamAlphaSignalsHtml(t) {
             let html = buildMarketSignalPills(t, true);
-            if (t.is_burst) html += signalPillHtml('⚡ BURST', { className: 'pill-burst', tipKey: 'burst' });
+            if (t.is_burst) {
+                const conc = t.power_concentration != null ? Number(t.power_concentration).toFixed(3) : '—';
+                const gap = t.burst_conc_gap != null ? Number(t.burst_conc_gap).toFixed(3) : '—';
+                html += signalPillHtml('⚡ BURST', {
+                    className: 'pill-burst',
+                    tip: `${omegaTip('burst')} Conc ${conc}, gap +${gap}.`,
+                });
+            }
             html += blindSpotPillHtml(t);
             if (t.is_opp_debut) html += signalPillHtml('✨ DEBUT TARGET', { className: 'pill-storm', tipKey: 'debut_target' });
             if (t.is_physics_override) {
