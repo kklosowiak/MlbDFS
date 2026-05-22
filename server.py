@@ -97,10 +97,16 @@ def perform_refresh_sync():
             raise RuntimeError("Analysis finished but latest_results.json was not written.")
         with open(results_path, "r", encoding="utf-8") as f:
             res_check = json.load(f)
-        if not res_check.get("pitchers") and not res_check.get("teams"):
+        n_p = len(res_check.get("pitchers") or [])
+        n_t = len(res_check.get("teams") or [])
+        n_h = len(res_check.get("hitters") or [])
+        print(f"[SERVER BG-THREAD]: Results written — {n_p} pitchers, {n_t} teams, {n_h} hitters.")
+        if n_p == 0 and n_t == 0:
             raise RuntimeError(
-                "Analysis produced empty pitchers/teams — check opening lines and odds snapshot in logs."
+                "Analysis produced empty pitchers/teams — check ODDS_API_KEY, snapshot, and opening lines in logs."
             )
+        if n_h == 0:
+            print("[SERVER BG-THREAD WARNING]: Hitters list empty — check statcast cache and prop ingest.")
 
         try:
             from utils.dqi import persist_dqi_history

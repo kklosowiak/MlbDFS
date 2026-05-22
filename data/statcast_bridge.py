@@ -11,6 +11,7 @@ if __name__ == "__main__":
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.normalization import normalize_player_name
+from utils.team_resolve import teams_match
 
 class StatcastBridge:
     def __init__(self, data_dir="data"):
@@ -493,7 +494,7 @@ class StatcastBridge:
         
         roster = []
         for name, data in cache.items():
-            if data.get('type') == player_type and data.get('team') == team_name:
+            if data.get('type') == player_type and teams_match(data.get('team'), team_name):
                 p_data = data.copy()
                 p_data['name'] = name # Include original name
                 roster.append(p_data)

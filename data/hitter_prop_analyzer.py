@@ -154,8 +154,8 @@ class HitterPropAnalyzer:
                 for p in roster:
                     name = p['name']
                     # OMEGA v7.9: Strict 50-PA Gate to eliminate ghosts/rookies
-                    pa_count = p.get('pa', 0)
-                    if pa_count < 50:
+                    pa_count = int(p.get('pa', 0) or 0)
+                    if pa_count < 30 and name not in self.xwoba_registry:
                         continue
 
                     # OMEGA v7.8: Pitcher Rejection Gate
@@ -215,9 +215,8 @@ class HitterPropAnalyzer:
 
                             # OMEGA v7.8: Hardened Sample Gate (50 PA) for Market Arrivals.
                             # We check the Registry first, then fallback to high-sample Statcast data.
-                            total_pa = momentum.get('pa', 0)
-                            
-                            xwoba = self._resolve_xwoba(player_name, momentum) if total_pa >= 50 else 0.330
+                            total_pa = int(momentum.get('pa', 0) or 0)
+                            xwoba = self._resolve_xwoba(player_name, momentum) if total_pa >= 30 else 0.330
                             
                             found_key = player_name
                             hitter_map[found_key] = {
@@ -333,8 +332,9 @@ class HitterPropAnalyzer:
                 for p in roster:
                     name = p['name']
                     if name not in hitter_map:
-                        pa_count = p.get('pa', 0)
-                        if pa_count < 50: continue
+                        pa_count = int(p.get('pa', 0) or 0)
+                        if pa_count < 30 and name not in self.xwoba_registry:
+                            continue
                         
                         xwoba = self._resolve_xwoba(name, p)
                         hitter_map[name] = {
@@ -352,8 +352,8 @@ class HitterPropAnalyzer:
                             'matchup_xwoba': xwoba
                         }
         
-        # Convert map to sorted list by AHR price
         h_list = list(hitter_map.values())
+        print(f"[OMEGA]: Hitter discovery complete — {len(h_list)} players across {len(active_teams)} teams.")
         return sorted(h_list, key=lambda x: x['ahr_price'])
 
     def resolve_team_side(self, player_name, home_t, away_t, market_side=None, confirmed_lineups=None):

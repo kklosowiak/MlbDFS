@@ -1,6 +1,7 @@
 import os
 import datetime
 from config import config
+from utils.normalization import normalize_player_name
 
 class SlateReportGenerator:
     """
@@ -16,7 +17,7 @@ class SlateReportGenerator:
         print("[REPORT]: Generating OMEGA Daily Attack Plan...")
 
         # 1. Map Opponents
-        pitcher_map = {p['pitcher']: p for p in p_reports}
+        pitcher_map = {normalize_player_name(p['pitcher']): p for p in p_reports}
         team_pitcher_map = {p['team']: p for p in p_reports}
         
         # 2. Score Pitchers
@@ -42,7 +43,7 @@ class SlateReportGenerator:
         # 3b. Score Hitters (attack_conf for CONF column + one-off decisions)
         for h in h_reports:
             team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
-            opp_p = pitcher_map.get(h.get('opp_pitcher', ''))
+            opp_p = pitcher_map.get(normalize_player_name(h.get('opp_pitcher', '')))
             if not opp_p and team_data:
                 opp_p = team_pitcher_map.get(team_data.get('opponent'))
             conf, reasons = self._score_hitter_confidence(h, team_data, opp_p)

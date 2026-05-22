@@ -158,18 +158,22 @@ def run_full_analysis():
         except Exception:
             print("[WARNING]: Could not load previous results for trend analysis.")
 
+    print(f"[INIT]: Pitchers will analyze after ingest; hitters/teams follow snapshot.")
+
     # 2. Ranking Pitcher Alpha
     p_reports = _get_pitcher_alpha(
         p_analyzer, snapshot_path, opening_lines_path, splits_data, 
         snapshot.get('props', {}), rosters, weather_fetcher, umpire_fetcher,
         movement_data=movement_data, previous_results=prev_pitcher_results
     )
+    print(f"[STEP 1 DONE]: {len(p_reports)} pitcher rows.")
     
     # OMEGA v6.21: The Integrity Gate
     p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
  
     # 3. Extract Hitters Early for Team Analysis (v6.8)
     raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=confirmed_lineups)
+    print(f"[STEP 2a]: {len(raw_hitters)} hitters before lineup purge.")
     
     # OMEGA v6.9.7: Fuzzy Franchise Purge
     # Purge any hitter not in the confirmed starters using fuzzy team matching.
@@ -185,13 +189,13 @@ def run_full_analysis():
                     confirmed = players
                     break
             
-            if confirmed:
+            if confirmed and len(confirmed) >= 7:
                 if normalize_player_name(h['name']) in confirmed:
                     purged_hitters.append(h)
             else:
-                purged_hitters.append(h) # Keep projected if no official data exists
+                purged_hitters.append(h)
         raw_hitters = purged_hitters
-        print(f"[PURGE]: Cleaned hitter pool via Fuzzy Matching. Bench players removed.")
+        print(f"[PURGE]: Hitter pool {len(raw_hitters)} after lineup filter (from {len(confirmed_lineups)} team keys).")
 
     # 4. Analyze Teams
     team_reports = _get_team_reports(
@@ -206,6 +210,7 @@ def run_full_analysis():
         h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar,
         raw_hitters=raw_hitters, pitcher_reports=p_reports,
     )
+    print(f"[STEP 3 DONE]: {len(h_reports)} hitter rows, {len(team_reports)} team rows.")
 
     # 5.5 OMEGA v6.8.5: Paradox Resolution
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
@@ -267,19 +272,24 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
     
     # OMEGA v4.5: Component Translation
     for report in p_reports:
-        res = report['alpha_score']
-        report['pitcher'] = report['pitcher'].title() # Aesthetic Fix: Capitalization
-        report['alpha_score'] = res['final'] # Flatten for display
-        report['physics_score'] = res['physics']
-        report['physics_talent'] = res.get('physics_talent', 0)
-        report['market_score'] = res['market']
-        report['is_trap'] = res.get('is_trap', False)
+        res = report.get('alpha_score', {})
+        report['pitcher'] = (report.get('pitcher') or 'TBD').title()
+        if isinstance(res, dict):
+            report['alpha_score'] = res.get('final', 0)
+            report['physics_score'] = res.get('physics', 0)
+            report['physics_talent'] = res.get('physics_talent', 0)
+            report['market_score'] = res.get('market', 0)
+            report['is_trap'] = res.get('is_trap', False)
+            report['is_coors'] = res.get('is_coors', False)
+        else:
+            report['alpha_score'] = float(res or 0)
+            report['physics_score'] = report.get('physics_score', 0)
+            report['physics_talent'] = report.get('physics_talent', 0)
+            report['market_score'] = report.get('market_score', 0)
         report['siera'] = report.get('siera', 4.10)
-        report['is_coors'] = res.get('is_coors', False)
-        report['is_paradox'] = False # Initial state
-        report['is_hazard'] = False  # Initial state
-        report['is_trap'] = res.get('is_trap', False)
-        report['is_low_ceiling'] = False # Initial state
+        report['is_paradox'] = False
+        report['is_hazard'] = False
+        report['is_low_ceiling'] = False
         report['is_sharp'] = report.get('is_sharp', False)
         report['is_whale'] = report.get('is_whale', False)
         report['is_shark'] = report.get('is_shark', False)

@@ -1905,6 +1905,16 @@
             return v != null ? (typeof v === 'number' ? Math.round(v * 10) / 10 : v) : '—';
         }
 
+        function numScore(value, fallback = 0) {
+            if (value == null || value === '') return fallback;
+            if (typeof value === 'object') {
+                const inner = value.final ?? value.score;
+                return numScore(inner, fallback);
+            }
+            const n = parseFloat(value);
+            return Number.isFinite(n) ? n : fallback;
+        }
+
         function isTeamBlindSpot(t) {
             const phys = parseFloat(t.physics_score) || 0;
             const mkt = parseFloat(t.market_score) || 0;
@@ -2272,7 +2282,11 @@
                 }
                 latestData = await res.json();
                 populateMatchupFilter(latestData);
-                updateWelcomeHub(latestData);
+                try {
+                    updateWelcomeHub(latestData);
+                } catch (hubErr) {
+                    console.warn('Welcome hub update skipped:', hubErr);
+                }
 
                 // Fetch platoon splits globally to support popovers
                 try {
@@ -2441,9 +2455,9 @@
 
               // Top Pitcher
               if (data.pitchers && data.pitchers.length > 0) {
-                  let p = [...data.pitchers].sort((a,b) => b.alpha_score - a.alpha_score)[0];
+                  let p = [...data.pitchers].sort((a,b) => numScore(b.alpha_score) - numScore(a.alpha_score))[0];
                   document.getElementById('hub-top-pitcher').innerText = p.pitcher || p.name || "---";
-                  document.getElementById('hub-top-pitcher-score').innerText = 'Omega: ' + (p.alpha_score ? p.alpha_score.toFixed(1) : '--');
+                  document.getElementById('hub-top-pitcher-score').innerText = 'Omega: ' + numScore(p.alpha_score).toFixed(1);
               }
 
               // Top Stack
@@ -2462,9 +2476,9 @@
 
               // Top Hitter
               if (data.hitters && data.hitters.length > 0) {
-                  let h = [...data.hitters].sort((a,b) => b.player_score - a.player_score)[0];
+                  let h = [...data.hitters].sort((a,b) => numScore(b.player_score) - numScore(a.player_score))[0];
                   document.getElementById('hub-top-hitter').innerText = h.name || "---";
-                  document.getElementById('hub-top-hitter-score').innerText = 'Omega: ' + (h.player_score ? h.player_score.toFixed(1) : '--');
+                  document.getElementById('hub-top-hitter-score').innerText = 'Omega: ' + numScore(h.player_score).toFixed(1);
               }
 
               if (data.teams && data.teams.length > 0) {
@@ -2529,7 +2543,7 @@
             const pitchers = latestData.pitchers || [];
             const teams = latestData.teams || [];
             const hittersForRender = [...(latestData.hitters || [])].sort(
-                (a, b) => (b.player_score || 0) - (a.player_score || 0)
+                (a, b) => numScore(b.player_score) - numScore(a.player_score)
             );
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
@@ -2547,9 +2561,10 @@
                 tr.setAttribute('data-exhausted', (oppT && oppT.bullpen_fatigue >= 90) ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openPitcherModal(encodeURIComponent(JSON.stringify(p)));
-                if (p.alpha_score >= 85) tr.classList.add('row-highlight');
+                const pScore = numScore(p.alpha_score);
+                if (pScore >= 85) tr.classList.add('row-highlight');
                 
-                const scoreClass = p.alpha_score >= 100 ? 'score elite' : (p.alpha_score >= 85 ? 'score high' : 'score med');
+                const scoreClass = pScore >= 100 ? 'score elite' : (pScore >= 85 ? 'score high' : 'score med');
                 
                 // Find opposing stack team info
                 let oppT = null;
@@ -2578,7 +2593,7 @@
                 const pRank = pRanks[p.pitcher];
                 const trapSpLabel = p.trap_type ? ` — ${p.trap_type}` : '';
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${p.alpha_score}${slatePercentileHtml(pRank)}</td>
+                    <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
                     ${attackConfHtml(p)}
                     ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
                     <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
@@ -2624,9 +2639,10 @@
                 tr.setAttribute('data-exhausted', (h.bullpen_fatigue >= 90) ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openHitterModal(encodeURIComponent(JSON.stringify(h)));
-                if (h.player_score >= 48) tr.classList.add('row-highlight');
+                const hScore = numScore(h.player_score);
+                if (hScore >= 48) tr.classList.add('row-highlight');
                 
-                const scoreClass = h.player_score >= 55 ? 'score elite' : (h.player_score >= 45 ? 'score high' : 'score med');
+                const scoreClass = hScore >= 55 ? 'score elite' : (hScore >= 45 ? 'score high' : 'score med');
                 
                 let platoonBadge = '';
                 if (h.platoon_multiplier && h.platoon_multiplier > 1.0) {
@@ -2642,7 +2658,7 @@
                 const hRank = hRanks[h.name];
                 const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${h.player_score}${slatePercentileHtml(hRank)}</td>
+                    <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
                     ${attackConfHtml(h)}
                     ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score))}
                     ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score))}
