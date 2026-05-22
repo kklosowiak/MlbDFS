@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: composite-pillars</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: clean-pillars</span>
             </div>
         </div>
 
@@ -1453,7 +1453,7 @@
                 <table id="hitters-table">
                     <thead>
                         <tr>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">PHY ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
@@ -1855,70 +1855,19 @@
             return 'color:#ff453a; font-weight:700;';
         }
 
-        function metricCellHtml(value, tierStyle, rankInfo) {
-            const sub = slatePercentileHtml(rankInfo);
-            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;">${value}${sub}</td>`;
+        function simpleMetricCell(value, tierStyle) {
+            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;">${value}</td>`;
         }
 
-        function teamPhyCell(t, rankInfo) {
-            const xw = (t.team_xwoba != null ? t.team_xwoba : 0.330).toFixed(3);
-            const vuln = t.vulnerability != null ? t.vulnerability : '—';
-            const pen = t.bullpen_boost != null ? t.bullpen_boost : (t.bullpen_fatigue >= 65 ? '+' : '');
-            const style = phyScoreTierStyle(t.physics_score);
-            const sub = slatePercentileHtml(rankInfo);
-            const title = `PHY pillar: xwOBA ${xw}, SP vuln +${vuln}, pen +${pen}, conc ${(t.power_concentration || 0).toFixed ? (t.power_concentration || 0).toFixed(3) : t.power_concentration || '—'}`;
-            return `<td class="metric" style="${style} font-variant-numeric:tabular-nums;" title="${title.replace(/"/g, '&quot;')}">
-                <span style="font-weight:800;">${t.physics_score ?? '—'}</span>
-                <div style="font-size:0.65rem; opacity:0.72; font-weight:600;">${xw} xw · pen ${pen}</div>${sub}</td>`;
-        }
-
-        function teamMktCell(t, rankInfo) {
-            const itt = t.implied_total != null ? t.implied_total : '—';
-            const ml = t.market_ml_bonus != null ? t.market_ml_bonus : 0;
-            const tt = t.market_tt_bonus != null ? t.market_tt_bonus : 0;
-            const style = slatePctTierStyle(rankInfo);
-            const sub = slatePercentileHtml(rankInfo);
-            const title = `MKT pillar: ITT ${itt}, ML bonus +${ml}, TT bonus +${tt}`;
-            return `<td class="metric" style="${style} font-variant-numeric:tabular-nums;" title="${title.replace(/"/g, '&quot;')}">
-                <span style="font-weight:800;">${t.market_score ?? '—'}</span>
-                <div style="font-size:0.65rem; opacity:0.72; font-weight:600;">ITT ${itt}</div>${sub}</td>`;
+        function pillarDisplay(row, pillarKey, scoreKey) {
+            const v = row[pillarKey] != null ? row[pillarKey] : row[scoreKey];
+            return v != null && v !== '' ? (typeof v === 'number' ? Math.round(v * 10) / 10 : v) : '—';
         }
 
         function isTeamBlindSpot(t) {
-            const phys = t.physics_pillar != null ? t.physics_pillar : buildCompositePhyFromRow(t, true);
-            const mkt = t.market_pillar != null ? t.market_pillar : buildCompositeMktFromRow(t);
+            const phys = parseFloat(t.physics_pillar ?? t.physics_score) || 0;
+            const mkt = parseFloat(t.market_pillar ?? t.market_score) || 0;
             return phys - mkt >= 25;
-        }
-
-        /** Map composite pillar to 0–100 vs tonight's slate (fallback if JSON is stale). */
-        function applySlatePillarDisplay(rows, sourceKey, destKey) {
-            if (!rows || !rows.length) return;
-            const vals = rows.map(r => parseFloat(r[sourceKey]) || 0);
-            const lo = Math.min(...vals);
-            const hi = Math.max(...vals);
-            const span = hi - lo;
-            rows.forEach((r, i) => {
-                const v = vals[i];
-                r[destKey] = span > 1e-6 ? Math.round(((v - lo) / span) * 1000) / 10 : 50;
-            });
-        }
-
-        function buildCompositePhyFromRow(t, isTeam) {
-            if (t.physics_pillar != null) return parseFloat(t.physics_pillar);
-            if (isTeam) {
-                const xw = parseFloat(t.team_xwoba) || 0.33;
-                const vuln = parseFloat(t.vulnerability) || 0;
-                const pen = parseFloat(t.bullpen_boost) || 0;
-                const raw = Math.min(100, Math.max(0, ((xw - 0.28) / 0.12) * 100));
-                return Math.min(100, raw + vuln + pen);
-            }
-            const xw = parseFloat(t.matchup_xwoba) || 0.33;
-            return Math.min(100, Math.max(0, ((xw - 0.28) / 0.12) * 100));
-        }
-
-        function buildCompositeMktFromRow(t) {
-            if (t.market_pillar != null) return parseFloat(t.market_pillar);
-            return parseFloat(t.market_score) || 0;
         }
 
         function attackConfHtml(entity) {
@@ -2174,14 +2123,19 @@
             });
         }
 
-        // Generic Table Sorter
-        function sortTable(tableId, colIndex, isNumeric) {
+        // Generic Table Sorter (defaultDesc: first click sorts high→low for OMEGA-style columns)
+        function sortTable(tableId, colIndex, isNumeric, defaultDesc) {
             const table = document.getElementById(tableId);
             const tbody = table.querySelector('tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
             
-            // Determine current sort direction from table attribute
-            let dir = table.getAttribute(`data-sort-dir-${colIndex}`) === 'asc' ? 'desc' : 'asc';
+            let stored = table.getAttribute(`data-sort-dir-${colIndex}`);
+            let dir;
+            if (!stored) {
+                dir = defaultDesc ? 'desc' : 'asc';
+            } else {
+                dir = stored === 'asc' ? 'desc' : 'asc';
+            }
             table.setAttribute(`data-sort-dir-${colIndex}`, dir);
 
             rows.sort((a, b) => {
@@ -2525,29 +2479,13 @@
             if (!latestData) return;
 
             const pitchers = latestData.pitchers || [];
-            const teams = (latestData.teams || []).map(t => {
-                const row = { ...t };
-                row.physics_pillar = buildCompositePhyFromRow(row, true);
-                row.market_pillar = buildCompositeMktFromRow(row);
-                return row;
-            });
-            applySlatePillarDisplay(teams, 'physics_pillar', 'physics_score');
-            applySlatePillarDisplay(teams, 'market_pillar', 'market_score');
-            const hittersForRender = (latestData.hitters || []).map(h => {
-                const row = { ...h };
-                row.physics_pillar = buildCompositePhyFromRow(row, false);
-                row.market_pillar = buildCompositeMktFromRow(row);
-                return row;
-            });
-            applySlatePillarDisplay(hittersForRender, 'physics_pillar', 'physics_score');
-            applySlatePillarDisplay(hittersForRender, 'market_pillar', 'market_score');
+            const teams = latestData.teams || [];
+            const hittersForRender = [...(latestData.hitters || [])].sort(
+                (a, b) => (b.player_score || 0) - (a.player_score || 0)
+            );
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
-            const tPhyRanks = computeScoreRankMap(teams, 'physics_score', 'team');
-            const tMktRanks = computeScoreRankMap(teams, 'market_score', 'team');
-            const hPhyRanks = computeScoreRankMap(hittersForRender, 'physics_score', 'name');
-            const hXwRanks = computeScoreRankMap(hittersForRender, 'matchup_xwoba', 'name');
 
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
@@ -2658,9 +2596,9 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${h.player_score}${slatePercentileHtml(hRank)}</td>
                     ${attackConfHtml(h)}
-                    ${metricCellHtml(h.physics_score ?? '—', phyScoreTierStyle(h.physics_score), hPhyRanks[h.name])}
-                    <td class="metric" style="color: var(--accent-purple); font-variant-numeric:tabular-nums;">${h.market_score || '-'}</td>
-                    ${metricCellHtml(xwoba, xwobaTierStyle(xwoba), hXwRanks[h.name])}
+                    ${simpleMetricCell(pillarDisplay(h, 'physics_pillar', 'physics_score'), phyScoreTierStyle(h.physics_pillar ?? h.physics_score))}
+                    ${simpleMetricCell(pillarDisplay(h, 'market_pillar', 'market_score'), phyScoreTierStyle(h.market_pillar ?? h.market_score))}
+                    ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba))}
                     <td>${platoonBadge}</td>
                     <td>
                         <div class="signals-container">
@@ -2780,8 +2718,8 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
-                    ${teamPhyCell(t, tPhyRanks[t.team])}
-                    ${teamMktCell(t, tMktRanks[t.team])}
+                    ${simpleMetricCell(pillarDisplay(t, 'physics_pillar', 'physics_score'), phyScoreTierStyle(t.physics_pillar ?? t.physics_score))}
+                    ${simpleMetricCell(pillarDisplay(t, 'market_pillar', 'market_score'), phyScoreTierStyle(t.market_pillar ?? t.market_score))}
                     <td>
                         <div class="signals-container">
                             ${buildMarketSignalPills(t, true)}
@@ -2815,7 +2753,6 @@
                 tBody.appendChild(tr);
             });
 
-            sortTable('hitters-table', 0, true);
             filterData();
         }
 

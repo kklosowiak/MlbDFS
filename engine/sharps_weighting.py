@@ -264,8 +264,8 @@ class SharpsWeighting:
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
         
-        # Composite pillars (what feeds base score before alpha multipliers)
-        physics_pillar = min(100.0, physics_raw + vulnerability_mod + bullpen_boost)
+        # Composite PHY display (0–100): core physics + matchup context (avoid all-100 cap)
+        physics_pillar = round(min(99.0, physics_raw + vulnerability_mod * 0.65 + bullpen_boost * 0.5), 1)
         market_ml_bonus = round(ml_score * 0.25, 1)
         market_tt_bonus = round(tt_score * 0.25, 1)
         market_pillar = min(100.0, market_raw)

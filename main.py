@@ -23,18 +23,6 @@ from data.statcast_bridge import StatcastBridge
 from engine.sharps_weighting import SharpsWeighting
 from engine.matchup_radar import MatchupRadar
 from utils.dashboard_generator import DashboardGenerator
-
-
-def _slate_relative_phy_scores(rows, source_key="physics_pillar", dest_key="physics_score"):
-    """Map composite physics pillar to 0–100 using tonight's slate min/max."""
-    vals = [float(r.get(source_key) or 0) for r in rows]
-    if not vals:
-        return
-    lo, hi = min(vals), max(vals)
-    span = hi - lo
-    for r in rows:
-        v = float(r.get(source_key) or 0)
-        r[dest_key] = round(((v - lo) / span) * 100, 1) if span > 1e-6 else 50.0
 from utils.audit_engine import AuditEngine
 from utils.slate_report_generator import SlateReportGenerator
 from config import config
@@ -741,6 +729,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'stack_score': final_stack_score,
                 'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
                 'physics_pillar': res.get('physics_pillar', res.get('physics_raw', 0)),
+                'physics_score': res.get('physics_pillar', res.get('physics_raw', 0)),
                 'market_pillar': res.get('market_pillar', res.get('market_raw', res['market'])),
                 'market_score': res.get('market_pillar', res.get('market_raw', res['market'])),
                 'market_itt_base': res.get('market_itt_base', 0),
@@ -770,8 +759,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             })
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
-    _slate_relative_phy_scores(team_reports, "physics_pillar", "physics_score")
-    _slate_relative_phy_scores(team_reports, "market_pillar", "market_score")
 
     # OMEGA v6.3: Auto-log SURGING/FADING tags to trend_tag_log.csv for validation
     import csv
@@ -894,7 +881,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'opp_pitcher': team_data['opp_pitcher'].title() if team_data else "TBD",
             'player_score': res['final'],
             'physics_pillar': res.get('physics_pillar', res['physics']),
+            'physics_score': res.get('physics_pillar', res['physics']),
             'market_pillar': res.get('market_pillar', res['market']),
+            'market_score': res.get('market_pillar', res['market']),
             'matchup_xwoba': res.get('matchup_xwoba', h.get('matchup_xwoba', 0.330)),
             'ahr_price': h.get('ahr_price', 400),
             'hits_line': h.get('hits_line', '-'),
@@ -920,8 +909,6 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         if hr['name'] not in seen_hitters:
             seen_hitters.add(hr['name'])
             cleaned_h_reports.append(hr)
-    _slate_relative_phy_scores(cleaned_h_reports, "physics_pillar", "physics_score")
-    _slate_relative_phy_scores(cleaned_h_reports, "market_pillar", "market_score")
     return cleaned_h_reports
 
 if __name__ == "__main__":
