@@ -467,6 +467,53 @@
             color: var(--text-primary);
         }
 
+        /* OMEGA hover glossary (signals, columns, metrics) */
+        .signals-container,
+        #pitchers-table td,
+        #hitters-table td,
+        #teams-table td,
+        #pitchers-table th,
+        #hitters-table th,
+        #teams-table th {
+            overflow: visible;
+        }
+        [data-omega-tip] {
+            position: relative;
+            cursor: help;
+        }
+        [data-omega-tip]::after {
+            content: attr(data-omega-tip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            width: max-content;
+            max-width: min(300px, 92vw);
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(12, 14, 22, 0.97);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            color: #e8eaed;
+            font-size: 0.72rem;
+            font-weight: 500;
+            line-height: 1.45;
+            text-transform: none;
+            letter-spacing: normal;
+            white-space: normal;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            z-index: 2500;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.12s ease, visibility 0.12s ease;
+        }
+        [data-omega-tip]:hover::after,
+        [data-omega-tip]:focus-visible::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .signal-filter-chip {
             font-size: 0.68rem;
             font-weight: 800;
@@ -1479,6 +1526,7 @@
         <div id="teams-panel" class="tab-panel">
             <div class="card">
                 <h2>Team Stack Sentiment Rankings</h2>
+                <p style="font-size:0.78rem; color:var(--text-secondary); margin:-6px 0 12px 0;">Hover signals, column headers, PHY/MKT cells, and DQI boxes for definitions and how to use them.</p>
                 <table id="teams-table">
                     <thead>
                         <tr>
@@ -1810,6 +1858,228 @@
             'Blue Jays': 'TOR', 'Nationals': 'WSH'
         };
 
+        /** Signal + column glossary — hover any [data-omega-tip] pill or header. */
+        const OMEGA_TIPS = {
+            col_omega: 'OMEGA master score (0–150 cap). Stacks/pitchers: physics + market + matchup multipliers. Higher = stronger overall play on the slate.',
+            col_conf: 'Attack confidence (0–100%). How strongly the Attack Plan engine likes this play after physics, traps, and context — not the same as OMEGA rank.',
+            col_phy: 'Physics pillar from talent/stats. Teams: lineup xwOBA grade. Pitchers: SIERA/CSW talent slice. Hitters: individual power profile.',
+            col_mkt: 'Market pillar: Vegas implied total, line moves, and sharp interest baked into one 0–100 score.',
+            col_xwoba: 'Platoon-adjusted expected weighted on-base vs today\'s opposing pitcher hand.',
+            col_itt: 'Implied team total from current ML + game total — how many runs Vegas expects this offense to score.',
+            col_ml_move: 'Moneyline move since open (negative = line toward this team / favorite steam).',
+            col_tt_move: 'Game total move since open (positive = total steamed up).',
+            col_div: 'Ticket vs money divergence (%). Positive = more handle than public tickets on this side.',
+            col_k_prop: 'DraftKings strikeout prop line (and price when shown).',
+            col_outs: 'Recorded outs / pitch-count proxy line for leash and workload.',
+            col_hr: 'Any-run / HR-related prop price context for power leverage.',
+            col_hits: 'Hits prop line and price — look for mispriced contact spots.',
+            col_tb: 'Total bases prop line and price — power ceiling plays.',
+            shark: 'Sharp money moving this side while the public is elsewhere. Use: high-trust core play; cross-check TRAP/CHALK on the other side.',
+            whale: 'Massive handle vs ticket count — institutional size on this team/player. Use: GPP leverage when paired with solid PHY and no TRAP.',
+            storm: 'Environmental or convergence accelerator (altitude, weather, multi-signal agreement). Use: prioritize offense/environment stacks.',
+            steam: 'Late aggressive line move (often pre-lock). Use: confirm news (lineup, pen fatigue) before committing.',
+            sharp: 'Heavy $: money% − tickets% ≥ 10 and strong handle. Use: confirms smart concentration without full SHARK pattern.',
+            burst: 'Elite power concentration vs soft spot — explosive stack ceiling. Use: GPP pivot on teams with targetable SP or tired pen.',
+            blind_spot: 'PHY − MKT ≥ 55: lineup grades much stronger than the market pillar. Use: contrarian offense idea — confirm SP/park and lineup status.',
+            phy_override: 'Lineup PHY beats opposing SP PHY by 10+ but stack score still modest. Use: hidden value if lineup is confirmed.',
+            cold_streak: 'Confirmed hitters striking out ≥25% above season K% recently. Use: fade or downsize stack ceiling expectations.',
+            debut_target: 'Opposing SP is a debut/rookie — stack gets a boost vs uncalibrated profiles. Use: tournament upside with volatility.',
+            debut: 'Pitcher debut — limited track record; props and PHY less reliable. Use: size down or target opposing stack.',
+            trap_sp: 'Public chalk SP with bad props, leash, or efficiency flags. Use: fade arm; stack opposing hitters.',
+            trap_stack: 'Chalk stack: market loves them but physics/trap logic says overpriced. Use: fade in GPP or pivot field.',
+            paradox: 'Conflicting elite signals (e.g., ace vs elite offense). Use: pick one side of the matchup, not both.',
+            hazard: 'Facing a top-3 slate offense by xwOBA (≥0.340). Use: risky SP start; consider run support or fade.',
+            low_ceiling: 'Limited K/outs upside on props — tough to pay up for ceiling. Use: pivot to higher-ceiling arms.',
+            exhausted: 'Opponent bullpen fatigue ≥90 — pen is cooked. Use: strong stack buy; target late innings.',
+            gassed: 'Opponent pen fatigue ≥75. Use: stack through the starter into a weak pen.',
+            weary: 'Opponent pen fatigue ≥65 — pressure building. Use: factor into 4–5 man stacks.',
+            surging: 'Divergence jumped ≥3 pts and still ≥+5% — money accelerating in. Use: timing edge before lock.',
+            fading: 'Divergence dropped ≤−3 pts and still ≤−5% — interest cooling. Use: caution on stale steam reads.',
+            chalk: 'Public chalk stack flag (trap logic). Use: fade or differentiate in GPP.',
+            target: 'Juiced prop target — line/pricing edge in hitter or pitcher props. Use: one-off leverage.',
+            smash: 'Smash factor hitter — elite contact/power signal in prop model. Use: ceiling plays in tournaments.',
+            power: 'Matchup xwOBA ≥ .360 — elite power spot vs today\'s pitcher. Use: HR/TB correlation.',
+            thief: 'Speed/baserunning target in the model. Use: SB upside mini-correlation plays.',
+            hot: 'Recent hot form flag in hitter engine. Use: momentum tie-breaker, not alone.',
+            elite_stack_opp: 'Opposing team is an elite OMEGA stack — tough environment for this SP. Use: fade arm or play run game.',
+            sharp_target_opp: 'Opposing stack is a sharp-backed target. Use: caution starting here.',
+            odiv: 'Over divergence on game total — sharps pounding the over. Use: stack correlated with run environment.',
+            udiv: 'Under divergence on game total — sharps on the under. Use: downsize offensive ceiling.',
+            over_money: 'Public over money % elevated on total. Use: context only — pair with O-DIV/U-DIV.',
+            dqi: 'Divergence Quality Index — only shows when divergence ≥10%. TRUST = quality sharp interest; FADE = likely trap.',
+            dqi_faded: 'DQI was active earlier today but divergence dropped before lock. Use: note late sharp exit.',
+            platoon_elite: 'Elite platoon edge vs pitcher hand. Use: core platoon plays in stacks.',
+            platoon_strong: 'Strong platoon edge. Use: overweight hitters in this hand split.',
+            platoon_fade: 'Slight platoon fade. Use: downgrade or pivot within stack.',
+            platoon_trap: 'Platoon trap — looks good but model flags a split trap. Use: avoid primary exposure.',
+            weather_label: 'Game weather context for this pitcher/team. Use: SP risk (delay) or hitter environment.',
+            opp_phys: 'Opposing SP talent 0–100 (low = targetable). Use: stack quality filter vs pitcher.',
+            form_surging: 'Pitcher recent form trending up in Statcast/form engine. Use: tie-break toward arm.',
+            form_cold: 'Pitcher form cold. Use: slight fade or target opposing stack.',
+        };
+
+        function escTip(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;');
+        }
+
+        function omegaTip(key, extra) {
+            let text = OMEGA_TIPS[key] || '';
+            if (extra) text = text ? `${text} ${extra}` : extra;
+            return text;
+        }
+
+        function tipAttrs(text) {
+            if (!text) return '';
+            const safe = escTip(text);
+            return ` data-omega-tip="${safe}" title="${safe}"`;
+        }
+
+        function signalPillHtml(label, opts) {
+            const o = opts || {};
+            const cls = o.className || 'pill-neutral';
+            const style = o.style ? ` style="${o.style}"` : '';
+            const tip = o.tip || omegaTip(o.tipKey, o.tipExtra);
+            const attrs = tipAttrs(tip);
+            return `<span class="signal-pill ${cls}"${style}${attrs}>${label}</span>`;
+        }
+
+        function bullpenFatiguePills(fatigue) {
+            const f = parseFloat(fatigue) || 0;
+            if (f >= 90) return signalPillHtml('🔥 EXHAUSTED', { className: 'pill-exhausted', tipKey: 'exhausted' });
+            if (f >= 75) return signalPillHtml('♨️ GASSED', { className: 'pill-gassed', tipKey: 'gassed' });
+            if (f >= 65) return signalPillHtml('♨️ WEARY', { className: 'pill-weary', tipKey: 'weary' });
+            return '';
+        }
+
+        function trendSignalPill(trend) {
+            if (trend === 'SURGING') {
+                return signalPillHtml('🔥 SURGING', {
+                    tipKey: 'surging',
+                    style: 'background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 69, 58, 0.25) 100%); border: 1px solid #ff9f0a; color: #ff9f0a; font-weight:800; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);',
+                });
+            }
+            if (trend === 'FADING') {
+                return signalPillHtml('❄️ FADING', {
+                    tipKey: 'fading',
+                    style: 'background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(144, 224, 239, 0.2) 100%); border: 1px solid #00b4d8; color: #00b4d8; font-weight:800; box-shadow: 0 0 8px rgba(0, 180, 216, 0.35);',
+                });
+            }
+            return '';
+        }
+
+        function totalSignalPill(raw) {
+            if (!raw) return '';
+            const s = String(raw);
+            let tipKey = 'odiv';
+            if (s.includes('U-DIV')) tipKey = 'udiv';
+            else if (s.includes('OVER')) tipKey = 'over_money';
+            return signalPillHtml(s, { className: 'pill-neutral', tipKey });
+        }
+
+        function pitcherAlphaSignalsHtml(p) {
+            let html = '';
+            if (p.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
+            html += buildMarketSignalPills(p, false);
+            if (p.is_debut) html += signalPillHtml('✨ DEBUT', { className: 'pill-storm', tipKey: 'debut' });
+            return html;
+        }
+
+        function pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel) {
+            let html = '';
+            if (p.is_paradox) html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
+            if (p.is_hazard) html += signalPillHtml('🌋 HAZARD', { className: 'pill-exhausted', tipKey: 'hazard' });
+            if (p.is_trap) {
+                html += signalPillHtml(`🚨 TRAP SP${trapSpLabel}`, {
+                    className: 'pill-trap',
+                    tip: `${omegaTip('trap_sp')}${trapSpLabel ? ` (${trapSpLabel.replace(/^ — /, '')})` : ''}`,
+                });
+            }
+            if (p.is_low_ceiling) html += signalPillHtml('📉 CEILING', { className: 'pill-neutral', tipKey: 'low_ceiling' });
+            html += signalPillHtml(p.weather_label || 'WEATHER: TBD', { className: 'pill-neutral', tipKey: 'weather_label' });
+            html += ouDivBadge;
+            if (p.form_status === 'SURGING') {
+                html += signalPillHtml('🔥 SURGING', {
+                    tipKey: 'form_surging',
+                    style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;',
+                });
+            } else if (p.form_status === 'COLD') {
+                html += signalPillHtml('🧊 COLD', {
+                    tipKey: 'form_cold',
+                    style: 'background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;',
+                });
+            }
+            return html;
+        }
+
+        function teamAlphaSignalsHtml(t) {
+            let html = buildMarketSignalPills(t, true);
+            if (t.is_burst) html += signalPillHtml('⚡ BURST', { className: 'pill-burst', tipKey: 'burst' });
+            html += blindSpotPillHtml(t);
+            if (t.is_opp_debut) html += signalPillHtml('✨ DEBUT TARGET', { className: 'pill-storm', tipKey: 'debut_target' });
+            if (t.is_physics_override) {
+                html += signalPillHtml('⚡ PHY OVERRIDE', {
+                    className: 'pill-neutral',
+                    style: 'background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;',
+                    tipKey: 'phy_override',
+                });
+            }
+            if (t.is_cold_streak) {
+                html += signalPillHtml(`🥶 COLD STREAK (+${t.rolling_k_delta}% K)`, {
+                    className: 'pill-neutral',
+                    style: 'background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;',
+                    tipKey: 'cold_streak',
+                });
+            }
+            return html;
+        }
+
+        function teamContextSignalsHtml(t) {
+            let html = trendSignalPill(t.trend);
+            if (t.is_trap) html += signalPillHtml('⚠️ CHALK', { className: 'pill-chalk', tipKey: 'trap_stack' });
+            if (t.is_paradox) html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
+            html += bullpenFatiguePills(t.bullpen_fatigue);
+            html += totalSignalPill(t.total_signal);
+            return html;
+        }
+
+        function hitterAlphaSignalsHtml(h) {
+            let html = '';
+            if (h.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
+            if (h.smash_factor) html += signalPillHtml('💥 SMASH', { className: 'pill-burst', tipKey: 'smash' });
+            return html;
+        }
+
+        function hitterContextSignalsHtml(h) {
+            let html = '';
+            if (h.matchup_xwoba >= 0.360) html += signalPillHtml('🔋 POWER', { className: 'pill-neutral', tipKey: 'power' });
+            if (h.is_speed_target) html += signalPillHtml('🏃‍♂️ THIEF', { className: 'pill-neutral', tipKey: 'thief' });
+            if (h.is_hot) html += signalPillHtml('♨️ HOT', { className: 'pill-target', tipKey: 'hot' });
+            html += bullpenFatiguePills(h.bullpen_fatigue);
+            return html;
+        }
+
+        const MATRIX_COLUMN_TIPS = {
+            'pitchers-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
+            'hitters-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', 'col_xwoba', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
+            'teams-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
+        };
+
+        function applyMatrixColumnTips() {
+            Object.entries(MATRIX_COLUMN_TIPS).forEach(([tableId, keys]) => {
+                const ths = document.querySelectorAll(`#${tableId} thead th`);
+                ths.forEach((th, idx) => {
+                    const key = keys[idx];
+                    if (!key) return;
+                    const text = omegaTip(key);
+                    th.setAttribute('data-omega-tip', text);
+                    th.setAttribute('title', text);
+                });
+            });
+        }
+
         function computeScoreRankMap(items, scoreKey, idKey) {
             const sorted = [...items].sort((a, b) => numScore(b[scoreKey]) - numScore(a[scoreKey]));
             const map = {};
@@ -1932,9 +2202,11 @@
             return 'color:#ff453a; font-weight:700;';
         }
 
-        function simpleMetricCell(value, tierStyle, title) {
-            const tip = title ? ` title="${String(title).replace(/"/g, '&quot;')}"` : '';
-            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;"${tip}>${value}</td>`;
+        function simpleMetricCell(value, tierStyle, tipText, metricClass) {
+            const attrs = tipAttrs(tipText);
+            const clsExtra = metricClass ? ` ${metricClass}` : '';
+            const style = tierStyle ? ` style="${tierStyle} font-variant-numeric:tabular-nums;"` : ' style="font-variant-numeric:tabular-nums;"';
+            return `<td class="metric${clsExtra}"${style}${attrs}>${value}</td>`;
         }
 
         function teamPhyCell(t) {
@@ -1944,7 +2216,8 @@
             const xwStyle = t.team_xwoba != null
                 ? xwobaTierStyle(t.team_xwoba)
                 : 'color:var(--text-secondary); font-weight:500;';
-            return `<td class="metric" style="font-variant-numeric:tabular-nums;" title="PHY grade from lineup xwOBA ${xw}">
+            const tip = omegaTip('col_phy', `(Lineup xwOBA ${xw})`);
+            return `<td class="metric" style="font-variant-numeric:tabular-nums;"${tipAttrs(tip)}>
                 <div style="${phyStyle}">${phy}</div>
                 <div style="font-size:0.68rem; font-weight:600; margin-top:2px; ${xwStyle}">${xw}</div>
             </td>`;
@@ -1968,17 +2241,23 @@
         function blindSpotPillHtml(t) {
             if (t.is_blind_spot !== true) return '';
             const gap = t.blind_spot_gap != null ? Number(t.blind_spot_gap).toFixed(1) : '—';
-            return `<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);" title="PHY−MKT ${gap} (need ≥55)">👁️ BLIND SPOT</span>`;
+            return signalPillHtml('👁️ BLIND SPOT', {
+                className: 'pill-neutral',
+                style: 'background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);',
+                tip: `${omegaTip('blind_spot')} Gap: ${gap} (need ≥55).`,
+            });
         }
 
         function attackConfHtml(entity) {
             const raw = entity.attack_conf;
             const conf = raw != null && raw !== undefined ? raw : '—';
-            const reasons = (entity.attack_reasons || []).slice(0, 3).join('\n');
+            const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
             const cls = typeof conf === 'number' && conf >= 70 ? 'val-up'
                 : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
-            const title = reasons ? ` title="${reasons.replace(/"/g, '&quot;')}"` : '';
-            return `<td class="metric ${cls}"${title}>${conf}</td>`;
+            const tip = reasons
+                ? `${omegaTip('col_conf')} ${reasons}`
+                : omegaTip('col_conf');
+            return `<td class="metric ${cls}"${tipAttrs(tip)}>${conf}</td>`;
         }
 
         let activeSignalFilter = '';
@@ -2001,12 +2280,12 @@
         }
 
         function platoonEdgePill(label) {
-            if (!label) return '<span class="signal-pill pill-neutral">—</span>';
-            if (label === 'ELITE PLATOON') return '<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b;">⚡ ELITE</span>';
-            if (label === 'STRONG EDGE') return '<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff;">🎯 STRONG</span>';
-            if (label === 'SLIGHT FADE') return '<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a;">⚠️ FADE</span>';
-            if (label === 'PLATOON TRAP') return '<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a;">🚨 TRAP</span>';
-            return '<span class="signal-pill pill-neutral">— NEUTRAL</span>';
+            if (!label) return signalPillHtml('—', { className: 'pill-neutral', tipKey: 'col_xwoba' });
+            if (label === 'ELITE PLATOON') return signalPillHtml('⚡ ELITE', { style: 'background:rgba(50,215,75,0.15); color:#32d74b;', tipKey: 'platoon_elite' });
+            if (label === 'STRONG EDGE') return signalPillHtml('🎯 STRONG', { style: 'background:rgba(10,132,255,0.12); color:#0a84ff;', tipKey: 'platoon_strong' });
+            if (label === 'SLIGHT FADE') return signalPillHtml('⚠️ FADE', { style: 'background:rgba(255,159,10,0.12); color:#ff9f0a;', tipKey: 'platoon_fade' });
+            if (label === 'PLATOON TRAP') return signalPillHtml('🚨 TRAP', { style: 'background:rgba(255,69,58,0.15); color:#ff453a;', tipKey: 'platoon_trap' });
+            return signalPillHtml('— NEUTRAL', { className: 'pill-neutral', tipKey: 'col_xwoba' });
         }
 
         function jumpToTeamStack(teamName) {
@@ -2022,16 +2301,16 @@
 
         function buildMarketSignalPills(entity, isTeamRow) {
             let html = '';
-            if (entity.is_shark) html += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
-            if (entity.is_whale) html += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
+            if (entity.is_shark) html += signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' });
+            if (entity.is_whale) html += signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' });
             if (isTeamRow) {
-                if (entity.is_steam) html += '<span class="signal-pill pill-steam">💨 STEAM</span>';
-                else if (entity.is_storm) html += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+                if (entity.is_steam) html += signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' });
+                else if (entity.is_storm) html += signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' });
             } else if (entity.is_storm) {
-                html += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+                html += signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' });
             }
             if (entity.is_sharp && !entity.is_shark) {
-                html += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
+                html += signalPillHtml('🎰 HEAVY $', { className: 'pill-sharp', tipKey: 'sharp' });
             }
             return html;
         }
@@ -2081,6 +2360,7 @@
                 document.getElementById('api-key-input').value = savedKey;
             }
             setSignalFilter('');
+            applyMatrixColumnTips();
             loadData();
             pollRefreshStatus();
             pollDataHealth();
@@ -2675,19 +2955,23 @@
                 let oppStackBadge = '';
                 if (oppT) {
                     if (p.is_paradox) {
-                        oppStackBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: #ff453a; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.2);">🔥 ELITE STACK (${numScore(oppT.stack_score).toFixed(0)})</span>`;
+                        const eliteTip = `${omegaTip('elite_stack_opp')} Stack Ω ${numScore(oppT.stack_score).toFixed(0)}.`;
+                        oppStackBadge = `<span class="badge-mini"${tipAttrs(eliteTip)} style="background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: #ff453a; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.2);">🔥 ELITE STACK (${numScore(oppT.stack_score).toFixed(0)})</span>`;
                     } else if (oppT.is_whale || oppT.is_shark) {
-                        oppStackBadge = `<span class="badge-mini" style="background: rgba(10, 132, 255, 0.12); border: 1px solid rgba(10, 132, 255, 0.3); color: #0a84ff; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🐳 SHARP TARGET</span>`;
+                        oppStackBadge = `<span class="badge-mini"${tipAttrs(omegaTip('sharp_target_opp'))} style="background: rgba(10, 132, 255, 0.12); border: 1px solid rgba(10, 132, 255, 0.3); color: #0a84ff; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🐳 SHARP TARGET</span>`;
                     }
                 }
                 let ouDivBadge = '';
                 if (oppT && oppT.total_signal) {
                     const ts = oppT.total_signal;
-                    if (ts.includes('O-DIV')) {
-                        ouDivBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.4); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;">📈 ${ts}</span>`;
-                    } else if (ts.includes('U-DIV')) {
-                        ouDivBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.12); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;">📉 ${ts}</span>`;
-                    }
+                    const prefix = ts.includes('U-DIV') ? '📉' : '📈';
+                    ouDivBadge = signalPillHtml(`${prefix} ${ts}`, {
+                        className: 'pill-neutral',
+                        tipKey: ts.includes('U-DIV') ? 'udiv' : 'odiv',
+                        style: ts.includes('U-DIV')
+                            ? 'background:rgba(50,215,75,0.12); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;'
+                            : 'background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.4); font-size:0.72em; font-weight:700; padding:1px 5px; white-space:nowrap;',
+                    });
                 }
 
                 const pRank = pRanks[p.pitcher];
@@ -2696,23 +2980,15 @@
                     <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
                     ${attackConfHtml(p)}
                     ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
-                    <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
+                    ${simpleMetricCell(p.market_score || '-', 'color: var(--accent-purple);', omegaTip('col_mkt'))}
                     <td>
                         <div class="signals-container">
-                            ${p.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
-                            ${buildMarketSignalPills(p, false)}
-                            ${p.is_debut ? '<span class="signal-pill pill-storm">✨ DEBUT</span>' : ''}
+                            ${pitcherAlphaSignalsHtml(p)}
                         </div>
                     </td>
                     <td>
                         <div class="signals-container">
-                            ${p.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
-                            ${p.is_hazard ? '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>' : ''}
-                            ${p.is_trap ? `<span class="signal-pill pill-trap">🚨 TRAP SP${trapSpLabel}</span>` : ''}
-                            ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
-                            <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
-                            ${ouDivBadge}
-                            ${p.form_status === 'SURGING' ? `<span class="signal-pill" style="background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;">🔥 SURGING</span>` : (p.form_status === 'COLD' ? `<span class="signal-pill" style="background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;">🧊 COLD</span>` : '')}
+                            ${pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel)}
                         </div>
                     </td>
                     <td>
@@ -2761,22 +3037,18 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
                     ${attackConfHtml(h)}
-                    ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score))}
-                    ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score))}
-                    ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba))}
+                    ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score), omegaTip('col_phy'))}
+                    ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score), omegaTip('col_mkt'))}
+                    ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba), omegaTip('col_xwoba'))}
                     <td>${platoonBadge}</td>
                     <td>
                         <div class="signals-container">
-                            ${h.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
-                            ${h.smash_factor ? '<span class="signal-pill pill-burst">💥 SMASH</span>' : ''}
+                            ${hitterAlphaSignalsHtml(h)}
                         </div>
                     </td>
                     <td>
                         <div class="signals-container">
-                            ${h.matchup_xwoba >= 0.360 ? '<span class="signal-pill pill-neutral">🔋 POWER</span>' : ''}
-                            ${h.is_speed_target ? '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>' : ''}
-                            ${h.is_hot ? '<span class="signal-pill pill-target">♨️ HOT</span>' : ''}
-                            ${h.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (h.bullpen_fatigue >= 75 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (h.bullpen_fatigue >= 65 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
+                            ${hitterContextSignalsHtml(h)}
                         </div>
                     </td>
                     <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
@@ -2834,13 +3106,6 @@
                     }
                 }
 
-                let trendPill = '';
-                if (t.trend === 'SURGING') {
-                    trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 159, 10, 0.15) 0%, rgba(255, 69, 58, 0.25) 100%); border: 1px solid #ff9f0a; color: #ff9f0a; font-weight:800; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);">🔥 SURGING</span>`;
-                } else if (t.trend === 'FADING') {
-                    trendPill = `<span class="signal-pill" style="background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(144, 224, 239, 0.2) 100%); border: 1px solid #00b4d8; color: #00b4d8; font-weight:800; box-shadow: 0 0 8px rgba(0, 180, 216, 0.35);">❄️ FADING</span>`;
-                }
-
                 // v9.5: DQI — render from backend-injected fields (single source of truth).
                 // Only shown when backend confirmed divergence >= 10% (dqi_score present).
                 let divBadgeHtml = '';
@@ -2851,7 +3116,7 @@
                     const posList  = (t.dqi_pos_factors  || []).map(f => `<span style="color:#32d74b; font-size:0.63rem;">• ${f}</span>`).join('');
                     const warnList = (t.dqi_warn_factors || []).map(f => `<span style="color:#ff453a; font-size:0.63rem;">• ${f}</span>`).join('');
                     divBadgeHtml = `
-                        <div style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; min-width:110px;">
+                        <div${tipAttrs(omegaTip('dqi'))} style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; min-width:110px;">
                             <div style="color:${scoreColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">DQI: ${dqiScore}% [${dqiStatus}]</div>
                             ${posList}${warnList}
                         </div>
@@ -2860,7 +3125,7 @@
                     // v10.1: DQI Faded Ghost Tag — signal was active earlier today but has since dropped
                     const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
                     divBadgeHtml = `
-                        <div style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.15); padding:4px 6px; border-radius:4px; min-width:110px; opacity:0.65;">
+                        <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.15); padding:4px 6px; border-radius:4px; min-width:110px; opacity:0.65;">
                             <div style="color:${fadedColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">⏱️ DQI FADED (was ${t.dqi_faded_score}% [${t.dqi_faded_status}])</div>
                             <span style="color:rgba(255,255,255,0.45); font-size:0.62rem;">Signal active earlier today, dropped at lock</span>
                         </div>
@@ -2873,32 +3138,23 @@
                     <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
                     ${teamPhyCell(t)}
-                    ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score))}
+                    ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score), omegaTip('col_mkt'))}
                     <td>
                         <div class="signals-container">
-                            ${buildMarketSignalPills(t, true)}
-                            ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
-                            ${blindSpotPillHtml(t)}
-                            ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
-                            ${t.is_physics_override ? '<span class="signal-pill pill-neutral" style="background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;">⚡ PHY OVERRIDE</span>' : ''}
-                            ${t.is_cold_streak ? `<span class="signal-pill pill-neutral" style="background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;">🥶 COLD STREAK (+${t.rolling_k_delta}% K)</span>` : ''}
+                            ${teamAlphaSignalsHtml(t)}
                         </div>
                     </td>
                     <td>
                         <div class="signals-container">
-                            ${trendPill}
-                            ${t.is_trap ? '<span class="signal-pill pill-chalk">⚠️ CHALK</span>' : ''}
-                            ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
-                            ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 75 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 65 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
-                            ${t.total_signal ? `<span class="signal-pill pill-neutral">${t.total_signal}</span>` : ''}
+                            ${teamContextSignalsHtml(t)}
                         </div>
                     </td>
                     <td><strong>${t.team}</strong></td>
                     <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>
-                    <td class="metric val-up">${t.implied_total || '-'}</td>
-                    <td class="metric ${mlClass}">${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}</td>
-                    <td class="metric ${ttClass}">${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}</td>
-                    <td class="metric ${divClass}" style="vertical-align: middle;">
+                    ${simpleMetricCell(t.implied_total || '-', 'color: var(--accent-green); font-weight:600;', omegaTip('col_itt'))}
+                    ${simpleMetricCell(`${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`, '', omegaTip('col_ml_move'), mlClass)}
+                    ${simpleMetricCell(`${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`, '', omegaTip('col_tt_move'), ttClass)}
+                    <td class="metric ${divClass}" style="vertical-align: middle;"${tipAttrs(omegaTip('col_div'))}>
                         <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>
                         ${divBadgeHtml}
                     </td>
@@ -2911,6 +3167,7 @@
                 hitters: hittersForRender.length,
                 teams: teams.length
             };
+            applyMatrixColumnTips();
             filterData();
         }
 
