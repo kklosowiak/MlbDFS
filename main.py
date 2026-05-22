@@ -28,6 +28,7 @@ from utils.slate_report_generator import SlateReportGenerator
 from config import config
 from utils.normalization import normalize_player_name
 from utils.market_utils import get_market_prices, calculate_ml_move
+from utils.xwoba_estimates import xwoba_to_phy_score
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -729,7 +730,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'stack_score': final_stack_score,
                 'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
                 'physics_pillar': res.get('physics_pillar', res.get('physics_raw', 0)),
-                'physics_score': res.get('physics_raw', res.get('physics_pillar', 0)),
+                'physics_raw': res.get('physics_raw', 0),
+                'physics_score': xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)),
                 'market_pillar': res.get('market_pillar', res.get('market_raw', res['market'])),
                 'market_score': res.get('market_raw', res.get('market_pillar', res['market'])),
                 'market_itt_base': res.get('market_itt_base', 0),

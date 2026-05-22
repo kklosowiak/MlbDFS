@@ -9,9 +9,9 @@ def ops_to_xwoba(ops):
 
 
 def xwoba_to_phy_score(xwoba):
-    """Map matchup/team xwOBA to a 0–100 PHY display score (slate-comparable)."""
+    """Map lineup/matchup xwOBA to 0–100 PHY display (0.280 weak → 0.450 elite)."""
     x = float(xwoba or 0.330)
-    return round(max(0.0, min(100.0, ((x - 0.280) / 0.140) * 100)), 1)
+    return round(max(0.0, min(100.0, ((x - 0.280) / 0.170) * 100)), 1)
 
 
 def woba_proxy_to_xwoba(woba_proxy, ops_fallback=0.0):

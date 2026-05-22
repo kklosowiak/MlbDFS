@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: raw-power-display</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: xwoba-phy</span>
             </div>
         </div>
 
@@ -1870,8 +1870,9 @@
             return 'color:#ff453a; font-weight:700;';
         }
 
-        function simpleMetricCell(value, tierStyle) {
-            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;">${value}</td>`;
+        function simpleMetricCell(value, tierStyle, title) {
+            const tip = title ? ` title="${String(title).replace(/"/g, '&quot;')}"` : '';
+            return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;"${tip}>${value}</td>`;
         }
 
         function scoreDisplay(value) {
@@ -2733,7 +2734,7 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
-                    ${simpleMetricCell(scoreDisplay(t.physics_score), teamPhyTierStyle(t.physics_score))}
+                    ${simpleMetricCell(scoreDisplay(t.physics_score), teamPhyTierStyle(t.physics_score), `Lineup xwOBA ${(t.team_xwoba != null ? Number(t.team_xwoba).toFixed(3) : '—')}`)}
                     ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score))}
                     <td>
                         <div class="signals-container">
