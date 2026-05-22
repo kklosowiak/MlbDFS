@@ -302,6 +302,7 @@ class PitcherAnalyzer:
                     is_death_sentence = trap_res["is_death_sentence"]
                     trap_prop_note = trap_res.get("trap_prop_note")
                     props_feed_status = trap_res.get("props_feed_status", "ok")
+                    sticky_trap = trap_res.get("sticky_trap", is_trap)
                     if k_odds is None and prev_pitcher_data and prev_pitcher_data.get("k_odds") is not None:
                         k_odds = prev_pitcher_data.get("k_odds")
 
@@ -401,6 +402,7 @@ class PitcherAnalyzer:
                     'trap_type': trap_type if is_trap else None,
                     'trap_prop_note': trap_prop_note,
                     'props_feed_status': props_feed_status,
+                    'sticky_trap': sticky_trap,
                     'form_status': form_status,
                     'recent_k9': recent_k9,
                     'recent_era': recent_era,
