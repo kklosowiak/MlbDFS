@@ -334,7 +334,17 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     # Identify the elite stacks (Top 3)
     sorted_teams = sorted(team_reports, key=lambda x: x['stack_score'], reverse=True)
     top_stack_names = [t['team'] for t in sorted_teams[:3]]
-    high_power_teams = [t['team'] for t in team_reports if t.get('team_xwoba', 0) >= 0.335]
+    # HAZARD: only top-3 raw offensive teams on the slate (0.335 caught ~half the league)
+    sorted_by_xwoba = sorted(
+        team_reports,
+        key=lambda x: float(x.get('team_xwoba', 0) or 0),
+        reverse=True,
+    )
+    elite_power_teams = [
+        t['team']
+        for t in sorted_by_xwoba[:3]
+        if float(t.get('team_xwoba', 0) or 0) >= 0.340
+    ]
 
     for p in p_reports:
         # 1. Paradox Check (Facing a Top 3 stack)
@@ -348,10 +358,10 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
             shield_label = " (SHIELDED)" if is_veteran else ""
             print(f"  - PARADOX: {p['pitcher']} ({p['team']}) penalized{shield_label} for facing Top-3 Stack {p['opponent']}")
 
-        # 2. Power Hazard Check (Facing high raw physics)
-        if p['opponent'] in high_power_teams:
+        # 2. Power Hazard Check (Top-3 team xwOBA on slate, min .340 elite floor)
+        if p['opponent'] in elite_power_teams:
             p['is_hazard'] = True
-            print(f"  - HAZARD: {p['pitcher']} ({p['team']}) flagged for facing High-Power opponent {p['opponent']}")
+            print(f"  - HAZARD: {p['pitcher']} ({p['team']}) flagged for facing elite offense {p['opponent']}")
             
         # 3. K-Ceiling Check (Low K-upside warning only, no cap)
         if p.get('k_line') and float(p['k_line']) <= 4.5:
