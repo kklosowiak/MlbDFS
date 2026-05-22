@@ -12,6 +12,7 @@ from config import config
 from engine.sharps_weighting import SharpsWeighting
 from utils.normalization import normalize_player_name
 from utils.market_utils import get_market_prices, calculate_ml_move
+from utils.pitcher_trap import resolve_pitcher_trap
 
 class PitcherAnalyzer:
     def __init__(self):
@@ -217,6 +218,8 @@ class PitcherAnalyzer:
                 is_trap = False
                 trap_type = None
                 is_death_sentence = False
+                trap_prop_note = None
+                props_feed_status = "ok"
                 divergence = 0
 
                 # Recover props and movement only if game has not started or we have no pre-game snapshot
@@ -283,36 +286,25 @@ class PitcherAnalyzer:
                     if k_line is None: k_line = 4.5
                     if outs_line is None: outs_line = 14.5
                     
-                    # Prop Trap Detection — Logic untouched, sub-label added
-                    is_trap = False
-                    trap_is_short_leash = False  # Outs line triggered
-                    trap_is_vulnerable = False   # Opponent/market edge triggered
                     p_move = next((m for m in movement_data if m.get('player') == pitcher_name), None)
                     k_move = p_move.get('k_move', 0) if p_move else 0
-                    
-                    if ml_move > 10 and k_move < 0:
-                        is_trap = True
-                        trap_is_vulnerable = True
-                    if k_odds and k_odds > 125:
-                        is_trap = True
-                        trap_is_vulnerable = True
-                        
-                    is_death_sentence = False
-                    if outs_line is not None and float(outs_line) <= 15.5 and outs_odds is not None and float(outs_odds) >= 100:
-                        is_trap = True
-                        is_death_sentence = True
-                        trap_is_short_leash = True
-                    
-                    # Derive human-readable sub-label
-                    if trap_is_short_leash and trap_is_vulnerable:
-                        trap_type = 'Both'
-                    elif trap_is_short_leash:
-                        trap_type = 'Short Leash'
-                    elif trap_is_vulnerable:
-                        trap_type = 'Vulnerable'
-                    else:
-                        trap_type = None
-                        
+                    trap_res = resolve_pitcher_trap(
+                        prev_pitcher=prev_pitcher_data,
+                        ml_move=ml_move,
+                        k_move=k_move,
+                        k_line=k_line,
+                        k_odds=k_odds,
+                        outs_line=outs_line,
+                        outs_odds=outs_odds,
+                    )
+                    is_trap = trap_res["is_trap"]
+                    trap_type = trap_res["trap_type"]
+                    is_death_sentence = trap_res["is_death_sentence"]
+                    trap_prop_note = trap_res.get("trap_prop_note")
+                    props_feed_status = trap_res.get("props_feed_status", "ok")
+                    if k_odds is None and prev_pitcher_data and prev_pitcher_data.get("k_odds") is not None:
+                        k_odds = prev_pitcher_data.get("k_odds")
+
                     is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
                     is_whale = (divergence >= 15)
                     is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
@@ -407,6 +399,8 @@ class PitcherAnalyzer:
                     'umpire_name': ump_data['name'],
                     'umpire_factor': ump_data.get('factor', 1.0),
                     'trap_type': trap_type if is_trap else None,
+                    'trap_prop_note': trap_prop_note,
+                    'props_feed_status': props_feed_status,
                     'form_status': form_status,
                     'recent_k9': recent_k9,
                     'recent_era': recent_era,

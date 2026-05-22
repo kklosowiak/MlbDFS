@@ -218,6 +218,9 @@ class SlateReportGenerator:
             if opp_p.get('is_trap'):
                 conf += 15
                 reasons.append(f"Attacking a Vegas Trap: Opposing pitcher {opp_p_name} is a known Trap.")
+                trap_note = opp_p.get("trap_prop_note")
+                if trap_note:
+                    reasons.append(trap_note)
             if opp_p.get('form_status') == 'COLD':
                 conf += 15
                 reasons.append(f"Attacking Cold Pitching: {opp_p_name} has a {opp_p.get('recent_era')} ERA over last 3 starts.")
