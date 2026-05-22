@@ -1350,7 +1350,7 @@
                     <span>Matchup Filter (Select Slates)</span>
                     <div style="display: flex; gap: 8px;">
                         <button onclick="toggleAllMatchups(true)" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Select All</button>
-                        <button onclick="toggleAllMatchups(false)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Clear All</button>
+                        <button onclick="toggleAllMatchups(true)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;" title="Reset filter — show all games">Reset Filter</button>
                     </div>
                 </div>
                 <div id="matchups-checkbox-container" style="display: grid; grid-template-rows: auto auto; grid-auto-flow: column; gap: 8px; overflow-x: auto; padding-bottom: 5px;">
@@ -2382,16 +2382,59 @@
 
         // Dynamic Slate Matchup Filter (v9.3)
         function getTeamAbbr(name) {
-            if (!name) return "";
+            if (!name) return '';
             const clean = name.trim();
             if (abbrevMap[clean]) return abbrevMap[clean];
-            if (clean.length === 3 || clean === 'CWS' || clean === 'WSH') return clean;
+            const upper = clean.toUpperCase();
+            if (/^[A-Z]{2,4}$/.test(upper)) return upper;
+            const lower = clean.toLowerCase();
             for (const [k, v] of Object.entries(abbrevMap)) {
-                if (k.toLowerCase().includes(clean.toLowerCase()) || clean.toLowerCase().includes(k.toLowerCase())) {
-                    return v;
-                }
+                if (k.toLowerCase() === lower) return v;
             }
-            return clean.toUpperCase();
+            return '';
+        }
+
+        function matchupGameKey(teamName, oppName) {
+            const a = getTeamAbbr(teamName);
+            const b = getTeamAbbr(oppName);
+            if (!a || !b) return '';
+            return [a, b].sort().join('_');
+        }
+
+        function syncMatchupChipStyle(cb) {
+            const div = cb && cb.closest('.matchup-chip');
+            if (!div) return;
+            if (cb.checked) {
+                div.style.borderColor = 'rgba(0, 242, 254, 0.2)';
+                div.style.background = 'rgba(0, 242, 254, 0.04)';
+                div.style.color = '#00f2fe';
+            } else {
+                div.style.borderColor = 'rgba(255,255,255,0.08)';
+                div.style.background = 'rgba(255,255,255,0.03)';
+                div.style.color = 'var(--text-secondary)';
+            }
+        }
+
+        function getMatchupFilterState() {
+            const boxes = [...document.querySelectorAll('.matchup-checkbox')];
+            if (!boxes.length) return null;
+            const active = new Set();
+            boxes.forEach(cb => {
+                if (cb.checked) active.add(cb.getAttribute('data-game-key'));
+            });
+            return { active, total: boxes.length };
+        }
+
+        function rowPassesMatchupFilter(row, filterState) {
+            if (!filterState) return true;
+            if (filterState.active.size === 0) return false;
+            if (filterState.active.size >= filterState.total) return true;
+            let key = row.getAttribute('data-game-key');
+            if (!key) {
+                const parts = (row.getAttribute('data-teams') || '').split(',').filter(Boolean);
+                if (parts.length === 2) key = parts.slice().sort().join('_');
+            }
+            return key ? filterState.active.has(key) : true;
         }
 
         function populateMatchupFilter(data) {
@@ -2438,7 +2481,7 @@
             panel.style.display = 'block';
 
             matchups.forEach(m => {
-                const gameKey = [m.teamA, m.teamB].sort().join('_');
+                const gameKey = matchupGameKey(m.teamA, m.teamB) || [m.teamA, m.teamB].sort().join('_');
                 const isChecked = !uncheckedMatchupKeys.has(gameKey);
 
                 const div = document.createElement('div');
@@ -2474,25 +2517,10 @@
                 input.style.cssText = "cursor: pointer; margin: 0; accent-color: var(--accent-blue);";
                 
                 input.onchange = () => {
-                    if (input.checked) {
-                        div.style.borderColor = "rgba(0, 242, 254, 0.2)";
-                        div.style.background = "rgba(0, 242, 254, 0.04)";
-                        div.style.color = "#00f2fe";
-                    } else {
-                        div.style.borderColor = "rgba(255,255,255,0.08)";
-                        div.style.background = "rgba(255,255,255,0.03)";
-                        div.style.color = "var(--text-secondary)";
-                    }
+                    syncMatchupChipStyle(input);
                     filterData();
                 };
-
-                if (isChecked) {
-                    div.style.borderColor = "rgba(0, 242, 254, 0.2)";
-                    div.style.background = "rgba(0, 242, 254, 0.04)";
-                    div.style.color = "#00f2fe";
-                } else {
-                    div.style.color = "var(--text-secondary)";
-                }
+                syncMatchupChipStyle(input);
 
                 const span = document.createElement('span');
                 span.innerText = `${m.teamA} @ ${m.teamB}`;
@@ -2530,8 +2558,9 @@
         function toggleAllMatchups(checkAll) {
             document.querySelectorAll('.matchup-checkbox').forEach(cb => {
                 cb.checked = checkAll;
-                cb.dispatchEvent(new Event('change'));
+                syncMatchupChipStyle(cb);
             });
+            filterData();
         }
 
         // Generic Table Sorter (defaultDesc: first click sorts high→low for OMEGA-style columns)
@@ -2948,6 +2977,7 @@
 
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
+                tr.setAttribute('data-game-key', matchupGameKey(p.team, p.opponent));
                 tr.setAttribute('data-conf', (p.attack_conf >= 60) ? '1' : '0');
                 tr.setAttribute('data-shark', p.is_shark ? '1' : '0');
                 tr.setAttribute('data-steam', (oppT && oppT.is_steam) ? '1' : '0');
@@ -3016,6 +3046,7 @@
             hittersForRender.forEach(h => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
+                tr.setAttribute('data-game-key', matchupGameKey(h.team, h.opponent));
                 const hTeam = teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(h.team));
                 tr.setAttribute('data-conf', (h.attack_conf >= 60) ? '1' : '0');
                 tr.setAttribute('data-steam', (hTeam && hTeam.is_steam) ? '1' : '0');
@@ -3074,6 +3105,7 @@
             teams.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
+                tr.setAttribute('data-game-key', matchupGameKey(t.team, t.opponent));
                 tr.setAttribute('data-steam', t.is_steam ? '1' : '0');
                 tr.setAttribute('data-exhausted', (t.bullpen_fatigue >= 90 || t.is_gassed) ? '1' : '0');
                 tr.setAttribute('data-conf', (t.attack_conf >= 60) ? '1' : '0');
@@ -3181,23 +3213,10 @@
         // Search Filter Control
         function filterData() {
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            const filterState = getMatchupFilterState();
             let showingCount = 0;
 
-            const matchupBoxes = document.querySelectorAll('.matchup-checkbox');
-            const checkedMatchups = document.querySelectorAll('.matchup-checkbox:checked').length;
-            const skipMatchupFilter = matchupBoxes.length > 0 && checkedMatchups === 0;
-
-            const uncheckedTeams = [];
-            if (!skipMatchupFilter) {
-                matchupBoxes.forEach(cb => {
-                    if (!cb.checked) {
-                        uncheckedTeams.push(cb.getAttribute('data-team-a'));
-                        uncheckedTeams.push(cb.getAttribute('data-team-b'));
-                    }
-                });
-            }
-
-            const selector = {
+            const tabSelector = {
                 'pitchers': '#pitchers-body tr',
                 'hitters': '#hitters-body tr',
                 'teams': '#teams-body tr',
@@ -3207,7 +3226,13 @@
                 'trends': null
             }[currentTab];
 
-            if (!selector) {
+            const matrixSelectors = [
+                '#pitchers-body tr',
+                '#hitters-body tr',
+                '#teams-body tr',
+            ];
+
+            if (!tabSelector) {
                 const mc = window.matrixRowCounts;
                 if (mc) {
                     document.getElementById('counter-box').innerText =
@@ -3215,29 +3240,40 @@
                 } else {
                     document.getElementById('counter-box').innerText = "SYSTEM ACTIVE";
                 }
+                matrixSelectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach(row => {
+                        const passesMatchup = rowPassesMatchupFilter(row, filterState);
+                        const passesSignal = rowPassesSignalFilter(row);
+                        const text = row.innerText.toLowerCase();
+                        row.style.display = (text.includes(query) && passesMatchup && passesSignal) ? '' : 'none';
+                    });
+                });
                 return;
             }
 
-            const rows = document.querySelectorAll(selector);
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                const rowTeamsStr = row.getAttribute('data-teams') || "";
-                const rowTeams = rowTeamsStr.split(',');
-                
-                const isFilteredByMatchup = rowTeams.some(t => uncheckedTeams.includes(t));
+            matrixSelectors.forEach(sel => {
+                document.querySelectorAll(sel).forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    const passesMatchup = rowPassesMatchupFilter(row, filterState);
+                    const passesSignal = rowPassesSignalFilter(row);
+                    const visible = text.includes(query) && passesMatchup && passesSignal;
+                    row.style.display = visible ? '' : 'none';
+                });
+            });
 
-                const passesSignal = rowPassesSignalFilter(row);
-                if (text.includes(query) && !isFilteredByMatchup && passesSignal) {
-                    row.style.display = '';
-                    showingCount++;
-                } else {
-                    row.style.display = 'none';
-                }
+            const rows = document.querySelectorAll(tabSelector);
+            rows.forEach(row => {
+                if (row.style.display !== 'none') showingCount++;
             });
 
             let counterText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
-            if (showingCount === 0 && rows.length > 0 && !query && !activeSignalFilter && checkedMatchups < matchupBoxes.length) {
-                counterText += ' — use Select All (Matchup Filter)';
+            if (filterState && filterState.active.size < filterState.total) {
+                counterText += ` · ${filterState.active.size}/${filterState.total} games`;
+            }
+            if (showingCount === 0 && rows.length > 0 && !query && !activeSignalFilter) {
+                if (filterState && filterState.active.size === 0) {
+                    counterText += ' — click Select All or Reset Filter';
+                }
             }
             document.getElementById('counter-box').innerText = counterText;
         }
