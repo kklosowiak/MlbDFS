@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: xwoba-cal-v2</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: solo-hitter-rank</span>
             </div>
         </div>
 
@@ -1450,6 +1450,7 @@
         <div id="hitters-panel" class="tab-panel">
             <div class="card">
                 <h2>Hitter Core Power Rankings</h2>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin:-8px 0 12px 0;">Solo leverage rank — xwOBA, props, and matchup only (not pulled by team stack).</p>
                 <table id="hitters-table">
                     <thead>
                         <tr>
@@ -1893,7 +1894,7 @@
         function isTeamBlindSpot(t) {
             const phys = parseFloat(t.physics_score) || 0;
             const mkt = parseFloat(t.market_score) || 0;
-            return phys - mkt >= 25;
+            return phys - mkt >= 30;
         }
 
         function attackConfHtml(entity) {
@@ -2602,9 +2603,9 @@
                 tr.setAttribute('data-exhausted', (h.bullpen_fatigue >= 90) ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openHitterModal(encodeURIComponent(JSON.stringify(h)));
-                if (h.player_score >= 85) tr.classList.add('row-highlight');
+                if (h.player_score >= 48) tr.classList.add('row-highlight');
                 
-                const scoreClass = h.player_score >= 100 ? 'score elite' : (h.player_score >= 85 ? 'score high' : 'score med');
+                const scoreClass = h.player_score >= 55 ? 'score elite' : (h.player_score >= 45 ? 'score high' : 'score med');
                 
                 let platoonBadge = '';
                 if (h.platoon_multiplier && h.platoon_multiplier > 1.0) {
@@ -4081,7 +4082,10 @@
             const h = JSON.parse(decodeURIComponent(hStr));
             document.getElementById('hm-name').innerText = h.name || '—';
             document.getElementById('hm-matchup').innerText = `${h.team || ''} vs ${h.opp_pitcher || ''} (${h.pitch_hand || '?'}HP)`;
-            document.getElementById('hm-score').innerText = h.player_score != null ? h.player_score.toFixed(1) : '—';
+            const solo = h.player_score != null ? h.player_score.toFixed(1) : '—';
+            const stackAdj = h.stack_adjusted_score != null && h.stack_adjusted_score !== h.player_score
+                ? ` (stack context ${Number(h.stack_adjusted_score).toFixed(1)})` : '';
+            document.getElementById('hm-score').innerText = solo + stackAdj;
             document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf + '%' : '—';
             document.getElementById('hm-phys').innerText = h.physics_score || '—';
             document.getElementById('hm-mkt').innerText = h.market_score || '—';

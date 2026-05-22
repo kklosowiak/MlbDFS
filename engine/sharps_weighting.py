@@ -414,26 +414,25 @@ class SharpsWeighting:
         # OMEGA v6.22: Vision Boost (K-rate discipline)
         boost *= vision_boost
         
-        # Aggregated Individual Score
-        individual_final = (p_comp + m_comp) * boost * matchup_radar_boost
+        # Aggregated Individual Score (props + xwOBA + matchup; no team stack pull)
+        individual_core = (p_comp + m_comp) * boost * matchup_radar_boost
         
         # OMEGA v7.3 (Post-Mortem 4/28): Opposing Pitcher CSW Gate
         if opp_csw > 0.32:
-            individual_final *= 0.85  
+            individual_core *= 0.85  
         elif opp_csw > 0.28:
-            individual_final *= 0.92  
+            individual_core *= 0.92  
         
-        # OMEGA v6.22: Lineup Protection Synergy
-        individual_final *= protection_boost
+        solo_score = max(0.0, individual_core * park_factor)
         
-        # 4. Integrate Team Context (The 65/35 Master Rule)
-        final_alpha = (individual_final * 0.65) + (team_score * 0.35)
-        
-        # Apply Park Factor Modifier
+        # Stack-adjusted score (team tab / legacy); hitter matrix uses solo_score only
+        individual_stacked = individual_core * protection_boost
+        final_alpha = (individual_stacked * 0.65) + (team_score * 0.35)
         final_alpha *= park_factor
         
         return {
             "final": round(max(0, final_alpha), 1),
+            "solo_score": round(solo_score, 1),
             "physics": round(p_comp, 1),
             "physics_component": round(p_comp, 1),
             "market": round(m_comp, 1),
