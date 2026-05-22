@@ -399,17 +399,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             open_data = next((o for o in opening_lines if o.get("pair_key") == pk), {})
             if not open_data:
                 open_data = next((o for o in opening_lines if o.get("game_id") == gid), {})
-            if not open_data:
-                sh_team = p_analyzer.normalized_map.get(team, team)
-                open_data = next(
-                    (
-                        o
-                        for o in opening_lines
-                        if team in (o.get("team_away"), o.get("team_home"))
-                        or sh_team in (o.get("team_away"), o.get("team_home"))
-                    ),
-                    {},
-                )
             
             if open_data.get("team_away") == team:
                 field_key = "away"

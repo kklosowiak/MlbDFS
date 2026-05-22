@@ -371,7 +371,7 @@ class MarketFetcher:
         """
         Date-stamped opening lines.
         - capture_opening=True: Odds API historical @ 4:30 AM ET (paid endpoint).
-        - Normal refresh: never overwrite opening_*; backfill via historical, snapshot, then FL manual.
+        - Normal refresh: Odds API historical primary; FL manual fills gaps only.
         """
         from utils.market_utils import get_market_prices
         from utils.slate_date import get_slate_date_iso
@@ -388,8 +388,6 @@ class MarketFetcher:
         slate_date = get_slate_date_iso()
         slate_ids = set()
         historical_by_pair = {}
-
-        sync_fantasylabs_vegas_opens(slate_date)
 
         if capture_opening:
             open_lookup = {}
@@ -536,7 +534,7 @@ class MarketFetcher:
                 open_lookup[g_id]["home_current_ml"] = home_ml
                 open_lookup[g_id]["current_total"] = total
 
-        # FantasyLabs true opens override DK historical where available (canonical baseline)
+        sync_fantasylabs_vegas_opens(slate_date)
         apply_manual_vegas_opens(open_lookup, structured_odds, slate_date)
 
         dated_path, count = persist_opening_db(open_lookup, slate_ids, slate_date)

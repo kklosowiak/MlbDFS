@@ -130,8 +130,17 @@ def sync_fantasylabs_vegas_opens(slate_date_iso=None):
         return None
 
 
+def _has_odds_api_open(row):
+    src = str(row.get("opening_source", ""))
+    return (
+        "odds_api_historical" in src
+        or "snapshot_backfill" in src
+        or "4:30_capture" in src
+    )
+
+
 def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
-    """FantasyLabs opens are the canonical baseline when available for this slate."""
+    """FantasyLabs backup only — fills games missing Odds API / snapshot opens."""
     manuals = load_manual_vegas_opens(slate_date_iso)
     if not manuals:
         return 0
@@ -148,6 +157,10 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
         if not manual:
             continue
 
+        row = open_lookup.get(g_id)
+        if row and _has_odds_api_open(row):
+            continue
+
         away_ml, _ = get_market_prices(game, away)
         home_ml, total = get_market_prices(game, home)
 
@@ -158,7 +171,7 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
                 manual.get("away_opening_ml") or away_ml or -110,
                 manual.get("home_opening_ml") or home_ml or -110,
                 manual.get("opening_total") or total or 8.5,
-                "fantasylabs_vegas",
+                "fantasylabs_vegas_fallback",
             )
         else:
             row = open_lookup[g_id]
@@ -168,7 +181,7 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
                 row["home_opening_ml"] = manual["home_opening_ml"]
             if manual.get("opening_total") is not None:
                 row["opening_total"] = manual["opening_total"]
-            row["opening_source"] = "fantasylabs_vegas"
+            row["opening_source"] = "fantasylabs_vegas_fallback"
 
         row = open_lookup[g_id]
         row["away_current_ml"] = away_ml if away_ml is not None else row.get("away_current_ml")
@@ -177,7 +190,7 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
         applied += 1
 
     if applied:
-        print(f"  - [LINES]: FantasyLabs opening lines applied for {applied} game(s).")
+        print(f"  - [LINES]: FantasyLabs fallback opens applied for {applied} game(s).")
     return applied
 
 
