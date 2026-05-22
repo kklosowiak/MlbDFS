@@ -118,8 +118,8 @@ def calculate_dqi(team, pitchers=None):
         warn_pts += 20.0
         warn_factors.append("Stack Chalk Warning (-20 pts)")
     if opp_pitcher_trap:
-        warn_pts += 20.0
-        warn_factors.append("Opposing SP Trap (-20 pts)")
+        pos_pts += 20.0
+        pos_factors.append("Opposing SP Trap (+20 pts)")
 
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))

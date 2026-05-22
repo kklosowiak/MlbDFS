@@ -42,7 +42,8 @@ def test_dqi_trap_from_pitcher():
     }
     pitchers = [{"pitcher": "Test Pitcher", "is_trap": True}]
     score, status, pos, warn = calculate_dqi(team, pitchers=pitchers)
-    assert any("Trap" in w for w in warn)
+    assert any("Opposing SP Trap" in p for p in pos)
+    assert not any("Opposing SP Trap" in w for w in warn)
 
 
 def test_ml_move():
