@@ -477,6 +477,7 @@
         .pill-lowconf { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
         .pill-paradox { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
         .pill-trap { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
+        .pill-chalk { background: rgba(255, 159, 10, 0.15); color: #ff9f0a; border-color: rgba(255, 159, 10, 0.35); }
         .pill-exhausted { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
         .pill-gassed { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
         .pill-weary { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
@@ -1389,14 +1390,15 @@
                     <thead>
                         <tr>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA CONTEXT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">vs OPPONENT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, true)">K-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, true)">OUTS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">vs OPPONENT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, true)">K-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">OUTS ↕</th>
                         </tr>
                     </thead>
                     <tbody id="pitchers-body">
@@ -1438,16 +1440,17 @@
                     <thead>
                         <tr>
                             <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA CONTEXT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TEAM ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">vs PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 7, true)">ITT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 8, true)">ML MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">TT MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">DIVERGENCE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TEAM ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 8, true)">ITT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ML MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">TT MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">DIVERGENCE ↕</th>
                         </tr>
                     </thead>
                     <tbody id="teams-body">
@@ -1776,6 +1779,16 @@
             if (!rankInfo || rankInfo.total < 2) return '';
             const pct = Math.round(((rankInfo.total - rankInfo.rank) / (rankInfo.total - 1)) * 100);
             return `<div style="font-size:0.65rem; opacity:0.72; font-weight:600; margin-top:2px;">#${rankInfo.rank} · P${pct}</div>`;
+        }
+
+        function attackConfHtml(entity) {
+            const raw = entity.attack_conf;
+            const conf = raw != null && raw !== undefined ? raw : '—';
+            const reasons = (entity.attack_reasons || []).slice(0, 3).join('\n');
+            const cls = typeof conf === 'number' && conf >= 70 ? 'val-up'
+                : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
+            const title = reasons ? ` title="${reasons.replace(/"/g, '&quot;')}"` : '';
+            return `<td class="metric ${cls}"${title}>${conf}</td>`;
         }
 
         function buildMarketSignalPills(entity, isTeamRow) {
@@ -2134,6 +2147,30 @@
                     container.appendChild(cardsContainer);
 
                     let firstTab = true;
+                    const analysisCards = [];
+
+                    function sectionTabLabel(h2Text) {
+                        const plain = h2Text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+                        if (/ultimate/i.test(plain)) return 'Ultimate';
+                        if (/core stacks/i.test(plain)) return 'Stacks';
+                        if (/core pitchers/i.test(plain)) return 'Pitchers';
+                        if (/vegas traps/i.test(plain)) return 'Traps';
+                        if (/leverage pivots/i.test(plain)) return 'Leverage';
+                        return plain.length > 22 ? plain.substring(0, 22) + '…' : plain || 'Section';
+                    }
+
+                    function setActiveAnalysisTab(activeTab, activeCard) {
+                        analysisCards.forEach(c => { c.style.display = 'none'; });
+                        activeCard.style.display = 'block';
+                        Array.from(tabsContainer.children).forEach(t => {
+                            t.style.background = 'rgba(255, 255, 255, 0.05)';
+                            t.style.borderColor = 'var(--border)';
+                            t.style.color = 'var(--text-secondary)';
+                        });
+                        activeTab.style.background = 'rgba(10, 132, 255, 0.15)';
+                        activeTab.style.borderColor = 'var(--accent-blue)';
+                        activeTab.style.color = '#fff';
+                    }
 
                     // Loop through elements and create cards
                     Array.from(tempDiv.children).forEach(el => {
@@ -2143,12 +2180,12 @@
                         }
 
                         if (el.tagName === 'H2') {
-                            let matchupName = el.innerText.trim();
-                            if (matchupName.length > 25) matchupName = matchupName.substring(0, 25) + '...';
+                            const sectionTitle = el.innerText.trim();
                             
                             // Create Tab
                             const tab = document.createElement('button');
-                            tab.innerText = matchupName || "Overview";
+                            tab.type = 'button';
+                            tab.innerText = sectionTabLabel(sectionTitle);
                             tab.style.cssText = `
                                 padding: 10px 16px;
                                 background: rgba(255, 255, 255, 0.05);
@@ -2160,46 +2197,31 @@
                                 white-space: nowrap;
                                 transition: all 0.2s;
                             `;
-                            if (firstTab) {
-                                tab.style.background = 'rgba(10, 132, 255, 0.15)';
-                                tab.style.borderColor = 'var(--accent-blue)';
-                                tab.style.color = '#fff';
-                            }
                             
-                            // Start a new card!
-                            currentCard = document.createElement('div');
-                            currentCard.className = 'card analysis-card';
-                            currentCard.style.display = firstTab ? 'block' : 'none';
+                            // Start a new card (capture per-tab — avoid closure on loop var)
+                            const card = document.createElement('div');
+                            card.className = 'card analysis-card';
+                            card.style.display = firstTab ? 'block' : 'none';
                             
                             const header = document.createElement('div');
                             header.className = 'analysis-card-header';
                             header.innerHTML = `<h2>${el.innerHTML}</h2>`;
-                            currentCard.appendChild(header);
+                            card.appendChild(header);
 
                             cardBody = document.createElement('div');
                             cardBody.className = 'analysis-card-body';
-                            currentCard.appendChild(cardBody);
+                            card.appendChild(cardBody);
 
-                            cardsContainer.appendChild(currentCard);
+                            cardsContainer.appendChild(card);
+                            analysisCards.push(card);
+                            currentCard = card;
 
-                            tab.onclick = () => {
-                                // Hide all cards
-                                Array.from(cardsContainer.children).forEach(c => c.style.display = 'none');
-                                // Show this card
-                                currentCard.style.display = 'block';
-                                // Reset all tabs
-                                Array.from(tabsContainer.children).forEach(t => {
-                                    t.style.background = 'rgba(255, 255, 255, 0.05)';
-                                    t.style.borderColor = 'var(--border)';
-                                    t.style.color = 'var(--text-secondary)';
-                                });
-                                // Highlight this tab
-                                tab.style.background = 'rgba(10, 132, 255, 0.15)';
-                                tab.style.borderColor = 'var(--accent-blue)';
-                                tab.style.color = '#fff';
-                            };
+                            tab.onclick = () => setActiveAnalysisTab(tab, card);
 
                             tabsContainer.appendChild(tab);
+                            if (firstTab) {
+                                setActiveAnalysisTab(tab, card);
+                            }
                             firstTab = false;
                         } else if (el.tagName === 'HR') {
                             // skip horizontal rules as cards act as dividers
@@ -2346,8 +2368,10 @@
                 }
 
                 const pRank = pRanks[p.pitcher];
+                const trapSpLabel = p.trap_type ? ` — ${p.trap_type}` : '';
                 tr.innerHTML = `
                     <td class="${scoreClass}">${p.alpha_score}${slatePercentileHtml(pRank)}</td>
+                    ${attackConfHtml(p)}
                     <td class="metric" style="color: var(--accent-green);">${p.physics_score || '-'}</td>
                     <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
                     <td>
@@ -2361,7 +2385,7 @@
                         <div class="signals-container">
                             ${p.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${p.is_hazard ? '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>' : ''}
-                            ${p.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
+                            ${p.is_trap ? `<span class="signal-pill pill-trap">🚨 TRAP SP${trapSpLabel}</span>` : ''}
                             ${p.is_low_ceiling ? '<span class="signal-pill pill-neutral">📉 CEILING</span>' : ''}
                             <span class="signal-pill pill-neutral">${p.weather_label || 'WEATHER: TBD'}</span>
                             ${ouDivBadge}
@@ -2515,6 +2539,7 @@
                 const tRank = tRanks[t.team];
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
+                    ${attackConfHtml(t)}
                     <td class="metric" style="color: var(--accent-green);">${t.physics_score || 0}</td>
                     <td class="metric" style="color: var(--accent-purple);">${t.market_score || 0}</td>
                     <td>
@@ -2531,7 +2556,7 @@
                         <div class="signals-container">
                             ${divPill}
                             ${trendPill}
-                            ${t.is_trap ? '<span class="signal-pill pill-trap">🚨 TRAP</span>' : ''}
+                            ${t.is_trap ? '<span class="signal-pill pill-chalk">⚠️ CHALK</span>' : ''}
                             ${t.is_paradox ? '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' : ''}
                             ${t.bullpen_fatigue >= 90 ? '<span class="signal-pill pill-exhausted">🔥 EXHAUSTED</span>' : (t.bullpen_fatigue >= 75 ? '<span class="signal-pill pill-gassed">♨️ GASSED</span>' : (t.bullpen_fatigue >= 65 ? '<span class="signal-pill pill-weary">♨️ WEARY</span>' : ''))}
                             ${t.total_signal ? `<span class="signal-pill pill-neutral">${t.total_signal}</span>` : ''}
@@ -3262,7 +3287,7 @@
             
             let badgesHTML = buildMarketSignalPills(t, true);
             if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
-            if (t.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
+            if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
             if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
             if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
             if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
@@ -3305,7 +3330,7 @@
                 if (oppP.is_debut) pBadgesHTML += '<span class="signal-pill pill-storm" style="font-size: 0.65rem; padding: 2px 6px;">✨ DEBUT</span>';
                 if (oppP.is_paradox) pBadgesHTML += '<span class="signal-pill pill-paradox" style="font-size: 0.65rem; padding: 2px 6px;">⚠️ PARADOX</span>';
                 if (oppP.is_hazard) pBadgesHTML += '<span class="signal-pill pill-exhausted" style="font-size: 0.65rem; padding: 2px 6px;">🌋 HAZARD</span>';
-                if (oppP.is_trap) pBadgesHTML += '<span class="signal-pill pill-trap" style="font-size: 0.65rem; padding: 2px 6px;">🚨 TRAP</span>';
+                if (oppP.is_trap) pBadgesHTML += '<span class="signal-pill pill-trap" style="font-size: 0.65rem; padding: 2px 6px;">🚨 TRAP SP</span>';
                 if (oppP.is_low_ceiling) pBadgesHTML += '<span class="signal-pill pill-neutral" style="font-size: 0.65rem; padding: 2px 6px;">📉 CEILING</span>';
                 
                 document.getElementById('tm-opp-p-badges').innerHTML = pBadgesHTML || '<span style="color:var(--text-secondary); font-size:0.8rem;">No active flags.</span>';
@@ -3561,7 +3586,7 @@
             if (p.is_debut) badgesHTML += '<span class="signal-pill pill-storm">✨ DEBUT</span>';
             if (p.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
             if (p.is_hazard) badgesHTML += '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>';
-            if (p.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
+            if (p.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP SP</span>';
             if (p.is_low_ceiling) badgesHTML += '<span class="signal-pill pill-neutral">📉 CEILING</span>';
             
             document.getElementById('pm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
@@ -3619,7 +3644,7 @@
                 if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
                 if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
                 if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
-                if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP</span>';
+                if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
                 if (oppT.is_paradox) tBadgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
                 if (oppT.trend === 'SURGING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
                 if (oppT.trend === 'FADING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';

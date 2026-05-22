@@ -678,6 +678,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 # OMEGA v8.0: Apply U-DIV as multiplier
                 final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
 
+            stack_score_raw = final_stack_score
+            final_stack_score = min(150.0, final_stack_score)
+
             # OMEGA v10.1: Physics Override Detection
             # When our lineup's PHY beats the opponent's PHY by 10+ pts but the market
             # (stack score) ranks them much lower, flag a potential market mispricing.
@@ -722,7 +725,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             team_reports.append({
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
                 'lineup_status': lineup_status,
-                'ml_move': ml_move, 'tt_move': tt_move, 'stack_score': final_stack_score,
+                'ml_move': ml_move, 'tt_move': tt_move,
+                'stack_score': final_stack_score,
+                'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
                 'physics_score': res['physics'], 'market_score': res['market'],
                 'team_xwoba': res.get('team_xwoba', 0.330),
                 'power_concentration': power_concentration,

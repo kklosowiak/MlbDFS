@@ -32,7 +32,8 @@ def calculate_dqi(team, pitchers=None):
     trend = team.get('trend', 'STABLE') or 'STABLE'
     is_opp_debut = team.get('is_opp_debut', False)
 
-    is_trap = team.get('is_trap', False)
+    team_stack_trap = team.get('is_trap', False)
+    opp_pitcher_trap = False
     if pitchers is not None:
         opp_p_name = team.get('opp_pitcher', '').lower().strip()
         opp_p_obj = next(
@@ -40,7 +41,7 @@ def calculate_dqi(team, pitchers=None):
             None,
         )
         if opp_p_obj:
-            is_trap = opp_p_obj.get('is_trap', False)
+            opp_pitcher_trap = opp_p_obj.get('is_trap', False)
 
     pos_pts = 0.0
     warn_pts = 0.0
@@ -107,9 +108,12 @@ def calculate_dqi(team, pitchers=None):
     if is_opp_debut:
         pos_pts += 10.0
         pos_factors.append("Debut Trap SP (+10 pts)")
-    if is_trap:
+    if team_stack_trap:
         warn_pts += 20.0
-        warn_factors.append("Public Chalk Trap (-20 pts)")
+        warn_factors.append("Stack Chalk Warning (-20 pts)")
+    if opp_pitcher_trap:
+        warn_pts += 20.0
+        warn_factors.append("Opposing SP Trap (-20 pts)")
 
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))

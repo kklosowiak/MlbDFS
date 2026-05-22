@@ -189,14 +189,6 @@ class SharpsWeighting:
         dampened_div_premium = div_premium * anchor_ratio
         div_multiplier = 1.0 + dampened_div_premium
         
-        # OMEGA v8.8: The 'Talent Floor Gate' (Prevents low-physics team inflation)
-        # If raw physics is weak (< 36.0, i.e., Weighted < 14.4) and the stack is heavily backed
-        # by market multipliers (Whale, Storm, Shark, Steam, etc.), apply a 0.90x defensive penalty.
-        has_market_inflation = is_whale or is_storm or is_shark or is_steam or is_sharp or (divergence > 12)
-        trap_multiplier = 1.0
-        if physics_raw < 36.0 and has_market_inflation:
-            trap_multiplier = 0.90
-
         # OMEGA v9.8: Matchup Magnetism with cap and talent dampening
         # If opposing pitcher physics is extremely low (below 20.0), we apply a matchup boost.
         # We cap the raw boost at 1.30 (max 30% boost) and scale it by the team's anchor_ratio 
@@ -228,7 +220,27 @@ class SharpsWeighting:
             elif opp_name in weak_pens:
                 bullpen_skill_mult = 1.10
 
-        final_omega = score * multiplier * div_multiplier * convergence_boost * trap_multiplier * magnetism_boost * bullpen_skill_mult
+        pre_trap_combined = (
+            multiplier * div_multiplier * convergence_boost * magnetism_boost * bullpen_skill_mult
+        )
+        pre_trap_combined = min(pre_trap_combined, 1.35)
+        pre_trap_score = score * pre_trap_combined
+        physics_display = physics_raw * 0.40
+
+        chalk_trap = self._stack_chalk_trap(
+            physics_raw=physics_raw,
+            team_xwoba=team_xwoba,
+            physics_display=physics_display,
+            ml_move=ml_move,
+            divergence=divergence,
+            is_steam=is_steam,
+            is_shark=is_shark,
+            pre_trap_score=pre_trap_score,
+        )
+        trap_multiplier = 0.90 if chalk_trap else 1.0
+
+        combined = min(pre_trap_combined * trap_multiplier, 1.35)
+        final_omega = score * combined
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt
@@ -254,8 +266,36 @@ class SharpsWeighting:
             "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence,
-            "is_trap": trap_multiplier < 1.0
+            "is_trap": chalk_trap,
+            "is_stack_chalk": chalk_trap,
         }
+
+    @staticmethod
+    def _stack_chalk_trap(
+        physics_raw,
+        team_xwoba,
+        physics_display,
+        ml_move,
+        divergence,
+        is_steam,
+        is_shark,
+        pre_trap_score,
+    ):
+        """
+        Package A: chalk-only stack warning — not sharp dog steam, not elite stacks.
+        """
+        if (is_steam or is_shark) and ml_move <= -10:
+            return False
+        if pre_trap_score >= 110.0:
+            return False
+
+        weak_offense = team_xwoba < 0.300 or physics_display < 25.0 or physics_raw < 36.0
+        if not weak_offense:
+            return False
+
+        sharp_in_favor = (is_steam or is_shark) and ml_move <= -10
+        public_pressure = ml_move >= 5 or (divergence > 12 and not sharp_in_favor)
+        return public_pressure
 
     def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None):
         """
