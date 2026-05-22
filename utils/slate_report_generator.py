@@ -39,6 +39,16 @@ class SlateReportGenerator:
             
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
 
+        # 3b. Score Hitters (attack_conf for CONF column + one-off decisions)
+        for h in h_reports:
+            team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
+            opp_p = pitcher_map.get(h.get('opp_pitcher', ''))
+            if not opp_p and team_data:
+                opp_p = team_pitcher_map.get(team_data.get('opponent'))
+            conf, reasons = self._score_hitter_confidence(h, team_data, opp_p)
+            h['attack_conf'] = conf
+            h['attack_reasons'] = reasons
+
         # 4. Generate Report
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")
@@ -225,3 +235,7 @@ class SlateReportGenerator:
             reasons.append("Neutral metrics across the board.")
             
         return max(0, min(100, conf)), reasons
+
+    def _score_hitter_confidence(self, h, team_data, opp_pitcher):
+        from utils.hitter_confidence import score_hitter_confidence
+        return score_hitter_confidence(h, team_data, opp_pitcher)

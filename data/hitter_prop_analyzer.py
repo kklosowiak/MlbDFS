@@ -8,6 +8,7 @@ if __name__ == "__main__":
 
 from config import config
 from utils.normalization import normalize_player_name
+from utils.xwoba_estimates import ops_to_xwoba
 from data.statcast_bridge import StatcastBridge
 
 class HitterPropAnalyzer:
@@ -36,6 +37,18 @@ class HitterPropAnalyzer:
             'COL': 'Colorado Rockies', 'MIA': 'Miami Marlins', 'WSH': 'Washington Nationals', 'WSN': 'Washington Nationals'
         }
         self.statcast = StatcastBridge()
+
+    def _resolve_xwoba(self, name, profile):
+        """Registry → Statcast OPS → ops_to_xwoba heuristic (replaces OPS/2.5)."""
+        reg = self.xwoba_registry.get(name)
+        if reg:
+            return reg
+        if isinstance(profile, dict):
+            ops_val = float(profile.get("ops", 0.0) or 0.0)
+            pa = int(profile.get("pa", 0) or 0)
+            if pa >= 50 and ops_val > 0:
+                return ops_to_xwoba(ops_val)
+        return 0.330
 
     def decimal_to_american(self, decimal):
         """Converts decimal odds to American format."""
@@ -141,12 +154,7 @@ class HitterPropAnalyzer:
                         continue
 
                     # Scoring Priority: Registry -> Cache
-                    reg_xwoba = self.xwoba_registry.get(name)
-                    if reg_xwoba:
-                        xwoba = reg_xwoba
-                    else:
-                        ops_val = p.get('ops', 0.0)
-                        xwoba = (ops_val / 2.5) if ops_val > 0 else 0.330
+                    xwoba = self._resolve_xwoba(name, p)
 
                     hitter_map[name] = {
                         'name': name,
@@ -200,12 +208,7 @@ class HitterPropAnalyzer:
                             # We check the Registry first, then fallback to high-sample Statcast data.
                             total_pa = momentum.get('pa', 0)
                             
-                            reg_xwoba = self.xwoba_registry.get(player_name)
-                            if reg_xwoba:
-                                xwoba = reg_xwoba
-                            else:
-                                ops_val = momentum.get('ops', 0.0)
-                                xwoba = ops_val / 2.5 if (total_pa >= 50 and ops_val > 0) else 0.330
+                            xwoba = self._resolve_xwoba(player_name, momentum) if total_pa >= 50 else 0.330
                             
                             found_key = player_name
                             hitter_map[found_key] = {

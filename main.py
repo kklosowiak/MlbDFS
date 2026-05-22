@@ -824,10 +824,15 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         is_hot = False
         vision_boost = 1.0
         mom = h_prop_analyzer.statcast.get_player_momentum(h['name'])
+        smash_factor = False
         if mom:
             if mom.get('ops', 0) > 0.900: is_hot = True
             if mom.get('s_k_rate', 0) > 0 and mom.get('r_k_rate', 0) < (mom.get('s_k_rate', 0) * 0.8):
                 vision_boost = 1.10
+            s_ops = float(mom.get('ops', 0) or 0)
+            r_ops = float(mom.get('rolling_ops', 0) or 0)
+            if s_ops > 0.200 and r_ops > s_ops * 1.08:
+                smash_factor = True
         
         # Protection synergy
         protection_boost = 1.05 if (team_data and team_data.get('stack_score', 0) >= 75) else 1.0
@@ -850,7 +855,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
             matchup_radar_boost=matchup_radar_boost,
-            pitch_hand=pitch_hand, hitter_splits=h_profile
+            pitch_hand=pitch_hand, hitter_splits=h_profile, smash_factor=smash_factor
         )
 
         # OMEGA v8.0: ICE_COLD_MARKET penalty
@@ -879,7 +884,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'platoon_multiplier': res.get('platoon_multiplier', 1.0),
             'platoon_label': res.get('platoon_label', 'Neutral'),
             'bat_side': h_profile.get('bat_side', 'R') if h_profile.get('type') == 'hitter' else 'R',
-            'pitch_hand': pitch_hand
+            'pitch_hand': pitch_hand,
+            'smash_factor': smash_factor,
         })
 
     h_reports.sort(key=lambda x: x['player_score'], reverse=True)

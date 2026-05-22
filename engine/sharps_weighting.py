@@ -241,6 +241,9 @@ class SharpsWeighting:
 
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
+
+        if team_xwoba < 0.295 and dampened_market_premium > 0.10:
+            final_omega = min(final_omega, score * (1.0 + min(0.22, dampened_market_premium)))
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
         eff_itt = implied_total if implied_total is not None else curr_itt
@@ -297,7 +300,7 @@ class SharpsWeighting:
         public_pressure = ml_move >= 5 or (divergence > 12 and not sharp_in_favor)
         return public_pressure
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
@@ -385,6 +388,8 @@ class SharpsWeighting:
         if is_target: boost += 0.10
         if is_speed_target: boost += 0.05
         if is_hot: boost += 0.07
+        if smash_factor:
+            boost += 0.05
         
         # OMEGA v6.22: Vision Boost (K-rate discipline)
         boost *= vision_boost

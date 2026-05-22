@@ -1050,6 +1050,7 @@ def post_trends_resolve_api(body: dict):
 def get_platoons_api():
     """Platoon Matrix: Cross-reference team/pitcher splits with today's matchups."""
     from utils.normalization import normalize_player_name
+    from utils.xwoba_estimates import woba_proxy_to_xwoba, platoon_advantage_label
     base_dir = os.path.dirname(os.path.abspath(__file__))
     
     # Load data sources
@@ -1122,9 +1123,14 @@ def get_platoons_api():
         team_other_key = "vr" if pitcher_hand == "L" else "vl"
         team_other_data = teams_splits.get(team_name, {}).get(team_other_key, {})
         team_other_ops = team_other_data.get("ops", 0)
+        team_other_woba = team_other_data.get("wOBA_proxy", 0)
+
+        team_vs_hand_xwoba = woba_proxy_to_xwoba(team_vs_hand_woba, team_vs_hand_ops)
+        team_other_xwoba = woba_proxy_to_xwoba(team_other_woba, team_other_ops)
         
         # OPS differential (how much better/worse vs this hand)
         ops_diff = round((team_vs_hand_ops - team_other_ops) * 1000) if team_other_ops else 0
+        xwoba_diff = round((team_vs_hand_xwoba - team_other_xwoba) * 1000) if team_other_xwoba else 0
         
         # Pitcher splits (how hittable by LHH vs RHH)
         pitcher_split_data = pitchers_splits.get(norm_pitcher, {})
@@ -1135,7 +1141,7 @@ def get_platoons_api():
         pitcher_vs_rhh_ops = pitcher_vs_rhh.get("ops", 0)
         pitcher_vs_rhh_woba = pitcher_vs_rhh.get("wOBA_proxy", 0)
         
-        # Determine advantage label
+        # OPS-based label (legacy) + xwOBA-primary EDGE for UI
         if team_vs_hand_ops >= 0.780:
             advantage = "ELITE PLATOON"
         elif team_vs_hand_ops >= 0.730:
@@ -1146,6 +1152,9 @@ def get_platoons_api():
             advantage = "SLIGHT FADE"
         else:
             advantage = "PLATOON TRAP"
+        advantage_xwoba = platoon_advantage_label(team_vs_hand_xwoba)
+        pitcher_vs_lhh_xwoba = woba_proxy_to_xwoba(pitcher_vs_lhh_woba, pitcher_vs_lhh_ops)
+        pitcher_vs_rhh_xwoba = woba_proxy_to_xwoba(pitcher_vs_rhh_woba, pitcher_vs_rhh_ops)
         
         # Pitcher weakness side
         pitcher_weak_side = "LHH" if pitcher_vs_lhh_ops > pitcher_vs_rhh_ops else "RHH"
@@ -1158,24 +1167,29 @@ def get_platoons_api():
             "pitcher_hand": pitcher_hand,
             "pitcher_hand_label": pitcher_hand_label,
             "team_vs_hand_ops": round(team_vs_hand_ops, 3),
+            "team_vs_hand_xwoba": team_vs_hand_xwoba,
             "team_vs_hand_woba": round(team_vs_hand_woba, 3),
+            "xwoba_diff": xwoba_diff,
             "team_vs_hand_avg": round(team_vs_hand_avg, 3),
             "team_vs_hand_slg": round(team_vs_hand_slg, 3),
             "team_vs_hand_pa": team_vs_hand_pa,
             "ops_diff": ops_diff,
             "pitcher_vs_lhh_ops": round(pitcher_vs_lhh_ops, 3),
+            "pitcher_vs_lhh_xwoba": pitcher_vs_lhh_xwoba,
             "pitcher_vs_lhh_woba": round(pitcher_vs_lhh_woba, 3),
             "pitcher_vs_rhh_ops": round(pitcher_vs_rhh_ops, 3),
+            "pitcher_vs_rhh_xwoba": pitcher_vs_rhh_xwoba,
             "pitcher_vs_rhh_woba": round(pitcher_vs_rhh_woba, 3),
             "pitcher_weak_side": pitcher_weak_side,
             "pitcher_max_vulnerability_ops": round(pitcher_max_ops, 3),
             "advantage": advantage,
+            "advantage_xwoba": advantage_xwoba,
             "stack_score": stack_score,
             "implied_total": implied_total
         })
     
-    # Sort by team OPS vs hand (best platoon advantages first)
-    matchups.sort(key=lambda x: x["team_vs_hand_ops"], reverse=True)
+    # Sort by xwOBA vs hand (primary platoon edge)
+    matchups.sort(key=lambda x: x["team_vs_hand_xwoba"], reverse=True)
     
     return JSONResponse(
         content={"matchups": matchups, "count": len(matchups)},

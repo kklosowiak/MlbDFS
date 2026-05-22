@@ -467,6 +467,23 @@
             color: var(--text-primary);
         }
 
+        .signal-filter-chip {
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .signal-filter-chip.active {
+            border-color: rgba(10, 132, 255, 0.45);
+            background: rgba(10, 132, 255, 0.12);
+            color: #00f2fe;
+        }
+
         .pill-target { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
         .pill-shark { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
         .pill-storm { background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }
@@ -1271,6 +1288,14 @@
                     SHOWING 0 PLAYS
                 </div>
             </div>
+            <div id="signal-filter-chips" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                <span style="font-size:0.7rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">GPP Lens:</span>
+                <button type="button" class="signal-filter-chip" data-filter="" onclick="setSignalFilter('')">All</button>
+                <button type="button" class="signal-filter-chip" data-filter="steam" onclick="setSignalFilter('steam')">💨 STEAM</button>
+                <button type="button" class="signal-filter-chip" data-filter="exhausted" onclick="setSignalFilter('exhausted')">🔥 EXHAUSTED</button>
+                <button type="button" class="signal-filter-chip" data-filter="conf60" onclick="setSignalFilter('conf60')">CONF ≥60</button>
+                <button type="button" class="signal-filter-chip" data-filter="shark" onclick="setSignalFilter('shark')">🦈 SHARK</button>
+            </div>
             
             <!-- Matchup Filter Panel (v9.3) -->
             <div id="matchup-filter-panel" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; display: none;">
@@ -1325,6 +1350,18 @@
                     <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Highest Divergence</div>
                     <div id="hub-top-div" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
                     <div id="hub-top-div-score" style="font-size: 1.1rem; color: #ff9f0a; font-weight: 700;">Gap: --%</div>
+                </div>
+                <!-- CONF Stack Card -->
+                <div class="card" style="margin: 0; padding: 20px; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 3px solid #00f2fe;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Top CONF Stack</div>
+                    <div id="hub-top-conf-stack" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
+                    <div id="hub-top-conf-stack-score" style="font-size: 1.1rem; color: #00f2fe; font-weight: 700;">CONF: --</div>
+                </div>
+                <!-- Sneaky Lean Card -->
+                <div class="card" style="margin: 0; padding: 20px; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 3px solid #bf5af2;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Sneaky GPP Lean</div>
+                    <div id="hub-sneaky-stack" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
+                    <div id="hub-sneaky-stack-score" style="font-size: 1.1rem; color: #bf5af2; font-weight: 700;">Omega: --</div>
                 </div>
             </div>
 
@@ -1416,13 +1453,18 @@
                     <thead>
                         <tr>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 1, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 2, false)">ALPHA CONTEXT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLAYER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">vs PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 5, true)">HR-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, true)">HITS ↕</th>
-                             <th class="sortable-th" onclick="sortTable('hitters-table', 7, true)">BASES ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">HITS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 12, true)">BASES ↕</th>
                         </tr>
                     </thead>
                     <tbody id="hitters-body">
@@ -1479,13 +1521,14 @@
                             <th class="sortable-th" onclick="sortTable('platoons-table', 0, false)">TEAM ↕</th>
                             <th class="sortable-th" onclick="sortTable('platoons-table', 1, false)">vs PITCHER ↕</th>
                             <th class="sortable-th" onclick="sortTable('platoons-table', 2, false)">TEAM vs HAND ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 3, true)">OPS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 4, true)">wOBA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 5, true)">OPS DIFF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 6, true)">P vs LHH ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 7, true)">P vs RHH ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 8, false)">EDGE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('platoons-table', 9, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 3, true)">xwOBA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 4, true)">OPS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 5, true)">xwOBA Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 6, true)">OPS Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 7, true)">P vs LHH ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 8, true)">P vs RHH ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 9, false)">EDGE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('platoons-table', 10, true)">OMEGA ↕</th>
                         </tr>
                     </thead>
                     <tbody id="platoons-body">
@@ -1791,6 +1834,45 @@
             return `<td class="metric ${cls}"${title}>${conf}</td>`;
         }
 
+        let activeSignalFilter = '';
+
+        function setSignalFilter(kind) {
+            activeSignalFilter = kind || '';
+            document.querySelectorAll('.signal-filter-chip').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-filter') === activeSignalFilter);
+            });
+            filterData();
+        }
+
+        function rowPassesSignalFilter(row) {
+            if (!activeSignalFilter) return true;
+            if (activeSignalFilter === 'steam') return row.getAttribute('data-steam') === '1';
+            if (activeSignalFilter === 'exhausted') return row.getAttribute('data-exhausted') === '1';
+            if (activeSignalFilter === 'conf60') return row.getAttribute('data-conf') === '1';
+            if (activeSignalFilter === 'shark') return row.getAttribute('data-shark') === '1';
+            return true;
+        }
+
+        function platoonEdgePill(label) {
+            if (!label) return '<span class="signal-pill pill-neutral">—</span>';
+            if (label === 'ELITE PLATOON') return '<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b;">⚡ ELITE</span>';
+            if (label === 'STRONG EDGE') return '<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff;">🎯 STRONG</span>';
+            if (label === 'SLIGHT FADE') return '<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a;">⚠️ FADE</span>';
+            if (label === 'PLATOON TRAP') return '<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a;">🚨 TRAP</span>';
+            return '<span class="signal-pill pill-neutral">— NEUTRAL</span>';
+        }
+
+        function jumpToTeamStack(teamName) {
+            if (!teamName) return;
+            document.querySelectorAll('.nav-item')[2].click();
+            const abbr = getTeamAbbr(teamName);
+            const search = document.getElementById('search-bar');
+            if (search) {
+                search.value = abbr;
+                filterData();
+            }
+        }
+
         function buildMarketSignalPills(entity, isTeamRow) {
             let html = '';
             if (entity.is_shark) html += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
@@ -1852,6 +1934,7 @@
             if (savedKey) {
                 document.getElementById('api-key-input').value = savedKey;
             }
+            setSignalFilter('');
             loadData();
             pollRefreshStatus();
             pollDataHealth();
@@ -2285,6 +2368,26 @@
                   document.getElementById('hub-top-hitter-score').innerText = 'Omega: ' + (h.player_score ? h.player_score.toFixed(1) : '--');
               }
 
+              if (data.teams && data.teams.length > 0) {
+                  const confStack = [...data.teams].filter(t => t.attack_conf != null).sort((a, b) => (b.attack_conf || 0) - (a.attack_conf || 0))[0];
+                  if (confStack) {
+                      document.getElementById('hub-top-conf-stack').innerText = confStack.team || '---';
+                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confStack.attack_conf + '% · Ω ' + (confStack.stack_score ? confStack.stack_score.toFixed(1) : '--');
+                  }
+                  const sneaky = [...data.teams].filter(t =>
+                      t.stack_score >= 95 && t.stack_score <= 125 &&
+                      (t.is_shark || t.is_steam) &&
+                      (t.dqi_score >= 75 || t.dqi_status === 'TRUST')
+                  ).sort((a, b) => b.stack_score - a.stack_score)[0];
+                  if (sneaky) {
+                      document.getElementById('hub-sneaky-stack').innerText = sneaky.team || '---';
+                      document.getElementById('hub-sneaky-stack-score').innerText = 'Ω ' + sneaky.stack_score.toFixed(1) + (sneaky.is_steam ? ' · STEAM' : ' · SHARK');
+                  } else {
+                      document.getElementById('hub-sneaky-stack').innerText = '—';
+                      document.getElementById('hub-sneaky-stack-score').innerText = 'No sneaky lean match';
+                  }
+              }
+
               // Populate Ticker
               let tickerItems = [];
               if (data.pitchers) {
@@ -2337,6 +2440,10 @@
             pitchers.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
+                tr.setAttribute('data-conf', (p.attack_conf >= 60) ? '1' : '0');
+                tr.setAttribute('data-shark', p.is_shark ? '1' : '0');
+                tr.setAttribute('data-steam', '0');
+                tr.setAttribute('data-exhausted', '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openPitcherModal(encodeURIComponent(JSON.stringify(p)));
                 if (p.alpha_score >= 85) tr.classList.add('row-highlight');
@@ -2409,31 +2516,45 @@
             hitters.forEach(h => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
+                const hTeam = teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(h.team));
+                tr.setAttribute('data-conf', (h.attack_conf >= 60) ? '1' : '0');
+                tr.setAttribute('data-steam', (hTeam && hTeam.is_steam) ? '1' : '0');
+                tr.setAttribute('data-shark', (hTeam && hTeam.is_shark) ? '1' : '0');
+                tr.setAttribute('data-exhausted', (h.bullpen_fatigue >= 90) ? '1' : '0');
+                tr.style.cursor = 'pointer';
+                tr.onclick = () => openHitterModal(encodeURIComponent(JSON.stringify(h)));
                 if (h.player_score >= 85) tr.classList.add('row-highlight');
                 
                 const scoreClass = h.player_score >= 100 ? 'score elite' : (h.player_score >= 85 ? 'score high' : 'score med');
                 
-                // Determine splits multiplier badge
                 let platoonBadge = '';
                 if (h.platoon_multiplier && h.platoon_multiplier > 1.0) {
                     const pct = Math.round((h.platoon_multiplier - 1.0) * 100);
-                    platoonBadge = `<span class="signal-pill" style="background:rgba(50, 215, 75, 0.15); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 6px rgba(50, 215, 75, 0.2);">⚡ VS ${h.pitch_hand}HP (+${pct}%)</span>`;
+                    platoonBadge = `<span class="signal-pill" style="background:rgba(50, 215, 75, 0.15); border-color:#32d74b; color:#32d74b; font-weight:800;">+${pct}%</span>`;
                 } else if (h.platoon_multiplier && h.platoon_multiplier < 1.0) {
                     const pct = Math.round((1.0 - h.platoon_multiplier) * 100);
-                    platoonBadge = `<span class="signal-pill" style="background:rgba(255, 69, 58, 0.15); border-color:#ff453a; color:#ff453a; font-weight:800;">📉 VS ${h.pitch_hand}HP (-${pct}%)</span>`;
+                    platoonBadge = `<span class="signal-pill" style="background:rgba(255, 69, 58, 0.15); color:#ff453a;">-${pct}%</span>`;
+                } else {
+                    platoonBadge = '<span style="color:var(--text-secondary); font-size:0.8rem;">—</span>';
                 }
 
                 const hRank = hRanks[h.name];
+                const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
                 tr.innerHTML = `
                     <td class="${scoreClass}">${h.player_score}${slatePercentileHtml(hRank)}</td>
+                    ${attackConfHtml(h)}
+                    <td class="metric" style="color: var(--accent-green);">${h.physics_score || '-'}</td>
+                    <td class="metric" style="color: var(--accent-purple);">${h.market_score || '-'}</td>
+                    <td class="metric" style="font-weight:800; font-variant-numeric:tabular-nums;">${xwoba}</td>
+                    <td>${platoonBadge}</td>
                     <td>
                         <div class="signals-container">
                             ${h.is_juiced_target ? '<span class="signal-pill pill-target">🎯 TARGET</span>' : ''}
+                            ${h.smash_factor ? '<span class="signal-pill pill-burst">💥 SMASH</span>' : ''}
                         </div>
                     </td>
                     <td>
                         <div class="signals-container">
-                            ${platoonBadge}
                             ${h.matchup_xwoba >= 0.360 ? '<span class="signal-pill pill-neutral">🔋 POWER</span>' : ''}
                             ${h.is_speed_target ? '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>' : ''}
                             ${h.is_hot ? '<span class="signal-pill pill-target">♨️ HOT</span>' : ''}
@@ -2441,7 +2562,7 @@
                         </div>
                     </td>
                     <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
-                    <td><span class="vs">vs</span><strong>${h.opp_pitcher}</strong> <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span> <span class="team-label" style="background:rgba(10, 132, 255, 0.12); border-color:rgba(10, 132, 255, 0.3); color:#0a84ff; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.pitch_hand}HP</span></td>
+                    <td><span class="vs">vs</span><strong>${h.opp_pitcher}</strong> <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span> <span class="team-label" style="background:rgba(10, 132, 255, 0.12); color:#0a84ff; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.pitch_hand}HP</span></td>
                     <td class="metric">${h.ahr_price > 0 ? '+' : ''}${h.ahr_price || '-'}</td>
                     <td class="metric"><b>${h.hits_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
                     <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>
@@ -2455,6 +2576,10 @@
             teams.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
+                tr.setAttribute('data-steam', t.is_steam ? '1' : '0');
+                tr.setAttribute('data-exhausted', (t.bullpen_fatigue >= 90 || t.is_gassed) ? '1' : '0');
+                tr.setAttribute('data-conf', (t.attack_conf >= 60) ? '1' : '0');
+                tr.setAttribute('data-shark', t.is_shark ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openTeamModal(encodeURIComponent(JSON.stringify(t)));
                 if (t.stack_score >= 85) tr.classList.add('row-highlight');
@@ -2575,6 +2700,7 @@
                 tBody.appendChild(tr);
             });
 
+            sortTable('hitters-table', 0, true);
             filterData();
         }
 
@@ -2614,7 +2740,8 @@
                 
                 const isFilteredByMatchup = rowTeams.some(t => uncheckedTeams.includes(t));
 
-                if (text.includes(query) && !isFilteredByMatchup) {
+                const passesSignal = rowPassesSignalFilter(row);
+                if (text.includes(query) && !isFilteredByMatchup && passesSignal) {
                     row.style.display = '';
                     showingCount++;
                 } else {
@@ -2639,21 +2766,32 @@
                 body.innerHTML = '';
 
                 if (matchups.length === 0) {
-                    body.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--text-secondary); padding:40px;">No platoon data available. Run a slate refresh to populate.</td></tr>';
+                    body.innerHTML = '<tr><td colspan="11" style="text-align:center; color:var(--text-secondary); padding:40px;">No platoon data available. Run a slate refresh to populate.</td></tr>';
                     return;
                 }
 
                 matchups.forEach(m => {
                     const tr = document.createElement('tr');
                     tr.setAttribute('data-teams', `${getTeamAbbr(m.team)},${getTeamAbbr(m.opponent)}`);
+                    tr.style.cursor = 'pointer';
+                    tr.title = 'Open team stack';
+                    tr.onclick = () => jumpToTeamStack(m.team);
 
-                    // OPS color helper
+                    function xwobaColor(x) {
+                        if (x >= 0.360) return 'color:#32d74b; text-shadow:0 0 8px rgba(50,215,75,0.4);';
+                        if (x >= 0.335) return 'color:#0a84ff;';
+                        if (x >= 0.310) return 'color:var(--text-primary);';
+                        if (x >= 0.290) return 'color:#ff9f0a;';
+                        return 'color:#ff453a; text-shadow:0 0 8px rgba(255,69,58,0.3);';
+                    }
+
+                    // OPS color helper (secondary)
                     function opsColor(ops) {
-                        if (ops >= 0.780) return 'color:#32d74b; text-shadow:0 0 8px rgba(50,215,75,0.4);';
+                        if (ops >= 0.780) return 'color:#32d74b;';
                         if (ops >= 0.730) return 'color:#0a84ff;';
                         if (ops >= 0.700) return 'color:var(--text-primary);';
                         if (ops >= 0.650) return 'color:#ff9f0a;';
-                        return 'color:#ff453a; text-shadow:0 0 8px rgba(255,69,58,0.3);';
+                        return 'color:#ff453a;';
                     }
 
                     // Pitcher vulnerability color (higher = more hittable = green for offense)
@@ -2664,21 +2802,13 @@
                         return 'color:#0a84ff;';
                     }
 
-                    // Advantage pill
-                    let advPill = '';
-                    if (m.advantage === 'ELITE PLATOON') {
-                        advPill = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); box-shadow:0 0 8px rgba(50,215,75,0.2);">⚡ ELITE</span>`;
-                    } else if (m.advantage === 'STRONG EDGE') {
-                        advPill = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25);">🎯 STRONG</span>`;
-                    } else if (m.advantage === 'NEUTRAL') {
-                        advPill = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary);">— NEUTRAL</span>`;
-                    } else if (m.advantage === 'SLIGHT FADE') {
-                        advPill = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25);">⚠️ FADE</span>`;
-                    } else {
-                        advPill = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); box-shadow:0 0 8px rgba(255,69,58,0.2);">🚨 TRAP</span>`;
-                    }
+                    const edgeLabel = m.advantage_xwoba || m.advantage;
+                    const advPill = platoonEdgePill(edgeLabel);
 
-                    // OPS diff badge
+                    let xDiff = m.xwoba_diff != null ? m.xwoba_diff : 0;
+                    let xDiffColor = xDiff > 0 ? '#32d74b' : xDiff < -25 ? '#ff453a' : '#ff9f0a';
+                    let xDiffPrefix = xDiff > 0 ? '+' : '';
+
                     let diffColor = m.ops_diff > 0 ? '#32d74b' : m.ops_diff < -30 ? '#ff453a' : '#ff9f0a';
                     let diffPrefix = m.ops_diff > 0 ? '+' : '';
 
@@ -2695,15 +2825,17 @@
                     // Score class
                     let scoreClass = m.stack_score >= 120 ? 'elite' : m.stack_score >= 90 ? 'high' : m.stack_score >= 60 ? 'med' : 'low';
 
+                    const teamXwoba = m.team_vs_hand_xwoba != null ? m.team_vs_hand_xwoba : m.team_vs_hand_woba;
                     tr.innerHTML = `
                         <td style="font-weight:700;">${getTeamAbbr(m.team)}<span class="team-label">${m.team.split(' ').pop()}</span></td>
                         <td>${m.opp_pitcher} ${handPill}</td>
                         <td style="font-weight:700; font-size:0.85rem; color:${handColor};">vs ${m.pitcher_hand_label}</td>
-                        <td style="font-weight:800; font-size:1.05rem; ${opsColor(m.team_vs_hand_ops)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_ops.toFixed(3)}</td>
-                        <td style="font-weight:700; ${opsColor(m.team_vs_hand_woba / 0.78 * 0.73)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_woba.toFixed(3)}</td>
-                        <td style="font-weight:700; color:${diffColor}; font-variant-numeric:tabular-nums;">${diffPrefix}${m.ops_diff}</td>
-                        <td style="${lhhStyle} ${lhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_lhh_ops.toFixed(3)}</td>
-                        <td style="${rhhStyle} ${rhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_rhh_ops.toFixed(3)}</td>
+                        <td style="font-weight:800; font-size:1.05rem; ${xwobaColor(teamXwoba)} font-variant-numeric:tabular-nums;">${Number(teamXwoba).toFixed(3)}</td>
+                        <td style="font-weight:600; opacity:0.85; ${opsColor(m.team_vs_hand_ops)} font-variant-numeric:tabular-nums;">${m.team_vs_hand_ops.toFixed(3)}</td>
+                        <td style="font-weight:700; color:${xDiffColor}; font-variant-numeric:tabular-nums;">${xDiffPrefix}${xDiff}</td>
+                        <td style="font-weight:600; opacity:0.75; color:${diffColor}; font-variant-numeric:tabular-nums;">${diffPrefix}${m.ops_diff}</td>
+                        <td style="${lhhStyle} ${lhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_lhh_ops.toFixed(3)}<div style="font-size:0.65rem; opacity:0.6;">${(m.pitcher_vs_lhh_xwoba || 0).toFixed(3)} xw</div></td>
+                        <td style="${rhhStyle} ${rhhBold} font-variant-numeric:tabular-nums;">${m.pitcher_vs_rhh_ops.toFixed(3)}<div style="font-size:0.65rem; opacity:0.6;">${(m.pitcher_vs_rhh_xwoba || 0).toFixed(3)} xw</div></td>
                         <td>${advPill}</td>
                         <td><span class="score ${scoreClass}">${m.stack_score.toFixed(1)}</span></td>
                     `;
@@ -3884,6 +4016,41 @@
             document.getElementById('pitcher-modal').classList.remove('open');
             document.getElementById('pitcher-modal-overlay').classList.remove('open');
         }
+
+        function openHitterModal(hStr) {
+            const h = JSON.parse(decodeURIComponent(hStr));
+            document.getElementById('hm-name').innerText = h.name || '—';
+            document.getElementById('hm-matchup').innerText = `${h.team || ''} vs ${h.opp_pitcher || ''} (${h.pitch_hand || '?'}HP)`;
+            document.getElementById('hm-score').innerText = h.player_score != null ? h.player_score.toFixed(1) : '—';
+            document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf + '%' : '—';
+            document.getElementById('hm-phys').innerText = h.physics_score || '—';
+            document.getElementById('hm-mkt').innerText = h.market_score || '—';
+            document.getElementById('hm-xwoba').innerText = (h.matchup_xwoba || 0.330).toFixed(3);
+            document.getElementById('hm-hr').innerText = (h.ahr_price > 0 ? '+' : '') + (h.ahr_price || '—');
+            document.getElementById('hm-hits').innerText = h.hits_line ? `${h.hits_line} (${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})` : '—';
+            document.getElementById('hm-tb').innerText = h.tb_line ? `${h.tb_line} (${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})` : '—';
+
+            let badges = '';
+            if (h.is_juiced_target) badges += '<span class="signal-pill pill-target">🎯 TARGET</span>';
+            if (h.smash_factor) badges += '<span class="signal-pill pill-burst">💥 SMASH</span>';
+            if (h.is_hot) badges += '<span class="signal-pill pill-target">♨️ HOT</span>';
+            if (h.is_speed_target) badges += '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>';
+            if (h.platoon_label && h.platoon_multiplier > 1) {
+                badges += `<span class="signal-pill" style="color:#32d74b;">⚡ ${h.platoon_label}</span>`;
+            }
+            document.getElementById('hm-badges').innerHTML = badges || '<span style="color:var(--text-secondary);">No active flags.</span>';
+
+            const reasons = (h.attack_reasons || []).map(r => `<div style="font-size:0.85rem; margin-bottom:6px; color:var(--text-secondary);">• ${r}</div>`).join('');
+            document.getElementById('hm-reasons').innerHTML = reasons || '<span style="color:var(--text-secondary);">No attack reasons logged.</span>';
+
+            document.getElementById('hitter-modal').classList.add('open');
+            document.getElementById('hitter-modal-overlay').classList.add('open');
+        }
+
+        function closeHitterModal() {
+            document.getElementById('hitter-modal').classList.remove('open');
+            document.getElementById('hitter-modal-overlay').classList.remove('open');
+        }
     </script>
 
     <!-- GRANULAR TEAM MODAL -->
@@ -3951,6 +4118,44 @@
             </h4>
             <div id="tm-roster-intel">
             </div>
+        </div>
+    </div>
+
+    <div class="team-modal-overlay" id="hitter-modal-overlay" onclick="closeHitterModal()"></div>
+    <div class="team-modal" id="hitter-modal">
+        <button class="team-modal-close" onclick="closeHitterModal()">×</button>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px;">
+            <div>
+                <h2 id="hm-name" style="margin:0; font-size:2rem; font-weight:800; color:#fff;">Hitter</h2>
+                <div id="hm-matchup" style="color:var(--text-secondary); font-weight:600; font-size:1rem; margin-top:5px;">vs Pitcher</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:0.8rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase;">Omega Score</div>
+                <div id="hm-score" style="font-size:2.5rem; font-weight:800; color:var(--accent-purple); line-height:1;">—</div>
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; margin-bottom:20px;">
+            <div class="card" style="padding:20px; margin:0;">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-green);">Hitter Metrics</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Attack CONF</span><strong id="hm-conf">—</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Physics</span><strong id="hm-phys">—</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Market</span><strong id="hm-mkt">—</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Matchup xwOBA</span><strong id="hm-xwoba">—</strong></div>
+            </div>
+            <div class="card" style="padding:20px; margin:0;">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-blue);">Prop Lines</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>HR Prop</span><strong id="hm-hr">—</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Hits</span><strong id="hm-hits">—</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span>Total Bases</span><strong id="hm-tb">—</strong></div>
+            </div>
+        </div>
+        <div class="card" style="padding:20px; margin:0; margin-bottom:20px;">
+            <h4 style="margin:0 0 15px 0; color:var(--accent-purple);">Active Badges</h4>
+            <div id="hm-badges" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+        </div>
+        <div class="card" style="padding:20px; margin:0;">
+            <h4 style="margin:0 0 15px 0; color:#00f2fe;">Attack Reasons</h4>
+            <div id="hm-reasons"></div>
         </div>
     </div>
 

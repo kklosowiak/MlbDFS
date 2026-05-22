@@ -2,60 +2,76 @@
 
 **Live site (2026-05-21):** `207e354` — manual Vegas opens, ML moves working. User cancelled mid-slate deploys; slate looks good.
 
-**When to deploy:** Quiet window — e.g. **~9 PM ET after lock**, or next morning before slate.
+**When to deploy:** Quiet window — after lock or next morning. **Say "deploy now" in the original Package A chat** before push/Render.
+
+**Full spec:** `docs/PACKAGE_ROLLOUT.md` (UI batch details)
 
 ---
 
-## Queue (deploy together or back-to-back)
+## Package A — deploy together (one PR / one Render deploy)
 
-### 1. Automatic opening lines — `47da038`
+### 1. Automatic opening lines — `47da038` (on main)
 
-| | |
-|---|---|
-| **What** | 4:30 AM freeze, dated `opening_lines_YYYY-MM-DD.json`, snapshot backfill, `pair_key` |
-| **Not included** | Slow refresh, refresh-reset, skip Statcast, progress UI |
-| **After deploy** | One Refresh; optional: retire `vegas_opens_manual.json` once 4:30 is trusted |
+- 4:30 AM `capture_opening=True`, `opening_lines_YYYY-MM-DD.json`, snapshot backfill, `pair_key`
+- Routine refresh must NOT overwrite frozen `opening_*`
+- **Do NOT re-add:** slow refresh, refresh-reset, skip Statcast, progress UI
 
-**Verify:** Miami ~-36, Detroit ~-25 ML moves (console audit script in chat history).
+**Verify:** Miami ~-36, Detroit ~-25 ML moves.
 
 ---
 
-### 2. Stack TRAP / DQI alignment — *not committed yet*
+### 2. Stack TRAP / DQI alignment — *implement*
 
-**Problem:** 🚨 TRAP on stacks (TOR, ARI) conflicts with high DQI TRUST. Talent Floor Gate treats SHARK/STEAM as “inflation” and flags sharp-backed teams. DQI never shows “Public Chalk Trap” because `calculate_dqi` only uses **opposing pitcher** `is_trap`, not stack trap.
+See `engine/sharps_weighting.py`, `utils/dqi.py`, `templates/index.html`, `tests/test_trap_gate.py`
 
-**Agreed fix (brainstorm 2026-05-21):**
+- Exempt sharp steam; exempt elite stacks (≥110); chalk-only trap conditions
+- DQI: `is_trap = team OR opp pitcher`; labels Stack Chalk vs TRAP SP
+- Stack **⚠️ CHALK** · Pitcher **🚨 TRAP SP**
 
-#### `engine/sharps_weighting.py` — Talent Floor Gate
-
-- **Exempt sharp steam:** no TRAP if `(is_steam or is_shark) and ml_move <= -10`
-- **Exempt elite stacks:** no TRAP if `final` stack score ≥ 110 (before trap mult)
-- **Chalk-only conditions:** require weak offense (`team_xwoba < 0.300` OR displayed `physics_score < 25`) **and** public-style pressure (`ml_move >= 5` or high div without steam/shark favoring team)
-- Stop treating all of `is_whale|is_storm|is_shark|is_steam|is_sharp|div>12` as generic “inflation” for trap
-
-#### `utils/dqi.py`
-
-- `is_trap = team.is_trap OR opp_pitcher.is_trap` (do not replace team with pitcher only)
-- Warning label: **“Stack Chalk Warning (-20)”** when stack trap; keep pitcher trap separate
-
-#### `templates/index.html` (optional UX)
-
-- Stack row: **⚠️ CHALK** (weak physics + public hype)
-- Pitcher row: keep **🚨 TRAP SP** (+ `trap_type`)
-
-**Verify after deploy:**
-
-- Toronto / Arizona with STEAM + negative `ml_move` + DQI TRUST → **no** stack TRAP
-- True chalk (weak PHY, line moving against, no sharp steam) → still flagged
+**Verify:** TOR/ARI STEAM + DQI TRUST → no stack TRAP/CHALK false positive.
 
 ---
 
-## Render steps
+### 3. Stack score scale — cap **150**, NOT 100
 
-1. **Manual Deploy** → latest `main` (includes `47da038` + trap fix commit when implemented).
-2. Wait for **Deploy live**.
-3. **One Refresh Slate**.
-4. Run ML + TRAP console checks (below).
+- `sharps_weighting.py`: `combined_mult = min(..., 1.35)`
+- `main.py`: `final_stack_score = min(150.0, ...)` after all post-processing
+- Optional: `stack_score_raw` in team JSON
+- Keep percentile badges; keep UI tiers 85/98/110
+
+**Verify:** No stack_score > 150; top teams ~130–150 not 180+.
+
+---
+
+### 4. OMEGA UI Package Rollout — `docs/PACKAGE_ROLLOUT.md`
+
+| Item | Status | Action |
+|------|--------|--------|
+| **Attack Plan sub-tabs fix** | Ready in `templates/index.html` | Deploy + QA all 5 tabs (Ultimate · Stacks · Pitchers · Traps · Leverage) |
+| **Attack conf (`attack_conf`) column** | Pending UI | Add **CONF** column to Pitchers + Teams matrices; data already in `/api/results` from `slate_report_generator.py` |
+
+**Attack conf v1 spec:**
+- Column **CONF** (or **ATK**) after OMEGA — integer 0–100, bands ≥70 green / 40–69 neutral / &lt;40 muted
+- Tooltip or hover: first 3 `attack_reasons` lines
+- Do **not** change default table sort (keep alpha_score / stack_score primary)
+
+**QA:** See checklist in `docs/PACKAGE_ROLLOUT.md` §1–2.
+
+---
+
+## Do NOT tonight (unless added later)
+
+- Package B: weak-stack market cap, splits hardening, game-started audit
+- Cap stack scores at 100
+- Push/deploy before "deploy now"
+
+---
+
+## Post-deploy verify
+
+1. Render Manual Deploy → latest `main`
+2. One **Refresh Slate** (~1 min)
+3. Console:
 
 ```javascript
 (async () => {
@@ -63,27 +79,23 @@
   const t = (n) => data.teams?.find(x => (x.team||'').includes(n));
   for (const n of ['Miami','Detroit','Toronto','Arizona']) {
     const x = t(n);
-    console.log(n, { ml_move: x?.ml_move, is_trap: x?.is_trap, dqi: x?.dqi_score, steam: x?.is_steam });
+    console.log(n, { stack_score: x?.stack_score, ml_move: x?.ml_move, is_trap: x?.is_trap, dqi: x?.dqi_score, attack_conf: x?.attack_conf });
   }
+  console.log('max stack_score', Math.max(...(data.teams||[]).map(x => x.stack_score||0)));
 })();
 ```
 
-Expect: ML moves intact; TOR/ARI `is_trap: false` if steam + TRUST DQI.
+4. Attack Plan: click all 5 sub-tabs
+5. Spot-check CONF column vs JSON `attack_conf`
+
+**Rollback:** redeploy `207e354`
 
 ---
 
-## Rollback
-
-- **Opens only broken:** redeploy `207e354`
-- **Trap fix too loose/tight:** revert `sharps_weighting.py` + `dqi.py` commit only
-
----
-
-## Paste into this chat later
+## Paste into Package A chat
 
 ```
-Continue OMEGA deploy-later queue per OMEGA_DEPLOY_LATER.md:
-1) Deploy 47da038 opening lines if not live
-2) Implement stack TRAP / DQI alignment per section 2
-Live is 207e354 unless already upgraded. One refresh + console verify after deploy.
+Deploy Package A per OMEGA_DEPLOY_LATER.md + docs/PACKAGE_ROLLOUT.md:
+opens (47da038) + TRAP/DQI + 150 stack cap + UI package (Attack Plan tabs QA + attack_conf CONF columns).
+Wait for my "deploy now" before push.
 ```
