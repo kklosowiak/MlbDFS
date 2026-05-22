@@ -97,10 +97,13 @@ class PitcherAnalyzer:
         with open(snapshot_path, 'r') as f:
             snapshot = json.load(f)
             
-        with open(opening_path, 'r') as f:
-            opening = json.load(f)
-            # OMEGA v5.3: ID-Based indexed lookup
-            self.opening_lookup = {o.get('game_id'): o for o in opening if o.get('game_id')}
+        if os.path.exists(opening_path):
+            with open(opening_path, "r", encoding="utf-8") as f:
+                opening = json.load(f)
+        else:
+            opening = []
+            print(f"  - [WARNING]: No opening lines file at {opening_path}; using live-line fallback.")
+        self.opening_lookup = {o.get("game_id"): o for o in opening if o.get("game_id")}
             
         ext_props = self.load_external_worksheet_props(
             os.path.join(self.config.DATA_DIR, "manual_props.csv"),
@@ -133,14 +136,27 @@ class PitcherAnalyzer:
             gid = game['id']
             open_data = self.opening_lookup.get(gid)
             
-            if not open_data:
-                home = game['home_team']
-                open_data = next((o for o in opening if any(n in [home] for n in [o['team_home'], o['team_away']])), None)
-            
-            if not open_data: continue
-            
             home = game['home_team']
             away = game['away_team']
+
+            if not open_data:
+                open_data = next(
+                    (o for o in opening if home in [o.get('team_home'), o.get('team_away')]),
+                    None,
+                )
+
+            if not open_data:
+                away_ml, _ = get_market_prices(game, away)
+                home_ml, total = get_market_prices(game, home)
+                open_data = {
+                    'game_id': gid,
+                    'team_home': home,
+                    'team_away': away,
+                    'home_opening_ml': home_ml,
+                    'away_opening_ml': away_ml,
+                    'opening_total': total or 8.5,
+                }
+                print(f"  - [OPEN-FALLBACK]: No stored opens for {away} @ {home}; using current lines.")
             
             # Check if game has commenced to prevent live-betting/in-progress odds shifts
             game_started = False

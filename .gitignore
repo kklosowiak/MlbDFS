@@ -16,6 +16,7 @@ data/opening_lines.json
 data/opening_lines_*.json
 data/consensus_*_live.json
 data/platoon_cache.json
+data/bullpen_fatigue_cache.json
 
 # Local Dev
 .vscode/

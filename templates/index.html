@@ -1857,6 +1857,15 @@
             return 'color:#ff453a; font-weight:700;';
         }
 
+        /** Pitcher PHY display slice (~0–45): SIERA + CSW talent, not xwOBA */
+        function pitcherPhyTierStyle(score) {
+            const v = parseFloat(score) || 0;
+            if (v >= 18) return 'color:#32d74b; font-weight:800;';
+            if (v >= 14) return 'color:#0a84ff; font-weight:700;';
+            if (v >= 9) return 'color:#ff9f0a; font-weight:700;';
+            return 'color:#ff453a; font-weight:700;';
+        }
+
         function teamMktTierStyle(score) {
             return teamPhyTierStyle(score);
         }
@@ -1881,10 +1890,13 @@
         function teamPhyCell(t) {
             const phy = scoreDisplay(t.physics_score);
             const xw = t.team_xwoba != null ? Number(t.team_xwoba).toFixed(3) : '—';
-            const style = teamPhyTierStyle(t.physics_score);
-            return `<td class="metric" style="${style} font-variant-numeric:tabular-nums;" title="Lineup avg xwOBA ${xw}">
-                <div>${phy}</div>
-                <div style="font-size:0.68rem; opacity:0.65; font-weight:500; margin-top:2px;">${xw}</div>
+            const phyStyle = teamPhyTierStyle(t.physics_score);
+            const xwStyle = t.team_xwoba != null
+                ? xwobaTierStyle(t.team_xwoba)
+                : 'color:var(--text-secondary); font-weight:500;';
+            return `<td class="metric" style="font-variant-numeric:tabular-nums;" title="PHY grade from lineup xwOBA ${xw}">
+                <div style="${phyStyle}">${phy}</div>
+                <div style="font-size:0.68rem; font-weight:600; margin-top:2px; ${xwStyle}">${xw}</div>
             </td>`;
         }
 
@@ -2568,7 +2580,7 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${p.alpha_score}${slatePercentileHtml(pRank)}</td>
                     ${attackConfHtml(p)}
-                    <td class="metric" style="color: var(--accent-green);">${p.physics_score || '-'}</td>
+                    ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
                     <td class="metric" style="color: var(--accent-purple);">${p.market_score || '-'}</td>
                     <td>
                         <div class="signals-container">

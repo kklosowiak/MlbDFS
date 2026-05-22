@@ -96,8 +96,9 @@ def run_full_analysis():
     
     snapshot_path = _get_resilient_snapshot()
     if not snapshot_path:
-        print("ERROR: No snapshot found.")
-        return
+        raise RuntimeError(
+            "No odds snapshot found. Market ingest failed — check ODDS_API_KEY and /api/data-health."
+        )
     
     print(f"[INIT]: Loading OMEGA Snapshot: {os.path.basename(snapshot_path)}")
     
@@ -120,6 +121,11 @@ def run_full_analysis():
 
     opening_lines = load_opening_lines_for_slate(get_slate_date_iso())
     opening_lines_path = os.path.join(config.DATA_DIR, "opening_lines.json")
+    try:
+        with open(opening_lines_path, "w", encoding="utf-8") as f:
+            json.dump(opening_lines, f, indent=2)
+    except Exception as e:
+        print(f"[WARNING]: Could not write opening lines cache: {e}")
         
     # OMEGA v5.2: Load Consensus Splits for SHARK Detection
     splits_data = snapshot.get('splits', {})
@@ -347,7 +353,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
 
 def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
-    print("\n[STEP 2]: Ranking Team Omega...")
+    print(f"\n[STEP 2]: Ranking Team Omega ({len(snapshot.get('odds', []))} games)...")
     
     # Load Statcast Cache for platoon resolution
     cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
@@ -431,6 +437,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # Both teams inherit the environment of the home_team's stadium.
             home_team_for_game = game.get('home_team')
             park_factor = config.PARK_FACTORS.get(home_team_for_game, 1.0)
+            print(f"  - Stack: {team} vs {opponent} (bullpen fatigue lookup)...")
             opp_bullpen = bullpen_analyzer.get_fatigue_score(opponent)
             
             # Market Divergence & Signal Detection
@@ -842,7 +849,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         h_reports.append({
             'name': h['name'].title(), 'team': h['team'], 
             'opponent': team_data['opponent'] if team_data else "TBD",
-            'opp_pitcher': team_data['opp_pitcher'].title() if team_data else "TBD",
+            'opp_pitcher': (team_data.get('opp_pitcher') or 'TBD').title() if team_data else "TBD",
             'player_score': res.get('solo_score', res['final']),
             'stack_adjusted_score': res['final'],
             'physics_score': res.get('physics_component', res['physics']),

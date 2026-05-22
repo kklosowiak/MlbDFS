@@ -265,6 +265,8 @@ class StatcastBridge:
             print("  - WARNING: pybaseball unavailable; xwOBA refresh skipped.")
             return self._load_cache_to_memory()
 
+        import concurrent.futures
+
         cache = self._load_cache_to_memory()
         if not cache:
             print("  - WARNING: statcast_cache.json empty; run refresh_momentum_data first.")
@@ -273,7 +275,9 @@ class StatcastBridge:
         xwoba_map = {}
         for yr in (season, season - 1):
             try:
-                df = statcast_batter_expected_stats(yr, minPA=min_pa)
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+                    fut = ex.submit(statcast_batter_expected_stats, yr, minPA=min_pa)
+                    df = fut.result(timeout=90)
                 if df is None or df.empty:
                     continue
                 name_col = next((c for c in df.columns if "first_name" in str(c)), None)
@@ -294,6 +298,8 @@ class StatcastBridge:
                     if yr == season or norm not in xwoba_map:
                         xwoba_map[norm] = cap_matchup_xwoba(xw)
                 print(f"  - Loaded {len(df)} Savant rows for {yr}.")
+            except concurrent.futures.TimeoutError:
+                print(f"  - WARNING: Savant xwOBA timed out for {yr}; skipping year.")
             except Exception as e:
                 print(f"  - WARNING: Savant xwOBA ingest failed for {yr}: {e}")
 

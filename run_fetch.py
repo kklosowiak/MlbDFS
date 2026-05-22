@@ -56,7 +56,7 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
     
     if not snapshot_path or not os.path.exists(snapshot_path):
         print("  - CRITICAL: Market ingestion failed. Aborting.")
-        return
+        return None
 
     # 2. Fetch Betting Splits (Consensus)
     print("\n[STEP 2]: Fetching Betting Splits (Consensus Overlay)...")
@@ -113,6 +113,8 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         platoon.fetch_platoon_data()
     except Exception as e:
         print(f"  - WARNING: Platoon splits refresh failed (non-critical): {e}")
+
+    return snapshot_path
 
 if __name__ == "__main__":
     import argparse

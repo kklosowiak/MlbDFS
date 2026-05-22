@@ -79,14 +79,28 @@ def perform_refresh_sync():
     try:
         print("[SERVER BG-THREAD]: Starting ingestion scrape...")
         from run_fetch import perform_fetch
-        perform_fetch()
-        
+        snapshot_path = perform_fetch()
+        if not snapshot_path:
+            raise RuntimeError(
+                "Market ingestion failed (no snapshot). Check ODDS_API_KEY quota and Render logs."
+            )
+
         with refresh_lock:
             refresh_progress = "Running OMEGA engine analysis..."
-            
+
         print("[SERVER BG-THREAD]: Starting model calculations...")
         from main import run_full_analysis
         run_full_analysis()
+
+        results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports", "latest_results.json")
+        if not os.path.exists(results_path):
+            raise RuntimeError("Analysis finished but latest_results.json was not written.")
+        with open(results_path, "r", encoding="utf-8") as f:
+            res_check = json.load(f)
+        if not res_check.get("pitchers") and not res_check.get("teams"):
+            raise RuntimeError(
+                "Analysis produced empty pitchers/teams — check opening lines and odds snapshot in logs."
+            )
 
         try:
             from utils.dqi import persist_dqi_history
