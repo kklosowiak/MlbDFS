@@ -680,6 +680,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 final_stack_score < 80
             )
 
+            phy_display = float(xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)) or 0)
+            mkt_display = float(res.get('market_raw', res.get('market', 0)) or 0)
+            is_blind_spot = (phy_display - mkt_display) >= 55
+
             # OMEGA v10.1: Team Rolling K% Cold Streak Detection
             # Compare rolling K rate vs season K rate across confirmed lineup hitters.
             # If the team is striking out at 25%+ above their season average, flag cold streak.
@@ -738,6 +742,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'implied_total': round(curr_itt, 2),
                 'total_signal': total_signal,
                 'is_physics_override': is_physics_override,  # v10.1: PHY beats market signal
+                'is_blind_spot': is_blind_spot,              # PHY - MKT gap >= 55 (server truth)
                 'is_cold_streak': is_cold_streak,            # v10.1: Rolling K% elevated 25%+
                 'rolling_k_delta': rolling_k_delta           # v10.1: % above season K rate
             })

@@ -1966,6 +1966,8 @@
         }
 
         function isTeamBlindSpot(t) {
+            if (t.is_blind_spot === true) return true;
+            if (t.is_blind_spot === false) return false;
             const phys = parseFloat(t.physics_score) || 0;
             const mkt = parseFloat(t.market_score) || 0;
             return phys - mkt >= 55;
@@ -2878,7 +2880,7 @@
                         <div class="signals-container">
                             ${buildMarketSignalPills(t, true)}
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
-                            ${isTeamBlindSpot(t) ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
+                            ${(t.is_blind_spot || isTeamBlindSpot(t)) ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);" title="PHY−MKT ≥55">👁️ BLIND SPOT</span>' : ''}
                             ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
                             ${t.is_physics_override ? '<span class="signal-pill pill-neutral" style="background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;">⚡ PHY OVERRIDE</span>' : ''}
                             ${t.is_cold_streak ? `<span class="signal-pill pill-neutral" style="background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;">🥶 COLD STREAK (+${t.rolling_k_delta}% K)</span>` : ''}
