@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.xwoba_estimates import ops_to_xwoba, xwoba_to_phy_score, cap_matchup_xwoba
+from utils.xwoba_estimates import ops_to_xwoba, xwoba_to_phy_score, cap_matchup_xwoba, platoon_advantage_label
 
 
 def test_ops_to_xwoba_realistic_range():
@@ -28,8 +28,17 @@ def test_phy_score_spread():
     assert weak < 25.0
 
 
+def test_platoon_edge_tiers():
+    assert platoon_advantage_label(0.375) == "ELITE PLATOON"
+    assert platoon_advantage_label(0.350) == "STRONG EDGE"
+    assert platoon_advantage_label(0.325) == "NEUTRAL"
+    assert platoon_advantage_label(0.305) == "SLIGHT FADE"
+    assert platoon_advantage_label(0.290) == "PLATOON TRAP"
+
+
 if __name__ == "__main__":
     test_ops_to_xwoba_realistic_range()
     test_no_phantom_450s()
     test_phy_score_spread()
+    test_platoon_edge_tiers()
     print("ok", ops_to_xwoba(0.71), ops_to_xwoba(0.85), ops_to_xwoba(0.95))

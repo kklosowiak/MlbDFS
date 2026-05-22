@@ -33,14 +33,14 @@ def woba_proxy_to_xwoba(woba_proxy, ops_fallback=0.0):
 
 
 def platoon_advantage_label(xwoba_vs_hand):
-    """Primary EDGE label from xwOBA vs opposing pitcher hand."""
+    """Primary EDGE label from xwOBA vs opposing pitcher hand (post-calibration scale)."""
     x = float(xwoba_vs_hand or 0)
-    if x >= 0.360:
+    if x >= 0.370:
         return "ELITE PLATOON"
-    if x >= 0.335:
+    if x >= 0.345:
         return "STRONG EDGE"
-    if x >= 0.310:
+    if x >= 0.320:
         return "NEUTRAL"
-    if x >= 0.290:
+    if x >= 0.300:
         return "SLIGHT FADE"
     return "PLATOON TRAP"

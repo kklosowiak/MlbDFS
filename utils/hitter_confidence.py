@@ -6,10 +6,10 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
     reasons = []
 
     xwoba = float(h.get("matchup_xwoba", 0.330) or 0.330)
-    if xwoba >= 0.360:
+    if xwoba >= 0.370:
         conf += 18
         reasons.append(f"Elite matchup xwOBA (.{str(xwoba)[2:5]}).")
-    elif xwoba >= 0.340:
+    elif xwoba >= 0.345:
         conf += 10
         reasons.append(f"Strong matchup xwOBA (.{str(xwoba)[2:5]}).")
     elif xwoba < 0.300:

@@ -1149,14 +1149,14 @@ def get_platoons_api():
         pitcher_vs_rhh_ops = pitcher_vs_rhh.get("ops", 0)
         pitcher_vs_rhh_woba = pitcher_vs_rhh.get("wOBA_proxy", 0)
         
-        # OPS-based label (legacy) + xwOBA-primary EDGE for UI
-        if team_vs_hand_ops >= 0.780:
+        # OPS-based label (legacy fallback) — aligned with calibrated xwOBA EDGE tiers
+        if team_vs_hand_ops >= 0.800:
             advantage = "ELITE PLATOON"
-        elif team_vs_hand_ops >= 0.730:
+        elif team_vs_hand_ops >= 0.760:
             advantage = "STRONG EDGE"
-        elif team_vs_hand_ops >= 0.700:
+        elif team_vs_hand_ops >= 0.720:
             advantage = "NEUTRAL"
-        elif team_vs_hand_ops >= 0.650:
+        elif team_vs_hand_ops >= 0.680:
             advantage = "SLIGHT FADE"
         else:
             advantage = "PLATOON TRAP"

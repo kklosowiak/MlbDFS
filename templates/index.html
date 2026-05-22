@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: solo-hitter-rank</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: platoon-edge-v2</span>
             </div>
         </div>
 
@@ -1511,9 +1511,10 @@
                     <h2 style="margin:0;">Platoon Splits Matrix</h2>
                     <div style="display:flex; gap:10px; align-items:center;">
                         <span style="font-size:0.7rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em;">Color Key:</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(50,215,75,0.15); color:#32d74b;">xwOBA ≥.360 ELITE</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,159,10,0.15); color:#ff9f0a;">≥.330 AVG+</span>
-                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,69,58,0.15); color:#ff453a;">&lt;.330 FADE</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(50,215,75,0.15); color:#32d74b;">≥.370 ELITE</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(10,132,255,0.12); color:#0a84ff;">≥.345 STRONG</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,159,10,0.15); color:#ff9f0a;">≥.320 NEUTRAL</span>
+                        <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,69,58,0.15); color:#ff453a;">&lt;.300 TRAP</span>
                         <span style="font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:5px; background:rgba(255,255,255,0.06); color:var(--text-secondary);">OPS: .780 / .720</span>
                     </div>
                 </div>
@@ -1829,8 +1830,10 @@
         /** Red / yellow / green tiers — no blue for "good" offense stats */
         function xwobaTierStyle(x) {
             const v = parseFloat(x) || 0;
-            if (v >= 0.360) return 'color:#32d74b; font-weight:800;';
-            if (v >= 0.330) return 'color:#ff9f0a; font-weight:700;';
+            if (v >= 0.370) return 'color:#32d74b; font-weight:800;';
+            if (v >= 0.345) return 'color:#0a84ff; font-weight:700;';
+            if (v >= 0.320) return 'color:#ff9f0a; font-weight:700;';
+            if (v >= 0.300) return 'color:#ff9f0a; font-weight:600; opacity:0.9;';
             return 'color:#ff453a; font-weight:700;';
         }
 
