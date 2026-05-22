@@ -1273,7 +1273,7 @@
                 <p id="page-subtitle">Omega Tactical Command Center</p>
             </div>
             <div class="meta-group">
-                OMEGA MASTER ENGINE v10.6<br>
+                OMEGA MASTER ENGINE v10.7<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
             </div>
         </div>
@@ -2165,6 +2165,14 @@
                 div.appendChild(span);
                 container.appendChild(div);
             });
+
+            // "Clear All" persists in DOM — zero checked hides every matrix row
+            if (container.querySelectorAll('.matchup-checkbox:checked').length === 0) {
+                container.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                    cb.checked = true;
+                    cb.dispatchEvent(new Event('change'));
+                });
+            }
         }
 
         function toggleAllMatchups(checkAll) {
@@ -2269,6 +2277,10 @@
 
             if (tabId === 'pitchers' || tabId === 'hitters' || tabId === 'teams') {
                 setSignalFilter('');
+                const body = document.getElementById(`${tabId}-body`);
+                if (latestData && body && body.querySelectorAll('tr').length === 0) {
+                    try { renderTables(); } catch (e) { console.error('Matrix re-render on tab:', e); }
+                }
             }
             filterData();
         }
@@ -2283,6 +2295,12 @@
                     return;
                 }
                 latestData = await res.json();
+                if (latestData && latestData.error) {
+                    showToast(latestData.error, 'error');
+                    return;
+                }
+                const searchBar = document.getElementById('search-bar');
+                if (searchBar) searchBar.value = '';
                 populateMatchupFilter(latestData);
                 try {
                     updateWelcomeHub(latestData);
@@ -2567,10 +2585,16 @@
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
 
+            let pRendered = 0;
+            let hRendered = 0;
+            let tRendered = 0;
+
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
+            if (!pBody) throw new Error('pitchers-body element missing');
             pBody.innerHTML = '';
             pitchers.forEach(p => {
+                try {
                 let oppT = null;
                 if (latestData.teams && p.opponent) {
                     oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
@@ -2641,12 +2665,18 @@
                     <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
                 `;
                 pBody.appendChild(tr);
+                pRendered++;
+                } catch (rowErr) {
+                    console.warn('Pitcher row skipped:', p.pitcher, rowErr);
+                }
             });
 
             // 2. Render Hitters
             const hBody = document.getElementById('hitters-body');
+            if (!hBody) throw new Error('hitters-body element missing');
             hBody.innerHTML = '';
             hittersForRender.forEach(h => {
+                try {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
                 const hTeam = teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(h.team));
@@ -2702,12 +2732,18 @@
                     <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>
                 `;
                 hBody.appendChild(tr);
+                hRendered++;
+                } catch (rowErr) {
+                    console.warn('Hitter row skipped:', h.name, rowErr);
+                }
             });
 
             // 3. Render Teams
             const tBody = document.getElementById('teams-body');
+            if (!tBody) throw new Error('teams-body element missing');
             tBody.innerHTML = '';
             teams.forEach(t => {
+                try {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
                 tr.setAttribute('data-steam', t.is_steam ? '1' : '0');
@@ -2716,20 +2752,21 @@
                 tr.setAttribute('data-shark', t.is_shark ? '1' : '0');
                 tr.style.cursor = 'pointer';
                 tr.onclick = () => openTeamModal(encodeURIComponent(JSON.stringify(t)));
-                if (t.stack_score >= 85) tr.classList.add('row-highlight');
+                const tStack = numScore(t.stack_score);
+                if (tStack >= 85) tr.classList.add('row-highlight');
                 
-                const scoreClass = t.stack_score >= 100 ? 'score elite' : (t.stack_score >= 85 ? 'score high' : 'score med');
+                const scoreClass = tStack >= 100 ? 'score elite' : (tStack >= 85 ? 'score high' : 'score med');
                 
                 const mlClass = t.ml_move < 0 ? 'val-up' : (t.ml_move > 0 ? 'val-down' : 'val-even');
                 const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
                 const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
 
                 // OMEGA v9.2: Opposing Pitcher Physics Styling (Terrible <= 20.0, Elite >= 25.0)
-                let oppPhys = t.opp_pitcher_physics || 0;
+                let oppPhys = numScore(t.opp_pitcher_physics, 0);
                 let oppP = null;
                 if (latestData.pitchers && t.opp_pitcher) {
                     oppP = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
-                    if (oppP && !oppPhys) oppPhys = oppP.physics_score || 0;
+                    if (oppP && !oppPhys) oppPhys = numScore(oppP.physics_score, 0);
                 }
                 const oppPhysColor = oppPhys <= 20.0 ? '#ff4d4d' : (oppPhys >= 25.0 ? '#4d7cff' : '#00e673');
                 const oppPhysBg = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
@@ -2789,7 +2826,7 @@
 
                 const tRank = tRanks[t.team];
                 tr.innerHTML = `
-                    <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
+                    <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
                     ${teamPhyCell(t)}
                     ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score))}
@@ -2823,8 +2860,17 @@
                     </td>
                 `;
                 tBody.appendChild(tr);
+                tRendered++;
+                } catch (rowErr) {
+                    console.warn('Team row skipped:', t.team, rowErr);
+                }
             });
 
+            window.matrixRowCounts = { pitchers: pRendered, hitters: hRendered, teams: tRendered };
+            if (pRendered === 0 && hRendered === 0 && tRendered === 0) {
+                const emptyMsg = '<tr><td colspan="12" style="text-align:center;padding:40px;color:var(--accent-orange);font-weight:700;">No matrix rows loaded — click Refresh Slate or check Render logs.</td></tr>';
+                if (pitchers.length === 0) pBody.innerHTML = emptyMsg;
+            }
             filterData();
         }
 
@@ -2833,13 +2879,19 @@
             const query = document.getElementById('search-bar').value.toLowerCase().trim();
             let showingCount = 0;
 
+            const matchupBoxes = document.querySelectorAll('.matchup-checkbox');
+            const checkedMatchups = document.querySelectorAll('.matchup-checkbox:checked').length;
+            const skipMatchupFilter = matchupBoxes.length > 0 && checkedMatchups === 0;
+
             const uncheckedTeams = [];
-            document.querySelectorAll('.matchup-checkbox').forEach(cb => {
-                if (!cb.checked) {
-                    uncheckedTeams.push(cb.getAttribute('data-team-a'));
-                    uncheckedTeams.push(cb.getAttribute('data-team-b'));
-                }
-            });
+            if (!skipMatchupFilter) {
+                matchupBoxes.forEach(cb => {
+                    if (!cb.checked) {
+                        uncheckedTeams.push(cb.getAttribute('data-team-a'));
+                        uncheckedTeams.push(cb.getAttribute('data-team-b'));
+                    }
+                });
+            }
 
             const selector = {
                 'pitchers': '#pitchers-body tr',
@@ -2852,7 +2904,13 @@
             }[currentTab];
 
             if (!selector) {
-                document.getElementById('counter-box').innerText = "SYSTEM ACTIVE";
+                const mc = window.matrixRowCounts;
+                if (mc) {
+                    document.getElementById('counter-box').innerText =
+                        `LOADED ${mc.pitchers} SP · ${mc.hitters} HIT · ${mc.teams} TM`;
+                } else {
+                    document.getElementById('counter-box').innerText = "SYSTEM ACTIVE";
+                }
                 return;
             }
 
@@ -2873,7 +2931,11 @@
                 }
             });
 
-            document.getElementById('counter-box').innerText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
+            let counterText = `SHOWING ${showingCount} OF ${rows.length} PLAYS`;
+            if (showingCount === 0 && rows.length > 0 && !query && !activeSignalFilter && checkedMatchups < matchupBoxes.length) {
+                counterText += ' — use Select All (Matchup Filter)';
+            }
+            document.getElementById('counter-box').innerText = counterText;
         }
 
         async function loadPlatoons() {
