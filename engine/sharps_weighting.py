@@ -264,23 +264,12 @@ class SharpsWeighting:
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
         
-        # Composite PHY display (0–100): core physics + matchup context (avoid all-100 cap)
-        physics_pillar = round(min(99.0, physics_raw + vulnerability_mod * 0.65 + bullpen_boost * 0.5), 1)
-        market_ml_bonus = round(ml_score * 0.25, 1)
-        market_tt_bonus = round(tt_score * 0.25, 1)
-        market_pillar = min(100.0, market_raw)
-
         return {
             "final": round(final_omega, 1),
             "physics": round(physics_raw * 0.40, 1),
             "physics_raw": round(physics_raw, 1),
-            "physics_pillar": round(physics_pillar, 1),
             "market": round(market_raw * 0.20, 1),
             "market_raw": round(market_raw, 1),
-            "market_pillar": round(market_pillar, 1),
-            "market_itt_base": round(base_market_score, 1),
-            "market_ml_bonus": market_ml_bonus,
-            "market_tt_bonus": market_tt_bonus,
             "team_xwoba": round(team_xwoba, 3),
             "power_concentration": round(power_concentration, 3),
             "vulnerability": round(vulnerability_mod, 1),
@@ -436,7 +425,6 @@ class SharpsWeighting:
             "physics": round(p_comp, 1),
             "physics_component": round(p_comp, 1),
             "market": round(m_comp, 1),
-            "market_pillar": round(m_comp, 1),
             "matchup_xwoba": round(matchup_xwoba, 3),
             "matchup_boost": round(matchup_radar_boost, 2),
             "platoon_multiplier": round(platoon_multiplier, 2),
