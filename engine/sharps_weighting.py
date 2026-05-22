@@ -264,14 +264,27 @@ class SharpsWeighting:
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
         
+        # Composite pillars (what feeds base score before alpha multipliers)
+        physics_pillar = min(100.0, physics_raw + vulnerability_mod + bullpen_boost)
+        market_ml_bonus = round(ml_score * 0.25, 1)
+        market_tt_bonus = round(tt_score * 0.25, 1)
+        market_pillar = min(100.0, market_raw)
+
         return {
             "final": round(final_omega, 1),
             "physics": round(physics_raw * 0.40, 1),
             "physics_raw": round(physics_raw, 1),
+            "physics_pillar": round(physics_pillar, 1),
             "market": round(market_raw * 0.20, 1),
             "market_raw": round(market_raw, 1),
+            "market_pillar": round(market_pillar, 1),
+            "market_itt_base": round(base_market_score, 1),
+            "market_ml_bonus": market_ml_bonus,
+            "market_tt_bonus": market_tt_bonus,
             "team_xwoba": round(team_xwoba, 3),
+            "power_concentration": round(power_concentration, 3),
             "vulnerability": round(vulnerability_mod, 1),
+            "bullpen_boost": round(bullpen_boost, 1),
             "volatility_hit": False,
             "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence,
@@ -419,11 +432,15 @@ class SharpsWeighting:
         final_alpha *= park_factor
         
         from utils.xwoba_estimates import xwoba_to_phy_score
+        platoon_phy_bonus = max(0.0, min(12.0, (platoon_multiplier - 1.0) * 40.0))
+        physics_pillar = min(100.0, p_comp * 2.0 + platoon_phy_bonus)
         return {
             "final": round(max(0, final_alpha), 1),
-            "physics": xwoba_to_phy_score(matchup_xwoba),
+            "physics": round(physics_pillar, 1),
+            "physics_pillar": round(physics_pillar, 1),
             "physics_component": round(p_comp, 1),
             "market": round(m_comp, 1),
+            "market_pillar": round(m_comp, 1),
             "matchup_xwoba": round(matchup_xwoba, 3),
             "matchup_boost": round(matchup_radar_boost, 2),
             "platoon_multiplier": round(platoon_multiplier, 2),
