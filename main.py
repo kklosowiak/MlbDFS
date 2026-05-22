@@ -30,6 +30,7 @@ from utils.market_utils import get_market_prices, calculate_ml_move
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
+from utils.team_signals import apply_team_blind_spot
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -680,10 +681,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 final_stack_score < 80
             )
 
-            phy_display = float(xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)) or 0)
-            mkt_display = float(res.get('market_raw', res.get('market', 0)) or 0)
-            is_blind_spot = (phy_display - mkt_display) >= 55
-
             # OMEGA v10.1: Team Rolling K% Cold Streak Detection
             # Compare rolling K rate vs season K rate across confirmed lineup hitters.
             # If the team is striking out at 25%+ above their season average, flag cold streak.
@@ -715,7 +712,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             except Exception:
                 pass
 
-            team_reports.append({
+            team_row = {
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
                 'lineup_status': lineup_status,
                 'ml_move': ml_move, 'tt_move': tt_move,
@@ -723,6 +720,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
                 'physics_score': xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)),
                 'market_score': res.get('market_raw', res['market']),
+                'market_raw': res.get('market_raw'),
                 'team_xwoba': res.get('team_xwoba', 0.330),
                 'power_concentration': res.get('power_concentration', power_concentration),
                 'bullpen_boost': res.get('bullpen_boost', 0),
@@ -742,10 +740,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'implied_total': round(curr_itt, 2),
                 'total_signal': total_signal,
                 'is_physics_override': is_physics_override,  # v10.1: PHY beats market signal
-                'is_blind_spot': is_blind_spot,              # PHY - MKT gap >= 55 (server truth)
                 'is_cold_streak': is_cold_streak,            # v10.1: Rolling K% elevated 25%+
                 'rolling_k_delta': rolling_k_delta           # v10.1: % above season K rate
-            })
+            }
+            apply_team_blind_spot(team_row)
+            team_reports.append(team_row)
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
 

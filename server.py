@@ -650,8 +650,11 @@ def get_results_api():
         import datetime as _dt
         now_et = _dt.datetime.now()
 
+        from utils.team_signals import apply_team_blind_spot
+
         for t in teams:
             team_key = t.get("team", "")
+            apply_team_blind_spot(t)
 
             try:
                 dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(

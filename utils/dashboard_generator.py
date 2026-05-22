@@ -1,6 +1,7 @@
 import os
 import datetime
 from config import config
+from utils.team_signals import apply_team_blind_spot
 
 class DashboardGenerator:
     def __init__(self):
@@ -113,6 +114,7 @@ class DashboardGenerator:
 
         team_rows = []
         for t in t_reports[:20]:
+            apply_team_blind_spot(t)
             div = t.get('divergence', 0)
             if div >= 15:
                 div_pill = f'<span class="signal-pill" style="background:linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border-color:#32d74b; color:#32d74b; font-weight:800; box-shadow:0 0 10px rgba(50, 215, 75, 0.35);">🟢 ML-DIV (+{div}%)</span>'
@@ -140,7 +142,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>' if t.get('is_sharp') and not t.get('is_shark') else '' }
 { '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
 { '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }
-{ '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if (t.get('physics_score', 0) - t.get('market_score', 0)) >= 30 else '' }
+{ '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if t.get('is_blind_spot') else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }
 </div></td>
 <td><div class="signals-container">
