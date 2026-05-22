@@ -1273,7 +1273,7 @@
                 <p id="page-subtitle">Omega Tactical Command Center</p>
             </div>
             <div class="meta-group">
-                OMEGA MASTER ENGINE v10.8<br>
+                OMEGA MASTER ENGINE v10.8.1<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
             </div>
         </div>
@@ -1864,6 +1864,56 @@
             if (v >= 14) return 'color:#0a84ff; font-weight:700;';
             if (v >= 9) return 'color:#ff9f0a; font-weight:700;';
             return 'color:#ff453a; font-weight:700;';
+        }
+
+        /** Opposing SP talent 0–100 for stack rows (high = elite SP, low = targetable). */
+        function resolveOppPitcherPhys100(teamRow, oppPitcherRow) {
+            let v = numScore(teamRow.opp_pitcher_physics, 0);
+            if (!v && oppPitcherRow) {
+                v = numScore(oppPitcherRow.physics_talent, 0);
+                if (!v) v = Math.min(100, numScore(oppPitcherRow.physics_score) / 0.45);
+            }
+            return v;
+        }
+
+        function oppPitcherPhyTier(phys0to100) {
+            const v = parseFloat(phys0to100) || 0;
+            if (v <= 40) {
+                return {
+                    color: '#32d74b',
+                    bg: 'rgba(50, 215, 75, 0.12)',
+                    border: 'rgba(50, 215, 75, 0.35)',
+                    tip: 'Targetable SP — favorable stack spot',
+                };
+            }
+            if (v <= 55) {
+                return {
+                    color: '#ff9f0a',
+                    bg: 'rgba(255, 159, 10, 0.12)',
+                    border: 'rgba(255, 159, 10, 0.35)',
+                    tip: 'Neutral SP talent',
+                };
+            }
+            if (v <= 69) {
+                return {
+                    color: '#0a84ff',
+                    bg: 'rgba(10, 132, 255, 0.12)',
+                    border: 'rgba(10, 132, 255, 0.35)',
+                    tip: 'Strong SP — stack with caution',
+                };
+            }
+            return {
+                color: '#ff453a',
+                bg: 'rgba(255, 69, 58, 0.15)',
+                border: 'rgba(255, 69, 58, 0.4)',
+                tip: 'Elite SP talent — tough matchup',
+            };
+        }
+
+        function oppPitcherPhyBadgeHtml(phys0to100) {
+            const tier = oppPitcherPhyTier(phys0to100);
+            const val = (parseFloat(phys0to100) || 0).toFixed(1);
+            return `<span class="badge-mini" title="${tier.tip}" style="background:${tier.bg}; border:1px solid ${tier.border}; color:${tier.color}; border-radius:4px; padding:1px 5px; font-size:0.75em; font-family:monospace; font-weight:bold; margin-left:6px; white-space:nowrap; box-shadow:0 0 6px ${tier.bg};">PHYS ${val}</span>`;
         }
 
         function teamMktTierStyle(score) {
@@ -2804,17 +2854,12 @@
                 const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
                 const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
 
-                // OMEGA v9.2: Opposing Pitcher Physics Styling (Terrible <= 20.0, Elite >= 25.0)
-                let oppPhys = numScore(t.opp_pitcher_physics, 0);
                 let oppP = null;
                 if (latestData.pitchers && t.opp_pitcher) {
                     oppP = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
-                    if (oppP && !oppPhys) oppPhys = numScore(oppP.physics_score, 0);
                 }
-                const oppPhysColor = oppPhys <= 20.0 ? '#ff4d4d' : (oppPhys >= 25.0 ? '#4d7cff' : '#00e673');
-                const oppPhysBg = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.12)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.12)' : 'rgba(0, 230, 115, 0.12)');
-                const oppPhysBorder = oppPhys <= 20.0 ? 'rgba(255, 77, 77, 0.3)' : (oppPhys >= 25.0 ? 'rgba(77, 124, 255, 0.3)' : 'rgba(0, 230, 115, 0.3)');
-                const oppPhysBadge = `<span class="badge-mini" style="background: ${oppPhysBg}; border: 1px solid ${oppPhysBorder}; color: ${oppPhysColor}; border-radius: 4px; padding: 1px 5px; font-size: 0.75em; font-family: monospace; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px ${oppPhysBg};">PHYS ${oppPhys.toFixed(1)}</span>`;
+                const oppPhys = resolveOppPitcherPhys100(t, oppP);
+                const oppPhysBadge = oppPitcherPhyBadgeHtml(oppPhys);
 
                 // Render dynamic warning badge next to opposing pitcher name if they are a trap or paradox
                 let pitcherTrapBadge = '';
@@ -3625,7 +3670,16 @@
             document.getElementById('tm-matchup').innerText = `vs ${t.opp_pitcher} (${abbrevMap[t.opponent] || t.opponent})`;
             document.getElementById('tm-score').innerText = t.stack_score;
             document.getElementById('tm-phys').innerText = t.physics_score || 0;
-            document.getElementById('tm-opp-phys').innerText = t.opp_pitcher_physics || 0;
+            let oppPModal = null;
+            if (latestData && latestData.pitchers && t.opp_pitcher) {
+                oppPModal = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
+            }
+            const oppPhysModal = resolveOppPitcherPhys100(t, oppPModal);
+            const oppPhysEl = document.getElementById('tm-opp-phys');
+            oppPhysEl.innerText = oppPhysModal.toFixed(1);
+            const oppTierModal = oppPitcherPhyTier(oppPhysModal);
+            oppPhysEl.style.color = oppTierModal.color;
+            oppPhysEl.title = oppTierModal.tip;
             document.getElementById('tm-pen').innerText = t.bullpen_fatigue || 0;
             document.getElementById('tm-itt').innerText = t.implied_total || 0;
             document.getElementById('tm-mkt').innerText = t.market_score || 0;
@@ -3641,11 +3695,7 @@
 
             document.getElementById('tm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
 
-            // Find and populate opposing starting pitcher profiler
-            let oppP = null;
-            if (latestData.pitchers && t.opp_pitcher) {
-                oppP = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
-            }
+            const oppP = oppPModal;
 
             if (oppP) {
                 document.getElementById('tm-opp-p-name').innerText = oppP.pitcher;
