@@ -1273,8 +1273,9 @@
                 <p id="page-subtitle">Premium Slate Alpha Matrix</p>
             </div>
             <div class="meta-group">
-                OMEGA MASTER ENGINE v9.0<br>
-                SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
+                OMEGA MASTER ENGINE v10.6<br>
+                SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: hitters-matrix</span>
             </div>
         </div>
 
@@ -2671,7 +2672,7 @@
                         <div class="signals-container">
                             ${buildMarketSignalPills(t, true)}
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
-                            ${(t.physics_score - t.market_score) >= 15 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
+                            ${(t.physics_score - t.market_score) >= 30 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
                             ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
                             ${t.is_physics_override ? '<span class="signal-pill pill-neutral" style="background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;">⚡ PHY OVERRIDE</span>' : ''}
                             ${t.is_cold_streak ? `<span class="signal-pill pill-neutral" style="background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;">🥶 COLD STREAK (+${t.rolling_k_delta}% K)</span>` : ''}

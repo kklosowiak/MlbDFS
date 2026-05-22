@@ -103,7 +103,11 @@ class SharpsWeighting:
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
         physics_raw = (effective_physics - 0.260) / (0.400 - 0.260) * 100
         physics_raw = max(0, min(100, physics_raw))
-        physics_raw *= (1 + (park_factor / 100.0))
+        # PARK_FACTORS are run multipliers (~0.92–1.15), not percentage points
+        pf = float(park_factor or 1.0)
+        if pf > 3.0:
+            pf = 1.0 + (pf / 100.0)
+        physics_raw = min(100.0, physics_raw * pf)
 
         # OMEGA v8.7: Linear Fatigue Pressure (Sliding Scale v1.0)
         # Pressure starts building at 65% instead of a hard cliff at 80%
@@ -263,7 +267,9 @@ class SharpsWeighting:
         return {
             "final": round(final_omega, 1),
             "physics": round(physics_raw * 0.40, 1),
+            "physics_raw": round(physics_raw, 1),
             "market": round(market_raw * 0.20, 1),
+            "market_raw": round(market_raw, 1),
             "team_xwoba": round(team_xwoba, 3),
             "vulnerability": round(vulnerability_mod, 1),
             "volatility_hit": False,

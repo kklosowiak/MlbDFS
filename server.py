@@ -599,7 +599,15 @@ def get_dashboard(request: Request):
     
     if os.path.exists(tmpl_path):
         with open(tmpl_path, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read(), media_type="text/html; charset=utf-8")
+            return HTMLResponse(
+                content=f.read(),
+                media_type="text/html; charset=utf-8",
+                headers={
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache",
+                    "Expires": "0",
+                },
+            )
     else:
         return HTMLResponse(content="ERROR: templates/index.html not found. Place template in templates/ folder.", media_type="text/html; charset=utf-8")
 
