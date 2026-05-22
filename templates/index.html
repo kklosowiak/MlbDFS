@@ -1273,7 +1273,7 @@
                 <p id="page-subtitle">Omega Tactical Command Center</p>
             </div>
             <div class="meta-group">
-                OMEGA MASTER ENGINE v10.8.1<br>
+                OMEGA MASTER ENGINE v10.9<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
             </div>
         </div>
@@ -2033,7 +2033,6 @@
             if (entity.is_sharp && !entity.is_shark) {
                 html += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
             }
-            if (isTeamRow && entity.is_steam) { /* steam shown above */ }
             return html;
         }
 
@@ -2216,7 +2215,6 @@
                 container.appendChild(div);
             });
 
-            // "Clear All" persists in DOM — zero checked hides every matrix row
             if (container.querySelectorAll('.matchup-checkbox:checked').length === 0) {
                 container.querySelectorAll('.matchup-checkbox').forEach(cb => { cb.checked = true; });
             }
@@ -2344,10 +2342,6 @@
 
             if (tabId === 'pitchers' || tabId === 'hitters' || tabId === 'teams') {
                 setSignalFilter('');
-                const body = document.getElementById(`${tabId}-body`);
-                if (latestData && body && body.querySelectorAll('tr').length === 0) {
-                    try { renderTables(); } catch (e) { console.error('Matrix re-render on tab:', e); }
-                }
             }
             filterData();
         }
@@ -2367,49 +2361,27 @@
                     if (!slateHasData(latestData)) setHubEmptyState(msg);
                     return;
                 }
-                if (payload.error && !slateHasData(payload)) {
+
+                if (!slateHasData(payload)) {
                     if (slateHasData(latestData)) {
-                        showToast('Server has no fresh file — showing last loaded slate.', 'error');
+                        showToast(payload.message || 'Using last loaded slate.', 'error');
                     } else {
-                        showToast(payload.error, 'error');
-                        setHubEmptyState(payload.error);
+                        const msg = payload.message || payload.error || 'No slate data yet — click Refresh Slate.';
+                        showToast(msg, 'error');
+                        setHubEmptyState(msg);
                         return;
                     }
                 } else {
                     latestData = payload;
                 }
 
-                if (!slateHasData(latestData)) {
-                    setHubEmptyState('No slate data yet — click Refresh Slate.');
-                    return;
-                }
-
                 const searchBar = document.getElementById('search-bar');
                 if (searchBar) searchBar.value = '';
-                try {
-                    populateMatchupFilter(latestData);
-                } catch (mfErr) {
-                    console.warn('Matchup filter skipped:', mfErr);
-                }
-                try {
-                    updateWelcomeHub(latestData);
-                } catch (hubErr) {
-                    console.warn('Welcome hub update skipped:', hubErr);
-                }
-
-                try {
-                    renderTables();
-                    setSignalFilter('');
-                    ['pitchers', 'hitters', 'teams'].forEach(tab => {
-                        document.querySelectorAll(`#${tab}-body tr`).forEach(row => {
-                            row.style.display = '';
-                        });
-                    });
-                    filterData();
-                } catch (tableErr) {
-                    console.error('Matrix render failed:', tableErr);
-                    showToast('Matrix render failed — check browser console (F12).', 'error');
-                }
+                populateMatchupFilter(latestData);
+                updateWelcomeHub(latestData);
+                renderTables();
+                setSignalFilter('');
+                filterData();
 
                 // Fetch platoon splits globally to support popovers
                 try {
@@ -2428,7 +2400,6 @@
                     document.getElementById('slate-date').innerText = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 }
 
-                // Attack Plan is optional — failure must not block pitcher/hitter matrices
                 try {
                 const analysisRes = await fetch('/api/analysis');
                 const analysisData = await analysisRes.json();
@@ -2572,7 +2543,7 @@
                 }
             } catch (err) {
                 console.error("Failed to load data:", err);
-                showToast('Failed to load slate data — see browser console (F12).', 'error');
+                showToast('Failed to load slate data.', 'error');
                 if (!slateHasData(latestData)) setHubEmptyState('Load failed — try Refresh Slate.');
             }
         }
@@ -2678,16 +2649,11 @@
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
 
-            let pRendered = 0;
-            let hRendered = 0;
-            let tRendered = 0;
-
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
             if (!pBody) throw new Error('pitchers-body element missing');
             pBody.innerHTML = '';
             pitchers.forEach(p => {
-                try {
                 let oppT = null;
                 if (latestData.teams && p.opponent) {
                     oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
@@ -2758,10 +2724,6 @@
                     <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
                 `;
                 pBody.appendChild(tr);
-                pRendered++;
-                } catch (rowErr) {
-                    console.warn('Pitcher row skipped:', p.pitcher, rowErr);
-                }
             });
 
             // 2. Render Hitters
@@ -2769,7 +2731,6 @@
             if (!hBody) throw new Error('hitters-body element missing');
             hBody.innerHTML = '';
             hittersForRender.forEach(h => {
-                try {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
                 const hTeam = teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(h.team));
@@ -2825,10 +2786,6 @@
                     <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>
                 `;
                 hBody.appendChild(tr);
-                hRendered++;
-                } catch (rowErr) {
-                    console.warn('Hitter row skipped:', h.name, rowErr);
-                }
             });
 
             // 3. Render Teams
@@ -2836,7 +2793,6 @@
             if (!tBody) throw new Error('teams-body element missing');
             tBody.innerHTML = '';
             teams.forEach(t => {
-                try {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(t.team)},${getTeamAbbr(t.opponent)}`);
                 tr.setAttribute('data-steam', t.is_steam ? '1' : '0');
@@ -2948,17 +2904,13 @@
                     </td>
                 `;
                 tBody.appendChild(tr);
-                tRendered++;
-                } catch (rowErr) {
-                    console.warn('Team row skipped:', t.team, rowErr);
-                }
             });
 
-            window.matrixRowCounts = { pitchers: pRendered, hitters: hRendered, teams: tRendered };
-            if (pRendered === 0 && hRendered === 0 && tRendered === 0) {
-                const emptyMsg = '<tr><td colspan="12" style="text-align:center;padding:40px;color:var(--accent-orange);font-weight:700;">No matrix rows loaded — click Refresh Slate or check Render logs.</td></tr>';
-                if (pitchers.length === 0) pBody.innerHTML = emptyMsg;
-            }
+            window.matrixRowCounts = {
+                pitchers: pitchers.length,
+                hitters: hittersForRender.length,
+                teams: teams.length
+            };
             filterData();
         }
 
