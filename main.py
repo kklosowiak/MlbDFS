@@ -23,6 +23,18 @@ from data.statcast_bridge import StatcastBridge
 from engine.sharps_weighting import SharpsWeighting
 from engine.matchup_radar import MatchupRadar
 from utils.dashboard_generator import DashboardGenerator
+
+
+def _slate_relative_phy_scores(rows, source_key="team_xwoba", dest_key="physics_score"):
+    """Map xwOBA to 0–100 using tonight's slate min/max so PHY spreads (not all 100)."""
+    vals = [float(r.get(source_key) or 0) for r in rows]
+    if not vals:
+        return
+    lo, hi = min(vals), max(vals)
+    span = hi - lo
+    for r in rows:
+        v = float(r.get(source_key) or 0)
+        r[dest_key] = round(((v - lo) / span) * 100, 1) if span > 1e-6 else 50.0
 from utils.audit_engine import AuditEngine
 from utils.slate_report_generator import SlateReportGenerator
 from config import config
@@ -312,7 +324,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     # Identify the elite stacks (Top 3)
     sorted_teams = sorted(team_reports, key=lambda x: x['stack_score'], reverse=True)
     top_stack_names = [t['team'] for t in sorted_teams[:3]]
-    high_power_teams = [t['team'] for t in team_reports if t['physics_score'] >= 22.0] # 22+ is elite raw power
+    high_power_teams = [t['team'] for t in team_reports if t.get('team_xwoba', 0) >= 0.335]
 
     for p in p_reports:
         # 1. Paradox Check (Facing a Top 3 stack)
@@ -728,7 +740,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'ml_move': ml_move, 'tt_move': tt_move,
                 'stack_score': final_stack_score,
                 'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
-                'physics_score': round(max(0, min(100, ((res.get('team_xwoba', 0.330) - 0.280) / 0.140) * 100)), 1),
                 'market_score': res.get('market_raw', res['market']),
                 'team_xwoba': res.get('team_xwoba', 0.330),
                 'power_concentration': power_concentration,
@@ -752,6 +763,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             })
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
+    _slate_relative_phy_scores(team_reports, "team_xwoba", "physics_score")
 
     # OMEGA v6.3: Auto-log SURGING/FADING tags to trend_tag_log.csv for validation
     import csv
@@ -899,6 +911,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         if hr['name'] not in seen_hitters:
             seen_hitters.add(hr['name'])
             cleaned_h_reports.append(hr)
+    _slate_relative_phy_scores(cleaned_h_reports, "matchup_xwoba", "physics_score")
     return cleaned_h_reports
 
 if __name__ == "__main__":

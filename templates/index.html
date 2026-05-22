@@ -1275,7 +1275,7 @@
             <div class="meta-group">
                 OMEGA MASTER ENGINE v10.6<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span><br>
-                <span style="font-size:0.7rem; opacity:0.55;">UI build: phy-scale-v2</span>
+                <span style="font-size:0.7rem; opacity:0.55;">UI build: phy-slate-relative</span>
             </div>
         </div>
 
@@ -1858,6 +1858,35 @@
         function metricCellHtml(value, tierStyle, rankInfo) {
             const sub = slatePercentileHtml(rankInfo);
             return `<td class="metric" style="${tierStyle} font-variant-numeric:tabular-nums;">${value}${sub}</td>`;
+        }
+
+        function teamPhyCell(t, rankInfo) {
+            const xw = (t.team_xwoba != null ? t.team_xwoba : 0.330).toFixed(3);
+            const style = phyScoreTierStyle(t.physics_score);
+            const sub = slatePercentileHtml(rankInfo);
+            return `<td class="metric" style="${style} font-variant-numeric:tabular-nums;" title="Stack xwOBA ${xw}">
+                <span style="font-weight:800;">${t.physics_score ?? '—'}</span>
+                <div style="font-size:0.65rem; opacity:0.72; font-weight:600;">${xw} xw</div>${sub}</td>`;
+        }
+
+        function isTeamBlindSpot(t) {
+            const xw = t.team_xwoba || 0.33;
+            const mkt = t.market_score || 0;
+            const physIdx = Math.min(100, Math.max(0, ((xw - 0.28) / 0.12) * 100));
+            return physIdx - mkt >= 30;
+        }
+
+        /** PHY 0–100 from tonight's slate xwOBA spread (works even on stale JSON). */
+        function applySlatePhyDisplay(teams, sourceKey, destKey) {
+            if (!teams || !teams.length) return;
+            const vals = teams.map(t => parseFloat(t[sourceKey]) || 0);
+            const lo = Math.min(...vals);
+            const hi = Math.max(...vals);
+            const span = hi - lo;
+            teams.forEach((t, i) => {
+                const v = vals[i];
+                t[destKey] = span > 1e-6 ? Math.round(((v - lo) / span) * 1000) / 10 : 50;
+            });
         }
 
         function attackConfHtml(entity) {
@@ -2464,15 +2493,17 @@
             if (!latestData) return;
 
             const pitchers = latestData.pitchers || [];
-            const hitters = latestData.hitters || [];
-            const teams = latestData.teams || [];
+            const teams = (latestData.teams || []).map(t => ({ ...t }));
+            applySlatePhyDisplay(teams, 'team_xwoba', 'physics_score');
+            const hittersForRender = (latestData.hitters || []).map(h => ({ ...h }));
+            applySlatePhyDisplay(hittersForRender, 'matchup_xwoba', 'physics_score');
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
-            const hRanks = computeScoreRankMap(hitters, 'player_score', 'name');
+            const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
             const tPhyRanks = computeScoreRankMap(teams, 'physics_score', 'team');
             const tMktRanks = computeScoreRankMap(teams, 'market_score', 'team');
-            const hPhyRanks = computeScoreRankMap(hitters, 'physics_score', 'name');
-            const hXwRanks = computeScoreRankMap(hitters, 'matchup_xwoba', 'name');
+            const hPhyRanks = computeScoreRankMap(hittersForRender, 'physics_score', 'name');
+            const hXwRanks = computeScoreRankMap(hittersForRender, 'matchup_xwoba', 'name');
 
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
@@ -2553,7 +2584,7 @@
             // 2. Render Hitters
             const hBody = document.getElementById('hitters-body');
             hBody.innerHTML = '';
-            hitters.forEach(h => {
+            hittersForRender.forEach(h => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(h.team)},${getTeamAbbr(h.opponent)}`);
                 const hTeam = teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(h.team));
@@ -2705,13 +2736,13 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${t.stack_score}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
-                    ${metricCellHtml(t.physics_score ?? 0, phyScoreTierStyle(t.physics_score), tPhyRanks[t.team])}
+                    ${teamPhyCell(t, tPhyRanks[t.team])}
                     ${metricCellHtml(t.market_score ?? 0, slatePctTierStyle(tMktRanks[t.team]), tMktRanks[t.team])}
                     <td>
                         <div class="signals-container">
                             ${buildMarketSignalPills(t, true)}
                             ${t.is_burst ? '<span class="signal-pill pill-burst">⚡ BURST</span>' : ''}
-                            ${(t.physics_score - t.market_score) >= 30 ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
+                            ${isTeamBlindSpot(t) ? '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' : ''}
                             ${t.is_opp_debut ? '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' : ''}
                             ${t.is_physics_override ? '<span class="signal-pill pill-neutral" style="background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;">⚡ PHY OVERRIDE</span>' : ''}
                             ${t.is_cold_streak ? `<span class="signal-pill pill-neutral" style="background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;">🥶 COLD STREAK (+${t.rolling_k_delta}% K)</span>` : ''}
