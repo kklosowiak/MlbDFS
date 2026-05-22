@@ -2267,7 +2267,9 @@
                 loadWeather();
             }
 
-            // Re-run filter/counter
+            if (tabId === 'pitchers' || tabId === 'hitters' || tabId === 'teams') {
+                setSignalFilter('');
+            }
             filterData();
         }
 
@@ -2288,6 +2290,17 @@
                     console.warn('Welcome hub update skipped:', hubErr);
                 }
 
+                // Matrices first — must not depend on Attack Plan markdown parsing
+                try {
+                    renderTables();
+                    setSignalFilter('');
+                    if (currentTab === 'pitchers' || currentTab === 'hitters' || currentTab === 'teams') {
+                        filterData();
+                    }
+                } catch (tableErr) {
+                    console.error('Matrix render failed:', tableErr);
+                }
+
                 // Fetch platoon splits globally to support popovers
                 try {
                     const platRes = await fetch('/api/platoons');
@@ -2305,7 +2318,8 @@
                     document.getElementById('slate-date').innerText = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 }
 
-                // Fetch markdown analysis
+                // Attack Plan is optional — failure must not block pitcher/hitter matrices
+                try {
                 const analysisRes = await fetch('/api/analysis');
                 const analysisData = await analysisRes.json();
                 
@@ -2434,8 +2448,11 @@
                 } else {
                     document.getElementById('analysis-markdown').innerText = analysisData.markdown;
                 }
-
-                renderTables();
+                } catch (analysisErr) {
+                    console.warn('Attack Plan markdown load skipped:', analysisErr);
+                    const container = document.getElementById('analysis-markdown');
+                    if (container) container.innerText = 'Attack Plan unavailable this refresh.';
+                }
 
                 // Pre-load learning feedback so stats are always visible (not just on tab click)
                 try {
