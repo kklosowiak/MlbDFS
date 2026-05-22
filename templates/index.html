@@ -1811,7 +1811,7 @@
         };
 
         function computeScoreRankMap(items, scoreKey, idKey) {
-            const sorted = [...items].sort((a, b) => (b[scoreKey] || 0) - (a[scoreKey] || 0));
+            const sorted = [...items].sort((a, b) => numScore(b[scoreKey]) - numScore(a[scoreKey]));
             const map = {};
             sorted.forEach((item, idx) => {
                 const id = item[idKey] || item.team || item.pitcher || item.name;
@@ -2299,6 +2299,7 @@
                     }
                 } catch (tableErr) {
                     console.error('Matrix render failed:', tableErr);
+                    showToast('Matrix render failed — check browser console (F12).', 'error');
                 }
 
                 // Fetch platoon splits globally to support popovers
@@ -2570,6 +2571,11 @@
             const pBody = document.getElementById('pitchers-body');
             pBody.innerHTML = '';
             pitchers.forEach(p => {
+                let oppT = null;
+                if (latestData.teams && p.opponent) {
+                    oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
+                }
+
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-teams', `${getTeamAbbr(p.team)},${getTeamAbbr(p.opponent)}`);
                 tr.setAttribute('data-conf', (p.attack_conf >= 60) ? '1' : '0');
@@ -2583,16 +2589,10 @@
                 
                 const scoreClass = pScore >= 100 ? 'score elite' : (pScore >= 85 ? 'score high' : 'score med');
                 
-                // Find opposing stack team info
-                let oppT = null;
-                if (latestData.teams && p.opponent) {
-                    oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
-                }
-                
                 let oppStackBadge = '';
                 if (oppT) {
                     if (p.is_paradox) {
-                        oppStackBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: #ff453a; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.2);">🔥 ELITE STACK (${oppT.stack_score.toFixed(0)})</span>`;
+                        oppStackBadge = `<span class="badge-mini" style="background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: #ff453a; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.2);">🔥 ELITE STACK (${numScore(oppT.stack_score).toFixed(0)})</span>`;
                     } else if (oppT.is_whale || oppT.is_shark) {
                         oppStackBadge = `<span class="badge-mini" style="background: rgba(10, 132, 255, 0.12); border: 1px solid rgba(10, 132, 255, 0.3); color: #0a84ff; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🐳 SHARP TARGET</span>`;
                     }
@@ -3381,12 +3381,16 @@
                     btn.innerHTML = `<span class="spinner"></span> <span id="btn-text">${status.progress || 'Analyzing...'}</span>`;
                 } else {
                     if (btn.classList.contains('loading')) {
-                        // Just finished reloading! Load fresh data!
                         btn.classList.remove('loading');
                         btn.disabled = false;
                         btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> <span id="btn-text">Refresh Slate</span>`;
-                        loadData();
-                        pollDataHealth();
+                        const prog = (status.progress || '').trim();
+                        if (prog.startsWith('Error:')) {
+                            showToast(prog, 'error');
+                        } else {
+                            loadData();
+                            pollDataHealth();
+                        }
                     }
                 }
             } catch (err) {
