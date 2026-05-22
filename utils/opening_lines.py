@@ -120,7 +120,18 @@ def load_manual_vegas_opens(slate_date_iso=None):
     return data.get("games", [])
 
 
+def sync_fantasylabs_vegas_opens(slate_date_iso=None):
+    """Pull true FL opening ML/totals into vegas_opens_manual.json (no paste)."""
+    try:
+        from data.fantasylabs_vegas_fetcher import write_manual_opens
+        return write_manual_opens(slate_date_iso)
+    except Exception as e:
+        print(f"  - [LINES WARNING]: FantasyLabs Vegas sync failed: {e}")
+        return None
+
+
 def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
+    """FantasyLabs opens are the canonical baseline when available for this slate."""
     manuals = load_manual_vegas_opens(slate_date_iso)
     if not manuals:
         return 0
@@ -137,31 +148,36 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
         if not manual:
             continue
 
+        away_ml, _ = get_market_prices(game, away)
+        home_ml, total = get_market_prices(game, home)
+
         if g_id not in open_lookup:
-            away_ml, _ = get_market_prices(game, away)
-            home_ml, total = get_market_prices(game, home)
             open_lookup[g_id] = _game_entry(
-                g_id, game, away_ml or -110, home_ml or -110, total or 8.5, "vegas_manual"
+                g_id,
+                game,
+                manual.get("away_opening_ml") or away_ml or -110,
+                manual.get("home_opening_ml") or home_ml or -110,
+                manual.get("opening_total") or total or 8.5,
+                "fantasylabs_vegas",
             )
         else:
             row = open_lookup[g_id]
-            # Only override when opens were not set by Odds API historical / snapshot
-            src = str(row.get("opening_source", ""))
-            if "odds_api_historical" in src or "snapshot_backfill" in src or "4:30_capture" in src:
-                continue
+            if manual.get("away_opening_ml") is not None:
+                row["away_opening_ml"] = manual["away_opening_ml"]
+            if manual.get("home_opening_ml") is not None:
+                row["home_opening_ml"] = manual["home_opening_ml"]
+            if manual.get("opening_total") is not None:
+                row["opening_total"] = manual["opening_total"]
+            row["opening_source"] = "fantasylabs_vegas"
 
         row = open_lookup[g_id]
-        if manual.get("away_opening_ml") is not None:
-            row["away_opening_ml"] = manual["away_opening_ml"]
-        if manual.get("home_opening_ml") is not None:
-            row["home_opening_ml"] = manual["home_opening_ml"]
-        if manual.get("opening_total") is not None:
-            row["opening_total"] = manual["opening_total"]
-        row["opening_source"] = "vegas_manual"
+        row["away_current_ml"] = away_ml if away_ml is not None else row.get("away_current_ml")
+        row["home_current_ml"] = home_ml if home_ml is not None else row.get("home_current_ml")
+        row["current_total"] = total if total is not None else row.get("current_total")
         applied += 1
 
     if applied:
-        print(f"  - [LINES]: Applied manual Vegas opens for {applied} game(s).")
+        print(f"  - [LINES]: FantasyLabs opening lines applied for {applied} game(s).")
     return applied
 
 

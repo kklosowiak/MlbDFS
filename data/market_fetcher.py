@@ -380,6 +380,7 @@ class MarketFetcher:
             find_earliest_lines_from_snapshots,
             load_opening_lines_for_slate,
             persist_opening_db,
+            sync_fantasylabs_vegas_opens,
             _game_entry,
             _pair_key,
         )
@@ -388,9 +389,11 @@ class MarketFetcher:
         slate_ids = set()
         historical_by_pair = {}
 
+        sync_fantasylabs_vegas_opens(slate_date)
+
         if capture_opening:
             open_lookup = {}
-            print(f"  - [LINES]: 4:30 AM OPEN CAPTURE for slate {slate_date} (Odds API historical).")
+            print(f"  - [LINES]: 4:30 AM OPEN CAPTURE for slate {slate_date}.")
             historical_by_pair = self._historical_opens_by_pair(slate_date)
         else:
             open_lookup = {
@@ -533,9 +536,8 @@ class MarketFetcher:
                 open_lookup[g_id]["home_current_ml"] = home_ml
                 open_lookup[g_id]["current_total"] = total
 
-        if not capture_opening:
-            # FantasyLabs manual file only fills gaps after Odds API historical
-            apply_manual_vegas_opens(open_lookup, structured_odds, slate_date)
+        # FantasyLabs true opens override DK historical where available (canonical baseline)
+        apply_manual_vegas_opens(open_lookup, structured_odds, slate_date)
 
         dated_path, count = persist_opening_db(open_lookup, slate_ids, slate_date)
         print(f"  - [LINES]: Opening lines saved ({count} games) -> {os.path.basename(dated_path)}")
