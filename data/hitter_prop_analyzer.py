@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
 from config import config
 from utils.normalization import normalize_player_name
-from utils.xwoba_estimates import ops_to_xwoba
+from utils.xwoba_estimates import ops_to_xwoba, cap_matchup_xwoba
 from data.statcast_bridge import StatcastBridge
 
 class HitterPropAnalyzer:
@@ -41,14 +41,14 @@ class HitterPropAnalyzer:
     def _resolve_xwoba(self, name, profile):
         """Registry → Statcast OPS → ops_to_xwoba heuristic (replaces OPS/2.5)."""
         reg = self.xwoba_registry.get(name)
-        if reg:
-            return reg
+        if reg is not None:
+            return cap_matchup_xwoba(reg)
         if isinstance(profile, dict):
             ops_val = float(profile.get("ops", 0.0) or 0.0)
             pa = int(profile.get("pa", 0) or 0)
             if pa >= 50 and ops_val > 0:
                 return ops_to_xwoba(ops_val)
-        return 0.330
+        return 0.310
 
     def decimal_to_american(self, decimal):
         """Converts decimal odds to American format."""
@@ -327,7 +327,7 @@ class HitterPropAnalyzer:
                         pa_count = p.get('pa', 0)
                         if pa_count < 50: continue
                         
-                        xwoba = self.xwoba_registry.get(name, p.get('ops', 0.0) / 2.5)
+                        xwoba = self._resolve_xwoba(name, p)
                         hitter_map[name] = {
                             'name': name,
                             'team': team,

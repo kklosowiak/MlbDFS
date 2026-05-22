@@ -387,7 +387,8 @@ class SharpsWeighting:
 
             # Bound split-scaling to stay within realistic sabermetric bounds [0.70, 1.30]
             platoon_multiplier = max(0.70, min(1.30, platoon_multiplier))
-            matchup_xwoba = matchup_xwoba * platoon_multiplier
+            from utils.xwoba_estimates import cap_matchup_xwoba
+            matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * platoon_multiplier)
 
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))

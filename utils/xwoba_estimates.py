@@ -2,16 +2,27 @@
 
 
 def ops_to_xwoba(ops):
-    """Map OPS to approximate xwOBA when Statcast xwOBA is unavailable."""
+    """
+    Map OPS → approximate xwOBA when Savant xwOBA is unavailable.
+    Calibrated to MLB reality (~.710 OPS ≈ .320 xwOBA, elite ~.950 OPS ≈ .400).
+    Old formula (ops*1.2 - 0.075) capped most lineups at .48 and collapsed PHY.
+    """
     if not ops or ops <= 0:
-        return 0.320
-    return max(0.250, min(0.480, (float(ops) * 1.20) - 0.075))
+        return 0.310
+    ops = float(ops)
+    xw = 0.180 + (ops * 0.230)
+    return round(max(0.250, min(0.420, xw)), 3)
+
+
+def cap_matchup_xwoba(xwoba):
+    """Hard ceiling for platoon-adjusted matchup xwOBA."""
+    return round(min(0.420, max(0.250, float(xwoba or 0.310))), 3)
 
 
 def xwoba_to_phy_score(xwoba):
-    """Map lineup/matchup xwOBA to 0–100 PHY display (0.280 weak → 0.450 elite)."""
-    x = float(xwoba or 0.330)
-    return round(max(0.0, min(100.0, ((x - 0.280) / 0.170) * 100)), 1)
+    """Map lineup xwOBA to 0–100 PHY (.280 weak → .400 elite)."""
+    x = float(xwoba or 0.310)
+    return round(max(0.0, min(100.0, ((x - 0.280) / 0.120) * 100)), 1)
 
 
 def woba_proxy_to_xwoba(woba_proxy, ops_fallback=0.0):

@@ -28,7 +28,7 @@ from utils.slate_report_generator import SlateReportGenerator
 from config import config
 from utils.normalization import normalize_player_name
 from utils.market_utils import get_market_prices, calculate_ml_move
-from utils.xwoba_estimates import xwoba_to_phy_score
+from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -548,8 +548,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         elif split_pa >= 20:
                             platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
                     
-                    base_xwoba = h.get('matchup_xwoba', 0.330)
-                    adj_xwoba = base_xwoba * platoon_multiplier
+                    base_xwoba = h.get('matchup_xwoba', 0.310)
+                    adj_xwoba = cap_matchup_xwoba(base_xwoba * platoon_multiplier)
                     adjusted_h_list.append({
                         'name': h['name'],
                         'matchup_xwoba': adj_xwoba
