@@ -1273,7 +1273,7 @@
                 <p id="page-subtitle">Omega Tactical Command Center</p>
             </div>
             <div class="meta-group">
-                OMEGA MASTER ENGINE v10.7<br>
+                OMEGA MASTER ENGINE v10.8<br>
                 SLATE ANALYSIS: <span id="slate-date">LOADING...</span>
             </div>
         </div>
@@ -2168,10 +2168,27 @@
 
             // "Clear All" persists in DOM — zero checked hides every matrix row
             if (container.querySelectorAll('.matchup-checkbox:checked').length === 0) {
-                container.querySelectorAll('.matchup-checkbox').forEach(cb => {
-                    cb.checked = true;
-                    cb.dispatchEvent(new Event('change'));
-                });
+                container.querySelectorAll('.matchup-checkbox').forEach(cb => { cb.checked = true; });
+            }
+        }
+
+        function slateHasData(data) {
+            if (!data) return false;
+            return (data.pitchers && data.pitchers.length > 0)
+                || (data.teams && data.teams.length > 0)
+                || (data.hitters && data.hitters.length > 0);
+        }
+
+        function setHubEmptyState(message) {
+            const msg = message || 'Run Refresh Slate to load data.';
+            ['hub-top-pitcher', 'hub-top-stack', 'hub-top-hitter', 'hub-top-div',
+             'hub-top-conf-stack', 'hub-sneaky-stack'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = '—';
+            });
+            const tickerEl = document.getElementById('omega-ticker');
+            if (tickerEl) {
+                tickerEl.innerHTML = `<span style="color:var(--accent-orange);">${msg}</span>`;
             }
         }
 
@@ -2288,33 +2305,57 @@
         // Load all data from API
         async function loadData() {
             try {
-                // Fetch projections
                 const res = await fetch('/api/results');
                 if (res.status === 401) {
                     window.location.href = '/login';
                     return;
                 }
-                latestData = await res.json();
-                if (latestData && latestData.error) {
-                    showToast(latestData.error, 'error');
+                const payload = await res.json();
+                if (!res.ok) {
+                    const msg = payload.detail || payload.error || `Results API failed (${res.status})`;
+                    showToast(msg, 'error');
+                    if (!slateHasData(latestData)) setHubEmptyState(msg);
                     return;
                 }
+                if (payload.error && !slateHasData(payload)) {
+                    if (slateHasData(latestData)) {
+                        showToast('Server has no fresh file — showing last loaded slate.', 'error');
+                    } else {
+                        showToast(payload.error, 'error');
+                        setHubEmptyState(payload.error);
+                        return;
+                    }
+                } else {
+                    latestData = payload;
+                }
+
+                if (!slateHasData(latestData)) {
+                    setHubEmptyState('No slate data yet — click Refresh Slate.');
+                    return;
+                }
+
                 const searchBar = document.getElementById('search-bar');
                 if (searchBar) searchBar.value = '';
-                populateMatchupFilter(latestData);
+                try {
+                    populateMatchupFilter(latestData);
+                } catch (mfErr) {
+                    console.warn('Matchup filter skipped:', mfErr);
+                }
                 try {
                     updateWelcomeHub(latestData);
                 } catch (hubErr) {
                     console.warn('Welcome hub update skipped:', hubErr);
                 }
 
-                // Matrices first — must not depend on Attack Plan markdown parsing
                 try {
                     renderTables();
                     setSignalFilter('');
-                    if (currentTab === 'pitchers' || currentTab === 'hitters' || currentTab === 'teams') {
-                        filterData();
-                    }
+                    ['pitchers', 'hitters', 'teams'].forEach(tab => {
+                        document.querySelectorAll(`#${tab}-body tr`).forEach(row => {
+                            row.style.display = '';
+                        });
+                    });
+                    filterData();
                 } catch (tableErr) {
                     console.error('Matrix render failed:', tableErr);
                     showToast('Matrix render failed — check browser console (F12).', 'error');
@@ -2481,6 +2522,8 @@
                 }
             } catch (err) {
                 console.error("Failed to load data:", err);
+                showToast('Failed to load slate data — see browser console (F12).', 'error');
+                if (!slateHasData(latestData)) setHubEmptyState('Load failed — try Refresh Slate.');
             }
         }
 
@@ -2498,9 +2541,9 @@
 
               // Top Stack
               if (data.teams && data.teams.length > 0) {
-                  let t = [...data.teams].sort((a,b) => b.stack_score - a.stack_score)[0];
+                  let t = [...data.teams].sort((a,b) => numScore(b.stack_score) - numScore(a.stack_score))[0];
                   document.getElementById('hub-top-stack').innerText = t.team || "---";
-                  document.getElementById('hub-top-stack-score').innerText = 'Omega: ' + (t.stack_score ? t.stack_score.toFixed(1) : '--');
+                  document.getElementById('hub-top-stack-score').innerText = 'Omega: ' + (numScore(t.stack_score) ? numScore(t.stack_score).toFixed(1) : '--');
                   
                   // Top Divergence
                   let div = [...data.teams].sort((a,b) => Math.abs(parseFloat(b.divergence||0)) - Math.abs(parseFloat(a.divergence||0)))[0];
@@ -2521,16 +2564,16 @@
                   const confStack = [...data.teams].filter(t => t.attack_conf != null).sort((a, b) => (b.attack_conf || 0) - (a.attack_conf || 0))[0];
                   if (confStack) {
                       document.getElementById('hub-top-conf-stack').innerText = confStack.team || '---';
-                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confStack.attack_conf + '% · Ω ' + (confStack.stack_score ? confStack.stack_score.toFixed(1) : '--');
+                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confStack.attack_conf + '% · Ω ' + (numScore(confStack.stack_score) ? numScore(confStack.stack_score).toFixed(1) : '--');
                   }
                   const sneaky = [...data.teams].filter(t =>
                       t.stack_score >= 95 && t.stack_score <= 125 &&
                       (t.is_shark || t.is_steam) &&
                       (t.dqi_score >= 75 || t.dqi_status === 'TRUST')
-                  ).sort((a, b) => b.stack_score - a.stack_score)[0];
+                  ).sort((a, b) => numScore(b.stack_score) - numScore(a.stack_score))[0];
                   if (sneaky) {
                       document.getElementById('hub-sneaky-stack').innerText = sneaky.team || '---';
-                      document.getElementById('hub-sneaky-stack-score').innerText = 'Ω ' + sneaky.stack_score.toFixed(1) + (sneaky.is_steam ? ' · STEAM' : ' · SHARK');
+                      document.getElementById('hub-sneaky-stack-score').innerText = 'Ω ' + numScore(sneaky.stack_score).toFixed(1) + (sneaky.is_steam ? ' · STEAM' : ' · SHARK');
                   } else {
                       document.getElementById('hub-sneaky-stack').innerText = '—';
                       document.getElementById('hub-sneaky-stack-score').innerText = 'No sneaky lean match';

@@ -653,24 +653,29 @@ def get_results_api():
         for t in teams:
             team_key = t.get("team", "")
 
-            dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(t, pitchers=pitchers)
-            if dqi_score is not None:
-                t["dqi_score"] = dqi_score
-                t["dqi_status"] = dqi_status
-                t["dqi_pos_factors"] = dqi_pos_factors
-                t["dqi_warn_factors"] = dqi_warn_factors
-            else:
-                hist = dqi_history.get(team_key)
-                if hist:
-                    try:
-                        recorded = _dt.datetime.fromisoformat(hist["recorded_at"])
-                        hours_ago = (now_et - recorded).total_seconds() / 3600
-                        if hours_ago <= 4:
-                            t["dqi_faded"] = True
-                            t["dqi_faded_score"] = hist["score"]
-                            t["dqi_faded_status"] = hist["status"]
-                    except Exception:
-                        pass
+            try:
+                dqi_score, dqi_status, dqi_pos_factors, dqi_warn_factors = calculate_dqi(
+                    t, pitchers=pitchers
+                )
+                if dqi_score is not None:
+                    t["dqi_score"] = dqi_score
+                    t["dqi_status"] = dqi_status
+                    t["dqi_pos_factors"] = dqi_pos_factors
+                    t["dqi_warn_factors"] = dqi_warn_factors
+                else:
+                    hist = dqi_history.get(team_key)
+                    if hist:
+                        try:
+                            recorded = _dt.datetime.fromisoformat(hist["recorded_at"])
+                            hours_ago = (now_et - recorded).total_seconds() / 3600
+                            if hours_ago <= 4:
+                                t["dqi_faded"] = True
+                                t["dqi_faded_score"] = hist["score"]
+                                t["dqi_faded_status"] = hist["status"]
+                        except Exception:
+                            pass
+            except Exception as dqi_err:
+                print(f"[API WARNING]: DQI skipped for {team_key}: {dqi_err}")
 
             ump_factor = t.get("umpire_factor", 1.0)
             if ump_factor >= 1.03:
@@ -691,7 +696,20 @@ def get_results_api():
             }
         )
     else:
-        return {"error": "No results available yet. Run a slate refresh."}
+        return JSONResponse(
+            content={
+                "pitchers": [],
+                "teams": [],
+                "hitters": [],
+                "timestamp": None,
+                "message": "No results available yet. Run a slate refresh.",
+            },
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            },
+        )
 
 @app.get("/api/analysis", dependencies=[Depends(get_current_user)])
 def get_analysis_api():

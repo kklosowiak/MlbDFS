@@ -16,11 +16,17 @@ def calculate_dqi(team, pitchers=None):
 
     Returns (score, status, pos_factors, warn_factors) or (None, None, [], []) if gated.
     """
-    divergence = team.get('divergence', 0) or 0
+    try:
+        divergence = float(team.get('divergence', 0) or 0)
+    except (TypeError, ValueError):
+        divergence = 0.0
     if divergence < 10:
         return None, None, [], []
 
-    opp_phys = team.get('opp_pitcher_physics', 50.0) or 50.0
+    try:
+        opp_phys = float(team.get('opp_pitcher_physics', 50.0) or 50.0)
+    except (TypeError, ValueError):
+        opp_phys = 50.0
     bullpen = team.get('bullpen_fatigue', 0) or 0
     tt_move = team.get('tt_move', 0.0) or 0.0
     ml_move = team.get('ml_move', 0.0) or 0.0
