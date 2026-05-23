@@ -1273,7 +1273,9 @@ def get_platoons_api():
             "Cache-Control": "no-cache, no-store, must-revalidate",
             "Pragma": "no-cache",
             "Expires": "0"
+        }
     )
+
 
 @app.get("/api/radar", dependencies=[Depends(get_current_user)])
 def get_radar_api():
