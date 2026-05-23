@@ -141,6 +141,11 @@ def perform_refresh_sync():
         import traceback
         traceback.print_exc()
         with refresh_lock:
+            try:
+                et_now = get_eastern_time(datetime.datetime.now())
+                last_scheduled_hour_key = et_now.strftime("%Y-%m-%d %H")
+            except Exception:
+                pass
             refresh_progress = f"Error: {str(e)}"
             is_refreshing = False
 

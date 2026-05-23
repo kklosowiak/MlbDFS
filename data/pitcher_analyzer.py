@@ -225,6 +225,7 @@ class PitcherAnalyzer:
                 is_death_sentence = False
                 trap_prop_note = None
                 props_feed_status = "ok"
+                sticky_trap = False
                 divergence = 0
 
                 # Recover props and movement only if game has not started or we have no pre-game snapshot
@@ -237,6 +238,8 @@ class PitcherAnalyzer:
                     is_whale = bool(prev_pitcher_data.get('is_whale', False))
                     k_line = prev_pitcher_data.get('k_line')
                     outs_line = prev_pitcher_data.get('outs_line')
+                    k_odds = prev_pitcher_data.get('k_odds')
+                    outs_odds = prev_pitcher_data.get('outs_odds')
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
                     is_prop_juice = bool(prev_pitcher_data.get('is_prop_juice', False))
                     _juice_gap = int(prev_pitcher_data.get('_juice_gap', 0) or 0)
@@ -246,6 +249,9 @@ class PitcherAnalyzer:
                     is_trap = bool(prev_pitcher_data.get('is_trap', False))
                     trap_type = prev_pitcher_data.get('trap_type')
                     is_death_sentence = bool(prev_pitcher_data.get('is_death_sentence', False))
+                    trap_prop_note = prev_pitcher_data.get('trap_prop_note')
+                    props_feed_status = prev_pitcher_data.get('props_feed_status', 'ok')
+                    sticky_trap = bool(prev_pitcher_data.get('sticky_trap', False))
                     curr_ml = open_ml + ml_move if (open_ml is not None and ml_move is not None) else -110
                     curr_total = open_total + tt_move if (open_total is not None and tt_move is not None) else 8.5
                 else:
