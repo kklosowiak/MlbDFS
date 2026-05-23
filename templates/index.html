@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light-theme');
+            }
+        })();
+    </script>
     <title>ΩMEGA Engine v9.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -23,7 +31,64 @@
             --radius-lg: 24px;
             --radius-md: 16px;
             --radius-sm: 10px;
+
+            --sidebar-bg: rgba(15, 15, 20, 0.85);
+            --nav-hover: rgba(255, 255, 255, 0.04);
+            --nav-active: rgba(255, 255, 255, 0.08);
+            --widget-bg: rgba(255, 255, 255, 0.03);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --logo-txt-grad: linear-gradient(135deg, #fff 0%, #888 100%);
+            --row-hover-bg: rgba(255, 255, 255, 0.035);
+            --row-hover-border: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --border-td: rgba(255, 255, 255, 0.04);
+            --body-gradient: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #030303 60%);
+            --drawer-bg: rgba(15, 15, 20, 0.95);
+            --handbook-sidebar-bg: rgba(10, 10, 15, 0.5);
+            --handbook-bg: rgba(3, 3, 3, 0.96);
+            --modal-bg: rgba(15, 15, 20, 0.95);
+            --modal-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(10, 132, 255, 0.15);
         }
+
+        body.light-theme {
+            --bg: #f4f6fa;
+            --surface: #ffffff;
+            --surface-hover: #eef2f7;
+            --text-primary: #1e2229;
+            --text-secondary: #5e6675;
+            --border: rgba(0, 0, 0, 0.08);
+            --sidebar-bg: rgba(255, 255, 255, 0.85);
+            --nav-hover: rgba(0, 0, 0, 0.04);
+            --nav-active: rgba(0, 0, 0, 0.08);
+            --widget-bg: rgba(0, 0, 0, 0.02);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            --logo-txt-grad: linear-gradient(135deg, #1e2229 0%, #5e6675 100%);
+            --row-hover-bg: rgba(0, 0, 0, 0.015);
+            --row-hover-border: rgba(0, 0, 0, 0.06);
+            --input-bg: rgba(0, 0, 0, 0.03);
+            --border-td: rgba(0, 0, 0, 0.04);
+            --body-gradient: radial-gradient(circle at 50% 0%, #e6eef8 0%, #f4f6fa 60%);
+            --drawer-bg: rgba(240, 244, 250, 0.95);
+            --handbook-sidebar-bg: rgba(240, 244, 250, 0.5);
+            --handbook-bg: rgba(244, 246, 250, 0.98);
+            --modal-bg: rgba(255, 255, 255, 0.98);
+            --modal-shadow: 0 30px 60px rgba(0,0,0,0.1), 0 0 40px rgba(10, 132, 255, 0.05);
+        }
+
+        /* Light Theme badge overrides to maximize premium visual contrast */
+        body.light-theme .pill-shark { color: #007aff; background: rgba(0, 122, 255, 0.08); border-color: rgba(0, 122, 255, 0.25); }
+        body.light-theme .pill-whale { color: #8f3ad6; background: rgba(143, 58, 214, 0.08); border-color: rgba(143, 58, 214, 0.25); }
+        body.light-theme .pill-storm { color: #8f3ad6; background: rgba(143, 58, 214, 0.08); }
+        body.light-theme .pill-sharp { color: #1e8a38; background: rgba(30, 138, 56, 0.08); border-color: rgba(30, 138, 56, 0.25); }
+        body.light-theme .pill-steam { color: #d97300; background: rgba(217, 115, 0, 0.08); }
+        body.light-theme .pill-burst { color: #b58900; background: rgba(181, 137, 0, 0.08); border-color: rgba(181, 137, 0, 0.25); }
+        body.light-theme .pill-target { color: #e6003a; background: rgba(230, 0, 58, 0.08); border-color: rgba(230, 0, 58, 0.25); }
+        body.light-theme .pill-anti-chalk { color: #0097a7; background: rgba(0, 151, 167, 0.08); border-color: rgba(0, 151, 167, 0.25); }
+        body.light-theme .pill-pitch-align { color: #007aff; background: rgba(0, 122, 255, 0.08); border-color: rgba(0, 122, 255, 0.25); }
+        body.light-theme .pill-slump { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
+        body.light-theme .pill-hot-run { color: #d97300; background: rgba(217, 115, 0, 0.08); border-color: rgba(217, 115, 0, 0.25); }
+        body.light-theme .pill-el-platoon { color: #1e8a38; background: rgba(30, 138, 56, 0.08); border-color: rgba(30, 138, 56, 0.25); }
+        body.light-theme .pill-trap { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
 
         * {
             box-sizing: border-box;
@@ -37,17 +102,18 @@
             margin: 0;
             padding: 0;
             display: flex;
-            background-image: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #030303 60%);
+            background-image: var(--body-gradient);
             background-attachment: fixed;
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
         }
 
         /* App Layout */
         .sidebar {
             width: 280px;
-            background: rgba(15, 15, 20, 0.85);
+            background: var(--sidebar-bg);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--border);
             height: 100vh;
@@ -59,6 +125,7 @@
             flex-direction: column;
             justify-content: space-between;
             z-index: 100;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .main-content {
@@ -88,9 +155,10 @@
             font-size: 1.3rem;
             font-weight: 800;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            background: var(--logo-txt-grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            transition: background 0.3s ease;
         }
 
         .nav-list {
@@ -117,24 +185,25 @@
 
         .nav-item:hover {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--nav-hover);
         }
 
         .nav-item.active {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--nav-active);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         /* System Health Widget */
         .system-widget {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--widget-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .widget-row {
@@ -322,19 +391,19 @@
 
         .search-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             padding: 12px 16px;
             font-size: 0.9rem;
-            color: #fff;
+            color: var(--text-primary);
             font-family: inherit;
             transition: all 0.25s ease;
         }
 
         .search-input:focus {
             border-color: var(--accent-blue);
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--surface-hover);
             box-shadow: 0 0 10px rgba(10, 132, 255, 0.15);
         }
 
@@ -361,9 +430,10 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 35px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow);
             margin-bottom: 30px;
             overflow-x: auto;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card h2 {
@@ -398,15 +468,16 @@
         }
         .sortable-th:hover {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--nav-hover);
         }
 
         td {
             padding: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid var(--border-td);
             font-size: 0.95rem;
             font-weight: 500;
             vertical-align: middle;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         tr:last-child td {
@@ -429,8 +500,8 @@
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.035) !important;
-            border-bottom-color: rgba(255, 255, 255, 0.08);
+            background: var(--row-hover-bg) !important;
+            border-bottom-color: var(--row-hover-border);
         }
 
         /* Pill styling */
@@ -686,12 +757,12 @@
             right: -420px;
             width: 420px;
             height: 100vh;
-            background: rgba(15, 15, 20, 0.95);
+            background: var(--drawer-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border-left: 1px solid var(--border);
             z-index: 200;
-            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
             box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
@@ -750,7 +821,7 @@
             border-radius: 6px;
             padding: 8px 12px;
             font-size: 0.8rem;
-            color: #fff;
+            color: var(--text-primary);
             font-family: inherit;
         }
 
@@ -780,10 +851,11 @@
         }
 
         .chat-bubble.bot {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--widget-bg);
             color: var(--text-primary);
             align-self: flex-start;
             border-bottom-left-radius: 3px;
+            transition: background 0.3s ease;
         }
 
         .chat-bubble p {
@@ -794,7 +866,7 @@
         }
         .chat-bubble strong {
             font-weight: 700;
-            color: #fff;
+            color: var(--text-primary);
         }
         .chat-bubble ul, .chat-bubble ol {
             padding-left: 20px;
@@ -810,11 +882,12 @@
             padding: 10px 30px;
             overflow-x: auto;
             border-top: 1px solid var(--border);
-            background: rgba(0,0,0,0.1);
+            background: var(--widget-bg);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .chat-chip {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 8px 14px;
@@ -823,12 +896,12 @@
             color: var(--text-secondary);
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease, background 0.3s ease, border-color 0.3s ease;
         }
 
         .chat-chip:hover {
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--nav-hover);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -841,19 +914,19 @@
 
         .chat-input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 14px 18px;
             font-size: 0.95rem;
-            color: #fff;
+            color: var(--text-primary);
             font-family: inherit;
-            transition: all 0.25s ease;
+            transition: all 0.25s ease, background 0.3s ease, border-color 0.3s ease;
         }
 
         .chat-input:focus {
             border-color: var(--accent-blue);
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--surface-hover);
         }
 
         .btn-send {
@@ -925,7 +998,7 @@
         .analysis-banner h1 {
             font-size: 2.3rem;
             font-weight: 800;
-            color: #fff;
+            color: var(--text-primary);
             margin: 0 0 10px 0;
             letter-spacing: -0.02em;
             text-shadow: 0 0 20px rgba(10, 132, 255, 0.3);
@@ -954,20 +1027,22 @@
             margin-bottom: 0px;
             padding: 0 !important;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: var(--shadow-md);
-            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            background: var(--surface);
             backdrop-filter: blur(20px);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .analysis-card-header {
-            background: rgba(255, 255, 255, 0.01);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--widget-bg);
+            border-bottom: 1px solid var(--border);
             padding: 22px 30px;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
         .analysis-card-header h2 {
             font-size: 1.35rem !important;
             font-weight: 800 !important;
-            color: #fff !important;
+            color: var(--text-primary) !important;
             margin: 0 !important;
             border-bottom: none !important;
             padding: 0 !important;
@@ -985,7 +1060,8 @@
             letter-spacing: -0.01em;
         }
         #analysis-markdown p {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary);
+            opacity: 0.95;
             margin-bottom: 1.3em;
         }
         #analysis-markdown blockquote {
@@ -1012,7 +1088,8 @@
             padding-left: 22px;
             margin-bottom: 8px;
             font-size: 0.96rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary);
+            opacity: 0.95;
         }
         #analysis-markdown li::before {
             content: "•";
@@ -1029,43 +1106,46 @@
             border-spacing: 0;
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
             margin-bottom: 2em;
-            background: rgba(255, 255, 255, 0.005);
+            background: var(--widget-bg);
+            transition: border-color 0.3s ease, background 0.3s ease;
         }
         #analysis-markdown th {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--widget-bg);
             font-weight: 700;
             font-size: 0.82rem;
             text-transform: uppercase;
             letter-spacing: 0.06em;
             color: var(--text-secondary);
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
             padding: 14px 16px;
             text-align: left;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
         #analysis-markdown td {
             padding: 14px 16px;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid var(--border-td);
             font-size: 0.93rem;
             color: var(--text-primary);
+            transition: border-color 0.3s ease;
         }
         #analysis-markdown tr:last-child td {
             border-bottom: none;
         }
         #analysis-markdown tr:hover td {
-            background: rgba(255, 255, 255, 0.015);
+            background: var(--row-hover-bg);
         }
         #analysis-markdown strong {
-            color: #fff;
+            color: var(--text-primary);
             font-weight: 600;
         }
 
         /* Sidebar Signal Guide */
         .sidebar-legend {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--widget-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 15px;
@@ -1077,6 +1157,7 @@
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.1) transparent;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .sidebar-legend::-webkit-scrollbar {
@@ -1111,11 +1192,12 @@
             gap: 10px;
             font-size: 0.72rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
-            transition: all 0.2s ease;
+            color: var(--text-primary);
+            opacity: 0.95;
+            transition: all 0.2s ease, color 0.3s ease;
         }
         .legend-item:hover {
-            color: #fff;
+            color: var(--text-primary);
             transform: translateX(2px);
         }
 
@@ -1138,11 +1220,11 @@
             right: -100%;
             width: 100vw;
             height: 100vh;
-            background: rgba(3, 3, 3, 0.96);
+            background: var(--handbook-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             z-index: 1000;
-            transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
             display: flex;
             color: var(--text-primary);
         }
@@ -1159,7 +1241,8 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
-            background: rgba(10, 10, 15, 0.5);
+            background: var(--handbook-sidebar-bg);
+            transition: border-color 0.3s ease, background 0.3s ease;
         }
 
         .handbook-sidebar h2 {
@@ -1167,9 +1250,10 @@
             font-weight: 800;
             margin: 0;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #fff 0%, var(--accent-blue) 100%);
+            background: var(--logo-txt-grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            transition: background 0.3s ease;
         }
 
         .handbook-toc {
@@ -1193,7 +1277,7 @@
         }
 
         .handbook-toc-item:hover, .handbook-toc-item.active {
-            color: #fff;
+            color: var(--text-primary);
             transform: translateX(4px);
         }
 
@@ -1208,25 +1292,25 @@
             position: absolute;
             top: 40px;
             right: 50px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--input-bg);
             border: 1px solid var(--border);
-            color: #fff;
+            color: var(--text-primary);
             padding: 10px 20px;
             border-radius: var(--radius-sm);
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
             z-index: 1010;
         }
 
         .handbook-close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--surface-hover);
             transform: translateY(-2px);
         }
 
         /* Quant Equation Styling */
         .quant-equation {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--widget-bg);
             border-left: 4px solid var(--accent-blue);
             border-radius: var(--radius-sm);
             padding: 20px 25px;
@@ -1237,14 +1321,16 @@
             color: var(--text-primary);
             overflow-x: auto;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            transition: background 0.3s ease;
         }
 
         .quant-card {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--widget-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 24px;
             margin: 20px 0;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .quant-card h4 {
@@ -1263,18 +1349,18 @@
             width: 90%;
             max-width: 800px;
             max-height: 90vh;
-            background: rgba(15, 15, 20, 0.95);
+            background: var(--modal-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             z-index: 1050;
             padding: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(10, 132, 255, 0.15);
+            box-shadow: var(--modal-shadow);
             color: var(--text-primary);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             overflow-y: auto;
         }
         .team-modal.open {
@@ -1415,6 +1501,15 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 <span id="btn-snapshot-text">Snapshot Lock</span>
             </button>
+            
+            <!-- Theme Toggle Switch -->
+            <div style="display: flex; justify-content: center; margin-top: 12px; margin-bottom: 6px;">
+                <button id="theme-toggle-btn" class="matrix-compact-toggle" style="margin-left: 0; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: var(--radius-sm); padding: 10px 14px;" onclick="toggleTheme()" title="Switch Theme">
+                    <svg id="theme-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.3s ease;">
+                    </svg>
+                    <span id="theme-toggle-text">Light Mode</span>
+                </button>
+            </div>
             
             <a href="/logout" style="text-decoration:none; text-align:center; font-size:0.85rem; font-weight:700; color:var(--accent-red); opacity:0.8; margin-top:5px;">SECURE LOGOUT</a>
 
@@ -1589,8 +1684,8 @@
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">TACTICAL MATCHUP ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
@@ -1618,8 +1713,8 @@
                             <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">TACTICAL MATCHUP ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
                             <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
@@ -1647,8 +1742,8 @@
                             <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TACTICAL MATCHUP ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
@@ -2096,29 +2191,36 @@
                     style: 'background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(144, 224, 239, 0.2) 100%); border: 1px solid #00b4d8; color: #00b4d8; font-weight:800; box-shadow: 0 0 8px rgba(0, 180, 216, 0.35);',
                 });
             }
-            return '';
-        }
-
-        function totalSignalPill(raw) {
-            if (!raw) return '';
-            const s = String(raw);
-            let tipKey = 'odiv';
-            if (s.includes('U-DIV')) tipKey = 'udiv';
-            else if (s.includes('OVER')) tipKey = 'over_money';
-            return signalPillHtml(s, { className: 'pill-neutral', tipKey });
-        }
-
-        function pitcherAlphaSignalsHtml(p) {
-            let html = '';
-            if (p.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
-            else if (p.is_prop_juice) html += signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' });
-            html += buildMarketSignalPills(p, false);
-            if (p.is_debut) html += signalPillHtml('✨ DEBUT', { className: 'pill-storm', tipKey: 'debut' });
-            return html;
-        }
-
-        function pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel) {
+            return '        function pitcherMarketIntelHtml(p, ouDivBadge) {
             let pills = [];
+            const marketPills = buildMarketSignalPills(p, false);
+            if (marketPills) pills.push(marketPills);
+
+            if (p.is_paradox) {
+                pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
+            }
+            if (p.sharp_fade) {
+                pills.push(signalPillHtml('📉 SHARP FADE', { className: 'pill-neutral', tipKey: 'sharp_fade', style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' }));
+            }
+            if (ouDivBadge) {
+                pills.push(ouDivBadge);
+            }
+
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
+        }
+
+        function pitcherTacticalMatchupHtml(p, trapSpLabel) {
+            let pills = [];
+
+            if (p.is_juiced_target) {
+                pills.push(signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' }));
+            } else if (p.is_prop_juice) {
+                pills.push(signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' }));
+            }
+
+            if (p.is_debut) {
+                pills.push(signalPillHtml('✨ DEBUT', { className: 'pill-storm', tipKey: 'debut' }));
+            }
 
             if (p.is_trap) {
                 const trapType = trapSpLabel ? ` SP${trapSpLabel}` : ' SP';
@@ -2126,14 +2228,6 @@
                 pills.push(signalPillHtml(`🚨 TRAP${trapType}`, { className: 'pill-trap', tip: tip }));
             } else if (p.is_hazard) {
                 pills.push(signalPillHtml('🌋 HAZARD', { className: 'pill-exhausted', tipKey: 'hazard' }));
-            }
-
-            if (p.is_paradox) {
-                pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
-            }
-
-            if (p.sharp_fade) {
-                pills.push(signalPillHtml('📉 SHARP FADE', { className: 'pill-neutral', tipKey: 'sharp_fade', style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' }));
             }
 
             if (p.form_status === 'SURGING') {
@@ -2146,18 +2240,45 @@
                 pills.push(signalPillHtml('📉 CEILING', { className: 'pill-neutral', tipKey: 'low_ceiling' }));
             }
 
-            let html = '';
-            if (pills.length > 0) {
-                html += pills.join(' ');
-            } else {
-                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant pitcher tactical fades or momentum triggers active.' });
-            }
-
-            if (ouDivBadge) html += ' ' + ouDivBadge;
-            return html;
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
         }
 
-        function teamAlphaSignalsHtml(t) {
+        function teamMarketIntelHtml(t) {
+            let pills = [];
+
+            if (t.is_whale) {
+                pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
+            }
+            if (t.is_shark) {
+                pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
+            }
+            if (t.is_sharp) {
+                pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
+            }
+            if (t.is_storm) {
+                pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
+            }
+            if (t.is_steam) {
+                pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
+            }
+            if (t.total_signal) {
+                const isOver = t.total_signal.includes('📈') || t.total_signal.includes('OVER') || t.total_signal.includes('O-DIV');
+                const label = isOver ? '📈 OVER-DIV' : '📉 UNDER-DIV';
+                const tipKey = isOver ? 'odiv' : 'udiv';
+                pills.push(signalPillHtml(label, { className: 'pill-neutral', tip: `${omegaTip(tipKey)} ${t.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a; font-weight:700;' }));
+            }
+            if (t.is_paradox) {
+                pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
+            }
+            const trendPill = trendSignalPill(t.trend);
+            if (trendPill) {
+                pills.push(trendPill);
+            }
+
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
+        }
+
+        function teamTacticalMatchupHtml(t) {
             let pills = [];
 
             if (t.is_anti_chalk_smash) {
@@ -2176,14 +2297,6 @@
                 pills.push(signalPillHtml('🎯 PITCH ALIGN', { className: 'pill-pitch-align', tipKey: 'pitch_alignment' }));
             }
 
-            if (t.is_whale) {
-                pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
-            }
-
-            if (t.is_shark) {
-                pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
-            }
-
             if (t.is_cold_streak_msmi || t.is_cold_streak) {
                 const k_delta = t.rolling_k_delta != null ? t.rolling_k_delta : '—';
                 const ops_delta = t.rolling_ops_delta != null ? t.rolling_ops_delta : '—';
@@ -2196,16 +2309,6 @@
                 pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: `${omegaTip('hot_run_msmi')} Rolling OPS delta +${ops_delta}%, K% delta ${k_delta}%.` }));
             }
 
-            if (t.is_sharp) {
-                pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
-            }
-
-            if (t.is_storm) {
-                pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
-            }
-            if (t.is_steam) {
-                pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
-            }
             if (t.is_opp_debut) {
                 pills.push(signalPillHtml('✨ DEBUT', { className: 'pill-neutral', tipKey: 'debut_target', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff;' }));
             }
@@ -2222,36 +2325,39 @@
                 pills.push(signalPillHtml('🔋 WEARY', { className: 'pill-neutral', tip: `${omegaTip('weary')} Opposing Bullpen Fatigue: ${bp}% (Weary)`, style: 'background:rgba(255,214,10,0.12); border-color:#ffd60a; color:#ffd60a; font-weight:700;' }));
             }
 
-            if (t.total_signal) {
-                const isOver = t.total_signal.includes('📈') || t.total_signal.includes('OVER') || t.total_signal.includes('O-DIV');
-                const label = isOver ? '📈 OVER-DIV' : '📉 UNDER-DIV';
-                const tipKey = isOver ? 'odiv' : 'udiv';
-                pills.push(signalPillHtml(label, { className: 'pill-neutral', tip: `${omegaTip(tipKey)} ${t.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a; font-weight:700;' }));
-            }
-
-            let html = '';
-            if (pills.length > 0) {
-                html += pills.join(' ');
-            } else {
-                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant stack tactical signals active.' });
-            }
-
-            return html;
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
         }
 
+        function hitterMarketIntelHtml(h, hTeam) {
+            let pills = [];
+            
+            if (hTeam) {
+                if (hTeam.is_shark) pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
+                if (hTeam.is_whale) pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
+                if (hTeam.is_sharp) pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
+                if (hTeam.is_storm) pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
+                if (hTeam.is_steam) pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
+                
+                if (hTeam.total_signal) {
+                    const isOver = hTeam.total_signal.includes('📈') || hTeam.total_signal.includes('OVER') || hTeam.total_signal.includes('O-DIV');
+                    const label = isOver ? '📈 OVER-DIV' : '📉 UNDER-DIV';
+                    const tipKey = isOver ? 'odiv' : 'udiv';
+                    pills.push(signalPillHtml(label, { className: 'pill-neutral', tip: `${omegaTip(tipKey)} ${hTeam.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a; font-weight:700;' }));
+                }
+                
+                if (hTeam.is_paradox) {
+                    pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
+                }
+            }
 
-        function teamContextSignalsHtml(t) {
-            let html = trendSignalPill(t.trend);
-            if (!html && t.is_paradox) {
-                html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
+            if (h.is_prop_juice) {
+                pills.push(signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' }));
             }
-            if (!html) {
-                html += '<span style="color:var(--text-secondary); font-size:0.85rem; padding-left: 6px;">Stable Market</span>';
-            }
-            return html;
+
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
         }
 
-        function hitterAlphaSignalsHtml(h) {
+        function hitterTacticalMatchupHtml(h) {
             let pills = [];
 
             const plat = h.platoon_label || '';
@@ -2279,30 +2385,20 @@
                 pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' }));
             }
 
-            if (h.is_prop_juice) {
-                pills.push(signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' }));
-            }
-
             if (h.is_speed_target) {
                 pills.push(signalPillHtml('🏃‍♂️ THIEF', { className: 'pill-neutral', tipKey: 'thief', style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' }));
             }
 
-            let html = '';
-            if (pills.length > 0) {
-                html += pills.join(' ');
-            } else {
-                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant hitter GPP matchup splits or prop targets active.' });
+            if (h.matchup_xwoba >= 0.360) {
+                pills.push(signalPillHtml('🔋 POWER', { className: 'pill-neutral', tipKey: 'power' }));
             }
 
-            return html;
-        }
+            const bpPill = bullpenFatiguePills(h.bullpen_fatigue);
+            if (bpPill) {
+                pills.push(bpPill);
+            }
 
-        function hitterContextSignalsHtml(h) {
-            let html = '';
-            if (h.matchup_xwoba >= 0.360) html += signalPillHtml('🔋 POWER', { className: 'pill-neutral', tipKey: 'power' });
-            html += bullpenFatiguePills(h.bullpen_fatigue);
-            if (!html) html += '<span style="color:var(--text-secondary); font-size:0.85rem; padding-left: 6px;">Standard Matchup</span>';
-            return html;
+            return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
         }
 
         const MATRIX_COLUMN_TIPS_FULL = {
@@ -2324,8 +2420,8 @@
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
@@ -2334,8 +2430,8 @@
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF·Δ ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">PROFILE ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">vs OPP ↕</th>
                     <th class="sortable-th" onclick="sortTable('pitchers-table', 7, true)">PROPS ↕</th>`,
@@ -2348,8 +2444,8 @@
                     <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
@@ -2360,8 +2456,8 @@
                     <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF·Δ ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">MATCH ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">PLAYER ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">vs PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('hitters-table', 8, true)">HR ↕</th>
@@ -2375,8 +2471,8 @@
                     <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
@@ -2387,8 +2483,8 @@
                     <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF·Δ ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">PHY ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">ALPHA SIGNALS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">TACTICAL MATCHUP ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TEAM ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">vs PITCHER ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 7, true)">MARKET ↕</th>`,
@@ -2428,6 +2524,47 @@
             updateMatrixCompactToggleUi();
             syncMatrixTableHeaders();
             if (latestData) renderTables();
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-theme');
+            document.documentElement.classList.toggle('light-theme', isLight);
+            try {
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            } catch (e) { /* ignore */ }
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const btn = document.getElementById('theme-toggle-btn');
+            const icon = document.getElementById('theme-toggle-icon');
+            const text = document.getElementById('theme-toggle-text');
+            if (!btn || !icon || !text) return;
+
+            const isLight = document.body.classList.contains('light-theme');
+            if (isLight) {
+                // Sun Icon
+                icon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                `;
+                text.textContent = 'Dark Mode';
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                // Moon Icon
+                icon.innerHTML = `
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                `;
+                text.textContent = 'Light Mode';
+                icon.style.transform = 'rotate(0deg)';
+            }
         }
 
         function syncMatrixTableHeaders() {
@@ -2835,12 +2972,18 @@
             }
         }
 
-        // Initialize API key from local storage
+        // Initialize API key and theme from local storage
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
             if (savedKey) {
                 document.getElementById('api-key-input').value = savedKey;
             }
+            // Sync theme configuration from documentElement
+            if (document.documentElement.classList.contains('light-theme')) {
+                document.body.classList.add('light-theme');
+            }
+            updateThemeButton();
+
             setSignalFilter('');
             initMatrixCompactMode();
             applyMatrixColumnTips();
@@ -3509,8 +3652,8 @@
                         ${p.form_status === 'SURGING' ? `<div style="font-size:0.75em; color:#ff9f0a; margin-top:2px; font-weight:bold;">🔥 ${p.recent_k9} K/9 (L3)</div>` : (p.form_status === 'COLD' ? `<div style="font-size:0.75em; color:#00b4d8; margin-top:2px; font-weight:bold;">🧊 ${p.recent_era} ERA (L3)</div>` : '')}
                     </td>`;
                 const pitcherSignals = `
-                    <td><div class="signals-container">${pitcherAlphaSignalsHtml(p)}</div></td>
-                    <td><div class="signals-container">${pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel)}</div></td>`;
+                    <td><div class="signals-container">${pitcherMarketIntelHtml(p, ouDivBadge)}</div></td>
+                    <td><div class="signals-container">${pitcherTacticalMatchupHtml(p, trapSpLabel)}</div></td>`;
                 if (compact) {
                     tr.innerHTML = `
                         <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
@@ -3582,8 +3725,8 @@
                         ${trustStackHtml(h)}
                         ${hitterMatchClusterCell(h)}
                         <td>${platoonBadge}</td>
-                        <td><div class="signals-container">${hitterAlphaSignalsHtml(h)}</div></td>
-                        <td><div class="signals-container">${hitterContextSignalsHtml(h)}</div></td>
+                        <td><div class="signals-container">${hitterMarketIntelHtml(h, hTeam)}</div></td>
+                        <td><div class="signals-container">${hitterTacticalMatchupHtml(h)}</div></td>
                         ${hitterCore}
                     `;
                 } else {
@@ -3595,8 +3738,8 @@
                         ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score), omegaTip('col_mkt'))}
                         ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba), omegaTip('col_xwoba'))}
                         <td>${platoonBadge}</td>
-                        <td><div class="signals-container">${hitterAlphaSignalsHtml(h)}</div></td>
-                        <td><div class="signals-container">${hitterContextSignalsHtml(h)}</div></td>
+                        <td><div class="signals-container">${hitterMarketIntelHtml(h, hTeam)}</div></td>
+                        <td><div class="signals-container">${hitterTacticalMatchupHtml(h)}</div></td>
                         ${hitterCore}
                     `;
                 }
@@ -3654,8 +3797,8 @@
 
                 const tRank = tRanks[t.team];
                 const teamSignals = `
-                    <td><div class="signals-container">${teamAlphaSignalsHtml(t)}</div></td>
-                    <td><div class="signals-container">${teamContextSignalsHtml(t)}</div></td>`;
+                    <td><div class="signals-container">${teamMarketIntelHtml(t)}</div></td>
+                    <td><div class="signals-container">${teamTacticalMatchupHtml(t)}</div></td>`;
                 const teamIdentity = `
                     <td><strong>${t.team}</strong></td>
                     <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>`;
