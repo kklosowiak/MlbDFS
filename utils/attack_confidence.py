@@ -20,6 +20,11 @@ def _has_high_conviction_stack(t):
         signals += 1
     if t.get("prop_pressure_elite") or t.get("prop_pressure_label") == LABEL_HOT:
         signals += 1
+    # New tactical GPP signals count as high conviction anchors!
+    if t.get("is_anti_chalk_smash"):
+        signals += 1
+    if t.get("is_pitch_alignment"):
+        signals += 1
     opp_trap = False
     return signals >= 2, opp_trap
 
@@ -102,9 +107,22 @@ def score_stack_confidence(t, p_reports):
     elif t.get("team_xwoba_dampened"):
         reasons.append("xwOBA held steady on confirmed lineup (minor refresh).")
 
-    if t.get("is_cold_streak"):
-        conf -= 8
-        reasons.append("Team cold streak (elevated K% recently).")
+    # New Multi-Factor Slate Momentum Index (MSMI)
+    if t.get("is_cold_streak_msmi") or t.get("is_cold_streak"):
+        conf -= 12
+        reasons.append("Team Slate Slump (MSMI): Elevated rolling K% surge & OPS drop.")
+    elif t.get("is_hot_run_msmi") or t.get("is_hot_run"):
+        conf += 8
+        reasons.append("Team Hot Run (MSMI): Surging rolling OPS & reduced K%.")
+
+    # New Tactical GPP Injections
+    if t.get("is_anti_chalk_smash"):
+        conf += 8
+        reasons.append("⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.")
+
+    if t.get("is_pitch_alignment"):
+        conf += 8
+        reasons.append("🎯 PITCH ALIGNMENT: 60%+ of starting lineup matches opposing SP's top 2 weapons.")
 
     opp_p_name = t.get("opp_pitcher")
     opp_p = next((p for p in p_reports if p.get("pitcher") == opp_p_name), None)
@@ -128,8 +146,14 @@ def score_stack_confidence(t, p_reports):
             else:
                 phys = max(phys, float(alpha or 0))
         if phys >= 22 and not opp_p.get("is_trap"):
-            conf -= 18
-            reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
+            # Sabermetric upgrade: if the bullpen is exhausted, cut the tough starter penalty in half (to -9)
+            bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
+            if bp_fatigue >= 90 or t.get("is_gassed"):
+                conf -= 9
+                reasons.append(f"Tough SP underlying profile ({opp_p_name}), but opponent bullpen is exhausted.")
+            else:
+                conf -= 18
+                reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
 
     bp = t.get("bullpen_fatigue", 0) or 0
     if bp >= 85 or t.get("is_gassed"):
@@ -245,6 +269,9 @@ def score_pitcher_confidence(p, t_reports):
             reasons.append(
                 f"{opp} elite prop board ({n_tgt} TARGET, {n_st} runs/RBI TARGET) — run risk."
             )
+        if opp_t.get("is_pitch_alignment"):
+            conf -= 10
+            reasons.append("Tough matchup: Opposing lineup has elite pitch-type alignment against SP's top weapons.")
 
     if p.get("is_sharp") or p.get("is_shark") or p.get("is_whale"):
         conf += 10

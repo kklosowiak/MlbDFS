@@ -6,8 +6,8 @@ MIN_JUICE_GAP_AMERICAN = 20
 SOFT_JUICE_GAP_AMERICAN = 5
 PITCHER_TARGET_MIN_K_LINE = 5.0
 PITCHER_TARGET_MIN_PHYSICS = 55.0
-HITTER_TARGET_MIN_XWOBA = 0.340
-HITTER_TARGET_MIN_GAP = 15
+HITTER_TARGET_MIN_XWOBA = 0.355
+HITTER_TARGET_MIN_GAP = 25
 STACK_PROP_MIN_XWOBA = 0.320
 STACK_PROP_TARGET_GAP = 12
 MAX_PITCHER_TARGETS = 10
@@ -203,18 +203,30 @@ def evaluate_hitter_prop_juice(over_price, under_price, *, matchup_xwoba=0.33):
     return is_target, is_prop_juice, gap
 
 
-def apply_hitter_target_caps(hitters, max_targets=MAX_HITTER_TARGETS):
-    """Keep strict TARGET only on top N by gap then xwOBA."""
-    candidates = []
+def apply_hitter_target_caps(hitters, max_targets=MAX_HITTER_TARGETS, max_per_team=3):
+    """Keep strict TARGET only on top N by gap then xwOBA, with a per-team cap."""
+    team_candidates = {}
     for h in hitters:
         if h.get("is_juiced_target"):
-            candidates.append(h)
+            team = h.get("team")
+            if team not in team_candidates:
+                team_candidates[team] = []
+            team_candidates[team].append(h)
             h["is_juiced_target"] = False
-    candidates.sort(
+
+    allowed_candidates = []
+    for team, players in team_candidates.items():
+        players.sort(
+            key=lambda x: (x.get("_juice_gap", 0), x.get("matchup_xwoba", 0)),
+            reverse=True,
+        )
+        allowed_candidates.extend(players[:max_per_team])
+
+    allowed_candidates.sort(
         key=lambda x: (x.get("_juice_gap", 0), x.get("matchup_xwoba", 0)),
         reverse=True,
     )
-    for h in candidates[:max_targets]:
+    for h in allowed_candidates[:max_targets]:
         h["is_juiced_target"] = True
     return hitters
 

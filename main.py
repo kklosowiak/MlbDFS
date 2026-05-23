@@ -614,6 +614,51 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_confidence = opp_pitcher_rep.get('confidence', 'low') if opp_pitcher_rep else 'low'
             opp_outs = opp_pitcher_rep.get('outs_line', 15.5) if opp_pitcher_rep else 15.5
             
+            # Calculate is_pitch_alignment
+            is_pitch_alignment = False
+            try:
+                pitcher_data = matchup_radar.data.get('pitchers', {}).get(opp_pitcher_name)
+                if pitcher_data:
+                    weapons = [ptype for ptype, usage in pitcher_data.items() if usage >= 25.0]
+                    if weapons and len(target_h) > 0:
+                        aligned_hitters = 0
+                        for h in target_h:
+                            hname = h.get('name')
+                            hitter_data = matchup_radar.data.get('hitters', {}).get(hname)
+                            if hitter_data:
+                                is_aligned = False
+                                for ptype in weapons:
+                                    h_stat = hitter_data.get(ptype, 0.0)
+                                    l_avg = matchup_radar.data.get('league_avg', {}).get(ptype, 0.300)
+                                    if h_stat > l_avg:
+                                        is_aligned = True
+                                        break
+                                if is_aligned:
+                                    aligned_hitters += 1
+                        
+                        alignment_rate = aligned_hitters / len(target_h)
+                        is_pitch_alignment = alignment_rate >= 0.60
+            except Exception:
+                pass
+
+            # Calculate is_anti_chalk_smash
+            is_anti_chalk_smash = False
+            try:
+                if curr_itt >= 4.2 and opp_pitcher_physics >= 22:
+                    opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
+                    opp_sp_cold = (opp_pitcher_rep.get('form_status') == 'COLD') if opp_pitcher_rep else False
+                    opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -15.0) if opp_pitcher_rep else False
+                    
+                    opp_sp_alpha = 90
+                    if opp_pitcher_rep:
+                        alpha = opp_pitcher_rep.get('alpha_score', 0)
+                        opp_sp_alpha = alpha.get('final', 0) if isinstance(alpha, dict) else alpha
+                    
+                    if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 75:
+                        is_anti_chalk_smash = True
+            except Exception:
+                pass
+            
             # OMEGA v10.2: BURST — star-heavy power + targetable SP or cooked pen / short leash
             is_burst, burst_conc_gap = evaluate_burst_signal(
                 power_concentration,
@@ -631,7 +676,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
                 opp_pitcher_physics=opp_pitcher_physics,
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
-                implied_total=curr_itt, is_burst=is_burst, opponent=opponent
+                implied_total=curr_itt, is_burst=is_burst, opponent=opponent,
+                is_anti_chalk_smash=is_anti_chalk_smash, is_pitch_alignment=is_pitch_alignment
             )
             
             # Sentiment Divergence (Venue-Based)
@@ -735,11 +781,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 final_stack_score < 80
             )
 
-            # OMEGA v10.1: Team Rolling K% Cold Streak Detection
-            # Compare rolling K rate vs season K rate across confirmed lineup hitters.
-            # If the team is striking out at 25%+ above their season average, flag cold streak.
+            # OMEGA v12.0: Multi-Factor Slate Momentum Index (MSMI)
+            # Compare rolling K rate and rolling OPS vs season rates across confirmed lineup hitters.
             rolling_k_delta = 0.0
+            rolling_ops_delta = 0.0
+            is_cold_streak_msmi = False
+            is_hot_run_msmi = False
             is_cold_streak = False
+            
             try:
                 cache_path = os.path.join(config.DATA_DIR, 'statcast_cache.json')
                 if os.path.exists(cache_path):
@@ -747,22 +796,38 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         hitter_cache = json.load(fc)
                     team_season_k_rates = []
                     team_rolling_k_rates = []
+                    team_season_ops_list = []
+                    team_rolling_ops_list = []
                     for hname, hdata in hitter_cache.items():
                         if hdata.get('type') == 'hitter' and hdata.get('team') == team:
                             pa = hdata.get('pa', 0)
                             k = hdata.get('k', 0)
                             r_pa = hdata.get('rolling_pa', 0)
                             r_k = hdata.get('rolling_k', 0)
+                            s_ops = hdata.get('ops', 0.0)
+                            r_ops = hdata.get('rolling_ops', 0.0)
                             if pa >= 20:
                                 team_season_k_rates.append(k / pa)
+                                team_season_ops_list.append(s_ops)
                             if r_pa >= 5:
                                 team_rolling_k_rates.append(r_k / r_pa)
+                                team_rolling_ops_list.append(r_ops)
+                    
                     if team_season_k_rates and team_rolling_k_rates:
                         avg_season_k = sum(team_season_k_rates) / len(team_season_k_rates)
                         avg_rolling_k = sum(team_rolling_k_rates) / len(team_rolling_k_rates)
                         if avg_season_k > 0:
                             rolling_k_delta = round((avg_rolling_k - avg_season_k) / avg_season_k * 100, 1)
-                            is_cold_streak = rolling_k_delta >= 25.0
+                            
+                    if team_season_ops_list and team_rolling_ops_list:
+                        avg_season_ops = sum(team_season_ops_list) / len(team_season_ops_list)
+                        avg_rolling_ops = sum(team_rolling_ops_list) / len(team_rolling_ops_list)
+                        if avg_season_ops > 0:
+                            rolling_ops_delta = round((avg_rolling_ops - avg_season_ops) / avg_season_ops * 100, 1)
+                            
+                    is_cold_streak_msmi = rolling_k_delta >= 20.0 or rolling_ops_delta <= -12.0
+                    is_hot_run_msmi = rolling_ops_delta >= 12.0 and rolling_k_delta <= -10.0
+                    is_cold_streak = is_cold_streak_msmi
             except Exception:
                 pass
 
@@ -799,7 +864,12 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'total_signal': total_signal,
                 'is_physics_override': is_physics_override,  # v10.1: PHY beats market signal
                 'is_cold_streak': is_cold_streak,            # v10.1: Rolling K% elevated 25%+
-                'rolling_k_delta': rolling_k_delta           # v10.1: % above season K rate
+                'rolling_k_delta': rolling_k_delta,           # v10.1: % above season K rate
+                'rolling_ops_delta': rolling_ops_delta,
+                'is_cold_streak_msmi': is_cold_streak_msmi,
+                'is_hot_run_msmi': is_hot_run_msmi,
+                'is_anti_chalk_smash': is_anti_chalk_smash,
+                'is_pitch_alignment': is_pitch_alignment
             }
             apply_team_blind_spot(team_row)
             team_reports.append(team_row)
@@ -852,6 +922,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
     if raw_hitters is None:
         raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path)
     
+    from utils.xwoba_estimates import ops_to_xwoba, woba_proxy_to_xwoba, cap_matchup_xwoba
+    
     # OMEGA v9.5 splits update: Load Cache for splits & Handedness matching
     cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
     cache = {}
@@ -863,6 +935,17 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         except Exception as e:
             print(f"[WARNING]: Could not load cache for splits: {e}")
             
+    # Load platoon split cache for NPAS
+    platoon_path = os.path.join(config.DATA_DIR, "platoon_cache.json")
+    platoon_cache = {}
+    if os.path.exists(platoon_path):
+        try:
+            with open(platoon_path, 'r', encoding='utf-8') as pf:
+                platoon_cache = json.load(pf)
+            print(f"[NPAS]: Loaded Platoon Cache with {len(platoon_cache.get('pitchers', {}))} pitchers splits.")
+        except Exception as e:
+            print(f"[WARNING]: Could not load platoon cache: {e}")
+
     h_reports = []
     pitcher_csw_map = {}
     for pr in (pitcher_reports or []):
@@ -907,8 +990,82 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         h_profile = cache.get(hitter_norm, {})
         opp_csw = pitcher_csw_map.get(opp_pitcher_norm) or float(p_profile.get('csw', 0) or 0)
 
+        # Individual Multi-Factor Slate Momentum Index (MSMI)
+        h_rolling_k_delta = 0.0
+        h_rolling_ops_delta = 0.0
+        h_is_cold_streak_msmi = False
+        h_is_hot_run_msmi = False
+        
+        if h_profile:
+            pa = h_profile.get('pa', 0)
+            k = h_profile.get('k', 0)
+            r_pa = h_profile.get('rolling_pa', 0)
+            r_k = h_profile.get('rolling_k', 0)
+            s_ops = h_profile.get('ops', 0.0)
+            r_ops = h_profile.get('rolling_ops', 0.0)
+            
+            season_k_rate = k / pa if pa >= 20 else 0.0
+            rolling_k_rate = r_k / r_pa if r_pa >= 5 else 0.0
+            
+            if season_k_rate > 0:
+                h_rolling_k_delta = round((rolling_k_rate - season_k_rate) / season_k_rate * 100, 1)
+            if s_ops > 0:
+                h_rolling_ops_delta = round((r_ops - s_ops) / s_ops * 100, 1)
+                
+            h_is_cold_streak_msmi = h_rolling_k_delta >= 20.0 or h_rolling_ops_delta <= -12.0
+            h_is_hot_run_msmi = h_rolling_ops_delta >= 12.0 and h_rolling_k_delta <= -10.0
+
+        # Dynamic Platoon splits via NPAS
+        NPAS_xwOBA = 0.0
+        try:
+            if h_profile:
+                h_vs_left_ops = float(h_profile.get("vs_left_ops", 0.0) or 0.0)
+                h_vs_right_ops = float(h_profile.get("vs_right_ops", 0.0) or 0.0)
+                
+                base_xw = float(h_profile.get("xwoba", 0.320) or 0.320)
+                h_vs_left_xwoba = ops_to_xwoba(h_vs_left_ops) if h_vs_left_ops > 0 else base_xw
+                h_vs_right_xwoba = ops_to_xwoba(h_vs_right_ops) if h_vs_right_ops > 0 else base_xw
+                
+                if pitch_hand == "L":
+                    hitter_vs_hand_xwoba = h_vs_left_xwoba
+                    hitter_other_xwoba = h_vs_right_xwoba
+                else:
+                    hitter_vs_hand_xwoba = h_vs_right_xwoba
+                    hitter_other_xwoba = h_vs_left_xwoba
+                    
+                hitter_xwoba_diff = hitter_vs_hand_xwoba - hitter_other_xwoba
+                
+                p_vl = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vl", {})
+                p_vr = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vr", {})
+                
+                p_vl_ops = p_vl.get("ops", 0.0)
+                p_vl_woba = p_vl.get("wOBA_proxy", 0.0)
+                p_vr_ops = p_vr.get("ops", 0.0)
+                p_vr_woba = p_vr.get("wOBA_proxy", 0.0)
+                
+                p_vs_lhh_xwoba = woba_proxy_to_xwoba(p_vl_woba, p_vl_ops)
+                p_vs_rhh_xwoba = woba_proxy_to_xwoba(p_vr_woba, p_vr_ops)
+                
+                bat_side = h_profile.get("bat_side", "R") if h_profile.get("type") == "hitter" else "R"
+                if bat_side == "L":
+                    pitcher_vs_opp_hand_xwoba = p_vs_lhh_xwoba
+                    pitcher_vs_own_hand_xwoba = p_vs_rhh_xwoba
+                else:
+                    pitcher_vs_opp_hand_xwoba = p_vs_rhh_xwoba
+                    pitcher_vs_own_hand_xwoba = p_vs_lhh_xwoba
+                    
+                pitcher_splits_diff = pitcher_vs_opp_hand_xwoba - pitcher_vs_own_hand_xwoba
+                
+                NPAS_xwOBA = hitter_xwoba_diff + pitcher_splits_diff
+        except Exception:
+            pass
+
+        # Adjust hitter's matchup_xwoba by NPAS
+        baseline_xwoba = float(h.get('matchup_xwoba', 0.330) or 0.330)
+        matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba + NPAS_xwOBA)
+
         res = sharps_weighting.calculate_individual_hitter_score(
-            h['name'], team_score, h.get('matchup_xwoba', 0.330), h.get('ahr_price', 400),
+            h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),
             park_factor=park_factor, is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
@@ -948,7 +1105,39 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'bat_side': h_profile.get('bat_side', 'R') if h_profile.get('type') == 'hitter' else 'R',
             'pitch_hand': pitch_hand,
             'smash_factor': smash_factor,
+            'NPAS_xwOBA': round(NPAS_xwOBA, 3),
+            'is_cold_streak_msmi': h_is_cold_streak_msmi,
+            'is_hot_run_msmi': h_is_hot_run_msmi
         })
+
+    # Calibrate dynamic splits (platoon_label) slate-wide
+    if h_reports:
+        # Sort by NPAS_xwOBA descending
+        h_reports_sorted = sorted(h_reports, key=lambda x: x.get('NPAS_xwOBA', 0.0), reverse=True)
+        n_hitters = len(h_reports_sorted)
+        # Create a lookup mapping from hitter name to its calibrated splits details
+        calibrated_labels = {}
+        for idx, hr in enumerate(h_reports_sorted):
+            percentile = idx / n_hitters if n_hitters > 0 else 0.5
+            npas = hr.get('NPAS_xwOBA', 0.0)
+            
+            # Calibrate label
+            if percentile <= 0.15:
+                label = "⚡ ELITE PLATOON"
+            elif percentile <= 0.40:
+                label = "🎯 STRONG EDGE"
+            elif percentile <= 0.75:
+                label = "⚪ NEUTRAL"
+            else:
+                label = "🚨 PLATOON TRAP"
+                
+            if npas < 0:
+                label = "🚨 PLATOON TRAP"
+            calibrated_labels[hr['name']] = label
+
+        # Apply the calibrated label back to h_reports
+        for hr in h_reports:
+            hr['platoon_label'] = calibrated_labels.get(hr['name'], hr['platoon_label'])
 
     h_reports.sort(key=lambda x: x['player_score'], reverse=True)
     

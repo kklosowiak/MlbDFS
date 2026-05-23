@@ -130,3 +130,64 @@ def test_pitcher_prop_penalty_only_elite_board():
     }
     conf_h, reasons_h = score_pitcher_confidence(p, [opp_hot])
     assert any("elite prop board" in r for r in reasons_h)
+
+
+def test_anti_chalk_smash_and_pitch_alignment_overrides():
+    # Test Anti-Chalk Smash (+8 Stack CONF)
+    t_anti = {
+        "team": "Los Angeles Angels",
+        "opp_pitcher": "Gerrit Cole",
+        "is_anti_chalk_smash": True,
+        "team_xwoba": 0.320,
+    }
+    conf_anti, reasons_anti = score_stack_confidence(t_anti, [])
+    assert conf_anti >= 58  # Base 50 + 8
+    assert any("ANTI-CHALK SMASH" in r for r in reasons_anti)
+
+    # Test Pitch Alignment (+8 Stack CONF)
+    t_align = {
+        "team": "Seattle Mariners",
+        "opp_pitcher": "Kevin Gausman",
+        "is_pitch_alignment": True,
+        "team_xwoba": 0.320,
+    }
+    conf_align, reasons_align = score_stack_confidence(t_align, [])
+    assert conf_align >= 58  # Base 50 + 8
+    assert any("PITCH ALIGNMENT" in r for r in reasons_align)
+
+
+def test_bullpen_exhausted_dampens_tough_sp_penalty():
+    t_gassed = {
+        "team": "Detroit Tigers",
+        "opp_pitcher": "Tarik Skubal",
+        "bullpen_fatigue": 95,
+        "is_gassed": True,
+        "team_xwoba": 0.320,
+    }
+    opp_p = {
+        "pitcher": "Tarik Skubal",
+        "physics_score": 25.0,
+        "is_trap": False,
+    }
+    conf, reasons = score_stack_confidence(t_gassed, [opp_p])
+    # Base 50 + 14 (xwOBA) + 10 (gassed BP) - 9 (tough SP penalty cut in half) = 65
+    assert conf == 65
+    assert any("bullpen is gassed" in r.lower() or "bullpen is exhausted" in r.lower() for r in reasons)
+    assert any("but opponent bullpen is exhausted" in r for r in reasons)
+
+
+def test_pitcher_pitch_alignment_penalty():
+    p = {
+        "pitcher": "Kevin Gausman",
+        "opponent": "SEA",
+        "physics_score": 20,
+        "is_juiced_target": False,
+        "divergence": 0,
+    }
+    opp_t = {
+        "team": "SEA",
+        "is_pitch_alignment": True,
+    }
+    conf, reasons = score_pitcher_confidence(p, [opp_t])
+    assert any("Tough matchup: Opposing lineup has elite pitch-type alignment" in r for r in reasons)
+

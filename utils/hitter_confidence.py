@@ -16,13 +16,23 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf -= 12
         reasons.append(f"Weak matchup xwOBA (.{str(xwoba)[2:5]}).")
 
-    plt = float(h.get("platoon_multiplier", 1.0) or 1.0)
-    if plt >= 1.08:
+    # Dynamic Platoon Splits via NPAS (Net Platoon Advantage Score)
+    platoon_label = h.get("platoon_label", "")
+    if platoon_label and "ELITE" in platoon_label.upper():
         conf += 12
-        reasons.append(f"Platoon edge vs {h.get('pitch_hand', 'P')}HP ({h.get('platoon_label', 'split')}).")
-    elif plt <= 0.92:
+        reasons.append("⚡ ELITE PLATOON MATCHUP: Hitter xwOBA and pitcher splits allowed perfectly align.")
+    elif platoon_label and "TRAP" in platoon_label.upper():
         conf -= 10
-        reasons.append(f"Platoon fade vs {h.get('pitch_hand', 'P')}HP.")
+        reasons.append("🚨 PLATOON TRAP: Matchup heavily neutralizes their side split.")
+    else:
+        # Fallback to old platoon multiplier if no NPAS label is found
+        plt = float(h.get("platoon_multiplier", 1.0) or 1.0)
+        if plt >= 1.08:
+            conf += 12
+            reasons.append(f"Platoon edge vs {h.get('pitch_hand', 'P')}HP ({h.get('platoon_label', 'split')}).")
+        elif plt <= 0.92:
+            conf -= 10
+            reasons.append(f"Platoon fade vs {h.get('pitch_hand', 'P')}HP.")
 
     if h.get("runs_target") or h.get("rbis_target"):
         conf += 6
@@ -37,9 +47,14 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
     elif h.get("is_prop_juice"):
         conf += 4
         reasons.append("Prop JUICE — Over favored vs Under on hits/TB.")
-    if h.get("is_hot"):
-        conf += 8
-        reasons.append("Hot recent form.")
+
+    # New Multi-Factor Slate Momentum Index (MSMI) for hitters
+    if h.get("is_cold_streak_msmi") or h.get("is_cold_streak"):
+        conf -= 12
+        reasons.append("Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.")
+    elif h.get("is_hot_run_msmi") or h.get("is_hot"):
+        conf += 10
+        reasons.append("Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.")
     if h.get("is_speed_target"):
         conf += 5
         reasons.append("Speed prop target.")

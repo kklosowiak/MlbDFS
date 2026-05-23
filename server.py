@@ -1198,20 +1198,18 @@ def get_platoons_api():
         pitcher_vs_rhh_ops = pitcher_vs_rhh.get("ops", 0)
         pitcher_vs_rhh_woba = pitcher_vs_rhh.get("wOBA_proxy", 0)
         
-        # OPS-based label (legacy fallback) — aligned with calibrated xwOBA EDGE tiers
-        if team_vs_hand_ops >= 0.800:
-            advantage = "ELITE PLATOON"
-        elif team_vs_hand_ops >= 0.760:
-            advantage = "STRONG EDGE"
-        elif team_vs_hand_ops >= 0.720:
-            advantage = "NEUTRAL"
-        elif team_vs_hand_ops >= 0.680:
-            advantage = "SLIGHT FADE"
-        else:
-            advantage = "PLATOON TRAP"
-        advantage_xwoba = platoon_advantage_label(team_vs_hand_xwoba)
         pitcher_vs_lhh_xwoba = woba_proxy_to_xwoba(pitcher_vs_lhh_woba, pitcher_vs_lhh_ops)
         pitcher_vs_rhh_xwoba = woba_proxy_to_xwoba(pitcher_vs_rhh_woba, pitcher_vs_rhh_ops)
+        
+        if pitcher_hand == "L":
+            pitcher_vs_opp_hand_xwoba = pitcher_vs_rhh_xwoba
+            pitcher_vs_own_hand_xwoba = pitcher_vs_lhh_xwoba
+        else:
+            pitcher_vs_opp_hand_xwoba = pitcher_vs_lhh_xwoba
+            pitcher_vs_own_hand_xwoba = pitcher_vs_rhh_xwoba
+            
+        NPAS_xwOBA = (team_vs_hand_xwoba - team_other_xwoba) + (pitcher_vs_opp_hand_xwoba - pitcher_vs_own_hand_xwoba)
+        NPAS_xwOBA = round(NPAS_xwOBA, 3)
         
         # Pitcher weakness side
         pitcher_weak_side = "LHH" if pitcher_vs_lhh_ops > pitcher_vs_rhh_ops else "RHH"
@@ -1239,14 +1237,35 @@ def get_platoons_api():
             "pitcher_vs_rhh_woba": round(pitcher_vs_rhh_woba, 3),
             "pitcher_weak_side": pitcher_weak_side,
             "pitcher_max_vulnerability_ops": round(pitcher_max_ops, 3),
-            "advantage": advantage,
-            "advantage_xwoba": advantage_xwoba,
+            "advantage": "⚪ NEUTRAL",
+            "advantage_xwoba": "⚪ NEUTRAL",
+            "NPAS_xwOBA": NPAS_xwOBA,
             "stack_score": stack_score,
             "implied_total": implied_total
         })
     
-    # Sort by xwOBA vs hand (primary platoon edge)
-    matchups.sort(key=lambda x: x["team_vs_hand_xwoba"], reverse=True)
+    # Sort and calibrate slate-wide by NPAS_xwOBA
+    if matchups:
+        matchups.sort(key=lambda x: x["NPAS_xwOBA"], reverse=True)
+        n_m = len(matchups)
+        for idx, m in enumerate(matchups):
+            percentile = idx / n_m if n_m > 0 else 0.5
+            npas = m["NPAS_xwOBA"]
+            
+            if percentile <= 0.15:
+                label = "⚡ ELITE PLATOON"
+            elif percentile <= 0.40:
+                label = "🎯 STRONG EDGE"
+            elif percentile <= 0.75:
+                label = "⚪ NEUTRAL"
+            else:
+                label = "🚨 PLATOON TRAP"
+                
+            if npas < 0:
+                label = "🚨 PLATOON TRAP"
+                
+            m["advantage"] = label
+            m["advantage_xwoba"] = label
     
     return JSONResponse(
         content={"matchups": matchups, "count": len(matchups)},
@@ -1254,8 +1273,21 @@ def get_platoons_api():
             "Cache-Control": "no-cache, no-store, must-revalidate",
             "Pragma": "no-cache",
             "Expires": "0"
-        }
     )
+
+@app.get("/api/radar", dependencies=[Depends(get_current_user)])
+def get_radar_api():
+    """Matchup Radar DNA: Serves the weekly pitch arsenal & xwOBA parameters."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    radar_path = os.path.join(base_dir, "data", "matchup_data.json")
+    if os.path.exists(radar_path):
+        try:
+            with open(radar_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return JSONResponse(content=data)
+        except Exception as e:
+            return JSONResponse(content={"error": str(e)}, status_code=500)
+    return JSONResponse(content={"pitchers": {}, "hitters": {}, "league_avg": {}})
 
 @app.get("/api/weather", dependencies=[Depends(get_current_user)])
 def get_weather_api():

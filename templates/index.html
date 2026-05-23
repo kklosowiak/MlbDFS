@@ -625,6 +625,34 @@
         .pill-weary { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
         .pill-neutral { background: rgba(255, 255, 255, 0.06); color: var(--text-secondary); }
 
+        /* GPP Premium Scorer & UI Cockpit Overhaul classes */
+        .pill-anti-chalk { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); border-color: rgba(50, 215, 75, 0.35); font-weight: 800; text-shadow: 0 0 8px rgba(50, 215, 75, 0.25); }
+        .pill-pitch-align { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border-color: rgba(10, 132, 255, 0.35); font-weight: 800; }
+        .pill-slump { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border-color: rgba(255, 69, 58, 0.35); font-weight: 800; }
+        .pill-hot-run { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); border-color: rgba(50, 215, 75, 0.35); font-weight: 800; }
+        .pill-el-platoon { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border-color: rgba(10, 132, 255, 0.35); font-weight: 800; }
+        
+        .mini-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+            cursor: help;
+            transition: all 0.2s ease;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .mini-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         .team-label {
             font-size: 0.75rem;
             color: var(--text-secondary);
@@ -1968,7 +1996,14 @@
             storm: 'Environmental or convergence accelerator (altitude, weather, multi-signal agreement). Use: prioritize offense/environment stacks.',
             steam: 'Late aggressive line move (often pre-lock). Use: confirm news (lineup, pen fatigue) before committing.',
             sharp: 'Heavy $: money% − tickets% ≥ 10 and strong handle. Use: confirms smart concentration without full SHARK pattern.',
-            burst: 'Star-heavy lineup (power conc ≥0.370, +0.020 above team xwOBA) plus targetable SP (≤55 PHYS) or cooked pen (≥85 fatigue, SP <15 outs). Rare GPP ceiling spot.',
+            burst: 'Star-heavy lineup (power conc >= 0.355/0.370) and team xwOBA >= 0.300 against a targetable SP (<= 55 PHYS) or cooked pen. Lower concentration gate for elite xwOBA teams (>= 0.330).',
+            anti_chalk_smash: '⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability (ace physics score >= 22 but flagged as trap, cold form, or sharp fade) provides massive contrarian GPP slate leverage.',
+            pitch_alignment: '🎯 PITCH ALIGNMENT: 60%+ of today\'s starting hitters match the opposing SP\'s top 2 weapons above league average xwOBA.',
+            cold_streak_msmi: '🥶 SLATE SLUMP (MSMI): Elevated team/hitter rolling strikeout rate surge (rolling K% delta >= 20%) or rolling OPS slump (rolling OPS delta <= -12%).',
+            hot_run_msmi: '🔥 HOT RUN (MSMI): Team/hitter surging rolling OPS (rolling OPS delta >= 12%) and reduced strikeout rate (rolling K% delta <= -10%).',
+            platoon_elite: '⚡ ELITE PLATOON (NPAS): Hitter and pitcher splits perfectly aligned (top 15% Net Platoon Advantage Score).',
+            platoon_trap: '🚨 PLATOON TRAP (NPAS): Hitter side split is heavily neutralized by pitcher matchup (bottom 25% Net Platoon Advantage Score or negative edge).',
+            platoon_strong: '🎯 STRONG EDGE (NPAS): Strong platoon split advantage (top 15-40% Net Platoon Advantage Score).',
             blind_spot: 'PHY − MKT ≥ 50: lineup grades much stronger than the market pillar. Use: contrarian offense idea — confirm SP/park and lineup status.',
             phy_override: 'Lineup PHY beats opposing SP PHY by 10+ but stack score still modest. Use: hidden value if lineup is confirmed.',
             cold_streak: 'Confirmed hitters striking out ≥25% above season K% recently. Use: fade or downsize stack ceiling expectations.',
@@ -2081,99 +2116,247 @@
         }
 
         function pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel) {
-            let html = '';
-            if (p.is_paradox) html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
-            if (p.is_hazard) html += signalPillHtml('🌋 HAZARD', { className: 'pill-exhausted', tipKey: 'hazard' });
+            let primary = null;
+            let secondary = [];
+
             if (p.is_trap) {
-                html += signalPillHtml(`🚨 TRAP SP${trapSpLabel}`, {
-                    className: 'pill-trap',
-                    tip: `${omegaTip('trap_sp')}${trapSpLabel ? ` (${trapSpLabel.replace(/^ — /, '')})` : ''}`,
-                });
-            } else if (p.sharp_fade) {
-                html += signalPillHtml('📉 SHARP FADE', {
-                    className: 'pill-neutral',
-                    tipKey: 'sharp_fade',
-                    style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;',
-                });
+                const trapType = trapSpLabel ? ` SP${trapSpLabel}` : ' SP';
+                const tip = `${omegaTip('trap_sp')}${trapSpLabel ? ` (${trapSpLabel.replace(/^ — /, '')})` : ''}`;
+                primary = { label: `🚨 TRAP${trapType}`, className: 'pill-trap', tip: tip };
+            } else if (p.is_hazard) {
+                primary = { label: '🌋 HAZARD', className: 'pill-exhausted', tipKey: 'hazard' };
             }
-            if (p.is_low_ceiling) html += signalPillHtml('📉 CEILING', { className: 'pill-neutral', tipKey: 'low_ceiling' });
-            html += signalPillHtml(p.weather_label || 'WEATHER: TBD', { className: 'pill-neutral', tipKey: 'weather_label' });
-            html += ouDivBadge;
+
+            if (p.is_paradox) {
+                const item = { label: '⚠️ PARADOX', className: 'pill-paradox', tipKey: 'paradox' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '⚠️', tip: omegaTip('paradox'), style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a;' });
+            }
+
+            if (p.sharp_fade) {
+                const item = { label: '📉 SHARP FADE', className: 'pill-neutral', tipKey: 'sharp_fade', style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '📉', tip: omegaTip('sharp_fade'), style: item.style });
+            }
+
             if (p.form_status === 'SURGING') {
-                html += signalPillHtml('🔥 SURGING', {
-                    tipKey: 'form_surging',
-                    style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;',
-                });
+                const item = { label: '🔥 SURGING', className: 'pill-target', tipKey: 'form_surging', style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🔥', tip: omegaTip('form_surging'), style: item.style });
             } else if (p.form_status === 'COLD') {
-                html += signalPillHtml('🧊 COLD', {
-                    tipKey: 'form_cold',
-                    style: 'background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;',
-                });
+                const item = { label: '🧊 COLD', className: 'pill-neutral', tipKey: 'form_cold', style: 'background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🧊', tip: omegaTip('form_cold'), style: item.style });
             }
+
+            if (p.is_low_ceiling) {
+                const item = { label: '📉 CEILING', className: 'pill-neutral', tipKey: 'low_ceiling' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🪂', tip: omegaTip('low_ceiling'), style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' });
+            }
+
+            let html = '';
+            if (primary) {
+                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey, style: primary.style });
+            } else {
+                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant pitcher tactical fades or momentum triggers active.' });
+            }
+
+            if (secondary.length > 0) {
+                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
+                secondary.forEach(item => {
+                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
+                });
+                html += '</span>';
+            }
+
+            if (ouDivBadge) html += ouDivBadge;
             return html;
         }
 
         function teamAlphaSignalsHtml(t) {
-            let html = buildMarketSignalPills(t, true);
+            let primary = null;
+            let secondary = [];
+
+            if (t.is_anti_chalk_smash) {
+                primary = { label: '⚓ ANTI-CHALK', className: 'pill-anti-chalk', tipKey: 'anti_chalk_smash' };
+            } else if (t.is_trap) {
+                primary = { label: '🚨 TRAP', className: 'pill-trap', tipKey: 'trap_stack' };
+            }
+
             if (t.is_burst) {
                 const conc = t.power_concentration != null ? Number(t.power_concentration).toFixed(3) : '—';
                 const gap = t.burst_conc_gap != null ? Number(t.burst_conc_gap).toFixed(3) : '—';
-                html += signalPillHtml('⚡ BURST', {
-                    className: 'pill-burst',
-                    tip: `${omegaTip('burst')} Conc ${conc}, gap +${gap}.`,
-                });
+                const item = { label: '⚡ BURST', className: 'pill-burst', tip: `${omegaTip('burst')} Conc ${conc}, gap +${gap}.` };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '⚡', tip: item.tip, style: 'background:rgba(255,214,10,0.15); border-color:#ffd60a; color:#ffd60a;' });
             }
-            html += blindSpotPillHtml(t);
-            if (t.prop_pressure_elite || t.prop_pressure_label === 'HOT') {
-                const names = (t.prop_pressure_hitters || []).slice(0, 2).join(', ');
-                html += signalPillHtml(`📊 PROP ${t.prop_pressure_label}`, {
-                    className: 'pill-neutral',
-                    tipKey: 'prop_pressure',
-                    style: 'background:rgba(191,90,242,0.12); border-color:#bf5af2; color:#bf5af2; font-weight:700;',
-                    tipExtra: names ? ` Top: ${names}.` : '',
-                });
+
+            if (t.is_pitch_alignment) {
+                const item = { label: '🎯 PITCH ALIGNMENT', className: 'pill-pitch-align', tipKey: 'pitch_alignment' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🎯', tip: omegaTip('pitch_alignment'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
             }
-            if (t.is_opp_debut) html += signalPillHtml('✨ DEBUT TARGET', { className: 'pill-storm', tipKey: 'debut_target' });
+
+            if (t.is_whale) {
+                const item = { label: '🐳 WHALE', className: 'pill-whale', tipKey: 'whale' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🐳', tip: omegaTip('whale'), style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+            }
+
+            if (t.is_shark) {
+                const item = { label: '🦈 SHARK', className: 'pill-shark', tipKey: 'shark' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🦈', tip: omegaTip('shark'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
+            }
+
+            if (t.is_cold_streak_msmi || t.is_cold_streak) {
+                const k_delta = t.rolling_k_delta != null ? t.rolling_k_delta : '—';
+                const ops_delta = t.rolling_ops_delta != null ? t.rolling_ops_delta : '—';
+                const item = { label: '🥶 SLATE SLUMP', className: 'pill-slump', tip: `${omegaTip('cold_streak_msmi')} Rolling K% delta +${k_delta}%, OPS delta ${ops_delta}%.` };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🥶', tip: item.tip, style: 'background:rgba(255,69,58,0.15); border-color:#ff453a; color:#ff453a;' });
+            }
+
+            if (t.is_hot_run_msmi) {
+                const k_delta = t.rolling_k_delta != null ? t.rolling_k_delta : '—';
+                const ops_delta = t.rolling_ops_delta != null ? t.rolling_ops_delta : '—';
+                const item = { label: '🔥 HOT RUN', className: 'pill-hot-run', tip: `${omegaTip('hot_run_msmi')} Rolling OPS delta +${ops_delta}%, K% delta ${k_delta}%.` };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🔥', tip: item.tip, style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+            }
+
+            if (t.is_sharp) {
+                secondary.push({ emoji: '💵', tip: omegaTip('sharp'), style: 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b;' });
+            }
+            if (t.is_storm) {
+                secondary.push({ emoji: '⛈️', tip: omegaTip('storm'), style: 'background:rgba(191,90,242,0.12); border-color:#bf5af2; color:#bf5af2;' });
+            }
+            if (t.is_steam) {
+                secondary.push({ emoji: '💨', tip: omegaTip('steam'), style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a;' });
+            }
+            if (t.is_opp_debut) {
+                secondary.push({ emoji: '✨', tip: omegaTip('debut_target'), style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff;' });
+            }
             if (t.is_physics_override) {
-                html += signalPillHtml('⚡ PHY OVERRIDE', {
-                    className: 'pill-neutral',
-                    style: 'background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;',
-                    tipKey: 'phy_override',
-                });
+                secondary.push({ emoji: '⚖️', tip: omegaTip('phy_override'), style: 'background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;' });
             }
-            if (t.is_cold_streak) {
-                html += signalPillHtml(`🥶 COLD STREAK (+${t.rolling_k_delta}% K)`, {
-                    className: 'pill-neutral',
-                    style: 'background:rgba(0,180,216,0.12); border-color:#00b4d8; color:#00b4d8;',
-                    tipKey: 'cold_streak',
-                });
+
+            const bp = parseFloat(t.bullpen_fatigue) || 0;
+            if (bp >= 90) {
+                secondary.push({ emoji: '🔋', tip: `${omegaTip('exhausted')} Opposing Bullpen Fatigue: ${bp}% (Exhausted)`, style: 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a;' });
+            } else if (bp >= 75) {
+                secondary.push({ emoji: '🔋', tip: `${omegaTip('gassed')} Opposing Bullpen Fatigue: ${bp}% (Gassed)`, style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a;' });
+            } else if (bp >= 65) {
+                secondary.push({ emoji: '🔋', tip: `${omegaTip('weary')} Opposing Bullpen Fatigue: ${bp}% (Weary)`, style: 'background:rgba(255,214,10,0.12); border-color:#ffd60a; color:#ffd60a;' });
             }
+
+            if (t.total_signal) {
+                const isOver = t.total_signal.includes('📈') || t.total_signal.includes('OVER') || t.total_signal.includes('O-DIV');
+                const emoji = isOver ? '📈' : '📉';
+                const tipKey = isOver ? 'odiv' : 'udiv';
+                secondary.push({ emoji: emoji, tip: `${omegaTip(tipKey)} ${t.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a;' });
+            }
+
+            let html = '';
+            if (primary) {
+                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey });
+            } else {
+                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant tactical GPP momentum indicators active.' });
+            }
+
+            if (secondary.length > 0) {
+                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
+                secondary.forEach(item => {
+                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
+                });
+                html += '</span>';
+            }
+
             return html;
         }
 
         function teamContextSignalsHtml(t) {
             let html = trendSignalPill(t.trend);
-            if (t.is_trap) html += signalPillHtml('⚠️ CHALK', { className: 'pill-chalk', tipKey: 'trap_stack' });
-            if (t.is_paradox) html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
-            html += bullpenFatiguePills(t.bullpen_fatigue);
-            html += totalSignalPill(t.total_signal);
+            if (!html && t.is_paradox) {
+                html += signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' });
+            }
+            if (!html) {
+                html += '<span style="color:var(--text-secondary); font-size:0.85rem; padding-left: 6px;">Stable Market</span>';
+            }
             return html;
         }
 
         function hitterAlphaSignalsHtml(h) {
+            let primary = null;
+            let secondary = [];
+
+            const plat = h.platoon_label || '';
+            if (plat.includes('ELITE')) {
+                primary = { label: '⚡ ELITE PLATOON', className: 'pill-el-platoon', tipKey: 'platoon_elite' };
+            } else if (plat.includes('TRAP')) {
+                primary = { label: '🚨 PLATOON TRAP', className: 'pill-trap', tipKey: 'platoon_trap' };
+            } else if (plat.includes('STRONG')) {
+                primary = { label: '🎯 STRONG EDGE', className: 'pill-pitch-align', tipKey: 'platoon_strong' };
+            }
+
+            if (h.is_juiced_target) {
+                const item = { label: '🎯 TARGET', className: 'pill-target', tipKey: 'target' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🎯', tip: omegaTip('target'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
+            }
+
+            if (h.smash_factor) {
+                const item = { label: '💥 SMASH', className: 'pill-burst', tipKey: 'smash' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '💥', tip: omegaTip('smash'), style: 'background:rgba(255,214,10,0.15); border-color:#ffd60a; color:#ffd60a;' });
+            }
+
+            if (h.is_cold_streak_msmi || h.is_cold_streak) {
+                const item = { label: '🥶 SLATE SLUMP', className: 'pill-slump', tip: 'Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🥶', tip: item.tip, style: 'background:rgba(255,69,58,0.15); border-color:#ff453a; color:#ff453a;' });
+            }
+
+            if (h.is_hot_run_msmi || h.is_hot) {
+                const item = { label: '🔥 HOT RUN', className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '🔥', tip: item.tip, style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+            }
+
+            if (h.is_prop_juice) {
+                const item = { label: '💧 JUICE', className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' };
+                if (!primary) primary = item;
+                else secondary.push({ emoji: '💧', tip: omegaTip('juice'), style: item.style });
+            }
+
+            if (h.is_speed_target) {
+                secondary.push({ emoji: '🏃‍♂️', tip: omegaTip('thief'), style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' });
+            }
+
             let html = '';
-            if (h.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
-            else if (h.is_prop_juice) html += signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' });
-            if (h.smash_factor) html += signalPillHtml('💥 SMASH', { className: 'pill-burst', tipKey: 'smash' });
+            if (primary) {
+                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey, style: primary.style });
+            } else {
+                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant hitter GPP matchup splits or prop targets active.' });
+            }
+
+            if (secondary.length > 0) {
+                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
+                secondary.forEach(item => {
+                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
+                });
+                html += '</span>';
+            }
+
             return html;
         }
 
         function hitterContextSignalsHtml(h) {
             let html = '';
             if (h.matchup_xwoba >= 0.360) html += signalPillHtml('🔋 POWER', { className: 'pill-neutral', tipKey: 'power' });
-            if (h.is_speed_target) html += signalPillHtml('🏃‍♂️ THIEF', { className: 'pill-neutral', tipKey: 'thief' });
-            if (h.is_hot) html += signalPillHtml('♨️ HOT', { className: 'pill-target', tipKey: 'hot' });
             html += bullpenFatiguePills(h.bullpen_fatigue);
+            if (!html) html += '<span style="color:var(--text-secondary); font-size:0.85rem; padding-left: 6px;">Standard Matchup</span>';
             return html;
         }
 
@@ -3056,6 +3239,17 @@
                     }
                 } catch (platErr) {
                     console.error("Failed to pre-load platoons:", platErr);
+                }
+
+                // Fetch weekly radar data
+                try {
+                    const rRes = await fetch('/api/radar');
+                    if (rRes.ok) {
+                        window.radarData = await rRes.json();
+                        console.log("[RADAR]: Weekly Matchup Radar DNA loaded successfully.");
+                    }
+                } catch (e) {
+                    console.error("[WARNING]: Failed to fetch Matchup Radar DNA:", e);
                 }
                 
                 // Update slate date in header
@@ -4900,17 +5094,115 @@
             document.getElementById('hm-tb').innerText = h.tb_line ? `${h.tb_line} (${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})` : '—';
 
             let badges = '';
+            const plat = h.platoon_label || '';
+            if (plat.includes('ELITE')) {
+                badges += '<span class="signal-pill pill-el-platoon">⚡ ELITE PLATOON</span>';
+            } else if (plat.includes('TRAP')) {
+                badges += '<span class="signal-pill pill-trap">🚨 PLATOON TRAP</span>';
+            } else if (plat.includes('STRONG')) {
+                badges += '<span class="signal-pill pill-pitch-align">🎯 STRONG EDGE</span>';
+            }
             if (h.is_juiced_target) badges += '<span class="signal-pill pill-target">🎯 TARGET</span>';
             if (h.smash_factor) badges += '<span class="signal-pill pill-burst">💥 SMASH</span>';
-            if (h.is_hot) badges += '<span class="signal-pill pill-target">♨️ HOT</span>';
+            if (h.is_hot_run_msmi || h.is_hot) badges += '<span class="signal-pill pill-target">🔥 HOT RUN</span>';
+            if (h.is_cold_streak_msmi || h.is_cold_streak) badges += '<span class="signal-pill pill-slump">🥶 SLATE SLUMP</span>';
             if (h.is_speed_target) badges += '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>';
-            if (h.platoon_label && h.platoon_multiplier > 1) {
-                badges += `<span class="signal-pill" style="color:#32d74b;">⚡ ${h.platoon_label}</span>`;
-            }
+            if (h.is_prop_juice) badges += '<span class="signal-pill pill-neutral" style="background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;">💧 JUICE</span>';
+            
             document.getElementById('hm-badges').innerHTML = badges || '<span style="color:var(--text-secondary);">No active flags.</span>';
 
             const reasons = (h.attack_reasons || []).map(r => `<div style="font-size:0.85rem; margin-bottom:6px; color:var(--text-secondary);">• ${r}</div>`).join('');
             document.getElementById('hm-reasons').innerHTML = reasons || '<span style="color:var(--text-secondary);">No attack reasons logged.</span>';
+
+            // Matchup Radar DNA Integration
+            const radarCard = document.getElementById('hm-radar-card');
+            const radarBody = document.getElementById('hm-radar-body');
+            const radarSummary = document.getElementById('hm-radar-summary');
+            
+            if (window.radarData && window.radarData.hitters && window.radarData.pitchers) {
+                const formatName = (name) => {
+                    if (!name) return '';
+                    const parts = name.trim().split(' ');
+                    if (parts.length >= 2) {
+                        return `${parts[parts.length - 1]}, ${parts.slice(0, parts.length - 1).join(' ')}`;
+                    }
+                    return name;
+                };
+                
+                const rHitter = formatName(h.name);
+                const rPitcher = formatName(h.opp_pitcher);
+                
+                const hDNA = window.radarData.hitters[rHitter];
+                const pDNA = window.radarData.pitchers[rPitcher];
+                const lAvg = window.radarData.league_avg || {};
+                
+                if (hDNA && pDNA) {
+                    radarCard.style.display = 'block';
+                    radarBody.innerHTML = '';
+                    
+                    const pitchNames = {
+                        'FF': 'Four-seam Fastball',
+                        'SI': 'Sinker',
+                        'SL': 'Slider',
+                        'CU': 'Curveball',
+                        'CH': 'Changeup'
+                    };
+                    
+                    let primaryMatchups = 0;
+                    let eliteMatchups = 0;
+                    
+                    Object.keys(pitchNames).forEach(ptype => {
+                        const usage = pDNA[ptype] || 0.0;
+                        const hxw = hDNA[ptype] || 0.000;
+                        const l_avg = lAvg[ptype] || 0.300;
+                        const isPrimary = usage >= 25.0;
+                        
+                        let edgeText = '—';
+                        let edgeColor = 'var(--text-secondary)';
+                        if (hxw > 0 && l_avg > 0) {
+                            const diff = ((hxw - l_avg) / l_avg * 100).toFixed(1);
+                            const sign = hxw >= l_avg ? '+' : '';
+                            edgeText = `${sign}${diff}% vs Avg`;
+                            edgeColor = hxw >= l_avg ? '#32d74b' : '#ff453a';
+                            
+                            if (isPrimary) {
+                                primaryMatchups++;
+                                if (hxw > l_avg) eliteMatchups++;
+                            }
+                        }
+                        
+                        const row = document.createElement('tr');
+                        row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                        row.style.opacity = usage > 0 ? '1' : '0.4';
+                        
+                        row.innerHTML = `
+                            <td style="padding:10px 8px; font-weight:700;">
+                                ${pitchNames[ptype]} ${isPrimary ? '<span class="badge-mini" style="background:rgba(255,214,10,0.15); color:#ffd60a; border:1px solid rgba(255,214,10,0.3); border-radius:3px; padding:1px 4px; font-size:0.68em; margin-left:4px;">PRIMARY</span>' : ''}
+                            </td>
+                            <td style="padding:10px 8px; font-weight:800; color:${isPrimary ? '#ffd60a' : 'var(--text-primary)'};">${usage.toFixed(1)}%</td>
+                            <td style="padding:10px 8px; font-weight:700;">.${hxw.toFixed(3).toString().substring(2)}</td>
+                            <td style="padding:10px 8px; color:var(--text-secondary);">.${l_avg.toFixed(3).toString().substring(2)}</td>
+                            <td style="padding:10px 8px; text-align:right; font-weight:800; color:${edgeColor};">${edgeText}</td>
+                        `;
+                        radarBody.appendChild(row);
+                    });
+                    
+                    const matchPercent = primaryMatchups > 0 ? (eliteMatchups / primaryMatchups * 100).toFixed(0) : 0;
+                    let summaryHTML = '';
+                    if (matchPercent >= 60) {
+                        summaryHTML = `🔥 <strong style="color:#32d74b;">ELITE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter has a positive xwOBA edge vs ${eliteMatchups}/${primaryMatchups} of ${h.opp_pitcher}'s primary pitch weapons.`;
+                    } else if (matchPercent > 0) {
+                        summaryHTML = `⚖️ <strong>MODERATE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter matches up reasonably vs ${h.opp_pitcher}'s primary pitch arsenal.`;
+                    } else {
+                        summaryHTML = `⚠️ <strong style="color:#ff453a;">FADE MATCHUP DNA:</strong> Hitter is below average vs the primary pitch types thrown by ${h.opp_pitcher}.`;
+                    }
+                    radarSummary.innerHTML = summaryHTML;
+                } else {
+                    radarCard.style.display = 'none';
+                }
+            } else {
+                radarCard.style.display = 'none';
+            }
 
             document.getElementById('hitter-modal').classList.add('open');
             document.getElementById('hitter-modal-overlay').classList.add('open');
@@ -5017,6 +5309,25 @@
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Hits</span><strong id="hm-hits">—</strong></div>
                 <div style="display:flex; justify-content:space-between;"><span>Total Bases</span><strong id="hm-tb">—</strong></div>
             </div>
+        </div>
+        <div class="card" id="hm-radar-card" style="padding:20px; margin:0; margin-bottom:20px; display:none;">
+            <h4 style="margin:0 0 15px 0; color:#00f2fe;">🎯 Pitch DNA Radar Matchup</h4>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; margin-top:10px;" id="hm-radar-table">
+                    <thead>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; text-align:left; font-size:0.85rem; color:var(--text-secondary);">
+                            <th style="padding:8px;">PITCH TYPE</th>
+                            <th style="padding:8px;">SP MIX %</th>
+                            <th style="padding:8px;">HITTER xwOBA</th>
+                            <th style="padding:8px;">LEAGUE AVG</th>
+                            <th style="padding:8px; text-align:right;">MATCHUP EDGE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hm-radar-body" style="font-size:0.9rem;">
+                    </tbody>
+                </table>
+            </div>
+            <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:12px; font-weight: 600;" id="hm-radar-summary"></div>
         </div>
         <div class="card" style="padding:20px; margin:0; margin-bottom:20px;">
             <h4 style="margin:0 0 15px 0; color:var(--accent-purple);">Active Badges</h4>

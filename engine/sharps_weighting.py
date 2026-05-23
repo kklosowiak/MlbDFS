@@ -98,7 +98,7 @@ class SharpsWeighting:
             "is_trap": is_trap
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
@@ -134,7 +134,7 @@ class SharpsWeighting:
         # OMEGA v10.0: Base + Bonus Model
         # Base is the implied total. Movement acts as an additive bonus rather than averaging out.
         market_raw = base_market_score + (ml_score * 0.25) + (tt_score * 0.25)
-        market_raw = max(0, min(100, market_raw))
+        market_raw = max(0, min(120, market_raw))
 
         # OMEGA v6.9: Pitcher Vulnerability
         vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
@@ -247,6 +247,12 @@ class SharpsWeighting:
 
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
+
+        # Inject GPP Decision Intelligence bonuses directly to OMEGA master score
+        if is_anti_chalk_smash:
+            final_omega += 5.0
+        if is_pitch_alignment:
+            final_omega += 4.0
 
         if team_xwoba < 0.295 and dampened_market_premium > 0.10:
             final_omega = min(final_omega, score * (1.0 + min(0.22, dampened_market_premium)))
