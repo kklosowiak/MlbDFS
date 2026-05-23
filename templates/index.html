@@ -2191,7 +2191,10 @@
                     style: 'background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(144, 224, 239, 0.2) 100%); border: 1px solid #00b4d8; color: #00b4d8; font-weight:800; box-shadow: 0 0 8px rgba(0, 180, 216, 0.35);',
                 });
             }
-            return '        function pitcherMarketIntelHtml(p, ouDivBadge) {
+            return '';
+        }
+
+        function pitcherMarketIntelHtml(p, ouDivBadge) {
             let pills = [];
             const marketPills = buildMarketSignalPills(p, false);
             if (marketPills) pills.push(marketPills);
