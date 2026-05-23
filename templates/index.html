@@ -525,6 +525,84 @@
             cursor: pointer;
             transition: all 0.15s ease;
         }
+        .matrix-compact-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .matrix-compact-toggle:hover {
+            border-color: rgba(0, 242, 254, 0.35);
+            color: #00f2fe;
+        }
+        .matrix-compact-toggle.active {
+            background: rgba(0, 242, 254, 0.12);
+            border-color: rgba(0, 242, 254, 0.45);
+            color: #00f2fe;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+        }
+        .trust-stack .ts-conf {
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+        .trust-stack .ts-delta {
+            font-size: 0.68rem;
+            font-weight: 700;
+            margin-top: 3px;
+            opacity: 0.92;
+        }
+        .profile-cluster .pc-line {
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1.35;
+            font-variant-numeric: tabular-nums;
+        }
+        .profile-cluster .pc-sub {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .market-cluster {
+            min-width: 118px;
+            vertical-align: middle !important;
+        }
+        .market-cluster .mc-line {
+            font-size: 0.72rem;
+            font-weight: 600;
+            line-height: 1.45;
+            font-variant-numeric: tabular-nums;
+        }
+        .market-cluster .mc-itt strong {
+            color: var(--accent-green);
+            font-size: 0.85rem;
+        }
+        .market-cluster .mc-div strong {
+            font-size: 0.9rem;
+        }
+        .market-cluster .mc-label {
+            color: var(--text-secondary);
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            margin-right: 4px;
+        }
+        body.matrix-compact .card h2 + p {
+            max-width: 52rem;
+        }
+
         .signal-filter-chip.active {
             border-color: rgba(10, 132, 255, 0.45);
             background: rgba(10, 132, 255, 0.12);
@@ -1342,6 +1420,9 @@
                 <button type="button" class="signal-filter-chip" data-filter="exhausted" onclick="setSignalFilter('exhausted')">🔥 EXHAUSTED</button>
                 <button type="button" class="signal-filter-chip" data-filter="conf60" onclick="setSignalFilter('conf60')">CONF ≥60</button>
                 <button type="button" class="signal-filter-chip" data-filter="shark" onclick="setSignalFilter('shark')">🦈 SHARK</button>
+                <button type="button" id="matrix-compact-toggle" class="matrix-compact-toggle" onclick="toggleMatrixCompact()" title="Fewer columns — CONF+Δ merged, PHY/MKT stacked; teams get one MARKET cell with ITT, moves, divergence, and DQI">
+                    ⊟ Compact matrices
+                </button>
             </div>
             
             <!-- Matchup Filter Panel (v9.3) -->
@@ -1527,7 +1608,7 @@
         <div id="teams-panel" class="tab-panel">
             <div class="card">
                 <h2>Team Stack Sentiment Rankings</h2>
-                <p style="font-size:0.78rem; color:var(--text-secondary); margin:-6px 0 12px 0;">Hover signals, column headers, PHY/MKT cells, and DQI boxes for definitions and how to use them.</p>
+                <p style="font-size:0.78rem; color:var(--text-secondary); margin:-6px 0 12px 0;">Hover signals, column headers, PHY/MKT cells, and DQI boxes for definitions. Use <strong style="color:#00f2fe;">Compact matrices</strong> above to collapse market into one column (ITT · ML · TT · DIV · DQI).</p>
                 <table id="teams-table">
                     <thead>
                         <tr>
@@ -1865,6 +1946,11 @@
             col_omega: 'OMEGA master score (0–150 cap). Stacks/pitchers: physics + market + matchup multipliers. Higher = stronger overall play on the slate.',
             col_conf: 'Attack confidence (0–100%). How strongly the Attack Plan engine likes this play after physics, traps, and context — not the same as OMEGA rank.',
             col_conf_delta: 'Δ CONF since the first OMEGA run today. Swings ≥15 pts flag VOLATILE — often lineup or xwOBA refresh churn, not new sharp info.',
+            col_trust_stack: 'CONF with intraday Δ underneath — rank conviction and stability in one glance.',
+            col_profile: 'Physics + market pillars stacked (full PHY/MKT/xwOBA still in row modal).',
+            col_market_cluster: 'Implied total, ML/TT moves, ticket–money divergence, and DQI when active — your sharp-market read in one column.',
+            col_props_cluster: 'Strikeout and recorded-outs prop lines (prices on second line).',
+            col_match_cluster: 'Hitter PHY, MKT, and matchup xwOBA stacked.',
             col_phy: 'Physics pillar from talent/stats. Teams: lineup xwOBA grade. Pitchers: SIERA/CSW talent slice. Hitters: individual power profile.',
             col_mkt: 'Market pillar: Vegas implied total, line moves, and sharp interest baked into one 0–100 score.',
             col_xwoba: 'Platoon-adjusted expected weighted on-base vs today\'s opposing pitcher hand.',
@@ -2081,14 +2167,144 @@
             return html;
         }
 
-        const MATRIX_COLUMN_TIPS = {
+        const MATRIX_COLUMN_TIPS_FULL = {
             'pitchers-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
             'hitters-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', 'col_xwoba', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
             'teams-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
         };
+        const MATRIX_COLUMN_TIPS_COMPACT = {
+            'pitchers-table': ['col_omega', 'col_trust_stack', 'col_profile', null, null, null, null, 'col_props_cluster'],
+            'hitters-table': ['col_omega', 'col_trust_stack', 'col_match_cluster', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
+            'teams-table': ['col_omega', 'col_trust_stack', 'col_phy', null, null, null, null, 'col_market_cluster'],
+        };
+
+        const MATRIX_HEADERS = {
+            pitchers: {
+                full: `
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">OUTS ↕</th>`,
+                compact: `
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">PROFILE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">vs OPP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, true)">PROPS ↕</th>`,
+            },
+            hitters: {
+                full: `
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">HITS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 12, true)">BASES ↕</th>`,
+                compact: `
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">MATCH ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">PLAYER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, true)">HR ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, true)">HITS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">BASES ↕</th>`,
+            },
+            teams: {
+                full: `
+                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ML MOVE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">TT MOVE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">DIVERGENCE ↕</th>`,
+                compact: `
+                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">ALPHA SIGNALS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA CONTEXT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TEAM ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 7, true)">MARKET ↕</th>`,
+            },
+        };
+
+        let matrixCompactMode = false;
+
+        function isMatrixCompact() {
+            return matrixCompactMode;
+        }
+
+        function updateMatrixCompactToggleUi() {
+            const btn = document.getElementById('matrix-compact-toggle');
+            if (!btn) return;
+            btn.classList.toggle('active', matrixCompactMode);
+            btn.textContent = matrixCompactMode ? '⊞ Full matrices' : '⊟ Compact matrices';
+        }
+
+        function initMatrixCompactMode() {
+            try {
+                matrixCompactMode = localStorage.getItem('omega_matrix_compact') === '1';
+            } catch (e) {
+                matrixCompactMode = false;
+            }
+            document.body.classList.toggle('matrix-compact', matrixCompactMode);
+            updateMatrixCompactToggleUi();
+            syncMatrixTableHeaders();
+        }
+
+        function toggleMatrixCompact() {
+            matrixCompactMode = !matrixCompactMode;
+            try {
+                localStorage.setItem('omega_matrix_compact', matrixCompactMode ? '1' : '0');
+            } catch (e) { /* ignore */ }
+            document.body.classList.toggle('matrix-compact', matrixCompactMode);
+            updateMatrixCompactToggleUi();
+            syncMatrixTableHeaders();
+            if (latestData) renderTables();
+        }
+
+        function syncMatrixTableHeaders() {
+            const mode = isMatrixCompact() ? 'compact' : 'full';
+            const pRow = document.querySelector('#pitchers-table thead tr');
+            const hRow = document.querySelector('#hitters-table thead tr');
+            const tRow = document.querySelector('#teams-table thead tr');
+            if (pRow) pRow.innerHTML = MATRIX_HEADERS.pitchers[mode];
+            if (hRow) hRow.innerHTML = MATRIX_HEADERS.hitters[mode];
+            if (tRow) tRow.innerHTML = MATRIX_HEADERS.teams[mode];
+        }
 
         function applyMatrixColumnTips() {
-            Object.entries(MATRIX_COLUMN_TIPS).forEach(([tableId, keys]) => {
+            const tipsMap = isMatrixCompact() ? MATRIX_COLUMN_TIPS_COMPACT : MATRIX_COLUMN_TIPS_FULL;
+            Object.entries(tipsMap).forEach(([tableId, keys]) => {
                 const ths = document.querySelectorAll(`#${tableId} thead th`);
                 ths.forEach((th, idx) => {
                     const key = keys[idx];
@@ -2292,6 +2508,102 @@
             return `<td class="metric ${cls}"${tipAttrs(tip)}>${prefix}${d}${vol}</td>`;
         }
 
+        function trustStackHtml(entity) {
+            const raw = entity.attack_conf;
+            const conf = raw != null && raw !== undefined ? raw : '—';
+            const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
+            const confCls = typeof conf === 'number' && conf >= 70 ? 'val-up'
+                : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
+            const d = entity.conf_delta;
+            let deltaHtml = '<div class="ts-delta" style="color:var(--text-secondary);">Δ —</div>';
+            if (d != null && d !== undefined) {
+                const dCls = d > 0 ? 'val-up' : (d < 0 ? 'val-down' : 'val-even');
+                const prefix = d > 0 ? '+' : '';
+                const vol = entity.is_volatile ? ' ⚡' : '';
+                deltaHtml = `<div class="ts-delta ${dCls}">Δ ${prefix}${d}${vol}</div>`;
+            }
+            const tip = reasons
+                ? `${omegaTip('col_trust_stack')} ${reasons}`
+                : omegaTip('col_trust_stack');
+            return `<td class="metric trust-stack"${tipAttrs(tip)}>
+                <div class="ts-conf ${confCls}">${conf}</div>
+                ${deltaHtml}
+            </td>`;
+        }
+
+        function pitcherProfileCell(p) {
+            const phy = scoreDisplay(p.physics_score);
+            const mkt = scoreDisplay(p.market_score);
+            const tip = `${omegaTip('col_profile')} PHY ${phy} · MKT ${mkt}. ${p.physics_talent != null ? `Talent ${p.physics_talent}/100.` : ''}`;
+            return `<td class="metric profile-cluster"${tipAttrs(tip)}>
+                <div class="pc-line" style="${pitcherPhyTierStyle(p.physics_score)}">PHY ${phy}</div>
+                <div class="pc-line" style="color:var(--accent-purple); font-weight:700;">MKT ${mkt}</div>
+            </td>`;
+        }
+
+        function hitterMatchClusterCell(h) {
+            const phy = scoreDisplay(h.physics_score);
+            const mkt = scoreDisplay(h.market_score);
+            const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
+            const tip = `${omegaTip('col_match_cluster')} PHY ${phy} · MKT ${mkt} · xwOBA ${xwoba}`;
+            return `<td class="metric profile-cluster"${tipAttrs(tip)}>
+                <div class="pc-line" style="${hitterPhyTierStyle(h.physics_score)}">PHY ${phy}</div>
+                <div class="pc-line" style="${hitterMktTierStyle(h.market_score)}">MKT ${mkt}</div>
+                <div class="pc-sub" style="${xwobaTierStyle(xwoba)}">xwOBA ${xwoba}</div>
+            </td>`;
+        }
+
+        function pitcherPropsClusterCell(p) {
+            const tip = `${omegaTip('col_props_cluster')} K ${p.k_line || '-'} (${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'}) · OUTS ${p.outs_line || '-'}`;
+            return `<td class="metric"${tipAttrs(tip)}>
+                <div><span class="mc-label">K</span><b>${p.k_line || '-'}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></div>
+                <div style="margin-top:4px;"><span class="mc-label">OUT</span><b>${p.outs_line || '-'}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></div>
+            </td>`;
+        }
+
+        function buildTeamDqiBadgeHtml(t) {
+            if (t.dqi_score !== undefined && t.dqi_score !== null) {
+                const dqiScore = t.dqi_score;
+                const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                const posList = (t.dqi_pos_factors || []).map(f => `<span style="color:#32d74b; font-size:0.6rem;">• ${f}</span>`).join('');
+                const warnList = (t.dqi_warn_factors || []).map(f => `<span style="color:#ff453a; font-size:0.6rem;">• ${f}</span>`).join('');
+                return `
+                    <div${tipAttrs(omegaTip('dqi'))} style="font-size:0.68rem; margin-top:5px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:3px 5px; border-radius:4px;">
+                        <div style="color:${scoreColor}; font-weight:bold; font-size:0.7rem;">DQI ${dqiScore}% [${dqiStatus}]</div>
+                        ${posList}${warnList}
+                    </div>`;
+            }
+            if (t.dqi_faded) {
+                const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
+                return `
+                    <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.68rem; margin-top:5px; padding:3px 5px; border-radius:4px; border:1px dashed rgba(255,255,255,0.15); opacity:0.7;">
+                        <div style="color:${fadedColor}; font-weight:bold;">⏱ DQI faded (${t.dqi_faded_score}%)</div>
+                    </div>`;
+            }
+            return '';
+        }
+
+        function teamMarketClusterCell(t) {
+            const mlClass = t.ml_move < 0 ? 'val-up' : (t.ml_move > 0 ? 'val-down' : 'val-even');
+            const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
+            const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
+            const mlTxt = `${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`;
+            const ttTxt = `${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`;
+            const dqiHtml = buildTeamDqiBadgeHtml(t);
+            const tip = `${omegaTip('col_market_cluster')} ITT ${t.implied_total || '—'} · ML ${mlTxt} · TT ${ttTxt} · DIV ${t.divergence > 0 ? '+' : ''}${t.divergence}%`;
+            return `<td class="metric market-cluster"${tipAttrs(tip)}>
+                <div class="mc-line mc-itt"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
+                <div class="mc-line mc-moves">
+                    <span class="mc-label">ML</span><span class="${mlClass}">${mlTxt}</span>
+                    <span style="color:var(--text-secondary); margin:0 3px;">·</span>
+                    <span class="mc-label">TT</span><span class="${ttClass}">${ttTxt}</span>
+                </div>
+                <div class="mc-line mc-div"><span class="mc-label">DIV</span><strong class="${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong></div>
+                ${dqiHtml}
+            </td>`;
+        }
+
         let activeSignalFilter = '';
 
         function setSignalFilter(kind) {
@@ -2392,6 +2704,7 @@
                 document.getElementById('api-key-input').value = savedKey;
             }
             setSignalFilter('');
+            initMatrixCompactMode();
             applyMatrixColumnTips();
             loadData();
             pollRefreshStatus();
@@ -2981,6 +3294,9 @@
         function renderTables() {
             if (!latestData) return;
 
+            syncMatrixTableHeaders();
+            const compact = isMatrixCompact();
+
             const pitchers = latestData.pitchers || [];
             const teams = latestData.teams || [];
             const hittersForRender = [...(latestData.hitters || [])].sort(
@@ -3038,30 +3354,38 @@
 
                 const pRank = pRanks[p.pitcher];
                 const trapSpLabel = p.trap_type ? ` — ${p.trap_type}` : '';
-                tr.innerHTML = `
-                    <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
-                    ${attackConfHtml(p)}
-                    ${confDeltaHtml(p)}
-                    ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
-                    ${simpleMetricCell(p.market_score || '-', 'color: var(--accent-purple);', omegaTip('col_mkt'))}
-                    <td>
-                        <div class="signals-container">
-                            ${pitcherAlphaSignalsHtml(p)}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="signals-container">
-                            ${pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel)}
-                        </div>
-                    </td>
+                const pitcherNameCell = `
                     <td>
                         <strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span>
                         ${p.form_status === 'SURGING' ? `<div style="font-size:0.75em; color:#ff9f0a; margin-top:2px; font-weight:bold;">🔥 ${p.recent_k9} K/9 (L3)</div>` : (p.form_status === 'COLD' ? `<div style="font-size:0.75em; color:#00b4d8; margin-top:2px; font-weight:bold;">🧊 ${p.recent_era} ERA (L3)</div>` : '')}
-                    </td>
-                    <td><span class="vs">vs</span><strong>${p.opponent}</strong>${oppStackBadge}</td>
-                    <td class="metric"><b>${p.k_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></td>
-                    <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
-                `;
+                    </td>`;
+                const pitcherSignals = `
+                    <td><div class="signals-container">${pitcherAlphaSignalsHtml(p)}</div></td>
+                    <td><div class="signals-container">${pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel)}</div></td>`;
+                if (compact) {
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
+                        ${trustStackHtml(p)}
+                        ${pitcherProfileCell(p)}
+                        ${pitcherSignals}
+                        ${pitcherNameCell}
+                        <td><span class="vs">vs</span><strong>${p.opponent}</strong>${oppStackBadge}</td>
+                        ${pitcherPropsClusterCell(p)}
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
+                        ${attackConfHtml(p)}
+                        ${confDeltaHtml(p)}
+                        ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
+                        ${simpleMetricCell(p.market_score || '-', 'color: var(--accent-purple);', omegaTip('col_mkt'))}
+                        ${pitcherSignals}
+                        ${pitcherNameCell}
+                        <td><span class="vs">vs</span><strong>${p.opponent}</strong>${oppStackBadge}</td>
+                        <td class="metric"><b>${p.k_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></td>
+                        <td class="metric"><b>${p.outs_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></td>
+                    `;
+                }
                 pBody.appendChild(tr);
             });
 
@@ -3097,30 +3421,36 @@
                 }
 
                 const hRank = hRanks[h.name];
-                const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
-                tr.innerHTML = `
-                    <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
-                    ${attackConfHtml(h)}
-                    ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score), omegaTip('col_phy'))}
-                    ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score), omegaTip('col_mkt'))}
-                    ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba), omegaTip('col_xwoba'))}
-                    <td>${platoonBadge}</td>
-                    <td>
-                        <div class="signals-container">
-                            ${hitterAlphaSignalsHtml(h)}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="signals-container">
-                            ${hitterContextSignalsHtml(h)}
-                        </div>
-                    </td>
+                const hitterCore = `
                     <td><strong>${h.name}</strong> <span class="team-label" style="background:rgba(255,255,255,0.06); color:#fff; border-radius:4px; padding:1px 4px; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.bat_side}B</span> <span class="team-label">${abbrevMap[h.team] || h.team}</span></td>
                     <td><span class="vs">vs</span><strong>${h.opp_pitcher}</strong> <span class="team-label">${abbrevMap[h.opponent] || h.opponent}</span> <span class="team-label" style="background:rgba(10, 132, 255, 0.12); color:#0a84ff; font-weight:bold; font-size:0.75em; margin-left:4px;">${h.pitch_hand}HP</span></td>
                     <td class="metric">${h.ahr_price > 0 ? '+' : ''}${h.ahr_price || '-'}</td>
                     <td class="metric"><b>${h.hits_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})</span></td>
-                    <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>
-                `;
+                    <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>`;
+                if (compact) {
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
+                        ${trustStackHtml(h)}
+                        ${hitterMatchClusterCell(h)}
+                        <td>${platoonBadge}</td>
+                        <td><div class="signals-container">${hitterAlphaSignalsHtml(h)}</div></td>
+                        <td><div class="signals-container">${hitterContextSignalsHtml(h)}</div></td>
+                        ${hitterCore}
+                    `;
+                } else {
+                    const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
+                        ${attackConfHtml(h)}
+                        ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score), omegaTip('col_phy'))}
+                        ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score), omegaTip('col_mkt'))}
+                        ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba), omegaTip('col_xwoba'))}
+                        <td>${platoonBadge}</td>
+                        <td><div class="signals-container">${hitterAlphaSignalsHtml(h)}</div></td>
+                        <td><div class="signals-container">${hitterContextSignalsHtml(h)}</div></td>
+                        ${hitterCore}
+                    `;
+                }
                 hBody.appendChild(tr);
             });
 
@@ -3171,60 +3501,42 @@
                     }
                 }
 
-                // v9.5: DQI — render from backend-injected fields (single source of truth).
-                // Only shown when backend confirmed divergence >= 10% (dqi_score present).
-                let divBadgeHtml = '';
-                if (t.dqi_score !== undefined && t.dqi_score !== null) {
-                    const dqiScore  = t.dqi_score;
-                    const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
-                    const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
-                    const posList  = (t.dqi_pos_factors  || []).map(f => `<span style="color:#32d74b; font-size:0.63rem;">• ${f}</span>`).join('');
-                    const warnList = (t.dqi_warn_factors || []).map(f => `<span style="color:#ff453a; font-size:0.63rem;">• ${f}</span>`).join('');
-                    divBadgeHtml = `
-                        <div${tipAttrs(omegaTip('dqi'))} style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; min-width:110px;">
-                            <div style="color:${scoreColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">DQI: ${dqiScore}% [${dqiStatus}]</div>
-                            ${posList}${warnList}
-                        </div>
-                    `;
-                } else if (t.dqi_faded) {
-                    // v10.1: DQI Faded Ghost Tag — signal was active earlier today but has since dropped
-                    const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
-                    divBadgeHtml = `
-                        <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.7rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.15); padding:4px 6px; border-radius:4px; min-width:110px; opacity:0.65;">
-                            <div style="color:${fadedColor}; font-weight:bold; font-size:0.75rem; letter-spacing:0.02em;">⏱️ DQI FADED (was ${t.dqi_faded_score}% [${t.dqi_faded_status}])</div>
-                            <span style="color:rgba(255,255,255,0.45); font-size:0.62rem;">Signal active earlier today, dropped at lock</span>
-                        </div>
-                    `;
-                }
-
+                const divBadgeHtml = buildTeamDqiBadgeHtml(t);
 
                 const tRank = tRanks[t.team];
-                tr.innerHTML = `
-                    <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
-                    ${attackConfHtml(t)}
-                    ${confDeltaHtml(t)}
-                    ${teamPhyCell(t)}
-                    ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score), omegaTip('col_mkt'))}
-                    <td>
-                        <div class="signals-container">
-                            ${teamAlphaSignalsHtml(t)}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="signals-container">
-                            ${teamContextSignalsHtml(t)}
-                        </div>
-                    </td>
+                const teamSignals = `
+                    <td><div class="signals-container">${teamAlphaSignalsHtml(t)}</div></td>
+                    <td><div class="signals-container">${teamContextSignalsHtml(t)}</div></td>`;
+                const teamIdentity = `
                     <td><strong>${t.team}</strong></td>
-                    <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>
-                    ${simpleMetricCell(t.implied_total || '-', 'color: var(--accent-green); font-weight:600;', omegaTip('col_itt'))}
-                    ${simpleMetricCell(`${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`, '', omegaTip('col_ml_move'), mlClass)}
-                    ${simpleMetricCell(`${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`, '', omegaTip('col_tt_move'), ttClass)}
-                    <td class="metric ${divClass}" style="vertical-align: middle;"${tipAttrs(omegaTip('col_div'))}>
-                        <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>
-                        ${divBadgeHtml}
-                    </td>
-                `;
+                    <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>`;
+                if (compact) {
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
+                        ${trustStackHtml(t)}
+                        ${teamPhyCell(t)}
+                        ${teamSignals}
+                        ${teamIdentity}
+                        ${teamMarketClusterCell(t)}
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
+                        ${attackConfHtml(t)}
+                        ${confDeltaHtml(t)}
+                        ${teamPhyCell(t)}
+                        ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score), omegaTip('col_mkt'))}
+                        ${teamSignals}
+                        ${teamIdentity}
+                        ${simpleMetricCell(t.implied_total || '-', 'color: var(--accent-green); font-weight:600;', omegaTip('col_itt'))}
+                        ${simpleMetricCell(`${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`, '', omegaTip('col_ml_move'), mlClass)}
+                        ${simpleMetricCell(`${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`, '', omegaTip('col_tt_move'), ttClass)}
+                        <td class="metric ${divClass}" style="vertical-align: middle;"${tipAttrs(omegaTip('col_div'))}>
+                            <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>
+                            ${divBadgeHtml}
+                        </td>
+                    `;
+                }
                 tBody.appendChild(tr);
             });
 
