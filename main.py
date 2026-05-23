@@ -826,9 +826,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         if avg_season_ops > 0:
                             rolling_ops_delta = round((avg_rolling_ops - avg_season_ops) / avg_season_ops * 100, 1)
                             
-                    # OMEGA v12.1: Requiring BOTH a K% surge and a severe OPS drop for a true Team Slate Slump
-                    is_cold_streak_msmi = rolling_k_delta >= 25.0 and rolling_ops_delta <= -15.0
+                    # OMEGA v12.1.1: Calibrated slate-wide balance (highly selective AND trigger)
+                    is_cold_streak_msmi = rolling_k_delta >= 12.0 and rolling_ops_delta <= -12.0
                     is_hot_run_msmi = rolling_ops_delta >= 12.0 and rolling_k_delta <= -10.0
+
                     is_cold_streak = is_cold_streak_msmi
             except Exception:
                 pass
@@ -1015,9 +1016,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             if s_ops > 0:
                 h_rolling_ops_delta = round((r_ops - s_ops) / s_ops * 100, 1)
                 
-            # OMEGA v12.1: Requiring BOTH a K% surge and a severe OPS drop for a true Hitter Slate Slump
-            h_is_cold_streak_msmi = h_rolling_k_delta >= 25.0 and h_rolling_ops_delta <= -15.0
+            # OMEGA v12.1.1: Calibrated slate-wide balance (highly selective AND trigger)
+            h_is_cold_streak_msmi = h_rolling_k_delta >= 12.0 and h_rolling_ops_delta <= -12.0
             h_is_hot_run_msmi = h_rolling_ops_delta >= 12.0 and h_rolling_k_delta <= -10.0
+
 
 
         # Dynamic Platoon splits via NPAS
