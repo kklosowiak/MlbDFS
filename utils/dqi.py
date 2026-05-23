@@ -115,8 +115,19 @@ def calculate_dqi(team, pitchers=None):
         pos_pts += 10.0
         pos_factors.append("Debut Trap SP (+10 pts)")
     if team_stack_trap:
-        warn_pts += 20.0
-        warn_factors.append("Stack Chalk Warning (-20 pts)")
+        # OMEGA v9.8: Scaled GPP Chalk Penalty
+        # Base penalty scales from 5.0 (physics >= 45) to 20.0 (physics <= 25)
+        phys_val = float(team.get('physics_score', 50.0) or 50.0)
+        phys_factor = min(1.0, max(0.0, (45.0 - phys_val) / 20.0))
+        penalty = 5.0 + 15.0 * phys_factor
+        
+        # Mitigate penalty if divergence is high (representing sharp backing)
+        if divergence > 10.0:
+            div_mitigation = min(10.0, (divergence - 10.0) * 0.5)
+            penalty = max(5.0, penalty - div_mitigation)
+            
+        warn_pts += penalty
+        warn_factors.append(f"Stack Chalk Warning (-{round(penalty, 1)} pts)")
     if opp_pitcher_trap:
         pos_pts += 20.0
         pos_factors.append("Opposing SP Trap (+20 pts)")
