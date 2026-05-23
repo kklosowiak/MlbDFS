@@ -542,17 +542,46 @@ def post_bankroll_login(pin: str = Form(...)):
         return response
     return RedirectResponse(url="/bankroll/login?error=1", status_code=status.HTTP_303_SEE_OTHER)
 
-@app.get("/bankroll", response_class=HTMLResponse)
-def get_bankroll_page(request: Request):
-    if not check_bankroll_auth(request):
-        return RedirectResponse(url="/bankroll/login")
+@app.get("/bankroll")
+def redirect_bankroll_page():
+    return RedirectResponse(url="/lineups")
+
+@app.get("/lineups", response_class=HTMLResponse)
+def get_lineups_page(request: Request):
+    if not check_page_auth(request):
+        return RedirectResponse(url="/login")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    tmpl_path = os.path.join(base_dir, "templates", "bankroll.html")
+    tmpl_path = os.path.join(base_dir, "templates", "lineups.html")
     if os.path.exists(tmpl_path):
         with open(tmpl_path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
-    return HTMLResponse(content="Error: bankroll.html not found.")
+    return HTMLResponse(content="Error: lineups.html not found.")
+
+@app.get("/api/lineups")
+def api_get_confirmed_lineups(request: Request):
+    if not check_page_auth(request):
+        raise HTTPException(status_code=401)
+    
+    from data.lineup_fetcher import LineupFetcher
+    fetcher = LineupFetcher()
+    confirmed = fetcher.fetch_confirmed_lineups()
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    
+    projections = {}
+    if os.path.exists(results_path):
+        try:
+            with open(results_path, "r", encoding="utf-8") as f:
+                projections = json.load(f)
+        except Exception as e:
+            print(f"Error loading projections for lineups: {e}")
+            
+    return {
+        "confirmed_lineups": confirmed,
+        "projections": projections
+    }
 
 @app.get("/api/bankroll")
 def api_get_bankroll(request: Request):

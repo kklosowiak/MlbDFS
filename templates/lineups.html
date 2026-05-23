@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ΩMEGA LINEUPS — STARTING ROSTERS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark theme (default) tokens */
+            --bg: #030303;
+            --surface: rgba(20, 20, 25, 0.7);
+            --surface-card: rgba(24, 24, 30, 0.55);
+            --text-primary: #f5f5f7;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent-blue: #0a84ff;
+            --accent-green: #32d74b;
+            --accent-red: #ff453a;
+            --accent-purple: #bf5af2;
+            --accent-orange: #ff9f0a;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Porcelain Light Mode overrides */
+        html.light-theme {
+            --bg: #f5f5f7;
+            --surface: rgba(255, 255, 255, 0.8);
+            --surface-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #1d1d1f;
+            --text-secondary: rgba(0, 0, 0, 0.55);
+            --border: rgba(0, 0, 0, 0.08);
+            --accent-blue: #007aff;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+            --accent-purple: #af52de;
+            --accent-orange: #ff9500;
+        }
+
+        /* Page styling */
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 50%, var(--bg) 0%, var(--bg) 100%);
+            background-attachment: fixed;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Dual-gradient backgrounds depending on theme class */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 30%, rgba(10, 132, 255, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        html.light-theme body::before {
+            background: radial-gradient(circle at 50% 30%, rgba(0, 122, 255, 0.03) 0%, transparent 60%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header Cockpit */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .header-logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            text-shadow: 0 0 20px rgba(10, 132, 255, 0.35);
+        }
+        .header-text-block h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        .header-subtitle {
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--accent-green);
+            text-transform: uppercase;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-premium {
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            background: var(--surface);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 6px 20px rgba(10, 132, 255, 0.15);
+        }
+        .btn-premium.btn-back {
+            background: rgba(10, 132, 255, 0.1);
+            border-color: rgba(10, 132, 255, 0.25);
+            color: var(--accent-blue);
+        }
+        .btn-premium.btn-back:hover {
+            background: rgba(10, 132, 255, 0.18);
+            border-color: var(--accent-blue);
+        }
+
+        /* Status Banner */
+        .status-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            backdrop-filter: blur(15px);
+        }
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+        .status-dot.pulse {
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(50, 215, 75, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(50, 215, 75, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(50, 215, 75, 0); }
+        }
+
+        /* Matchup Cards Grid */
+        .matchups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+            gap: 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            .matchups-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Matchup Card Structure */
+        .matchup-card {
+            background: var(--surface-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            transition: var(--transition);
+        }
+        html.light-theme .matchup-card {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+        .matchup-card:hover {
+            border-color: rgba(10, 132, 255, 0.2);
+            box-shadow: 0 12px 45px rgba(0,0,0,0.5), 0 0 30px rgba(10,132,255,0.03);
+        }
+        html.light-theme .matchup-card:hover {
+            box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Matchup Card Header */
+        .matchup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+        .matchup-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .matchup-vs {
+            color: var(--accent-blue);
+            font-weight: 800;
+            margin: 0 6px;
+            font-size: 0.9em;
+        }
+        .matchup-odds {
+            font-size: 0.8rem;
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+        .matchup-meta {
+            text-align: right;
+        }
+        .matchup-time {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            background: rgba(255, 159, 10, 0.08);
+            border: 1px solid rgba(255, 159, 10, 0.2);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .matchup-weather {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-weight: 600;
+            max-width: 220px;
+            line-height: 1.3;
+        }
+
+        /* Implied run totals overlay */
+        .implied-totals-bar {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+            margin-bottom: 16px;
+        }
+        .implied-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .implied-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .implied-value {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        /* Starting Pitchers section */
+        .pitcher-matchup-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+        .pitcher-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .pitcher-box.home {
+            text-align: right;
+            border-left: 1px solid var(--border);
+            padding-left: 16px;
+        }
+        .pitcher-box.away {
+            padding-right: 16px;
+        }
+        .pitcher-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .pitcher-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .pitcher-stats {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Dynamic Side-by-Side Lineup Cards */
+        .lineups-split-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .lineup-card-side {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Lineup Card Header Banner */
+        .lineup-banner {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        .lineup-banner.projected {
+            background: rgba(255, 69, 58, 0.12);
+            color: var(--accent-red);
+            border-bottom-color: rgba(255, 69, 58, 0.2);
+        }
+        .lineup-banner.confirmed {
+            background: rgba(50, 215, 75, 0.12);
+            color: var(--accent-green);
+            border-bottom-color: rgba(50, 215, 75, 0.25);
+            animation: soft-pulse 2s infinite alternate;
+        }
+        @keyframes soft-pulse {
+            from { background: rgba(50, 215, 75, 0.1); }
+            to { background: rgba(50, 215, 75, 0.2); }
+        }
+
+        /* Hitter list sequence */
+        .hitter-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .hitter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9.5px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.82rem;
+            transition: var(--transition);
+        }
+        .hitter-row:last-child {
+            border-bottom: none;
+        }
+        .hitter-row:nth-child(even) {
+            background: rgba(255,255,255,0.015);
+        }
+        .hitter-row:hover {
+            background: rgba(10, 132, 255, 0.05);
+        }
+
+        .hitter-left-side {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bat-order {
+            font-weight: 800;
+            font-size: 0.8rem;
+            font-family: monospace;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        .hitter-name-block {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .hitter-hand {
+            font-weight: 800;
+            font-size: 0.72rem;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 0 4px;
+            margin-left: 4px;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+        .hitter-hand.L { color: var(--accent-red); background: rgba(255,69,58,0.1); }
+        .hitter-hand.R { color: var(--accent-blue); background: rgba(10,132,255,0.1); }
+        .hitter-hand.B { color: var(--accent-purple); background: rgba(191,90,242,0.1); }
+
+        .hitter-pos {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 6px;
+        }
+
+        /* Hitter metrics overlays */
+        .hitter-right-side {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: right;
+        }
+        .hitter-score-pill {
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .hitter-score-pill.elite {
+            background: rgba(50, 215, 75, 0.15);
+            border: 1px solid rgba(50, 215, 75, 0.35);
+            color: var(--accent-green);
+        }
+        .hitter-score-pill.mid {
+            background: rgba(255, 159, 10, 0.12);
+            border: 1px solid rgba(255, 159, 10, 0.3);
+            color: var(--accent-orange);
+        }
+        .hitter-price {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* Empty state placeholders */
+        .empty-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            text-align: center;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .placeholder-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+        .placeholder-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .placeholder-text {
+            font-size: 0.78rem;
+            max-width: 180px;
+            line-height: 1.4;
+        }
+
+        /* Global spinner loader */
+        .loader-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+            gap: 15px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3.5px solid var(--border);
+            border-top: 3.5px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader-text {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Dynamic Light/Dark switch buttons */
+        .theme-switcher-circle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-switcher-circle:hover {
+            border-color: var(--accent-blue);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // Check local storage for persistent Porcelain Light Mode toggle early to prevent style flashes
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+            document.documentElement.classList.add('light-theme');
+        }
+    </script>
+
+    <div class="container">
+        
+        <!-- Header Cockpit -->
+        <div class="header">
+            <div class="header-title-box">
+                <span class="header-logo">Ω</span>
+                <div class="header-text-block">
+                    <h1>ΩMEGA LINEUP COCKPIT</h1>
+                    <div class="header-subtitle">Live Starting Cards</div>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <!-- Theme switcher -->
+                <div class="theme-switcher-circle" onclick="toggleTheme()" title="Switch Theme">
+                    <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.4s ease;"></svg>
+                </div>
+                <a href="/" class="btn-premium btn-back">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    Back to Cockpit
+                </a>
+            </div>
+        </div>
+
+        <!-- System Sync banner -->
+        <div class="status-strip">
+            <div class="status-info">
+                <span class="status-dot pulse"></span>
+                <span>StatsAPI Real-Time Lineup Feed Connected</span>
+            </div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase;" id="active-date-label">
+                Slate Date: Loading...
+            </div>
+        </div>
+
+        <!-- Main matchups grid content -->
+        <div id="main-content" style="width:100%;">
+            <div class="loader-box">
+                <div class="spinner"></div>
+                <div class="loader-text">Ingesting official roster sheets from MLB Savant...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Normalization engine to map StatsAPI names to projections names robustly
+        function normalizeName(name) {
+            if (!name) return '';
+            return name.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // strip accents
+                .replace(/[^a-z0-9 ]/g, '') // remove special characters
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Initialize theme button icon
+        function updateThemeButton() {
+            const isLight = document.documentElement.classList.contains('light-theme');
+            const icon = document.getElementById('theme-icon');
+            if (!icon) return;
+
+            if (isLight) {
+                // Sun Icon
+                icon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                `;
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                // Moon Icon
+                icon.innerHTML = `
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                `;
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.documentElement.classList.toggle('light-theme');
+            try {
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            } catch (e) { /* ignore */ }
+            updateThemeButton();
+        }
+
+        updateThemeButton();
+
+        // Team franchise conversions mapping StatsAPI names to short names
+        const shortNameMap = {
+            "arizona diamondbacks": "ARI",
+            "atlanta braves": "ATL",
+            "baltimore orioles": "BAL",
+            "boston red sox": "BOS",
+            "chicago cubs": "CHC",
+            "chicago white sox": "CWS",
+            "cincinnati reds": "CIN",
+            "cleveland guardians": "CLE",
+            "colorado rockies": "COL",
+            "detroit tigers": "DET",
+            "houston astros": "HOU",
+            "kansas city royals": "KC",
+            "los angeles angels": "LAA",
+            "los angeles dodgers": "LAD",
+            "miami marlins": "MIA",
+            "milwaukee brewers": "MIL",
+            "minnesota twins": "MIN",
+            "new york mets": "NYM",
+            "new york yankees": "NYY",
+            "athletics": "OAK",
+            "philadelphia phillies": "PHI",
+            "pittsburgh pirates": "PIT",
+            "san diego padres": "SD",
+            "san francisco giants": "SF",
+            "seattle mariners": "SEA",
+            "st louis cardinals": "STL",
+            "tampa bay rays": "TB",
+            "texas rangers": "TEX",
+            "toronto blue jays": "TOR",
+            "washington nationals": "WSH"
+        };
+
+        function getTeamAbbrev(fullName) {
+            if (!fullName) return '—';
+            const clean = fullName.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+            return shortNameMap[clean] || fullName;
+        }
+
+        // Fetch official starting rosters
+        async function loadLineupDashboard() {
+            try {
+                const res = await fetch('/api/lineups');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                const payload = await res.json();
+                renderMatchupCards(payload);
+            } catch (err) {
+                console.error("Error loading lineup cards", err);
+                document.getElementById('main-content').innerHTML = `
+                    <div style="text-align:center; padding:50px; color:var(--accent-red);">
+                        <h3>⚠️ Connection Interrupted</h3>
+                        <p>Could not retrieve starting lists. Check local cache and server health.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderMatchupCards(payload) {
+            const container = document.getElementById('main-content');
+            container.innerHTML = '';
+
+            const confirmed = payload.confirmed_lineups || {};
+            const projections = payload.projections || {};
+            
+            // Slate metadata date
+            const dateLabel = document.getElementById('active-date-label');
+            if (projections.meta && projections.meta.date) {
+                dateLabel.innerText = `Slate Date: ${projections.meta.date}`;
+            } else {
+                dateLabel.innerText = `Slate Date: ${new Date().toLocaleDateString()}`;
+            }
+
+            const pitchers = projections.pitchers || [];
+            const teams = projections.teams || [];
+            const hitters = projections.hitters || [];
+
+            if (teams.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:80px; color:var(--text-secondary); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg);">
+                        <span style="font-size:3rem; margin-bottom:15px; display:block;">⚾</span>
+                        <h3 style="margin:0; color:var(--text-primary);">No Slate Matchups Active</h3>
+                        <p>Market snapshot data is currently being synced by the scheduler.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Pair teams by game (Home vs Away)
+            let games = [];
+            let processedTeams = new Set();
+
+            teams.forEach(t => {
+                const teamName = t.team;
+                if (processedTeams.has(teamName)) return;
+
+                const opponentName = t.opponent;
+                const oppTeam = teams.find(x => x.team === opponentName);
+
+                if (oppTeam) {
+                    // Match starting pitchers
+                    const awayPitcher = pitchers.find(p => p.team === teamName) || 
+                                         pitchers.find(p => p.team === opponentName && p.opponent === teamName);
+                    const homePitcher = pitchers.find(p => p.team === opponentName) || 
+                                         pitchers.find(p => p.team === teamName && p.opponent === opponentName);
+
+                    // Assume team that is opponent of away is home, or lookup is_home flag in pitcher
+                    let isAwayHomeMatch = false;
+                    if (awayPitcher && awayPitcher.side === 'away') {
+                        isAwayHomeMatch = true;
+                    } else if (homePitcher && homePitcher.side === 'home') {
+                        isAwayHomeMatch = true;
+                    }
+
+                    const away = isAwayHomeMatch ? t : oppTeam;
+                    const home = isAwayHomeMatch ? oppTeam : t;
+
+                    games.push({ away, home });
+                    processedTeams.add(away.team);
+                    processedTeams.add(home.team);
+                }
+            });
+
+            // Draw game cards
+            const grid = document.createElement('div');
+            grid.className = 'matchups-grid';
+
+            games.forEach(g => {
+                const awayTeam = g.away;
+                const homeTeam = g.home;
+
+                const card = document.createElement('div');
+                card.className = 'matchup-card';
+
+                // Look up pitchers
+                const awaySP = pitchers.find(p => p.team === awayTeam.team) || { pitcher: 'TBD', pitch_hand: 'R', siera: 4.5, physics_score: 0 };
+                const homeSP = pitchers.find(p => p.team === homeTeam.team) || { pitcher: 'TBD', pitch_hand: 'R', siera: 4.5, physics_score: 0 };
+
+                // Weather and wind overlay
+                const weatherStr = awayTeam.weather_label || homeTeam.weather_label || 'Weather: Dome / Standard conditions';
+
+                // Implied runs
+                const awayRuns = awayTeam.implied_total != null ? awayTeam.implied_total.toFixed(1) : '—';
+                const homeRuns = homeTeam.implied_total != null ? homeTeam.implied_total.toFixed(1) : '—';
+
+                // Check starting rosters confirm status
+                // MLB StatsAPI confirmed list matches on team name
+                const awayConfirmedList = confirmed[awayTeam.team] || confirmed[getTeamAbbrev(awayTeam.team)] || null;
+                const homeConfirmedList = confirmed[homeTeam.team] || confirmed[getTeamAbbrev(homeTeam.team)] || null;
+
+                const isAwayConfirmed = awayConfirmedList !== null && awayConfirmedList.length > 0;
+                const isHomeConfirmed = homeConfirmedList !== null && homeConfirmedList.length > 0;
+
+                // Render rosters HTML lists helper
+                function getRostersHtml(playersList, isConfirmed, teamName) {
+                    if (!isConfirmed) {
+                        return `
+                            <div class="empty-placeholder">
+                                <span class="placeholder-icon">⌛</span>
+                                <div class="placeholder-title">Roster Projected</div>
+                                <div class="placeholder-text">Waiting for StatsAPI official lineup confirmation.</div>
+                            </div>
+                        `;
+                    }
+
+                    let rows = '';
+                    playersList.slice(0, 9).forEach((pNameNormalized, idx) => {
+                        const orderNum = idx + 1;
+                        
+                        // Try to find hitter profile in projections to overlay leverage stats
+                        const hitProfile = hitters.find(h => {
+                            const nameA = normalizeName(h.name);
+                            const nameB = normalizeName(pNameNormalized);
+                            return nameA === nameB || nameA.includes(nameB) || nameB.includes(nameA);
+                        });
+
+                        let dispName = pNameNormalized.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        let batSide = '—';
+                        let position = 'H';
+                        let leveragePill = '';
+                        let price = '';
+
+                        if (hitProfile) {
+                            dispName = hitProfile.name;
+                            batSide = hitProfile.bat_side || '—';
+                            
+                            // Map default positions, or extract from key details
+                            position = hitProfile.bat_side === 'R' ? 'RHP' : 'LHP'; // Fallback labels
+                            if (hitProfile.hits_line && hitProfile.hits_line !== '-') {
+                                price = `$${hitProfile.ahr_price || '—'}`;
+                            } else if (hitProfile.tb_line && hitProfile.tb_line !== '-') {
+                                price = `$${hitProfile.ahr_price || '—'}`;
+                            } else {
+                                price = hitProfile.ahr_price ? `+$${hitProfile.ahr_price}` : '';
+                            }
+                            
+                            // Pos overlays or standard fillers
+                            position = hitProfile.bat_side === 'B' ? 'S' : hitProfile.bat_side;
+
+                            // Dynamic Leverage Pill
+                            const score = Math.round(hitProfile.player_score);
+                            const pillClass = score >= 55 ? 'elite' : 'mid';
+                            leveragePill = `<span class="hitter-score-pill ${pillClass}">Ω ${score}</span>`;
+                        }
+
+                        rows += `
+                            <div class="hitter-row">
+                                <div class="hitter-left-side">
+                                    <span class="bat-order">${orderNum}</span>
+                                    <span class="hitter-name-block">
+                                        <strong>${dispName}</strong>
+                                        <span class="hitter-hand ${batSide}">${batSide}</span>
+                                    </span>
+                                </div>
+                                <div class="hitter-right-side">
+                                    ${leveragePill}
+                                    <span class="hitter-price">${price}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    return `<div class="hitter-list">${rows}</div>`;
+                }
+
+                const awayRosterHtml = getRostersHtml(awayConfirmedList, isAwayConfirmed, awayTeam.team);
+                const homeRosterHtml = getRostersHtml(homeConfirmedList, isHomeConfirmed, homeTeam.team);
+
+                // Build full game card HTML structure
+                card.innerHTML = `
+                    <div class="matchup-header">
+                        <div>
+                            <div class="matchup-title">
+                                <strong>${getTeamAbbrev(awayTeam.team)}</strong>
+                                <span class="matchup-vs">@</span>
+                                <strong>${getTeamAbbrev(homeTeam.team)}</strong>
+                            </div>
+                            <div class="matchup-odds">
+                                Stack Score: Ω ${awayTeam.stack_score.toFixed(0)} Away | Ω ${homeTeam.stack_score.toFixed(0)} Home
+                            </div>
+                        </div>
+                        <div class="matchup-meta">
+                            <span class="matchup-time">ACTIVE SLATE</span>
+                            <div class="matchup-weather">🌧️ ${weatherStr}</div>
+                        </div>
+                    </div>
+
+                    <div class="implied-totals-bar">
+                        <div class="implied-box">
+                            <span class="implied-label">Away Implied:</span>
+                            <span class="implied-value">${awayRuns} Runs</span>
+                        </div>
+                        <div class="implied-box">
+                            <span class="implied-label">Home Implied:</span>
+                            <span class="implied-value">${homeRuns} Runs</span>
+                        </div>
+                    </div>
+
+                    <div class="pitcher-matchup-row">
+                        <div class="pitcher-box away">
+                            <span class="pitcher-label">Away SP</span>
+                            <span class="pitcher-name">${awaySP.pitcher}</span>
+                            <span class="pitcher-stats">${awaySP.pitch_hand}HP · SIERA ${awaySP.siera || '4.10'}</span>
+                        </div>
+                        <div class="pitcher-box home">
+                            <span class="pitcher-label">Home SP</span>
+                            <span class="pitcher-name">${homeSP.pitcher}</span>
+                            <span class="pitcher-stats">${homeSP.pitch_hand}HP · SIERA ${homeSP.siera || '4.10'}</span>
+                        </div>
+                    </div>
+
+                    <div class="lineups-split-box">
+                        <!-- Away lineup card -->
+                        <div class="lineup-card-side">
+                            <div class="lineup-banner ${isAwayConfirmed ? 'confirmed' : 'projected'}">
+                                <span>${isAwayConfirmed ? '✓' : '⌛'}</span>
+                                <span>${isAwayConfirmed ? 'CONFIRMED' : 'PROJECTED'}</span>
+                            </div>
+                            ${awayRosterHtml}
+                        </div>
+                        <!-- Home lineup card -->
+                        <div class="lineup-card-side">
+                            <div class="lineup-banner ${isHomeConfirmed ? 'confirmed' : 'projected'}">
+                                <span>${isHomeConfirmed ? '✓' : '⌛'}</span>
+                                <span>${isHomeConfirmed ? 'CONFIRMED' : 'PROJECTED'}</span>
+                            </div>
+                            ${homeRosterHtml}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            container.appendChild(grid);
+        }
+
+        loadLineupDashboard();
+    </script>
+</body>
+</html>
