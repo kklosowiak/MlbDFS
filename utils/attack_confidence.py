@@ -238,10 +238,12 @@ def score_pitcher_confidence(p, t_reports):
         elif oxw < 0.300:
             conf += 12
             reasons.append(f"Soft matchup: {opp} weak lineup xwOBA.")
-        if opp_t.get("prop_pressure_elite") and int(opp_t.get("prop_target_count", 0) or 0) >= 2:
+        n_tgt = int(opp_t.get("prop_target_count", 0) or 0)
+        n_st = int(opp_t.get("prop_stack_target_count", 0) or 0)
+        if opp_t.get("prop_pressure_elite") and (n_tgt >= 3 or (n_tgt >= 2 and n_st >= 2)):
             conf -= 6
             reasons.append(
-                f"{opp} elite prop board ({opp_t.get('prop_target_count')} strict TARGET) — run risk."
+                f"{opp} elite prop board ({n_tgt} TARGET, {n_st} runs/RBI TARGET) — run risk."
             )
 
     if p.get("is_sharp") or p.get("is_shark") or p.get("is_whale"):

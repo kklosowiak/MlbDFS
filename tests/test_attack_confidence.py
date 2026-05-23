@@ -5,10 +5,11 @@ from utils.team_prop_pressure import (
     LABEL_COLD,
     LABEL_HOT,
     LABEL_NEUTRAL,
+    LABEL_WARM,
 )
 
 
-def test_prop_pressure_hot_requires_strict_targets():
+def test_prop_pressure_hot_requires_strict_targets_and_stack_depth():
     hitters = [
         {"name": "A", "team": "Boston Red Sox", "is_juiced_target": True, "matchup_xwoba": 0.360},
         {"name": "B", "team": "Boston Red Sox", "is_juiced_target": True, "runs_target": True, "matchup_xwoba": 0.350},
@@ -17,13 +18,28 @@ def test_prop_pressure_hot_requires_strict_targets():
     teams = [{"team": "Boston Red Sox"}, {"team": "Kansas City Royals"}]
     attach_team_prop_pressure(teams, hitters)
     bos = next(t for t in teams if "Boston" in t["team"])
-    assert bos["prop_target_count"] >= 2
-    assert bos["prop_pressure_raw"] >= 18
+    assert bos["prop_target_count"] >= 3
+    assert bos["prop_stack_target_count"] >= 1
+    assert bos["prop_pressure_raw"] >= 22
     assert bos["prop_pressure_label"] == LABEL_HOT
     assert bos["prop_pressure_elite"] is True
 
 
-def test_multiple_teams_can_be_hot_without_cap():
+def test_two_targets_without_stack_targets_not_hot():
+    hitters = [
+        {"name": "A", "team": "Team X", "is_juiced_target": True, "matchup_xwoba": 0.36},
+        {"name": "B", "team": "Team X", "is_juiced_target": True, "matchup_xwoba": 0.35},
+        {"name": "C", "team": "Team X", "is_prop_juice": True, "runs_juice": True, "matchup_xwoba": 0.34},
+        {"name": "D", "team": "Team X", "is_prop_juice": True, "rbis_juice": True, "matchup_xwoba": 0.33},
+    ]
+    teams = [{"team": "Team X"}, {"team": "Team Y"}]
+    attach_team_prop_pressure(teams, hitters)
+    assert teams[0]["prop_target_count"] == 2
+    assert teams[0]["prop_stack_target_count"] == 0
+    assert teams[0]["prop_pressure_label"] != LABEL_HOT
+
+
+def test_multiple_teams_can_be_hot_without_slate_cap():
     hitters = []
     for team in ("Team A", "Team B", "Team C", "Team D", "Team E"):
         hitters.extend([
@@ -49,11 +65,21 @@ def test_soft_juice_alone_not_hot():
     ]
     m = compute_team_prop_pressure("Team A", hitters)
     assert m["prop_target_count"] == 0
-    assert m["prop_pressure_raw"] < 12
+    assert m["prop_pressure_raw"] == 0
 
     teams = [{"team": "Team A"}, {"team": "Team B"}]
     attach_team_prop_pressure(teams, hitters)
-    assert teams[0]["prop_pressure_label"] != LABEL_HOT
+    assert teams[0]["prop_pressure_label"] not in (LABEL_HOT, LABEL_WARM)
+
+
+def test_warm_is_moderate_not_every_team():
+    hitters = [
+        {"name": "A", "team": "Team Z", "is_juiced_target": True, "matchup_xwoba": 0.35},
+        {"name": "B", "team": "Team Z", "is_juiced_target": True, "matchup_xwoba": 0.34},
+    ]
+    teams = [{"team": "Team Z"}, {"team": "Team W"}]
+    attach_team_prop_pressure(teams, hitters)
+    assert teams[0]["prop_pressure_label"] == LABEL_NEUTRAL
 
 
 def test_stack_conf_penalizes_chalk_and_cold_props():
@@ -89,7 +115,8 @@ def test_pitcher_prop_penalty_only_elite_board():
         "team_xwoba": 0.355,
         "prop_pressure_label": LABEL_NEUTRAL,
         "prop_pressure_elite": False,
-        "prop_target_count": 0,
+        "prop_target_count": 2,
+        "prop_stack_target_count": 0,
     }
     conf_n, reasons_n = score_pitcher_confidence(p, [opp_neutral])
     assert not any("prop board" in r.lower() for r in reasons_n)
@@ -99,6 +126,7 @@ def test_pitcher_prop_penalty_only_elite_board():
         "prop_pressure_label": LABEL_HOT,
         "prop_pressure_elite": True,
         "prop_target_count": 3,
+        "prop_stack_target_count": 2,
     }
     conf_h, reasons_h = score_pitcher_confidence(p, [opp_hot])
     assert any("elite prop board" in r for r in reasons_h)

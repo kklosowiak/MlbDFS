@@ -9,12 +9,19 @@ LABEL_WARM = "WARM"
 LABEL_NEUTRAL = "NEUTRAL"
 LABEL_COLD = "COLD"
 
-# Strict team-level prop pressure (soft per-hitter JUICE excluded from team score)
-HOT_MIN_RAW = 18
-HOT_MIN_TARGETS = 2
-HOT_MIN_STACK_MARKETS = 2
-WARM_MIN_RAW = 12
+# Absolute gates only — no per-slate cap. Soft JUICE never counts toward raw/HOT.
+HOT_MIN_RAW = 22
+HOT_MIN_TARGETS_DEEP = 3
+HOT_MIN_TARGETS_STACKED = 2
+HOT_MIN_STACK_TARGETS = 2
+HOT_MIN_STACK_TARGETS_FOR_DEEP = 1
+HOT_STACKED_MIN_RAW = 24
+
+WARM_MIN_RAW = 14
 WARM_MIN_TARGETS = 2
+WARM_ALT_RAW = 11
+WARM_ALT_TARGETS = 1
+WARM_ALT_STACK_TARGETS = 1
 
 
 def _confirmed_set_for_team(team_name, confirmed_lineups):
@@ -29,21 +36,18 @@ def _confirmed_set_for_team(team_name, confirmed_lineups):
 
 
 def _hitter_strict_prop_points(h):
-    """Only strict TARGET + stack-correlated juice (not blanket is_prop_juice)."""
+    """Strict TARGET + stack TARGET only (no is_prop_juice, no runs/rbis JUICE)."""
     pts = 0.0
     if h.get("is_juiced_target"):
         pts += 5.0
     if h.get("runs_target") or h.get("rbis_target"):
         pts += 4.0
-    elif h.get("runs_juice") or h.get("rbis_juice"):
-        pts += 2.0
     return pts
 
 
 def compute_team_prop_pressure(team_name, hitters, confirmed_lineups=None):
     """
     Score 0–100 + label for strict prop board activity on confirmed/top hitters.
-    Soft JUICE flags are excluded so most teams are not HOT by default.
     """
     roster = [h for h in (hitters or []) if h.get("team") == team_name]
     if not roster:
@@ -54,6 +58,7 @@ def compute_team_prop_pressure(team_name, hitters, confirmed_lineups=None):
             "prop_target_count": 0,
             "prop_juice_count": 0,
             "prop_stack_market_count": 0,
+            "prop_stack_target_count": 0,
             "prop_pressure_hitters": [],
             "prop_pressure_elite": False,
         }
@@ -76,6 +81,7 @@ def compute_team_prop_pressure(team_name, hitters, confirmed_lineups=None):
 
     n_target = sum(1 for h in pool if h.get("is_juiced_target"))
     n_juice = sum(1 for h in pool if h.get("is_prop_juice"))
+    n_stack_target = sum(1 for h in pool if h.get("runs_target") or h.get("rbis_target"))
     n_stack = sum(
         1 for h in pool
         if h.get("runs_juice") or h.get("rbis_juice")
@@ -99,33 +105,50 @@ def compute_team_prop_pressure(team_name, hitters, confirmed_lineups=None):
         "prop_target_count": n_target,
         "prop_juice_count": n_juice,
         "prop_stack_market_count": n_stack,
+        "prop_stack_target_count": n_stack_target,
         "prop_pressure_hitters": top_names,
         "prop_pressure_elite": False,
     }
 
 
 def _is_hot_board(m: dict) -> bool:
-    """Absolute HOT gate — any team meeting criteria qualifies (no slate cap)."""
-    if m["prop_pressure_raw"] < HOT_MIN_RAW:
-        return False
-    if m["prop_target_count"] < HOT_MIN_TARGETS:
-        return False
-    return m["prop_target_count"] >= 3 or (
-        m["prop_stack_market_count"] >= HOT_MIN_STACK_MARKETS
-        and m["prop_target_count"] >= HOT_MIN_TARGETS
-    )
+    """
+    HOT only when books are on multiple strict hitters with stack-market depth.
+    Typical slate: a handful of teams, not most lineups.
+    """
+    raw = m["prop_pressure_raw"]
+    nt = m["prop_target_count"]
+    nst = m.get("prop_stack_target_count", 0)
+
+    if nt >= HOT_MIN_TARGETS_DEEP and raw >= HOT_MIN_RAW and nst >= HOT_MIN_STACK_TARGETS_FOR_DEEP:
+        return True
+    if (
+        nt >= HOT_MIN_TARGETS_STACKED
+        and nst >= HOT_MIN_STACK_TARGETS
+        and raw >= HOT_STACKED_MIN_RAW
+    ):
+        return True
+    return False
 
 
 def _is_warm_board(m: dict) -> bool:
     if _is_hot_board(m):
         return False
-    if m["prop_target_count"] >= WARM_MIN_TARGETS and m["prop_pressure_raw"] >= WARM_MIN_RAW:
+    nt = m["prop_target_count"]
+    nst = m.get("prop_stack_target_count", 0)
+    raw = m["prop_pressure_raw"]
+    if nt >= WARM_MIN_TARGETS and raw >= WARM_MIN_RAW:
         return True
-    return m["prop_target_count"] >= 1 and m["prop_pressure_raw"] >= 16
+    if (
+        nt >= WARM_ALT_TARGETS
+        and nst >= WARM_ALT_STACK_TARGETS
+        and raw >= WARM_ALT_RAW
+    ):
+        return True
+    return False
 
 
 def _assign_team_labels(team_metrics: list[tuple[dict, dict]]):
-    """Apply HOT/WARM/COLD from strict per-team thresholds only."""
     for _t, m in team_metrics:
         if _is_hot_board(m):
             m["prop_pressure_label"] = LABEL_HOT
@@ -135,8 +158,8 @@ def _assign_team_labels(team_metrics: list[tuple[dict, dict]]):
             m["prop_pressure_elite"] = False
         elif (
             m["prop_target_count"] == 0
-            and m["prop_pressure_raw"] <= 3
-            and m["prop_stack_market_count"] == 0
+            and m.get("prop_stack_target_count", 0) == 0
+            and m["prop_pressure_raw"] <= 2
         ):
             m["prop_pressure_label"] = LABEL_COLD
             m["prop_pressure_elite"] = False
