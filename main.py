@@ -630,14 +630,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # Calculate is_pitch_alignment
             is_pitch_alignment = False
             try:
-                pitcher_data = matchup_radar.data.get('pitchers', {}).get(opp_pitcher_name)
+                pitcher_data = matchup_radar.data.get('pitchers', {}).get(normalize_player_name(opp_pitcher_name))
                 if pitcher_data:
                     weapons = [ptype for ptype, usage in pitcher_data.items() if usage >= 25.0]
                     if weapons and len(target_h) > 0:
                         aligned_hitters = 0
                         for h in target_h:
                             hname = h.get('name')
-                            hitter_data = matchup_radar.data.get('hitters', {}).get(hname)
+                            hitter_data = matchup_radar.data.get('hitters', {}).get(normalize_player_name(hname))
                             if hitter_data:
                                 is_aligned = False
                                 for ptype in weapons:
@@ -1044,18 +1044,20 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
                 h_vs_left_ops = float(h_profile.get("vs_left_ops", 0.0) or 0.0)
                 h_vs_right_ops = float(h_profile.get("vs_right_ops", 0.0) or 0.0)
                 
-                base_xw = float(h_profile.get("xwoba", 0.320) or 0.320)
+                base_xw = h_prop_analyzer._resolve_xwoba(h['name'], h_profile)
                 h_vs_left_xwoba = ops_to_xwoba(h_vs_left_ops) if h_vs_left_ops > 0 else base_xw
                 h_vs_right_xwoba = ops_to_xwoba(h_vs_right_ops) if h_vs_right_ops > 0 else base_xw
                 
                 if pitch_hand == "L":
                     hitter_vs_hand_xwoba = h_vs_left_xwoba
-                    hitter_other_xwoba = h_vs_right_xwoba
+                    h_pa = float(h_profile.get("vs_left_pa", 0) or 0)
                 else:
                     hitter_vs_hand_xwoba = h_vs_right_xwoba
-                    hitter_other_xwoba = h_vs_left_xwoba
+                    h_pa = float(h_profile.get("vs_right_pa", 0) or 0)
                     
-                hitter_xwoba_diff = hitter_vs_hand_xwoba - hitter_other_xwoba
+                # Regress hitter split toward baseline (M_h = 100)
+                h_vs_hand_reg = (hitter_vs_hand_xwoba * h_pa + base_xw * 100.0) / (h_pa + 100.0)
+                hitter_xwoba_diff = h_vs_hand_reg - base_xw
                 
                 p_vl = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vl", {})
                 p_vr = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vr", {})
@@ -1069,16 +1071,23 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
                 p_vs_rhh_xwoba = woba_proxy_to_xwoba(p_vr_woba, p_vr_ops)
                 
                 bat_side = h_profile.get("bat_side", "R") if h_profile.get("type") == "hitter" else "R"
-                if bat_side == "L":
+                if bat_side == "S":
+                    eff_bat_side = "R" if pitch_hand == "L" else "L"
+                else:
+                    eff_bat_side = bat_side
+                    
+                if eff_bat_side == "L":
                     pitcher_vs_opp_hand_xwoba = p_vs_lhh_xwoba
-                    pitcher_vs_own_hand_xwoba = p_vs_rhh_xwoba
+                    p_pa = float(p_vl.get("pa", 0) or 0)
                 else:
                     pitcher_vs_opp_hand_xwoba = p_vs_rhh_xwoba
-                    pitcher_vs_own_hand_xwoba = p_vs_lhh_xwoba
+                    p_pa = float(p_vr.get("pa", 0) or 0)
                     
-                pitcher_splits_diff = pitcher_vs_opp_hand_xwoba - pitcher_vs_own_hand_xwoba
+                # Regress pitcher split toward league average (0.320, M_p = 250)
+                p_vs_hand_reg = (pitcher_vs_opp_hand_xwoba * p_pa + 0.320 * 250.0) / (p_pa + 250.0)
+                pitcher_splits_diff = p_vs_hand_reg - 0.320
                 
-                NPAS_xwOBA = hitter_xwoba_diff + pitcher_splits_diff
+                NPAS_xwOBA = hitter_xwoba_diff * 0.50 + pitcher_splits_diff * 0.25
         except Exception:
             pass
 

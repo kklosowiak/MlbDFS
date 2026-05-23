@@ -337,7 +337,7 @@ class SharpsWeighting:
                 platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
             else:
                 platoon_label = f"Neutral vs {opp_label}"
-            matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * platoon_multiplier)
+            # matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * platoon_multiplier)
 
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))

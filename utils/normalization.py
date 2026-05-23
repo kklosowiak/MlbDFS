@@ -10,6 +10,10 @@ def normalize_player_name(name):
     if not name:
         return ""
         
+    if "," in name:
+        parts = name.split(",")
+        name = parts[1].strip() + " " + parts[0].strip()
+        
     # 1. Unicode NFKD normalization to decompose combined characters (e.g., ñ -> n + ~)
     nfkd_form = unicodedata.normalize('NFKD', name)
     # 2. Filter out non-spacing marks (the accents)

@@ -10,8 +10,14 @@ class MatchupRadar:
         if not os.path.exists(self.data_path):
             return {"pitchers": {}, "hitters": {}, "league_avg": {}}
         try:
+            from utils.normalization import normalize_player_name
             with open(self.data_path, 'r') as f:
-                return json.load(f)
+                raw = json.load(f)
+            return {
+                "pitchers": {normalize_player_name(k): v for k, v in raw.get("pitchers", {}).items()},
+                "hitters": {normalize_player_name(k): v for k, v in raw.get("hitters", {}).items()},
+                "league_avg": raw.get("league_avg", {})
+            }
         except Exception:
             return {"pitchers": {}, "hitters": {}, "league_avg": {}}
 
@@ -50,8 +56,9 @@ class MatchupRadar:
         Calculates a synergy multiplier based on Pitch Arsenal vs. xwOBA.
         Returns a float (e.g., 1.05 for a boost, 0.95 for a penalty).
         """
-        pitcher = self.data['pitchers'].get(pitcher_name)
-        hitter = self.data['hitters'].get(hitter_name)
+        from utils.normalization import normalize_player_name
+        pitcher = self.data['pitchers'].get(normalize_player_name(pitcher_name))
+        hitter = self.data['hitters'].get(normalize_player_name(hitter_name))
         league_avg = self.data['league_avg']
         
         if not pitcher or not hitter:
