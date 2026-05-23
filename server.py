@@ -691,6 +691,13 @@ def get_results_api():
 
         data["teams"] = teams
 
+        try:
+            from utils.slate_signal_history import attach_signal_deltas
+
+            attach_signal_deltas(os.path.join(base_dir, "reports"), teams, pitchers)
+        except Exception as sig_err:
+            print(f"[API WARNING]: Signal delta attach skipped: {sig_err}")
+
         return JSONResponse(
             content=data,
             headers={

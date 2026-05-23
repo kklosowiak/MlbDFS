@@ -220,6 +220,21 @@ def run_full_analysis():
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
 
+    try:
+        from utils.slate_signal_history import persist_slate_signals, attach_signal_deltas
+
+        persist_slate_signals(config.REPORTS_DIR, team_reports, p_reports)
+        attach_signal_deltas(config.REPORTS_DIR, team_reports, p_reports)
+    except Exception as sig_e:
+        print(f"[WARNING]: Signal history failed: {sig_e}")
+
+    try:
+        from utils.target_audit import log_target_counts
+
+        log_target_counts(p_reports, h_reports)
+    except Exception as audit_e:
+        print(f"[WARNING]: Target audit log failed: {audit_e}")
+
     # 7. Generate Dashboard
     dash_gen.generate_report(p_reports, team_reports, h_reports)
     
@@ -323,6 +338,9 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
             cleaned_p_reports.append(report)
             
     cleaned_p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
+    from utils.prop_juice import apply_pitcher_target_caps
+
+    apply_pitcher_target_caps(cleaned_p_reports)
     return cleaned_p_reports
 
 def _resolve_pitcher_team_conflicts(p_reports, team_reports):
@@ -522,6 +540,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
             team_xwoba = 0.330
             power_concentration = 0.330
+            xwoba_dampened = False
             if team_h:
                 # Resolve opposing pitcher throw hand
                 pitch_hand = "R"
@@ -549,7 +568,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 # For confirmed lineups, we use all confirmed players. For projected, top 5.
                 sample_size = 5 if not confirmed else len(sorted_h)
                 target_h = sorted_h[:sample_size]
-                team_xwoba = statistics.mean([h.get('matchup_xwoba', 0.330) for h in target_h])
+                fresh_xwoba = statistics.mean([h.get('matchup_xwoba', 0.330) for h in target_h])
+                from utils.xwoba_stability import resolve_team_xwoba
+
+                team_xwoba, xwoba_dampened = resolve_team_xwoba(
+                    {"lineup_status": lineup_status},
+                    prev_team_data,
+                    fresh_xwoba,
+                )
                 
                 # Weighted Concentration (Top 2: 40%, 3-4: 30%, Rest: 30%)
                 top_2 = statistics.mean([h.get('matchup_xwoba', 0.330) for h in sorted_h[:2]])
@@ -727,7 +753,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'physics_score': xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)),
                 'market_score': res.get('market_raw', res['market']),
                 'market_raw': res.get('market_raw'),
-                'team_xwoba': res.get('team_xwoba', 0.330),
+                'team_xwoba': team_xwoba,
+                'team_xwoba_locked': team_xwoba if lineup_status == 'CONFIRMED' else None,
+                'team_xwoba_dampened': xwoba_dampened if team_h else False,
                 'power_concentration': res.get('power_concentration', power_concentration),
                 'bullpen_boost': res.get('bullpen_boost', 0),
                 'vulnerability': res.get('vulnerability', 0),
@@ -891,6 +919,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'tb_price': h.get('tb_price', 0),
             'bullpen_fatigue': team_data['bullpen_fatigue'] if team_data else 0,
             'is_hot': is_hot, 'is_juiced_target': h.get('is_juiced_target', False),
+            'is_prop_juice': h.get('is_prop_juice', False),
             'is_speed_target': h.get('is_speed_target', False),
             'platoon_multiplier': res.get('platoon_multiplier', 1.0),
             'platoon_label': res.get('platoon_label', 'Neutral'),

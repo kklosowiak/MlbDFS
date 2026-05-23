@@ -1475,14 +1475,15 @@
                         <tr>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
                             <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA CONTEXT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">vs OPPONENT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, true)">K-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">OUTS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">OUTS ↕</th>
                         </tr>
                     </thead>
                     <tbody id="pitchers-body">
@@ -1532,16 +1533,17 @@
                         <tr>
                             <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">ALPHA SIGNALS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA CONTEXT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TEAM ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">vs PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 8, true)">ITT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ML MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">TT MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">DIVERGENCE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">ALPHA SIGNALS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">ALPHA CONTEXT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ML MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">TT MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">DIVERGENCE ↕</th>
                         </tr>
                     </thead>
                     <tbody id="teams-body">
@@ -1862,6 +1864,7 @@
         const OMEGA_TIPS = {
             col_omega: 'OMEGA master score (0–150 cap). Stacks/pitchers: physics + market + matchup multipliers. Higher = stronger overall play on the slate.',
             col_conf: 'Attack confidence (0–100%). How strongly the Attack Plan engine likes this play after physics, traps, and context — not the same as OMEGA rank.',
+            col_conf_delta: 'Δ CONF since the first OMEGA run today. Swings ≥15 pts flag VOLATILE — often lineup or xwOBA refresh churn, not new sharp info.',
             col_phy: 'Physics pillar from talent/stats. Teams: lineup xwOBA grade. Pitchers: SIERA/CSW talent slice. Hitters: individual power profile.',
             col_mkt: 'Market pillar: Vegas implied total, line moves, and sharp interest baked into one 0–100 score.',
             col_xwoba: 'Platoon-adjusted expected weighted on-base vs today\'s opposing pitcher hand.',
@@ -1896,7 +1899,9 @@
             surging: 'Divergence jumped ≥3 pts and still ≥+5% — money accelerating in. Use: timing edge before lock.',
             fading: 'Divergence dropped ≤−3 pts and still ≤−5% — interest cooling. Use: caution on stale steam reads.',
             chalk: 'Public chalk stack flag (trap logic). Use: fade or differentiate in GPP.',
-            target: 'Juiced prop target — line/pricing edge in hitter or pitcher props. Use: one-off leverage.',
+            target: 'Strict prop TARGET — juiced Over vs Under with quality filters (capped top pool). Use: high-trust one-off leverage.',
+            juice: 'Soft prop JUICE — Over favored vs Under (gap ≥5) but below strict TARGET bar. Use: tie-breaker / correlation, not auto-lock.',
+            sharp_fade: 'Sharp money fading this SP (divergence ≤−15%, not a prop TRAP). Core SP list excludes these; playable with caution only.',
             smash: 'Smash factor hitter — elite contact/power signal in prop model. Use: ceiling plays in tournaments.',
             power: 'Matchup xwOBA ≥ .360 — elite power spot vs today\'s pitcher. Use: HR/TB correlation.',
             thief: 'Speed/baserunning target in the model. Use: SB upside mini-correlation plays.',
@@ -1982,6 +1987,7 @@
         function pitcherAlphaSignalsHtml(p) {
             let html = '';
             if (p.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
+            else if (p.is_prop_juice) html += signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' });
             html += buildMarketSignalPills(p, false);
             if (p.is_debut) html += signalPillHtml('✨ DEBUT', { className: 'pill-storm', tipKey: 'debut' });
             return html;
@@ -1995,6 +2001,12 @@
                 html += signalPillHtml(`🚨 TRAP SP${trapSpLabel}`, {
                     className: 'pill-trap',
                     tip: `${omegaTip('trap_sp')}${trapSpLabel ? ` (${trapSpLabel.replace(/^ — /, '')})` : ''}`,
+                });
+            } else if (p.sharp_fade) {
+                html += signalPillHtml('📉 SHARP FADE', {
+                    className: 'pill-neutral',
+                    tipKey: 'sharp_fade',
+                    style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;',
                 });
             }
             if (p.is_low_ceiling) html += signalPillHtml('📉 CEILING', { className: 'pill-neutral', tipKey: 'low_ceiling' });
@@ -2055,6 +2067,7 @@
         function hitterAlphaSignalsHtml(h) {
             let html = '';
             if (h.is_juiced_target) html += signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' });
+            else if (h.is_prop_juice) html += signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' });
             if (h.smash_factor) html += signalPillHtml('💥 SMASH', { className: 'pill-burst', tipKey: 'smash' });
             return html;
         }
@@ -2069,9 +2082,9 @@
         }
 
         const MATRIX_COLUMN_TIPS = {
-            'pitchers-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
+            'pitchers-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
             'hitters-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', 'col_xwoba', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
-            'teams-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
+            'teams-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
         };
 
         function applyMatrixColumnTips() {
@@ -2265,6 +2278,18 @@
                 ? `${omegaTip('col_conf')} ${reasons}`
                 : omegaTip('col_conf');
             return `<td class="metric ${cls}"${tipAttrs(tip)}>${conf}</td>`;
+        }
+
+        function confDeltaHtml(entity) {
+            const d = entity.conf_delta;
+            if (d == null || d === undefined) {
+                return `<td class="metric val-even"${tipAttrs(omegaTip('col_conf_delta'))}>—</td>`;
+            }
+            const cls = d > 0 ? 'val-up' : (d < 0 ? 'val-down' : 'val-even');
+            const prefix = d > 0 ? '+' : '';
+            const vol = entity.is_volatile ? ' ⚡' : '';
+            const tip = `${omegaTip('col_conf_delta')} Change since first run today: ${prefix}${d} pts.${entity.is_volatile ? ' VOLATILE (swing ≥15).' : ''}`;
+            return `<td class="metric ${cls}"${tipAttrs(tip)}>${prefix}${d}${vol}</td>`;
         }
 
         let activeSignalFilter = '';
@@ -3016,6 +3041,7 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
                     ${attackConfHtml(p)}
+                    ${confDeltaHtml(p)}
                     ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
                     ${simpleMetricCell(p.market_score || '-', 'color: var(--accent-purple);', omegaTip('col_mkt'))}
                     <td>
@@ -3176,6 +3202,7 @@
                 tr.innerHTML = `
                     <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
                     ${attackConfHtml(t)}
+                    ${confDeltaHtml(t)}
                     ${teamPhyCell(t)}
                     ${simpleMetricCell(scoreDisplay(t.market_score), teamMktTierStyle(t.market_score), omegaTip('col_mkt'))}
                     <td>

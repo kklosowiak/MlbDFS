@@ -176,6 +176,8 @@ class HitterPropAnalyzer:
                         'tb_line': '-',
                         'tb_price': 0,
                         'is_juiced_target': False,
+                        'is_prop_juice': False,
+                        '_juice_gap': 0,
                         'is_speed_target': False,
                         'matchup_xwoba': xwoba
                     }
@@ -230,6 +232,8 @@ class HitterPropAnalyzer:
                                 'tb_line': '-',
                                 'tb_price': 0,
                                 'is_juiced_target': False,
+                                'is_prop_juice': False,
+                                '_juice_gap': 0,
                                 'is_speed_target': False,
                                 'matchup_xwoba': xwoba
                             }
@@ -253,16 +257,27 @@ class HitterPropAnalyzer:
                                 if 1.0 < hits_price < 100.0: hits_price = self.decimal_to_american(hits_price)
                                 hitter_map[found_key]['hits_price'] = hits_price
 
-                                # Juice Target Detection for hits
+                                from utils.prop_juice import evaluate_hitter_prop_juice
+
                                 o_price = hits_price
                                 pt = entry.get('point')
                                 book = entry.get('bookmaker')
                                 matching = [e for e in market_data if e.get('player_name') == player_name and e.get('side') == 'Under' and e.get('bookmaker') == book and e.get('point') == pt]
                                 if matching:
                                     u_price = matching[0].get('price', 0)
-                                    if 1.0 < u_price < 100.0: u_price = self.decimal_to_american(u_price)
-                                    if o_price < u_price:
-                                        hitter_map[found_key]['is_juiced_target'] = True
+                                    if 1.0 < u_price < 100.0:
+                                        u_price = self.decimal_to_american(u_price)
+                                    xw = hitter_map[found_key].get("matchup_xwoba", 0.33)
+                                    tgt, juice, gap = evaluate_hitter_prop_juice(
+                                        o_price, u_price, matchup_xwoba=xw
+                                    )
+                                    if juice:
+                                        hitter_map[found_key]["is_prop_juice"] = True
+                                        hitter_map[found_key]["_juice_gap"] = max(
+                                            hitter_map[found_key].get("_juice_gap", 0), gap
+                                        )
+                                    if tgt:
+                                        hitter_map[found_key]["is_juiced_target"] = True
 
                         elif m_key == 'batter_total_bases':
                             if entry.get('side') == 'Over':
@@ -273,16 +288,27 @@ class HitterPropAnalyzer:
                                 if 1.0 < tb_price < 100.0: tb_price = self.decimal_to_american(tb_price)
                                 hitter_map[found_key]['tb_price'] = tb_price
 
-                                # Juice Target Detection for total bases
+                                from utils.prop_juice import evaluate_hitter_prop_juice
+
                                 o_price = tb_price
                                 pt = entry.get('point')
                                 book = entry.get('bookmaker')
                                 matching = [e for e in market_data if e.get('player_name') == player_name and e.get('side') == 'Under' and e.get('bookmaker') == book and e.get('point') == pt]
                                 if matching:
                                     u_price = matching[0].get('price', 0)
-                                    if 1.0 < u_price < 100.0: u_price = self.decimal_to_american(u_price)
-                                    if o_price < u_price:
-                                        hitter_map[found_key]['is_juiced_target'] = True
+                                    if 1.0 < u_price < 100.0:
+                                        u_price = self.decimal_to_american(u_price)
+                                    xw = hitter_map[found_key].get("matchup_xwoba", 0.33)
+                                    tgt, juice, gap = evaluate_hitter_prop_juice(
+                                        o_price, u_price, matchup_xwoba=xw
+                                    )
+                                    if juice:
+                                        hitter_map[found_key]["is_prop_juice"] = True
+                                        hitter_map[found_key]["_juice_gap"] = max(
+                                            hitter_map[found_key].get("_juice_gap", 0), gap
+                                        )
+                                    if tgt:
+                                        hitter_map[found_key]["is_juiced_target"] = True
                                         
                         elif m_key == 'batter_stolen_bases':
                             side = entry.get('side')
@@ -353,7 +379,15 @@ class HitterPropAnalyzer:
                         }
         
         h_list = list(hitter_map.values())
-        print(f"[OMEGA]: Hitter discovery complete — {len(h_list)} players across {len(active_teams)} teams.")
+        from utils.prop_juice import apply_hitter_target_caps
+
+        h_list = apply_hitter_target_caps(h_list)
+        n_tgt = sum(1 for h in h_list if h.get("is_juiced_target"))
+        n_juice = sum(1 for h in h_list if h.get("is_prop_juice"))
+        print(
+            f"[OMEGA]: Hitter discovery complete — {len(h_list)} players "
+            f"({n_tgt} TARGET, {n_juice} JUICE) across {len(active_teams)} teams."
+        )
         return sorted(h_list, key=lambda x: x['ahr_price'])
 
     def resolve_team_side(self, player_name, home_t, away_t, market_side=None, confirmed_lineups=None):

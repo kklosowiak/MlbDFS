@@ -3,6 +3,9 @@ import datetime
 from config import config
 from utils.normalization import normalize_player_name
 
+SHARP_FADE_DIVERGENCE = -15
+
+
 class SlateReportGenerator:
     """
     OMEGA v10.5: Daily Attack Plan Generator
@@ -16,11 +19,9 @@ class SlateReportGenerator:
     def generate(self, p_reports, t_reports, h_reports):
         print("[REPORT]: Generating OMEGA Daily Attack Plan...")
 
-        # 1. Map Opponents
         pitcher_map = {normalize_player_name(p['pitcher']): p for p in p_reports}
         team_pitcher_map = {p['team']: p for p in p_reports}
         
-        # 2. Score Pitchers
         scored_pitchers = []
         for p in p_reports:
             conf, reasons = self._score_pitcher_confidence(p, t_reports)
@@ -30,7 +31,6 @@ class SlateReportGenerator:
             
         scored_pitchers.sort(key=lambda x: x['attack_conf'], reverse=True)
 
-        # 3. Score Stacks
         scored_stacks = []
         for t in t_reports:
             conf, reasons = self._score_stack_confidence(t, p_reports)
@@ -40,7 +40,6 @@ class SlateReportGenerator:
             
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
 
-        # 3b. Score Hitters (attack_conf for CONF column + one-off decisions)
         for h in h_reports:
             team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
             opp_p = pitcher_map.get(normalize_player_name(h.get('opp_pitcher', '')))
@@ -50,7 +49,6 @@ class SlateReportGenerator:
             h['attack_conf'] = conf
             h['attack_reasons'] = reasons
 
-        # 4. Generate Report
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")
         lines.append(f"**Generated:** {datetime.datetime.now().strftime('%Y-%m-%d %I:%M %p ET')}")
@@ -61,10 +59,9 @@ class SlateReportGenerator:
         lines.append("---")
         lines.append("")
 
-        # 4a. The Ultimate Suggestion
         lines.append("## 👑 The Ultimate Suggestion")
         best_p1 = scored_pitchers[0] if len(scored_pitchers) > 0 else None
-        best_p2 = scored_pitchers[1] if len(scored_pitchers) > 1 else None
+        best_p2 = self._pick_sp2(scored_pitchers)
         best_t = scored_stacks[0] if scored_stacks else None
         
         if best_t:
@@ -88,7 +85,6 @@ class SlateReportGenerator:
         lines.append("---")
         lines.append("")
 
-        # 4b. Top 5 Stacks
         lines.append("## 🏟️ Core Stacks (Top 5)")
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
@@ -97,25 +93,45 @@ class SlateReportGenerator:
                 lines.append(f"- {r}")
             lines.append("")
 
-        # 4c. Top 5 Pitchers
+        core_pitchers = [p for p in scored_pitchers if not p.get('sharp_fade') and not p.get('is_trap')][:5]
+        if not core_pitchers:
+            core_pitchers = scored_pitchers[:5]
         lines.append("## ⚾ Core Pitchers (Top 5)")
         lines.append("")
-        for i, p in enumerate(scored_pitchers[:5], 1):
-            lines.append(f"### {i}. {p['pitcher']} ({p['attack_conf']}% Confidence)")
+        for i, p in enumerate(core_pitchers, 1):
+            tag = " ⚠️ split signal" if p.get('sharp_fade') else ""
+            lines.append(f"### {i}. {p['pitcher']} ({p['attack_conf']}% Confidence){tag}")
             for r in p['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
 
-        # 4d. Vegas Trap & Leverage Pivot
         lines.append("---")
-        lines.append("## 🚨 Vegas Traps (Hard Fades)")
-        traps = [p for p in p_reports if p.get('is_trap') or p.get('divergence', 0) < -15]
-        if traps:
-            for p in traps[:3]:
-                trap_reason = p.get('trap_type') or 'Sharp Market Fade'
-                lines.append(f"- **{p['pitcher']}**: Vegas is trapping the public here. They have a `{trap_reason}` designation.")
+        prop_traps = [p for p in p_reports if p.get('is_trap')]
+        lines.append("## 🚨 TRAP SP (Stack Against)")
+        if prop_traps:
+            for p in prop_traps[:5]:
+                trap_reason = p.get('trap_type') or 'Vulnerable'
+                lines.append(
+                    f"- **{p['pitcher']}**: Prop TRAP ({trap_reason}). Attack opposing hitters."
+                )
         else:
-            lines.append("- *No obvious Vegas traps detected today.*")
+            lines.append("- *No prop TRAP pitchers flagged today.*")
+        lines.append("")
+
+        sharp_fades = [
+            p for p in p_reports
+            if p.get('sharp_fade') and not p.get('is_trap')
+        ]
+        lines.append("## 📉 Sharp Fade (SP Caution)")
+        if sharp_fades:
+            for p in sharp_fades[:5]:
+                div = p.get('divergence', 0)
+                lines.append(
+                    f"- **{p['pitcher']}**: Sharp money fading this side ({div:+d}% divergence). "
+                    f"Playable with caution — not a prop TRAP."
+                )
+        else:
+            lines.append("- *No sharp-fade SP caution flags today.*")
         lines.append("")
 
         lines.append("## 🎯 Leverage Pivots (GPP Tournaments)")
@@ -134,11 +150,18 @@ class SlateReportGenerator:
         print(f"[REPORT]: Attack Plan written to {self.output_path}")
         return self.output_path
 
+    def _pick_sp2(self, scored_pitchers):
+        if len(scored_pitchers) < 2:
+            return None
+        for p in scored_pitchers[1:6]:
+            if not p.get('sharp_fade') and not p.get('is_trap'):
+                return p
+        return scored_pitchers[1]
+
     def _score_pitcher_confidence(self, p, t_reports):
         conf = 50
         reasons = []
         
-        # Form
         if p.get('form_status') == 'SURGING':
             conf += 15
             reasons.append(f"🔥 SURGING: Elite recent form with {p.get('recent_k9')} K/9 and {p.get('recent_era')} ERA over last 3 starts.")
@@ -146,7 +169,6 @@ class SlateReportGenerator:
             conf -= 20
             reasons.append(f"🧊 COLD: Pitcher is in a major slump ({p.get('recent_era')} ERA last 3 starts).")
             
-        # Physics
         siera = p.get('physics_score', 0)
         if siera >= 20:
             conf += 15
@@ -155,15 +177,24 @@ class SlateReportGenerator:
             conf -= 15
             reasons.append(f"Weak underlying Physics profile (Score: {siera:.1f}).")
             
-        # Trap / Paradox
         if p.get('is_trap'):
             conf -= 30
             reasons.append(f"🚨 TRAP: Flagged as a Vegas trap ({p.get('trap_type')}). Sharp money is fading.")
+        elif p.get('sharp_fade'):
+            div = int(p.get('divergence', 0) or 0)
+            conf -= 12
+            reasons.append(
+                f"📉 Sharp market fade ({div:+d}% divergence) — playable with caution, not a prop TRAP."
+            )
+            opp = p.get('opponent')
+            opp_t = next((t for t in t_reports if t['team'] == opp), None)
+            if p.get('form_status') == 'SURGING' and opp_t and opp_t.get('stack_score', 100) < 50:
+                conf += 5
+                reasons.append("Form + soft opponent offset part of the fade signal.")
         if p.get('is_paradox'):
             conf -= 25
             reasons.append(f"⚠️ PARADOX: Good pitcher, but facing an absolutely lethal lineup. Fade.")
             
-        # Matchup
         opp = p.get('opponent')
         opp_t = next((t for t in t_reports if t['team'] == opp), None)
         if opp_t:
@@ -174,12 +205,10 @@ class SlateReportGenerator:
                 conf += 15
                 reasons.append(f"Elite Matchup: Facing a bottom-tier opposing lineup ({opp}).")
                 
-        # Market
         if p.get('is_sharp') or p.get('is_shark') or p.get('is_whale'):
             conf += 10
             reasons.append("Institutional/Sharp money is backing this pitcher today.")
             
-        # Output bounds checking
         if not reasons:
             reasons.append("Neutral metrics across the board.")
             
@@ -197,12 +226,10 @@ class SlateReportGenerator:
             conf -= 15
             reasons.append(f"Weak Team Physics: Poor .{str(xwoba)[2:5]} xwOBA projection.")
             
-        # PHY Override
         if t.get('is_physics_override'):
             conf += 15
             reasons.append("⚡ PHY OVERRIDE: Market is undervaluing this team's true hitting ceiling.")
             
-        # Market
         if t.get('is_shark') or t.get('is_whale') or t.get('is_sharp'):
             conf += 15
             reasons.append("Institutional/Sharp money is heavily backing this stack.")
@@ -211,7 +238,6 @@ class SlateReportGenerator:
             conf += 10
             reasons.append(f"🟢 OVER-DIVERGENCE: Market line is moving heavily in their favor.")
             
-        # Matchup / Opposing Pitcher
         opp_p_name = t.get('opp_pitcher')
         opp_p = next((p for p in p_reports if p['pitcher'] == opp_p_name), None)
         if opp_p:
@@ -228,13 +254,11 @@ class SlateReportGenerator:
                 conf -= 20
                 reasons.append(f"Tough Matchup: Facing an elite underlying pitcher in {opp_p_name}.")
                 
-        # Bullpen Fatigue
         bp = t.get('bullpen_fatigue', 0)
         if bp >= 85 or t.get('is_gassed'):
             conf += 10
             reasons.append(f"🔥 GASSED BP: Opposing bullpen is exhausted. Great late-inning ceiling.")
             
-        # Output bounds checking
         if not reasons:
             reasons.append("Neutral metrics across the board.")
             

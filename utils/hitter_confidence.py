@@ -26,7 +26,10 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
 
     if h.get("is_juiced_target"):
         conf += 8
-        reasons.append("Juiced HR prop relative to physics.")
+        reasons.append("Juiced prop TARGET — strict line/pricing edge.")
+    elif h.get("is_prop_juice"):
+        conf += 4
+        reasons.append("Prop JUICE — Over favored vs Under on hits/TB.")
     if h.get("is_hot"):
         conf += 8
         reasons.append("Hot recent form.")

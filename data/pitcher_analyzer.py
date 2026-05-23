@@ -215,6 +215,8 @@ class PitcherAnalyzer:
                 k_odds = None
                 outs_odds = None
                 is_juiced_target = False
+                is_prop_juice = False
+                _juice_gap = 0
                 is_trap = False
                 trap_type = None
                 is_death_sentence = False
@@ -233,6 +235,8 @@ class PitcherAnalyzer:
                     k_line = prev_pitcher_data.get('k_line')
                     outs_line = prev_pitcher_data.get('outs_line')
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
+                    is_prop_juice = bool(prev_pitcher_data.get('is_prop_juice', False))
+                    _juice_gap = int(prev_pitcher_data.get('_juice_gap', 0) or 0)
                     is_trap = bool(prev_pitcher_data.get('is_trap', False))
                     trap_type = prev_pitcher_data.get('trap_type')
                     is_death_sentence = bool(prev_pitcher_data.get('is_death_sentence', False))
@@ -255,18 +259,6 @@ class PitcherAnalyzer:
                                 o_odds = next((o.get('price') for o in p_k if o.get('point') == k_line and o.get('side') == 'Over'), None)
                                 if o_odds: k_odds = o_odds
                             
-                            for o in p_k:
-                                if o.get('side') == 'Over':
-                                    o_price = o.get('price', 0)
-                                    book = o.get('bookmaker')
-                                    pt = o.get('point')
-                                    matching = [u for u in p_k if u.get('side') == 'Under' and u.get('bookmaker') == book and u.get('point') == pt]
-                                    if matching:
-                                        u_price = matching[0].get('price', 0)
-                                        if o_price < u_price: 
-                                            is_juiced_target = True
-                                            break
-                    
                     # Outs recovery
                     if 'pitcher_outs' in gid_props:
                         p_outs = [o for o in gid_props['pitcher_outs'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
@@ -311,6 +303,25 @@ class PitcherAnalyzer:
                     is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
 
                 physics = self.fetch_pitcher_physics(pitcher_name)
+                if not (game_started and has_prev):
+                    from utils.prop_juice import evaluate_pitcher_k_juice
+
+                    p_k_rows = gid_props.get("pitcher_strikeouts", []) if gid_props else []
+                    p_k_rows = [
+                        o
+                        for o in p_k_rows
+                        if normalize_player_name(o.get("player_name", ""))
+                        == normalize_player_name(pitcher_name)
+                    ]
+                    s_score = max(0, min(100, (6.0 - physics["siera"]) * 20))
+                    c_score = max(0, min(100, (physics["csw"] / 0.35) * 100))
+                    phys_talent = (s_score + c_score) / 2
+                    is_juiced_target, is_prop_juice, _juice_gap = evaluate_pitcher_k_juice(
+                        p_k_rows,
+                        pitcher_name,
+                        k_line=k_line,
+                        physics_talent=phys_talent,
+                    )
                 venue_team = home 
                 base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
                 ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "TBD"})
@@ -389,6 +400,9 @@ class PitcherAnalyzer:
                     'confidence': physics.get('confidence', 'low'),
                     'is_confirmed': team_name in confirmed_list,
                     'is_juiced_target': is_juiced_target,
+                    'is_prop_juice': is_prop_juice,
+                    '_juice_gap': _juice_gap,
+                    'sharp_fade': int(divergence) <= -15 and not is_trap,
                     'is_shark': is_shark,
                     'is_whale': is_whale,
                     'is_sharp': is_sharp,
