@@ -18,7 +18,7 @@ def _has_high_conviction_stack(t):
         signals += 1
     if t.get("bullpen_fatigue", 0) >= 85 or t.get("is_gassed"):
         signals += 1
-    if t.get("prop_pressure_label") in (LABEL_HOT, LABEL_WARM):
+    if t.get("prop_pressure_elite") or t.get("prop_pressure_label") == LABEL_HOT:
         signals += 1
     opp_trap = False
     return signals >= 2, opp_trap
@@ -138,13 +138,15 @@ def score_stack_confidence(t, p_reports):
 
     plabel = t.get("prop_pressure_label")
     pscore = int(t.get("prop_pressure_score", 0) or 0)
-    if plabel == LABEL_HOT:
-        conf += 12
+    if t.get("prop_pressure_elite") and plabel == LABEL_HOT:
+        conf += 8
         names = ", ".join((t.get("prop_pressure_hitters") or [])[:3])
-        reasons.append(f"PROP PRESSURE HOT ({pscore}) — {names or 'lineup juiced'}.")
+        reasons.append(
+            f"Elite prop board ({pscore}, {t.get('prop_target_count', 0)} TARGET) — {names or 'lineup'}."
+        )
     elif plabel == LABEL_WARM:
-        conf += 7
-        reasons.append(f"PROP PRESSURE WARM ({pscore}) — books active on lineup.")
+        conf += 4
+        reasons.append(f"Moderate prop interest ({pscore}, WARM) — secondary board signal.")
     elif plabel == LABEL_COLD and xwoba >= 0.335:
         conf -= 10
         reasons.append("Elite xwOBA but cold prop board — market not agreeing.")
@@ -236,9 +238,11 @@ def score_pitcher_confidence(p, t_reports):
         elif oxw < 0.300:
             conf += 12
             reasons.append(f"Soft matchup: {opp} weak lineup xwOBA.")
-        if opp_t.get("prop_pressure_label") == LABEL_HOT:
-            conf -= 8
-            reasons.append(f"{opp} lineup has HOT prop pressure — run environment risk.")
+        if opp_t.get("prop_pressure_elite") and int(opp_t.get("prop_target_count", 0) or 0) >= 2:
+            conf -= 6
+            reasons.append(
+                f"{opp} elite prop board ({opp_t.get('prop_target_count')} strict TARGET) — run risk."
+            )
 
     if p.get("is_sharp") or p.get("is_shark") or p.get("is_whale"):
         conf += 10

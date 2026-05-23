@@ -1,16 +1,59 @@
 from utils.attack_confidence import score_stack_confidence, score_pitcher_confidence
-from utils.team_prop_pressure import compute_team_prop_pressure, LABEL_COLD, LABEL_HOT
+from utils.team_prop_pressure import (
+    attach_team_prop_pressure,
+    compute_team_prop_pressure,
+    LABEL_COLD,
+    LABEL_HOT,
+    LABEL_NEUTRAL,
+)
 
 
-def test_prop_pressure_hot_with_targets():
+def test_prop_pressure_hot_requires_strict_targets():
     hitters = [
-        {"name": "A", "team": "Boston Red Sox", "is_juiced_target": True, "matchup_xwoba": 0.360, "_juice_gap": 20},
-        {"name": "B", "team": "Boston Red Sox", "is_prop_juice": True, "runs_juice": True, "matchup_xwoba": 0.350, "_juice_gap": 10},
-        {"name": "C", "team": "Boston Red Sox", "is_prop_juice": True, "rbis_juice": True, "matchup_xwoba": 0.345, "_juice_gap": 8},
+        {"name": "A", "team": "Boston Red Sox", "is_juiced_target": True, "matchup_xwoba": 0.360},
+        {"name": "B", "team": "Boston Red Sox", "is_juiced_target": True, "runs_target": True, "matchup_xwoba": 0.350},
+        {"name": "C", "team": "Boston Red Sox", "is_juiced_target": True, "rbis_target": True, "matchup_xwoba": 0.345},
     ]
-    m = compute_team_prop_pressure("Boston Red Sox", hitters)
-    assert m["prop_pressure_label"] in (LABEL_HOT, "WARM")
-    assert m["prop_target_count"] >= 1
+    teams = [{"team": "Boston Red Sox"}, {"team": "Kansas City Royals"}]
+    attach_team_prop_pressure(teams, hitters)
+    bos = next(t for t in teams if "Boston" in t["team"])
+    assert bos["prop_target_count"] >= 2
+    assert bos["prop_pressure_raw"] >= 18
+    assert bos["prop_pressure_label"] == LABEL_HOT
+    assert bos["prop_pressure_elite"] is True
+
+
+def test_multiple_teams_can_be_hot_without_cap():
+    hitters = []
+    for team in ("Team A", "Team B", "Team C", "Team D", "Team E"):
+        hitters.extend([
+            {
+                "name": f"{team}-T{i}",
+                "team": team,
+                "is_juiced_target": True,
+                "runs_target": True,
+                "matchup_xwoba": 0.35,
+            }
+            for i in range(3)
+        ])
+    teams = [{"team": t} for t in ("Team A", "Team B", "Team C", "Team D", "Team E")]
+    attach_team_prop_pressure(teams, hitters)
+    hot_count = sum(1 for t in teams if t["prop_pressure_label"] == LABEL_HOT)
+    assert hot_count == 5
+
+
+def test_soft_juice_alone_not_hot():
+    hitters = [
+        {"name": f"H{i}", "team": "Team A", "is_prop_juice": True, "matchup_xwoba": 0.33}
+        for i in range(6)
+    ]
+    m = compute_team_prop_pressure("Team A", hitters)
+    assert m["prop_target_count"] == 0
+    assert m["prop_pressure_raw"] < 12
+
+    teams = [{"team": "Team A"}, {"team": "Team B"}]
+    attach_team_prop_pressure(teams, hitters)
+    assert teams[0]["prop_pressure_label"] != LABEL_HOT
 
 
 def test_stack_conf_penalizes_chalk_and_cold_props():
@@ -30,7 +73,7 @@ def test_stack_conf_penalizes_chalk_and_cold_props():
     assert any("CHALK" in r or "DQI FADE" in r for r in reasons)
 
 
-def test_pitcher_conf_uses_xwoba_not_stack_score():
+def test_pitcher_prop_penalty_only_elite_board():
     p = {
         "pitcher": "Test SP",
         "opponent": "COL",
@@ -41,7 +84,21 @@ def test_pitcher_conf_uses_xwoba_not_stack_score():
         "is_juiced_target": True,
         "divergence": 5,
     }
-    t_reports = [{"team": "COL", "team_xwoba": 0.355, "prop_pressure_label": LABEL_HOT}]
-    conf, reasons = score_pitcher_confidence(p, t_reports)
-    assert conf < 60
-    assert any("HOT prop" in r or "Tough matchup" in r for r in reasons)
+    opp_neutral = {
+        "team": "COL",
+        "team_xwoba": 0.355,
+        "prop_pressure_label": LABEL_NEUTRAL,
+        "prop_pressure_elite": False,
+        "prop_target_count": 0,
+    }
+    conf_n, reasons_n = score_pitcher_confidence(p, [opp_neutral])
+    assert not any("prop board" in r.lower() for r in reasons_n)
+
+    opp_hot = {
+        **opp_neutral,
+        "prop_pressure_label": LABEL_HOT,
+        "prop_pressure_elite": True,
+        "prop_target_count": 3,
+    }
+    conf_h, reasons_h = score_pitcher_confidence(p, [opp_hot])
+    assert any("elite prop board" in r for r in reasons_h)
