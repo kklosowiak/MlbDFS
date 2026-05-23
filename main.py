@@ -309,8 +309,14 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
     )
     
     # OMEGA v4.5: Component Translation
-    from utils.cache import load_cache
-    cache = load_cache()
+    cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+    cache = {}
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                cache = json.load(f)
+        except Exception:
+            pass
     for report in p_reports:
         res = report.get('alpha_score', {})
         report['pitcher'] = (report.get('pitcher') or 'TBD').title()
