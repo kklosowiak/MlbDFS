@@ -812,6 +812,20 @@
             </div>
         </div>
 
+        <!-- Matchup Filter Panel -->
+        <div id="matchup-filter-panel" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 15px; margin-bottom: 25px; box-sizing: border-box; background: var(--surface); backdrop-filter: blur(10px); display: none;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Matchup Filter (Select Slates)</span>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="toggleAllMatchups(true)" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Select All</button>
+                    <button onclick="toggleAllMatchups(false)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Deselect All</button>
+                </div>
+            </div>
+            <div id="matchups-checkbox-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <!-- Dynamically Populated Matchups -->
+            </div>
+        </div>
+
         <!-- Main matchups grid content -->
         <div id="main-content" style="width:100%;">
             <div class="loader-box">
@@ -950,13 +964,126 @@
                 `;
             }
         }
+        function syncMatchupChipStyle(cb) {
+            const chip = cb.closest('.matchup-chip');
+            if (!chip) return;
+            if (cb.checked) {
+                chip.style.borderColor = "rgba(0, 242, 254, 0.3)";
+                chip.style.background = "rgba(0, 242, 254, 0.06)";
+            } else {
+                chip.style.borderColor = "var(--border)";
+                chip.style.background = "rgba(0,0,0,0.15)";
+            }
+        }
+
+        function toggleAllMatchups(checkAll) {
+            document.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                cb.checked = checkAll;
+                syncMatchupChipStyle(cb);
+            });
+            filterMatchups();
+        }
+
+        function populateMatchupFilter(games) {
+            const container = document.getElementById('matchups-checkbox-container');
+            const panel = document.getElementById('matchup-filter-panel');
+            if (!container || !panel || !games) return;
+
+            if (games.length === 0) {
+                panel.style.display = 'none';
+                return;
+            }
+
+            // Save currently unchecked keys to preserve user state
+            const uncheckedMatchupKeys = new Set();
+            container.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                if (!cb.checked) {
+                    uncheckedMatchupKeys.add(cb.getAttribute('data-game-key'));
+                }
+            });
+
+            container.innerHTML = '';
+            panel.style.display = 'block';
+
+            games.forEach(g => {
+                const teamA = getTeamAbbrev(g.away.team);
+                const teamB = getTeamAbbrev(g.home.team);
+                const gameKey = [teamA, teamB].sort().join('_');
+                const isChecked = !uncheckedMatchupKeys.has(gameKey);
+
+                const div = document.createElement('div');
+                div.style.cssText = "display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; gap: 6px; cursor: pointer; transition: all 0.2s; user-select: none; font-size: 0.8rem; font-family: monospace; font-weight: bold; color: var(--text-primary);";
+                div.className = "matchup-chip";
+                div.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const cb = div.querySelector('input');
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
+                };
+
+                div.onmouseenter = () => { div.style.borderColor = "var(--accent-blue)"; };
+                div.onmouseleave = () => { 
+                    const cb = div.querySelector('input');
+                    if (cb.checked) {
+                        div.style.borderColor = "rgba(0, 242, 254, 0.3)"; 
+                    } else {
+                        div.style.borderColor = "var(--border)"; 
+                    }
+                };
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.checked = isChecked;
+                input.className = 'matchup-checkbox';
+                input.setAttribute('data-game-key', gameKey);
+                input.setAttribute('data-team-a', teamA);
+                input.setAttribute('data-team-b', teamB);
+                input.style.cssText = "cursor: pointer; margin: 0; accent-color: var(--accent-blue);";
+                
+                input.onchange = () => {
+                    syncMatchupChipStyle(input);
+                    filterMatchups();
+                };
+                
+                const span = document.createElement('span');
+                span.innerText = `${teamA} @ ${teamB}`;
+
+                div.appendChild(input);
+                div.appendChild(span);
+                container.appendChild(div);
+                
+                syncMatchupChipStyle(input);
+            });
+        }
+
         function filterMatchups() {
             const query = document.getElementById('matchup-search').value.toLowerCase().trim();
             const confirmedOnly = document.getElementById('confirmed-only-toggle').checked;
             
+            // Get active matchup filter state
+            const checkedCheckboxes = document.querySelectorAll('.matchup-checkbox:checked');
+            const totalCheckboxes = document.querySelectorAll('.matchup-checkbox');
+            
+            const activeMatchupKeys = new Set();
+            checkedCheckboxes.forEach(cb => activeMatchupKeys.add(cb.getAttribute('data-game-key')));
+            
             const cards = document.querySelectorAll('.matchup-card');
             cards.forEach(card => {
                 const cardText = card.innerText.toLowerCase();
+                
+                // Get team names from card to resolve its gameKey
+                const titleElement = card.querySelector('.matchup-title');
+                let gameKey = '';
+                if (titleElement) {
+                    const strongs = titleElement.querySelectorAll('strong');
+                    if (strongs.length === 2) {
+                        const teamA = strongs[0].innerText.trim();
+                        const teamB = strongs[1].innerText.trim();
+                        gameKey = [teamA, teamB].sort().join('_');
+                    }
+                }
+                
                 const banners = card.querySelectorAll('.lineup-banner');
                 let hasConfirmed = false;
                 banners.forEach(b => {
@@ -968,7 +1095,12 @@
                 const matchesQuery = cardText.includes(query);
                 const matchesConfirmed = !confirmedOnly || hasConfirmed;
                 
-                if (matchesQuery && matchesConfirmed) {
+                // Match matchup checkboxes (if none checked, fallback to show all)
+                const matchesMatchup = checkedCheckboxes.length === 0 || 
+                                       checkedCheckboxes.length === totalCheckboxes.length || 
+                                       activeMatchupKeys.has(gameKey);
+                
+                if (matchesQuery && matchesConfirmed && matchesMatchup) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
@@ -1293,6 +1425,9 @@
             });
 
             container.appendChild(grid);
+            
+            // Populate matchup checkboxes
+            populateMatchupFilter(games);
             
             // Trigger filter in case values are already entered
             filterMatchups();
