@@ -26,17 +26,17 @@
 
         /* Porcelain Light Mode overrides */
         html.light-theme {
-            --bg: #f5f5f7;
-            --surface: rgba(255, 255, 255, 0.8);
-            --surface-card: rgba(255, 255, 255, 0.95);
-            --text-primary: #1d1d1f;
-            --text-secondary: rgba(0, 0, 0, 0.55);
-            --border: rgba(0, 0, 0, 0.08);
+            --bg: #eef2f7;
+            --surface: #ffffff;
+            --surface-card: #ffffff;
+            --text-primary: #1e2229;
+            --text-secondary: #5e6675;
+            --border: #cfd6e0;
             --accent-blue: #007aff;
-            --accent-green: #34c759;
-            --accent-red: #ff3b30;
-            --accent-purple: #af52de;
-            --accent-orange: #ff9500;
+            --accent-green: #1e8a38;
+            --accent-red: #d32f2f;
+            --accent-orange: #d97300;
+            --accent-purple: #8f3ad6;
         }
 
         /* Page styling */
@@ -728,28 +728,127 @@
             margin-bottom: 16px;
         }
         html.light-theme .team-modal .card {
-            background: rgba(0, 0, 0, 0.02);
+            background: #f8f9fa;
+            border-color: #cfd5e0;
         }
-        .signal-pill {
-            display: inline-flex;
+        
+        /* Light Mode Starting Lineup Card Side panels */
+        html.light-theme .lineup-card-side {
+            background: #f8f9fa;
+            border-color: #cfd5e0;
+        }
+        html.light-theme .bat-order {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: var(--border);
+            color: var(--text-secondary);
+        }
+        html.light-theme .hitter-row:nth-child(even) {
+            background: rgba(0, 0, 0, 0.01);
+        }
+        html.light-theme .hitter-row:hover {
+            background: rgba(0, 122, 255, 0.05);
+        }
+        html.light-theme .hitter-hand {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Hitter Expected score badge contrast in Light Mode */
+        html.light-theme .hitter-score-pill.elite {
+            background: rgba(52, 199, 89, 0.08);
+            border-color: rgba(52, 199, 89, 0.25);
+            color: #1e8a38;
+        }
+        html.light-theme .hitter-score-pill.mid {
+            background: rgba(255, 149, 0, 0.08);
+            border-color: rgba(255, 149, 0, 0.25);
+            color: #d97300;
+        }
+
+        /* Unified Matchup Chips styles */
+        .matchup-chip {
+            display: flex;
             align-items: center;
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 5px 10px;
             border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            background: rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            font-size: 0.8rem;
+            font-family: monospace;
+            font-weight: bold;
             color: var(--text-primary);
-            border: 1px solid transparent;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.15);
         }
-        .pill-target { background: rgba(255, 55, 95, 0.15); color: #ff375f; border: 1px solid rgba(255, 55, 95, 0.35); font-weight: 800; }
-        .pill-burst { background: rgba(255, 214, 10, 0.15); color: #ffd60a; border: 1px solid rgba(255, 214, 10, 0.35); }
-        .pill-slump { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border-color: rgba(255, 69, 58, 0.35); font-weight: 800; }
-        .pill-hot-run { background: rgba(255, 186, 8, 0.15); color: #ffba08; border: 1px solid rgba(255, 186, 8, 0.35); font-weight: 800; }
-        .pill-el-platoon { background: rgba(48, 209, 88, 0.15); color: #30d158; border-color: rgba(48, 209, 88, 0.35); font-weight: 800; }
-        .pill-pitch-align { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border-color: rgba(10, 132, 255, 0.35); font-weight: 800; }
-        .pill-neutral { background: rgba(255, 255, 255, 0.06); color: var(--text-secondary); }
+        .matchup-chip:hover {
+            border-color: var(--accent-blue);
+        }
+        .matchup-chip.active {
+            border-color: rgba(0, 242, 254, 0.3);
+            background: rgba(0, 242, 254, 0.06);
+            color: #00f2fe;
+        }
+
+        html.light-theme .matchup-chip {
+            border-color: var(--border);
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--text-secondary);
+        }
+        html.light-theme .matchup-chip:hover {
+            border-color: var(--accent-blue);
+            background: rgba(0, 0, 0, 0.05);
+        }
+        html.light-theme .matchup-chip.active {
+            border-color: var(--accent-blue);
+            background: rgba(0, 122, 255, 0.08);
+            color: var(--accent-blue);
+        }
+
+        /* Select / Deselect button classes for Matchup Filter */
+        .btn-filter-select {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-filter-select:hover {
+            background: rgba(0, 122, 255, 0.2);
+        }
+        .btn-filter-deselect {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: var(--accent-red);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-filter-deselect:hover {
+            background: rgba(255, 59, 48, 0.2);
+        }
+
+        /* Light Mode visual signal badge overrides */
+        html.light-theme .signal-pill {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+        html.light-theme .pill-target { color: #e6003a; background: rgba(230, 0, 58, 0.08); border-color: rgba(230, 0, 58, 0.25); }
+        html.light-theme .pill-burst { color: #b58900; background: rgba(181, 137, 0, 0.08); border-color: rgba(181, 137, 0, 0.25); }
+        html.light-theme .pill-slump { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
+        html.light-theme .pill-hot-run { color: #d97300; background: rgba(217, 115, 0, 0.08); border-color: rgba(217, 115, 0, 0.25); }
+        html.light-theme .pill-el-platoon { color: #1e8a38; background: rgba(30, 138, 56, 0.08); border-color: rgba(30, 138, 56, 0.25); }
+        html.light-theme .pill-pitch-align { color: #007aff; background: rgba(0, 122, 255, 0.08); border-color: rgba(0, 122, 255, 0.25); }
+        html.light-theme .pill-neutral { background: rgba(0, 0, 0, 0.05); color: var(--text-secondary); }
     </style>
 </head>
 <body>
@@ -817,8 +916,8 @@
             <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
                 <span>Matchup Filter (Select Slates)</span>
                 <div style="display: flex; gap: 8px;">
-                    <button onclick="toggleAllMatchups(true)" style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Select All</button>
-                    <button onclick="toggleAllMatchups(false)" style="background: rgba(255, 77, 77, 0.1); border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s;">Deselect All</button>
+                    <button onclick="toggleAllMatchups(true)" class="btn-filter-select">Select All</button>
+                    <button onclick="toggleAllMatchups(false)" class="btn-filter-deselect">Deselect All</button>
                 </div>
             </div>
             <div id="matchups-checkbox-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
@@ -967,13 +1066,7 @@
         function syncMatchupChipStyle(cb) {
             const chip = cb.closest('.matchup-chip');
             if (!chip) return;
-            if (cb.checked) {
-                chip.style.borderColor = "rgba(0, 242, 254, 0.3)";
-                chip.style.background = "rgba(0, 242, 254, 0.06)";
-            } else {
-                chip.style.borderColor = "var(--border)";
-                chip.style.background = "rgba(0,0,0,0.15)";
-            }
+            chip.classList.toggle('active', cb.checked);
         }
 
         function toggleAllMatchups(checkAll) {
@@ -1012,23 +1105,12 @@
                 const isChecked = !uncheckedMatchupKeys.has(gameKey);
 
                 const div = document.createElement('div');
-                div.style.cssText = "display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; gap: 6px; cursor: pointer; transition: all 0.2s; user-select: none; font-size: 0.8rem; font-family: monospace; font-weight: bold; color: var(--text-primary);";
                 div.className = "matchup-chip";
                 div.onclick = (e) => {
                     if (e.target.tagName !== 'INPUT') {
                         const cb = div.querySelector('input');
                         cb.checked = !cb.checked;
                         cb.dispatchEvent(new Event('change'));
-                    }
-                };
-
-                div.onmouseenter = () => { div.style.borderColor = "var(--accent-blue)"; };
-                div.onmouseleave = () => { 
-                    const cb = div.querySelector('input');
-                    if (cb.checked) {
-                        div.style.borderColor = "rgba(0, 242, 254, 0.3)"; 
-                    } else {
-                        div.style.borderColor = "var(--border)"; 
                     }
                 };
 
