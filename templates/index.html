@@ -2417,6 +2417,10 @@
             if (t.is_paradox) {
                 pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
             }
+            const bspot = blindSpotPillHtml(t);
+            if (bspot) {
+                pills.push(bspot);
+            }
             const trendPill = trendSignalPill(t.trend);
             if (trendPill) {
                 pills.push(trendPill);
