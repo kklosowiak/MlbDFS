@@ -641,10 +641,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             except Exception:
                 pass
 
-            # Calculate is_anti_chalk_smash (OMEGA v12.1: Tightened, highly selective GPP criteria)
+            # Calculate is_anti_chalk_smash (OMEGA v12.1.2: Restrict to true premium starters / aces)
             is_anti_chalk_smash = False
             try:
-                if curr_itt >= 4.5 and opp_pitcher_physics >= 28:
+                if curr_itt >= 4.5 and opp_pitcher_physics >= 50.0:
+
                     opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
                     opp_sp_cold = (opp_pitcher_rep.get('form_status') == 'COLD') if opp_pitcher_rep else False
                     opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -20.0) if opp_pitcher_rep else False
