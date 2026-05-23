@@ -309,9 +309,16 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
     )
     
     # OMEGA v4.5: Component Translation
+    from utils.cache import load_cache
+    cache = load_cache()
     for report in p_reports:
         res = report.get('alpha_score', {})
         report['pitcher'] = (report.get('pitcher') or 'TBD').title()
+        
+        # Resolve throw hand
+        pitcher_norm = normalize_player_name(report['pitcher'])
+        p_profile = cache.get(pitcher_norm, {})
+        report['pitch_hand'] = p_profile.get("pitch_hand", "R") if p_profile.get("type") == "pitcher" else "R"
         if isinstance(res, dict):
             report['alpha_score'] = res.get('final', 0)
             report['physics_score'] = res.get('physics', 0)

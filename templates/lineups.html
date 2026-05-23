@@ -626,6 +626,24 @@
                 .trim();
         }
 
+        // Parse UTC start times to Eastern Time (EST/EDT) dynamically
+        function formatGameTimeEST(utcString) {
+            if (!utcString) return 'ACTIVE SLATE';
+            try {
+                const date = new Date(utcString);
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZone: 'America/New_York',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                    timeZoneName: 'short'
+                });
+                return formatter.format(date);
+            } catch (e) {
+                return 'ACTIVE SLATE';
+            }
+        }
+
         // Initialize theme button icon
         function updateThemeButton() {
             const isLight = document.documentElement.classList.contains('light-theme');
@@ -848,29 +866,24 @@
                         let batSide = '—';
                         let position = 'H';
                         let leveragePill = '';
-                        let price = '';
+                        let emojiStr = '';
 
                         if (hitProfile) {
                             dispName = hitProfile.name;
                             batSide = hitProfile.bat_side || '—';
                             
                             // Map default positions, or extract from key details
-                            position = hitProfile.bat_side === 'R' ? 'RHP' : 'LHP'; // Fallback labels
-                            if (hitProfile.hits_line && hitProfile.hits_line !== '-') {
-                                price = `$${hitProfile.ahr_price || '—'}`;
-                            } else if (hitProfile.tb_line && hitProfile.tb_line !== '-') {
-                                price = `$${hitProfile.ahr_price || '—'}`;
-                            } else {
-                                price = hitProfile.ahr_price ? `+$${hitProfile.ahr_price}` : '';
-                            }
-                            
-                            // Pos overlays or standard fillers
                             position = hitProfile.bat_side === 'B' ? 'S' : hitProfile.bat_side;
 
                             // Dynamic Leverage Pill
                             const score = Math.round(hitProfile.player_score);
                             const pillClass = score >= 55 ? 'elite' : 'mid';
                             leveragePill = `<span class="hitter-score-pill ${pillClass}">Ω ${score}</span>`;
+
+                            // Leverage/Juiced prop emojis next to hitter names
+                            if (hitProfile.is_juiced_target) emojiStr += ' 🎯';
+                            if (hitProfile.is_prop_juice) emojiStr += ' 💧';
+                            if (hitProfile.smash_factor) emojiStr += ' 💥';
                         }
 
                         rows += `
@@ -878,13 +891,12 @@
                                 <div class="hitter-left-side">
                                     <span class="bat-order">${orderNum}</span>
                                     <span class="hitter-name-block">
-                                        <strong>${dispName}</strong>
+                                        <strong>${dispName}${emojiStr}</strong>
                                         <span class="hitter-hand ${batSide}">${batSide}</span>
                                     </span>
                                 </div>
                                 <div class="hitter-right-side">
                                     ${leveragePill}
-                                    <span class="hitter-price">${price}</span>
                                 </div>
                             </div>
                         `;
@@ -895,6 +907,11 @@
 
                 const awayRosterHtml = getRostersHtml(awayConfirmedList, isAwayConfirmed, awayTeam.team);
                 const homeRosterHtml = getRostersHtml(homeConfirmedList, isHomeConfirmed, homeTeam.team);
+
+                // Get start time in EST
+                const gameTimes = confirmed._game_times || {};
+                const gameDateStr = gameTimes[awayTeam.team] || gameTimes[getTeamAbbrev(awayTeam.team)] || gameTimes[homeTeam.team] || gameTimes[getTeamAbbrev(homeTeam.team)] || null;
+                const gameTimeEST = formatGameTimeEST(gameDateStr);
 
                 // Build full game card HTML structure
                 card.innerHTML = `
@@ -910,7 +927,7 @@
                             </div>
                         </div>
                         <div class="matchup-meta">
-                            <span class="matchup-time">ACTIVE SLATE</span>
+                            <span class="matchup-time">${gameTimeEST}</span>
                             <div class="matchup-weather">🌧️ ${weatherStr}</div>
                         </div>
                     </div>
@@ -930,12 +947,12 @@
                         <div class="pitcher-box away">
                             <span class="pitcher-label">Away SP</span>
                             <span class="pitcher-name">${awaySP.pitcher}</span>
-                            <span class="pitcher-stats">${awaySP.pitch_hand}HP · SIERA ${awaySP.siera || '4.10'}</span>
+                            <span class="pitcher-stats">${(awaySP.pitch_hand || 'R').toUpperCase()}HP · SIERA ${(awaySP.siera ? Number(awaySP.siera).toFixed(2) : '4.10')}</span>
                         </div>
                         <div class="pitcher-box home">
                             <span class="pitcher-label">Home SP</span>
                             <span class="pitcher-name">${homeSP.pitcher}</span>
-                            <span class="pitcher-stats">${homeSP.pitch_hand}HP · SIERA ${homeSP.siera || '4.10'}</span>
+                            <span class="pitcher-stats">${(homeSP.pitch_hand || 'R').toUpperCase()}HP · SIERA ${(homeSP.siera ? Number(homeSP.siera).toFixed(2) : '4.10')}</span>
                         </div>
                     </div>
 

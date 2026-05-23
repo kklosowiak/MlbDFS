@@ -58,6 +58,7 @@ class LineupFetcher:
         }
         
         lineups = {}
+        game_times = {}
         try:
             response = requests.get(self.api_url, params=params, timeout=10)
             response.raise_for_status()
@@ -68,13 +69,20 @@ class LineupFetcher:
                 
             games = data['dates'][0].get('games', [])
             for game in games:
+                game_date = game.get('gameDate')
                 lineups_data = game.get('lineups', {})
                 
                 for side in ['away', 'home']:
                     team_info = game.get('teams', {}).get(side, {}).get('team', {})
                     team_name = team_info.get('name')
-                    team_players = lineups_data.get(f'{side}Players', [])
                     
+                    if team_name and game_date:
+                        game_times[team_name] = game_date
+                        for short, full in franchise_map.items():
+                            if full == team_name:
+                                game_times[short] = game_date
+                                
+                    team_players = lineups_data.get(f'{side}Players', [])
                     if team_players:
                         normalized_players = [normalize_player_name(p.get('fullName')) for p in team_players]
                         lineups[team_name] = normalized_players
@@ -83,6 +91,7 @@ class LineupFetcher:
                             if full == team_name:
                                 lineups[short] = normalized_players
                                 
+            lineups["_game_times"] = game_times
             return lineups
         except Exception as e:
             print(f"[LINEUPS]: Error fetching confirmed lineups: {e}")
