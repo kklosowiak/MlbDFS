@@ -1237,14 +1237,14 @@ def get_platoons_api():
             "pitcher_vs_rhh_woba": round(pitcher_vs_rhh_woba, 3),
             "pitcher_weak_side": pitcher_weak_side,
             "pitcher_max_vulnerability_ops": round(pitcher_max_ops, 3),
-            "advantage": "⚪ NEUTRAL",
-            "advantage_xwoba": "⚪ NEUTRAL",
+            "advantage": "NEUTRAL",
+            "advantage_xwoba": "NEUTRAL",
             "NPAS_xwOBA": NPAS_xwOBA,
             "stack_score": stack_score,
             "implied_total": implied_total
         })
     
-    # Sort and calibrate slate-wide by NPAS_xwOBA
+    # Sort and calibrate slate-wide by NPAS_xwOBA (OMEGA v12.1: Tightened splits)
     if matchups:
         matchups.sort(key=lambda x: x["NPAS_xwOBA"], reverse=True)
         n_m = len(matchups)
@@ -1252,20 +1252,18 @@ def get_platoons_api():
             percentile = idx / n_m if n_m > 0 else 0.5
             npas = m["NPAS_xwOBA"]
             
-            if percentile <= 0.15:
-                label = "⚡ ELITE PLATOON"
-            elif percentile <= 0.40:
-                label = "🎯 STRONG EDGE"
-            elif percentile <= 0.75:
-                label = "⚪ NEUTRAL"
+            if percentile <= 0.12 and npas >= 0.055:
+                label = "ELITE PLATOON"
+            elif percentile <= 0.30 and npas >= 0.030:
+                label = "STRONG EDGE"
+            elif npas <= -0.030 or (percentile >= 0.80 and npas <= -0.010):
+                label = "PLATOON TRAP"
             else:
-                label = "🚨 PLATOON TRAP"
-                
-            if npas < 0:
-                label = "🚨 PLATOON TRAP"
+                label = "NEUTRAL"
                 
             m["advantage"] = label
             m["advantage_xwoba"] = label
+
     
     return JSONResponse(
         content={"matchups": matchups, "count": len(matchups)},

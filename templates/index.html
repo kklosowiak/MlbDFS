@@ -457,15 +457,16 @@
         .signal-pill {
             display: inline-flex;
             align-items: center;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             font-weight: 800;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 6px;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
         }
+
 
         /* OMEGA hover glossary (signals, columns, metrics) */
         .signals-container,
@@ -2116,165 +2117,126 @@
         }
 
         function pitcherContextSignalsHtml(p, ouDivBadge, trapSpLabel) {
-            let primary = null;
-            let secondary = [];
+            let pills = [];
 
             if (p.is_trap) {
                 const trapType = trapSpLabel ? ` SP${trapSpLabel}` : ' SP';
                 const tip = `${omegaTip('trap_sp')}${trapSpLabel ? ` (${trapSpLabel.replace(/^ — /, '')})` : ''}`;
-                primary = { label: `🚨 TRAP${trapType}`, className: 'pill-trap', tip: tip };
+                pills.push(signalPillHtml(`🚨 TRAP${trapType}`, { className: 'pill-trap', tip: tip }));
             } else if (p.is_hazard) {
-                primary = { label: '🌋 HAZARD', className: 'pill-exhausted', tipKey: 'hazard' };
+                pills.push(signalPillHtml('🌋 HAZARD', { className: 'pill-exhausted', tipKey: 'hazard' }));
             }
 
             if (p.is_paradox) {
-                const item = { label: '⚠️ PARADOX', className: 'pill-paradox', tipKey: 'paradox' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '⚠️', tip: omegaTip('paradox'), style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a;' });
+                pills.push(signalPillHtml('⚠️ PARADOX', { className: 'pill-paradox', tipKey: 'paradox' }));
             }
 
             if (p.sharp_fade) {
-                const item = { label: '📉 SHARP FADE', className: 'pill-neutral', tipKey: 'sharp_fade', style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '📉', tip: omegaTip('sharp_fade'), style: item.style });
+                pills.push(signalPillHtml('📉 SHARP FADE', { className: 'pill-neutral', tipKey: 'sharp_fade', style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' }));
             }
 
             if (p.form_status === 'SURGING') {
-                const item = { label: '🔥 SURGING', className: 'pill-target', tipKey: 'form_surging', style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🔥', tip: omegaTip('form_surging'), style: item.style });
+                pills.push(signalPillHtml('🔥 SURGING', { className: 'pill-target', tipKey: 'form_surging', style: 'background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a; font-weight:800;' }));
             } else if (p.form_status === 'COLD') {
-                const item = { label: '🧊 COLD', className: 'pill-neutral', tipKey: 'form_cold', style: 'background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🧊', tip: omegaTip('form_cold'), style: item.style });
+                pills.push(signalPillHtml('🧊 COLD', { className: 'pill-neutral', tipKey: 'form_cold', style: 'background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; font-weight:800;' }));
             }
 
             if (p.is_low_ceiling) {
-                const item = { label: '📉 CEILING', className: 'pill-neutral', tipKey: 'low_ceiling' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🪂', tip: omegaTip('low_ceiling'), style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' });
+                pills.push(signalPillHtml('📉 CEILING', { className: 'pill-neutral', tipKey: 'low_ceiling' }));
             }
 
             let html = '';
-            if (primary) {
-                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey, style: primary.style });
+            if (pills.length > 0) {
+                html += pills.join(' ');
             } else {
                 html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant pitcher tactical fades or momentum triggers active.' });
             }
 
-            if (secondary.length > 0) {
-                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
-                secondary.forEach(item => {
-                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
-                });
-                html += '</span>';
-            }
-
-            if (ouDivBadge) html += ouDivBadge;
+            if (ouDivBadge) html += ' ' + ouDivBadge;
             return html;
         }
 
         function teamAlphaSignalsHtml(t) {
-            let primary = null;
-            let secondary = [];
+            let pills = [];
 
             if (t.is_anti_chalk_smash) {
-                primary = { label: '⚓ ANTI-CHALK', className: 'pill-anti-chalk', tipKey: 'anti_chalk_smash' };
+                pills.push(signalPillHtml('⚓ ANTI-CHALK', { className: 'pill-anti-chalk', tipKey: 'anti_chalk_smash' }));
             } else if (t.is_trap) {
-                primary = { label: '🚨 TRAP', className: 'pill-trap', tipKey: 'trap_stack' };
+                pills.push(signalPillHtml('🚨 TRAP', { className: 'pill-trap', tipKey: 'trap_stack' }));
             }
 
             if (t.is_burst) {
                 const conc = t.power_concentration != null ? Number(t.power_concentration).toFixed(3) : '—';
                 const gap = t.burst_conc_gap != null ? Number(t.burst_conc_gap).toFixed(3) : '—';
-                const item = { label: '⚡ BURST', className: 'pill-burst', tip: `${omegaTip('burst')} Conc ${conc}, gap +${gap}.` };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '⚡', tip: item.tip, style: 'background:rgba(255,214,10,0.15); border-color:#ffd60a; color:#ffd60a;' });
+                pills.push(signalPillHtml('⚡ BURST', { className: 'pill-burst', tip: `${omegaTip('burst')} Conc ${conc}, gap +${gap}.` }));
             }
 
             if (t.is_pitch_alignment) {
-                const item = { label: '🎯 PITCH ALIGNMENT', className: 'pill-pitch-align', tipKey: 'pitch_alignment' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🎯', tip: omegaTip('pitch_alignment'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
+                pills.push(signalPillHtml('🎯 PITCH ALIGN', { className: 'pill-pitch-align', tipKey: 'pitch_alignment' }));
             }
 
             if (t.is_whale) {
-                const item = { label: '🐳 WHALE', className: 'pill-whale', tipKey: 'whale' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🐳', tip: omegaTip('whale'), style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+                pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
             }
 
             if (t.is_shark) {
-                const item = { label: '🦈 SHARK', className: 'pill-shark', tipKey: 'shark' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🦈', tip: omegaTip('shark'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
+                pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
             }
 
             if (t.is_cold_streak_msmi || t.is_cold_streak) {
                 const k_delta = t.rolling_k_delta != null ? t.rolling_k_delta : '—';
                 const ops_delta = t.rolling_ops_delta != null ? t.rolling_ops_delta : '—';
-                const item = { label: '🥶 SLATE SLUMP', className: 'pill-slump', tip: `${omegaTip('cold_streak_msmi')} Rolling K% delta +${k_delta}%, OPS delta ${ops_delta}%.` };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🥶', tip: item.tip, style: 'background:rgba(255,69,58,0.15); border-color:#ff453a; color:#ff453a;' });
+                pills.push(signalPillHtml('🥶 SLUMP', { className: 'pill-slump', tip: `${omegaTip('cold_streak_msmi')} Rolling K% delta +${k_delta}%, OPS delta ${ops_delta}%.` }));
             }
 
             if (t.is_hot_run_msmi) {
                 const k_delta = t.rolling_k_delta != null ? t.rolling_k_delta : '—';
                 const ops_delta = t.rolling_ops_delta != null ? t.rolling_ops_delta : '—';
-                const item = { label: '🔥 HOT RUN', className: 'pill-hot-run', tip: `${omegaTip('hot_run_msmi')} Rolling OPS delta +${ops_delta}%, K% delta ${k_delta}%.` };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🔥', tip: item.tip, style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+                pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: `${omegaTip('hot_run_msmi')} Rolling OPS delta +${ops_delta}%, K% delta ${k_delta}%.` }));
             }
 
             if (t.is_sharp) {
-                secondary.push({ emoji: '💵', tip: omegaTip('sharp'), style: 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b;' });
+                pills.push(signalPillHtml('💵 SHARP', { className: 'pill-neutral', tipKey: 'sharp', style: 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' }));
             }
             if (t.is_storm) {
-                secondary.push({ emoji: '⛈️', tip: omegaTip('storm'), style: 'background:rgba(191,90,242,0.12); border-color:#bf5af2; color:#bf5af2;' });
+                pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
             }
             if (t.is_steam) {
-                secondary.push({ emoji: '💨', tip: omegaTip('steam'), style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a;' });
+                pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
             }
             if (t.is_opp_debut) {
-                secondary.push({ emoji: '✨', tip: omegaTip('debut_target'), style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff;' });
+                pills.push(signalPillHtml('✨ DEBUT', { className: 'pill-neutral', tipKey: 'debut_target', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff;' }));
             }
             if (t.is_physics_override) {
-                secondary.push({ emoji: '⚖️', tip: omegaTip('phy_override'), style: 'background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600;' });
+                pills.push(signalPillHtml('⚖️ OVERRIDE', { className: 'pill-neutral', tipKey: 'phy_override', style: 'background:rgba(255,214,0,0.12); border-color:#ffd600; color:#ffd600; font-weight:700;' }));
             }
 
             const bp = parseFloat(t.bullpen_fatigue) || 0;
             if (bp >= 90) {
-                secondary.push({ emoji: '🔋', tip: `${omegaTip('exhausted')} Opposing Bullpen Fatigue: ${bp}% (Exhausted)`, style: 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a;' });
+                pills.push(signalPillHtml('🔋 EXHAUSTED', { className: 'pill-neutral', tip: `${omegaTip('exhausted')} Opposing Bullpen Fatigue: ${bp}% (Exhausted)`, style: 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a; font-weight:700;' }));
             } else if (bp >= 75) {
-                secondary.push({ emoji: '🔋', tip: `${omegaTip('gassed')} Opposing Bullpen Fatigue: ${bp}% (Gassed)`, style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a;' });
+                pills.push(signalPillHtml('🔋 GASSED', { className: 'pill-neutral', tip: `${omegaTip('gassed')} Opposing Bullpen Fatigue: ${bp}% (Gassed)`, style: 'background:rgba(255,159,10,0.12); border-color:#ff9f0a; color:#ff9f0a; font-weight:700;' }));
             } else if (bp >= 65) {
-                secondary.push({ emoji: '🔋', tip: `${omegaTip('weary')} Opposing Bullpen Fatigue: ${bp}% (Weary)`, style: 'background:rgba(255,214,10,0.12); border-color:#ffd60a; color:#ffd60a;' });
+                pills.push(signalPillHtml('🔋 WEARY', { className: 'pill-neutral', tip: `${omegaTip('weary')} Opposing Bullpen Fatigue: ${bp}% (Weary)`, style: 'background:rgba(255,214,10,0.12); border-color:#ffd60a; color:#ffd60a; font-weight:700;' }));
             }
 
             if (t.total_signal) {
                 const isOver = t.total_signal.includes('📈') || t.total_signal.includes('OVER') || t.total_signal.includes('O-DIV');
-                const emoji = isOver ? '📈' : '📉';
+                const label = isOver ? '📈 OVER-DIV' : '📉 UNDER-DIV';
                 const tipKey = isOver ? 'odiv' : 'udiv';
-                secondary.push({ emoji: emoji, tip: `${omegaTip(tipKey)} ${t.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a;' });
+                pills.push(signalPillHtml(label, { className: 'pill-neutral', tip: `${omegaTip(tipKey)} ${t.total_signal}`, style: isOver ? 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' : 'background:rgba(255,69,58,0.12); border-color:#ff453a; color:#ff453a; font-weight:700;' }));
             }
 
             let html = '';
-            if (primary) {
-                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey });
+            if (pills.length > 0) {
+                html += pills.join(' ');
             } else {
-                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant tactical GPP momentum indicators active.' });
-            }
-
-            if (secondary.length > 0) {
-                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
-                secondary.forEach(item => {
-                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
-                });
-                html += '</span>';
+                html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant stack tactical signals active.' });
             }
 
             return html;
         }
+
 
         function teamContextSignalsHtml(t) {
             let html = trendSignalPill(t.trend);
@@ -2288,65 +2250,46 @@
         }
 
         function hitterAlphaSignalsHtml(h) {
-            let primary = null;
-            let secondary = [];
+            let pills = [];
 
             const plat = h.platoon_label || '';
             if (plat.includes('ELITE')) {
-                primary = { label: '⚡ ELITE PLATOON', className: 'pill-el-platoon', tipKey: 'platoon_elite' };
+                pills.push(signalPillHtml('⚡ ELITE PLATOON', { className: 'pill-el-platoon', tipKey: 'platoon_elite' }));
             } else if (plat.includes('TRAP')) {
-                primary = { label: '🚨 PLATOON TRAP', className: 'pill-trap', tipKey: 'platoon_trap' };
+                pills.push(signalPillHtml('🚨 PLATOON TRAP', { className: 'pill-trap', tipKey: 'platoon_trap' }));
             } else if (plat.includes('STRONG')) {
-                primary = { label: '🎯 STRONG EDGE', className: 'pill-pitch-align', tipKey: 'platoon_strong' };
+                pills.push(signalPillHtml('🎯 STRONG EDGE', { className: 'pill-pitch-align', tipKey: 'platoon_strong' }));
             }
 
             if (h.is_juiced_target) {
-                const item = { label: '🎯 TARGET', className: 'pill-target', tipKey: 'target' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🎯', tip: omegaTip('target'), style: 'background:rgba(10,132,255,0.15); border-color:#0a84ff; color:#0a84ff;' });
+                pills.push(signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' }));
             }
 
             if (h.smash_factor) {
-                const item = { label: '💥 SMASH', className: 'pill-burst', tipKey: 'smash' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '💥', tip: omegaTip('smash'), style: 'background:rgba(255,214,10,0.15); border-color:#ffd60a; color:#ffd60a;' });
+                pills.push(signalPillHtml('💥 SMASH', { className: 'pill-burst', tipKey: 'smash' }));
             }
 
             if (h.is_cold_streak_msmi || h.is_cold_streak) {
-                const item = { label: '🥶 SLATE SLUMP', className: 'pill-slump', tip: 'Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🥶', tip: item.tip, style: 'background:rgba(255,69,58,0.15); border-color:#ff453a; color:#ff453a;' });
+                pills.push(signalPillHtml('🥶 SLATE SLUMP', { className: 'pill-slump', tip: 'Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.' }));
             }
 
             if (h.is_hot_run_msmi || h.is_hot) {
-                const item = { label: '🔥 HOT RUN', className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '🔥', tip: item.tip, style: 'background:rgba(50,215,75,0.15); border-color:#32d74b; color:#32d74b;' });
+                pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' }));
             }
 
             if (h.is_prop_juice) {
-                const item = { label: '💧 JUICE', className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' };
-                if (!primary) primary = item;
-                else secondary.push({ emoji: '💧', tip: omegaTip('juice'), style: item.style });
+                pills.push(signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' }));
             }
 
             if (h.is_speed_target) {
-                secondary.push({ emoji: '🏃‍♂️', tip: omegaTip('thief'), style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' });
+                pills.push(signalPillHtml('🏃‍♂️ THIEF', { className: 'pill-neutral', tipKey: 'thief', style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' }));
             }
 
             let html = '';
-            if (primary) {
-                html += signalPillHtml(primary.label, { className: primary.className, tip: primary.tip, tipKey: primary.tipKey, style: primary.style });
+            if (pills.length > 0) {
+                html += pills.join(' ');
             } else {
                 html += signalPillHtml('⚪ NEUTRAL', { className: 'pill-neutral', tip: 'No dominant hitter GPP matchup splits or prop targets active.' });
-            }
-
-            if (secondary.length > 0) {
-                html += '<span class="mini-cluster" style="display:inline-flex; align-items:center; margin-left:4px; vertical-align:middle;">';
-                secondary.forEach(item => {
-                    html += `<span class="mini-icon" style="${item.style}" data-omega-tip="${escTip(item.tip)}" title="${escTip(item.tip)}">${item.emoji}</span>`;
-                });
-                html += '</span>';
             }
 
             return html;

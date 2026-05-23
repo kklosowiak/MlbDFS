@@ -641,23 +641,24 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             except Exception:
                 pass
 
-            # Calculate is_anti_chalk_smash
+            # Calculate is_anti_chalk_smash (OMEGA v12.1: Tightened, highly selective GPP criteria)
             is_anti_chalk_smash = False
             try:
-                if curr_itt >= 4.2 and opp_pitcher_physics >= 22:
+                if curr_itt >= 4.5 and opp_pitcher_physics >= 28:
                     opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
                     opp_sp_cold = (opp_pitcher_rep.get('form_status') == 'COLD') if opp_pitcher_rep else False
-                    opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -15.0) if opp_pitcher_rep else False
+                    opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -20.0) if opp_pitcher_rep else False
                     
                     opp_sp_alpha = 90
                     if opp_pitcher_rep:
                         alpha = opp_pitcher_rep.get('alpha_score', 0)
                         opp_sp_alpha = alpha.get('final', 0) if isinstance(alpha, dict) else alpha
                     
-                    if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 75:
+                    if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 72:
                         is_anti_chalk_smash = True
             except Exception:
                 pass
+
             
             # OMEGA v10.2: BURST — star-heavy power + targetable SP or cooked pen / short leash
             is_burst, burst_conc_gap = evaluate_burst_signal(
@@ -825,11 +826,13 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         if avg_season_ops > 0:
                             rolling_ops_delta = round((avg_rolling_ops - avg_season_ops) / avg_season_ops * 100, 1)
                             
-                    is_cold_streak_msmi = rolling_k_delta >= 20.0 or rolling_ops_delta <= -12.0
+                    # OMEGA v12.1: Requiring BOTH a K% surge and a severe OPS drop for a true Team Slate Slump
+                    is_cold_streak_msmi = rolling_k_delta >= 25.0 and rolling_ops_delta <= -15.0
                     is_hot_run_msmi = rolling_ops_delta >= 12.0 and rolling_k_delta <= -10.0
                     is_cold_streak = is_cold_streak_msmi
             except Exception:
                 pass
+
 
             team_row = {
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
@@ -1012,8 +1015,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             if s_ops > 0:
                 h_rolling_ops_delta = round((r_ops - s_ops) / s_ops * 100, 1)
                 
-            h_is_cold_streak_msmi = h_rolling_k_delta >= 20.0 or h_rolling_ops_delta <= -12.0
+            # OMEGA v12.1: Requiring BOTH a K% surge and a severe OPS drop for a true Hitter Slate Slump
+            h_is_cold_streak_msmi = h_rolling_k_delta >= 25.0 and h_rolling_ops_delta <= -15.0
             h_is_hot_run_msmi = h_rolling_ops_delta >= 12.0 and h_rolling_k_delta <= -10.0
+
 
         # Dynamic Platoon splits via NPAS
         NPAS_xwOBA = 0.0
@@ -1110,7 +1115,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'is_hot_run_msmi': h_is_hot_run_msmi
         })
 
-    # Calibrate dynamic splits (platoon_label) slate-wide
+    # Calibrate dynamic splits (platoon_label) slate-wide (OMEGA v12.1: Tightened, highly selective GPP criteria)
     if h_reports:
         # Sort by NPAS_xwOBA descending
         h_reports_sorted = sorted(h_reports, key=lambda x: x.get('NPAS_xwOBA', 0.0), reverse=True)
@@ -1121,19 +1126,18 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             percentile = idx / n_hitters if n_hitters > 0 else 0.5
             npas = hr.get('NPAS_xwOBA', 0.0)
             
-            # Calibrate label
-            if percentile <= 0.15:
-                label = "⚡ ELITE PLATOON"
-            elif percentile <= 0.40:
-                label = "🎯 STRONG EDGE"
-            elif percentile <= 0.75:
-                label = "⚪ NEUTRAL"
+            # Calibrate label with strict absolute thresholds + percentiles
+            if percentile <= 0.12 and npas >= 0.055:
+                label = "ELITE PLATOON"
+            elif percentile <= 0.30 and npas >= 0.030:
+                label = "STRONG EDGE"
+            elif npas <= -0.030 or (percentile >= 0.80 and npas <= -0.010):
+                label = "PLATOON TRAP"
             else:
-                label = "🚨 PLATOON TRAP"
+                label = "NEUTRAL"
                 
-            if npas < 0:
-                label = "🚨 PLATOON TRAP"
             calibrated_labels[hr['name']] = label
+
 
         # Apply the calibrated label back to h_reports
         for hr in h_reports:
