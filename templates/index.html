@@ -610,13 +610,13 @@
             color: #00f2fe;
         }
 
-        .pill-target { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
-        .pill-shark { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }
+        .pill-target { background: rgba(255, 55, 95, 0.15); color: #ff375f; border: 1px solid rgba(255, 55, 95, 0.35); font-weight: 800; }
+        .pill-shark { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(10, 132, 255, 0.3); }
         .pill-storm { background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); }
-        .pill-sharp { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }
-        .pill-whale { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); }
+        .pill-sharp { background: rgba(48, 209, 88, 0.12); color: #30d158; border: 1px solid rgba(48, 209, 88, 0.3); font-weight: 700; }
+        .pill-whale { background: rgba(191, 90, 242, 0.15); color: var(--accent-purple); border: 1px solid rgba(191, 90, 242, 0.35); }
         .pill-steam { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
-        .pill-burst { background: rgba(255, 214, 10, 0.15); color: #ffd60a; }
+        .pill-burst { background: rgba(255, 214, 10, 0.15); color: #ffd60a; border: 1px solid rgba(255, 214, 10, 0.35); }
         .pill-lowconf { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
         .pill-paradox { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
         .pill-trap { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }
@@ -627,11 +627,12 @@
         .pill-neutral { background: rgba(255, 255, 255, 0.06); color: var(--text-secondary); }
 
         /* GPP Premium Scorer & UI Cockpit Overhaul classes */
-        .pill-anti-chalk { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); border-color: rgba(50, 215, 75, 0.35); font-weight: 800; text-shadow: 0 0 8px rgba(50, 215, 75, 0.25); }
+        .pill-anti-chalk { background: rgba(0, 229, 255, 0.12); color: #00e5ff; border: 1px solid rgba(0, 229, 255, 0.35); font-weight: 800; text-shadow: 0 0 8px rgba(0, 229, 255, 0.25); }
         .pill-pitch-align { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border-color: rgba(10, 132, 255, 0.35); font-weight: 800; }
         .pill-slump { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border-color: rgba(255, 69, 58, 0.35); font-weight: 800; }
-        .pill-hot-run { background: rgba(50, 215, 75, 0.15); color: var(--accent-green); border-color: rgba(50, 215, 75, 0.35); font-weight: 800; }
-        .pill-el-platoon { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border-color: rgba(10, 132, 255, 0.35); font-weight: 800; }
+        .pill-hot-run { background: rgba(255, 186, 8, 0.15); color: #ffba08; border: 1px solid rgba(255, 186, 8, 0.35); font-weight: 800; }
+        .pill-el-platoon { background: rgba(48, 209, 88, 0.15); color: #30d158; border-color: rgba(48, 209, 88, 0.35); font-weight: 800; }
+
         
         .mini-icon {
             display: inline-flex;
@@ -2196,8 +2197,9 @@
             }
 
             if (t.is_sharp) {
-                pills.push(signalPillHtml('💵 SHARP', { className: 'pill-neutral', tipKey: 'sharp', style: 'background:rgba(50,215,75,0.12); border-color:#32d74b; color:#32d74b; font-weight:700;' }));
+                pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
             }
+
             if (t.is_storm) {
                 pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
             }
