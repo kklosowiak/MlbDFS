@@ -53,10 +53,21 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         date_from=date_from, date_to=date_to, capture_opening=capture_opening
     )
 
+    # Resiliency Fallback: If 0 events are found on the current slate (e.g. late night refresh on a fresh deploy)
+    # automatically shift forward to the next slate day.
+    if not snapshot_path and not custom_date_from:
+        next_date = base_date + timedelta(days=1)
+        date_from = f"{next_date}T04:00:00Z"
+        date_to = (next_date + timedelta(days=1)).strftime("%Y-%m-%dT04:00:00Z")
+        print(f"[INGEST WARNING]: No active events on slate {base_date}. Shifting forward to next slate {next_date} (Window: {date_from} to {date_to})")
+        snapshot_path = fetcher.run_bulk_ingestion(
+            date_from=date_from, date_to=date_to, capture_opening=capture_opening
+        )
     
     if not snapshot_path or not os.path.exists(snapshot_path):
         print("  - CRITICAL: Market ingestion failed. Aborting.")
         return None
+
 
     # 2. Fetch Betting Splits (Consensus)
     print("\n[STEP 2]: Fetching Betting Splits (Consensus Overlay)...")
