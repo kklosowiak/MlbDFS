@@ -178,6 +178,14 @@ class HitterPropAnalyzer:
                         'is_juiced_target': False,
                         'is_prop_juice': False,
                         '_juice_gap': 0,
+                        'runs_line': '-',
+                        'runs_price': 0,
+                        'runs_juice': False,
+                        'runs_target': False,
+                        'rbis_line': '-',
+                        'rbis_price': 0,
+                        'rbis_juice': False,
+                        'rbis_target': False,
                         'is_speed_target': False,
                         'matchup_xwoba': xwoba
                     }
@@ -187,7 +195,10 @@ class HitterPropAnalyzer:
                 matchup = game_map.get(gid, {})
                 if not matchup: continue
                 
-                for m_key in ['batter_home_runs', 'batter_hits', 'batter_total_bases', 'batter_stolen_bases']:
+                for m_key in [
+                    'batter_home_runs', 'batter_hits', 'batter_total_bases',
+                    'batter_stolen_bases', 'batter_runs', 'batter_rbis',
+                ]:
                     market_data = markets.get(m_key, [])
                     for entry in market_data:
                         player_name = entry.get('player_name')
@@ -234,6 +245,14 @@ class HitterPropAnalyzer:
                                 'is_juiced_target': False,
                                 'is_prop_juice': False,
                                 '_juice_gap': 0,
+                                'runs_line': '-',
+                                'runs_price': 0,
+                                'runs_juice': False,
+                                'runs_target': False,
+                                'rbis_line': '-',
+                                'rbis_price': 0,
+                                'rbis_juice': False,
+                                'rbis_target': False,
                                 'is_speed_target': False,
                                 'matchup_xwoba': xwoba
                             }
@@ -317,6 +336,14 @@ class HitterPropAnalyzer:
                                 if 1.0 < sb_price < 100.0: sb_price = self.decimal_to_american(sb_price)
                                 if -500 < sb_price <= 250:
                                     hitter_map[found_key]['is_speed_target'] = True
+
+                        elif m_key in ('batter_runs', 'batter_rbis'):
+                            if entry.get('side') == 'Over':
+                                from utils.prop_juice import merge_hitter_market_juice
+
+                                merge_hitter_market_juice(
+                                    hitter_map[found_key], market_data, player_name, m_key
+                                )
 
         except Exception as e:
             print(f"[CRITICAL ERROR]: Hitter Discovery silent crash prevented: {e}")

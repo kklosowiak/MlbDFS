@@ -217,6 +217,9 @@ class PitcherAnalyzer:
                 is_juiced_target = False
                 is_prop_juice = False
                 _juice_gap = 0
+                is_hits_allowed_juice = False
+                _ha_gap = 0
+                k_move = 0
                 is_trap = False
                 trap_type = None
                 is_death_sentence = False
@@ -237,6 +240,9 @@ class PitcherAnalyzer:
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
                     is_prop_juice = bool(prev_pitcher_data.get('is_prop_juice', False))
                     _juice_gap = int(prev_pitcher_data.get('_juice_gap', 0) or 0)
+                    is_hits_allowed_juice = bool(prev_pitcher_data.get('is_hits_allowed_juice', False))
+                    _ha_gap = prev_pitcher_data.get('_ha_juice_gap', 0)
+                    k_move = float(prev_pitcher_data.get('k_move', 0) or 0)
                     is_trap = bool(prev_pitcher_data.get('is_trap', False))
                     trap_type = prev_pitcher_data.get('trap_type')
                     is_death_sentence = bool(prev_pitcher_data.get('is_death_sentence', False))
@@ -322,6 +328,17 @@ class PitcherAnalyzer:
                         k_line=k_line,
                         physics_talent=phys_talent,
                     )
+                    from utils.prop_juice import evaluate_pitcher_hits_allowed_juice
+
+                    p_ha_rows = [
+                        o
+                        for o in (gid_props.get("pitcher_hits_allowed", []) or [])
+                        if normalize_player_name(o.get("player_name", ""))
+                        == normalize_player_name(pitcher_name)
+                    ]
+                    is_hits_allowed_juice, _ha_gap = evaluate_pitcher_hits_allowed_juice(
+                        p_ha_rows, pitcher_name
+                    )
                 venue_team = home 
                 base_stadium_factor = self.config.PARK_FACTORS.get(venue_team, 1.00)
                 ump_data = ump_assignments.get(venue_team, {"factor": 1.0, "name": "TBD"})
@@ -402,6 +419,9 @@ class PitcherAnalyzer:
                     'is_juiced_target': is_juiced_target,
                     'is_prop_juice': is_prop_juice,
                     '_juice_gap': _juice_gap,
+                    'is_hits_allowed_juice': is_hits_allowed_juice,
+                    '_ha_juice_gap': _ha_gap,
+                    'k_move': k_move,
                     'sharp_fade': int(divergence) <= -15 and not is_trap,
                     'is_shark': is_shark,
                     'is_whale': is_whale,

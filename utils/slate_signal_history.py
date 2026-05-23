@@ -88,6 +88,37 @@ def persist_slate_signals(reports_dir, teams, pitchers):
         print(f"[SIGNAL-HIST]: persist failed: {e}")
 
 
+def mark_volatile_preview(reports_dir, teams, pitchers):
+    """Set is_volatile from prior intraday snapshots before this refresh's CONF score."""
+    data = load_history(reports_dir)
+
+    for t in teams or []:
+        key = t.get("team") or ""
+        rec = data.get("teams", {}).get(key)
+        if not rec:
+            t["is_volatile"] = False
+            continue
+        open_conf = int(rec.get("open_conf", 50))
+        swings = [
+            abs(int(e.get("attack_conf", open_conf)) - open_conf)
+            for e in rec.get("entries", [])
+        ]
+        t["is_volatile"] = max(swings + [0]) >= VOLATILE_CONF_SWING
+
+    for p in pitchers or []:
+        key = p.get("pitcher") or ""
+        rec = data.get("pitchers", {}).get(key)
+        if not rec:
+            p["is_volatile"] = False
+            continue
+        open_conf = int(rec.get("open_conf", 50))
+        swings = [
+            abs(int(e.get("attack_conf", open_conf)) - open_conf)
+            for e in rec.get("entries", [])
+        ]
+        p["is_volatile"] = max(swings + [0]) >= VOLATILE_CONF_SWING
+
+
 def attach_signal_deltas(reports_dir, teams, pitchers):
     """Mutates team/pitcher dicts with conf_delta, is_volatile, stack_delta."""
     data = load_history(reports_dir)

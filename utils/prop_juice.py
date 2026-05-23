@@ -8,8 +8,88 @@ PITCHER_TARGET_MIN_K_LINE = 5.0
 PITCHER_TARGET_MIN_PHYSICS = 55.0
 HITTER_TARGET_MIN_XWOBA = 0.340
 HITTER_TARGET_MIN_GAP = 15
+STACK_PROP_MIN_XWOBA = 0.320
+STACK_PROP_TARGET_GAP = 12
 MAX_PITCHER_TARGETS = 10
 MAX_HITTER_TARGETS = 45
+
+
+def merge_hitter_market_juice(hitter_entry, market_data, player_name, market_key):
+    """
+    Apply Over/Under juice from one market to a hitter dict.
+    market_key: batter_hits | batter_total_bases | batter_runs | batter_rbis
+    """
+    from utils.normalization import normalize_player_name
+
+    norm = normalize_player_name(player_name)
+    stack_market = market_key in ("batter_runs", "batter_rbis")
+    flag_juice = "runs_juice" if market_key == "batter_runs" else (
+        "rbis_juice" if market_key == "batter_rbis" else None
+    )
+    flag_target = "runs_target" if market_key == "batter_runs" else (
+        "rbis_target" if market_key == "batter_rbis" else None
+    )
+    line_key = "runs_line" if market_key == "batter_runs" else (
+        "rbis_line" if market_key == "batter_rbis" else None
+    )
+    price_key = "runs_price" if market_key == "batter_runs" else (
+        "rbis_price" if market_key == "batter_rbis" else None
+    )
+
+    for entry in market_data or []:
+        if normalize_player_name(entry.get("player_name", "")) != norm:
+            continue
+        if entry.get("side") != "Over":
+            continue
+        pt = entry.get("point")
+        book = entry.get("bookmaker")
+        o_price = entry.get("price", 0)
+        if 1.0 < o_price < 100.0:
+            o_price = _to_american(o_price)
+        matching = [
+            e for e in market_data
+            if normalize_player_name(e.get("player_name", "")) == norm
+            and e.get("side") == "Under"
+            and e.get("bookmaker") == book
+            and e.get("point") == pt
+        ]
+        if not matching:
+            continue
+        u_price = matching[0].get("price", 0)
+        if 1.0 < u_price < 100.0:
+            u_price = _to_american(u_price)
+        xw = float(hitter_entry.get("matchup_xwoba", 0.33) or 0.33)
+        if stack_market:
+            gap = american_juice_gap(o_price, u_price)
+            if gap >= SOFT_JUICE_GAP_AMERICAN and line_key:
+                hitter_entry[flag_juice] = True
+                hitter_entry["_juice_gap"] = max(hitter_entry.get("_juice_gap", 0), gap)
+            if gap >= STACK_PROP_TARGET_GAP and xw >= STACK_PROP_MIN_XWOBA and line_key:
+                hitter_entry[flag_target] = True
+            if line_key:
+                hitter_entry[line_key] = pt
+            if price_key:
+                hitter_entry[price_key] = o_price
+            continue
+        tgt, juice, gap = evaluate_hitter_prop_juice(o_price, u_price, matchup_xwoba=xw)
+        if juice:
+            hitter_entry["is_prop_juice"] = True
+            hitter_entry["_juice_gap"] = max(hitter_entry.get("_juice_gap", 0), gap)
+        if tgt:
+            hitter_entry["is_juiced_target"] = True
+
+
+def evaluate_pitcher_hits_allowed_juice(prop_rows, pitcher_name):
+    """Juiced Over on hits allowed = run risk for SP."""
+    from utils.normalization import normalize_player_name
+
+    norm = normalize_player_name(pitcher_name)
+    pairs = scan_prop_pairs(prop_rows, norm)
+    if not pairs:
+        return False, 0
+    best_gap = max(p["gap"] for p in pairs)
+    return best_gap >= SOFT_JUICE_GAP_AMERICAN, best_gap
+
 
 
 def _to_american(price):

@@ -23,8 +23,10 @@ class SlateReportGenerator:
         team_pitcher_map = {p['team']: p for p in p_reports}
         
         scored_pitchers = []
+        from utils.attack_confidence import score_pitcher_confidence, score_stack_confidence
+
         for p in p_reports:
-            conf, reasons = self._score_pitcher_confidence(p, t_reports)
+            conf, reasons = score_pitcher_confidence(p, t_reports)
             p['attack_conf'] = conf
             p['attack_reasons'] = reasons
             scored_pitchers.append(p)
@@ -33,7 +35,7 @@ class SlateReportGenerator:
 
         scored_stacks = []
         for t in t_reports:
-            conf, reasons = self._score_stack_confidence(t, p_reports)
+            conf, reasons = score_stack_confidence(t, p_reports)
             t['attack_conf'] = conf
             t['attack_reasons'] = reasons
             scored_stacks.append(t)
@@ -62,7 +64,13 @@ class SlateReportGenerator:
         lines.append("## 👑 The Ultimate Suggestion")
         best_p1 = scored_pitchers[0] if len(scored_pitchers) > 0 else None
         best_p2 = self._pick_sp2(scored_pitchers)
-        best_t = scored_stacks[0] if scored_stacks else None
+        lock_stacks = [
+            t for t in scored_stacks
+            if not t.get('is_trap')
+            and t.get('dqi_status') != 'FADE'
+            and not t.get('is_volatile')
+        ]
+        best_t = lock_stacks[0] if lock_stacks else (scored_stacks[0] if scored_stacks else None)
         
         if best_t:
             lines.append(f"### 🏟️ Lock Stack: {best_t['team']} ({best_t['attack_conf']}% Confidence)")

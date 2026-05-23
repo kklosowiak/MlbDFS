@@ -24,6 +24,13 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf -= 10
         reasons.append(f"Platoon fade vs {h.get('pitch_hand', 'P')}HP.")
 
+    if h.get("runs_target") or h.get("rbis_target"):
+        conf += 6
+        reasons.append("Runs/RBI prop TARGET — stack-correlated juice.")
+    elif h.get("runs_juice") or h.get("rbis_juice"):
+        conf += 3
+        reasons.append("Runs/RBI prop juice on board.")
+
     if h.get("is_juiced_target"):
         conf += 8
         reasons.append("Juiced prop TARGET — strict line/pricing edge.")

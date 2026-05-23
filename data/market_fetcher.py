@@ -26,7 +26,11 @@ class MarketFetcher:
         
         # OMEGA v3.2.1 Core Market Alpha
         # Requirement: Strictly comma-separated strings for requests
-        self.prop_markets = 'pitcher_strikeouts,batter_home_runs,batter_hits,pitcher_outs,batter_total_bases,batter_stolen_bases'
+        self.prop_markets = (
+            'pitcher_strikeouts,batter_home_runs,batter_hits,pitcher_outs,'
+            'batter_total_bases,batter_stolen_bases,batter_runs,batter_rbis,'
+            'pitcher_hits_allowed'
+        )
         self.game_markets = 'h2h,totals'
         self.bookmakers = config.BOOKMAKERS
         self.regions = config.REGIONS

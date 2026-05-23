@@ -217,6 +217,28 @@ def run_full_analysis():
     # We run this after Hitters (who depend on Teams) but before the Dashboard.
     p_reports = _resolve_pitcher_team_conflicts(p_reports, team_reports)
 
+    from utils.team_prop_pressure import attach_team_prop_pressure
+    from utils.dqi import calculate_dqi
+
+    attach_team_prop_pressure(team_reports, raw_hitters, confirmed_lineups)
+    for t in team_reports:
+        try:
+            dqi_score, dqi_status, dqi_pos, dqi_warn = calculate_dqi(t, pitchers=p_reports)
+            if dqi_score is not None:
+                t["dqi_score"] = dqi_score
+                t["dqi_status"] = dqi_status
+                t["dqi_pos_factors"] = dqi_pos
+                t["dqi_warn_factors"] = dqi_warn
+        except Exception as dqi_e:
+            print(f"[WARNING]: DQI pre-attack skipped for {t.get('team')}: {dqi_e}")
+
+    try:
+        from utils.slate_signal_history import mark_volatile_preview
+
+        mark_volatile_preview(config.REPORTS_DIR, team_reports, p_reports)
+    except Exception as vol_e:
+        print(f"[WARNING]: Volatile preview skipped: {vol_e}")
+
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
 

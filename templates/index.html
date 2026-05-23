@@ -1986,6 +1986,7 @@
             fading: 'Divergence dropped ≤−3 pts and still ≤−5% — interest cooling. Use: caution on stale steam reads.',
             chalk: 'Public chalk stack flag (trap logic). Use: fade or differentiate in GPP.',
             target: 'Strict prop TARGET — juiced Over vs Under with quality filters (capped top pool). Use: high-trust one-off leverage.',
+            prop_pressure: 'Lineup-level prop board activity (TARGET/JUICE + runs/RBI juice on confirmed hitters). HOT/WARM lifts stack CONF; COLD vs elite xwOBA is a caution flag.',
             juice: 'Soft prop JUICE — Over favored vs Under (gap ≥5) but below strict TARGET bar. Use: tie-breaker / correlation, not auto-lock.',
             sharp_fade: 'Sharp money fading this SP (divergence ≤−15%, not a prop TRAP). Core SP list excludes these; playable with caution only.',
             smash: 'Smash factor hitter — elite contact/power signal in prop model. Use: ceiling plays in tournaments.',
@@ -2123,6 +2124,15 @@
                 });
             }
             html += blindSpotPillHtml(t);
+            if (t.prop_pressure_label === 'HOT' || t.prop_pressure_label === 'WARM') {
+                const names = (t.prop_pressure_hitters || []).slice(0, 2).join(', ');
+                html += signalPillHtml(`📊 PROP ${t.prop_pressure_label}`, {
+                    className: 'pill-neutral',
+                    tipKey: 'prop_pressure',
+                    style: 'background:rgba(191,90,242,0.12); border-color:#bf5af2; color:#bf5af2; font-weight:700;',
+                    tipExtra: names ? ` Top: ${names}.` : '',
+                });
+            }
             if (t.is_opp_debut) html += signalPillHtml('✨ DEBUT TARGET', { className: 'pill-storm', tipKey: 'debut_target' });
             if (t.is_physics_override) {
                 html += signalPillHtml('⚡ PHY OVERRIDE', {
