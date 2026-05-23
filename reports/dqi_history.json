@@ -1,1 +1,37 @@
-{"San Diego Padres": {"score": 19, "status": "FADE", "recorded_at": "2026-05-20T22:27:41.947358"}}
+{
+  "San Diego Padres": {
+    "score": 19,
+    "status": "FADE",
+    "recorded_at": "2026-05-20T22:27:41.947358"
+  },
+  "Minnesota Twins": {
+    "score": 100,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  },
+  "St. Louis Cardinals": {
+    "score": 91,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  },
+  "Pittsburgh Pirates": {
+    "score": 92,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  },
+  "Texas Rangers": {
+    "score": 83,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  },
+  "Chicago White Sox": {
+    "score": 85,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  },
+  "Milwaukee Brewers": {
+    "score": 100,
+    "status": "TRUST",
+    "recorded_at": "2026-05-23T11:29:48.082713"
+  }
+}

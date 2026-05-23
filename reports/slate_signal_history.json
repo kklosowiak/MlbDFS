@@ -1,0 +1,679 @@
+{
+  "slate_date": "2026-05-23",
+  "teams": {
+    "Atlanta Braves": {
+      "open_conf": 82,
+      "open_stack": 150.0,
+      "open_xwoba": 0.3888,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 82,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3888
+        }
+      ]
+    },
+    "Minnesota Twins": {
+      "open_conf": 100,
+      "open_stack": 139.4,
+      "open_xwoba": 0.39199999999999996,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 100,
+          "stack_score": 139.4,
+          "team_xwoba": 0.39199999999999996
+        }
+      ]
+    },
+    "St. Louis Cardinals": {
+      "open_conf": 100,
+      "open_stack": 137.6,
+      "open_xwoba": 0.334125,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 100,
+          "stack_score": 137.6,
+          "team_xwoba": 0.334125
+        }
+      ]
+    },
+    "Arizona Diamondbacks": {
+      "open_conf": 82,
+      "open_stack": 136.1,
+      "open_xwoba": 0.362,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 82,
+          "stack_score": 136.1,
+          "team_xwoba": 0.362
+        }
+      ]
+    },
+    "Pittsburgh Pirates": {
+      "open_conf": 96,
+      "open_stack": 135.2,
+      "open_xwoba": 0.3634,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 96,
+          "stack_score": 135.2,
+          "team_xwoba": 0.3634
+        }
+      ]
+    },
+    "Texas Rangers": {
+      "open_conf": 76,
+      "open_stack": 130.0,
+      "open_xwoba": 0.36319999999999997,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 76,
+          "stack_score": 130.0,
+          "team_xwoba": 0.36319999999999997
+        }
+      ]
+    },
+    "Chicago White Sox": {
+      "open_conf": 98,
+      "open_stack": 128.4,
+      "open_xwoba": 0.3796,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 98,
+          "stack_score": 128.4,
+          "team_xwoba": 0.3796
+        }
+      ]
+    },
+    "Baltimore Orioles": {
+      "open_conf": 68,
+      "open_stack": 128.1,
+      "open_xwoba": 0.384,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 68,
+          "stack_score": 128.1,
+          "team_xwoba": 0.384
+        }
+      ]
+    },
+    "Milwaukee Brewers": {
+      "open_conf": 100,
+      "open_stack": 121.0,
+      "open_xwoba": 0.3844,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 100,
+          "stack_score": 121.0,
+          "team_xwoba": 0.3844
+        }
+      ]
+    },
+    "Cincinnati Reds": {
+      "open_conf": 82,
+      "open_stack": 116.5,
+      "open_xwoba": 0.35477777777777775,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 82,
+          "stack_score": 116.5,
+          "team_xwoba": 0.35477777777777775
+        }
+      ]
+    },
+    "Seattle Mariners": {
+      "open_conf": 44,
+      "open_stack": 113.6,
+      "open_xwoba": 0.3872,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 44,
+          "stack_score": 113.6,
+          "team_xwoba": 0.3872
+        }
+      ]
+    },
+    "Chicago Cubs": {
+      "open_conf": 50,
+      "open_stack": 109.9,
+      "open_xwoba": 0.3486666666666667,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 50,
+          "stack_score": 109.9,
+          "team_xwoba": 0.3486666666666667
+        }
+      ]
+    },
+    "Detroit Tigers": {
+      "open_conf": 59,
+      "open_stack": 102.3,
+      "open_xwoba": 0.3758,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 59,
+          "stack_score": 102.3,
+          "team_xwoba": 0.3758
+        }
+      ]
+    },
+    "Los Angeles Dodgers": {
+      "open_conf": 41,
+      "open_stack": 101.6,
+      "open_xwoba": 0.393,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 41,
+          "stack_score": 101.6,
+          "team_xwoba": 0.393
+        }
+      ]
+    },
+    "Athletics": {
+      "open_conf": 39,
+      "open_stack": 101.3,
+      "open_xwoba": 0.382,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 39,
+          "stack_score": 101.3,
+          "team_xwoba": 0.382
+        }
+      ]
+    },
+    "Washington Nationals": {
+      "open_conf": 72,
+      "open_stack": 101.2,
+      "open_xwoba": 0.392,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 72,
+          "stack_score": 101.2,
+          "team_xwoba": 0.392
+        }
+      ]
+    },
+    "San Diego Padres": {
+      "open_conf": 49,
+      "open_stack": 101.2,
+      "open_xwoba": 0.40040000000000003,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 49,
+          "stack_score": 101.2,
+          "team_xwoba": 0.40040000000000003
+        }
+      ]
+    },
+    "Kansas City Royals": {
+      "open_conf": 33,
+      "open_stack": 98.1,
+      "open_xwoba": 0.38,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 33,
+          "stack_score": 98.1,
+          "team_xwoba": 0.38
+        }
+      ]
+    },
+    "Miami Marlins": {
+      "open_conf": 62,
+      "open_stack": 95.9,
+      "open_xwoba": 0.36019999999999996,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 62,
+          "stack_score": 95.9,
+          "team_xwoba": 0.36019999999999996
+        }
+      ]
+    },
+    "San Francisco Giants": {
+      "open_conf": 37,
+      "open_stack": 91.9,
+      "open_xwoba": 0.3534,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 37,
+          "stack_score": 91.9,
+          "team_xwoba": 0.3534
+        }
+      ]
+    },
+    "Philadelphia Phillies": {
+      "open_conf": 57,
+      "open_stack": 90.5,
+      "open_xwoba": 0.3832,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 57,
+          "stack_score": 90.5,
+          "team_xwoba": 0.3832
+        }
+      ]
+    },
+    "Colorado Rockies": {
+      "open_conf": 81,
+      "open_stack": 89.6,
+      "open_xwoba": 0.3946,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 81,
+          "stack_score": 89.6,
+          "team_xwoba": 0.3946
+        }
+      ]
+    },
+    "Houston Astros": {
+      "open_conf": 42,
+      "open_stack": 89.2,
+      "open_xwoba": 0.3784,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 42,
+          "stack_score": 89.2,
+          "team_xwoba": 0.3784
+        }
+      ]
+    },
+    "Boston Red Sox": {
+      "open_conf": 17,
+      "open_stack": 81.5,
+      "open_xwoba": 0.34600000000000003,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 17,
+          "stack_score": 81.5,
+          "team_xwoba": 0.34600000000000003
+        }
+      ]
+    },
+    "Los Angeles Angels": {
+      "open_conf": 21,
+      "open_stack": 61.0,
+      "open_xwoba": 0.3576,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 21,
+          "stack_score": 61.0,
+          "team_xwoba": 0.3576
+        }
+      ]
+    },
+    "Cleveland Guardians": {
+      "open_conf": 39,
+      "open_stack": 60.1,
+      "open_xwoba": 0.371,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 39,
+          "stack_score": 60.1,
+          "team_xwoba": 0.371
+        }
+      ]
+    },
+    "New York Mets": {
+      "open_conf": 39,
+      "open_stack": 57.5,
+      "open_xwoba": 0.374,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 39,
+          "stack_score": 57.5,
+          "team_xwoba": 0.374
+        }
+      ]
+    },
+    "Toronto Blue Jays": {
+      "open_conf": 37,
+      "open_stack": 22.3,
+      "open_xwoba": 0.3624,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 37,
+          "stack_score": 22.3,
+          "team_xwoba": 0.3624
+        }
+      ]
+    }
+  },
+  "pitchers": {
+    "Paul Skenes": {
+      "open_conf": 75,
+      "open_alpha": 200.1,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 75,
+          "alpha_score": 200.1
+        }
+      ]
+    },
+    "Nathan Eovaldi": {
+      "open_conf": 67,
+      "open_alpha": 126.1,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 67,
+          "alpha_score": 126.1
+        }
+      ]
+    },
+    "Max Meyer": {
+      "open_conf": 65,
+      "open_alpha": 123.7,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 65,
+          "alpha_score": 123.7
+        }
+      ]
+    },
+    "Zack Wheeler": {
+      "open_conf": 73,
+      "open_alpha": 105.2,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 73,
+          "alpha_score": 105.2
+        }
+      ]
+    },
+    "Bryan Hudson": {
+      "open_conf": 48,
+      "open_alpha": 98.8,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 48,
+          "alpha_score": 98.8
+        }
+      ]
+    },
+    "Freddy Peralta": {
+      "open_conf": 57,
+      "open_alpha": 90.8,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 57,
+          "alpha_score": 90.8
+        }
+      ]
+    },
+    "George Kirby": {
+      "open_conf": 38,
+      "open_alpha": 84.3,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 38,
+          "alpha_score": 84.3
+        }
+      ]
+    },
+    "J.T. Ginn": {
+      "open_conf": 49,
+      "open_alpha": 83.2,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 49,
+          "alpha_score": 83.2
+        }
+      ]
+    },
+    "Colin Rea": {
+      "open_conf": 34,
+      "open_alpha": 81.3,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 34,
+          "alpha_score": 81.3
+        }
+      ]
+    },
+    "Taj Bradley": {
+      "open_conf": 44,
+      "open_alpha": 78.8,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 44,
+          "alpha_score": 78.8
+        }
+      ]
+    },
+    "Adrian Houser": {
+      "open_conf": 61,
+      "open_alpha": 75.2,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 61,
+          "alpha_score": 75.2
+        }
+      ]
+    },
+    "Grant Holmes": {
+      "open_conf": 46,
+      "open_alpha": 74.1,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 46,
+          "alpha_score": 74.1
+        }
+      ]
+    },
+    "Zac Gallen": {
+      "open_conf": 26,
+      "open_alpha": 74.0,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 26,
+          "alpha_score": 74.0
+        }
+      ]
+    },
+    "Walbert Ure\u00f1a": {
+      "open_conf": 49,
+      "open_alpha": 72.9,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 49,
+          "alpha_score": 72.9
+        }
+      ]
+    },
+    "Framber Valdez": {
+      "open_conf": 50,
+      "open_alpha": 70.1,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 50,
+          "alpha_score": 70.1
+        }
+      ]
+    },
+    "Robert Gasser": {
+      "open_conf": 36,
+      "open_alpha": 68.2,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 36,
+          "alpha_score": 68.2
+        }
+      ]
+    },
+    "Stephen Kolek": {
+      "open_conf": 38,
+      "open_alpha": 67.7,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 38,
+          "alpha_score": 67.7
+        }
+      ]
+    },
+    "Lucas Giolito": {
+      "open_conf": 34,
+      "open_alpha": 65.3,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 34,
+          "alpha_score": 65.3
+        }
+      ]
+    },
+    "Kai-Wei Teng": {
+      "open_conf": 57,
+      "open_alpha": 65.0,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 57,
+          "alpha_score": 65.0
+        }
+      ]
+    },
+    "Brandon Young": {
+      "open_conf": 34,
+      "open_alpha": 59.7,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 34,
+          "alpha_score": 59.7
+        }
+      ]
+    },
+    "Slade Cecconi": {
+      "open_conf": 35,
+      "open_alpha": 59.1,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 35,
+          "alpha_score": 59.1
+        }
+      ]
+    },
+    "Kyle Leahy": {
+      "open_conf": 53,
+      "open_alpha": 57.7,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 53,
+          "alpha_score": 57.7
+        }
+      ]
+    },
+    "Patrick Corbin": {
+      "open_conf": 26,
+      "open_alpha": 56.3,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 26,
+          "alpha_score": 56.3
+        }
+      ]
+    },
+    "Jake Irvin": {
+      "open_conf": 10,
+      "open_alpha": 46.9,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 10,
+          "alpha_score": 46.9
+        }
+      ]
+    },
+    "Roki Sasaki": {
+      "open_conf": 0,
+      "open_alpha": 46.3,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 0,
+          "alpha_score": 46.3
+        }
+      ]
+    },
+    "Jovani Mor\u00e1n": {
+      "open_conf": 0,
+      "open_alpha": 42.2,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 0,
+          "alpha_score": 42.2
+        }
+      ]
+    },
+    "Chase Petty": {
+      "open_conf": 8,
+      "open_alpha": 33.9,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 8,
+          "alpha_score": 33.9
+        }
+      ]
+    },
+    "Michael Lorenzen": {
+      "open_conf": 0,
+      "open_alpha": 32.6,
+      "entries": [
+        {
+          "at": "2026-05-23T11:29:48.005011",
+          "attack_conf": 0,
+          "alpha_score": 32.6
+        }
+      ]
+    }
+  }
+}

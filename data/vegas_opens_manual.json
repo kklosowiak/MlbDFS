@@ -1,54 +1,104 @@
 {
-  "slate_date": "2026-05-21",
-  "source": "FantasyLabs Vegas (manual paste — update Open column daily)",
+  "slate_date": "2026-05-23",
+  "source": "FantasyLabs terminal.fantasylabs.com/vegas (auto)",
+  "fetched_at": "2026-05-23T15:26:16.168612Z",
   "games": [
     {
-      "away": "Cleveland Guardians",
-      "home": "Detroit Tigers",
-      "away_opening_ml": -125,
-      "home_opening_ml": 105,
+      "away": "St. Louis Cardinals",
+      "home": "Cincinnati Reds",
+      "away_opening_ml": -108,
+      "home_opening_ml": -108,
+      "opening_total": 9.5
+    },
+    {
+      "away": "Houston Astros",
+      "home": "Chicago Cubs",
+      "away_opening_ml": 120,
+      "home_opening_ml": -142,
       "opening_total": 7.5
     },
     {
       "away": "Pittsburgh Pirates",
-      "home": "St. Louis Cardinals",
-      "away_opening_ml": -132,
-      "home_opening_ml": 110,
+      "home": "Toronto Blue Jays",
+      "away_opening_ml": -141,
+      "home_opening_ml": 120,
       "opening_total": 7.5
+    },
+    {
+      "away": "Cleveland Guardians",
+      "home": "Philadelphia Phillies",
+      "away_opening_ml": 165,
+      "home_opening_ml": -200,
+      "opening_total": 7.5
+    },
+    {
+      "away": "Chicago White Sox",
+      "home": "San Francisco Giants",
+      "away_opening_ml": -100,
+      "home_opening_ml": -120,
+      "opening_total": 8.5
+    },
+    {
+      "away": "Detroit Tigers",
+      "home": "Baltimore Orioles",
+      "away_opening_ml": -105,
+      "home_opening_ml": -116,
+      "opening_total": 8.5
     },
     {
       "away": "New York Mets",
-      "home": "Washington Nationals",
-      "away_opening_ml": -125,
-      "home_opening_ml": 105,
-      "opening_total": 9.5
-    },
-    {
-      "away": "Atlanta Braves",
       "home": "Miami Marlins",
-      "away_opening_ml": -185,
-      "home_opening_ml": 155,
+      "away_opening_ml": -116,
+      "home_opening_ml": -105,
       "opening_total": 7.5
     },
     {
-      "away": "Toronto Blue Jays",
-      "home": "New York Yankees",
+      "away": "Washington Nationals",
+      "home": "Atlanta Braves",
       "away_opening_ml": 140,
       "home_opening_ml": -167,
-      "opening_total": 7.5
+      "opening_total": 8.5
+    },
+    {
+      "away": "Seattle Mariners",
+      "home": "Kansas City Royals",
+      "away_opening_ml": -141,
+      "home_opening_ml": 120,
+      "opening_total": 8.5
+    },
+    {
+      "away": "Minnesota Twins",
+      "home": "Boston Red Sox",
+      "away_opening_ml": -105,
+      "home_opening_ml": -116,
+      "opening_total": 8.5
+    },
+    {
+      "away": "Los Angeles Dodgers",
+      "home": "Milwaukee Brewers",
+      "away_opening_ml": -125,
+      "home_opening_ml": 105,
+      "opening_total": 8.5
     },
     {
       "away": "Athletics",
+      "home": "San Diego Padres",
+      "away_opening_ml": -111,
+      "home_opening_ml": -111,
+      "opening_total": 7.5
+    },
+    {
+      "away": "Texas Rangers",
       "home": "Los Angeles Angels",
-      "away_opening_ml": 105,
-      "home_opening_ml": -125,
+      "away_opening_ml": -120,
+      "home_opening_ml": -100,
       "opening_total": 8.5
     },
     {
       "away": "Colorado Rockies",
       "home": "Arizona Diamondbacks",
-      "away_opening_ml": 145,
-      "home_opening_ml": -172,
+      "away_opening_ml": 125,
+      "home_opening_ml": -152,
       "opening_total": 9.5
     }
   ]

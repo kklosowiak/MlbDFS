@@ -2172,9 +2172,9 @@
 
         function bullpenFatiguePills(fatigue) {
             const f = parseFloat(fatigue) || 0;
-            if (f >= 90) return signalPillHtml('🔥 EXHAUSTED', { className: 'pill-exhausted', tipKey: 'exhausted' });
-            if (f >= 75) return signalPillHtml('♨️ GASSED', { className: 'pill-gassed', tipKey: 'gassed' });
-            if (f >= 65) return signalPillHtml('♨️ WEARY', { className: 'pill-weary', tipKey: 'weary' });
+            if (f >= 90) return signalPillHtml('🔋 EXHAUSTED', { className: 'pill-exhausted', tipKey: 'exhausted' });
+            if (f >= 75) return signalPillHtml('🔋 GASSED', { className: 'pill-gassed', tipKey: 'gassed' });
+            if (f >= 65) return signalPillHtml('🔋 WEARY', { className: 'pill-weary', tipKey: 'weary' });
             return '';
         }
 
@@ -2378,27 +2378,16 @@
 
             if (h.smash_factor) {
                 pills.push(signalPillHtml('💥 SMASH', { className: 'pill-burst', tipKey: 'smash' }));
+            } else if (h.is_hot_run_msmi || h.is_hot) {
+                pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' }));
             }
 
             if (h.is_cold_streak_msmi || h.is_cold_streak) {
                 pills.push(signalPillHtml('🥶 SLATE SLUMP', { className: 'pill-slump', tip: 'Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.' }));
             }
 
-            if (h.is_hot_run_msmi || h.is_hot) {
-                pills.push(signalPillHtml('🔥 HOT RUN', { className: 'pill-hot-run', tip: 'Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.' }));
-            }
-
             if (h.is_speed_target) {
                 pills.push(signalPillHtml('🏃‍♂️ THIEF', { className: 'pill-neutral', tipKey: 'thief', style: 'background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.15); color:var(--text-secondary);' }));
-            }
-
-            if (h.matchup_xwoba >= 0.360) {
-                pills.push(signalPillHtml('🔋 POWER', { className: 'pill-neutral', tipKey: 'power' }));
-            }
-
-            const bpPill = bullpenFatiguePills(h.bullpen_fatigue);
-            if (bpPill) {
-                pills.push(bpPill);
             }
 
             return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
@@ -2932,7 +2921,7 @@
                 html += signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' });
             }
             if (entity.is_sharp && !entity.is_shark) {
-                html += signalPillHtml('🎰 HEAVY $', { className: 'pill-sharp', tipKey: 'sharp' });
+                html += signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' });
             }
             return html;
         }

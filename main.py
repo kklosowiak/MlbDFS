@@ -1130,12 +1130,12 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             percentile = idx / n_hitters if n_hitters > 0 else 0.5
             npas = hr.get('NPAS_xwOBA', 0.0)
             
-            # Calibrate label with strict absolute thresholds + percentiles
-            if percentile <= 0.12 and npas >= 0.055:
+            # Calibrate label with strict absolute thresholds + percentiles (OMEGA v12.4: Tightened for elite selectivity)
+            if percentile <= 0.05 and npas >= 0.075:
                 label = "ELITE PLATOON"
-            elif percentile <= 0.30 and npas >= 0.030:
+            elif percentile <= 0.15 and npas >= 0.050:
                 label = "STRONG EDGE"
-            elif npas <= -0.030 or (percentile >= 0.80 and npas <= -0.010):
+            elif npas <= -0.040 or (percentile >= 0.90 and npas <= -0.020):
                 label = "PLATOON TRAP"
             else:
                 label = "NEUTRAL"
