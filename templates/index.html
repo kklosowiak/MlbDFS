@@ -2335,12 +2335,6 @@
             let pills = [];
             
             if (hTeam) {
-                if (hTeam.is_shark) pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
-                if (hTeam.is_whale) pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
-                if (hTeam.is_sharp) pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
-                if (hTeam.is_storm) pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
-                if (hTeam.is_steam) pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
-                
                 if (hTeam.total_signal) {
                     const isOver = hTeam.total_signal.includes('📈') || hTeam.total_signal.includes('OVER') || hTeam.total_signal.includes('O-DIV');
                     const label = isOver ? '📈 OVER-DIV' : '📉 UNDER-DIV';
@@ -2483,7 +2477,7 @@
             },
         };
 
-        let matrixCompactMode = false;
+        let matrixCompactMode = true;
 
         function isMatrixCompact() {
             return matrixCompactMode;
@@ -2498,9 +2492,14 @@
 
         function initMatrixCompactMode() {
             try {
-                matrixCompactMode = localStorage.getItem('omega_matrix_compact') === '1';
+                const stored = localStorage.getItem('omega_matrix_compact');
+                if (stored === null) {
+                    matrixCompactMode = true; // Default to true on first load
+                } else {
+                    matrixCompactMode = stored === '1';
+                }
             } catch (e) {
-                matrixCompactMode = false;
+                matrixCompactMode = true;
             }
             document.body.classList.toggle('matrix-compact', matrixCompactMode);
             updateMatrixCompactToggleUi();
