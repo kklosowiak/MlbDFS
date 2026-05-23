@@ -25,7 +25,7 @@ def test_apply_team_blind_spot_threshold():
 
 
 def test_blind_spot_min_gap_constant():
-    assert BLIND_SPOT_MIN_GAP == 55.0
+    assert BLIND_SPOT_MIN_GAP == 50.0
 
 
 def test_burst_old_pen_only_path_no_longer_fires():

@@ -1,6 +1,6 @@
 """Team matrix signal flags — single source of truth for UI pills."""
 
-BLIND_SPOT_MIN_GAP = 55.0
+BLIND_SPOT_MIN_GAP = 50.0
 
 
 def team_blind_spot_gap(physics_score, market_score, market_raw=None):
