@@ -122,18 +122,18 @@ def evaluate_sneaky_stack(
     gassed = bool(opp_bullpen_is_gassed)
     fatigued = bool(opp_bullpen_is_fatigued)
 
-    # Trigger 1: Elite Physics vs. Market Doubt
-    if xw >= 0.340:
+    # Trigger 1: Elite Physics vs. Market Doubt (Optimized: xw >= 0.345)
+    if xw >= 0.345:
         return True
-    # Trigger 2: Opener / Bullpen Game
-    if outs <= 14.5:
+    # Trigger 2: Opener / Bullpen Game (Optimized: outs <= 13.5)
+    if outs <= 13.5:
         return True
     # Trigger 3: Debut Starting Pitcher
     if debut:
         return True
-    # Trigger 4: Short SP Leash + Gassed Bullpen
-    is_bp_fatigued = pen_score >= 60 or gassed or fatigued
-    if outs <= 15.5 and is_bp_fatigued:
+    # Trigger 4: Short SP Leash + Gassed Bullpen (Optimized: outs <= 14.5, pen_score >= 55)
+    is_bp_fatigued = pen_score >= 55 or gassed or fatigued
+    if outs <= 14.5 and is_bp_fatigued:
         return True
 
     return False

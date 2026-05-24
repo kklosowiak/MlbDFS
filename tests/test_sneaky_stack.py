@@ -12,11 +12,11 @@ def test_sneaky_stack_elite_physics():
     assert res is True
 
 def test_sneaky_stack_opener():
-    # Implied total <= 4.1, opp_pitcher_outs <= 14.5 (Trigger 2)
+    # Implied total <= 4.1, opp_pitcher_outs <= 13.5 (Trigger 2)
     res = evaluate_sneaky_stack(
         implied_total=3.5,
         team_xwoba=0.310,
-        opp_pitcher_outs=14.0,
+        opp_pitcher_outs=13.0,
         is_opp_debut=False,
         opp_bullpen_score=20.0
     )
@@ -34,11 +34,11 @@ def test_sneaky_stack_debut():
     assert res is True
 
 def test_sneaky_stack_short_leash_fatigued_pen():
-    # Implied total <= 4.1, opp_pitcher_outs <= 15.5 AND bullpen fatigue >= 60 (Trigger 4)
+    # Implied total <= 4.1, opp_pitcher_outs <= 14.5 AND bullpen fatigue >= 55 (Trigger 4)
     res = evaluate_sneaky_stack(
         implied_total=4.0,
         team_xwoba=0.320,
-        opp_pitcher_outs=15.0,
+        opp_pitcher_outs=14.0,
         is_opp_debut=False,
         opp_bullpen_score=65.0
     )

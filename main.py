@@ -657,9 +657,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # Calculate is_anti_chalk_smash (OMEGA v12.1.3: Align strictly with Blue/Red cockpit SP badge tiers)
             is_anti_chalk_smash = False
             try:
-                if curr_itt >= 4.5 and opp_pitcher_physics >= 56.0:
-
-
+                if curr_itt >= 4.5 and opp_pitcher_physics >= 50.0:
                     opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
                     opp_sp_cold = (opp_pitcher_rep.get('form_status') == 'COLD') if opp_pitcher_rep else False
                     opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -20.0) if opp_pitcher_rep else False
@@ -669,7 +667,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         alpha = opp_pitcher_rep.get('alpha_score', 0)
                         opp_sp_alpha = alpha.get('final', 0) if isinstance(alpha, dict) else alpha
                     
-                    if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 72:
+                    if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 75:
                         is_anti_chalk_smash = True
             except Exception:
                 pass
@@ -800,20 +798,20 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # OMEGA v13.0: Sneaky Stack Detection (Low-owned GPP gems)
             is_sneaky = False
             if curr_itt <= 4.1:
-                is_bp_fatigued = opp_bullpen['score'] >= 60 or opp_bullpen['is_gassed'] or opp_bullpen.get('is_fatigued', False)
+                is_bp_fatigued = opp_bullpen['score'] >= 55 or opp_bullpen['is_gassed'] or opp_bullpen.get('is_fatigued', False)
                 
                 # Triggers:
-                # 1. Elite Physics vs. Market Doubt (team_xwoba >= 0.340)
-                # 2. Bullpen Game or Opener (opp_outs <= 14.5)
+                # 1. Elite Physics vs. Market Doubt (team_xwoba >= 0.345)
+                # 2. Bullpen Game or Opener (opp_outs <= 13.5)
                 # 3. Debut starting pitcher (is_opp_debut)
-                # 4. Short leash starter (opp_outs <= 15.5) + gassed/fatigued bullpen
-                if team_xwoba >= 0.340:
+                # 4. Short leash starter (opp_outs <= 14.5) + gassed/fatigued bullpen
+                if team_xwoba >= 0.345:
                     is_sneaky = True
-                elif float(opp_outs) <= 14.5:
+                elif float(opp_outs) <= 13.5:
                     is_sneaky = True
                 elif is_opp_debut:
                     is_sneaky = True
-                elif float(opp_outs) <= 15.5 and is_bp_fatigued:
+                elif float(opp_outs) <= 14.5 and is_bp_fatigued:
                     is_sneaky = True
 
             # OMEGA v12.0: Multi-Factor Slate Momentum Index (MSMI)
@@ -1112,21 +1110,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         baseline_xwoba = float(h.get('matchup_xwoba', 0.330) or 0.330)
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba + NPAS_xwOBA)
 
-        # OMEGA v13.0 Hitter SMASH Calibration (f2_matchup_synergy)
-        smash_factor = False
-        if mom:
-            s_ops = float(mom.get('ops', 0) or 0)
-            r_ops = float(mom.get('rolling_ops', 0) or 0)
-            
-            opp_pitcher_norm = normalize_player_name(opp_pitcher)
-            opp_p_rep = next((p for p in (pitcher_reports or []) if normalize_player_name(p.get("pitcher", "")) == opp_pitcher_norm), None)
-            is_vuln_pitcher = False
-            if opp_p_rep:
-                is_vuln_pitcher = opp_p_rep.get('is_trap') or opp_p_rep.get('form_status') == 'COLD' or opp_p_rep.get('sharp_fade')
-
-            if s_ops >= 0.740 and r_ops >= s_ops * 0.95:
-                if (matchup_xwoba_npas >= 0.355 or matchup_radar_boost >= 1.05 or is_vuln_pitcher):
-                    smash_factor = True
+        # OMEGA v13.5 Hitter SMASH Calibration (Optimized via Grid Sweep)
+        smash_factor = (matchup_xwoba_npas >= 0.355 and NPAS_xwOBA >= 0.0)
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),

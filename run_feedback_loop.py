@@ -114,15 +114,15 @@ def run_feedback_loop(days=7):
                     team_xwoba = float(t.get('team_xwoba', 0.320) or 0.320)
                     opp_outs = float(t.get('opp_pitcher_outs', 18.0) or 18.0)
                     is_opp_debut = bool(t.get('is_opp_debut', False))
-                    is_bp_fatigued = (float(t.get('bullpen_fatigue', 0) or 0) >= 60) or bool(t.get('is_gassed', False)) or bool(t.get('is_fatigued', False))
+                    is_bp_fatigued = (float(t.get('bullpen_fatigue', 0) or 0) >= 55) or bool(t.get('is_gassed', False)) or bool(t.get('is_fatigued', False))
                     
-                    if team_xwoba >= 0.340:
+                    if team_xwoba >= 0.345:
                         is_sneaky = True
-                    elif opp_outs <= 14.5:
+                    elif opp_outs <= 13.5:
                         is_sneaky = True
                     elif is_opp_debut:
                         is_sneaky = True
-                    elif opp_outs <= 15.5 and is_bp_fatigued:
+                    elif opp_outs <= 14.5 and is_bp_fatigued:
                         is_sneaky = True
                 t['is_sneaky'] = is_sneaky
 
@@ -133,7 +133,7 @@ def run_feedback_loop(days=7):
                 if curr_itt >= 4.5 and opp_p:
                     from utils.matchup_physics import pitcher_physics_0_100
                     opp_pitcher_physics = pitcher_physics_0_100(opp_p)
-                    if opp_pitcher_physics >= 56.0:
+                    if opp_pitcher_physics >= 50.0:
                         opp_sp_trap = bool(opp_p.get('is_trap', False))
                         opp_sp_cold = (opp_p.get('form_status') == 'COLD')
                         opp_sp_fade = (float(opp_p.get('divergence', 0) or 0) <= -20.0)
@@ -143,7 +143,7 @@ def run_feedback_loop(days=7):
                             opp_sp_alpha = float(raw_alpha.get('final', 90.0) or 90.0)
                         elif raw_alpha is not None:
                             opp_sp_alpha = float(raw_alpha)
-                        if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 72:
+                        if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 75:
                             is_anti_chalk_smash = True
                 t['is_anti_chalk_smash'] = is_anti_chalk_smash
 
@@ -299,7 +299,14 @@ def run_feedback_loop(days=7):
                 projection_stats['top5_hitters']['hit'] += 1
 
         for h in h_audit:
-            if h.get('smash_factor') or h.get('is_smash'):
+            is_smash = h.get('smash_factor') or h.get('is_smash')
+            if is_smash is None:
+                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.355 and NPAS_xwOBA >= 0.0
+                matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
+                npas = float(h.get('NPAS_xwOBA', 0.0) or 0.0)
+                is_smash = (matchup_xwoba >= 0.355 and npas >= 0.0)
+            
+            if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1
                 if h.get('success_flag') == '[WIN]':
                     signal_stats['HITTER_SMASH']['hit'] += 1
