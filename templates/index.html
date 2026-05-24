@@ -3026,21 +3026,46 @@
                 if (posList) breakdown += posList + '\n';
                 if (warnList) breakdown += warnList;
                 
-                const rankText = dqiRankInfo ? `Rank #${dqiRankInfo.rank} of ${dqiRankInfo.total}` : '';
-                const ptsText = `+${posPts}/-${warnPts} pts`;
-                const subText = rankText ? `${rankText} · ${ptsText}` : ptsText;
+                let scoreBg, scoreBorderColor, scoreGlow, rankColor, ptsColor, dotColor;
+                if (dqiScore >= 75) {
+                    scoreBg = 'rgba(50, 215, 75, 0.12)';
+                    scoreBorderColor = 'rgba(50, 215, 75, 0.65)';
+                    scoreGlow = 'box-shadow: 0 0 10px rgba(50, 215, 75, 0.35), inset 0 0 4px rgba(50, 215, 75, 0.15);';
+                    rankColor = '#8bfb9d';
+                    ptsColor = '#c2ffd0';
+                    dotColor = 'rgba(50, 215, 75, 0.6)';
+                } else if (dqiScore >= 50) {
+                    scoreBg = 'rgba(255, 159, 10, 0.12)';
+                    scoreBorderColor = 'rgba(255, 159, 10, 0.65)';
+                    scoreGlow = 'box-shadow: 0 0 10px rgba(255, 159, 10, 0.35), inset 0 0 4px rgba(255, 159, 10, 0.15);';
+                    rankColor = '#ffd28c';
+                    ptsColor = '#ffe0b3';
+                    dotColor = 'rgba(255, 159, 10, 0.6)';
+                } else {
+                    scoreBg = 'rgba(255, 69, 58, 0.12)';
+                    scoreBorderColor = 'rgba(255, 69, 58, 0.65)';
+                    scoreGlow = 'box-shadow: 0 0 10px rgba(255, 69, 58, 0.35), inset 0 0 4px rgba(255, 69, 58, 0.15);';
+                    rankColor = '#ff9c96';
+                    ptsColor = '#ffd1cf';
+                    dotColor = 'rgba(255, 69, 58, 0.6)';
+                }
+
+                const rankHtml = dqiRankInfo ? `<span style="color:${rankColor}; font-weight:700;">Rank #${dqiRankInfo.rank}</span>` : '';
+                const ptsHtml = `<span style="color:${ptsColor}; font-weight:600;">+${posPts}/-${warnPts} pts</span>`;
+                const dotHtml = rankHtml ? `<span style="color:${dotColor}; margin:0 3px;">·</span>` : '';
+                const subHtml = rankHtml ? `${rankHtml}${dotHtml}${ptsHtml}` : ptsHtml;
                 
                 return `
-                    <div${tipAttrs(breakdown)} style="font-size:0.68rem; margin-top:5px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; width:fit-content;">
-                        <div style="color:${scoreColor}; font-weight:bold; font-size:0.7rem;">DQI ${dqiScore}% · ${dqiStatus}</div>
-                        <div style="color:var(--text-secondary); font-size:0.62rem; font-weight:500;">${subText}</div>
+                    <div${tipAttrs(breakdown)} style="font-size:0.68rem; margin-top:6px; display:flex; flex-direction:column; gap:3px; font-weight:600; text-align:left; background:${scoreBg}; border:1px solid ${scoreBorderColor}; padding:5px 8px; border-radius:6px; width:fit-content; ${scoreGlow}">
+                        <div style="color:${scoreColor}; font-weight:800; font-size:0.72rem; text-shadow: 0 0 8px ${scoreColor}; letter-spacing:0.02em;">DQI ${dqiScore}% · ${dqiStatus}</div>
+                        <div style="font-size:0.64rem; font-weight:600; margin-top:1px; color:#ffffff;">${subHtml}</div>
                     </div>`;
             }
             if (t.dqi_faded) {
                 const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
                 return `
-                    <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.68rem; margin-top:5px; padding:4px 6px; border-radius:4px; border:1px dashed rgba(255,255,255,0.15); opacity:0.7; width:fit-content;">
-                        <div style="color:${fadedColor}; font-weight:bold; font-size:0.7rem;">⏱ Faded (${t.dqi_faded_score}%)</div>
+                    <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.68rem; margin-top:5px; padding:5px 8px; border-radius:6px; border:1px dashed rgba(255,255,255,0.15); opacity:0.7; width:fit-content; background: rgba(255,255,255,0.02);">
+                        <div style="color:${fadedColor}; font-weight:bold; font-size:0.72rem; text-shadow: 0 0 4px ${fadedColor}40;">⏱ Faded (${t.dqi_faded_score}%)</div>
                     </div>`;
             }
             return '';
@@ -3054,14 +3079,16 @@
             const ttTxt = `${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`;
             const dqiHtml = buildTeamDqiBadgeHtml(t, dqiRankInfo);
             const tip = `${omegaTip('col_market_cluster')} ITT ${t.implied_total || '—'} · ML ${mlTxt} · TT ${ttTxt} · DIV ${t.divergence > 0 ? '+' : ''}${t.divergence}%`;
-            return `<td class="metric market-cluster"${tipAttrs(tip)}>
-                <div class="mc-line mc-itt"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
-                <div class="mc-line mc-moves">
-                    <span class="mc-label">ML</span><span class="${mlClass}">${mlTxt}</span>
-                    <span style="color:var(--text-secondary); margin:0 3px;">·</span>
-                    <span class="mc-label">TT</span><span class="${ttClass}">${ttTxt}</span>
+            return `<td class="metric market-cluster" style="overflow: visible;">
+                <div${tipAttrs(tip)}>
+                    <div class="mc-line mc-itt"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
+                    <div class="mc-line mc-moves">
+                        <span class="mc-label">ML</span><span class="${mlClass}">${mlTxt}</span>
+                        <span style="color:var(--text-secondary); margin:0 3px;">·</span>
+                        <span class="mc-label">TT</span><span class="${ttClass}">${ttTxt}</span>
+                    </div>
+                    <div class="mc-line mc-div"><span class="mc-label">DIV</span><strong class="${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong></div>
                 </div>
-                <div class="mc-line mc-div"><span class="mc-label">DIV</span><strong class="${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong></div>
                 ${dqiHtml}
             </td>`;
         }
@@ -4031,8 +4058,10 @@
                         ${simpleMetricCell(t.implied_total || '-', 'color: var(--accent-green); font-weight:600;', omegaTip('col_itt'))}
                         ${simpleMetricCell(`${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`, '', omegaTip('col_ml_move'), mlClass)}
                         ${simpleMetricCell(`${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`, '', omegaTip('col_tt_move'), ttClass)}
-                        <td class="metric ${divClass}" style="vertical-align: middle;"${tipAttrs(omegaTip('col_div'))}>
-                            <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>
+                        <td class="metric ${divClass}" style="vertical-align: middle; overflow: visible;">
+                            <div${tipAttrs(omegaTip('col_div'))} style="display: inline-block;">
+                                <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>
+                            </div>
                             ${divBadgeHtml}
                         </td>
                     `;
