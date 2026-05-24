@@ -163,6 +163,7 @@ def test_bullpen_exhausted_dampens_tough_sp_penalty():
         "bullpen_fatigue": 95,
         "is_gassed": True,
         "team_xwoba": 0.320,
+        "implied_total": 4.0,
     }
     opp_p = {
         "pitcher": "Tarik Skubal",
@@ -172,7 +173,7 @@ def test_bullpen_exhausted_dampens_tough_sp_penalty():
     conf, reasons = score_stack_confidence(t_gassed, [opp_p])
     # Base 50 + 14 (xwOBA) + 10 (gassed BP) - 9 (tough SP penalty cut in half) = 65
     assert conf == 65
-    assert any("bullpen is gassed" in r.lower() or "bullpen is exhausted" in r.lower() for r in reasons)
+    assert any("opposing pen exhausted" in r.lower() or "opponent bullpen is exhausted" in r.lower() for r in reasons)
     assert any("but opponent bullpen is exhausted" in r for r in reasons)
 
 
@@ -190,4 +191,124 @@ def test_pitcher_pitch_alignment_penalty():
     }
     conf, reasons = score_pitcher_confidence(p, [opp_t])
     assert any("Tough matchup: Opposing lineup has elite pitch-type alignment" in r for r in reasons)
+
+
+def test_asymptotic_compression_retains_hierarchy():
+    # If raw score is very high (e.g. 120 vs 98), compression should distinguish them
+    t_120 = {
+        "team": "Braves",
+        "team_xwoba": 0.360,
+        "implied_total": 5.2,
+        "is_gassed": True,
+        "opp_pitcher_outs": 14.0,  # 2 signals: gassed + outs -> Gassed Bullpen Attack
+        "dqi_status": "TRUST",
+        "lineup_status": "CONFIRMED",
+    }
+    # Reds: slightly weaker but still elite
+    t_110 = {
+        "team": "Reds",
+        "team_xwoba": 0.320,
+        "implied_total": 4.8,
+        "is_gassed": True,
+        "opp_pitcher_outs": 14.0,
+        "dqi_status": "TRUST",
+        "lineup_status": "CONFIRMED",
+    }
+    
+    conf_120, _ = score_stack_confidence(t_120, [])
+    conf_110, _ = score_stack_confidence(t_110, [])
+    
+    assert conf_120 > conf_110
+    assert conf_120 < 100
+    assert conf_110 < 100
+
+
+def test_implied_total_brackets():
+    # Elite stack with 5.2 implied total
+    t_high = {
+        "team": "A",
+        "team_xwoba": 0.320,
+        "implied_total": 5.2,
+    }
+    # Solid stack with 4.6 implied total
+    t_mid = {
+        "team": "B",
+        "team_xwoba": 0.320,
+        "implied_total": 4.6,
+    }
+    # Neutral stack with 4.1 implied total
+    t_neu = {
+        "team": "C",
+        "team_xwoba": 0.320,
+        "implied_total": 4.1,
+    }
+    # Caution stack with 3.6 implied total
+    t_low = {
+        "team": "D",
+        "team_xwoba": 0.320,
+        "implied_total": 3.6,
+    }
+    
+    c_high, _ = score_stack_confidence(t_high, [])
+    c_mid, _ = score_stack_confidence(t_mid, [])
+    c_neu, _ = score_stack_confidence(t_neu, [])
+    c_low, _ = score_stack_confidence(t_low, [])
+    
+    assert c_high > c_mid
+    assert c_mid > c_neu
+    assert c_neu > c_low
+
+
+def test_weather_and_umpire_calibrations():
+    # Stack with Orange weather (delay) and wind blowing in
+    t_weather_bad = {
+        "team": "A",
+        "team_xwoba": 0.320,
+        "weather_label": "🟠 52° / In 12mph",
+    }
+    # Stack with Red weather (postponement)
+    t_weather_worst = {
+        "team": "B",
+        "team_xwoba": 0.320,
+        "weather_label": "🔴 52° / Neutral 5mph",
+    }
+    # Stack with warm temp, wind out, and hitter-friendly umpire
+    t_weather_good = {
+        "team": "C",
+        "team_xwoba": 0.320,
+        "weather_label": "🟢 82° / Out 12mph",
+        "umpire_factor": 1.05,
+    }
+    
+    c_bad, r_bad = score_stack_confidence(t_weather_bad, [])
+    c_worst, r_worst = score_stack_confidence(t_weather_worst, [])
+    c_good, r_good = score_stack_confidence(t_weather_good, [])
+    
+    assert c_good > c_bad
+    assert c_bad > c_worst
+    assert any("WEATHER DELAY RISK" in r for r in r_bad)
+    assert any("WEATHER POSTPONEMENT RISK" in r for r in r_worst)
+    assert any("High temperature boost" in r for r in r_good)
+    assert any("Hitter-friendly wind blowing out" in r for r in r_good)
+    assert any("Hitter-friendly umpire assigned" in r for r in r_good)
+
+
+def test_matchup_boost_caps():
+    # SP with trap + cold + sharp fade (raw 14 + 12 + 6 = 32, should cap at 20)
+    t = {
+        "team": "A",
+        "team_xwoba": 0.320,
+        "opp_pitcher": "Test SP",
+    }
+    opp_p = {
+        "pitcher": "Test SP",
+        "is_trap": True,
+        "form_status": "COLD",
+        "sharp_fade": True,
+        "physics_score": 15,
+    }
+    
+    c, reasons = score_stack_confidence(t, [opp_p])
+    assert any("SP Matchup Boost capped at +20" in r for r in reasons)
+
 
