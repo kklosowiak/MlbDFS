@@ -95,6 +95,7 @@
         body.light-theme .pill-el-platoon { color: #1e8a38; background: rgba(30, 138, 56, 0.08); border-color: rgba(30, 138, 56, 0.25); }
         body.light-theme .pill-trap { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
         body.light-theme .pill-fade-risk { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
+        body.light-theme .pill-sneaky { color: #8e24aa; background: rgba(142, 36, 170, 0.08); border-color: rgba(142, 36, 170, 0.25); }
 
         /* Light Mode Sidebar Active Tab & General Navigation Styles */
         body.light-theme .nav-item.active {
@@ -849,6 +850,7 @@
         .pill-hot-run { background: rgba(255, 186, 8, 0.15); color: #ffba08; border: 1px solid rgba(255, 186, 8, 0.35); font-weight: 800; }
         .pill-el-platoon { background: rgba(48, 209, 88, 0.15); color: #30d158; border-color: rgba(48, 209, 88, 0.35); font-weight: 800; }
         .pill-fade-risk { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 69, 58, 0.35); font-weight: 800; }
+        .pill-sneaky { background: rgba(187, 134, 252, 0.15); color: #bb86fc; border: 1px solid rgba(187, 134, 252, 0.35); font-weight: 800; }
 
         
         .mini-icon {
@@ -2241,6 +2243,7 @@
             sharp: 'Heavy $: money% − tickets% ≥ 10 and strong handle. Use: confirms smart concentration without full SHARK pattern.',
             burst: 'Star-heavy lineup (power conc >= 0.355/0.370) and team xwOBA >= 0.300 against a targetable SP (<= 55 PHYS) or cooked pen. Lower concentration gate for elite xwOBA teams (>= 0.330).',
             anti_chalk_smash: '⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability (ace physics score >= 22 but flagged as trap, cold form, or sharp fade) provides massive contrarian GPP slate leverage.',
+            sneaky: '🛸 SNEAKY STACK: Low implied Vegas total (≤ 4.1 runs) facing volatile matchup variables (debut SP, bullpen game, short leash SP with fatigued bullpen, or elite team xwOBA in low total game). High GPP leverage.',
             pitch_alignment: '🎯 PITCH ALIGNMENT: 60%+ of today\'s starting hitters match the opposing SP\'s top 2 weapons above league average xwOBA.',
             cold_streak_msmi: '🥶 SLATE SLUMP (MSMI): Elevated team/hitter rolling strikeout rate surge (rolling K% delta >= 20%) or rolling OPS slump (rolling OPS delta <= -12%).',
             hot_run_msmi: '🔥 HOT RUN (MSMI): Team/hitter surging rolling OPS (rolling OPS delta >= 12%) and reduced strikeout rate (rolling K% delta <= -10%).',
@@ -2442,6 +2445,10 @@
 
             if (t.is_fade_risk) {
                 pills.push(signalPillHtml('⚠️ FADE RISK', { className: 'pill-fade-risk', tip: 'GPP Leverage Fade Risk: High implied total backed by public but faded by sharps.' }));
+            }
+
+            if (t.is_sneaky) {
+                pills.push(signalPillHtml('🛸 SNEAKY', { className: 'pill-sneaky', tipKey: 'sneaky' }));
             }
 
             if (t.is_burst) {
@@ -4697,6 +4704,7 @@
             if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
             if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
             if (t.is_fade_risk) badgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
+            if (t.is_sneaky) badgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
             if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
             if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
             if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
@@ -5051,6 +5059,7 @@
                 if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
                 if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
                 if (oppT.is_fade_risk) tBadgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
+                if (oppT.is_sneaky) tBadgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
                 if (oppT.is_paradox) tBadgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
                 if (oppT.trend === 'SURGING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
                 if (oppT.trend === 'FADING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';

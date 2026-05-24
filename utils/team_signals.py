@@ -95,3 +95,60 @@ def apply_team_burst(team, opp_pitcher_outs=18.0):
     team["burst_conc_gap"] = gap
     team["is_burst"] = is_burst
     return team
+
+
+def evaluate_sneaky_stack(
+    implied_total,
+    team_xwoba,
+    opp_pitcher_outs,
+    is_opp_debut,
+    opp_bullpen_score,
+    opp_bullpen_is_gassed=False,
+    opp_bullpen_is_fatigued=False,
+):
+    """
+    Evaluates whether a team represents a high-leverage contrarian stack (Sneaky Stack).
+    Vegas implied total must be <= 4.1.
+    Requires one of the volatile/high-leverage triggers.
+    """
+    itt = float(implied_total or 4.5)
+    if itt > 4.1:
+        return False
+
+    xw = float(team_xwoba or 0.320)
+    outs = float(opp_pitcher_outs or 18.0)
+    debut = bool(is_opp_debut)
+    pen_score = float(opp_bullpen_score or 0)
+    gassed = bool(opp_bullpen_is_gassed)
+    fatigued = bool(opp_bullpen_is_fatigued)
+
+    # Trigger 1: Elite Physics vs. Market Doubt
+    if xw >= 0.340:
+        return True
+    # Trigger 2: Opener / Bullpen Game
+    if outs <= 14.5:
+        return True
+    # Trigger 3: Debut Starting Pitcher
+    if debut:
+        return True
+    # Trigger 4: Short SP Leash + Gassed Bullpen
+    is_bp_fatigued = pen_score >= 60 or gassed or fatigued
+    if outs <= 15.5 and is_bp_fatigued:
+        return True
+
+    return False
+
+
+def apply_sneaky_stack(team, opp_pitcher_outs=18.0, is_opp_debut=False):
+    """Computes is_sneaky on a team dict (mutates in place)."""
+    team["is_sneaky"] = evaluate_sneaky_stack(
+        team.get("implied_total"),
+        team.get("team_xwoba"),
+        opp_pitcher_outs,
+        is_opp_debut,
+        team.get("bullpen_fatigue", 0),
+        team.get("is_gassed", False),
+        team.get("is_fatigued", False),
+    )
+    return team
+
