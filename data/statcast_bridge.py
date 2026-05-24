@@ -154,6 +154,14 @@ class StatcastBridge:
         splits_2025 = _fetch_bulk_splits(2025)
 
         # 3. Unified Merge
+        existing_cache = {}
+        if os.path.exists(self.cache_path):
+            try:
+                with open(self.cache_path, 'r', encoding='utf-8') as f:
+                    existing_cache = json.load(f)
+            except Exception:
+                pass
+
         cache = {}
         # Merge Hitters
         for name in set(list(h_seasonal.keys()) + list(h_rolling.keys())):
@@ -166,6 +174,10 @@ class StatcastBridge:
             
             p_splits_2026 = splits_2026.get(name, {})
             p_splits_2025 = splits_2025.get(name, {})
+            
+            # Preserve existing xwoba from cache
+            existing_profile = existing_cache.get(name, {})
+            existing_xwoba = existing_profile.get("xwoba")
             
             cache[name] = {
                 "type": "hitter",
@@ -188,6 +200,9 @@ class StatcastBridge:
                 "vs_right_pa_2025": p_splits_2025.get("vr", {}).get("pa", 0),
                 "timestamp": datetime.now().isoformat()
             }
+            if existing_xwoba is not None:
+                cache[name]["xwoba"] = existing_xwoba
+
             
         # Merge Pitchers
         for name in set(list(p_seasonal.keys()) + list(p_rolling.keys()) + list(p_seasonal_2025.keys())):
