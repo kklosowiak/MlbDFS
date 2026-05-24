@@ -2995,7 +2995,12 @@
                 const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
                 const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
                 const posList = (t.dqi_pos_factors || []).map(f => `<span style="color:#32d74b; font-size:0.6rem;">• ${f}</span>`).join('');
-                const warnList = (t.dqi_warn_factors || []).map(f => `<span style="color:#ff453a; font-size:0.6rem;">• ${f}</span>`).join('');
+                const warnList = (t.dqi_warn_factors || []).map(f => {
+                    const isBypass = f.includes("Bypass");
+                    const color = isBypass ? '#5ac8fa' : '#ff453a';
+                    const bullet = isBypass ? '⚡' : '•';
+                    return `<span style="color:${color}; font-size:0.6rem;">${bullet} ${f}</span>`;
+                }).join('');
                 return `
                     <div${tipAttrs(omegaTip('dqi'))} style="font-size:0.68rem; margin-top:5px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:3px 5px; border-radius:4px;">
                         <div style="color:${scoreColor}; font-weight:bold; font-size:0.7rem;">DQI ${dqiScore}% [${dqiStatus}]</div>
@@ -5041,7 +5046,13 @@
                         dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
                     }
                     if (oppT.dqi_warn_factors && oppT.dqi_warn_factors.length > 0) {
-                        dqiFactorStr += `<div style="color:#ff9f0a; font-size:0.72rem; margin-top:2px;">⚠️ ${oppT.dqi_warn_factors.join(' · ')}</div>`;
+                        const formattedWarns = oppT.dqi_warn_factors.map(f => {
+                            if (f.includes("Bypass")) {
+                                return `<span style="color:#5ac8fa;">⚡ ${f}</span>`;
+                            }
+                            return `<span>⚠️ ${f}</span>`;
+                        }).join(' · ');
+                        dqiFactorStr += `<div style="color:#ff9f0a; font-size:0.72rem; margin-top:2px;">${formattedWarns}</div>`;
                     }
                     dqiHtml = `<span style="color:${dqiColor}; font-weight:bold;">${dqiScore}% [${dqiStatus}]</span>${dqiFactorStr}`;
                 } else if (oppT.divergence >= 10) {

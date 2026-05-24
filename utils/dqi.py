@@ -58,6 +58,10 @@ def calculate_dqi(team, pitchers=None):
     pos_factors = []
     warn_factors = []
 
+    # OMEGA v13.9: Track if the team bypassed the divergence gate via Vegas total
+    if divergence < 10.0 and implied_total >= 5.0:
+        warn_factors.append(f"Divergence Gate Bypass (Div {round(divergence, 1)}% < 10% | ITT {round(implied_total, 2)} >= 5.0)")
+
     div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 15.0))
     div_pts = 5.0 + 15.0 * div_factor
     pos_pts += div_pts
