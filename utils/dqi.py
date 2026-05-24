@@ -150,6 +150,12 @@ def calculate_dqi(team, pitchers=None):
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
         
+    # OMEGA v13.7: Sharp Fade / Negative Divergence Cap
+    # A team being faded by sharps (negative divergence) cannot be trusted as a DQI TRUST stack.
+    if status == "TRUST" and divergence < 0:
+        status = "CAUTION"
+        warn_factors.append(f"Negative Divergence TRUST Cap (Div {round(divergence, 1)}% < 0)")
+        
     return dqi_score_int, status, pos_factors, warn_factors
 
 
