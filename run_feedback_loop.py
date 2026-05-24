@@ -31,9 +31,11 @@ def run_feedback_loop(days=7):
         'TEAM_STORM': {'fired': 0, 'hit': 0},
         'TEAM_SURGING': {'fired': 0, 'hit': 0},       # Success = Surging team scored 5+ runs
         'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},  # Success = Attacked team scored 5+ runs
+        'TEAM_SNEAKY_STACK': {'fired': 0, 'hit': 0},      # Success = Sneaky stack scored 5+ runs
         'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
         'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
         'STEAM_SUPPORT': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
+        'HITTER_SMASH': {'fired': 0, 'hit': 0},           # Success = Hitter got 2+ Hits or 1+ HR
     }
     
     projection_stats = {
@@ -45,9 +47,9 @@ def run_feedback_loop(days=7):
     what_we_missed = []
     analyzed_dates = []
 
-    # Iterate over the past N days (excluding today)
+    # Iterate over the past N days (including today)
     today = datetime.date.today()
-    for i in range(days, 0, -1):
+    for i in range(days, -1, -1):
         date_str = (today - timedelta(days=i)).strftime("%Y-%m-%d")
         
         # Look for lock snapshot first, then standard archive file
@@ -92,6 +94,26 @@ def run_feedback_loop(days=7):
                 
         # Signal Metrics
         for t in t_audit:
+            # Recalculate sneaky stack dynamically if missing from historical data
+            if 'is_sneaky' not in t or t['is_sneaky'] is None:
+                is_sneaky = False
+                implied_total = t.get('implied_total')
+                if implied_total is not None and float(implied_total) <= 4.1:
+                    team_xwoba = float(t.get('team_xwoba', 0.320) or 0.320)
+                    opp_outs = float(t.get('opp_pitcher_outs', 18.0) or 18.0)
+                    is_opp_debut = bool(t.get('is_opp_debut', False))
+                    is_bp_fatigued = (float(t.get('bullpen_fatigue', 0) or 0) >= 60) or bool(t.get('is_gassed', False)) or bool(t.get('is_fatigued', False))
+                    
+                    if team_xwoba >= 0.340:
+                        is_sneaky = True
+                    elif opp_outs <= 14.5:
+                        is_sneaky = True
+                    elif is_opp_debut:
+                        is_sneaky = True
+                    elif opp_outs <= 15.5 and is_bp_fatigued:
+                        is_sneaky = True
+                t['is_sneaky'] = is_sneaky
+
             runs = t.get('actual_runs', 0)
             is_hit_5 = runs >= 5
             div = float(t.get('divergence', 0) or 0)
@@ -116,6 +138,11 @@ def run_feedback_loop(days=7):
                 if runs >= 5:
                     signal_stats['GASSED_BULLPEN_ATTACK']['hit'] += 1
                     
+            if t.get('is_sneaky'):
+                signal_stats['TEAM_SNEAKY_STACK']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['TEAM_SNEAKY_STACK']['hit'] += 1
+
             # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
             dqi_score, dqi_status, _, _ = calculate_dqi(t, pitchers)
             if dqi_score is not None:
@@ -191,6 +218,12 @@ def run_feedback_loop(days=7):
             projection_stats['top5_hitters']['total'] += 1
             if h.get('success_flag') == '[WIN]':
                 projection_stats['top5_hitters']['hit'] += 1
+
+        for h in h_audit:
+            if h.get('smash_factor') or h.get('is_smash'):
+                signal_stats['HITTER_SMASH']['fired'] += 1
+                if h.get('success_flag') == '[WIN]':
+                    signal_stats['HITTER_SMASH']['hit'] += 1
 
     # Output learning loops and parameter suggestions
     recommendations = []
