@@ -1,42 +1,36 @@
 # OMEGA Future Roadmap: The "Physics 2.0" Layer
 
-These notes capture the proposed enhancements identified during the April 16th post-mortem. These are deferred tasks to be evaluated after observing the performance of the v6.1.1 "Hardening" update.
+These notes capture the proposed enhancements and long-term directions for the OMEGA model.
+
+## 🚀 Completed / Calibrated (May 23 Sprint)
+
+1. **Platoon Intelligence (The "Splits" Patch)**: Completed with Bayesian Hitter and Pitcher regressions, combined into a final `NPAS_xwOBA` platoon split difference.
+2. **Bullpen Skill Grades (The "Closer" Layer)**: Completed. Bullpen skill multipliers are applied to stack scores, and fatigue boosts are scaled dynamically based on bullpen talent tier (dampened for elite pens, amplified for weak pens).
+3. **Statcast "Smash Factor"**: Completed and calibrated using the standard `f2_matchup_synergy` formula (season OPS floor, rolling OPS momentum, and elite matchup xwOBA).
+4. **Remove/Adjust Pitcher Debut Boost**: Completed. The debut visibility boost was removed/neutralized for starting pitchers.
+5. **Cap Market Boosts for Weak-Hitting Stacks**: Completed. Market whale/shark multipliers were capped, and a 3.8 implied run total floor was added for DQI Trust ratings.
+
+---
 
 ## 🧠 High-Priority Research (Next Phase)
 
-### 1. Platoon Intelligence (The "Splits" Patch)
-*   **Concept**: Explicitly weight the handedness matchup between Hitter and Pitcher.
+### 1. Batting Order Weighting (The "Lineup" Pillar)
+*   **Concept**: Explicitly weight the lineup order when aggregating hitter physics and projections into the team stack score.
 *   **Logic**: 
-    - Opposite Hand (L vs R): +8% Alpha Boost.
-    - Same Hand (L vs L / R vs R): -5% Alpha Penalty (escalating for elite pitchers).
-*   **Objective**: Reduce the "Fried Trap" by penalizing same-handed matchups against elite starters.
+    - The top 4 batting positions capture over 60% of run-scoring upside.
+    - Apply decay multipliers (e.g., spots 1–4: `1.2x`, spots 8–9: `0.7x`) to hitter physics scores before sum/blend.
+*   **Objective**: Prevent teams with weak top-of-the-order hitters but deep benches from being artificially inflated.
 
-### 2. Bullpen Skill Grades (The "Closer" Layer)
-*   **Concept**: Move beyond "Fatigue" to "Quality."
-*   **Logic**: Tag team bullpens with a K-rate ranking.
-    - Elite Pen (e.g., CLE, MIL): -5% Hitter penalty.
-    - Weak Pen (e.g., COL, CWS): +10% Hitter boost.
-*   **Objective**: Capture the true value of stacks facing weak middle relief.
+### 2. GPP Ownership Projections Proxy (The "Leverage" Engine)
+*   **Concept**: Heuristically estimate player/team ownership to isolate the leverage gap.
+*   **Logic**: 
+    - Estimate team ownership using implied run totals, slate size, and starting pitcher matchup.
+    - Compute a `GPP Leverage Index` defined as `OMEGA_Score / Projected_Ownership`.
+*   **Objective**: Directly highlight low-owned, high-upside stacks in the cockpit dashboard.
 
-### 3. Statcast "Smash Factor"
-*   **Concept**: Integrate Exit Velocity (EV) and HardHit% into the Hitter Alpha.
-*   **Logic**: Replace or supplement the `ops` momentum with a `HardHit_delta`.
-*   **Objective**: Identify "Unlucky Stars" who are hitting rockets but haven't cashed yet.
-
-### 4. Remove/Adjust Pitcher Debut Boost
-*   **Concept**: Re-evaluate the flat 10% visibility boost currently given to pitchers without established K-lines (often debuts/callups).
-*   **Logic**: Reduce this boost to 0-5% or remove it entirely, as it overvalues unproven rookies against established starters.
-*   **Objective**: Prevent untested pitchers from artificially spiking to the top of the Pitcher Alpha board and burning DFS lineups.
-
-### 5. Cap Market Boosts for Weak-Hitting Stacks
-*   **Concept**: Prevent sharp/steam money from vaulting weak-hitting teams to the top of the Stack rankings.
-*   **Logic**: Introduce a threshold based on `team_xwoba`. If a team's underlying physics is below a certain mark, cap the amount of points they can gain from "Shark/Steam" market signals.
-*   **Objective**: Ensure that high conviction stacks have both sharp money *and* the actual offensive capability to produce runs.
+---
 
 ## 📈 Long-Term Integration
 *   **Automation**: Automatic "Snapshot velocity" detection (alerting if a line moves > 10 cents in 15 minutes).
 *   **Weather 2.0**: Humidity and Air Density (DA) impact on HR potential.
-*   **DraftKings Value Matrix (The "CSV Drop")**: Ingest local `dk_salaries.csv` files generated via manual export from the DraftKings contest page. Cross-reference salaries with the Hitters Alpha `xwOBA` matrix to isolate elite punts (sub-$3,500) and build a definitive Value per Dollar ($) dashboard to perfectly complement the Teams matrix.
-
----
-*Note: These changes are currently on hold to allow the 40/25 Market/Physics re-weighting (v6.1.1) to be validated on the April 17th slate.*
+*   **DraftKings Value Matrix (The "CSV Drop")**: Ingest local `dk_salaries.csv` files, cross-reference with Hitters Alpha, and isolate punts (sub-$3,500).

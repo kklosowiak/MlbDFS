@@ -7,6 +7,49 @@ class SharpsWeighting:
         self.ML_MOVE_MIN = 10  # 10 cents
         self.TT_MOVE_MIN = 0.3 # 0.3 runs
         self.PUBLIC_BET_MAX = 50 # 50%
+        self.bullpen_talent_grades = {
+            # Tier 1: Elite (Fatigue matters less, very tough bullpen)
+            'Cleveland Guardians': {'grade': 'Elite', 'multiplier': 0.90, 'fatigue_mod': 0.75},
+            'Milwaukee Brewers': {'grade': 'Elite', 'multiplier': 0.90, 'fatigue_mod': 0.75},
+            'San Diego Padres': {'grade': 'Elite', 'multiplier': 0.92, 'fatigue_mod': 0.80},
+            'Seattle Mariners': {'grade': 'Elite', 'multiplier': 0.92, 'fatigue_mod': 0.80},
+            
+            # Tier 2: Strong (Good depth, strong leverage arms)
+            'New York Yankees': {'grade': 'Strong', 'multiplier': 0.95, 'fatigue_mod': 0.85},
+            'Atlanta Braves': {'grade': 'Strong', 'multiplier': 0.95, 'fatigue_mod': 0.85},
+            'Los Angeles Dodgers': {'grade': 'Strong', 'multiplier': 0.95, 'fatigue_mod': 0.85},
+            'Philadelphia Phillies': {'grade': 'Strong', 'multiplier': 0.96, 'fatigue_mod': 0.88},
+            'Baltimore Orioles': {'grade': 'Strong', 'multiplier': 0.96, 'fatigue_mod': 0.88},
+            'Minnesota Twins': {'grade': 'Strong', 'multiplier': 0.97, 'fatigue_mod': 0.90},
+            'Houston Astros': {'grade': 'Strong', 'multiplier': 0.97, 'fatigue_mod': 0.90},
+            
+            # Tier 3: Average (Neutral/Standard)
+            'Chicago Cubs': {'grade': 'Average', 'multiplier': 1.00, 'fatigue_mod': 1.00},
+            'New York Mets': {'grade': 'Average', 'multiplier': 1.00, 'fatigue_mod': 1.00},
+            'Texas Rangers': {'grade': 'Average', 'multiplier': 1.00, 'fatigue_mod': 1.00},
+            'Boston Red Sox': {'grade': 'Average', 'multiplier': 1.00, 'fatigue_mod': 1.00},
+            'San Francisco Giants': {'grade': 'Average', 'multiplier': 1.00, 'fatigue_mod': 1.00},
+            'Tampa Bay Rays': {'grade': 'Average', 'multiplier': 1.02, 'fatigue_mod': 1.02},
+            'Arizona Diamondbacks': {'grade': 'Average', 'multiplier': 1.02, 'fatigue_mod': 1.02},
+            'Cincinnati Reds': {'grade': 'Average', 'multiplier': 1.03, 'fatigue_mod': 1.03},
+            'Kansas City Royals': {'grade': 'Average', 'multiplier': 1.03, 'fatigue_mod': 1.03},
+            'St. Louis Cardinals': {'grade': 'Average', 'multiplier': 1.04, 'fatigue_mod': 1.04},
+            'Pittsburgh Pirates': {'grade': 'Average', 'multiplier': 1.04, 'fatigue_mod': 1.04},
+            
+            # Tier 4: Below Average (Vulnerable depth, easily fatigued)
+            'Detroit Tigers': {'grade': 'Below Average', 'multiplier': 1.06, 'fatigue_mod': 1.10},
+            'Washington Nationals': {'grade': 'Below Average', 'multiplier': 1.07, 'fatigue_mod': 1.12},
+            'Toronto Blue Jays': {'grade': 'Below Average', 'multiplier': 1.08, 'fatigue_mod': 1.15},
+            'Los Angeles Angels': {'grade': 'Below Average', 'multiplier': 1.09, 'fatigue_mod': 1.15},
+            'Oakland Athletics': {'grade': 'Below Average', 'multiplier': 1.10, 'fatigue_mod': 1.18},
+            'Athletics': {'grade': 'Below Average', 'multiplier': 1.10, 'fatigue_mod': 1.18},
+            
+            # Tier 5: Weak (Extremely thin, fatigue is devastating)
+            'Colorado Rockies': {'grade': 'Weak', 'multiplier': 1.15, 'fatigue_mod': 1.25},
+            'Chicago White Sox': {'grade': 'Weak', 'multiplier': 1.15, 'fatigue_mod': 1.25},
+            'Miami Marlins': {'grade': 'Weak', 'multiplier': 1.15, 'fatigue_mod': 1.25}
+        }
+
         
     def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110):
         """
@@ -118,6 +161,15 @@ class SharpsWeighting:
         # Short-Leash Multiplier: If starter <= 15.5 outs, pressure on the tired bullpen is 1.5x
         if pitcher_outs <= 15.5:
             bullpen_boost *= 1.5
+            
+        # OMEGA v13.5: Bullpen Skill Granularity for Fatigue Boost (Overhauled)
+        skill_modifier = 1.0
+        if opponent:
+            opp_name = str(opponent).strip()
+            bp_grade = self.bullpen_talent_grades.get(opp_name)
+            if bp_grade:
+                skill_modifier = bp_grade['fatigue_mod']
+        bullpen_boost *= skill_modifier
         
         bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
 
@@ -206,24 +258,13 @@ class SharpsWeighting:
             raw_magnetism_capped = min(1.30, raw_magnetism)
             magnetism_boost = 1.0 + (raw_magnetism_capped - 1.0) * anchor_ratio
 
-        # OMEGA v9.8: Bullpen Skill Grades
+        # OMEGA v9.8: Bullpen Skill Grades (Overhauled)
         bullpen_skill_mult = 1.0
         if opponent:
             opp_name = str(opponent).strip()
-            elite_pens = {
-                'Cleveland Guardians', 'Milwaukee Brewers', 'New York Yankees', 
-                'Atlanta Braves', 'Los Angeles Dodgers', 'Seattle Mariners', 
-                'San Diego Padres', 'Philadelphia Phillies'
-            }
-            weak_pens = {
-                'Colorado Rockies', 'Chicago White Sox', 'Miami Marlins', 
-                'Oakland Athletics', 'Athletics', 'Washington Nationals', 
-                'Detroit Tigers', 'Los Angeles Angels', 'Toronto Blue Jays'
-            }
-            if opp_name in elite_pens:
-                bullpen_skill_mult = 0.95
-            elif opp_name in weak_pens:
-                bullpen_skill_mult = 1.10
+            bp_grade = self.bullpen_talent_grades.get(opp_name)
+            if bp_grade:
+                bullpen_skill_mult = bp_grade['multiplier']
 
         pre_trap_combined = (
             multiplier * div_multiplier * convergence_boost * magnetism_boost * bullpen_skill_mult

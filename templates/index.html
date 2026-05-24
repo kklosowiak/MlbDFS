@@ -2938,6 +2938,7 @@
         function trustStackHtml(entity) {
             const raw = entity.attack_conf;
             const conf = raw != null && raw !== undefined ? raw : '—';
+            const confDisplay = typeof conf === 'number' ? `${conf}%` : conf;
             const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
             const confCls = typeof conf === 'number' && conf >= 70 ? 'val-up'
                 : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
@@ -2953,7 +2954,7 @@
                 ? `${omegaTip('col_trust_stack')} ${reasons}`
                 : omegaTip('col_trust_stack');
             return `<td class="metric trust-stack"${tipAttrs(tip)}>
-                <div class="ts-conf ${confCls}">${conf}</div>
+                <div class="ts-conf ${confCls}">${confDisplay}</div>
                 ${deltaHtml}
             </td>`;
         }
@@ -5635,19 +5636,19 @@
         <button class="handbook-close-btn" onclick="closeHandbook()">CLOSE GUIDE ×</button>
         
         <div class="handbook-sidebar">
-            <h2 style="font-size:1.5rem;">🔱 Omega Knowledge Base</h2>
-            <p style="font-size: 0.72rem; color: var(--text-secondary); margin: -10px 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">GPP OPERATIONAL GUIDE</p>
+            <h2 style="font-size:1.5rem;">🔱 Omega Operational Handbook</h2>
+            <p style="font-size: 0.72rem; color: var(--text-secondary); margin: -10px 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Tactical GPP Intelligence</p>
             <hr style="border: 0; border-top: 1px solid var(--border); width: 100%; margin: 0 0 10px 0;">
             
             <ul class="handbook-toc">
-                <li class="handbook-toc-item active" onclick="scrollToHandbookSection('sec-philosophy')">1. The Battle of Liquidity & Physics</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-pitchers')">2. Starting Pitchers Matrix</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-hitters')">3. Hitters & Power Rankings</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-stacks')">4. Team Stacks & Bullpens</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-environment')">5. Ballpark Weather Matrix</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-definitions')">6. Cockpit Signals Glossary</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-playbook')">7. Our GPP Drafting Playbook</li>
-                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-contact')">8. Support & Contact</li>
+                <li class="handbook-toc-item active" onclick="scrollToHandbookSection('sec-philosophy')">1. The Physics vs. Liquidity War</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-pitchers')">2. Pitchers: Core & Pivots</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-hitters')">3. Hitters: The Smash Vector</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-stacks')">4. Stacks & Bullpen Fatigue</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-environment')">5. Micro-Environments & Officiating</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-definitions')">6. Cockpit Signal Dictionary</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-playbook')">7. The GPP Exploiter Playbook</li>
+                <li class="handbook-toc-item" onclick="scrollToHandbookSection('sec-contact')">8. Support & Diagnostics</li>
             </ul>
         </div>
         
@@ -5655,89 +5656,88 @@
             <!-- SECTION 1 -->
             <div id="sec-philosophy" style="margin-bottom: 60px; padding-top: 20px;">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>1.</span> The Battle of Liquidity & Physics
+                    <span>1.</span> The Physics vs. Liquidity War
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    Every single day in Major League Baseball, two massive forces collide. On one side are millions of casual, retail sports bettors and DFS players, submitting rosters based on last night’s highlights, name recognition, and stagnant, outdated seasonal box scores. On the other side is a network of secretive, multi-million-dollar sharp betting syndicates, using advanced proprietary algorithms to move lines and dump massive amounts of liquidity into the market.
+                    Every single night, the MLB arena plays host to a quiet financial war. On one side are millions of retail DFS players and casual bettors, building their rosters based on name recognition, yesterday's box scores, and surface-level team records. On the other side is a network of secretive, quantitative betting syndicates moving millions of dollars on line movements and arbitrage margins. 
                 </p>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    <strong>OMEGA v9.0 is your personal intelligence terminal in this battle.</strong> It does not trust simple seasonal averages, and it does not follow the crowd. Instead, OMEGA acts as a high-frequency probability filter. By constantly monitoring the global sports betting markets and cross-referencing them against the cold, hard physics of the playing field—such as real-time exit velocities, barometric ballpark pressure, and umpire strike zones—OMEGA isolates the exact mathematical gaps where the public is walking into a trap and the smart money is preparing to cash in.
+                    <strong>OMEGA is your personal intelligence terminal in this war.</strong> We do not guess, and we do not chase headlines. Instead, OMEGA acts as a high-fidelity probability filter. By constantly monitoring global betting market liquidity (line moves, money-vs-ticket gaps) and cross-referencing it against the immutable physics of the diamond (Statcast exit velocities, air density, pitcher strikeout momentum, and bullpen exhaustion), OMEGA exposes the exact gaps where the public is walking into a trap and the sharps are preparing to cash in.
                 </p>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    This handbook is your plain-English roadmap to reading the terminal, understanding the signals, and constructing tournament-winning GPP lineups that have a systematic, mathematical edge over the field.
+                    Whether you are an absolute beginner entering a $1 contest or an advanced DFS pro building 150 lineups for a major tournament, this handbook translates raw terminal signals into a systematic, mathematical edge over the field.
                 </p>
             </div>
             
             <!-- SECTION 2 -->
             <div id="sec-pitchers" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>2.</span> The Starting Pitchers Matrix
+                    <span>2.</span> Pitchers: Core & Pivots
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    This is your pitching anchor terminal. It helps you identify high-floor "Core" pitchers to build around and high-leverage "Pivots" to separate your lineups from the crowd.
+                    Rostering starting pitching is about anchoring your slate. In DFS, you need a balance of safety (floor) and strikeout upside (ceiling). OMEGA grades pitchers on a scale from 0 to 110+:
                 </p>
                 <ul style="font-size: 1.0rem; line-height: 1.8; color: rgba(255,255,255,0.85); padding-left: 20px;">
-                    <li><strong style="color:var(--accent-blue);">OMEGA (Final Score):</strong> The definitive quantitative score of the pitcher (on a scale of 0 to 110+). A score of <strong>100+ is elite (blue)</strong>, and <strong>85+ is high-quality (green)</strong>.</li>
-                    <li><strong style="color:var(--accent-blue);">PHY (Physics Score):</strong> Represents the pitcher's raw physical talent and stuff, combining their pitching command, strikeout rates, and velocity trends into a simple 0-25 score. **Higher is better.**</li>
-                    <li><strong style="color:var(--accent-blue);">MKT (Market Score):</strong> The betting market's confidence in this pitcher. It tracks line movement, odds shifts, and sharp betting volume. A **high Market score (purple)** means the smartest money in the world is heavily backing this pitcher.</li>
-                    <li><strong style="color:var(--accent-blue);">K-PROP & OUTS:</strong> The live betting lines for their Strikeouts and total Outs. The parenthesis show the odds (e.g., `+114` means a $100 bet wins $114). Use these columns to quickly find which pitchers are projected for deep, high-strikeout outings.</li>
+                    <li><strong style="color:var(--accent-blue);">OMEGA Score ($\ge 100$ is Elite, $\ge 85$ is Strong):</strong> The absolute baseline projection of a pitcher's slate quality. It incorporates vegas win probability, strikeout rates, and runs allowed projection.</li>
+                    <li><strong style="color:var(--accent-blue);">PHY (Physics Score, 0-40 Scale):</strong> Represents the pitcher's raw physical stuff. It measures recent strikeout rate (K/9), swing-and-miss ability (CSW%), and expected ERA (SIERA). **If a pitcher has a high PHY but a low salary, they are a premier value.**</li>
+                    <li><strong style="color:var(--accent-blue);">MKT (Market Score, 0-20 Scale):</strong> The betting market's confidence in this pitcher. It tracks line movement, odds shifts, and sharp betting volume. A **high Market score** means the smartest money in the world is heavily backing this pitcher.</li>
+                    <li><strong style="color:var(--accent-blue);">Sharp Money Filtering (Shark & Whale):</strong> We de-weight starting pitcher sharp multipliers to prioritize individual pitching talent (like strikeouts) over general team moneyline swings. Look for pitchers who combine a high **PHY** score with solid market steam.</li>
                 </ul>
             </div>
             
             <!-- SECTION 3 -->
             <div id="sec-hitters" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>3.</span> Hitters & Power Rankings
+                    <span>3.</span> Hitters: The Smash Vector
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    This matrix ranks individual batters, exposing elite players who are in premier matchups to hit home runs or accumulate extra-base hits.
+                    Evaluating individual batters requires pairing recent plate appearance momentum with dynamic pitcher matchups. 
                 </p>
                 <ul style="font-size: 1.0rem; line-height: 1.8; color: rgba(255,255,255,0.85); padding-left: 20px;">
-                    <li><strong style="color:var(--accent-blue);">OMEGA (Hitter Score):</strong> The raw projected power potential of the batter on today's slate. Ranks individual hitters from highest power upside to lowest.</li>
-                    <li><strong style="color:var(--accent-blue);">PLAYER & vs PITCHER:</strong> The batter's name, team, and the opposing starting pitcher they are facing.</li>
-                    <li><strong style="color:var(--accent-blue);">HR-PROP & BASES:</strong> The live Vegas prop pricing for their Home Run odds (e.g., `+450` means a $100 bet pays $450 if they hit a home run) and total bases line. Sorting by this column lets you instantly identify the highest-upside power hitters on the slate.</li>
+                    <li><strong style="color:var(--accent-blue);">Matchup xwOBA:</strong> Regressed dynamically using Bayesian principles to ensure that hitters facing weak pitchers get a proportional boost, while adjusting for small seasonal samples.</li>
+                    <li><strong style="color:var(--accent-blue);">NPAS Platoon Advantage:</strong> The Net Platoon Advantage Score adjusts hitter and pitcher platoon splits. Look for the **ELITE PLATOON** label on player modals, signaling that the hitter's split perfectly exploits the pitcher's weakest splits.</li>
+                    <li><strong style="color:var(--accent-blue);">💥 SMASH Factor (Verified 23.7% Hit Rate):</strong> To prevent chasing misleading "hot streaks," a hitter only gets flagged with a Smash badge if they have both **positive rolling momentum** (OPS above baseline) and are in an **elite matchup** (high xwOBA or facing a highly vulnerable pitcher). Roster these hitters to target home runs.</li>
                 </ul>
             </div>
             
             <!-- SECTION 4 -->
             <div id="sec-stacks" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>4.</span> Team Stacks & Bullpens
+                    <span>4.</span> Stacks & Bullpen Fatigue
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    In large-field DFS tournaments, "stacking" (pairing 3 to 5 hitters from the same team) is the most successful strategy to win first place. This dashboard ranks the best offensive team stacks on the slate.
+                    Stacking (rostering 3 to 5 players from the same offense) is the single most effective way to win a major DFS tournament because baseball runs are highly correlated.
                 </p>
                 <ul style="font-size: 1.0rem; line-height: 1.8; color: rgba(255,255,255,0.85); padding-left: 20px;">
-                    <li><strong style="color:var(--accent-blue);">OMEGA (Stack Score):</strong> The overall rating of the team's offense today. A score above **95 is an elite GPP stack**.</li>
-                    <li><strong style="color:var(--accent-blue);">ITT (Implied Team Total):</strong> The most important basic stat in DFS. This is the **Vegas Implied Run Total** (e.g., `5.28` means Vegas expects this team to score 5.28 runs). Stacking teams with an ITT above **4.8** is a premier strategy.</li>
-                    <li><strong style="color:var(--accent-blue);">ML MOVE & TT MOVE (Moneyline & Team Total Movement):</strong> Shows how betting lines have shifted since opening. For Team Totals (TT), a positive move (e.g., `+0.5`) is positive steam. For Moneyline (ML) in American odds, a negative shift (e.g., `-15`) indicates the price became more expensive/favored, meaning heavy money is flooding in to back them (styled green as 'val-up' in your cockpit).</li>
-                    <li><strong style="color:var(--accent-blue);">DIVERGENCE:</strong> Shows the "Money Gap." If this is **highly positive (e.g., +26%)**, it means smart, high-roller bettors are putting far more money on this team than the general public. This is a massive buy signal.</li>
+                    <li><strong style="color:var(--accent-blue);">ITT (Implied Team Total):</strong> The Vegas projected run total. Stacking teams with an ITT above **4.8** represents the chalk (popular) path to runs, but can be highly owned.</li>
+                    <li><strong style="color:var(--accent-blue);">Divergence (The Money Gap):</strong> The difference between the percentage of money bet on a team vs. the percentage of tickets (public bets) written. If a team has a **+20% Divergence**, it means sharp syndicates are putting massive capital behind this offense.</li>
+                    <li><strong style="color:var(--accent-blue);">Granular Bullpen Talent Index:</strong> Bullpens are graded into 5 tiers (Elite, Strong, Average, Below Average, Weak) with custom multipliers and fatigue rates. Elite bullpens (like Cleveland or Milwaukee) absorb fatigue cleanly, whereas Weak bullpens (like Colorado) crumble rapidly under heavy pitch counts.</li>
+                    <li><strong style="color:var(--accent-blue);">🔥 GASSED Bullpen (GPP Attack):</strong> Triggered when a weak or fatigued bullpen ($\ge 65$ fatigue) sits behind a short-leash starting pitcher (projected outs $\le 15.5$). This adds a direct **+5.0 Stack Score premium** because the offense is guaranteed multiple high-leverage late innings against tired relief arms.</li>
                 </ul>
             </div>
             
             <!-- SECTION 5 -->
             <div id="sec-environment" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>5.</span> Ballpark Weather Matrix
+                    <span>5.</span> Micro-Environments & Officiating
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    Weather alters the physics of a baseball. Hot air makes the ball fly farther; cold air dense-packs the atmosphere; wind blowing out can turn routine flyouts into home runs. This panel monitors these environmental anomalies.
+                    Weather dictate pitch physics. Cold air is dense and kills fly balls; hot air allows balls to carry. OMEGA reads local weather feeds dynamically and applies environmental modifiers (excluding dome/indoor stadium models):
                 </p>
                 <ul style="font-size: 1.0rem; line-height: 1.8; color: rgba(255,255,255,0.85); padding-left: 20px;">
-                    <li><strong style="color:var(--accent-blue);">STATUS:</strong> Color-coded safety status. `☀️ CLEAR` (Safe), `🏟️ DOME` (Indoor, zero weather impact), `⛅ DELAY RISK` (High danger for starting pitchers who might get warm and then get pulled), or `🌧️ POSTPONE HAZARD` (Severe weather risk; avoid!).</li>
-                    <li><strong style="color:var(--accent-blue);">TEMP & HUMIDITY:</strong> Displays the temperature and moisture. **High heat (85°F+) and high humidity** are massive boosts for hitters, causing the ball to carry significantly farther.</li>
-                    <li><strong style="color:var(--accent-blue);">WIND SPEED & DIRECTION:</strong> The velocity and direction of the wind (e.g., `12mph Out to Left`). Wind blowing **OUT** at 8mph+ is a major hitter accelerator. Wind blowing **IN** at 8mph+ is a major pitcher boost.</li>
-                    <li><strong style="color:var(--accent-blue);">PARK & UMPIRE:</strong> Evaluates stadium altitude and the strike-zone tightness of the assigned home-plate umpire. A "Tight" strike-zone umpire walks more batters, heavily boosting offenses.</li>
+                    <li><strong style="color:var(--accent-blue);">Thermal Density:</strong> Outdoor temperatures $\ge 80^\circ$F add a baseline boost to hitter confidence scores and penalize pitchers. Temperatures $< 60^\circ$F do the opposite, dense-packing the air to favor pitchers.</li>
+                    <li><strong style="color:var(--accent-blue);">Wind Velocity Vectors:</strong> Wind blowing OUT to center $\ge 10$ MPH adds a significant boost to stack scores and hitter power ratings. Wind blowing IN at similar speeds acts as a heavy dampener.</li>
+                    <li><strong style="color:var(--accent-blue);">Umpire Strike Zones:</strong> OMEGA references the officiating umpire's historic strike zone. A hitter-friendly umpire (tight strike zone) walks more batters and forces pitchers to throw down the middle, heavily boosting stack upside.</li>
                 </ul>
             </div>
             
             <!-- SECTION 6 -->
             <div id="sec-definitions" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>6.</span> Cockpit Signals Glossary
+                    <span>6.</span> Cockpit Signal Dictionary
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    Here is your direct cockpit cheat sheet to identify high-conviction plays on any slate:
+                    Reference these dynamic badges on the dashboard cockpit to quickly spot leverage:
                 </p>
                 <table style="margin-top: 20px; font-size: 0.9rem;">
                     <thead>
@@ -5755,43 +5755,53 @@
                         </tr>
                         <tr>
                             <td><span class="badge pill-whale">🐳 WHALE</span></td>
-                            <td>The biggest high-rollers in the world (the "Whales") are dumping massive financial volume on this play.</td>
-                            <td>Elite GPP tournament plays. These indicate massive smart-money backing.</td>
+                            <td>High-rolling betting syndicates are placing massive financial volume on this team.</td>
+                            <td>Indicates significant smart-money backing. Great correlation indicator.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-storm">⚡ STORM</span></td>
-                            <td>Offense playing in ideal hot/humid/wind-out launch environments.</td>
-                            <td>Prioritize these hitters and stacks. The ball will be flying out of the park.</td>
+                            <td>Ideal warm/humid weather or high wind-out speeds.</td>
+                            <td>Strong hitter boost. The ball carries significantly further in this environment.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-steam">💨 STEAM</span></td>
-                            <td>Extreme, late-breaking money is flooding in on this line just hours before lock.</td>
-                            <td>Pay close attention to these late shifts. They indicate late-breaking sharp news.</td>
+                            <td>Late-breaking money is pouring in on this line just hours before lock.</td>
+                            <td>Indicates critical, late-breaking information is backing this team.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-sharp">⚡ BURST</span></td>
-                            <td>A player who has massive statistical upside but is projected for extremely low ownership in GPP tournaments.</td>
-                            <td>The ultimate tournament secret. Pair a BURST player with a popular stack to make your lineup unique.</td>
+                            <td>A team displaying a sudden positive spike in their rolling momentum and physics metrics.</td>
+                            <td>Roster as a sneaky value to unlock late-game offensive runs.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-sharp" style="background:linear-gradient(135deg,#a855f7,#7c3aed); color:#fff; border-color:#7c3aed;">🛸 SNEAKY</span></td>
+                            <td>A contrarian stack with a low implied total ($\le 4.1$ runs) that meets key physics triggers (e.g. debut pitcher, gassed bullpen, or physics gap).</td>
+                            <td>**Ultimate Tournament Pivot.** Rostering sneaky stacks isolates highly volatile teams at near-zero ownership.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-trap" style="background:rgba(255,69,58,0.15); border-color:#ff453a; color:#ff453a;">🚨 TRAP</span></td>
-                            <td>A highly popular public play that has severe underlying warning signs.</td>
-                            <td>FADE. Let the rest of the field roster this player. When they fail, you leapfrog them.</td>
+                            <td>A popular public play that displays severe underlying red flags (such as sharp money fading them).</td>
+                            <td>**FADE.** Roster alternative options and let the field walk into the trap.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-trap" style="background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border-color:#dc2626;">⚠️ FADE RISK</span></td>
+                            <td>A popular, high-implied-total team that is showing massive negative divergence (sharps are heavily avoiding).</td>
+                            <td>**Tournament Fade.** High public ownership but low sharp conviction means this team is prime to fail.</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-paradox">⚠️ PARADOX</span></td>
                             <td>A contradiction in the data (e.g., an elite starting pitcher facing an elite, highly rated offense).</td>
-                            <td>Avoid rostering both sides. Choose one side of the matchup to commit to.</td>
+                            <td>Avoid rostering both. Commit to one side of the matchup (pitcher or stack).</td>
                         </tr>
                         <tr>
                             <td><span class="badge pill-lowconf" style="background:rgba(255,159,10,0.15); border-color:#ff9f0a; color:#ff9f0a;">🌋 HAZARD</span></td>
-                            <td>High probability of negative outcomes, such as severe weather or delay risks.</td>
-                            <td>Highly risky. Avoid starting pitchers in these games.</td>
+                            <td>High probability of negative outcomes, such as weather delays or elite hitters facing the pitcher.</td>
+                            <td>High risk. Avoid starting pitchers in this game.</td>
                         </tr>
                         <tr>
-                            <td><span class="badge pill-gassed">🔥 EXHAUSTED</span></td>
-                            <td>The opposing team's bullpen relief pitchers are completely fatigued.</td>
-                            <td>Massive BUY signal for the opposing stack. Feasting on tired relief arms leads to late-inning run surges.</td>
+                            <td><span class="badge pill-gassed">🔥 GASSED BP</span></td>
+                            <td>Opposing starting pitcher has a short leash and the relief bullpen is exhausted.</td>
+                            <td>**High ceiling buy signal.** The stack will face tired relievers in the middle-to-late innings.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -5800,30 +5810,36 @@
             <!-- SECTION 7 -->
             <div id="sec-playbook" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>7.</span> Our GPP Drafting Playbook
+                    <span>7.</span> The GPP Exploiter Playbook
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    To win first place in a high-stakes GPP tournament, you cannot just play the "best" players. You must play the **smartest** players:
+                    To win first place in a high-stakes GPP tournament, you cannot just play the popular plays. You must play the **smartest** plays. Here are three step-by-step strategies to win:
                 </p>
                 
                 <div class="quant-card" style="border-left: 4px solid var(--accent-blue);">
-                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 1: The "Trap-Pivot" Sweep</h4>
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 1: The Leverage Fade Pivot</h4>
                     <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0;">
-                        Scan the Starting Pitchers matrix and locate a highly owned pitcher flagged as a `🚨 TRAP`. Do not roster that pitcher. Instead, pivot to a pitcher in the same price range who has high Physics (`PHY`) and zero warning signals, and directly stack the opposing hitters. If the trap pitcher fails, your lineup vaults straight to the top.
+                        1. Scan the Team Stack Matrix and locate teams with high implied run totals ($5.0+$) flagged as a `⚠️ FADE RISK`. 
+                        <br>2. Do not stack this team. Pivot completely away.
+                        <br>3. Stack the opposing team's offense or pivot to a high-physics stack in the same price range with a positive `Divergence` or `🛸 SNEAKY` badge. If the popular team fails, you vault past a massive portion of the field.
                     </p>
                 </div>
                 
                 <div class="quant-card" style="border-left: 4px solid var(--accent-green);">
-                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 2: The Bullpen Exhaustion Exploit</h4>
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 2: The Gassed Bullpen Exploit</h4>
                     <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0;">
-                        Look for a team stack whose opponent is flagged with `🔥 EXHAUSTED` bullpen fatigue. Even if the starting pitcher is decent, roster a 4-man or 5-man stack against them. The moment the starter exits the game, the opposing offense will face fatigued relief arms, netting you massive, late-inning run surges.
+                        1. Look for offenses flagged with the `🔥 GASSED BP` badge on the dashboard.
+                        <br>2. Even if the starting pitcher is decent, roster a 4-man or 5-man stack from this team.
+                        <br>3. When the starter exits the game, the offense will feast on tired, lower-tier relief arms, scoring rapid, late-inning runs that generate massive tournament separation.
                     </p>
                 </div>
                 
                 <div class="quant-card" style="border-left: 4px solid var(--accent-purple);">
-                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 3: The Whale Moneyline Sync</h4>
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 3: The Sneary Stack contrarian Hunt</h4>
                     <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0;">
-                        Cross-reference the Team Stack Matrix with the Pitchers Matrix. Locate a team that has a highly positive Divergence (e.g., +26% money gap) and a `🐳 WHALE` signal, but their starting pitcher is flagged as a `🚨 TRAP`. Do not play the starting pitcher, but roster the team's offense (stack them) to exploit a high-scoring game while avoiding the low-upside chalk pitcher!
+                        1. Locate low-owned teams flagged as `🛸 SNEAKY` with low implied totals.
+                        <br>2. Check their matchup details to verify if they are facing a debuting starter, a bullpen opener, or an exhausted bullpen behind a short leash.
+                        <br>3. Stack these hitters. Because the public ignores them due to low Vegas lines, their ownership is near-zero. If their physics override fires, your lineup secures a massive contrarian leverage advantage.
                     </p>
                 </div>
             </div>
@@ -5831,13 +5847,13 @@
             <!-- SECTION 8 -->
             <div id="sec-contact" style="margin-bottom: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
                 <h3 style="font-size: 1.8rem; font-weight: 800; margin-top: 0; letter-spacing: -0.03em; color: var(--accent-blue); display: flex; align-items: center; gap: 10px;">
-                    <span>8.</span> Support & Contact
+                    <span>8.</span> Support & Diagnostics
                 </h3>
                 <p style="font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.85);">
-                    If you encounter any issues, need billing assistance, or want to report a bug with the Omega Engine terminal, please reach out to our team at:
+                    If you encounter any issues, need data diagnostics, or want to report a calculation anomaly in the OMEGA Engine, please reach out to our analytical support team at:
                 </p>
                 <div style="background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.3); padding: 20px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; color: #fff; text-align: center; margin-top: 20px; box-shadow: 0 0 15px rgba(10, 132, 255, 0.1);">
-                    <a href="mailto:XYZ@gmail.com" style="color: #00f2fe; text-decoration: none;">XYZ@gmail.com</a>
+                    <a href="mailto:konrad.klosowiak@gmail.com" style="color: #00f2fe; text-decoration: none;">konrad.klosowiak@gmail.com</a>
                 </div>
             </div>
         </div>

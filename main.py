@@ -1187,6 +1187,16 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         for hr in h_reports:
             hr['platoon_label'] = calibrated_labels.get(hr['name'], hr['platoon_label'])
 
+        # OMEGA v13.5.1: Calculate hitter confidence using the calibrated splits label
+        from utils.hitter_confidence import score_hitter_confidence
+        for hr in h_reports:
+            opp_pitcher_norm = normalize_player_name(hr['opp_pitcher'])
+            opp_pitcher_row = next((pr for pr in (pitcher_reports or []) if normalize_player_name(pr.get('pitcher', '')) == opp_pitcher_norm), None)
+            team_data = next((tr for tr in team_reports if tr['team'] == hr['team']), None)
+            conf, reasons = score_hitter_confidence(hr, team_data, opp_pitcher_row)
+            hr['attack_conf'] = conf
+            hr['attack_reasons'] = reasons
+
     h_reports.sort(key=lambda x: x['player_score'], reverse=True)
     
     # Deduplication

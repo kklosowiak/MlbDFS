@@ -1,22 +1,23 @@
 """Attack confidence for individual hitters (0-100 decision layer)."""
-
+import re
 
 def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
     conf = 50
     reasons = []
 
+    # 1. Individual Matchup xwOBA (Physics Component)
     xwoba = float(h.get("matchup_xwoba", 0.330) or 0.330)
     if xwoba >= 0.370:
         conf += 18
-        reasons.append(f"Elite matchup xwOBA (.{str(xwoba)[2:5]}).")
+        reasons.append(f"Elite matchup xwOBA ({xwoba:.3f}).")
     elif xwoba >= 0.345:
         conf += 10
-        reasons.append(f"Strong matchup xwOBA (.{str(xwoba)[2:5]}).")
+        reasons.append(f"Strong matchup xwOBA ({xwoba:.3f}).")
     elif xwoba < 0.300:
         conf -= 12
-        reasons.append(f"Weak matchup xwOBA (.{str(xwoba)[2:5]}).")
+        reasons.append(f"Weak matchup xwOBA ({xwoba:.3f}).")
 
-    # Dynamic Platoon Splits via NPAS (Net Platoon Advantage Score)
+    # 2. Dynamic Platoon Splits via NPAS (Net Platoon Advantage Score)
     platoon_label = h.get("platoon_label", "")
     if platoon_label and "ELITE" in platoon_label.upper():
         conf += 12
@@ -29,11 +30,12 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         plt = float(h.get("platoon_multiplier", 1.0) or 1.0)
         if plt >= 1.08:
             conf += 12
-            reasons.append(f"Platoon edge vs {h.get('pitch_hand', 'P')}HP ({h.get('platoon_label', 'split')}).")
+            reasons.append(f"Platoon edge vs {h.get('pitch_hand', 'P')}HP.")
         elif plt <= 0.92:
             conf -= 10
             reasons.append(f"Platoon fade vs {h.get('pitch_hand', 'P')}HP.")
 
+    # 3. Prop Betting Targets & Juice
     if h.get("runs_target") or h.get("rbis_target"):
         conf += 6
         reasons.append("Runs/RBI prop TARGET — stack-correlated juice.")
@@ -48,13 +50,14 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf += 4
         reasons.append("Prop JUICE — Over favored vs Under on hits/TB.")
 
-    # New Multi-Factor Slate Momentum Index (MSMI) for hitters
+    # 4. Multi-Factor Slate Momentum Index (MSMI) & Streaks
     if h.get("is_cold_streak_msmi") or h.get("is_cold_streak"):
         conf -= 12
         reasons.append("Hitter Slate Slump (MSMI): Elevated rolling K% surge & OPS slumping.")
     elif h.get("is_hot_run_msmi") or h.get("is_hot"):
         conf += 10
         reasons.append("Hitter Hot Run (MSMI): Rolling OPS surge and reduced strikeout rate.")
+    
     if h.get("is_speed_target"):
         conf += 5
         reasons.append("Speed prop target.")
@@ -63,6 +66,7 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf += 8
         reasons.append("Smash factor: rolling OPS above season baseline.")
 
+    # 5. Team Stack & Market Sentiment Context
     if team_data:
         if team_data.get("stack_score", 0) >= 105:
             conf += 8
@@ -71,13 +75,55 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
             conf += 6
             reasons.append("Team has sharp market steam/shark backing.")
 
-    if opp_pitcher and opp_pitcher.get("is_trap"):
-        conf += 10
-        reasons.append(f"Opposing SP trap ({opp_pitcher.get('pitcher', 'SP')}).")
+    # 6. Opposing Starting Pitcher Form & Quality
+    if opp_pitcher:
+        if opp_pitcher.get("is_trap"):
+            conf += 10
+            reasons.append(f"Opposing SP trap ({opp_pitcher.get('pitcher', 'SP')}).")
+        
+        if opp_pitcher.get("form_status") == "COLD":
+            conf += 10
+            reasons.append(f"Attacking cold opposing pitcher ({opp_pitcher.get('pitcher', 'SP')}).")
+            
+        opp_sp_phys = opp_pitcher.get("physics_score", 0) or 0
+        if opp_sp_phys >= 18:
+            conf -= 12
+            reasons.append("Opposing SP has strong underlying physics.")
+        elif opp_sp_phys < 10 and not opp_pitcher.get("is_trap"):
+            conf += 12
+            reasons.append("Attacking pitcher with weak underlying physics.")
 
-    if opp_pitcher and (opp_pitcher.get("physics_score", 0) or 0) >= 18:
-        conf -= 12
-        reasons.append("Opposing SP has strong underlying physics.")
+    # 7. Opposing Bullpen Fatigue
+    opp_bf = h.get("bullpen_fatigue", 0) or (team_data.get("bullpen_fatigue", 0) if team_data else 0)
+    is_gassed = team_data.get("is_gassed", False) if team_data else False
+    if opp_bf >= 85 or is_gassed:
+        conf += 8
+        reasons.append(f"Attacking gassed opposing bullpen (Fatigue: {opp_bf}%).")
+    elif opp_bf >= 65:
+        conf += 4
+        reasons.append(f"Attacking fatigued opposing bullpen (Fatigue: {opp_bf}%).")
+
+    # 8. Ballpark Weather (Temperature & Wind Vectors)
+    weather_lbl = (team_data.get("weather_label") if team_data else None) or h.get("weather_label") or ""
+    weather_lbl_upper = weather_lbl.upper()
+    if "DOME" not in weather_lbl_upper and "INDOOR" not in weather_lbl_upper:
+        temp_match = re.search(r'(\d+)°', weather_lbl)
+        if temp_match:
+            temp = int(temp_match.group(1))
+            if temp >= 80:
+                conf += 5
+                reasons.append(f"Hitter-friendly weather: warm temperature ({temp}°F).")
+            elif temp < 60:
+                conf -= 6
+                reasons.append(f"Pitcher-friendly weather: cold temperature ({temp}°F).")
+        
+        if "OUT TO" in weather_lbl_upper:
+            wind_speed_match = re.search(r'(\d+)\s*MPH', weather_lbl_upper)
+            if wind_speed_match:
+                speed = int(wind_speed_match.group(1))
+                if speed >= 10:
+                    conf += 6
+                    reasons.append(f"Hitter-friendly wind: blowing out to center at {speed} mph.")
 
     if not reasons:
         reasons.append("Neutral hitter profile on this slate.")

@@ -477,6 +477,11 @@
             border: 1px solid rgba(255, 159, 10, 0.3);
             color: var(--accent-orange);
         }
+        .hitter-score-pill.low {
+            background: rgba(255, 69, 58, 0.12);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            color: var(--accent-red);
+        }
         .hitter-price {
             font-size: 0.75rem;
             font-weight: 700;
@@ -762,6 +767,11 @@
             background: rgba(255, 149, 0, 0.08);
             border-color: rgba(255, 149, 0, 0.25);
             color: #d97300;
+        }
+        html.light-theme .hitter-score-pill.low {
+            background: rgba(255, 59, 48, 0.08);
+            border-color: rgba(255, 59, 48, 0.25);
+            color: #d32f2f;
         }
 
         /* Unified Matchup Chips styles */
@@ -1221,7 +1231,7 @@
                     ? ` (stack context ${Number(hitProfile.stack_adjusted_score).toFixed(1)})` : '';
                 document.getElementById('hm-score').innerText = solo + stackAdj;
                 
-                document.getElementById('hm-conf').innerText = hitProfile.market_score != null ? Math.round(hitProfile.market_score * 2) + '%' : '—';
+                document.getElementById('hm-conf').innerText = hitProfile.attack_conf != null ? Math.round(hitProfile.attack_conf) + '%' : '—';
                 document.getElementById('hm-phys').innerText = hitProfile.physics_score != null ? hitProfile.physics_score.toFixed(1) : '—';
                 document.getElementById('hm-mkt').innerText = hitProfile.market_score != null ? hitProfile.market_score.toFixed(1) : '—';
                 document.getElementById('hm-xwoba').innerText = hitProfile.matchup_xwoba != null ? hitProfile.matchup_xwoba.toFixed(3) : '0.330';
@@ -1404,10 +1414,15 @@
                             // Map default positions, or extract from key details
                             position = hitProfile.bat_side === 'B' ? 'S' : hitProfile.bat_side;
 
-                            // Dynamic Leverage Pill
+                            // Dynamic Leverage Pill & CONF tag (OMEGA Cockpit Overhaul)
                             const score = Math.round(hitProfile.player_score);
-                            const pillClass = score >= 55 ? 'elite' : 'mid';
-                            leveragePill = `<span class="hitter-score-pill ${pillClass}">Ω ${score}</span>`;
+                            const conf = hitProfile.attack_conf != null ? Math.round(hitProfile.attack_conf) : 50;
+                            const scoreClass = score >= 55 ? 'elite' : 'mid';
+                            const confClass = conf >= 70 ? 'elite' : (conf >= 40 ? 'mid' : 'low');
+                            leveragePill = `
+                                <span class="hitter-score-pill ${scoreClass}" style="margin-right: 4px;" title="Omega Score">Ω ${score}</span>
+                                <span class="hitter-score-pill ${confClass}" title="Attack Confidence">C ${conf}%</span>
+                            `;
 
                             // Leverage/Juiced prop emojis next to hitter names
                             if (hitProfile.is_juiced_target) emojiStr += ' 🎯';
