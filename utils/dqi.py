@@ -31,7 +31,10 @@ def calculate_dqi(team, pitchers=None):
     tt_move = team.get('tt_move', 0.0) or 0.0
     ml_move = team.get('ml_move', 0.0) or 0.0
     is_storm = team.get('is_storm', False)
-    implied_total = team.get('implied_total', 0.0) or 0.0
+    try:
+        implied_total = float(team.get('implied_total', 0.0) or 0.0)
+    except (TypeError, ValueError):
+        implied_total = 0.0
     team_xwoba = team.get('team_xwoba', 0.0) or 0.0
     power_conc = team.get('power_concentration', 0.0) or 0.0
     total_signal = team.get('total_signal', '') or ''
@@ -135,7 +138,13 @@ def calculate_dqi(team, pitchers=None):
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))
     dqi_score_int = int(round(dqi_score))
+    
+    # Implied run total floor (3.8 runs) for GPP Trust
     status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
+    if status == "TRUST" and implied_total < 3.8:
+        status = "CAUTION"
+        warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
+        
     return dqi_score_int, status, pos_factors, warn_factors
 
 
