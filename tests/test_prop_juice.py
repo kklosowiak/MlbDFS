@@ -27,7 +27,7 @@ def test_pitcher_strict_target_requires_physics_and_k():
 
 
 def test_hitter_target_needs_xwoba():
-    tgt, juice, gap = evaluate_hitter_prop_juice(-150, -110, matchup_xwoba=0.355)
+    tgt, juice, gap = evaluate_hitter_prop_juice(-150, -110, matchup_xwoba=0.360)
     assert juice and tgt and gap >= 15
     tgt2, juice2, _ = evaluate_hitter_prop_juice(-150, -110, matchup_xwoba=0.310)
     assert juice2

@@ -276,9 +276,17 @@
         /* Sidebar Logo & Menu */
         .logo-group {
             display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            margin-bottom: 40px;
+        }
+
+        .logo-main {
+            display: flex;
             align-items: center;
-            gap: 0px;
-            margin-bottom: 45px;
+            gap: 4px;
+            line-height: 1;
         }
 
         .logo-sym {
@@ -289,13 +297,24 @@
         }
 
         .logo-txt {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: -0.03em;
             background: var(--logo-txt-grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: background 0.3s ease;
+            line-height: 1;
+        }
+
+        .logo-sub {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            padding-left: 4px;
+            line-height: 1;
         }
 
         .nav-list {
@@ -665,10 +684,10 @@
         .signal-pill {
             display: inline-flex;
             align-items: center;
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 6px;
+            padding: 3px 7px;
+            border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             background: rgba(255, 255, 255, 0.08);
@@ -708,7 +727,7 @@
             line-height: 1.45;
             text-transform: none;
             letter-spacing: normal;
-            white-space: normal;
+            white-space: pre-line;
             text-align: left;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
             z-index: 2500;
@@ -1558,9 +1577,11 @@
         <div>
             <a href="/" style="text-decoration: none;">
                 <div class="logo-group">
-                    <span class="logo-sym">Ω</span>
-                    <span class="logo-txt" style="margin-left: 2px;">MEGA</span>
-                    <span class="logo-txt" style="margin-left: 10px;">ENGINE</span>
+                    <div class="logo-main">
+                        <span class="logo-sym">Ω</span>
+                        <span class="logo-txt">MEGA</span>
+                    </div>
+                    <span class="logo-sub">ENGINE</span>
                 </div>
             </a>
             
@@ -2882,7 +2903,7 @@
             const tip = omegaTip('col_phy', `(Lineup xwOBA ${xw})`);
             return `<td class="metric" style="font-variant-numeric:tabular-nums;"${tipAttrs(tip)}>
                 <div style="${phyStyle}">${phy}</div>
-                <div style="font-size:0.68rem; font-weight:600; margin-top:2px; ${xwStyle}">${xw}</div>
+                <div style="font-size:0.76rem; font-weight:bold; margin-top:2px; ${xwStyle}">${xw}</div>
             </td>`;
         }
 
@@ -2989,41 +3010,49 @@
             </td>`;
         }
 
-        function buildTeamDqiBadgeHtml(t) {
+        function buildTeamDqiBadgeHtml(t, dqiRankInfo = null) {
             if (t.dqi_score !== undefined && t.dqi_score !== null) {
                 const dqiScore = t.dqi_score;
                 const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
                 const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
-                const posList = (t.dqi_pos_factors || []).map(f => `<span style="color:#32d74b; font-size:0.6rem;">• ${f}</span>`).join('');
-                const warnList = (t.dqi_warn_factors || []).map(f => {
-                    const isBypass = f.includes("Bypass");
-                    const color = isBypass ? '#5ac8fa' : '#ff453a';
-                    const bullet = isBypass ? '⚡' : '•';
-                    return `<span style="color:${color}; font-size:0.6rem;">${bullet} ${f}</span>`;
-                }).join('');
+                
+                const posPts = t.dqi_pos_pts != null ? Math.round(t.dqi_pos_pts) : 0;
+                const warnPts = t.dqi_warn_pts != null ? Math.round(t.dqi_warn_pts) : 0;
+                
+                const posList = (t.dqi_pos_factors || []).map(f => `+ ${f}`).join('\n');
+                const warnList = (t.dqi_warn_factors || []).map(f => `- ${f}`).join('\n');
+                
+                let breakdown = `DQI ${dqiScore}% Breakdown:\n`;
+                if (posList) breakdown += posList + '\n';
+                if (warnList) breakdown += warnList;
+                
+                const rankText = dqiRankInfo ? `Rank #${dqiRankInfo.rank} of ${dqiRankInfo.total}` : '';
+                const ptsText = `+${posPts}/-${warnPts} pts`;
+                const subText = rankText ? `${rankText} · ${ptsText}` : ptsText;
+                
                 return `
-                    <div${tipAttrs(omegaTip('dqi'))} style="font-size:0.68rem; margin-top:5px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:3px 5px; border-radius:4px;">
-                        <div style="color:${scoreColor}; font-weight:bold; font-size:0.7rem;">DQI ${dqiScore}% [${dqiStatus}]</div>
-                        ${posList}${warnList}
+                    <div${tipAttrs(breakdown)} style="font-size:0.68rem; margin-top:5px; display:flex; flex-direction:column; gap:2px; font-weight:600; text-align:left; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:4px 6px; border-radius:4px; width:fit-content;">
+                        <div style="color:${scoreColor}; font-weight:bold; font-size:0.7rem;">DQI ${dqiScore}% · ${dqiStatus}</div>
+                        <div style="color:var(--text-secondary); font-size:0.62rem; font-weight:500;">${subText}</div>
                     </div>`;
             }
             if (t.dqi_faded) {
                 const fadedColor = t.dqi_faded_status === 'TRUST' ? '#32d74b' : (t.dqi_faded_status === 'CAUTION' ? '#ff9f0a' : '#ff453a');
                 return `
-                    <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.68rem; margin-top:5px; padding:3px 5px; border-radius:4px; border:1px dashed rgba(255,255,255,0.15); opacity:0.7;">
-                        <div style="color:${fadedColor}; font-weight:bold;">⏱ DQI faded (${t.dqi_faded_score}%)</div>
+                    <div${tipAttrs(omegaTip('dqi_faded'))} style="font-size:0.68rem; margin-top:5px; padding:4px 6px; border-radius:4px; border:1px dashed rgba(255,255,255,0.15); opacity:0.7; width:fit-content;">
+                        <div style="color:${fadedColor}; font-weight:bold; font-size:0.7rem;">⏱ Faded (${t.dqi_faded_score}%)</div>
                     </div>`;
             }
             return '';
         }
 
-        function teamMarketClusterCell(t) {
+        function teamMarketClusterCell(t, dqiRankInfo = null) {
             const mlClass = t.ml_move < 0 ? 'val-up' : (t.ml_move > 0 ? 'val-down' : 'val-even');
             const ttClass = t.tt_move > 0 ? 'val-up' : (t.tt_move < 0 ? 'val-down' : 'val-even');
             const divClass = t.divergence > 0 ? 'val-up' : (t.divergence < 0 ? 'val-down' : 'val-even');
             const mlTxt = `${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`;
             const ttTxt = `${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`;
-            const dqiHtml = buildTeamDqiBadgeHtml(t);
+            const dqiHtml = buildTeamDqiBadgeHtml(t, dqiRankInfo);
             const tip = `${omegaTip('col_market_cluster')} ITT ${t.implied_total || '—'} · ML ${mlTxt} · TT ${ttTxt} · DIV ${t.divergence > 0 ? '+' : ''}${t.divergence}%`;
             return `<td class="metric market-cluster"${tipAttrs(tip)}>
                 <div class="mc-line mc-itt"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
@@ -3206,6 +3235,20 @@
             return key ? filterState.active.has(key) : true;
         }
 
+        function saveUncheckedMatchups(container) {
+            const currentUnchecked = [];
+            container.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                if (!cb.checked) {
+                    currentUnchecked.push(cb.getAttribute('data-game-key'));
+                }
+            });
+            try {
+                localStorage.setItem('omega_unchecked_matchups', JSON.stringify(currentUnchecked));
+            } catch (e) {
+                console.error("Failed to save unchecked matchups to localStorage:", e);
+            }
+        }
+
         function populateMatchupFilter(data) {
             const container = document.getElementById('matchups-checkbox-container');
             const panel = document.getElementById('matchup-filter-panel');
@@ -3239,12 +3282,24 @@
                 return;
             }
 
-            const uncheckedMatchupKeys = new Set();
-            container.querySelectorAll('.matchup-checkbox').forEach(cb => {
-                if (!cb.checked) {
-                    uncheckedMatchupKeys.add(cb.getAttribute('data-game-key'));
+            let uncheckedMatchupKeys = new Set();
+            try {
+                const stored = localStorage.getItem('omega_unchecked_matchups');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        uncheckedMatchupKeys = new Set(parsed);
+                    }
+                } else {
+                    container.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                        if (!cb.checked) {
+                            uncheckedMatchupKeys.add(cb.getAttribute('data-game-key'));
+                        }
+                    });
                 }
-            });
+            } catch (e) {
+                console.error("Failed to load unchecked matchups from localStorage:", e);
+            }
 
             container.innerHTML = '';
             panel.style.display = 'block';
@@ -3274,6 +3329,7 @@
                 
                 input.onchange = () => {
                     syncMatchupChipStyle(input);
+                    saveUncheckedMatchups(container);
                     filterData();
                 };
                 syncMatchupChipStyle(input);
@@ -3287,7 +3343,11 @@
             });
 
             if (container.querySelectorAll('.matchup-checkbox:checked').length === 0) {
-                container.querySelectorAll('.matchup-checkbox').forEach(cb => { cb.checked = true; });
+                container.querySelectorAll('.matchup-checkbox').forEach(cb => { 
+                    cb.checked = true; 
+                    syncMatchupChipStyle(cb);
+                });
+                saveUncheckedMatchups(container);
             }
         }
 
@@ -3734,6 +3794,17 @@
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
             const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
+            
+            // Build DQI Rank Map
+            const activeDqiTeams = teams.filter(t => t.dqi_score !== undefined && t.dqi_score !== null);
+            activeDqiTeams.sort((a, b) => (b.dqi_score || 0) - (a.dqi_score || 0));
+            const dqiRanks = {};
+            activeDqiTeams.forEach((t, index) => {
+                dqiRanks[t.team] = {
+                    rank: index + 1,
+                    total: activeDqiTeams.length
+                };
+            });
 
             // 1. Render Pitchers
             const pBody = document.getElementById('pitchers-body');
@@ -3930,7 +4001,7 @@
                     }
                 }
 
-                const divBadgeHtml = buildTeamDqiBadgeHtml(t);
+                const divBadgeHtml = buildTeamDqiBadgeHtml(t, dqiRanks[t.team]);
 
                 const tRank = tRanks[t.team];
                 const teamSignals = `
@@ -3946,7 +4017,7 @@
                         ${teamPhyCell(t)}
                         ${teamSignals}
                         ${teamIdentity}
-                        ${teamMarketClusterCell(t)}
+                        ${teamMarketClusterCell(t, dqiRanks[t.team])}
                     `;
                 } else {
                     tr.innerHTML = `
@@ -4876,32 +4947,32 @@
                 verdictDesc = 'Situational leverage—consider for multi-entry builds.';
             }
 
-            // --- Card 2: Ownership Signal ---
+            // --- Card 2: Roster Leverage & Tactic ---
             let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
             if (isTrap && stackScore >= 100) {
                 ownLabel = 'CHALK TRAP';
                 ownColor = '#ff453a';
                 ownBg = 'rgba(255,69,58,0.12)';
                 ownIcon = '🚨';
-                ownDesc = 'Heavy public backing with minimal underlying physics.';
+                ownDesc = 'AI Analyst: Heavy public popularity with under-the-hood risk. Fading or playing underweight is highly recommended to capture slate leverage.';
             } else if (isShark || isWhale || (stackScore < 98 && physScore >= 90)) {
                 ownLabel = 'CONTRARIAN';
                 ownColor = '#32d74b';
                 ownBg = 'rgba(50,215,75,0.12)';
                 ownIcon = '📊';
-                ownDesc = 'Sharp or Whale backed low-ownership GPP leverage.';
+                ownDesc = 'AI Analyst: Highly efficient physical profile backed by smart-money divergence. This is a primary tournament target. Play as a full 4 or 5-man stack for maximum leverage.';
             } else if (stackScore >= 105 && !isTrap) {
                 ownLabel = 'CHALK PLAY';
                 ownColor = '#ff9f0a';
                 ownBg = 'rgba(255,159,10,0.12)';
                 ownIcon = '👥';
-                ownDesc = 'Popular play—pair with contrarian value pivots.';
+                ownDesc = 'AI Analyst: Popular stack with elite physical backing. Use this stack for a high-floor base, but differentiate your lineup by pairing them with contrarian value pivots at other positions.';
             } else {
-                ownLabel = 'CONTRARIAN';
-                ownColor = '#32d74b';
-                ownBg = 'rgba(50,215,75,0.12)';
-                ownIcon = '📊';
-                ownDesc = 'Low ownership profile. Offers clean leverage.';
+                ownLabel = 'CONTRARIAN VALUE';
+                ownColor = '#0a84ff';
+                ownBg = 'rgba(10,132,255,0.12)';
+                ownIcon = '💎';
+                ownDesc = 'AI Analyst: Under-the-radar cheap stack option. Lower-tier ownership but strong matchup mechanics. Excellent secondary stack to gain salary relief and tournament leverage.';
             }
 
             // --- Card 3: Leverage Grade ---
@@ -4943,9 +5014,9 @@
                         <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
                     </div>
-                    <!-- Ownership Signal -->
+                    <!-- Roster Leverage & Tactic -->
                     <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Ownership Signal</div>
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
                         <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
                     </div>
@@ -4955,8 +5026,31 @@
                         <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
                     </div>
-                    <!-- Ump Intel (v10.1) -->
-                    ${ (() => { const ul = t.umpire_label || 'Neutral'; const uc = ul === 'Hitter-Friendly' ? '#32d74b' : (ul === 'Pitcher-Friendly' ? '#ff453a' : '#8e8e93'); const ubg = ul === 'Hitter-Friendly' ? 'rgba(50,215,75,0.1)' : (ul === 'Pitcher-Friendly' ? 'rgba(255,69,58,0.1)' : 'rgba(100,100,100,0.1)'); const uicon = ul === 'Hitter-Friendly' ? '🟢' : (ul === 'Pitcher-Friendly' ? '🔴' : '⚪'); return `<div style="background:${ubg}; border:1px solid ${uc}40; border-radius:12px; padding:16px;"><div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire</div><div style="font-size:1rem; font-weight:900; color:${uc}; line-height:1; margin-bottom:4px;">${uicon} ${ul}</div><div style="font-size:0.72rem; color:rgba(255,255,255,0.55);">${t.umpire_name || 'TBD'}</div></div>`; })() }
+                    <!-- Ump Intel -->
+                    ${ (() => {
+                        const factor = t.umpire_factor != null ? parseFloat(t.umpire_factor) : 1.0;
+                        let ul = 'Neutral';
+                        let uc = '#8e8e93';
+                        let ubg = 'rgba(100,100,100,0.1)';
+                        let uicon = '⚪';
+                        if (factor < 0.98) {
+                            ul = 'Hitter-Friendly';
+                            uc = '#32d74b';
+                            ubg = 'rgba(50,215,75,0.1)';
+                            uicon = '🟢';
+                        } else if (factor > 1.02) {
+                            ul = 'Pitcher-Friendly';
+                            uc = '#ff453a';
+                            ubg = 'rgba(255,69,58,0.1)';
+                            uicon = '🔴';
+                        }
+                        const factorStr = factor.toFixed(2);
+                        return `<div style="background:${ubg}; border:1px solid ${uc}40; border-radius:12px; padding:16px;">
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire</div>
+                            <div style="font-size:1.0rem; font-weight:900; color:${uc}; line-height:1; margin-bottom:4px;">${uicon} ${ul} (${factorStr})</div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.55);">${t.umpire_name || 'TBD'}</div>
+                        </div>`;
+                    })() }
                 </div>
                 ${warningHTML}
                 ${t.is_cold_streak ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(0,180,216,0.08); border:1px dashed #00b4d8; border-radius:10px; font-size:0.75rem; color:#00b4d8;"><strong>🥶 COLD STREAK:</strong> This lineup is striking out ${t.rolling_k_delta}% more than their season average recently. Consider reducing stack size.</div>` : ''}
@@ -5186,32 +5280,32 @@
                 verdictDesc = 'Situational leverage—use in select lineups.';
             }
 
-            // --- Card 2: Ownership Signal ---
+            // --- Card 2: Roster Leverage & Tactic ---
             let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
             if (isTrap && alphaScore >= 80) {
                 ownLabel = 'CHALK TRAP';
                 ownColor = '#ff453a';
                 ownBg = 'rgba(255,69,58,0.12)';
                 ownIcon = '🚨';
-                ownDesc = 'High projected ownership with hidden risk.';
+                ownDesc = 'AI Analyst: Heavy public popularity with under-the-hood risk. Fading or playing underweight is highly recommended to capture slate leverage.';
             } else if (isShark || isWhale || (alphaScore < 75 && physScore >= 16)) {
                 ownLabel = 'CONTRARIAN';
                 ownColor = '#32d74b';
                 ownBg = 'rgba(50,215,75,0.12)';
                 ownIcon = '📊';
-                ownDesc = 'Sharp-backed low-ownership GPP leverage.';
+                ownDesc = 'AI Analyst: Excellent underlying metrics matched with sharp/whale divergence. Premium low-ownership tournament play with significant leverage upside.';
             } else if (alphaScore >= 85 && !isTrap) {
                 ownLabel = 'CHALK PLAY';
                 ownColor = '#ff9f0a';
                 ownBg = 'rgba(255,159,10,0.12)';
                 ownIcon = '👥';
-                ownDesc = 'Popular play—pair with low-owned lineup builds.';
+                ownDesc = 'AI Analyst: Popular high-end pitching option with elite metrics. Best used for high-floor stability; ensure differentiation through contrarian batters.';
             } else {
-                ownLabel = 'CONTRARIAN';
-                ownColor = '#32d74b';
-                ownBg = 'rgba(50,215,75,0.12)';
-                ownIcon = '📊';
-                ownDesc = 'Low projected ownership. GPP separation.';
+                ownLabel = 'CONTRARIAN VALUE';
+                ownColor = '#0a84ff';
+                ownBg = 'rgba(10,132,255,0.12)';
+                ownIcon = '💎';
+                ownDesc = 'AI Analyst: Under-the-radar cheap pitching option. Strong leverage play to unlock salary cap flexibility while maintaining respectable projection floor.';
             }
 
             // --- Card 3: Leverage Grade ---
@@ -5236,9 +5330,9 @@
                         <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
                     </div>
-                    <!-- Ownership Signal -->
+                    <!-- Roster Leverage & Tactic -->
                     <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Ownership Signal</div>
+                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
                         <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
                         <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
                     </div>

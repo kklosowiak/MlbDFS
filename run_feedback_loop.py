@@ -12,7 +12,7 @@ from datetime import timedelta
 from utils.audit_engine import AuditEngine
 from utils.dqi import calculate_dqi
 from config import config
-from utils.team_signals import evaluate_sneaky_stack
+from utils.team_signals import evaluate_sneaky_stack, apply_signal_exclusions
 
 def run_feedback_loop(days=7):
     print("\n" + "="*60)
@@ -199,6 +199,8 @@ def run_feedback_loop(days=7):
                     is_cold_streak_msmi = True
                 t['is_cold_streak_msmi'] = is_cold_streak_msmi
 
+            apply_signal_exclusions(t)
+
             runs = t.get('actual_runs', 0)
             is_hit_5 = runs >= 5
             div = float(t.get('divergence', 0) or 0)
@@ -356,10 +358,10 @@ def run_feedback_loop(days=7):
         for h in h_audit:
             is_smash = h.get('smash_factor') or h.get('is_smash')
             if is_smash is None:
-                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.365 and NPAS_xwOBA >= 0.0
+                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.370 and NPAS_xwOBA >= 0.0
                 matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
                 npas = float(h.get('NPAS_xwOBA', 0.0) or 0.0)
-                is_smash = (matchup_xwoba >= 0.365 and npas >= 0.0)
+                is_smash = (matchup_xwoba >= 0.370 and npas >= 0.0)
             
             if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1

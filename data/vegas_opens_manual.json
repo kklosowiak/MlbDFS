@@ -1,13 +1,41 @@
 {
   "slate_date": "2026-05-23",
   "source": "FantasyLabs terminal.fantasylabs.com/vegas (auto)",
-  "fetched_at": "2026-05-23T15:26:16.168612Z",
+  "fetched_at": "2026-05-24T02:40:37.576655Z",
   "games": [
     {
       "away": "St. Louis Cardinals",
       "home": "Cincinnati Reds",
-      "away_opening_ml": -108,
-      "home_opening_ml": -108,
+      "away_opening_ml": -100,
+      "home_opening_ml": -120,
+      "opening_total": 9.5
+    },
+    {
+      "away": "Los Angeles Dodgers",
+      "home": "Milwaukee Brewers",
+      "away_opening_ml": -125,
+      "home_opening_ml": 105,
+      "opening_total": 8.5
+    },
+    {
+      "away": "Athletics",
+      "home": "San Diego Padres",
+      "away_opening_ml": -111,
+      "home_opening_ml": -111,
+      "opening_total": 7.5
+    },
+    {
+      "away": "Texas Rangers",
+      "home": "Los Angeles Angels",
+      "away_opening_ml": -120,
+      "home_opening_ml": -100,
+      "opening_total": 8.5
+    },
+    {
+      "away": "Colorado Rockies",
+      "home": "Arizona Diamondbacks",
+      "away_opening_ml": 125,
+      "home_opening_ml": -152,
       "opening_total": 9.5
     },
     {
@@ -39,13 +67,6 @@
       "opening_total": 8.5
     },
     {
-      "away": "Detroit Tigers",
-      "home": "Baltimore Orioles",
-      "away_opening_ml": -105,
-      "home_opening_ml": -116,
-      "opening_total": 8.5
-    },
-    {
       "away": "New York Mets",
       "home": "Miami Marlins",
       "away_opening_ml": -116,
@@ -72,34 +93,6 @@
       "away_opening_ml": -105,
       "home_opening_ml": -116,
       "opening_total": 8.5
-    },
-    {
-      "away": "Los Angeles Dodgers",
-      "home": "Milwaukee Brewers",
-      "away_opening_ml": -125,
-      "home_opening_ml": 105,
-      "opening_total": 8.5
-    },
-    {
-      "away": "Athletics",
-      "home": "San Diego Padres",
-      "away_opening_ml": -111,
-      "home_opening_ml": -111,
-      "opening_total": 7.5
-    },
-    {
-      "away": "Texas Rangers",
-      "home": "Los Angeles Angels",
-      "away_opening_ml": -120,
-      "home_opening_ml": -100,
-      "opening_total": 8.5
-    },
-    {
-      "away": "Colorado Rockies",
-      "home": "Arizona Diamondbacks",
-      "away_opening_ml": 125,
-      "home_opening_ml": -152,
-      "opening_total": 9.5
     }
   ]
 }

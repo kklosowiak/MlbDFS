@@ -7,12 +7,12 @@
   "Minnesota Twins": {
     "score": 100,
     "status": "TRUST",
-    "recorded_at": "2026-05-23T11:29:48.082713"
+    "recorded_at": "2026-05-23T22:02:33.182541"
   },
   "St. Louis Cardinals": {
-    "score": 91,
+    "score": 100,
     "status": "TRUST",
-    "recorded_at": "2026-05-23T11:29:48.082713"
+    "recorded_at": "2026-05-23T18:02:34.511981"
   },
   "Pittsburgh Pirates": {
     "score": 92,
@@ -25,13 +25,18 @@
     "recorded_at": "2026-05-23T11:29:48.082713"
   },
   "Chicago White Sox": {
-    "score": 85,
-    "status": "TRUST",
-    "recorded_at": "2026-05-23T11:29:48.082713"
+    "score": 84,
+    "status": "CAUTION",
+    "recorded_at": "2026-05-23T22:02:33.182541"
   },
   "Milwaukee Brewers": {
-    "score": 100,
-    "status": "TRUST",
-    "recorded_at": "2026-05-23T11:29:48.082713"
+    "score": 74,
+    "status": "CAUTION",
+    "recorded_at": "2026-05-24T00:05:10.416493"
+  },
+  "Cleveland Guardians": {
+    "score": 41,
+    "status": "FADE",
+    "recorded_at": "2026-05-23T22:02:33.182541"
   }
 }

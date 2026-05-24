@@ -1,0 +1,161 @@
+{
+    "generated_at": "2026-05-23 11:48 PM ET",
+    "dates_analyzed": [
+        "2026-05-04",
+        "2026-05-05",
+        "2026-05-06",
+        "2026-05-08",
+        "2026-05-09",
+        "2026-05-10",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-16",
+        "2026-05-17",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-23"
+    ],
+    "signal_stats": {
+        "PITCHER_WHALE": {
+            "fired": 16,
+            "hit": 3
+        },
+        "PITCHER_SHARK": {
+            "fired": 3,
+            "hit": 0
+        },
+        "PITCHER_TRAP_FADE": {
+            "fired": 57,
+            "hit": 42
+        },
+        "PITCHER_LOW_CEILING": {
+            "fired": 58,
+            "hit": 47
+        },
+        "PITCHER_HAZARD": {
+            "fired": 11,
+            "hit": 7
+        },
+        "TEAM_WHALE": {
+            "fired": 38,
+            "hit": 11
+        },
+        "TEAM_STORM": {
+            "fired": 9,
+            "hit": 1
+        },
+        "TEAM_SURGING": {
+            "fired": 10,
+            "hit": 2
+        },
+        "GASSED_BULLPEN_ATTACK": {
+            "fired": 128,
+            "hit": 61
+        },
+        "TEAM_SNEAKY_STACK": {
+            "fired": 13,
+            "hit": 4
+        },
+        "TEAM_BURST": {
+            "fired": 84,
+            "hit": 37
+        },
+        "ANTI_CHALK_SMASH": {
+            "fired": 75,
+            "hit": 33
+        },
+        "PHYSICS_OVERRIDE": {
+            "fired": 1,
+            "hit": 0
+        },
+        "GPP_FADE_RISK": {
+            "fired": 15,
+            "hit": 6
+        },
+        "TEAM_COLD_STREAK_MSMI": {
+            "fired": 3,
+            "hit": 3
+        },
+        "DQI_TRUST": {
+            "fired": 10,
+            "hit": 2
+        },
+        "DQI_FADE": {
+            "fired": 17,
+            "hit": 11
+        },
+        "STEAM_SUPPORT": {
+            "fired": 91,
+            "hit": 27
+        },
+        "HITTER_SMASH": {
+            "fired": 494,
+            "hit": 133
+        }
+    },
+    "projection_stats": {
+        "top3_pitchers": {
+            "total": 56,
+            "hit": 25
+        },
+        "top3_stacks": {
+            "total": 56,
+            "hit": 24
+        },
+        "top5_hitters": {
+            "total": 95,
+            "hit": 29
+        }
+    },
+    "what_we_missed": [
+        {
+            "date": "2026-05-04",
+            "type": "Team Divergence Fail",
+            "name": "Los Angeles Angels",
+            "detail": "OMEGA showed +21.0% divergence vs market, but they scored only 0 runs vs Davis Martin."
+        },
+        {
+            "date": "2026-05-04",
+            "type": "Pitcher Shelling",
+            "name": "Jos\u00e9 Soriano",
+            "detail": "Alpha projected 153.3 score, but they gave up 5 ER in 4.0 IP."
+        },
+        {
+            "date": "2026-05-04",
+            "type": "Pitcher Shelling",
+            "name": "Logan Gilbert",
+            "detail": "Alpha projected 103.4 score, but they gave up 4 ER in 6.0 IP."
+        },
+        {
+            "date": "2026-05-04",
+            "type": "Pitcher Shelling",
+            "name": "Chad Patrick",
+            "detail": "Alpha projected 97.3 score, but they gave up 4 ER in 3.1 IP."
+        },
+        {
+            "date": "2026-05-11",
+            "type": "Team Divergence Fail",
+            "name": "Los Angeles Angels",
+            "detail": "OMEGA showed +15.0% divergence vs market, but they scored only 2 runs vs Joey Cantillo."
+        }
+    ],
+    "recommendations": [
+        "\u26a0\ufe0f **PITCHER_WHALE** has been cold at **19%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **PITCHER_SHARK** has been cold at **0%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u2705 **PITCHER_TRAP_FADE** is highly profitable at **74%** hit rate. Increase projection weight and trust indicators.",
+        "\u2705 **PITCHER_LOW_CEILING** is highly profitable at **81%** hit rate. Increase projection weight and trust indicators.",
+        "\u26a0\ufe0f **TEAM_WHALE** has been cold at **29%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **TEAM_STORM** has been cold at **11%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **TEAM_SURGING** has been cold at **20%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **TEAM_SNEAKY_STACK** has been cold at **31%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u2705 **TEAM_COLD_STREAK_MSMI** is highly profitable at **100%** hit rate. Increase projection weight and trust indicators.",
+        "\u26a0\ufe0f **HITTER_SMASH** has been cold at **27%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u26a0\ufe0f **DQI TRUST Grade** is showing convergence volatility at **20%** success rate. Recommend widening margins."
+    ]
+}

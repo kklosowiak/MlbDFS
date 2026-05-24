@@ -162,6 +162,10 @@ def calculate_dqi(team, pitchers=None):
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
         
+    if isinstance(team, dict):
+        team["dqi_pos_pts"] = pos_pts
+        team["dqi_warn_pts"] = warn_pts
+
     return dqi_score_int, status, pos_factors, warn_factors
 
 

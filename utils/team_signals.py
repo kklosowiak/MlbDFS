@@ -152,3 +152,14 @@ def apply_sneaky_stack(team, opp_pitcher_outs=18.0, is_opp_debut=False):
     )
     return team
 
+
+def apply_signal_exclusions(team_data):
+    """Resolves logical GPP signal contradiction overlaps on a team dict (mutates in place)."""
+    if team_data.get("is_trap", False):
+        team_data["is_sneaky"] = False
+    if team_data.get("is_fade_risk", False):
+        team_data["is_physics_override"] = False
+        team_data["is_anti_chalk_smash"] = False
+    return team_data
+
+

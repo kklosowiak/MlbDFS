@@ -51,11 +51,21 @@ See `engine/sharps_weighting.py`, `utils/dqi.py`, `templates/index.html`, `tests
 | **Attack conf (`attack_conf`) column** | Pending UI | Add **CONF** column to Pitchers + Teams matrices; data already in `/api/results` from `slate_report_generator.py` |
 
 **Attack conf v1 spec:**
-- Column **CONF** (or **ATK**) after OMEGA — integer 0–100, bands ≥70 green / 40–69 neutral / &lt;40 muted
+- Column **CONF** (or **ATK**) after OMEGA — integer 0–100, bands ≥70 green / 40–69 neutral / <40 muted
 - Tooltip or hover: first 3 `attack_reasons` lines
 - Do **not** change default table sort (keep alpha_score / stack_score primary)
 
 **QA:** See checklist in `docs/PACKAGE_ROLLOUT.md` §1–2.
+
+---
+
+### 5. GPP Signal Contradiction Overrides — *implement next morning*
+
+See [test_signal_exclusions.py](file:///c:/Users/konra/OneDrive/Desktop/Antigravity/Projects/MlbDFS/tests/test_signal_exclusions.py) for details and unit tests.
+
+- **Trap vs. Sneaky**: If a team is flagged as a Chalk Trap (`is_trap` is True), automatically force `is_sneaky` to `False`.
+- **Fade Risk vs. GPP Targets**: If a team is flagged as a GPP Fade Risk (`is_fade_risk` is True), automatically force `is_physics_override` and `is_anti_chalk_smash` to `False`.
+- Prevents cockpit views from showing conflicting "Fade" vs. "Buy" markers for the same team.
 
 ---
 

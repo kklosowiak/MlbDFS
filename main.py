@@ -30,7 +30,7 @@ from utils.market_utils import get_market_prices, calculate_ml_move
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
-from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_sneaky_stack, evaluate_sneaky_stack
+from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_sneaky_stack, evaluate_sneaky_stack, apply_signal_exclusions
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -909,6 +909,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_sneaky': is_sneaky
             }
             apply_team_blind_spot(team_row)
+            apply_signal_exclusions(team_row)
             team_reports.append(team_row)
 
     team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
@@ -1110,7 +1111,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba + NPAS_xwOBA)
 
         # OMEGA v13.5 Hitter SMASH Calibration (Optimized via Grid Sweep)
-        smash_factor = (matchup_xwoba_npas >= 0.365 and NPAS_xwOBA >= 0.0)
+        smash_factor = (matchup_xwoba_npas >= 0.370 and NPAS_xwOBA >= 0.0)
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),

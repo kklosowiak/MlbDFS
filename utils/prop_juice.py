@@ -4,14 +4,15 @@ from __future__ import annotations
 
 MIN_JUICE_GAP_AMERICAN = 20
 SOFT_JUICE_GAP_AMERICAN = 5
+HITTER_SOFT_JUICE_GAP_AMERICAN = 20
 PITCHER_TARGET_MIN_K_LINE = 5.0
 PITCHER_TARGET_MIN_PHYSICS = 55.0
-HITTER_TARGET_MIN_XWOBA = 0.355
-HITTER_TARGET_MIN_GAP = 25
+HITTER_TARGET_MIN_XWOBA = 0.360
+HITTER_TARGET_MIN_GAP = 30
 STACK_PROP_MIN_XWOBA = 0.320
 STACK_PROP_TARGET_GAP = 12
 MAX_PITCHER_TARGETS = 10
-MAX_HITTER_TARGETS = 45
+MAX_HITTER_TARGETS = 25
 
 
 def merge_hitter_market_juice(hitter_entry, market_data, player_name, market_key):
@@ -61,7 +62,7 @@ def merge_hitter_market_juice(hitter_entry, market_data, player_name, market_key
         xw = float(hitter_entry.get("matchup_xwoba", 0.33) or 0.33)
         if stack_market:
             gap = american_juice_gap(o_price, u_price)
-            if gap >= SOFT_JUICE_GAP_AMERICAN and line_key:
+            if gap >= HITTER_SOFT_JUICE_GAP_AMERICAN and line_key:
                 hitter_entry[flag_juice] = True
                 hitter_entry["_juice_gap"] = max(hitter_entry.get("_juice_gap", 0), gap)
             if gap >= STACK_PROP_TARGET_GAP and xw >= STACK_PROP_MIN_XWOBA and line_key:
@@ -193,7 +194,7 @@ def evaluate_pitcher_k_juice(prop_rows, pitcher_name, *, k_line, physics_talent)
 def evaluate_hitter_prop_juice(over_price, under_price, *, matchup_xwoba=0.33):
     """Single market pair (hits or TB)."""
     gap = american_juice_gap(over_price, under_price)
-    is_prop_juice = gap >= SOFT_JUICE_GAP_AMERICAN
+    is_prop_juice = gap >= HITTER_SOFT_JUICE_GAP_AMERICAN
     xw = float(matchup_xwoba or 0)
     is_target = (
         is_prop_juice

@@ -5,8 +5,6 @@
     "Chicago Cubs": "Colin Rea",
     "Pittsburgh Pirates": "Paul Skenes",
     "Toronto Blue Jays": "Patrick Corbin",
-    "Detroit Tigers": "Framber Valdez",
-    "Baltimore Orioles": "Brandon Young",
     "Cleveland Guardians": "Slade Cecconi",
     "Philadelphia Phillies": "Zack Wheeler",
     "Chicago White Sox": "Bryan Hudson",
@@ -28,5 +26,7 @@
     "Colorado Rockies": "Michael Lorenzen",
     "Arizona Diamondbacks": "Zac Gallen",
     "Tampa Bay Rays": "Drew Rasmussen",
-    "New York Yankees": "Ryan Weathers"
+    "New York Yankees": "Ryan Weathers",
+    "Detroit Tigers": "Framber Valdez",
+    "Baltimore Orioles": "Brandon Young"
 }
