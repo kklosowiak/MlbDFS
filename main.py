@@ -30,7 +30,7 @@ from utils.market_utils import get_market_prices, calculate_ml_move
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
-from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_sneaky_stack
+from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_sneaky_stack, evaluate_sneaky_stack
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -600,8 +600,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
                 # Sort by adjusted matchup_xwoba descending
                 sorted_h = sorted(adjusted_h_list, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
-                # For confirmed lineups, we use all confirmed players. For projected, top 5.
-                sample_size = 5 if not confirmed else len(sorted_h)
+                # For confirmed lineups, we use starting players. For projected, top 9.
+                if confirmed:
+                    confirmed_names = {normalize_player_name(p) for p in confirmed}
+                    sorted_h = [h for h in sorted_h if normalize_player_name(h['name']) in confirmed_names]
+                sample_size = 9 if not confirmed else len(sorted_h)
                 target_h = sorted_h[:sample_size]
                 fresh_xwoba = statistics.mean([h.get('matchup_xwoba', 0.330) for h in target_h])
                 from utils.xwoba_stability import resolve_team_xwoba
@@ -796,23 +799,15 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             )
 
             # OMEGA v13.0: Sneaky Stack Detection (Low-owned GPP gems)
-            is_sneaky = False
-            if curr_itt <= 4.1:
-                is_bp_fatigued = opp_bullpen['score'] >= 55 or opp_bullpen['is_gassed'] or opp_bullpen.get('is_fatigued', False)
-                
-                # Triggers:
-                # 1. Elite Physics vs. Market Doubt (team_xwoba >= 0.345)
-                # 2. Bullpen Game or Opener (opp_outs <= 13.5)
-                # 3. Debut starting pitcher (is_opp_debut)
-                # 4. Short leash starter (opp_outs <= 14.5) + gassed/fatigued bullpen
-                if team_xwoba >= 0.345:
-                    is_sneaky = True
-                elif float(opp_outs) <= 13.5:
-                    is_sneaky = True
-                elif is_opp_debut:
-                    is_sneaky = True
-                elif float(opp_outs) <= 14.5 and is_bp_fatigued:
-                    is_sneaky = True
+            is_sneaky = evaluate_sneaky_stack(
+                curr_itt,
+                team_xwoba,
+                float(opp_outs),
+                is_opp_debut,
+                opp_bullpen['score'],
+                opp_bullpen['is_gassed'],
+                opp_bullpen.get('is_fatigued', False)
+            )
 
             # OMEGA v12.0: Multi-Factor Slate Momentum Index (MSMI)
             # Compare rolling K rate and rolling OPS vs season rates across confirmed lineup hitters.
@@ -1111,7 +1106,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba + NPAS_xwOBA)
 
         # OMEGA v13.5 Hitter SMASH Calibration (Optimized via Grid Sweep)
-        smash_factor = (matchup_xwoba_npas >= 0.355 and NPAS_xwOBA >= 0.0)
+        smash_factor = (matchup_xwoba_npas >= 0.365 and NPAS_xwOBA >= 0.0)
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),
@@ -1171,11 +1166,11 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             npas = hr.get('NPAS_xwOBA', 0.0)
             
             # Calibrate label with strict absolute thresholds + percentiles (OMEGA v12.4: Tightened for elite selectivity)
-            if percentile <= 0.05 and npas >= 0.075:
+            if percentile <= 0.05 and npas >= 0.025:
                 label = "ELITE PLATOON"
-            elif percentile <= 0.15 and npas >= 0.050:
+            elif percentile <= 0.15 and npas >= 0.015:
                 label = "STRONG EDGE"
-            elif npas <= -0.040 or (percentile >= 0.90 and npas <= -0.020):
+            elif npas <= -0.015 or (percentile >= 0.90 and npas <= -0.010):
                 label = "PLATOON TRAP"
             else:
                 label = "NEUTRAL"

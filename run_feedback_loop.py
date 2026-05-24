@@ -12,6 +12,7 @@ from datetime import timedelta
 from utils.audit_engine import AuditEngine
 from utils.dqi import calculate_dqi
 from config import config
+from utils.team_signals import evaluate_sneaky_stack
 
 def run_feedback_loop(days=7):
     print("\n" + "="*60)
@@ -130,24 +131,16 @@ def run_feedback_loop(days=7):
                 opp_norm = normalize_player_name(opp_pitcher_name)
                 opp_p = next((p for p in pitchers if normalize_player_name(p.get('pitcher', '')) == opp_norm), None)
 
-            # Recalculate sneaky stack dynamically with optimized thresholds
             if True:
-                is_sneaky = False
-                implied_total = t.get('implied_total')
-                if implied_total is not None and float(implied_total) <= 4.1:
-                    team_xwoba = float(t.get('team_xwoba', 0.320) or 0.320)
-                    opp_outs = float(t.get('opp_pitcher_outs', 18.0) or 18.0)
-                    is_opp_debut = bool(t.get('is_opp_debut', False))
-                    is_bp_fatigued = (float(t.get('bullpen_fatigue', 0) or 0) >= 55) or bool(t.get('is_gassed', False)) or bool(t.get('is_fatigued', False))
-                    
-                    if team_xwoba >= 0.345:
-                        is_sneaky = True
-                    elif opp_outs <= 13.5:
-                        is_sneaky = True
-                    elif is_opp_debut:
-                        is_sneaky = True
-                    elif opp_outs <= 14.5 and is_bp_fatigued:
-                        is_sneaky = True
+                is_sneaky = evaluate_sneaky_stack(
+                    t.get('implied_total'),
+                    t.get('team_xwoba'),
+                    t.get('opp_pitcher_outs'),
+                    t.get('is_opp_debut', False),
+                    t.get('bullpen_fatigue', 0),
+                    t.get('is_gassed', False),
+                    t.get('is_fatigued', False)
+                )
                 t['is_sneaky'] = is_sneaky
 
             # Recalculate is_anti_chalk_smash dynamically with optimized thresholds
@@ -363,10 +356,10 @@ def run_feedback_loop(days=7):
         for h in h_audit:
             is_smash = h.get('smash_factor') or h.get('is_smash')
             if is_smash is None:
-                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.355 and NPAS_xwOBA >= 0.0
+                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.365 and NPAS_xwOBA >= 0.0
                 matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
                 npas = float(h.get('NPAS_xwOBA', 0.0) or 0.0)
-                is_smash = (matchup_xwoba >= 0.355 and npas >= 0.0)
+                is_smash = (matchup_xwoba >= 0.365 and npas >= 0.0)
             
             if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1
