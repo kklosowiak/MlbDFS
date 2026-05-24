@@ -894,13 +894,17 @@
         }
 
         .team-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            background: rgba(255,255,255,0.04);
-            padding: 3px 6px;
+            font-size: 0.7rem;
+            color: #5ac8fa;
+            font-weight: 800;
+            background: rgba(90, 200, 250, 0.12);
+            border: 1px solid rgba(90, 200, 250, 0.35);
+            padding: 2px 5px;
             border-radius: 4px;
-            margin-left: 4px;
+            margin-left: 5px;
+            letter-spacing: 0.03em;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .metric {
@@ -3080,14 +3084,14 @@
             const dqiHtml = buildTeamDqiBadgeHtml(t, dqiRankInfo);
             const tip = `${omegaTip('col_market_cluster')} ITT ${t.implied_total || '—'} · ML ${mlTxt} · TT ${ttTxt} · DIV ${t.divergence > 0 ? '+' : ''}${t.divergence}%`;
             return `<td class="metric market-cluster" style="overflow: visible;">
-                <div${tipAttrs(tip)}>
-                    <div class="mc-line mc-itt"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
-                    <div class="mc-line mc-moves">
+                <div${tipAttrs(tip)} style="display: flex; flex-direction: column; gap: 5px; align-items: flex-start;">
+                    <div class="mc-line mc-itt" style="display: flex; align-items: center;"><span class="mc-label">ITT</span><strong>${t.implied_total || '—'}</strong></div>
+                    <div class="mc-line mc-moves" style="display: flex; align-items: center; flex-wrap: nowrap;">
                         <span class="mc-label">ML</span><span class="${mlClass}">${mlTxt}</span>
-                        <span style="color:var(--text-secondary); margin:0 3px;">·</span>
+                        <span style="color:var(--text-secondary); margin:0 4px;">·</span>
                         <span class="mc-label">TT</span><span class="${ttClass}">${ttTxt}</span>
                     </div>
-                    <div class="mc-line mc-div"><span class="mc-label">DIV</span><strong class="${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong></div>
+                    <div class="mc-line mc-div" style="display: flex; align-items: center;"><span class="mc-label">DIV</span><strong class="${divClass}">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong></div>
                 </div>
                 ${dqiHtml}
             </td>`;
