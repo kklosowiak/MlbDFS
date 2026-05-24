@@ -52,15 +52,14 @@ class SharpsWeighting:
         
         if is_target and not gate_active: alpha_signals += 1
         
-        # Group market signals to prevent double-counting
-        if (is_whale or is_shark) and not gate_active:
-            alpha_signals += 1
+        # Group market signals to prevent double-counting - cut in half to +7.5%
+        market_whale_bonus = 0.075 if (is_whale or is_shark) and not gate_active else 0.0
         
         if k_prop and float(k_prop) >= 6.5: beta_signals += 1
         if abs(tt_move) >= 0.5: beta_signals += 1
         if divergence >= 10: beta_signals += 1
         
-        multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05)
+        multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05) + market_whale_bonus
             
         if park_factor >= 114:
             multiplier -= 0.20
@@ -116,8 +115,8 @@ class SharpsWeighting:
         fatigue_floor = 65.0
         bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 3.5)
         
-        # Short-Leash Multiplier: If starter < 15.5 outs, pressure on the tired bullpen is 1.5x
-        if pitcher_outs < 15.5:
+        # Short-Leash Multiplier: If starter <= 15.5 outs, pressure on the tired bullpen is 1.5x
+        if pitcher_outs <= 15.5:
             bullpen_boost *= 1.5
         
         bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
@@ -248,6 +247,13 @@ class SharpsWeighting:
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
 
+        # OMEGA v9.9: Gassed Bullpen Attack Premium
+        # If opponent bullpen is tired (>= 65) and starter is on a short leash (<= 15.5 outs),
+        # we add an extra +5.0 GPP premium directly to final_omega
+        is_gassed_attack = (bullpen_fatigue >= 65) and (pitcher_outs <= 15.5)
+        if is_gassed_attack:
+            final_omega += 5.0
+
         # Inject GPP Decision Intelligence bonuses directly to OMEGA master score
         if is_anti_chalk_smash:
             final_omega += 5.0
@@ -258,8 +264,6 @@ class SharpsWeighting:
             final_omega = min(final_omega, score * (1.0 + min(0.22, dampened_market_premium)))
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
-        eff_itt = implied_total if implied_total is not None else curr_itt
-        
         # If Vegas says it's a low total, but sharps disagree (WHALE/STORM), we trust the sharps.
         # We only apply the penalty if there is no major sharp divergence backing them.
         is_sharp_backed = is_whale or is_storm or (divergence > 15)
@@ -271,6 +275,11 @@ class SharpsWeighting:
         
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
+        
+        # OMEGA v9.9: GPP Leverage Fade Risk
+        # If a team has a high implied total (>= 5.0) and negative divergence (< -10),
+        # they represent public chalk being faded by sharps (high-ownership fade risk).
+        is_fade_risk = (eff_itt >= 5.0) and (divergence < -10)
         
         return {
             "final": round(final_omega, 1),
@@ -287,6 +296,7 @@ class SharpsWeighting:
             "confidence": confidence,
             "is_trap": chalk_trap,
             "is_stack_chalk": chalk_trap,
+            "is_fade_risk": is_fade_risk,
         }
 
     @staticmethod

@@ -888,7 +888,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_cold_streak_msmi': is_cold_streak_msmi,
                 'is_hot_run_msmi': is_hot_run_msmi,
                 'is_anti_chalk_smash': is_anti_chalk_smash,
-                'is_pitch_alignment': is_pitch_alignment
+                'is_pitch_alignment': is_pitch_alignment,
+                'is_fade_risk': res.get('is_fade_risk', False)
             }
             apply_team_blind_spot(team_row)
             team_reports.append(team_row)

@@ -1531,6 +1531,7 @@ def post_chat_api(body: dict):
                 if t.get('is_steam'): signals.append('STEAM')
                 if t.get('is_storm'): signals.append('STORM')
                 if t.get('is_trap'): signals.append('TRAP')
+                if t.get('is_fade_risk'): signals.append('FADE RISK')
                 sig_str = ", ".join(signals) if signals else "None"
                 
                 from utils.dqi import calculate_dqi as _calc_dqi

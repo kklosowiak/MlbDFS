@@ -94,6 +94,7 @@
         body.light-theme .pill-hot-run { color: #d97300; background: rgba(217, 115, 0, 0.08); border-color: rgba(217, 115, 0, 0.25); }
         body.light-theme .pill-el-platoon { color: #1e8a38; background: rgba(30, 138, 56, 0.08); border-color: rgba(30, 138, 56, 0.25); }
         body.light-theme .pill-trap { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
+        body.light-theme .pill-fade-risk { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
 
         /* Light Mode Sidebar Active Tab & General Navigation Styles */
         body.light-theme .nav-item.active {
@@ -847,6 +848,7 @@
         .pill-slump { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border-color: rgba(255, 69, 58, 0.35); font-weight: 800; }
         .pill-hot-run { background: rgba(255, 186, 8, 0.15); color: #ffba08; border: 1px solid rgba(255, 186, 8, 0.35); font-weight: 800; }
         .pill-el-platoon { background: rgba(48, 209, 88, 0.15); color: #30d158; border-color: rgba(48, 209, 88, 0.35); font-weight: 800; }
+        .pill-fade-risk { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 69, 58, 0.35); font-weight: 800; }
 
         
         .mini-icon {
@@ -2436,6 +2438,10 @@
                 pills.push(signalPillHtml('⚓ ANTI-CHALK', { className: 'pill-anti-chalk', tipKey: 'anti_chalk_smash' }));
             } else if (t.is_trap) {
                 pills.push(signalPillHtml('🚨 TRAP', { className: 'pill-trap', tipKey: 'trap_stack' }));
+            }
+
+            if (t.is_fade_risk) {
+                pills.push(signalPillHtml('⚠️ FADE RISK', { className: 'pill-fade-risk', tip: 'GPP Leverage Fade Risk: High implied total backed by public but faded by sharps.' }));
             }
 
             if (t.is_burst) {
@@ -4690,6 +4696,7 @@
             let badgesHTML = buildMarketSignalPills(t, true);
             if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
             if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
+            if (t.is_fade_risk) badgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
             if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
             if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
             if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
@@ -5043,6 +5050,7 @@
                 if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
                 if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
                 if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
+                if (oppT.is_fade_risk) tBadgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
                 if (oppT.is_paradox) tBadgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
                 if (oppT.trend === 'SURGING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
                 if (oppT.trend === 'FADING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
