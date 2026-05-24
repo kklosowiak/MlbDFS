@@ -74,8 +74,29 @@ def run_feedback_loop(days=7):
         if not active_path:
             continue
             
-        # Fetch actuals
-        actuals = audit.fetch_results(date=date_str)
+        # Fetch actuals (with local scratch caching to prevent repetitive API requests)
+        cache_path = os.path.join("scratch", "actuals_cache.json")
+        actuals_cache = {}
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, "r", encoding="utf-8") as cf:
+                    actuals_cache = json.load(cf)
+            except Exception:
+                pass
+                
+        if date_str in actuals_cache:
+            actuals = actuals_cache[date_str]
+        else:
+            actuals = audit.fetch_results(date=date_str)
+            if actuals:
+                actuals_cache[date_str] = actuals
+                os.makedirs("scratch", exist_ok=True)
+                try:
+                    with open(cache_path, "w", encoding="utf-8") as cf:
+                        json.dump(actuals_cache, cf, indent=4)
+                except Exception:
+                    pass
+
         if not actuals:
             print(f"  - [WARNING]: No MLB stats returned for {date_str}. Game may be active or postponed.")
             continue
