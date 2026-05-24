@@ -27,6 +27,8 @@ def run_feedback_loop(days=7):
         'PITCHER_WHALE': {'fired': 0, 'hit': 0},
         'PITCHER_SHARK': {'fired': 0, 'hit': 0},
         'PITCHER_TRAP_FADE': {'fired': 0, 'hit': 0},  # Success = Trap pitcher gave up >= 4 ER or failed QS
+        'PITCHER_LOW_CEILING': {'fired': 0, 'hit': 0}, # Success = Low ceiling pitcher failed QS
+        'PITCHER_HAZARD': {'fired': 0, 'hit': 0},      # Success = Hazard pitcher failed QS
         'TEAM_WHALE': {'fired': 0, 'hit': 0},
         'TEAM_STORM': {'fired': 0, 'hit': 0},
         'TEAM_SURGING': {'fired': 0, 'hit': 0},       # Success = Surging team scored 5+ runs
@@ -36,6 +38,7 @@ def run_feedback_loop(days=7):
         'ANTI_CHALK_SMASH': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
         'PHYSICS_OVERRIDE': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
         'GPP_FADE_RISK': {'fired': 0, 'hit': 0},           # Success = Team scored < 4 runs
+        'TEAM_COLD_STREAK_MSMI': {'fired': 0, 'hit': 0},  # Success = Cold streak team scored < 4 runs
         'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
         'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
         'STEAM_SUPPORT': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
@@ -106,8 +109,8 @@ def run_feedback_loop(days=7):
                 opp_norm = normalize_player_name(opp_pitcher_name)
                 opp_p = next((p for p in pitchers if normalize_player_name(p.get('pitcher', '')) == opp_norm), None)
 
-            # Recalculate sneaky stack dynamically if missing from historical data
-            if 'is_sneaky' not in t or t['is_sneaky'] is None:
+            # Recalculate sneaky stack dynamically with optimized thresholds
+            if True:
                 is_sneaky = False
                 implied_total = t.get('implied_total')
                 if implied_total is not None and float(implied_total) <= 4.1:
@@ -126,8 +129,8 @@ def run_feedback_loop(days=7):
                         is_sneaky = True
                 t['is_sneaky'] = is_sneaky
 
-            # Recalculate is_anti_chalk_smash dynamically if missing
-            if 'is_anti_chalk_smash' not in t or t['is_anti_chalk_smash'] is None:
+            # Recalculate is_anti_chalk_smash dynamically with optimized thresholds
+            if True:
                 is_anti_chalk_smash = False
                 curr_itt = float(t.get('implied_total') or 0.0)
                 if curr_itt >= 4.5 and opp_p:
@@ -147,8 +150,8 @@ def run_feedback_loop(days=7):
                             is_anti_chalk_smash = True
                 t['is_anti_chalk_smash'] = is_anti_chalk_smash
 
-            # Recalculate is_physics_override dynamically if missing
-            if 'is_physics_override' not in t or t['is_physics_override'] is None:
+            # Recalculate is_physics_override dynamically with fixed and optimized thresholds
+            if True:
                 physics_score = float(t.get('physics_score') or t.get('physics') or 0.0)
                 
                 opp_pitcher_physics = 0.0
@@ -160,18 +163,27 @@ def run_feedback_loop(days=7):
                     
                 stack_score = float(t.get('stack_score') or 100.0)
                 is_physics_override = (
-                    physics_score > opp_pitcher_physics + 10 and
-                    physics_score > 40 and
-                    stack_score < 80
+                    physics_score > opp_pitcher_physics + 6.0 and
+                    physics_score > 40.0 and
+                    stack_score < 85.0
                 )
                 t['is_physics_override'] = is_physics_override
 
-            # Recalculate is_fade_risk dynamically if missing
-            if 'is_fade_risk' not in t or t['is_fade_risk'] is None:
+            # Recalculate is_fade_risk dynamically
+            if True:
                 implied_total = float(t.get('implied_total') or 0.0)
                 divergence = float(t.get('divergence') or 0.0)
                 is_fade_risk = (implied_total >= 5.0) and (divergence < -10)
                 t['is_fade_risk'] = is_fade_risk
+
+            # Recalculate is_cold_streak_msmi dynamically
+            if True:
+                is_cold_streak_msmi = False
+                rolling_k_delta = float(t.get('rolling_k_delta', 0.0) or 0.0)
+                rolling_ops_delta = float(t.get('rolling_ops_delta', 0.0) or 0.0)
+                if rolling_k_delta >= 12.0 and rolling_ops_delta <= -12.0:
+                    is_cold_streak_msmi = True
+                t['is_cold_streak_msmi'] = is_cold_streak_msmi
 
             runs = t.get('actual_runs', 0)
             is_hit_5 = runs >= 5
@@ -222,6 +234,11 @@ def run_feedback_loop(days=7):
                 if runs < 4:
                     signal_stats['GPP_FADE_RISK']['hit'] += 1
 
+            if t.get('is_cold_streak_msmi'):
+                signal_stats['TEAM_COLD_STREAK_MSMI']['fired'] += 1
+                if runs < 4:
+                    signal_stats['TEAM_COLD_STREAK_MSMI']['hit'] += 1
+
             # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
             dqi_score, dqi_status, _, _ = calculate_dqi(t, pitchers)
             if dqi_score is not None:
@@ -252,6 +269,15 @@ def run_feedback_loop(days=7):
                     'detail': f"OMEGA showed +{div}% divergence vs market, but they scored only {runs} runs vs {t.get('opp_pitcher')}."
                 })
 
+        # Identify the elite power teams on this date's slate dynamically
+        # Rank <= 4, team_xwoba >= 0.350
+        sorted_by_xwoba = sorted(t_audit, key=lambda x: float(x.get('team_xwoba', 0.0) or 0.0), reverse=True)
+        elite_power_teams = [
+            team_item['team']
+            for team_item in sorted_by_xwoba[:4]
+            if float(team_item.get('team_xwoba', 0.0) or 0.0) >= 0.350
+        ]
+
         # 2. Audit Pitcher Signals & Projections
         p_audit = audit.score_performance(pitchers, actuals)
         
@@ -263,6 +289,21 @@ def run_feedback_loop(days=7):
                 
         for p in p_audit:
             is_qs = p.get('success_flag') == '[WIN]'
+            
+            # Recalculate low ceiling and hazard dynamically
+            k_line = p.get('k_line')
+            is_low_ceiling = (k_line is not None and float(k_line) <= 4.0)
+            is_hazard = p.get('opponent') in elite_power_teams
+            
+            if is_low_ceiling:
+                signal_stats['PITCHER_LOW_CEILING']['fired'] += 1
+                if not is_qs:
+                    signal_stats['PITCHER_LOW_CEILING']['hit'] += 1
+                    
+            if is_hazard:
+                signal_stats['PITCHER_HAZARD']['fired'] += 1
+                if not is_qs:
+                    signal_stats['PITCHER_HAZARD']['hit'] += 1
             
             if p.get('is_whale'):
                 signal_stats['PITCHER_WHALE']['fired'] += 1

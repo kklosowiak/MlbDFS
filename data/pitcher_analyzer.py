@@ -360,7 +360,7 @@ class PitcherAnalyzer:
                 park_factor = (base_stadium_factor * 100.0) + ump_boost + weather_boost
                 opponent = away if side == 'home' else home
                 opponent_k_boost = self.opponent_k_boosts.get(opponent, 5.0) 
-                is_low_ceiling = (k_line is not None and float(k_line) <= 4.5)
+                is_low_ceiling = (k_line is not None and float(k_line) <= 4.0)
 
                 # OMEGA v10.2: Pitcher Recent Form Assessment (Conservative)
                 p_form = form_cache.get(normalize_player_name(pitcher_name))

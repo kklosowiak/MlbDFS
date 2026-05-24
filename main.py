@@ -396,8 +396,8 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     )
     elite_power_teams = [
         t['team']
-        for t in sorted_by_xwoba[:3]
-        if float(t.get('team_xwoba', 0) or 0) >= 0.340
+        for t in sorted_by_xwoba[:4]
+        if float(t.get('team_xwoba', 0) or 0) >= 0.350
     ]
 
     for p in p_reports:
@@ -418,7 +418,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
             print(f"  - HAZARD: {p['pitcher']} ({p['team']}) flagged for facing elite offense {p['opponent']}")
             
         # 3. K-Ceiling Check (Low K-upside warning only, no cap)
-        if p.get('k_line') and float(p['k_line']) <= 4.5:
+        if p.get('k_line') and float(p['k_line']) <= 4.0:
             p['is_low_ceiling'] = True
 
     # Re-sort after penalties
@@ -790,9 +790,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # (stack score) ranks them much lower, flag a potential market mispricing.
             opp_physics = opp_pitcher_physics if opp_pitcher_physics else 0
             is_physics_override = (
-                res['physics'] > opp_physics + 10 and
-                res['physics'] > 40 and
-                final_stack_score < 80
+                res['physics_raw'] > opp_physics + 6.0 and
+                res['physics_raw'] > 40.0 and
+                final_stack_score < 85.0
             )
 
             # OMEGA v13.0: Sneaky Stack Detection (Low-owned GPP gems)
