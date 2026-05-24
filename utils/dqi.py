@@ -142,6 +142,14 @@ def calculate_dqi(team, pitchers=None):
 
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))
+    
+    # OMEGA v13.8: Sharp Fade Score & Status Cap
+    # If a team is faded by sharps (negative divergence), they cannot be TRUST.
+    # We cap their score at 74.0 so it naturally aligns with the yellow CAUTION range in the UI.
+    if divergence < 0 and dqi_score >= 75.0:
+        dqi_score = 74.0
+        warn_factors.append(f"Sharp Fade Score Cap (Div {round(divergence, 1)}% < 0)")
+        
     dqi_score_int = int(round(dqi_score))
     
     # Implied run total floor (3.8 runs) for GPP Trust
@@ -149,12 +157,6 @@ def calculate_dqi(team, pitchers=None):
     if status == "TRUST" and implied_total < 3.8:
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
-        
-    # OMEGA v13.7: Sharp Fade / Negative Divergence Cap
-    # A team being faded by sharps (negative divergence) cannot be trusted as a DQI TRUST stack.
-    if status == "TRUST" and divergence < 0:
-        status = "CAUTION"
-        warn_factors.append(f"Negative Divergence TRUST Cap (Div {round(divergence, 1)}% < 0)")
         
     return dqi_score_int, status, pos_factors, warn_factors
 
