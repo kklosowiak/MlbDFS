@@ -32,6 +32,10 @@ def run_feedback_loop(days=7):
         'TEAM_SURGING': {'fired': 0, 'hit': 0},       # Success = Surging team scored 5+ runs
         'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},  # Success = Attacked team scored 5+ runs
         'TEAM_SNEAKY_STACK': {'fired': 0, 'hit': 0},      # Success = Sneaky stack scored 5+ runs
+        'TEAM_BURST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
+        'ANTI_CHALK_SMASH': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
+        'PHYSICS_OVERRIDE': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
+        'GPP_FADE_RISK': {'fired': 0, 'hit': 0},           # Success = Team scored < 4 runs
         'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
         'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
         'STEAM_SUPPORT': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
@@ -94,6 +98,14 @@ def run_feedback_loop(days=7):
                 
         # Signal Metrics
         for t in t_audit:
+            # Resolve opposing pitcher for dynamic calculations
+            opp_pitcher_name = t.get('opp_pitcher')
+            opp_p = None
+            if opp_pitcher_name and pitchers:
+                from utils.normalization import normalize_player_name
+                opp_norm = normalize_player_name(opp_pitcher_name)
+                opp_p = next((p for p in pitchers if normalize_player_name(p.get('pitcher', '')) == opp_norm), None)
+
             # Recalculate sneaky stack dynamically if missing from historical data
             if 'is_sneaky' not in t or t['is_sneaky'] is None:
                 is_sneaky = False
@@ -113,6 +125,53 @@ def run_feedback_loop(days=7):
                     elif opp_outs <= 15.5 and is_bp_fatigued:
                         is_sneaky = True
                 t['is_sneaky'] = is_sneaky
+
+            # Recalculate is_anti_chalk_smash dynamically if missing
+            if 'is_anti_chalk_smash' not in t or t['is_anti_chalk_smash'] is None:
+                is_anti_chalk_smash = False
+                curr_itt = float(t.get('implied_total') or 0.0)
+                if curr_itt >= 4.5 and opp_p:
+                    from utils.matchup_physics import pitcher_physics_0_100
+                    opp_pitcher_physics = pitcher_physics_0_100(opp_p)
+                    if opp_pitcher_physics >= 56.0:
+                        opp_sp_trap = bool(opp_p.get('is_trap', False))
+                        opp_sp_cold = (opp_p.get('form_status') == 'COLD')
+                        opp_sp_fade = (float(opp_p.get('divergence', 0) or 0) <= -20.0)
+                        opp_sp_alpha = 90.0
+                        raw_alpha = opp_p.get('alpha_score', 90.0)
+                        if isinstance(raw_alpha, dict):
+                            opp_sp_alpha = float(raw_alpha.get('final', 90.0) or 90.0)
+                        elif raw_alpha is not None:
+                            opp_sp_alpha = float(raw_alpha)
+                        if opp_sp_trap or opp_sp_cold or opp_sp_fade or opp_sp_alpha < 72:
+                            is_anti_chalk_smash = True
+                t['is_anti_chalk_smash'] = is_anti_chalk_smash
+
+            # Recalculate is_physics_override dynamically if missing
+            if 'is_physics_override' not in t or t['is_physics_override'] is None:
+                physics_score = float(t.get('physics_score') or t.get('physics') or 0.0)
+                
+                opp_pitcher_physics = 0.0
+                if opp_p:
+                    from utils.matchup_physics import pitcher_physics_0_100
+                    opp_pitcher_physics = pitcher_physics_0_100(opp_p)
+                else:
+                    opp_pitcher_physics = float(t.get('opp_pitcher_physics') or 0.0)
+                    
+                stack_score = float(t.get('stack_score') or 100.0)
+                is_physics_override = (
+                    physics_score > opp_pitcher_physics + 10 and
+                    physics_score > 40 and
+                    stack_score < 80
+                )
+                t['is_physics_override'] = is_physics_override
+
+            # Recalculate is_fade_risk dynamically if missing
+            if 'is_fade_risk' not in t or t['is_fade_risk'] is None:
+                implied_total = float(t.get('implied_total') or 0.0)
+                divergence = float(t.get('divergence') or 0.0)
+                is_fade_risk = (implied_total >= 5.0) and (divergence < -10)
+                t['is_fade_risk'] = is_fade_risk
 
             runs = t.get('actual_runs', 0)
             is_hit_5 = runs >= 5
@@ -142,6 +201,26 @@ def run_feedback_loop(days=7):
                 signal_stats['TEAM_SNEAKY_STACK']['fired'] += 1
                 if is_hit_5:
                     signal_stats['TEAM_SNEAKY_STACK']['hit'] += 1
+
+            if t.get('is_burst'):
+                signal_stats['TEAM_BURST']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['TEAM_BURST']['hit'] += 1
+
+            if t.get('is_anti_chalk_smash'):
+                signal_stats['ANTI_CHALK_SMASH']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['ANTI_CHALK_SMASH']['hit'] += 1
+
+            if t.get('is_physics_override'):
+                signal_stats['PHYSICS_OVERRIDE']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['PHYSICS_OVERRIDE']['hit'] += 1
+
+            if t.get('is_fade_risk'):
+                signal_stats['GPP_FADE_RISK']['fired'] += 1
+                if runs < 4:
+                    signal_stats['GPP_FADE_RISK']['hit'] += 1
 
             # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
             dqi_score, dqi_status, _, _ = calculate_dqi(t, pitchers)
