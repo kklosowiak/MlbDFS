@@ -112,8 +112,11 @@ class SharpsWeighting:
         
         volume_factor = min(1.0, projected_outs / 18.0)
         
-        # OMEGA v7.8: Prop Trap Penalty (-15%)
-        trap_multiplier = 0.85 if is_trap else 1.0
+        # OMEGA v7.8: Prop Trap Penalty (-15% baseline, -20% against strong offenses)
+        if is_trap:
+            trap_multiplier = 0.80 if opponent_k_boost < 5.0 else 0.85
+        else:
+            trap_multiplier = 1.0
 
         # OMEGA v8.5: The 'Institutional Anchor' (Market Fade)
         # If divergence is negative (market fading) and it's a high-alpha target,

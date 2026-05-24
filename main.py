@@ -809,6 +809,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 opp_bullpen.get('is_fatigued', False)
             )
 
+            # Apply +4.0 point GPP premium for sneaky stacks (low implied total leverage)
+            if is_sneaky:
+                final_stack_score = round(final_stack_score + 4.0, 1)
+
             # OMEGA v12.0: Multi-Factor Slate Momentum Index (MSMI)
             # Compare rolling K rate and rolling OPS vs season rates across confirmed lineup hitters.
             rolling_k_delta = 0.0

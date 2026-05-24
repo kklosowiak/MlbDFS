@@ -20,7 +20,12 @@ def calculate_dqi(team, pitchers=None):
         divergence = float(team.get('divergence', 0) or 0)
     except (TypeError, ValueError):
         divergence = 0.0
-    if divergence < 10:
+    try:
+        implied_total = float(team.get('implied_total', 0.0) or 0.0)
+    except (TypeError, ValueError):
+        implied_total = 0.0
+
+    if divergence < 10 and implied_total < 5.0:
         return None, None, [], []
 
     try:
@@ -31,10 +36,6 @@ def calculate_dqi(team, pitchers=None):
     tt_move = team.get('tt_move', 0.0) or 0.0
     ml_move = team.get('ml_move', 0.0) or 0.0
     is_storm = team.get('is_storm', False)
-    try:
-        implied_total = float(team.get('implied_total', 0.0) or 0.0)
-    except (TypeError, ValueError):
-        implied_total = 0.0
     team_xwoba = team.get('team_xwoba', 0.0) or 0.0
     power_conc = team.get('power_concentration', 0.0) or 0.0
     total_signal = team.get('total_signal', '') or ''
@@ -134,6 +135,10 @@ def calculate_dqi(team, pitchers=None):
     if opp_pitcher_trap:
         pos_pts += 20.0
         pos_factors.append("Opposing SP Trap (+20 pts)")
+
+    if divergence < 0:
+        warn_pts += 10.0
+        warn_factors.append("Negative Market Divergence (-10 pts)")
 
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))
