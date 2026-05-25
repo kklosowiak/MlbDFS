@@ -483,74 +483,6 @@ def get_logout():
     response.delete_cookie(COOKIE_NAME)
     return response
 
-# ----------------- BANKROLL ROUTES -----------------
-BANKROLL_PIN = os.getenv("BANKROLL_PIN") or ""
-BANKROLL_COOKIE = "omega_bankroll_session"
-
-def check_bankroll_auth(request: Request):
-    return request.cookies.get(BANKROLL_COOKIE) == "active"
-
-@app.get("/bankroll/login", response_class=HTMLResponse)
-def get_bankroll_login(request: Request):
-    if check_bankroll_auth(request):
-        return RedirectResponse(url="/bankroll")
-        
-    html_content = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ΩMEGA BANKROLL - SECURE VAULT</title>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-        <style>
-            :root { --bg: #030303; --surface: rgba(20, 20, 25, 0.7); --text: #f5f5f7; --accent: #32d74b; --accent-red: #ff453a; --border: rgba(255, 255, 255, 0.08); --radius: 20px; }
-            body { margin: 0; padding: 0; background-color: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: radial-gradient(circle at 50% 50%, #0d2a1b 0%, #030303 80%); }
-            .login-card { background: var(--surface); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--radius); padding: 50px 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 100px rgba(50, 215, 75, 0.1); }
-            .logo { font-size: 3rem; font-weight: 800; color: var(--accent); text-shadow: 0 0 20px rgba(50, 215, 75, 0.5); margin-bottom: 10px; }
-            h2 { margin: 0 0 8px 0; font-weight: 800; font-size: 1.5rem; }
-            p { margin: 0 0 35px 0; color: rgba(255, 255, 255, 0.5); font-size: 0.95rem; }
-            form { display: flex; flex-direction: column; gap: 20px; }
-            input[type="password"] { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 1rem; color: #fff; text-align: center; outline: none; }
-            input[type="password"]:focus { border-color: var(--accent); }
-            button { background: var(--accent); color: #000; border: none; border-radius: 12px; padding: 16px; font-size: 1rem; font-weight: 800; cursor: pointer; }
-            button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(50, 215, 75, 0.4); }
-            .error-msg { color: var(--accent-red); font-size: 0.9rem; margin-top: 15px; font-weight: 600; display: none; }
-        </style>
-    </head>
-    <body>
-        <div class="login-card">
-            <div class="logo">🏦</div>
-            <h2>BANKROLL VAULT</h2>
-            <p>Private Ledger Authorization Required</p>
-            <form method="POST" action="/bankroll/login">
-                <input type="password" name="pin" placeholder="ENTER SECURE PIN" required autofocus>
-                <button type="submit">AUTHORIZE</button>
-            </form>
-            <div class="error-msg" id="error-box">AUTHORIZATION FAILED.</div>
-        </div>
-        <script>
-            if (new URLSearchParams(window.location.search).has('error')) {
-                document.getElementById('error-box').style.display = 'block';
-            }
-        </script>
-    </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content)
-
-@app.post("/bankroll/login")
-def post_bankroll_login(pin: str = Form(...)):
-    if BANKROLL_PIN and pin == BANKROLL_PIN:
-        response = RedirectResponse(url="/bankroll", status_code=status.HTTP_303_SEE_OTHER)
-        response.set_cookie(key=BANKROLL_COOKIE, value="active", max_age=30*24*3600, httponly=True, samesite="lax")
-        return response
-    return RedirectResponse(url="/bankroll/login?error=1", status_code=status.HTTP_303_SEE_OTHER)
-
-@app.get("/bankroll")
-def redirect_bankroll_page():
-    return RedirectResponse(url="/lineups")
-
 @app.get("/lineups", response_class=HTMLResponse)
 def get_lineups_page(request: Request):
     if not check_page_auth(request):
@@ -588,58 +520,6 @@ def api_get_confirmed_lineups(request: Request):
         "projections": projections
     }
 
-@app.get("/api/bankroll")
-def api_get_bankroll(request: Request):
-    if not check_bankroll_auth(request):
-        raise HTTPException(status_code=401)
-        
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_dir, "data", "bankroll.csv")
-    
-    if not os.path.exists(csv_path):
-        return {"entries": []}
-        
-    entries = []
-    try:
-        import csv
-        with open(csv_path, "r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                entries.append(row)
-    except Exception as e:
-        print(f"Error reading bankroll: {e}")
-    
-    return {"entries": entries}
-
-from pydantic import BaseModel
-class BankrollEntry(BaseModel):
-    date: str
-    bet: float
-    won: float
-    stack: str
-
-@app.post("/api/bankroll")
-def api_post_bankroll(request: Request, entry: BankrollEntry):
-    if not check_bankroll_auth(request):
-        raise HTTPException(status_code=401)
-        
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_dir, "data", "bankroll.csv")
-    
-    profit = entry.won - entry.bet
-    
-    file_exists = os.path.exists(csv_path)
-    
-    try:
-        import csv
-        with open(csv_path, "a", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            if not file_exists:
-                writer.writerow(["date", "bet", "won", "profit", "stack"])
-            writer.writerow([entry.date, f"{entry.bet:.2f}", f"{entry.won:.2f}", f"{profit:.2f}", entry.stack])
-        return {"status": "success"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 # Main page wrapper serving index.html
 @app.get("/", response_class=HTMLResponse)
