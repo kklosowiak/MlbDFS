@@ -249,7 +249,7 @@
 
         /* App Layout */
         .sidebar {
-            width: 280px;
+            width: 300px;
             background: var(--sidebar-bg);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--border);
@@ -257,7 +257,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            padding: 35px 25px;
+            padding: 35px 0 20px 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -266,9 +266,9 @@
         }
 
         .main-content {
-            margin-left: 280px;
+            margin-left: 300px;
             padding: 40px 50px;
-            width: calc(100% - 280px);
+            width: calc(100% - 300px);
             min-height: 100vh;
             transition: width 0.3s ease;
         }
@@ -280,6 +280,7 @@
             align-items: flex-start;
             gap: 2px;
             margin-bottom: 40px;
+            padding: 0 24px;
         }
 
         .logo-main {
@@ -323,31 +324,34 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 18px;
-            border-radius: var(--radius-sm);
+            padding: 14px 24px;
+            border-radius: 0;
             color: var(--text-secondary);
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid transparent;
         }
 
         .nav-item:hover {
             color: var(--text-primary);
             background: var(--nav-hover);
+            transform: translateX(4px);
+            border-left-color: var(--accent-blue);
         }
 
         .nav-item.active {
             color: var(--text-primary);
             background: var(--nav-active);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-left-color: var(--accent-blue);
         }
 
         /* System Health Widget */
@@ -1799,6 +1803,34 @@
                     Omega Knowledge Base
                 </li>
             </ul>
+        </div>
+
+        <!-- Bottom Left Status Widget -->
+        <div class="sidebar-status-box" style="margin: 20px 24px; padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: var(--radius-sm);">
+            <div class="widget-row" style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
+                <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Last Refresh</span>
+                <span class="widget-val" id="last-refresh-time" style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary);">Never</span>
+            </div>
+            <div class="widget-row" style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
+                <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Lineups</span>
+                <span class="widget-val" id="health-lineups-pct" style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary);">—</span>
+            </div>
+            <div class="widget-row" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
+                <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Splits</span>
+                <span class="widget-val" id="health-splits-status" style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary);">—</span>
+            </div>
+            
+            <!-- Mini Buttons Row -->
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-refresh" id="btn-refresh" onclick="triggerRefresh()" style="flex: 1; margin-top: 0; padding: 8px 6px; font-size: 0.7rem; font-weight: 800; background: var(--accent-blue); color: #fff; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; box-shadow: none;" onmouseover="this.style.filter='brightness(1.15)';" onmouseout="this.style.filter='none';">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span id="btn-text">Refresh</span>
+                </button>
+                <button class="btn-refresh" id="btn-snapshot-lock" onclick="triggerLockSnapshot()" style="flex: 1; margin-top: 0; padding: 8px 6px; font-size: 0.7rem; font-weight: 800; background: rgba(50,205,50,0.15); border: 1px solid rgba(50,205,50,0.35); color: #32cd32; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; box-shadow: none;" onmouseover="this.style.background='rgba(50,205,50,0.25)';" onmouseout="this.style.background='rgba(50,205,50,0.15)';">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span id="btn-snapshot-text">Lock</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -6266,34 +6298,10 @@
                     <span class="widget-val">Auto (1 hour)</span>
                 </div>
                 <div class="widget-row">
-                    <span class="widget-label">Last Refresh</span>
-                    <span class="widget-val" id="last-refresh-time">Never</span>
-                </div>
-                <div class="widget-row">
                     <span class="widget-label">Snapshot</span>
                     <span class="widget-val" id="health-snapshot-age">—</span>
                 </div>
-                <div class="widget-row">
-                    <span class="widget-label">Splits</span>
-                    <span class="widget-val" id="health-splits-status">—</span>
-                </div>
-                <div class="widget-row">
-                    <span class="widget-label">Lineups</span>
-                    <span class="widget-val" id="health-lineups-pct">—</span>
-                </div>
             </div>
-
-            <!-- Manual Refresh Button -->
-            <button class="btn-refresh" id="btn-refresh" onclick="triggerRefresh()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                <span id="btn-text">Refresh Slate</span>
-            </button>
-            
-            <!-- Snapshot Lock Button -->
-            <button class="btn-refresh" id="btn-snapshot-lock" onclick="triggerLockSnapshot()" style="background: rgba(50,205,50,0.15); border: 1px solid rgba(50,205,50,0.35); margin-top: 5px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span id="btn-snapshot-text">Snapshot Lock</span>
-            </button>
             
             <!-- Theme Toggle Switch -->
             <div style="display: flex; justify-content: center; margin-top: 5px;">
