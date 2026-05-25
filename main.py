@@ -832,11 +832,17 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             else:
                 if totals_data:
                     # Match game by searching for both team names in the key
-                    home_key = home.split()[-1].upper()  # e.g. 'DODGERS'
-                    away_key = away.split()[-1].upper()  # e.g. 'ROCKIES'
+                    def get_clean_team_key(team_name):
+                        t_up = team_name.upper()
+                        if "WHITE SOX" in t_up: return "WHITE SOX"
+                        if "RED SOX" in t_up: return "RED SOX"
+                        return team_name.split()[-1].upper()
+                    
+                    home_key = get_clean_team_key(home)
+                    away_key = get_clean_team_key(away)
                     for gk, gv in totals_data.items():
                         gk_up = gk.upper()
-                        if home_key in gk_up or away_key in gk_up:
+                        if home_key in gk_up and away_key in gk_up:
                             od = gv.get('over_divergence', 0)
                             ud = gv.get('under_divergence', 0)
                             

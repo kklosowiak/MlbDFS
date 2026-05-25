@@ -3195,7 +3195,7 @@
             if (t.dqi_score !== undefined && t.dqi_score !== null) {
                 const dqiScore = t.dqi_score;
                 const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
-                const scoreColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                const scoreColor = dqiStatus === 'TRUST' ? '#32d74b' : (dqiStatus === 'CAUTION' ? '#ff9f0a' : '#ff453a');
                 
                 const posPts = t.dqi_pos_pts != null ? Math.round(t.dqi_pos_pts) : 0;
                 const warnPts = t.dqi_warn_pts != null ? Math.round(t.dqi_warn_pts) : 0;
@@ -3208,14 +3208,14 @@
                 if (warnList) breakdown += warnList;
                 
                 let scoreBg, scoreBorderColor, scoreGlow, rankColor, ptsColor, dotColor;
-                if (dqiScore >= 75) {
+                if (dqiStatus === 'TRUST') {
                     scoreBg = 'rgba(50, 215, 75, 0.12)';
                     scoreBorderColor = 'rgba(50, 215, 75, 0.65)';
                     scoreGlow = 'box-shadow: 0 0 10px rgba(50, 215, 75, 0.35), inset 0 0 4px rgba(50, 215, 75, 0.15);';
                     rankColor = '#8bfb9d';
                     ptsColor = '#c2ffd0';
                     dotColor = 'rgba(50, 215, 75, 0.6)';
-                } else if (dqiScore >= 50) {
+                } else if (dqiStatus === 'CAUTION') {
                     scoreBg = 'rgba(255, 159, 10, 0.12)';
                     scoreBorderColor = 'rgba(255, 159, 10, 0.65)';
                     scoreGlow = 'box-shadow: 0 0 10px rgba(255, 159, 10, 0.35), inset 0 0 4px rgba(255, 159, 10, 0.15);';
@@ -5413,7 +5413,7 @@
                     if (oppT.dqi_score !== undefined) {
                         const dqiScore = oppT.dqi_score;
                         const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
-                        const dqiColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                        const dqiColor = dqiStatus === 'TRUST' ? '#32d74b' : (dqiStatus === 'CAUTION' ? '#ff9f0a' : '#ff453a');
                         let dqiFactorStr = '';
                         if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
                             dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
