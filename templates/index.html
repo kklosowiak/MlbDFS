@@ -606,9 +606,15 @@
             border-collapse: collapse;
             text-align: left;
         }
+
+        /* Column Grid Mode: Vertical dividers separating columns */
         table th:not(:last-child), 
         table td:not(:last-child) {
-            border-right: 1px solid var(--border);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        body.light-theme table th:not(:last-child),
+        body.light-theme table td:not(:last-child) {
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         th {
@@ -618,7 +624,12 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        }
+        body.light-theme th {
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
         }
         
         .sortable-th {
@@ -631,17 +642,33 @@
             background: var(--nav-hover);
         }
 
+        /* Bold outer borders enclosing each row */
         td {
             padding: 16px;
-            border-bottom: 1px solid var(--border-td);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             font-size: 0.95rem;
             font-weight: 500;
             vertical-align: middle;
             transition: background 0.2s ease, border-color 0.2s ease;
         }
+        body.light-theme td {
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        }
 
-        tr:last-child td {
-            border-bottom: none;
+        /* Close outer row sides on left and right edges */
+        table td:first-child, table th:first-child {
+            border-left: 1.5px solid rgba(255, 255, 255, 0.12);
+        }
+        table td:last-child, table th:last-child {
+            border-right: 1.5px solid rgba(255, 255, 255, 0.12);
+        }
+        body.light-theme table td:first-child, body.light-theme table th:first-child {
+            border-left: 1.5px solid rgba(0, 0, 0, 0.12);
+        }
+        body.light-theme table td:last-child, body.light-theme table th:last-child {
+            border-right: 1.5px solid rgba(0, 0, 0, 0.12);
         }
 
         tr.row-highlight td {
@@ -659,9 +686,28 @@
             transform: translateX(4px);
         }
 
+        /* Dynamic Blue Glow highlights on row hover */
         tr:hover td {
             background: var(--row-hover-bg) !important;
-            border-bottom-color: var(--row-hover-border);
+            border-top-color: rgba(10, 132, 255, 0.2) !important;
+            border-bottom-color: rgba(10, 132, 255, 0.2) !important;
+        }
+        tr:hover td:first-child {
+            border-left-color: rgba(10, 132, 255, 0.35) !important;
+        }
+        tr:hover td:last-child {
+            border-right-color: rgba(10, 132, 255, 0.35) !important;
+        }
+
+        body.light-theme tr:hover td {
+            border-top-color: rgba(0, 122, 255, 0.2) !important;
+            border-bottom-color: rgba(0, 122, 255, 0.2) !important;
+        }
+        body.light-theme tr:hover td:first-child {
+            border-left-color: rgba(0, 122, 255, 0.35) !important;
+        }
+        body.light-theme tr:hover td:last-child {
+            border-right-color: rgba(0, 122, 255, 0.35) !important;
         }
 
         /* Pill styling */
