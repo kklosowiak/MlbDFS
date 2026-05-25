@@ -603,10 +603,25 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 # For confirmed lineups, we use starting players. For projected, top 9.
                 if confirmed:
                     confirmed_names = {normalize_player_name(p) for p in confirmed}
-                    sorted_h = [h for h in sorted_h if normalize_player_name(h['name']) in confirmed_names]
-                sample_size = 9 if not confirmed else len(sorted_h)
-                target_h = sorted_h[:sample_size]
-                fresh_xwoba = statistics.mean([h.get('matchup_xwoba', 0.330) for h in target_h])
+                    
+                    # Map each confirmed player to their position in the confirmed starting lineup list
+                    confirmed_order = {normalize_player_name(p): idx for idx, p in enumerate(confirmed)}
+                    # Filter and sort target_h to preserve the confirmed batting order
+                    target_h = [h for h in adjusted_h_list if normalize_player_name(h['name']) in confirmed_order]
+                    target_h = sorted(target_h, key=lambda x: confirmed_order[normalize_player_name(x['name'])])
+                else:
+                    target_h = sorted_h[:9]
+
+                # OMEGA: Lineup Spot PA Decay (Batting Order Weighting)
+                BATTING_ORDER_WEIGHTS = [1.22, 1.16, 1.10, 1.04, 0.98, 0.92, 0.86, 0.80, 0.72]
+                weighted_xwoba_sum = 0.0
+                weight_sum = 0.0
+                for idx, h in enumerate(target_h[:9]):
+                    weight = BATTING_ORDER_WEIGHTS[idx]
+                    weighted_xwoba_sum += h.get('matchup_xwoba', 0.330) * weight
+                    weight_sum += weight
+                
+                fresh_xwoba = (weighted_xwoba_sum / weight_sum) if weight_sum > 0 else 0.330
                 from utils.xwoba_stability import resolve_team_xwoba
 
                 team_xwoba, xwoba_dampened = resolve_team_xwoba(
