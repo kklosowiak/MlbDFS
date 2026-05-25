@@ -294,7 +294,7 @@ def run_full_analysis():
                 t['projected_ownership'] = round(scaled_own, 1)
                 t['gpp_leverage_index'] = round(gli, 2)
                 
-                if gli >= 1.5:
+                if gli >= 1.5 and not t.get('is_trap', False) and not t.get('is_fade_risk', False):
                     t['leverage_label'] = 'LEVERAGE PIVOT'
                     t['leverage_color'] = 'green'
                 elif gli < 0.6:

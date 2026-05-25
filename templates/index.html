@@ -4966,356 +4966,377 @@
 
         // Granular Team Modal logic
         function openTeamModal(tStr) {
-            const t = JSON.parse(decodeURIComponent(tStr));
-            document.getElementById('tm-name').innerText = t.team;
-            document.getElementById('tm-matchup').innerText = `vs ${t.opp_pitcher} (${abbrevMap[t.opponent] || t.opponent})`;
-            document.getElementById('tm-score').innerText = t.stack_score;
-            document.getElementById('tm-phys').innerText = t.physics_score || 0;
-            let oppPModal = null;
-            if (latestData && latestData.pitchers && t.opp_pitcher) {
-                oppPModal = latestData.pitchers.find(p => p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
-            }
-            const oppPhysModal = resolveOppPitcherPhys100(t, oppPModal);
-            const oppPhysEl = document.getElementById('tm-opp-phys');
-            oppPhysEl.innerText = oppPhysModal.toFixed(1);
-            const oppTierModal = oppPitcherPhyTier(oppPhysModal);
-            oppPhysEl.style.color = oppTierModal.color;
-            oppPhysEl.title = oppTierModal.tip;
-            document.getElementById('tm-pen').innerText = t.bullpen_fatigue || 0;
-            document.getElementById('tm-itt').innerText = t.implied_total || 0;
-            document.getElementById('tm-mkt').innerText = t.market_score || 0;
-            document.getElementById('tm-div').innerText = `${t.divergence || 0}%`;
-            document.getElementById('tm-vegas').innerText = t.total_signal || 'N/A';
-            
-            // GPP Leverage data modal updates
-            const own = t.projected_ownership !== undefined ? `${t.projected_ownership}%` : '—';
-            const gli = t.gpp_leverage_index !== undefined ? t.gpp_leverage_index : '—';
-            const status = t.leverage_label || '—';
-            const color = t.leverage_color === 'green' ? '#2ecc71' : (t.leverage_color === 'red' ? '#e74c3c' : 'var(--text-secondary)');
-            
-            document.getElementById('tm-proj-own').innerText = own;
-            document.getElementById('tm-gli').innerText = gli;
-            const statusEl = document.getElementById('tm-leverage-status');
-            statusEl.innerText = status;
-            statusEl.style.color = color;
-            
-            let badgesHTML = buildMarketSignalPills(t, true);
-            if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
-            if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
-            if (t.is_fade_risk) badgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
-            if (t.is_sneaky) badgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
-            if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
-            if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
-            if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
-
-            document.getElementById('tm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
-
-            const oppP = oppPModal;
-
-            if (oppP) {
-                document.getElementById('tm-opp-p-name').innerText = oppP.pitcher;
-                document.getElementById('tm-opp-p-score').innerText = oppP.alpha_score;
-                
-                let kStr = '-';
-                if (oppP.k_line) {
-                    kStr = oppP.k_line;
-                    if (oppP.k_odds !== null && oppP.k_odds !== undefined && oppP.k_odds !== 0) {
-                        kStr += ` (${oppP.k_odds > 0 ? '+' : ''}${oppP.k_odds})`;
-                    }
+            try {
+                const t = JSON.parse(decodeURIComponent(tStr));
+                document.getElementById('tm-name').innerText = t.team || 'Unknown';
+                document.getElementById('tm-matchup').innerText = `vs ${t.opp_pitcher || 'TBD'} (${abbrevMap[t.opponent] || t.opponent || 'TBD'})`;
+                document.getElementById('tm-score').innerText = t.stack_score || '—';
+                document.getElementById('tm-phys').innerText = t.physics_score || 0;
+                let oppPModal = null;
+                if (latestData && latestData.pitchers && t.opp_pitcher) {
+                    oppPModal = latestData.pitchers.find(p => p && p.pitcher && typeof p.pitcher === 'string' && p.pitcher.toLowerCase() === t.opp_pitcher.toLowerCase());
                 }
-                document.getElementById('tm-opp-p-k').innerText = kStr;
+                const oppPhysModal = resolveOppPitcherPhys100(t, oppPModal);
+                const oppPhysEl = document.getElementById('tm-opp-phys');
+                oppPhysEl.innerText = typeof oppPhysModal === 'number' ? oppPhysModal.toFixed(1) : '0.0';
+                const oppTierModal = oppPitcherPhyTier(oppPhysModal);
+                oppPhysEl.style.color = oppTierModal.color;
+                oppPhysEl.title = oppTierModal.tip;
+                document.getElementById('tm-pen').innerText = t.bullpen_fatigue || 0;
+                document.getElementById('tm-itt').innerText = t.implied_total || 0;
+                document.getElementById('tm-mkt').innerText = t.market_score || 0;
+                document.getElementById('tm-div').innerText = `${t.divergence || 0}%`;
+                document.getElementById('tm-vegas').innerText = t.total_signal || 'N/A';
                 
-                let outsStr = '-';
-                if (oppP.outs_line) {
-                    outsStr = oppP.outs_line;
-                    if (oppP.outs_odds !== null && oppP.outs_odds !== undefined && oppP.outs_odds !== 0) {
-                        outsStr += ` (${oppP.outs_odds > 0 ? '+' : ''}${oppP.outs_odds})`;
+                // GPP Leverage data modal updates
+                const own = t.projected_ownership !== undefined ? `${t.projected_ownership}%` : '—';
+                const gli = t.gpp_leverage_index !== undefined ? t.gpp_leverage_index : '—';
+                const status = t.leverage_label || '—';
+                const color = t.leverage_color === 'green' ? '#2ecc71' : (t.leverage_color === 'red' ? '#e74c3c' : 'var(--text-secondary)');
+                
+                document.getElementById('tm-proj-own').innerText = own;
+                document.getElementById('tm-gli').innerText = gli;
+                const statusEl = document.getElementById('tm-leverage-status');
+                statusEl.innerText = status;
+                statusEl.style.color = color;
+                
+                let badgesHTML = buildMarketSignalPills(t, true);
+                if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
+                if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
+                if (t.is_fade_risk) badgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
+                if (t.is_sneaky) badgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
+                if (t.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
+                if (t.trend === 'SURGING') badgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
+                if (t.trend === 'FADING') badgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
+
+                document.getElementById('tm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
+
+                const oppP = oppPModal;
+
+                if (oppP) {
+                    document.getElementById('tm-opp-p-name').innerText = oppP.pitcher || '—';
+                    document.getElementById('tm-opp-p-score').innerText = oppP.alpha_score || '—';
+                    
+                    let kStr = '-';
+                    if (oppP.k_line) {
+                        kStr = oppP.k_line;
+                        if (oppP.k_odds !== null && oppP.k_odds !== undefined && oppP.k_odds !== 0) {
+                            kStr += ` (${oppP.k_odds > 0 ? '+' : ''}${oppP.k_odds})`;
+                        }
                     }
+                    document.getElementById('tm-opp-p-k').innerText = kStr;
+                    
+                    let outsStr = '-';
+                    if (oppP.outs_line) {
+                        outsStr = oppP.outs_line;
+                        if (oppP.outs_odds !== null && oppP.outs_odds !== undefined && oppP.outs_odds !== 0) {
+                            outsStr += ` (${oppP.outs_odds > 0 ? '+' : ''}${oppP.outs_odds})`;
+                        }
+                    }
+                    document.getElementById('tm-opp-p-outs').innerText = outsStr;
+
+                    let pBadgesHTML = '';
+                    if (oppP.is_juiced_target) pBadgesHTML += '<span class="signal-pill pill-target" style="font-size: 0.65rem; padding: 2px 6px;">🎯 TARGET</span>';
+                    if (oppP.is_shark) pBadgesHTML += '<span class="signal-pill pill-shark" style="font-size: 0.65rem; padding: 2px 6px;">🦈 SHARK</span>';
+                    if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 HEAVY $</span>';
+                    if (oppP.is_whale) pBadgesHTML += '<span class="signal-pill pill-whale" style="font-size: 0.65rem; padding: 2px 6px;">🐳 WHALE</span>';
+                    if (oppP.is_debut) pBadgesHTML += '<span class="signal-pill pill-storm" style="font-size: 0.65rem; padding: 2px 6px;">✨ DEBUT</span>';
+                    if (oppP.is_paradox) pBadgesHTML += '<span class="signal-pill pill-paradox" style="font-size: 0.65rem; padding: 2px 6px;">⚠️ PARADOX</span>';
+                    if (oppP.is_hazard) pBadgesHTML += '<span class="signal-pill pill-exhausted" style="font-size: 0.65rem; padding: 2px 6px;">🌋 HAZARD</span>';
+                    if (oppP.is_trap) pBadgesHTML += '<span class="signal-pill pill-trap" style="font-size: 0.65rem; padding: 2px 6px;">🚨 TRAP SP</span>';
+                    if (oppP.is_low_ceiling) pBadgesHTML += '<span class="signal-pill pill-neutral" style="font-size: 0.65rem; padding: 2px 6px;">📉 CEILING</span>';
+                    
+                    document.getElementById('tm-opp-p-badges').innerHTML = pBadgesHTML || '<span style="color:var(--text-secondary); font-size:0.8rem;">No active flags.</span>';
+                    document.getElementById('tm-opp-pitcher-card').style.display = 'block';
+                } else {
+                    document.getElementById('tm-opp-pitcher-card').style.display = 'none';
                 }
-                document.getElementById('tm-opp-p-outs').innerText = outsStr;
 
-                let pBadgesHTML = '';
-                if (oppP.is_juiced_target) pBadgesHTML += '<span class="signal-pill pill-target" style="font-size: 0.65rem; padding: 2px 6px;">🎯 TARGET</span>';
-                if (oppP.is_shark) pBadgesHTML += '<span class="signal-pill pill-shark" style="font-size: 0.65rem; padding: 2px 6px;">🦈 SHARK</span>';
-                if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 HEAVY $</span>';
-                if (oppP.is_whale) pBadgesHTML += '<span class="signal-pill pill-whale" style="font-size: 0.65rem; padding: 2px 6px;">🐳 WHALE</span>';
-                if (oppP.is_debut) pBadgesHTML += '<span class="signal-pill pill-storm" style="font-size: 0.65rem; padding: 2px 6px;">✨ DEBUT</span>';
-                if (oppP.is_paradox) pBadgesHTML += '<span class="signal-pill pill-paradox" style="font-size: 0.65rem; padding: 2px 6px;">⚠️ PARADOX</span>';
-                if (oppP.is_hazard) pBadgesHTML += '<span class="signal-pill pill-exhausted" style="font-size: 0.65rem; padding: 2px 6px;">🌋 HAZARD</span>';
-                if (oppP.is_trap) pBadgesHTML += '<span class="signal-pill pill-trap" style="font-size: 0.65rem; padding: 2px 6px;">🚨 TRAP SP</span>';
-                if (oppP.is_low_ceiling) pBadgesHTML += '<span class="signal-pill pill-neutral" style="font-size: 0.65rem; padding: 2px 6px;">📉 CEILING</span>';
+                // Platoon splits profile integration
+                let platoon = null;
+                if (window.platoonMatchups) {
+                    platoon = window.platoonMatchups.find(m => m && getTeamAbbr(m.team) === getTeamAbbr(t.team));
+                }
                 
-                document.getElementById('tm-opp-p-badges').innerHTML = pBadgesHTML || '<span style="color:var(--text-secondary); font-size:0.8rem;">No active flags.</span>';
-                document.getElementById('tm-opp-pitcher-card').style.display = 'block';
-            } else {
-                document.getElementById('tm-opp-pitcher-card').style.display = 'none';
-            }
-
-            // Platoon splits profile integration
-            let platoon = null;
-            if (window.platoonMatchups) {
-                platoon = window.platoonMatchups.find(m => getTeamAbbr(m.team) === getTeamAbbr(t.team));
-            }
-            
-            const platOpsEl = document.getElementById('tm-plat-ops');
-            const platWobaEl = document.getElementById('tm-plat-woba');
-            const platOpsDiffEl = document.getElementById('tm-plat-ops-diff');
-            const platPSplitsEl = document.getElementById('tm-plat-p-splits');
-            const platAdvEl = document.getElementById('tm-plat-advantage');
-            
-            if (platoon) {
-                const teamOps = typeof platoon.team_vs_hand_ops === 'number' ? platoon.team_vs_hand_ops : parseFloat(platoon.team_vs_hand_ops);
-                platOpsEl.innerText = !isNaN(teamOps) ? teamOps.toFixed(3) : '-';
+                const platOpsEl = document.getElementById('tm-plat-ops');
+                const platWobaEl = document.getElementById('tm-plat-woba');
+                const platOpsDiffEl = document.getElementById('tm-plat-ops-diff');
+                const platPSplitsEl = document.getElementById('tm-plat-p-splits');
+                const platAdvEl = document.getElementById('tm-plat-advantage');
                 
-                // Color Team vs Hand OPS dynamically
-                if (!isNaN(teamOps)) {
-                    if (teamOps >= 0.780) {
-                        platOpsEl.style.color = '#32d74b';
-                    } else if (teamOps >= 0.730) {
-                        platOpsEl.style.color = '#0a84ff';
-                    } else if (teamOps >= 0.700) {
-                        platOpsEl.style.color = 'var(--text-primary)';
-                    } else if (teamOps >= 0.650) {
-                        platOpsEl.style.color = '#ff9f0a';
+                if (platoon) {
+                    const teamOps = typeof platoon.team_vs_hand_ops === 'number' ? platoon.team_vs_hand_ops : parseFloat(platoon.team_vs_hand_ops);
+                    platOpsEl.innerText = !isNaN(teamOps) ? teamOps.toFixed(3) : '-';
+                    
+                    if (!isNaN(teamOps)) {
+                        if (teamOps >= 0.780) {
+                            platOpsEl.style.color = '#32d74b';
+                        } else if (teamOps >= 0.730) {
+                            platOpsEl.style.color = '#0a84ff';
+                        } else if (teamOps >= 0.700) {
+                            platOpsEl.style.color = 'var(--text-primary)';
+                        } else if (teamOps >= 0.650) {
+                            platOpsEl.style.color = '#ff9f0a';
+                        } else {
+                            platOpsEl.style.color = '#ff453a';
+                        }
                     } else {
-                        platOpsEl.style.color = '#ff453a';
+                        platOpsEl.style.color = 'var(--text-primary)';
                     }
+                    
+                    const teamWoba = typeof platoon.team_vs_hand_woba === 'number' ? platoon.team_vs_hand_woba : parseFloat(platoon.team_vs_hand_woba);
+                    platWobaEl.innerText = !isNaN(teamWoba) ? teamWoba.toFixed(3) : '-';
+                    
+                    const opsDiff = typeof platoon.ops_diff === 'number' ? platoon.ops_diff : parseFloat(platoon.ops_diff);
+                    const sign = opsDiff > 0 ? '+' : '';
+                    platOpsDiffEl.innerText = !isNaN(opsDiff) ? `${sign}${opsDiff}` : '-';
+                    if (!isNaN(opsDiff)) {
+                        platOpsDiffEl.style.color = opsDiff > 0 ? '#32d74b' : (opsDiff < -30 ? '#ff453a' : '#ff9f0a');
+                    } else {
+                        platOpsDiffEl.style.color = 'var(--text-primary)';
+                    }
+                    
+                    const pitcherLhhOps = typeof platoon.pitcher_vs_lhh_ops === 'number' ? platoon.pitcher_vs_lhh_ops : parseFloat(platoon.pitcher_vs_lhh_ops);
+                    const pitcherRhhOps = typeof platoon.pitcher_vs_rhh_ops === 'number' ? platoon.pitcher_vs_rhh_ops : parseFloat(platoon.pitcher_vs_rhh_ops);
+                    const lhhStr = !isNaN(pitcherLhhOps) ? pitcherLhhOps.toFixed(3) : '-';
+                    const rhhStr = !isNaN(pitcherRhhOps) ? pitcherRhhOps.toFixed(3) : '-';
+                    platPSplitsEl.innerText = `${lhhStr} / ${rhhStr}`;
+                    
+                    let advBadge = '';
+                    if (platoon.advantage === 'ELITE PLATOON') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-size:0.75rem; padding:2px 6px;">⚡ ELITE</span>`;
+                    } else if (platoon.advantage === 'STRONG EDGE') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25); font-size:0.75rem; padding:2px 6px;">🎯 STRONG</span>`;
+                    } else if (platoon.advantage === 'NEUTRAL') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 6px;">— NEUTRAL</span>`;
+                    } else if (platoon.advantage === 'SLIGHT FADE') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25); font-size:0.75rem; padding:2px 6px;">⚠️ FADE</span>`;
+                    } else {
+                        advBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-size:0.75rem; padding:2px 6px;">🚨 TRAP</span>`;
+                    }
+                    platAdvEl.innerHTML = advBadge;
+                    document.getElementById('tm-platoon-card').style.display = 'block';
                 } else {
-                    platOpsEl.style.color = 'var(--text-primary)';
+                    document.getElementById('tm-platoon-card').style.display = 'none';
                 }
-                
-                const teamWoba = typeof platoon.team_vs_hand_woba === 'number' ? platoon.team_vs_hand_woba : parseFloat(platoon.team_vs_hand_woba);
-                platWobaEl.innerText = !isNaN(teamWoba) ? teamWoba.toFixed(3) : '-';
-                
-                const opsDiff = typeof platoon.ops_diff === 'number' ? platoon.ops_diff : parseFloat(platoon.ops_diff);
-                const sign = opsDiff > 0 ? '+' : '';
-                platOpsDiffEl.innerText = !isNaN(opsDiff) ? `${sign}${opsDiff}` : '-';
-                if (!isNaN(opsDiff)) {
-                    platOpsDiffEl.style.color = opsDiff > 0 ? '#32d74b' : (opsDiff < -30 ? '#ff453a' : '#ff9f0a');
+
+                // ============================================================
+                // v9.5: Build the 3-Column "Roster Intel" Grid for Team Stacks
+                // ============================================================
+                const stackScore = t.stack_score || 0;
+                const physScore = t.physics_score || 0;
+                const isTrap = t.is_trap || false;
+                const isParadox = t.is_paradox || false;
+                const isShark = t.is_shark || false;
+                const isWhale = t.is_whale || false;
+                const isStorm = t.is_storm || false;
+                const isSteam = t.is_steam || false;
+                const isSharp = t.is_sharp || false;
+                const isBurst = t.is_burst || false;
+                const isDebut = t.is_opp_debut || false;
+
+                // --- Card 1: DFS Verdict ---
+                let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
+                if ((isTrap && physScore < 50) || (isParadox && physScore < 50) || (stackScore < 75)) {
+                    verdictLabel = 'D-TIER HARD FADE';
+                    verdictColor = '#ff453a';
+                    verdictBg = 'rgba(255, 69, 58, 0.12)';
+                    verdictIcon = '🚫';
+                    verdictDesc = 'Weak physical floor matched with excessive risk or low implied total. Complete stack fade recommended.';
+                } else if (stackScore >= 110 && physScore >= 85 && !isTrap) {
+                    verdictLabel = 'S-TIER AUTO PLAY';
+                    verdictColor = '#32d74b';
+                    verdictBg = 'rgba(50, 215, 75, 0.15)';
+                    verdictIcon = '⚡';
+                    verdictDesc = 'Elite physical metrics combined with massive market backing. High-conviction core stack choice.';
+                } else if (stackScore >= 95 && !isTrap && (isShark || isWhale || t.is_sneaky || isBurst)) {
+                    verdictLabel = 'A-TIER GPP PIVOT';
+                    verdictColor = '#5ac8fa';
+                    verdictBg = 'rgba(90, 200, 250, 0.12)';
+                    verdictIcon = '🛸';
+                    verdictDesc = 'Premium contrarian play with sharp money support. High tournament ceiling with low projected ownership.';
+                } else if (stackScore >= 80 && !isTrap) {
+                    verdictLabel = 'B-TIER VALUE STACK';
+                    verdictColor = '#ff9f0a';
+                    verdictBg = 'rgba(255, 159, 10, 0.12)';
+                    verdictIcon = '🎯';
+                    verdictDesc = 'Viable salary-saving stack with high correlation upside. Great secondary tournament stack selection.';
                 } else {
-                    platOpsDiffEl.style.color = 'var(--text-primary)';
+                    verdictLabel = 'C-TIER GPP DART';
+                    verdictColor = '#ff9f0a';
+                    verdictBg = 'rgba(255, 159, 10, 0.08)';
+                    verdictIcon = '🎯';
+                    verdictDesc = 'High-variance dart throw. Play only in large multi-entry portfolios to capture outlier slate outcomes.';
                 }
-                
-                const pitcherLhhOps = typeof platoon.pitcher_vs_lhh_ops === 'number' ? platoon.pitcher_vs_lhh_ops : parseFloat(platoon.pitcher_vs_lhh_ops);
-                const pitcherRhhOps = typeof platoon.pitcher_vs_rhh_ops === 'number' ? platoon.pitcher_vs_rhh_ops : parseFloat(platoon.pitcher_vs_rhh_ops);
-                const lhhStr = !isNaN(pitcherLhhOps) ? pitcherLhhOps.toFixed(3) : '-';
-                const rhhStr = !isNaN(pitcherRhhOps) ? pitcherRhhOps.toFixed(3) : '-';
-                platPSplitsEl.innerText = `${lhhStr} / ${rhhStr}`;
-                
-                let advBadge = '';
-                if (platoon.advantage === 'ELITE PLATOON') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.3); font-size:0.75rem; padding:2px 6px;">⚡ ELITE</span>`;
-                } else if (platoon.advantage === 'STRONG EDGE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(10,132,255,0.12); color:#0a84ff; border:1px solid rgba(10,132,255,0.25); font-size:0.75rem; padding:2px 6px;">🎯 STRONG</span>`;
-                } else if (platoon.advantage === 'NEUTRAL') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 6px;">— NEUTRAL</span>`;
-                } else if (platoon.advantage === 'SLIGHT FADE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.12); color:#ff9f0a; border:1px solid rgba(255,159,10,0.25); font-size:0.75rem; padding:2px 6px;">⚠️ FADE</span>`;
+
+                // --- Card 2: Roster Leverage & Tactic ---
+                let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
+                if (isTrap && (stackScore >= 95 || (t.implied_total && parseFloat(t.implied_total) >= 4.5))) {
+                    ownLabel = 'CHALK TRAP';
+                    ownColor = '#ff453a';
+                    ownBg = 'rgba(255, 69, 58, 0.12)';
+                    ownIcon = '🚨';
+                    ownDesc = 'AI Analyst: Heavily stacked by the public today but carries high physical floor risk. Fading or playing significantly underweight is highly recommended.';
+                } else if ((isShark || isWhale || (t.divergence || 0) > 10) && stackScore >= 85 && !isTrap) {
+                    ownLabel = 'SHARP CONTRARIAN';
+                    ownColor = '#32d74b';
+                    ownBg = 'rgba(50, 215, 75, 0.12)';
+                    ownIcon = '📊';
+                    ownDesc = 'AI Analyst: Under-the-radar tournament play receiving institutional sharp money backing. High-conviction leverage play over chalky options.';
+                } else if (stackScore >= 105 && !isTrap) {
+                    ownLabel = 'CHALK PLAY';
+                    ownColor = '#ff9f0a';
+                    ownBg = 'rgba(255, 159, 10, 0.12)';
+                    ownIcon = '👥';
+                    ownDesc = 'AI Analyst: High implied total and public popularity. Best used as a high-floor base; ensure you differentiate your lineup elsewhere.';
+                } else if (stackScore >= 80 && (t.is_sneaky || t.bullpen_fatigue >= 80 || isBurst)) {
+                    ownLabel = 'SNEAKY VALUE';
+                    ownColor = '#0a84ff';
+                    ownBg = 'rgba(10, 132, 255, 0.12)';
+                    ownIcon = '🛸';
+                    ownDesc = 'AI Analyst: Low-owned offense attacking a vulnerable bullpen or carrying positive splits. Excellent secondary stack to unlock high-priced pitchers.';
                 } else {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,69,58,0.15); color:#ff453a; border:1px solid rgba(255,69,58,0.3); font-size:0.75rem; padding:2px 6px;">🚨 TRAP</span>`;
+                    ownLabel = 'LOW-VALUE FADE';
+                    ownColor = '#8e8e93';
+                    ownBg = 'rgba(100, 100, 100, 0.08)';
+                    ownIcon = '🚫';
+                    ownDesc = 'AI Analyst: Weak overall stack metrics with no active leverage signals. Do not waste roster spots on low-total, unbacked offenses.';
                 }
-                platAdvEl.innerHTML = advBadge;
-                document.getElementById('tm-platoon-card').style.display = 'block';
-            } else {
-                document.getElementById('tm-platoon-card').style.display = 'none';
-            }
 
-            // ============================================================
-            // v9.5: Build the 3-Column "Roster Intel" Grid for Team Stacks
-            // ============================================================
-            const stackScore = t.stack_score || 0;
-            const physScore = t.physics_score || 0;
-            const isTrap = t.is_trap || false;
-            const isParadox = t.is_paradox || false;
-            const isShark = t.is_shark || false;
-            const isWhale = t.is_whale || false;
-            const isStorm = t.is_storm || false;
-            const isSteam = t.is_steam || false;
-            const isSharp = t.is_sharp || false;
-            const isBurst = t.is_burst || false;
-            const isDebut = t.is_opp_debut || false;
+                // --- Card 3: Optimal Stack Construction ---
+                let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
+                if (verdictLabel === 'S-TIER AUTO PLAY' || (stackScore >= 105 && !isTrap)) {
+                    buildLabel = 'FULL 5-MAN STACK';
+                    buildColor = '#32d74b';
+                    buildBg = 'rgba(50, 215, 75, 0.15)';
+                    buildIcon = '🧩';
+                    buildDesc = 'AI Builder: Maximize correlation. Build as a full 5-man stack (Hitters 1-5) to capture full scoring upside in GPP tournaments.';
+                } else if (verdictLabel === 'A-TIER GPP PIVOT' || verdictLabel === 'B-TIER VALUE STACK') {
+                    buildLabel = '2-3 MAN MINI-STACK';
+                    buildColor = '#0a84ff';
+                    buildBg = 'rgba(10, 132, 255, 0.12)';
+                    buildIcon = '✂️';
+                    buildDesc = 'AI Builder: Target the heart of the order. Pair 2-3 correlated top-of-the-order hitters in premium platoon matchups to capture efficiency.';
+                } else if (stackScore >= 80 && (t.dqi_pos_factors || []).length > 0) {
+                    buildLabel = 'ONE-OFF BATS ONLY';
+                    buildColor = '#ff9f0a';
+                    buildBg = 'rgba(255, 159, 10, 0.12)';
+                    buildIcon = '🎯';
+                    buildDesc = 'AI Builder: Do not stack. Cherry-pick 1 or 2 specific hitters with strong individual splits or high individual SMASH grades.';
+                } else {
+                    buildLabel = 'TOTAL STACK FADE';
+                    buildColor = '#ff453a';
+                    buildBg = 'rgba(255, 69, 58, 0.12)';
+                    buildIcon = '🚫';
+                    buildDesc = 'AI Builder: Zero exposure. Completely remove this team from your player pool to optimize salary and ceiling projections.';
+                }
 
-            // --- Card 1: DFS Verdict ---
-            let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap && physScore < 50) || (isParadox && physScore < 50) || (stackScore < 75)) {
-                verdictLabel = 'D-TIER HARD FADE';
-                verdictColor = '#ff453a';
-                verdictBg = 'rgba(255, 69, 58, 0.12)';
-                verdictIcon = '🚫';
-                verdictDesc = 'Weak physical floor matched with excessive risk or low implied total. Complete stack fade recommended.';
-            } else if (stackScore >= 110 && physScore >= 85 && !isTrap) {
-                verdictLabel = 'S-TIER AUTO PLAY';
-                verdictColor = '#32d74b';
-                verdictBg = 'rgba(50, 215, 75, 0.15)';
-                verdictIcon = '⚡';
-                verdictDesc = 'Elite physical metrics combined with massive market backing. High-conviction core stack choice.';
-            } else if (stackScore >= 95 && !isTrap && (isShark || isWhale || isSneaky || isBurst)) {
-                verdictLabel = 'A-TIER GPP PIVOT';
-                verdictColor = '#5ac8fa';
-                verdictBg = 'rgba(90, 200, 250, 0.12)';
-                verdictIcon = '🛸';
-                verdictDesc = 'Premium contrarian play with sharp money support. High tournament ceiling with low projected ownership.';
-            } else if (stackScore >= 80 && !isTrap) {
-                verdictLabel = 'B-TIER VALUE STACK';
-                verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255, 159, 10, 0.12)';
-                verdictIcon = '🎯';
-                verdictDesc = 'Viable salary-saving stack with high correlation upside. Great secondary tournament stack selection.';
-            } else {
-                verdictLabel = 'C-TIER GPP DART';
-                verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255, 159, 10, 0.08)';
-                verdictIcon = '🎯';
-                verdictDesc = 'High-variance dart throw. Play only in large multi-entry portfolios to capture outlier slate outcomes.';
-            }
+                // --- Card 4: Umpire & Environment ---
+                const factor = t.umpire_factor != null ? parseFloat(t.umpire_factor) : 1.0;
+                const weatherLabel = t.weather_label || 'Unknown';
+                let envLabel, envColor, envBg, envIcon, envDesc;
+                
+                let isHitterEnv = factor < 0.98;
+                let isPitcherEnv = factor > 1.02;
+                
+                if (isHitterEnv) {
+                    envLabel = 'HITTER HAVEN';
+                    envColor = '#32d74b';
+                    envBg = 'rgba(50, 215, 75, 0.1)';
+                    envIcon = '🟢';
+                    envDesc = `Zone: Hitter-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
+                } else if (isPitcherEnv) {
+                    envLabel = 'PITCHER\'S PARK';
+                    envColor = '#ff453a';
+                    envBg = 'rgba(255, 69, 58, 0.1)';
+                    envIcon = '🔴';
+                    envDesc = `Zone: Pitcher-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
+                } else {
+                    envLabel = 'NEUTRAL ZONE';
+                    envColor = '#8e8e93';
+                    envBg = 'rgba(100, 100, 100, 0.1)';
+                    envIcon = '⚪';
+                    envDesc = `Zone: Neutral (${factor.toFixed(2)}x) under standard park conditions. weather: ${weatherLabel}.`;
+                }
 
-            // --- Card 2: Roster Leverage & Tactic ---
-            let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
-            if (isTrap && (stackScore >= 95 || (t.implied_total && parseFloat(t.implied_total) >= 4.5))) {
-                ownLabel = 'CHALK TRAP';
-                ownColor = '#ff453a';
-                ownBg = 'rgba(255, 69, 58, 0.12)';
-                ownIcon = '🚨';
-                ownDesc = 'AI Analyst: Heavily stacked by the public today but carries high physical floor risk. Fading or playing significantly underweight is highly recommended.';
-            } else if ((isShark || isWhale || t.divergence > 10) && stackScore >= 85 && !isTrap) {
-                ownLabel = 'SHARP CONTRARIAN';
-                ownColor = '#32d74b';
-                ownBg = 'rgba(50, 215, 75, 0.12)';
-                ownIcon = '📊';
-                ownDesc = 'AI Analyst: Under-the-radar tournament play receiving institutional sharp money backing. High-conviction leverage play over chalky options.';
-            } else if (stackScore >= 105 && !isTrap) {
-                ownLabel = 'CHALK PLAY';
-                ownColor = '#ff9f0a';
-                ownBg = 'rgba(255, 159, 10, 0.12)';
-                ownIcon = '👥';
-                ownDesc = 'AI Analyst: High implied total and public popularity. Best used as a high-floor base; ensure you differentiate your lineup elsewhere.';
-            } else if (stackScore >= 80 && (t.is_sneaky || t.bullpen_fatigue >= 80 || isBurst)) {
-                ownLabel = 'SNEAKY VALUE';
-                ownColor = '#0a84ff';
-                ownBg = 'rgba(10, 132, 255, 0.12)';
-                ownIcon = '🛸';
-                ownDesc = 'AI Analyst: Low-owned offense attacking a vulnerable bullpen or carrying positive splits. Excellent secondary stack to unlock high-priced pitchers.';
-            } else {
-                ownLabel = 'LOW-VALUE FADE';
-                ownColor = '#8e8e93';
-                ownBg = 'rgba(100, 100, 100, 0.08)';
-                ownIcon = '🚫';
-                ownDesc = 'AI Analyst: Weak overall stack metrics with no active leverage signals. Do not waste roster spots on low-total, unbacked offenses.';
-            }
+                // Check for ITT (Implied Team Total) Sanity Gate Bypass Warning
+                let warningHTML = '';
+                const isSharpBacked = isWhale || isStorm || ((t.divergence || 0) > 15);
+                const impliedTotalVal = parseFloat(t.implied_total || 0);
+                if (impliedTotalVal > 0 && impliedTotalVal < 4.0 && isSharpBacked) {
+                    warningHTML = `
+                        <div style="background:rgba(255,159,10,0.1); border:1px dashed #ff9f0a; border-radius:12px; padding:12px; margin-top:14px; display:flex; align-items:center; gap:10px;">
+                            <span style="font-size:1.2rem; margin-right:4px;">⚠️</span>
+                            <div style="font-size:0.75rem; color:#ff9f0a; line-height:1.3; font-weight:500; text-align:left;">
+                                <strong>Vegas Low-Total Alert:</strong> Implied total is low (${impliedTotalVal} runs). Sharp/whale steam is bypassing the safety gate, but physical floor risk remains high.
+                            </div>
+                        </div>
+                    `;
+                }
 
-            // --- Card 3: Optimal Stack Construction ---
-            let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
-            if (verdictLabel === 'S-TIER AUTO PLAY' || (stackScore >= 105 && !isTrap)) {
-                buildLabel = 'FULL 5-MAN STACK';
-                buildColor = '#32d74b';
-                buildBg = 'rgba(50, 215, 75, 0.15)';
-                buildIcon = '🧩';
-                buildDesc = 'AI Builder: Maximize correlation. Build as a full 5-man stack (Hitters 1-5) to capture full scoring upside in GPP tournaments.';
-            } else if (verdictLabel === 'A-TIER GPP PIVOT' || verdictLabel === 'B-TIER VALUE STACK') {
-                buildLabel = '2-3 MAN MINI-STACK';
-                buildColor = '#0a84ff';
-                buildBg = 'rgba(10, 132, 255, 0.12)';
-                buildIcon = '✂️';
-                buildDesc = 'AI Builder: Target the heart of the order. Pair 2-3 correlated top-of-the-order hitters in premium platoon matchups to capture efficiency.';
-            } else if (stackScore >= 80 && (t.dqi_pos_factors || []).length > 0) {
-                buildLabel = 'ONE-OFF BATS ONLY';
-                buildColor = '#ff9f0a';
-                buildBg = 'rgba(255, 159, 10, 0.12)';
-                buildIcon = '🎯';
-                buildDesc = 'AI Builder: Do not stack. Cherry-pick 1 or 2 specific hitters with strong individual splits or high individual SMASH grades.';
-            } else {
-                buildLabel = 'TOTAL STACK FADE';
-                buildColor = '#ff453a';
-                buildBg = 'rgba(255, 69, 58, 0.12)';
-                buildIcon = '🚫';
-                buildDesc = 'AI Builder: Zero exposure. Completely remove this team from your player pool to optimize salary and ceiling projections.';
-            }
-
-            // --- Card 4: Umpire & Environment ---
-            const factor = t.umpire_factor != null ? parseFloat(t.umpire_factor) : 1.0;
-            const weatherLabel = t.weather_label || 'Unknown';
-            let envLabel, envColor, envBg, envIcon, envDesc;
-            
-            let isHitterEnv = factor < 0.98;
-            let isPitcherEnv = factor > 1.02;
-            
-            if (isHitterEnv) {
-                envLabel = 'HITTER HAVEN';
-                envColor = '#32d74b';
-                envBg = 'rgba(50, 215, 75, 0.1)';
-                envIcon = '🟢';
-                envDesc = `Zone: Hitter-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
-            } else if (isPitcherEnv) {
-                envLabel = 'PITCHER\'S PARK';
-                envColor = '#ff453a';
-                envBg = 'rgba(255, 69, 58, 0.1)';
-                envIcon = '🔴';
-                envDesc = `Zone: Pitcher-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
-            } else {
-                envLabel = 'NEUTRAL ZONE';
-                envColor = '#8e8e93';
-                envBg = 'rgba(100, 100, 100, 0.1)';
-                envIcon = '⚪';
-                envDesc = `Zone: Neutral (${factor.toFixed(2)}x) under standard park conditions. weather: ${weatherLabel}.`;
-            }
-
-            // Check for ITT (Implied Team Total) Sanity Gate Bypass Warning
-            let warningHTML = '';
-            const isSharpBacked = isWhale || isStorm || (t.divergence > 15);
-            const impliedTotalVal = parseFloat(t.implied_total || 0);
-            if (impliedTotalVal > 0 && impliedTotalVal < 4.0 && isSharpBacked) {
-                warningHTML = `
-                    <div style="background:rgba(255,159,10,0.1); border:1px dashed #ff9f0a; border-radius:12px; padding:12px; margin-top:14px; display:flex; align-items:center; gap:10px;">
-                        <span style="font-size:1.2rem; margin-right:4px;">⚠️</span>
-                        <div style="font-size:0.75rem; color:#ff9f0a; line-height:1.3; font-weight:500; text-align:left;">
-                            <strong>Vegas Low-Total Alert:</strong> Implied total is low (${impliedTotalVal} runs). Sharp/whale steam is bypassing the safety gate, but physical floor risk remains high.
+                document.getElementById('tm-roster-intel').innerHTML = `
+                    <div class="roster-intel-grid-team">
+                        <!-- DFS Verdict -->
+                        <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
+                        </div>
+                        <!-- Roster Leverage & Tactic -->
+                        <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
+                        </div>
+                        <!-- Optimal Stack Construction -->
+                        <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal Stack Construction</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
+                        </div>
+                        <!-- Umpire & Environment -->
+                        <div style="background:${envBg}; border:1px solid ${envColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire & Environment</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${envColor}; line-height:1.1; margin-bottom:4px;">${envIcon} ${envLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${envDesc}</div>
                         </div>
                     </div>
+                    ${warningHTML}
+                    ${t.is_cold_streak ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(0,180,216,0.08); border:1px dashed #00b4d8; border-radius:10px; font-size:0.75rem; color:#00b4d8;"><strong>🥶 COLD STREAK:</strong> This lineup is striking out ${t.rolling_k_delta}% more than their season average recently. Consider reducing stack size.</div>` : ''}
+                    ${t.is_physics_override ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(255,214,0,0.08); border:1px dashed #ffd600; border-radius:10px; font-size:0.75rem; color:#ffd600;"><strong>⚡ PHY OVERRIDE:</strong> This lineup grades out physically stronger than the market is pricing. Potential hidden value — check official lineup confirmation.</div>` : ''}
                 `;
+
+                document.getElementById('team-modal').classList.add('open');
+                document.getElementById('team-modal-overlay').classList.add('open');
+            } catch (err) {
+                console.error("Error in openTeamModal:", err);
+                try {
+                    const t = JSON.parse(decodeURIComponent(tStr));
+                    document.getElementById('tm-name').innerText = (t && t.team) || 'Unknown';
+                    document.getElementById('tm-matchup').innerText = `Error loading profile`;
+                    document.getElementById('tm-score').innerText = (t && t.stack_score) || '—';
+                    document.getElementById('tm-roster-intel').innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                            <span style="font-size: 2rem;">⚠️</span>
+                            <p style="margin: 10px 0 0 0; font-size: 0.85rem;">Failed to render tactical details. Data may be incomplete.</p>
+                        </div>
+                    `;
+                    document.getElementById('tm-opp-pitcher-card').style.display = 'none';
+                    document.getElementById('tm-platoon-card').style.display = 'none';
+                    document.getElementById('team-modal').classList.add('open');
+                    document.getElementById('team-modal-overlay').classList.add('open');
+                } catch (e2) {
+                    console.error("Critical fallback failure in openTeamModal:", e2);
+                }
             }
-
-            document.getElementById('tm-roster-intel').innerHTML = `
-                <div class="roster-intel-grid-team">
-                    <!-- DFS Verdict -->
-                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
-                    </div>
-                    <!-- Roster Leverage & Tactic -->
-                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
-                    </div>
-                    <!-- Optimal Stack Construction -->
-                    <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal Stack Construction</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
-                    </div>
-                    <!-- Umpire & Environment -->
-                    <div style="background:${envBg}; border:1px solid ${envColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire & Environment</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${envColor}; line-height:1.1; margin-bottom:4px;">${envIcon} ${envLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${envDesc}</div>
-                    </div>
-                </div>
-                ${warningHTML}
-                ${t.is_cold_streak ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(0,180,216,0.08); border:1px dashed #00b4d8; border-radius:10px; font-size:0.75rem; color:#00b4d8;"><strong>🥶 COLD STREAK:</strong> This lineup is striking out ${t.rolling_k_delta}% more than their season average recently. Consider reducing stack size.</div>` : ''}
-                ${t.is_physics_override ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(255,214,0,0.08); border:1px dashed #ffd600; border-radius:10px; font-size:0.75rem; color:#ffd600;"><strong>⚡ PHY OVERRIDE:</strong> This lineup grades out physically stronger than the market is pricing. Potential hidden value — check official lineup confirmation.</div>` : ''}
-            `;
-
-            document.getElementById('team-modal').classList.add('open');
-            document.getElementById('team-modal-overlay').classList.add('open');
         }
 
         function closeTeamModal() {
@@ -5325,364 +5346,388 @@
 
         // Granular Pitcher Modal logic
         function openPitcherModal(pStr) {
-            const p = JSON.parse(decodeURIComponent(pStr));
-            document.getElementById('pm-name').innerText = p.pitcher;
-            document.getElementById('pm-matchup').innerText = `vs ${p.opponent} (${p.team})`;
-            document.getElementById('pm-score').innerText = p.alpha_score;
-            document.getElementById('pm-phys').innerText = p.physics_score || 0;
-            document.getElementById('pm-mkt').innerText = p.market_score || 0;
-            
-            let kStr = '-';
-            if (p.k_line) {
-                kStr = p.k_line;
-                if (p.k_odds !== null && p.k_odds !== undefined && p.k_odds !== 0) {
-                    kStr += ` (${p.k_odds > 0 ? '+' : ''}${p.k_odds})`;
-                }
-            }
-            document.getElementById('pm-kline').innerText = kStr;
-            
-            let outsStr = '-';
-            if (p.outs_line) {
-                outsStr = p.outs_line;
-                if (p.outs_odds !== null && p.outs_odds !== undefined && p.outs_odds !== 0) {
-                    outsStr += ` (${p.outs_odds > 0 ? '+' : ''}${p.outs_odds})`;
-                }
-            }
-            document.getElementById('pm-outsline').innerText = outsStr;
-
-            let badgesHTML = '';
-            if (p.is_juiced_target) badgesHTML += '<span class="signal-pill pill-target">🎯 TARGET</span>';
-            badgesHTML += buildMarketSignalPills(p, false);
-            if (p.is_debut) badgesHTML += '<span class="signal-pill pill-storm">✨ DEBUT</span>';
-            if (p.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
-            if (p.is_hazard) badgesHTML += '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>';
-            if (p.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP SP</span>';
-            if (p.is_low_ceiling) badgesHTML += '<span class="signal-pill pill-neutral">📉 CEILING</span>';
-            
-            document.getElementById('pm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
-
-            // Find opposing stack team info
-            let oppT = null;
-            if (latestData.teams && p.opponent) {
-                oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
-            }
-
-            if (oppT) {
-                document.getElementById('pm-opp-stack').innerText = oppT.stack_score || 0;
-                document.getElementById('pm-opp-itt').innerText = oppT.implied_total || 0;
-                document.getElementById('pm-opp-div').innerText = `${oppT.divergence || 0}%`;
-
-                // v9.5: Render O-DIV / U-DIV market divergence signal from backend data
-                const totalSig = oppT.total_signal || '';
-                let totalSigHtml = '';
-                if (totalSig.includes('O-DIV')) {
-                    totalSigHtml = `<span class="signal-pill" style="background:rgba(255,69,58,0.18); color:#ff453a; border:1px solid rgba(255,69,58,0.45); font-size:0.78rem; padding:2px 7px; font-weight:700;">📈 ${totalSig}</span>`;
-                } else if (totalSig.includes('U-DIV')) {
-                    totalSigHtml = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.78rem; padding:2px 7px; font-weight:700;">📉 ${totalSig}</span>`;
-                } else if (totalSig) {
-                    totalSigHtml = `<span class="signal-pill pill-neutral" style="font-size:0.78rem; padding:2px 7px;">${totalSig}</span>`;
-                } else {
-                    totalSigHtml = `<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>`;
-                }
-                document.getElementById('pm-opp-total-signal').innerHTML = totalSigHtml;
-
-                // v9.5: Use pre-calculated DQI from the backend (injected in /api/results)
-                let dqiHtml = 'N/A';
-                if (oppT.dqi_score !== undefined) {
-                    const dqiScore = oppT.dqi_score;
-                    const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
-                    const dqiColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
-                    let dqiFactorStr = '';
-                    if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
-                        dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
+            try {
+                const p = JSON.parse(decodeURIComponent(pStr));
+                document.getElementById('pm-name').innerText = p.pitcher || '—';
+                document.getElementById('pm-matchup').innerText = `vs ${p.opponent || '—'} (${p.team || '—'})`;
+                document.getElementById('pm-score').innerText = p.alpha_score || '—';
+                document.getElementById('pm-phys').innerText = p.physics_score || 0;
+                document.getElementById('pm-mkt').innerText = p.market_score || 0;
+                
+                let kStr = '-';
+                if (p.k_line) {
+                    kStr = p.k_line;
+                    if (p.k_odds !== null && p.k_odds !== undefined && p.k_odds !== 0) {
+                        kStr += ` (${p.k_odds > 0 ? '+' : ''}${p.k_odds})`;
                     }
-                    if (oppT.dqi_warn_factors && oppT.dqi_warn_factors.length > 0) {
-                        const formattedWarns = oppT.dqi_warn_factors.map(f => {
-                            if (f.includes("Bypass")) {
-                                return `<span style="color:#5ac8fa;">⚡ ${f}</span>`;
-                            }
-                            return `<span>⚠️ ${f}</span>`;
-                        }).join(' · ');
-                        dqiFactorStr += `<div style="color:#ff9f0a; font-size:0.72rem; margin-top:2px;">${formattedWarns}</div>`;
+                }
+                document.getElementById('pm-kline').innerText = kStr;
+                
+                let outsStr = '-';
+                if (p.outs_line) {
+                    outsStr = p.outs_line;
+                    if (p.outs_odds !== null && p.outs_odds !== undefined && p.outs_odds !== 0) {
+                        outsStr += ` (${p.outs_odds > 0 ? '+' : ''}${p.outs_odds})`;
                     }
-                    dqiHtml = `<span style="color:${dqiColor}; font-weight:bold;">${dqiScore}% [${dqiStatus}]</span>${dqiFactorStr}`;
-                } else if (oppT.divergence >= 10) {
-                    // Fallback if not yet injected
-                    const dqiScore = Math.max(0, Math.min(100, 50));
-                    dqiHtml = `<span style="color:#ff9f0a; font-weight:bold;">${dqiScore}% [CAUTION]</span>`;
                 }
-                document.getElementById('pm-opp-dqi').innerHTML = dqiHtml;
+                document.getElementById('pm-outsline').innerText = outsStr;
 
-                let tBadgesHTML = '';
-                if (oppT.is_shark) tBadgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
-                if (oppT.is_storm) tBadgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
-                if (oppT.is_whale) tBadgesHTML += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
-                if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
-                if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
-                if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
-                if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
-                if (oppT.is_fade_risk) tBadgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
-                if (oppT.is_sneaky) tBadgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
-                if (oppT.is_paradox) tBadgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
-                if (oppT.trend === 'SURGING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
-                if (oppT.trend === 'FADING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
+                let badgesHTML = '';
+                if (p.is_juiced_target) badgesHTML += '<span class="signal-pill pill-target">🎯 TARGET</span>';
+                badgesHTML += buildMarketSignalPills(p, false);
+                if (p.is_debut) badgesHTML += '<span class="signal-pill pill-storm">✨ DEBUT</span>';
+                if (p.is_paradox) badgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
+                if (p.is_hazard) badgesHTML += '<span class="signal-pill pill-exhausted">🌋 HAZARD</span>';
+                if (p.is_trap) badgesHTML += '<span class="signal-pill pill-trap">🚨 TRAP SP</span>';
+                if (p.is_low_ceiling) badgesHTML += '<span class="signal-pill pill-neutral">📉 CEILING</span>';
                 
-                document.getElementById('pm-opp-badges').innerHTML = tBadgesHTML || '<span style="color:var(--text-secondary); font-size:0.8rem;">No active flags.</span>';
-                document.getElementById('pm-opp-card').style.display = 'block';
-                document.getElementById('pm-opp-badges-card').style.display = 'block';
-            } else {
-                document.getElementById('pm-opp-card').style.display = 'none';
-                document.getElementById('pm-opp-badges-card').style.display = 'none';
-            }
+                document.getElementById('pm-badges').innerHTML = badgesHTML || '<span style="color:var(--text-secondary); font-size:0.9rem;">No active flags.</span>';
 
-            // Platoon splits profile integration for Starting Pitcher
-            let platoon = null;
-            if (window.platoonMatchups) {
-                platoon = window.platoonMatchups.find(m => m.opp_pitcher.toLowerCase() === p.pitcher.toLowerCase());
-            }
-            
-            const platHandEl = document.getElementById('pm-plat-hand');
-            const platVlEl = document.getElementById('pm-plat-vl');
-            const platVrEl = document.getElementById('pm-plat-vr');
-            const platOppOpsEl = document.getElementById('pm-plat-opp-ops');
-            const platAdvEl = document.getElementById('pm-plat-advantage');
-            
-            if (platoon) {
-                platHandEl.innerText = `${platoon.pitcher_hand_label}`;
-                platHandEl.style.color = platoon.pitcher_hand === 'L' ? '#ff9f0a' : '#0a84ff';
-                
-                platVlEl.innerText = `${platoon.pitcher_vs_lhh_ops.toFixed(3)} / .${Math.round(platoon.pitcher_vs_lhh_woba * 1000)}`;
-                platVrEl.innerText = `${platoon.pitcher_vs_rhh_ops.toFixed(3)} / .${Math.round(platoon.pitcher_vs_rhh_woba * 1000)}`;
-                
-                // Highlight weak side
-                if (platoon.pitcher_weak_side === 'LHH') {
-                    platVlEl.style.fontWeight = '800';
-                    platVlEl.style.color = '#ff453a';
-                    platVrEl.style.fontWeight = 'normal';
-                    platVrEl.style.color = 'var(--text-primary)';
+                // Find opposing stack team info
+                let oppT = null;
+                if (latestData && latestData.teams && p.opponent) {
+                    oppT = latestData.teams.find(t => t && getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
+                }
+
+                if (oppT) {
+                    document.getElementById('pm-opp-stack').innerText = oppT.stack_score || 0;
+                    document.getElementById('pm-opp-itt').innerText = oppT.implied_total || 0;
+                    document.getElementById('pm-opp-div').innerText = `${oppT.divergence || 0}%`;
+
+                    // v9.5: Render O-DIV / U-DIV market divergence signal from backend data
+                    const totalSig = oppT.total_signal || '';
+                    let totalSigHtml = '';
+                    if (totalSig.includes('O-DIV')) {
+                        totalSigHtml = `<span class="signal-pill" style="background:rgba(255,69,58,0.18); color:#ff453a; border:1px solid rgba(255,69,58,0.45); font-size:0.78rem; padding:2px 7px; font-weight:700;">📈 ${totalSig}</span>`;
+                    } else if (totalSig.includes('U-DIV')) {
+                        totalSigHtml = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.78rem; padding:2px 7px; font-weight:700;">📉 ${totalSig}</span>`;
+                    } else if (totalSig) {
+                        totalSigHtml = `<span class="signal-pill pill-neutral" style="font-size:0.78rem; padding:2px 7px;">${totalSig}</span>`;
+                    } else {
+                        totalSigHtml = `<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>`;
+                    }
+                    document.getElementById('pm-opp-total-signal').innerHTML = totalSigHtml;
+
+                    // v9.5: Use pre-calculated DQI from the backend
+                    let dqiHtml = 'N/A';
+                    if (oppT.dqi_score !== undefined) {
+                        const dqiScore = oppT.dqi_score;
+                        const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                        const dqiColor = dqiScore >= 75 ? '#32d74b' : (dqiScore >= 50 ? '#ff9f0a' : '#ff453a');
+                        let dqiFactorStr = '';
+                        if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
+                            dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
+                        }
+                        if (oppT.dqi_warn_factors && oppT.dqi_warn_factors.length > 0) {
+                            const formattedWarns = oppT.dqi_warn_factors.map(f => {
+                                if (f && f.includes("Bypass")) {
+                                    return `<span style="color:#5ac8fa;">⚡ ${f}</span>`;
+                                }
+                                return `<span>⚠️ ${f}</span>`;
+                            }).join(' · ');
+                            dqiFactorStr += `<div style="color:#ff9f0a; font-size:0.72rem; margin-top:2px;">${formattedWarns}</div>`;
+                        }
+                        dqiHtml = `<span style="color:${dqiColor}; font-weight:bold;">${dqiScore}% [${dqiStatus}]</span>${dqiFactorStr}`;
+                    } else if (oppT.divergence >= 10) {
+                        const dqiScore = 50;
+                        dqiHtml = `<span style="color:#ff9f0a; font-weight:bold;">${dqiScore}% [CAUTION]</span>`;
+                    }
+                    document.getElementById('pm-opp-dqi').innerHTML = dqiHtml;
+
+                    let tBadgesHTML = '';
+                    if (oppT.is_shark) tBadgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
+                    if (oppT.is_storm) tBadgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
+                    if (oppT.is_whale) tBadgesHTML += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
+                    if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
+                    if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
+                    if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
+                    if (oppT.is_trap) tBadgesHTML += '<span class="signal-pill pill-chalk">⚠️ CHALK</span>';
+                    if (oppT.is_fade_risk) tBadgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
+                    if (oppT.is_sneaky) tBadgesHTML += '<span class="signal-pill pill-sneaky">🛸 SNEAKY</span>';
+                    if (oppT.is_paradox) tBadgesHTML += '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>';
+                    if (oppT.trend === 'SURGING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(255,159,10,0.15); color:#ff9f0a; border:1px solid #ff9f0a;">🔥 SURGING</span>';
+                    if (oppT.trend === 'FADING') tBadgesHTML += '<span class="signal-pill" style="background:rgba(0,180,216,0.15); color:#00b4d8; border:1px solid #00b4d8;">❄️ FADING</span>';
+                    
+                    document.getElementById('pm-opp-badges').innerHTML = tBadgesHTML || '<span style="color:var(--text-secondary); font-size:0.8rem;">No active flags.</span>';
+                    document.getElementById('pm-opp-card').style.display = 'block';
+                    document.getElementById('pm-opp-badges-card').style.display = 'block';
                 } else {
-                    platVrEl.style.fontWeight = '800';
-                    platVrEl.style.color = '#ff453a';
-                    platVlEl.style.fontWeight = 'normal';
-                    platVlEl.style.color = 'var(--text-primary)';
+                    document.getElementById('pm-opp-card').style.display = 'none';
+                    document.getElementById('pm-opp-badges-card').style.display = 'none';
+                }
+
+                // Platoon splits profile integration for Starting Pitcher
+                let platoon = null;
+                if (window.platoonMatchups && p.pitcher) {
+                    platoon = window.platoonMatchups.find(m => m && m.opp_pitcher && m.opp_pitcher.toLowerCase() === p.pitcher.toLowerCase());
                 }
                 
-                platOppOpsEl.innerText = platoon.team_vs_hand_ops.toFixed(3);
+                const platHandEl = document.getElementById('pm-plat-hand');
+                const platVlEl = document.getElementById('pm-plat-vl');
+                const platVrEl = document.getElementById('pm-plat-vr');
+                const platOppOpsEl = document.getElementById('pm-plat-opp-ops');
+                const platAdvEl = document.getElementById('pm-plat-advantage');
                 
-                // v9.5 CORRECTED badge logic:
-                // Since this is the PITCHER modal, the platoon advantage is from the OFFENSE's perspective.
-                // ELITE PLATOON for offense = worst case for pitcher (ELITE FADE = dark red)
-                // PLATOON TRAP for offense = best case for pitcher (ELITE PLAY = green)
-                let advBadge = '';
-                if (platoon.advantage === 'ELITE PLATOON') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(139,0,0,0.25); color:#ff453a; border:1px solid rgba(255,69,58,0.5); font-size:0.75rem; padding:2px 8px; font-weight:800;">🚨 ELITE FADE</span>`;
-                } else if (platoon.advantage === 'STRONG EDGE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.18); color:#ff9f0a; border:1px solid rgba(255,159,10,0.4); font-size:0.75rem; padding:2px 8px; font-weight:700;">⚠️ HIGH RISK</span>`;
-                } else if (platoon.advantage === 'NEUTRAL') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 8px;">— NEUTRAL</span>`;
-                } else if (platoon.advantage === 'SLIGHT FADE') {
-                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.75rem; padding:2px 8px; font-weight:700;">✅ STRONG PLAY</span>`;
+                if (platoon) {
+                    platHandEl.innerText = `${platoon.pitcher_hand_label || 'R'}`;
+                    platHandEl.style.color = platoon.pitcher_hand === 'L' ? '#ff9f0a' : '#0a84ff';
+                    
+                    const lhhOpsVal = typeof platoon.pitcher_vs_lhh_ops === 'number' ? platoon.pitcher_vs_lhh_ops : parseFloat(platoon.pitcher_vs_lhh_ops);
+                    const lhhWobaVal = typeof platoon.pitcher_vs_lhh_woba === 'number' ? platoon.pitcher_vs_lhh_woba : parseFloat(platoon.pitcher_vs_lhh_woba);
+                    const rhhOpsVal = typeof platoon.pitcher_vs_rhh_ops === 'number' ? platoon.pitcher_vs_rhh_ops : parseFloat(platoon.pitcher_vs_rhh_ops);
+                    const rhhWobaVal = typeof platoon.pitcher_vs_rhh_woba === 'number' ? platoon.pitcher_vs_rhh_woba : parseFloat(platoon.pitcher_vs_rhh_woba);
+                    
+                    platVlEl.innerText = `${!isNaN(lhhOpsVal) ? lhhOpsVal.toFixed(3) : '-'} / .${!isNaN(lhhWobaVal) ? Math.round(lhhWobaVal * 1000) : '-'}`;
+                    platVrEl.innerText = `${!isNaN(rhhOpsVal) ? rhhOpsVal.toFixed(3) : '-'} / .${!isNaN(rhhWobaVal) ? Math.round(rhhWobaVal * 1000) : '-'}`;
+                    
+                    if (platoon.pitcher_weak_side === 'LHH') {
+                        platVlEl.style.fontWeight = '800';
+                        platVlEl.style.color = '#ff453a';
+                        platVrEl.style.fontWeight = 'normal';
+                        platVrEl.style.color = 'var(--text-primary)';
+                    } else {
+                        platVrEl.style.fontWeight = '800';
+                        platVrEl.style.color = '#ff453a';
+                        platVlEl.style.fontWeight = 'normal';
+                        platVlEl.style.color = 'var(--text-primary)';
+                    }
+                    
+                    const teamOpsVal = typeof platoon.team_vs_hand_ops === 'number' ? platoon.team_vs_hand_ops : parseFloat(platoon.team_vs_hand_ops);
+                    platOppOpsEl.innerText = !isNaN(teamOpsVal) ? teamOpsVal.toFixed(3) : '-';
+                    
+                    let advBadge = '';
+                    if (platoon.advantage === 'ELITE PLATOON') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(139,0,0,0.25); color:#ff453a; border:1px solid rgba(255,69,58,0.5); font-size:0.75rem; padding:2px 8px; font-weight:800;">🚨 ELITE FADE</span>`;
+                    } else if (platoon.advantage === 'STRONG EDGE') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(255,159,10,0.18); color:#ff9f0a; border:1px solid rgba(255,159,10,0.4); font-size:0.75rem; padding:2px 8px; font-weight:700;">⚠️ HIGH RISK</span>`;
+                    } else if (platoon.advantage === 'NEUTRAL') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(255,255,255,0.06); color:var(--text-secondary); font-size:0.75rem; padding:2px 8px;">— NEUTRAL</span>`;
+                    } else if (platoon.advantage === 'SLIGHT FADE') {
+                        advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.15); color:#32d74b; border:1px solid rgba(50,215,75,0.35); font-size:0.75rem; padding:2px 8px; font-weight:700;">✅ STRONG PLAY</span>`;
+                    } else {
+                        advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.2); color:#32d74b; border:1px solid rgba(50,215,75,0.45); font-size:0.75rem; padding:2px 8px; font-weight:800;">⚡ ELITE PLAY</span>`;
+                    }
+                    platAdvEl.innerHTML = advBadge;
+                    document.getElementById('pm-platoon-card').style.display = 'block';
                 } else {
-                    // PLATOON TRAP = pitcher's best case
-                    advBadge = `<span class="signal-pill" style="background:rgba(50,215,75,0.2); color:#32d74b; border:1px solid rgba(50,215,75,0.45); font-size:0.75rem; padding:2px 8px; font-weight:800;">⚡ ELITE PLAY</span>`;
+                    document.getElementById('pm-platoon-card').style.display = 'none';
                 }
-                platAdvEl.innerHTML = advBadge;
-                document.getElementById('pm-platoon-card').style.display = 'block';
-            } else {
-                document.getElementById('pm-platoon-card').style.display = 'none';
-            }
 
-            // ============================================================
-            // v9.5: Build the 3-Column "Roster Intel" Grid & Populate the 4th Grid Card "Game Environment"
-            // ============================================================
-            const alphaScore = p.alpha_score || 0;
-            const physScore = p.physics_score || 0;
-            const isTrap = p.is_trap || false;
-            const isParadox = p.is_paradox || false;
-            const isShark = p.is_shark || false;
-            const isWhale = p.is_whale || false;
-            const isDebut = p.is_debut || false;
+                // ============================================================
+                // v9.5: Build the 3-Column "Roster Intel" Grid & Populate the 4th Grid Card "Game Environment"
+                // ============================================================
+                const alphaScore = p.alpha_score || 0;
+                const physScore = p.physics_score || 0;
+                const isTrap = p.is_trap || false;
+                const isParadox = p.is_paradox || false;
+                const isShark = p.is_shark || false;
+                const isWhale = p.is_whale || false;
+                const isDebut = p.is_debut || false;
 
-            // --- Card 1: DFS Verdict ---
-            let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap && physScore < 10) || (isParadox && physScore < 10) || (alphaScore < 65) || p.is_hazard) {
-                verdictLabel = 'D-TIER HARD FADE';
-                verdictColor = '#ff453a';
-                verdictBg = 'rgba(255, 69, 58, 0.12)';
-                verdictIcon = '🚫';
-                verdictDesc = 'Severe red flags (Trap SP, Hazard, or weak strikeout projection). Complete fade recommended.';
-            } else if (alphaScore >= 95 && physScore >= 65 && !isTrap) {
-                verdictLabel = 'S-TIER CORE ANCHOR';
-                verdictColor = '#32d74b';
-                verdictBg = 'rgba(50, 215, 75, 0.15)';
-                verdictIcon = '⚡';
-                verdictDesc = 'Elite raw physics combined with dominant strikeout projections. Safe cash and GPP core play.';
-            } else if (alphaScore >= 80 && !isTrap && (isShark || isWhale || isDebut)) {
-                verdictLabel = 'A-TIER GPP PLAY';
-                verdictColor = '#5ac8fa';
-                verdictBg = 'rgba(90, 200, 250, 0.12)';
-                verdictIcon = '🛸';
-                verdictDesc = 'High-ceiling tournament option backed by sharp money or debut premium. Excellent leverage target.';
-            } else if (alphaScore >= 65 && !isTrap) {
-                verdictLabel = 'B-TIER VALUE PLAY';
-                verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255, 159, 10, 0.12)';
-                verdictIcon = '🎯';
-                verdictDesc = 'Viable salary-saving starting pitcher option. Solid matchup specs with moderate floor.';
-            } else {
-                verdictLabel = 'C-TIER GPP DART';
-                verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255, 159, 10, 0.08)';
-                verdictIcon = '🎯';
-                verdictDesc = 'Highly volatile. Limit exposure only to deep tournament multi-entry portfolios.';
-            }
-
-            // --- Card 2: Roster Leverage & Tactic ---
-            let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
-            if (isTrap && alphaScore >= 75) {
-                ownLabel = 'CHALK TRAP';
-                ownColor = '#ff453a';
-                ownBg = 'rgba(255, 69, 58, 0.12)';
-                ownIcon = '🚨';
-                ownDesc = 'AI Analyst: Highly owned by the public today but carries significant underlying floor risk. Fading or playing underweight is advised.';
-            } else if ((isShark || isWhale) && alphaScore >= 70 && !isTrap) {
-                ownLabel = 'SHARP CONTRARIAN';
-                ownColor = '#32d74b';
-                ownBg = 'rgba(50, 215, 75, 0.12)';
-                ownIcon = '📊';
-                ownDesc = 'AI Analyst: Elite contrarian leverage target receiving sharp-money volume. Great way to vault over the field in GPP formats.';
-            } else if (alphaScore >= 90 && !isTrap) {
-                ownLabel = 'CHALK PLAY';
-                ownColor = '#ff9f0a';
-                ownBg = 'rgba(255, 159, 10, 0.12)';
-                ownIcon = '👥';
-                ownDesc = 'AI Analyst: Heavily selected public favorite. Best for high-floor stability; ensure differentiation through contrarian batters.';
-            } else if (alphaScore >= 60 && !isTrap) {
-                ownLabel = 'SNEAKY VALUE';
-                ownColor = '#0a84ff';
-                ownBg = 'rgba(10, 132, 255, 0.12)';
-                ownIcon = '🛸';
-                ownDesc = 'AI Analyst: Under-the-radar cheap pitching option. Strong leverage play to unlock salary cap flexibility.';
-            } else {
-                ownLabel = 'LOW-VALUE FADE';
-                ownColor = '#8e8e93';
-                ownBg = 'rgba(100, 100, 100, 0.08)';
-                ownIcon = '🚫';
-                ownDesc = 'AI Analyst: Poor overall pitching metrics with no active leverage signals. Do not waste roster spots on this pitcher.';
-            }
-
-            // --- Card 3: Optimal DFS Usage ---
-            let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
-            if (verdictLabel === 'S-TIER CORE ANCHOR' || (alphaScore >= 90 && !isTrap)) {
-                buildLabel = 'CASH / GPP CORE';
-                buildColor = '#32d74b';
-                buildBg = 'rgba(50, 215, 75, 0.15)';
-                buildIcon = '🧩';
-                buildDesc = 'AI Builder: High stability. Use as your primary cash game anchor or baseline GPP core lineup foundation.';
-            } else if (verdictLabel === 'A-TIER GPP PLAY' || isShark || isWhale) {
-                buildLabel = 'GPP LEVERAGE PLAY';
-                buildColor = '#0a84ff';
-                buildBg = 'rgba(10, 132, 255, 0.12)';
-                buildIcon = '🎯';
-                buildDesc = 'AI Builder: Tournament ceiling play. Deploy in medium-to-large field tournaments to leverage strikeout potential.';
-            } else if (alphaScore >= 60 && !isTrap) {
-                buildLabel = 'SALARY RELIEF ONLY';
-                buildColor = '#ff9f0a';
-                buildBg = 'rgba(255, 159, 10, 0.12)';
-                buildIcon = '💵';
-                buildDesc = 'AI Builder: Budget enabler. Use only to free up salary cap space to stack elite high-priced offenses.';
-            } else {
-                buildLabel = 'TOTAL ROSTER FADE';
-                buildColor = '#ff453a';
-                buildBg = 'rgba(255, 69, 58, 0.12)';
-                buildIcon = '🚫';
-                buildDesc = 'AI Builder: Zero exposure. Completely remove this pitcher from your pool to protect your lineups from blow-up risk.';
-            }
-
-            // --- Populate Roster Intel ---
-            document.getElementById('pm-roster-intel').innerHTML = `
-                <div class="roster-intel-grid-pitcher">
-                    <!-- DFS Verdict -->
-                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
-                    </div>
-                    <!-- Roster Leverage & Tactic -->
-                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
-                    </div>
-                    <!-- Optimal DFS Usage -->
-                    <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal DFS Usage</div>
-                            <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
-                        </div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
-                    </div>
-                </div>
-            `;
-
-            // --- Populate Card 4: Game Environment ---
-            const weatherLabel = p.weather_label || 'Weather: N/A';
-            const parkFactor = p.park_factor !== undefined ? p.park_factor : null;
-            let envIcon = '🌤️';
-            let envColor = 'var(--text-primary)';
-            if (weatherLabel.includes('POSTPONE') || weatherLabel.includes('🔴')) {
-                envIcon = '🌧️'; envColor = '#ff453a';
-            } else if (weatherLabel.includes('DELAY') || weatherLabel.includes('🟠')) {
-                envIcon = '⛅'; envColor = '#ff9f0a';
-            } else if (weatherLabel.includes('DOME') || weatherLabel.includes('🟢') || weatherLabel.includes('CLEAR')) {
-                envIcon = '🏟️'; envColor = '#32d74b';
-            }
-            document.getElementById('pm-env-weather').innerHTML = `<span style="color:${envColor}; font-weight:700;">${envIcon} ${weatherLabel}</span>`;
-
-            let parkStr = 'Neutral (1.00x)';
-            if (parkFactor !== null) {
-                const pfVal = parseFloat(parkFactor);
-                if (pfVal > 1.08) parkStr = `<span style="color:#ff9f0a; font-weight:700;">🏟️ Hitter-Friendly (${pfVal.toFixed(2)}x)</span>`;
-                else if (pfVal < 0.93) parkStr = `<span style="color:#32d74b; font-weight:700;">🏟️ Pitcher's Park (${pfVal.toFixed(2)}x)</span>`;
-                else parkStr = `<span style="color:var(--text-secondary); font-weight:700;">🏟️ Neutral (${pfVal.toFixed(2)}x)</span>`;
-            }
-            document.getElementById('pm-env-park').innerHTML = parkStr;
-
-            // Umpire Assignment
-            const umpName = p.umpire_name || 'TBD';
-            let umpStr = `<span style="color:var(--text-secondary);">${umpName}</span>`;
-            let umpFactor = 1.0;
-            let home = p.side === 'home' ? p.team : p.opponent;
-            if (window.umpireAssignments && window.umpireAssignments[home]) {
-                const ud = window.umpireAssignments[home];
-                umpFactor = ud.factor || 1.0;
-            }
-            if (umpFactor !== 1.0) {
-                const isPitcherUmp = umpFactor < 1.0;
-                umpStr = `<span style="color:${isPitcherUmp ? '#32d74b' : '#ff453a'}; font-weight:700;">${umpName} (${isPitcherUmp ? '🟢 Pitcher' : '🔴 Hitter'}: ${umpFactor.toFixed(2)}x)</span>`;
-            }
-            document.getElementById('pm-env-umpire').innerHTML = umpStr;
-
-            // Vegas Total Signal
-            let envMarketStr = '<span style="color:var(--text-secondary);">—</span>';
-            if (oppT && oppT.total_signal) {
-                const ts = oppT.total_signal;
-                if (ts.includes('O-DIV')) {
-                    envMarketStr = `<span style="color:#ff453a; font-weight:700;">📈 ${ts}</span>`;
-                } else if (ts.includes('U-DIV')) {
-                    envMarketStr = `<span style="color:#32d74b; font-weight:700;">📉 ${ts}</span>`;
+                // --- Card 1: DFS Verdict ---
+                let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
+                if ((isTrap && physScore < 10) || (isParadox && physScore < 10) || (alphaScore < 65) || p.is_hazard) {
+                    verdictLabel = 'D-TIER HARD FADE';
+                    verdictColor = '#ff453a';
+                    verdictBg = 'rgba(255, 69, 58, 0.12)';
+                    verdictIcon = '🚫';
+                    verdictDesc = 'Severe red flags (Trap SP, Hazard, or weak strikeout projection). Complete fade recommended.';
+                } else if (alphaScore >= 95 && physScore >= 65 && !isTrap) {
+                    verdictLabel = 'S-TIER CORE ANCHOR';
+                    verdictColor = '#32d74b';
+                    verdictBg = 'rgba(50, 215, 75, 0.15)';
+                    verdictIcon = '⚡';
+                    verdictDesc = 'Elite raw physics combined with dominant strikeout projections. Safe cash and GPP core play.';
+                } else if (alphaScore >= 80 && !isTrap && (isShark || isWhale || isDebut)) {
+                    verdictLabel = 'A-TIER GPP PLAY';
+                    verdictColor = '#5ac8fa';
+                    verdictBg = 'rgba(90, 200, 250, 0.12)';
+                    verdictIcon = '🛸';
+                    verdictDesc = 'High-ceiling tournament option backed by sharp money or debut premium. Excellent leverage target.';
+                } else if (alphaScore >= 65 && !isTrap) {
+                    verdictLabel = 'B-TIER VALUE PLAY';
+                    verdictColor = '#ff9f0a';
+                    verdictBg = 'rgba(255, 159, 10, 0.12)';
+                    verdictIcon = '🎯';
+                    verdictDesc = 'Viable salary-saving starting pitcher option. Solid matchup specs with moderate floor.';
                 } else {
-                    envMarketStr = `<span style="color:var(--text-secondary);">${ts}</span>`;
+                    verdictLabel = 'C-TIER GPP DART';
+                    verdictColor = '#ff9f0a';
+                    verdictBg = 'rgba(255, 159, 10, 0.08)';
+                    verdictIcon = '🎯';
+                    verdictDesc = 'Highly volatile. Limit exposure only to deep tournament multi-entry portfolios.';
+                }
+
+                // --- Card 2: Roster Leverage & Tactic ---
+                let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
+                if (isTrap && alphaScore >= 75) {
+                    ownLabel = 'CHALK TRAP';
+                    ownColor = '#ff453a';
+                    ownBg = 'rgba(255, 69, 58, 0.12)';
+                    ownIcon = '🚨';
+                    ownDesc = 'AI Analyst: Highly owned by the public today but carries significant underlying floor risk. Fading or playing underweight is advised.';
+                } else if ((isShark || isWhale) && alphaScore >= 70 && !isTrap) {
+                    ownLabel = 'SHARP CONTRARIAN';
+                    ownColor = '#32d74b';
+                    ownBg = 'rgba(50, 215, 75, 0.12)';
+                    ownIcon = '📊';
+                    ownDesc = 'AI Analyst: Elite contrarian leverage target receiving sharp-money volume. Great way to vault over the field in GPP formats.';
+                } else if (alphaScore >= 90 && !isTrap) {
+                    ownLabel = 'CHALK PLAY';
+                    ownColor = '#ff9f0a';
+                    ownBg = 'rgba(255, 159, 10, 0.12)';
+                    ownIcon = '👥';
+                    ownDesc = 'AI Analyst: Heavily selected public favorite. Best for high-floor stability; ensure differentiation through contrarian batters.';
+                } else if (alphaScore >= 60 && !isTrap) {
+                    ownLabel = 'SNEAKY VALUE';
+                    ownColor = '#0a84ff';
+                    ownBg = 'rgba(10, 132, 255, 0.12)';
+                    ownIcon = '🛸';
+                    ownDesc = 'AI Analyst: Under-the-radar cheap pitching option. Strong leverage play to unlock salary cap flexibility.';
+                } else {
+                    ownLabel = 'LOW-VALUE FADE';
+                    ownColor = '#8e8e93';
+                    ownBg = 'rgba(100, 100, 100, 0.08)';
+                    ownIcon = '🚫';
+                    ownDesc = 'AI Analyst: Poor overall pitching metrics with no active leverage signals. Do not waste roster spots on this pitcher.';
+                }
+
+                // --- Card 3: Optimal DFS Usage ---
+                let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
+                if (verdictLabel === 'S-TIER CORE ANCHOR' || (alphaScore >= 90 && !isTrap)) {
+                    buildLabel = 'CASH / GPP CORE';
+                    buildColor = '#32d74b';
+                    buildBg = 'rgba(50, 215, 75, 0.15)';
+                    buildIcon = '🧩';
+                    buildDesc = 'AI Builder: High stability. Use as your primary cash game anchor or baseline GPP core lineup foundation.';
+                } else if (verdictLabel === 'A-TIER GPP PLAY' || isShark || isWhale) {
+                    buildLabel = 'GPP LEVERAGE PLAY';
+                    buildColor = '#0a84ff';
+                    buildBg = 'rgba(10, 132, 255, 0.12)';
+                    buildIcon = '🎯';
+                    buildDesc = 'AI Builder: Tournament ceiling play. Deploy in medium-to-large field tournaments to leverage strikeout potential.';
+                } else if (alphaScore >= 60 && !isTrap) {
+                    buildLabel = 'SALARY RELIEF ONLY';
+                    buildColor = '#ff9f0a';
+                    buildBg = 'rgba(255, 159, 10, 0.12)';
+                    buildIcon = '💵';
+                    buildDesc = 'AI Builder: Budget enabler. Use only to free up salary cap space to stack elite high-priced offenses.';
+                } else {
+                    buildLabel = 'TOTAL ROSTER FADE';
+                    buildColor = '#ff453a';
+                    buildBg = 'rgba(255, 69, 58, 0.12)';
+                    buildIcon = '🚫';
+                    buildDesc = 'AI Builder: Zero exposure. Completely remove this pitcher from your pool to protect your lineups from blow-up risk.';
+                }
+
+                // --- Populate Roster Intel ---
+                document.getElementById('pm-roster-intel').innerHTML = `
+                    <div class="roster-intel-grid-pitcher">
+                        <!-- DFS Verdict -->
+                        <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
+                        </div>
+                        <!-- Roster Leverage & Tactic -->
+                        <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
+                        </div>
+                        <!-- Optimal DFS Usage -->
+                        <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal DFS Usage</div>
+                                <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
+                            </div>
+                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
+                        </div>
+                    </div>
+                `;
+
+                // --- Populate Card 4: Game Environment ---
+                const weatherLabel = p.weather_label || 'Weather: N/A';
+                const parkFactor = p.park_factor !== undefined ? p.park_factor : null;
+                let envIcon = '🌤️';
+                let envColor = 'var(--text-primary)';
+                if (weatherLabel.includes('POSTPONE') || weatherLabel.includes('🔴')) {
+                    envIcon = '🌧️'; envColor = '#ff453a';
+                } else if (weatherLabel.includes('DELAY') || weatherLabel.includes('🟠')) {
+                    envIcon = '⛅'; envColor = '#ff9f0a';
+                } else if (weatherLabel.includes('DOME') || weatherLabel.includes('🟢') || weatherLabel.includes('CLEAR')) {
+                    envIcon = '🏟️'; envColor = '#32d74b';
+                }
+                document.getElementById('pm-env-weather').innerHTML = `<span style="color:${envColor}; font-weight:700;">${envIcon} ${weatherLabel}</span>`;
+
+                let parkStr = 'Neutral (1.00x)';
+                if (parkFactor !== null) {
+                    const pfVal = parseFloat(parkFactor);
+                    if (!isNaN(pfVal)) {
+                        if (pfVal > 1.08) parkStr = `<span style="color:#ff9f0a; font-weight:700;">🏟️ Hitter-Friendly (${pfVal.toFixed(2)}x)</span>`;
+                        else if (pfVal < 0.93) parkStr = `<span style="color:#32d74b; font-weight:700;">🏟️ Pitcher's Park (${pfVal.toFixed(2)}x)</span>`;
+                        else parkStr = `<span style="color:var(--text-secondary); font-weight:700;">🏟️ Neutral (${pfVal.toFixed(2)}x)</span>`;
+                    }
+                }
+                document.getElementById('pm-env-park').innerHTML = parkStr;
+
+                // Umpire Assignment
+                const umpName = p.umpire_name || 'TBD';
+                let umpStr = `<span style="color:var(--text-secondary);">${umpName}</span>`;
+                let umpFactor = 1.0;
+                let home = p.side === 'home' ? p.team : p.opponent;
+                if (window.umpireAssignments && home && window.umpireAssignments[home]) {
+                    const ud = window.umpireAssignments[home];
+                    umpFactor = ud.factor || 1.0;
+                }
+                if (umpFactor !== 1.0) {
+                    const isPitcherUmp = umpFactor < 1.0;
+                    umpStr = `<span style="color:${isPitcherUmp ? '#32d74b' : '#ff453a'}; font-weight:700;">${umpName} (${isPitcherUmp ? '🟢 Pitcher' : '🔴 Hitter'}: ${umpFactor.toFixed(2)}x)</span>`;
+                }
+                document.getElementById('pm-env-umpire').innerHTML = umpStr;
+
+                // Vegas Total Signal
+                let envMarketStr = '<span style="color:var(--text-secondary);">—</span>';
+                if (oppT && oppT.total_signal) {
+                    const ts = oppT.total_signal;
+                    if (ts.includes('O-DIV')) {
+                        envMarketStr = `<span style="color:#ff453a; font-weight:700;">📈 ${ts}</span>`;
+                    } else if (ts.includes('U-DIV')) {
+                        envMarketStr = `<span style="color:#32d74b; font-weight:700;">📉 ${ts}</span>`;
+                    } else {
+                        envMarketStr = `<span style="color:var(--text-secondary);">${ts}</span>`;
+                    }
+                }
+                document.getElementById('pm-env-vegas').innerHTML = envMarketStr;
+
+                document.getElementById('pitcher-modal').classList.add('open');
+                document.getElementById('pitcher-modal-overlay').classList.add('open');
+            } catch (err) {
+                console.error("Error in openPitcherModal:", err);
+                try {
+                    const p = JSON.parse(decodeURIComponent(pStr));
+                    document.getElementById('pm-name').innerText = (p && p.pitcher) || 'Unknown';
+                    document.getElementById('pm-matchup').innerText = `Error loading profile`;
+                    document.getElementById('pm-score').innerText = (p && p.alpha_score) || '—';
+                    document.getElementById('pm-roster-intel').innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                            <span style="font-size: 2rem;">⚠️</span>
+                            <p style="margin: 10px 0 0 0; font-size: 0.85rem;">Failed to render tactical details. Data may be incomplete.</p>
+                        </div>
+                    `;
+                    document.getElementById('pm-opp-card').style.display = 'none';
+                    document.getElementById('pm-opp-badges-card').style.display = 'none';
+                    document.getElementById('pm-platoon-card').style.display = 'none';
+                    document.getElementById('pitcher-modal').classList.add('open');
+                    document.getElementById('pitcher-modal-overlay').classList.add('open');
+                } catch (e2) {
+                    console.error("Critical fallback failure in openPitcherModal:", e2);
                 }
             }
-            document.getElementById('pm-env-vegas').innerHTML = envMarketStr;
-
-            document.getElementById('pitcher-modal').classList.add('open');
-            document.getElementById('pitcher-modal-overlay').classList.add('open');
         }
 
         function closePitcherModal() {
@@ -5691,134 +5736,158 @@
         }
 
         function openHitterModal(hStr) {
-            const h = JSON.parse(decodeURIComponent(hStr));
-            document.getElementById('hm-name').innerText = h.name || '—';
-            document.getElementById('hm-matchup').innerText = `${h.team || ''} vs ${h.opp_pitcher || ''} (${h.pitch_hand || '?'}HP)`;
-            const solo = h.player_score != null ? h.player_score.toFixed(1) : '—';
-            const stackAdj = h.stack_adjusted_score != null && h.stack_adjusted_score !== h.player_score
-                ? ` (stack context ${Number(h.stack_adjusted_score).toFixed(1)})` : '';
-            document.getElementById('hm-score').innerText = solo + stackAdj;
-            document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf + '%' : '—';
-            document.getElementById('hm-phys').innerText = h.physics_score || '—';
-            document.getElementById('hm-mkt').innerText = h.market_score || '—';
-            document.getElementById('hm-xwoba').innerText = (h.matchup_xwoba || 0.330).toFixed(3);
-            document.getElementById('hm-hr').innerText = (h.ahr_price > 0 ? '+' : '') + (h.ahr_price || '—');
-            document.getElementById('hm-hits').innerText = h.hits_line ? `${h.hits_line} (${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})` : '—';
-            document.getElementById('hm-tb').innerText = h.tb_line ? `${h.tb_line} (${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})` : '—';
-
-            let badges = '';
-            const plat = h.platoon_label || '';
-            if (plat.includes('ELITE')) {
-                badges += '<span class="signal-pill pill-el-platoon">⚡ ELITE PLATOON</span>';
-            } else if (plat.includes('TRAP')) {
-                badges += '<span class="signal-pill pill-trap">🚨 PLATOON TRAP</span>';
-            } else if (plat.includes('STRONG')) {
-                badges += '<span class="signal-pill pill-pitch-align">🎯 STRONG EDGE</span>';
-            }
-            if (h.is_juiced_target) badges += '<span class="signal-pill pill-target">🎯 TARGET</span>';
-            if (h.smash_factor) badges += '<span class="signal-pill pill-burst">💥 SMASH</span>';
-            if (h.is_hot_run_msmi || h.is_hot) badges += '<span class="signal-pill pill-target">🔥 HOT RUN</span>';
-            if (h.is_cold_streak_msmi || h.is_cold_streak) badges += '<span class="signal-pill pill-slump">🥶 SLATE SLUMP</span>';
-            if (h.is_speed_target) badges += '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>';
-            if (h.is_prop_juice) badges += '<span class="signal-pill pill-neutral" style="background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;">💧 JUICE</span>';
-            
-            document.getElementById('hm-badges').innerHTML = badges || '<span style="color:var(--text-secondary);">No active flags.</span>';
-
-            const reasons = (h.attack_reasons || []).map(r => `<div style="font-size:0.85rem; margin-bottom:6px; color:var(--text-secondary);">• ${r}</div>`).join('');
-            document.getElementById('hm-reasons').innerHTML = reasons || '<span style="color:var(--text-secondary);">No attack reasons logged.</span>';
-
-            // Matchup Radar DNA Integration
-            const radarCard = document.getElementById('hm-radar-card');
-            const radarBody = document.getElementById('hm-radar-body');
-            const radarSummary = document.getElementById('hm-radar-summary');
-            
-            if (window.radarData && window.radarData.hitters && window.radarData.pitchers) {
-                const formatName = (name) => {
-                    if (!name) return '';
-                    const parts = name.trim().split(' ');
-                    if (parts.length >= 2) {
-                        return `${parts[parts.length - 1]}, ${parts.slice(0, parts.length - 1).join(' ')}`;
-                    }
-                    return name;
-                };
+            try {
+                const h = JSON.parse(decodeURIComponent(hStr));
+                document.getElementById('hm-name').innerText = h.name || '—';
+                document.getElementById('hm-matchup').innerText = `${h.team || ''} vs ${h.opp_pitcher || ''} (${h.pitch_hand || '?'}HP)`;
+                const solo = h.player_score != null ? h.player_score.toFixed(1) : '—';
+                const stackAdj = h.stack_adjusted_score != null && h.stack_adjusted_score !== h.player_score
+                    ? ` (stack context ${Number(h.stack_adjusted_score).toFixed(1)})` : '';
+                document.getElementById('hm-score').innerText = solo + stackAdj;
+                document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf + '%' : '—';
+                document.getElementById('hm-phys').innerText = h.physics_score || '—';
+                document.getElementById('hm-mkt').innerText = h.market_score || '—';
                 
-                const rHitter = formatName(h.name);
-                const rPitcher = formatName(h.opp_pitcher);
+                const xwobaVal = typeof h.matchup_xwoba === 'number' ? h.matchup_xwoba : parseFloat(h.matchup_xwoba || 0.330);
+                document.getElementById('hm-xwoba').innerText = !isNaN(xwobaVal) ? xwobaVal.toFixed(3) : '0.330';
                 
-                const hDNA = window.radarData.hitters[rHitter];
-                const pDNA = window.radarData.pitchers[rPitcher];
-                const lAvg = window.radarData.league_avg || {};
+                document.getElementById('hm-hr').innerText = (h.ahr_price > 0 ? '+' : '') + (h.ahr_price || '—');
+                document.getElementById('hm-hits').innerText = h.hits_line ? `${h.hits_line} (${h.hits_price > 0 ? '+' : ''}${h.hits_price || '-'})` : '—';
+                document.getElementById('hm-tb').innerText = h.tb_line ? `${h.tb_line} (${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})` : '—';
+
+                let badges = '';
+                const plat = h.platoon_label || '';
+                if (plat.includes('ELITE')) {
+                    badges += '<span class="signal-pill pill-el-platoon">⚡ ELITE PLATOON</span>';
+                } else if (plat.includes('TRAP')) {
+                    badges += '<span class="signal-pill pill-trap">🚨 PLATOON TRAP</span>';
+                } else if (plat.includes('STRONG')) {
+                    badges += '<span class="signal-pill pill-pitch-align">🎯 STRONG EDGE</span>';
+                }
+                if (h.is_juiced_target) badges += '<span class="signal-pill pill-target">🎯 TARGET</span>';
+                if (h.smash_factor) badges += '<span class="signal-pill pill-burst">💥 SMASH</span>';
+                if (h.is_hot_run_msmi || h.is_hot) badges += '<span class="signal-pill pill-target">🔥 HOT RUN</span>';
+                if (h.is_cold_streak_msmi || h.is_cold_streak) badges += '<span class="signal-pill pill-slump">🥶 SLATE SLUMP</span>';
+                if (h.is_speed_target) badges += '<span class="signal-pill pill-neutral">🏃‍♂️ THIEF</span>';
+                if (h.is_prop_juice) badges += '<span class="signal-pill pill-neutral" style="background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;">💧 JUICE</span>';
                 
-                if (hDNA && pDNA) {
-                    radarCard.style.display = 'block';
-                    radarBody.innerHTML = '';
-                    
-                    const pitchNames = {
-                        'FF': 'Four-seam Fastball',
-                        'SI': 'Sinker',
-                        'SL': 'Slider',
-                        'CU': 'Curveball',
-                        'CH': 'Changeup'
+                document.getElementById('hm-badges').innerHTML = badges || '<span style="color:var(--text-secondary);">No active flags.</span>';
+
+                const reasons = (h.attack_reasons || []).map(r => `<div style="font-size:0.85rem; margin-bottom:6px; color:var(--text-secondary);">• ${r}</div>`).join('');
+                document.getElementById('hm-reasons').innerHTML = reasons || '<span style="color:var(--text-secondary);">No attack reasons logged.</span>';
+
+                // Matchup Radar DNA Integration
+                const radarCard = document.getElementById('hm-radar-card');
+                const radarBody = document.getElementById('hm-radar-body');
+                const radarSummary = document.getElementById('hm-radar-summary');
+                
+                if (window.radarData && window.radarData.hitters && window.radarData.pitchers) {
+                    const formatName = (name) => {
+                        if (!name) return '';
+                        const parts = name.trim().split(' ');
+                        if (parts.length >= 2) {
+                            return `${parts[parts.length - 1]}, ${parts.slice(0, parts.length - 1).join(' ')}`;
+                        }
+                        return name;
                     };
                     
-                    let primaryMatchups = 0;
-                    let eliteMatchups = 0;
+                    const rHitter = formatName(h.name);
+                    const rPitcher = formatName(h.opp_pitcher);
                     
-                    Object.keys(pitchNames).forEach(ptype => {
-                        const usage = pDNA[ptype] || 0.0;
-                        const hxw = hDNA[ptype] || 0.000;
-                        const l_avg = lAvg[ptype] || 0.300;
-                        const isPrimary = usage >= 25.0;
+                    const hDNA = window.radarData.hitters[rHitter];
+                    const pDNA = window.radarData.pitchers[rPitcher];
+                    const lAvg = window.radarData.league_avg || {};
+                    
+                    if (hDNA && pDNA) {
+                        radarCard.style.display = 'block';
+                        radarBody.innerHTML = '';
                         
-                        let edgeText = '—';
-                        let edgeColor = 'var(--text-secondary)';
-                        if (hxw > 0 && l_avg > 0) {
-                            const diff = ((hxw - l_avg) / l_avg * 100).toFixed(1);
-                            const sign = hxw >= l_avg ? '+' : '';
-                            edgeText = `${sign}${diff}% vs Avg`;
-                            edgeColor = hxw >= l_avg ? '#32d74b' : '#ff453a';
+                        const pitchNames = {
+                            'FF': 'Four-seam Fastball',
+                            'SI': 'Sinker',
+                            'SL': 'Slider',
+                            'CU': 'Curveball',
+                            'CH': 'Changeup'
+                        };
+                        
+                        let primaryMatchups = 0;
+                        let eliteMatchups = 0;
+                        
+                        Object.keys(pitchNames).forEach(ptype => {
+                            const usage = pDNA[ptype] !== undefined ? pDNA[ptype] : 0.0;
+                            const hxw = hDNA[ptype] !== undefined ? hDNA[ptype] : 0.000;
+                            const l_avg = lAvg[ptype] !== undefined ? lAvg[ptype] : 0.300;
+                            const isPrimary = usage >= 25.0;
                             
-                            if (isPrimary) {
-                                primaryMatchups++;
-                                if (hxw > l_avg) eliteMatchups++;
+                            let edgeText = '—';
+                            let edgeColor = 'var(--text-secondary)';
+                            if (hxw > 0 && l_avg > 0) {
+                                const diff = ((hxw - l_avg) / l_avg * 100).toFixed(1);
+                                const sign = hxw >= l_avg ? '+' : '';
+                                edgeText = `${sign}${diff}% vs Avg`;
+                                edgeColor = hxw >= l_avg ? '#32d74b' : '#ff453a';
+                                
+                                if (isPrimary) {
+                                    primaryMatchups++;
+                                    if (hxw > l_avg) eliteMatchups++;
+                                }
                             }
+                            
+                            const row = document.createElement('tr');
+                            row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                            row.style.opacity = usage > 0 ? '1' : '0.4';
+                            
+                            row.innerHTML = `
+                                <td style="padding:10px 8px; font-weight:700;">
+                                    ${pitchNames[ptype]} ${isPrimary ? '<span class="badge-mini" style="background:rgba(255,214,10,0.15); color:#ffd60a; border:1px solid rgba(255,214,10,0.3); border-radius:3px; padding:1px 4px; font-size:0.68em; margin-left:4px;">PRIMARY</span>' : ''}
+                                </td>
+                                <td style="padding:10px 8px; font-weight:800; color:${isPrimary ? '#ffd60a' : 'var(--text-primary)'};">${usage.toFixed(1)}%</td>
+                                <td style="padding:10px 8px; font-weight:700;">.${hxw.toFixed(3).toString().substring(2)}</td>
+                                <td style="padding:10px 8px; color:var(--text-secondary);">.${l_avg.toFixed(3).toString().substring(2)}</td>
+                                <td style="padding:10px 8px; text-align:right; font-weight:800; color:${edgeColor};">${edgeText}</td>
+                            `;
+                            radarBody.appendChild(row);
+                        });
+                        
+                        const matchPercent = primaryMatchups > 0 ? (eliteMatchups / primaryMatchups * 100).toFixed(0) : 0;
+                        let summaryHTML = '';
+                        if (matchPercent >= 60) {
+                            summaryHTML = `🔥 <strong style="color:#32d74b;">ELITE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter has a positive xwOBA edge vs ${eliteMatchups}/${primaryMatchups} of ${h.opp_pitcher || 'SP'}'s primary pitch weapons.`;
+                        } else if (matchPercent > 0) {
+                            summaryHTML = `⚖️ <strong>MODERATE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter matches up reasonably vs ${h.opp_pitcher || 'SP'}'s primary pitch arsenal.`;
+                        } else {
+                            summaryHTML = `⚠️ <strong style="color:#ff453a;">FADE MATCHUP DNA:</strong> Hitter is below average vs the primary pitch types thrown by ${h.opp_pitcher || 'SP'}.`;
                         }
-                        
-                        const row = document.createElement('tr');
-                        row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-                        row.style.opacity = usage > 0 ? '1' : '0.4';
-                        
-                        row.innerHTML = `
-                            <td style="padding:10px 8px; font-weight:700;">
-                                ${pitchNames[ptype]} ${isPrimary ? '<span class="badge-mini" style="background:rgba(255,214,10,0.15); color:#ffd60a; border:1px solid rgba(255,214,10,0.3); border-radius:3px; padding:1px 4px; font-size:0.68em; margin-left:4px;">PRIMARY</span>' : ''}
-                            </td>
-                            <td style="padding:10px 8px; font-weight:800; color:${isPrimary ? '#ffd60a' : 'var(--text-primary)'};">${usage.toFixed(1)}%</td>
-                            <td style="padding:10px 8px; font-weight:700;">.${hxw.toFixed(3).toString().substring(2)}</td>
-                            <td style="padding:10px 8px; color:var(--text-secondary);">.${l_avg.toFixed(3).toString().substring(2)}</td>
-                            <td style="padding:10px 8px; text-align:right; font-weight:800; color:${edgeColor};">${edgeText}</td>
-                        `;
-                        radarBody.appendChild(row);
-                    });
-                    
-                    const matchPercent = primaryMatchups > 0 ? (eliteMatchups / primaryMatchups * 100).toFixed(0) : 0;
-                    let summaryHTML = '';
-                    if (matchPercent >= 60) {
-                        summaryHTML = `🔥 <strong style="color:#32d74b;">ELITE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter has a positive xwOBA edge vs ${eliteMatchups}/${primaryMatchups} of ${h.opp_pitcher}'s primary pitch weapons.`;
-                    } else if (matchPercent > 0) {
-                        summaryHTML = `⚖️ <strong>MODERATE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter matches up reasonably vs ${h.opp_pitcher}'s primary pitch arsenal.`;
+                        radarSummary.innerHTML = summaryHTML;
                     } else {
-                        summaryHTML = `⚠️ <strong style="color:#ff453a;">FADE MATCHUP DNA:</strong> Hitter is below average vs the primary pitch types thrown by ${h.opp_pitcher}.`;
+                        radarCard.style.display = 'none';
                     }
-                    radarSummary.innerHTML = summaryHTML;
                 } else {
                     radarCard.style.display = 'none';
                 }
-            } else {
-                radarCard.style.display = 'none';
-            }
 
-            document.getElementById('hitter-modal').classList.add('open');
-            document.getElementById('hitter-modal-overlay').classList.add('open');
+                document.getElementById('hitter-modal').classList.add('open');
+                document.getElementById('hitter-modal-overlay').classList.add('open');
+            } catch (err) {
+                console.error("Error in openHitterModal:", err);
+                try {
+                    const h = JSON.parse(decodeURIComponent(hStr));
+                    document.getElementById('hm-name').innerText = (h && h.name) || 'Unknown';
+                    document.getElementById('hm-matchup').innerText = `Error loading profile`;
+                    document.getElementById('hm-score').innerText = (h && h.player_score) || '—';
+                    document.getElementById('hm-reasons').innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                            <span style="font-size: 2rem;">⚠️</span>
+                            <p style="margin: 10px 0 0 0; font-size: 0.85rem;">Failed to render tactical details. Data may be incomplete.</p>
+                        </div>
+                    `;
+                    document.getElementById('hm-radar-card').style.display = 'none';
+                    document.getElementById('hitter-modal').classList.add('open');
+                    document.getElementById('hitter-modal-overlay').classList.add('open');
+                } catch (e2) {
+                    console.error("Critical fallback failure in openHitterModal:", e2);
+                }
+            }
         }
 
         function closeHitterModal() {
