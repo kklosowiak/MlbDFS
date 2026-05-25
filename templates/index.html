@@ -1567,6 +1567,23 @@
             cursor: pointer;
         }
         .team-modal-close:hover { color: #fff; }
+
+        .roster-intel-grid-team {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        .roster-intel-grid-pitcher {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 680px) {
+            .roster-intel-grid-team,
+            .roster-intel-grid-pitcher {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -4948,80 +4965,126 @@
 
             // --- Card 1: DFS Verdict ---
             let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap && physScore < 50) || (isParadox && physScore < 50)) {
-                verdictLabel = 'HARD FADE';
+            if ((isTrap && physScore < 50) || (isParadox && physScore < 50) || (stackScore < 75)) {
+                verdictLabel = 'D-TIER HARD FADE';
                 verdictColor = '#ff453a';
-                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictBg = 'rgba(255, 69, 58, 0.12)';
                 verdictIcon = '🚫';
-                verdictDesc = 'Weak physics matched with public trap or paradox signals. Avoid.';
-            } else if (stackScore >= 110 && physScore >= 85) {
-                verdictLabel = 'ELITE PLAY';
+                verdictDesc = 'Weak physical floor matched with excessive risk or low implied total. Complete stack fade recommended.';
+            } else if (stackScore >= 110 && physScore >= 85 && !isTrap) {
+                verdictLabel = 'S-TIER AUTO PLAY';
                 verdictColor = '#32d74b';
-                verdictBg = 'rgba(50,215,75,0.15)';
+                verdictBg = 'rgba(50, 215, 75, 0.15)';
                 verdictIcon = '⚡';
-                verdictDesc = 'Top-tier physics + market support. Premium play.';
-            } else if (isDebut || stackScore >= 98) {
-                verdictLabel = 'STRONG GPP';
+                verdictDesc = 'Elite physical metrics combined with massive market backing. High-conviction core stack choice.';
+            } else if (stackScore >= 95 && !isTrap && (isShark || isWhale || isSneaky || isBurst)) {
+                verdictLabel = 'A-TIER GPP PIVOT';
+                verdictColor = '#5ac8fa';
+                verdictBg = 'rgba(90, 200, 250, 0.12)';
+                verdictIcon = '🛸';
+                verdictDesc = 'Premium contrarian play with sharp money support. High tournament ceiling with low projected ownership.';
+            } else if (stackScore >= 80 && !isTrap) {
+                verdictLabel = 'B-TIER VALUE STACK';
                 verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictBg = 'rgba(255, 159, 10, 0.12)';
                 verdictIcon = '🎯';
-                verdictDesc = 'Excellent tournament leverage. High run-scoring upside.';
-            } else if (isTrap) {
-                verdictLabel = 'CONTRARIAN FADE';
-                verdictColor = '#ff453a';
-                verdictBg = 'rgba(255,69,58,0.1)';
-                verdictIcon = '⚠️';
-                verdictDesc = 'Chalky play with mediocre underlying physics. Pivot for leverage.';
+                verdictDesc = 'Viable salary-saving stack with high correlation upside. Great secondary tournament stack selection.';
             } else {
-                verdictLabel = 'GPP DART';
+                verdictLabel = 'C-TIER GPP DART';
                 verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictBg = 'rgba(255, 159, 10, 0.08)';
                 verdictIcon = '🎯';
-                verdictDesc = 'Situational leverage—consider for multi-entry builds.';
+                verdictDesc = 'High-variance dart throw. Play only in large multi-entry portfolios to capture outlier slate outcomes.';
             }
 
             // --- Card 2: Roster Leverage & Tactic ---
             let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
-            if (isTrap && stackScore >= 100) {
+            if (isTrap && (stackScore >= 95 || (t.implied_total && parseFloat(t.implied_total) >= 4.5))) {
                 ownLabel = 'CHALK TRAP';
                 ownColor = '#ff453a';
-                ownBg = 'rgba(255,69,58,0.12)';
+                ownBg = 'rgba(255, 69, 58, 0.12)';
                 ownIcon = '🚨';
-                ownDesc = 'AI Analyst: Heavy public popularity with under-the-hood risk. Fading or playing underweight is highly recommended to capture slate leverage.';
-            } else if (isShark || isWhale || (stackScore < 98 && physScore >= 90)) {
-                ownLabel = 'CONTRARIAN';
+                ownDesc = 'AI Analyst: Heavily stacked by the public today but carries high physical floor risk. Fading or playing significantly underweight is highly recommended.';
+            } else if ((isShark || isWhale || t.divergence > 10) && stackScore >= 85 && !isTrap) {
+                ownLabel = 'SHARP CONTRARIAN';
                 ownColor = '#32d74b';
-                ownBg = 'rgba(50,215,75,0.12)';
+                ownBg = 'rgba(50, 215, 75, 0.12)';
                 ownIcon = '📊';
-                ownDesc = 'AI Analyst: Highly efficient physical profile backed by smart-money divergence. This is a primary tournament target. Play as a full 4 or 5-man stack for maximum leverage.';
+                ownDesc = 'AI Analyst: Under-the-radar tournament play receiving institutional sharp money backing. High-conviction leverage play over chalky options.';
             } else if (stackScore >= 105 && !isTrap) {
                 ownLabel = 'CHALK PLAY';
                 ownColor = '#ff9f0a';
-                ownBg = 'rgba(255,159,10,0.12)';
+                ownBg = 'rgba(255, 159, 10, 0.12)';
                 ownIcon = '👥';
-                ownDesc = 'AI Analyst: Popular stack with elite physical backing. Use this stack for a high-floor base, but differentiate your lineup by pairing them with contrarian value pivots at other positions.';
-            } else {
-                ownLabel = 'CONTRARIAN VALUE';
+                ownDesc = 'AI Analyst: High implied total and public popularity. Best used as a high-floor base; ensure you differentiate your lineup elsewhere.';
+            } else if (stackScore >= 80 && (t.is_sneaky || t.bullpen_fatigue >= 80 || isBurst)) {
+                ownLabel = 'SNEAKY VALUE';
                 ownColor = '#0a84ff';
-                ownBg = 'rgba(10,132,255,0.12)';
-                ownIcon = '💎';
-                ownDesc = 'AI Analyst: Under-the-radar cheap stack option. Lower-tier ownership but strong matchup mechanics. Excellent secondary stack to gain salary relief and tournament leverage.';
+                ownBg = 'rgba(10, 132, 255, 0.12)';
+                ownIcon = '🛸';
+                ownDesc = 'AI Analyst: Low-owned offense attacking a vulnerable bullpen or carrying positive splits. Excellent secondary stack to unlock high-priced pitchers.';
+            } else {
+                ownLabel = 'LOW-VALUE FADE';
+                ownColor = '#8e8e93';
+                ownBg = 'rgba(100, 100, 100, 0.08)';
+                ownIcon = '🚫';
+                ownDesc = 'AI Analyst: Weak overall stack metrics with no active leverage signals. Do not waste roster spots on low-total, unbacked offenses.';
             }
 
-            // --- Card 3: Leverage Grade ---
-            let lvGrade, lvColor, lvBg, lvDesc;
-            // v10.1: Platoon advantage from platoon panel boosts leverage grade
-            const platoonAdv = t._platoon_advantage || '';
-            const platoonBoost = (platoonAdv === 'ELITE PLATOON') ? 15 : (platoonAdv === 'STRONG EDGE' ? 8 : 0);
-            const lvScore = stackScore + (physScore * 0.1) - (isTrap ? 8 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 12 : 0) + platoonBoost;
-            if (lvScore >= 120) {
-                lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max stack leverage. Target heavily.';
-            } else if (lvScore >= 105) {
-                lvGrade = 'B'; lvColor = '#0a84ff'; lvBg = 'rgba(10,132,255,0.12)'; lvDesc = 'Strong play. Target in most lineups.';
-            } else if (lvScore >= 90) {
-                lvGrade = 'C'; lvColor = '#ff9f0a'; lvBg = 'rgba(255,159,10,0.12)'; lvDesc = 'Situational. Use in selective stacks.';
+            // --- Card 3: Optimal Stack Construction ---
+            let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
+            if (verdictLabel === 'S-TIER AUTO PLAY' || (stackScore >= 105 && !isTrap)) {
+                buildLabel = 'FULL 5-MAN STACK';
+                buildColor = '#32d74b';
+                buildBg = 'rgba(50, 215, 75, 0.15)';
+                buildIcon = '🧩';
+                buildDesc = 'AI Builder: Maximize correlation. Build as a full 5-man stack (Hitters 1-5) to capture full scoring upside in GPP tournaments.';
+            } else if (verdictLabel === 'A-TIER GPP PIVOT' || verdictLabel === 'B-TIER VALUE STACK') {
+                buildLabel = '2-3 MAN MINI-STACK';
+                buildColor = '#0a84ff';
+                buildBg = 'rgba(10, 132, 255, 0.12)';
+                buildIcon = '✂️';
+                buildDesc = 'AI Builder: Target the heart of the order. Pair 2-3 correlated top-of-the-order hitters in premium platoon matchups to capture efficiency.';
+            } else if (stackScore >= 80 && (t.dqi_pos_factors || []).length > 0) {
+                buildLabel = 'ONE-OFF BATS ONLY';
+                buildColor = '#ff9f0a';
+                buildBg = 'rgba(255, 159, 10, 0.12)';
+                buildIcon = '🎯';
+                buildDesc = 'AI Builder: Do not stack. Cherry-pick 1 or 2 specific hitters with strong individual splits or high individual SMASH grades.';
             } else {
-                lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Extreme risk of underperforming.';
+                buildLabel = 'TOTAL STACK FADE';
+                buildColor = '#ff453a';
+                buildBg = 'rgba(255, 69, 58, 0.12)';
+                buildIcon = '🚫';
+                buildDesc = 'AI Builder: Zero exposure. Completely remove this team from your player pool to optimize salary and ceiling projections.';
+            }
+
+            // --- Card 4: Umpire & Environment ---
+            const factor = t.umpire_factor != null ? parseFloat(t.umpire_factor) : 1.0;
+            const weatherLabel = t.weather_label || 'Unknown';
+            let envLabel, envColor, envBg, envIcon, envDesc;
+            
+            let isHitterEnv = factor < 0.98;
+            let isPitcherEnv = factor > 1.02;
+            
+            if (isHitterEnv) {
+                envLabel = 'HITTER HAVEN';
+                envColor = '#32d74b';
+                envBg = 'rgba(50, 215, 75, 0.1)';
+                envIcon = '🟢';
+                envDesc = `Zone: Hitter-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
+            } else if (isPitcherEnv) {
+                envLabel = 'PITCHER\'S PARK';
+                envColor = '#ff453a';
+                envBg = 'rgba(255, 69, 58, 0.1)';
+                envIcon = '🔴';
+                envDesc = `Zone: Pitcher-Friendly (${factor.toFixed(2)}x) with umpire ${t.umpire_name || 'TBD'}. weather: ${weatherLabel}.`;
+            } else {
+                envLabel = 'NEUTRAL ZONE';
+                envColor = '#8e8e93';
+                envBg = 'rgba(100, 100, 100, 0.1)';
+                envIcon = '⚪';
+                envDesc = `Zone: Neutral (${factor.toFixed(2)}x) under standard park conditions. weather: ${weatherLabel}.`;
             }
 
             // Check for ITT (Implied Team Total) Sanity Gate Bypass Warning
@@ -5040,50 +5103,39 @@
             }
 
             document.getElementById('tm-roster-intel').innerHTML = `
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                <div class="roster-intel-grid-team">
                     <!-- DFS Verdict -->
-                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
-                        <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
+                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
                     </div>
                     <!-- Roster Leverage & Tactic -->
-                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
-                        <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
+                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
                     </div>
-                    <!-- Leverage Grade -->
-                    <div style="background:${lvBg}; border:1px solid ${lvColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Leverage Grade</div>
-                        <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
+                    <!-- Optimal Stack Construction -->
+                    <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal Stack Construction</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
                     </div>
-                    <!-- Ump Intel -->
-                    ${ (() => {
-                        const factor = t.umpire_factor != null ? parseFloat(t.umpire_factor) : 1.0;
-                        let ul = 'Neutral';
-                        let uc = '#8e8e93';
-                        let ubg = 'rgba(100,100,100,0.1)';
-                        let uicon = '⚪';
-                        if (factor < 0.98) {
-                            ul = 'Hitter-Friendly';
-                            uc = '#32d74b';
-                            ubg = 'rgba(50,215,75,0.1)';
-                            uicon = '🟢';
-                        } else if (factor > 1.02) {
-                            ul = 'Pitcher-Friendly';
-                            uc = '#ff453a';
-                            ubg = 'rgba(255,69,58,0.1)';
-                            uicon = '🔴';
-                        }
-                        const factorStr = factor.toFixed(2);
-                        return `<div style="background:${ubg}; border:1px solid ${uc}40; border-radius:12px; padding:16px;">
-                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire</div>
-                            <div style="font-size:1.0rem; font-weight:900; color:${uc}; line-height:1; margin-bottom:4px;">${uicon} ${ul} (${factorStr})</div>
-                            <div style="font-size:0.72rem; color:rgba(255,255,255,0.55);">${t.umpire_name || 'TBD'}</div>
-                        </div>`;
-                    })() }
+                    <!-- Umpire & Environment -->
+                    <div style="background:${envBg}; border:1px solid ${envColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Umpire & Environment</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${envColor}; line-height:1.1; margin-bottom:4px;">${envIcon} ${envLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${envDesc}</div>
+                    </div>
                 </div>
                 ${warningHTML}
                 ${t.is_cold_streak ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(0,180,216,0.08); border:1px dashed #00b4d8; border-radius:10px; font-size:0.75rem; color:#00b4d8;"><strong>🥶 COLD STREAK:</strong> This lineup is striking out ${t.rolling_k_delta}% more than their season average recently. Consider reducing stack size.</div>` : ''}
@@ -5281,99 +5333,126 @@
 
             // --- Card 1: DFS Verdict ---
             let verdictLabel, verdictColor, verdictBg, verdictIcon, verdictDesc;
-            if ((isTrap && physScore < 10) || (isParadox && physScore < 10)) {
-                verdictLabel = 'HARD FADE';
+            if ((isTrap && physScore < 10) || (isParadox && physScore < 10) || (alphaScore < 65) || p.is_hazard) {
+                verdictLabel = 'D-TIER HARD FADE';
                 verdictColor = '#ff453a';
-                verdictBg = 'rgba(139,0,0,0.2)';
+                verdictBg = 'rgba(255, 69, 58, 0.12)';
                 verdictIcon = '🚫';
-                verdictDesc = 'Chalk pitcher with low underlying raw metrics. Avoid.';
-            } else if (alphaScore >= 90 && physScore >= 16) {
-                verdictLabel = 'ELITE PLAY';
+                verdictDesc = 'Severe red flags (Trap SP, Hazard, or weak strikeout projection). Complete fade recommended.';
+            } else if (alphaScore >= 95 && physScore >= 65 && !isTrap) {
+                verdictLabel = 'S-TIER CORE ANCHOR';
                 verdictColor = '#32d74b';
-                verdictBg = 'rgba(50,215,75,0.15)';
+                verdictBg = 'rgba(50, 215, 75, 0.15)';
                 verdictIcon = '⚡';
-                verdictDesc = 'Top-tier core play. Elite physics and high projection.';
-            } else if (isDebut || alphaScore >= 75) {
-                verdictLabel = 'STRONG GPP';
+                verdictDesc = 'Elite raw physics combined with dominant strikeout projections. Safe cash and GPP core play.';
+            } else if (alphaScore >= 80 && !isTrap && (isShark || isWhale || isDebut)) {
+                verdictLabel = 'A-TIER GPP PLAY';
+                verdictColor = '#5ac8fa';
+                verdictBg = 'rgba(90, 200, 250, 0.12)';
+                verdictIcon = '🛸';
+                verdictDesc = 'High-ceiling tournament option backed by sharp money or debut premium. Excellent leverage target.';
+            } else if (alphaScore >= 65 && !isTrap) {
+                verdictLabel = 'B-TIER VALUE PLAY';
                 verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictBg = 'rgba(255, 159, 10, 0.12)';
                 verdictIcon = '🎯';
-                verdictDesc = 'High-strikeout or leverage play for GPP formats.';
-            } else if (isTrap) {
-                verdictLabel = 'CONTRARIAN FADE';
-                verdictColor = '#ff453a';
-                verdictBg = 'rgba(255,69,58,0.1)';
-                verdictIcon = '⚠️';
-                verdictDesc = 'Mediocre metrics but high projected ownership. Pivot target.';
+                verdictDesc = 'Viable salary-saving starting pitcher option. Solid matchup specs with moderate floor.';
             } else {
-                verdictLabel = 'GPP DART';
+                verdictLabel = 'C-TIER GPP DART';
                 verdictColor = '#ff9f0a';
-                verdictBg = 'rgba(255,159,10,0.12)';
+                verdictBg = 'rgba(255, 159, 10, 0.08)';
                 verdictIcon = '🎯';
-                verdictDesc = 'Situational leverage—use in select lineups.';
+                verdictDesc = 'Highly volatile. Limit exposure only to deep tournament multi-entry portfolios.';
             }
 
             // --- Card 2: Roster Leverage & Tactic ---
             let ownLabel, ownColor, ownBg, ownIcon, ownDesc;
-            if (isTrap && alphaScore >= 80) {
+            if (isTrap && alphaScore >= 75) {
                 ownLabel = 'CHALK TRAP';
                 ownColor = '#ff453a';
-                ownBg = 'rgba(255,69,58,0.12)';
+                ownBg = 'rgba(255, 69, 58, 0.12)';
                 ownIcon = '🚨';
-                ownDesc = 'AI Analyst: Heavy public popularity with under-the-hood risk. Fading or playing underweight is highly recommended to capture slate leverage.';
-            } else if (isShark || isWhale || (alphaScore < 75 && physScore >= 16)) {
-                ownLabel = 'CONTRARIAN';
+                ownDesc = 'AI Analyst: Highly owned by the public today but carries significant underlying floor risk. Fading or playing underweight is advised.';
+            } else if ((isShark || isWhale) && alphaScore >= 70 && !isTrap) {
+                ownLabel = 'SHARP CONTRARIAN';
                 ownColor = '#32d74b';
-                ownBg = 'rgba(50,215,75,0.12)';
+                ownBg = 'rgba(50, 215, 75, 0.12)';
                 ownIcon = '📊';
-                ownDesc = 'AI Analyst: Excellent underlying metrics matched with sharp/whale divergence. Premium low-ownership tournament play with significant leverage upside.';
-            } else if (alphaScore >= 85 && !isTrap) {
+                ownDesc = 'AI Analyst: Elite contrarian leverage target receiving sharp-money volume. Great way to vault over the field in GPP formats.';
+            } else if (alphaScore >= 90 && !isTrap) {
                 ownLabel = 'CHALK PLAY';
                 ownColor = '#ff9f0a';
-                ownBg = 'rgba(255,159,10,0.12)';
+                ownBg = 'rgba(255, 159, 10, 0.12)';
                 ownIcon = '👥';
-                ownDesc = 'AI Analyst: Popular high-end pitching option with elite metrics. Best used for high-floor stability; ensure differentiation through contrarian batters.';
-            } else {
-                ownLabel = 'CONTRARIAN VALUE';
+                ownDesc = 'AI Analyst: Heavily selected public favorite. Best for high-floor stability; ensure differentiation through contrarian batters.';
+            } else if (alphaScore >= 60 && !isTrap) {
+                ownLabel = 'SNEAKY VALUE';
                 ownColor = '#0a84ff';
-                ownBg = 'rgba(10,132,255,0.12)';
-                ownIcon = '💎';
-                ownDesc = 'AI Analyst: Under-the-radar cheap pitching option. Strong leverage play to unlock salary cap flexibility while maintaining respectable projection floor.';
+                ownBg = 'rgba(10, 132, 255, 0.12)';
+                ownIcon = '🛸';
+                ownDesc = 'AI Analyst: Under-the-radar cheap pitching option. Strong leverage play to unlock salary cap flexibility.';
+            } else {
+                ownLabel = 'LOW-VALUE FADE';
+                ownColor = '#8e8e93';
+                ownBg = 'rgba(100, 100, 100, 0.08)';
+                ownIcon = '🚫';
+                ownDesc = 'AI Analyst: Poor overall pitching metrics with no active leverage signals. Do not waste roster spots on this pitcher.';
             }
 
-            // --- Card 3: Leverage Grade ---
-            let lvGrade, lvColor, lvBg, lvDesc;
-            const lvScore = alphaScore + (physScore * 0.5) - (isTrap ? 10 : 0) - (isParadox ? 5 : 0) + (isShark || isWhale ? 10 : 0);
-            if (lvScore >= 105) {
-                lvGrade = 'A'; lvColor = '#32d74b'; lvBg = 'rgba(50,215,75,0.15)'; lvDesc = 'Max leverage. Play in all lineups.';
-            } else if (lvScore >= 90) {
-                lvGrade = 'B'; lvColor = '#0a84ff'; lvBg = 'rgba(10,132,255,0.12)'; lvDesc = 'Strong play. Target in most lineups.';
-            } else if (lvScore >= 75) {
-                lvGrade = 'C'; lvColor = '#ff9f0a'; lvBg = 'rgba(255,159,10,0.12)'; lvDesc = 'Situational. Use in 2-3 lineups max.';
+            // --- Card 3: Optimal DFS Usage ---
+            let buildLabel, buildColor, buildBg, buildIcon, buildDesc;
+            if (verdictLabel === 'S-TIER CORE ANCHOR' || (alphaScore >= 90 && !isTrap)) {
+                buildLabel = 'CASH / GPP CORE';
+                buildColor = '#32d74b';
+                buildBg = 'rgba(50, 215, 75, 0.15)';
+                buildIcon = '🧩';
+                buildDesc = 'AI Builder: High stability. Use as your primary cash game anchor or baseline GPP core lineup foundation.';
+            } else if (verdictLabel === 'A-TIER GPP PLAY' || isShark || isWhale) {
+                buildLabel = 'GPP LEVERAGE PLAY';
+                buildColor = '#0a84ff';
+                buildBg = 'rgba(10, 132, 255, 0.12)';
+                buildIcon = '🎯';
+                buildDesc = 'AI Builder: Tournament ceiling play. Deploy in medium-to-large field tournaments to leverage strikeout potential.';
+            } else if (alphaScore >= 60 && !isTrap) {
+                buildLabel = 'SALARY RELIEF ONLY';
+                buildColor = '#ff9f0a';
+                buildBg = 'rgba(255, 159, 10, 0.12)';
+                buildIcon = '💵';
+                buildDesc = 'AI Builder: Budget enabler. Use only to free up salary cap space to stack elite high-priced offenses.';
             } else {
-                lvGrade = 'F'; lvColor = '#ff453a'; lvBg = 'rgba(255,69,58,0.12)'; lvDesc = 'Avoid. Risk outweighs upside.';
+                buildLabel = 'TOTAL ROSTER FADE';
+                buildColor = '#ff453a';
+                buildBg = 'rgba(255, 69, 58, 0.12)';
+                buildIcon = '🚫';
+                buildDesc = 'AI Builder: Zero exposure. Completely remove this pitcher from your pool to protect your lineups from blow-up risk.';
             }
 
             // --- Populate Roster Intel ---
             document.getElementById('pm-roster-intel').innerHTML = `
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                <div class="roster-intel-grid-pitcher">
                     <!-- DFS Verdict -->
-                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
-                        <div style="font-size:1.35rem; font-weight:900; color:${verdictColor}; line-height:1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${verdictDesc}</div>
+                    <div style="background:${verdictBg}; border:1px solid ${verdictColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">DFS Verdict</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${verdictColor}; line-height:1.1; margin-bottom:4px;">${verdictIcon} ${verdictLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${verdictDesc}</div>
                     </div>
                     <!-- Roster Leverage & Tactic -->
-                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
-                        <div style="font-size:1.35rem; font-weight:900; color:${ownColor}; line-height:1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${ownDesc}</div>
+                    <div style="background:${ownBg}; border:1px solid ${ownColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Roster Leverage & Tactic</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${ownColor}; line-height:1.1; margin-bottom:4px;">${ownIcon} ${ownLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${ownDesc}</div>
                     </div>
-                    <!-- Leverage Grade -->
-                    <div style="background:${lvBg}; border:1px solid ${lvColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden;">
-                        <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Leverage Grade</div>
-                        <div style="font-size:2.2rem; font-weight:900; color:${lvColor}; line-height:1; margin-bottom:4px;">${lvGrade}</div>
-                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.4;">${lvDesc}</div>
+                    <!-- Optimal DFS Usage -->
+                    <div style="background:${buildBg}; border:1px solid ${buildColor}40; border-radius:12px; padding:16px; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px;">Optimal DFS Usage</div>
+                            <div style="font-size:1.2rem; font-weight:900; color:${buildColor}; line-height:1.1; margin-bottom:4px;">${buildIcon} ${buildLabel}</div>
+                        </div>
+                        <div style="font-size:0.72rem; color:rgba(255,255,255,0.75); line-height:1.4; margin-top:8px;">${buildDesc}</div>
                     </div>
                 </div>
             `;
