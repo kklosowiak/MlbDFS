@@ -171,8 +171,8 @@ def test_bullpen_exhausted_dampens_tough_sp_penalty():
         "is_trap": False,
     }
     conf, reasons = score_stack_confidence(t_gassed, [opp_p])
-    # Base 50 + 14 (xwOBA) + 10 (gassed BP) - 9 (tough SP penalty cut in half) = 65
-    assert conf == 65
+    # Base 50 + 12 (xwOBA) + 14 (gassed BP) - 9 (tough SP penalty cut in half) = 67
+    assert conf == 67
     assert any("opposing pen exhausted" in r.lower() or "opponent bullpen is exhausted" in r.lower() for r in reasons)
     assert any("but opponent bullpen is exhausted" in r for r in reasons)
 
