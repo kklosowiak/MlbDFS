@@ -74,8 +74,8 @@ class SharpsWeighting:
             return 100 / (ml + 100)
             
         win_prob = _ml_to_prob(curr_ml)
-        # Scale probability from 40% to 70% -> 0 to 100
-        base_market_score = max(0, min(100, ((win_prob - 0.40) / 0.30) * 100))
+        # Scale probability from 30% to 80% -> 0 to 100 (expanded linear scale)
+        base_market_score = max(0, min(100, ((win_prob - 0.30) / 0.50) * 100))
         
         ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
         tt_score = max(0, min(100, (abs(tt_move) / 0.7) * 100))
@@ -143,7 +143,7 @@ class SharpsWeighting:
             "is_trap": is_trap
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
@@ -154,16 +154,20 @@ class SharpsWeighting:
         pf = float(park_factor or 1.0)
         if pf > 3.0:
             pf = 1.0 + (pf / 100.0)
-        physics_raw = min(100.0, physics_raw * pf)
+        physics_raw = min(120.0, physics_raw * pf)
 
         # OMEGA v8.7: Linear Fatigue Pressure (Sliding Scale v1.0)
         # Pressure starts building at 65% instead of a hard cliff at 80%
         fatigue_floor = 65.0
         bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 3.5)
         
-        # Short-Leash Multiplier: If starter <= 15.5 outs, pressure on the tired bullpen is 1.5x
-        if pitcher_outs <= 15.5:
-            bullpen_boost *= 1.5
+        # Soft starter hook multipliers to prevent over-aggression
+        # If the opposing SP is a TRAP, force short leash (15.5 outs) to boost bullpen pressure
+        effective_outs = 15.5 if opp_pitcher_trap else pitcher_outs
+        if effective_outs <= 15.5:
+            bullpen_boost *= 1.20 # Soft 20% boost for short leash (previously 1.5x)
+        elif effective_outs >= 18.0:
+            bullpen_boost *= 0.85 # Soft 15% dampener for deep workhorse starters
             
         # OMEGA v13.5: Bullpen Skill Granularity for Fatigue Boost (Overhauled)
         skill_modifier = 1.0
@@ -367,7 +371,7 @@ class SharpsWeighting:
             return False
 
         sharp_in_favor = (is_steam or is_shark) and ml_move <= -10
-        public_pressure = ml_move >= 5 or (divergence > 12 and not sharp_in_favor)
+        public_pressure = ml_move >= 12 or (divergence > 12 and not sharp_in_favor)
         return public_pressure
 
     def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False):

@@ -129,11 +129,6 @@ def calculate_dqi(team, pitchers=None):
         phys_factor = min(1.0, max(0.0, (45.0 - phys_val) / 20.0))
         penalty = 5.0 + 15.0 * phys_factor
         
-        # Mitigate penalty if divergence is high (representing sharp backing)
-        if divergence > 10.0:
-            div_mitigation = min(10.0, (divergence - 10.0) * 0.5)
-            penalty = max(5.0, penalty - div_mitigation)
-            
         warn_pts += penalty
         warn_factors.append(f"Stack Chalk Warning (-{round(penalty, 1)} pts)")
     if opp_pitcher_trap:

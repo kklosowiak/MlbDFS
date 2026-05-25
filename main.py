@@ -659,9 +659,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
             # Calculate is_anti_chalk_smash (OMEGA v12.1.3: Align strictly with Blue/Red cockpit SP badge tiers)
             is_anti_chalk_smash = False
+            opp_sp_trap = False
             try:
+                opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
                 if curr_itt >= 4.5 and opp_pitcher_physics >= 50.0:
-                    opp_sp_trap = opp_pitcher_rep.get('is_trap', False) if opp_pitcher_rep else False
                     opp_sp_cold = (opp_pitcher_rep.get('form_status') == 'COLD') if opp_pitcher_rep else False
                     opp_sp_fade = (float(opp_pitcher_rep.get('divergence', 0) or 0) <= -20.0) if opp_pitcher_rep else False
                     
@@ -694,7 +695,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 opp_pitcher_physics=opp_pitcher_physics,
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
                 implied_total=curr_itt, is_burst=is_burst, opponent=opponent,
-                is_anti_chalk_smash=is_anti_chalk_smash, is_pitch_alignment=is_pitch_alignment
+                is_anti_chalk_smash=is_anti_chalk_smash, is_pitch_alignment=is_pitch_alignment,
+                opp_pitcher_trap=opp_sp_trap
             )
             
             # Sentiment Divergence (Venue-Based)
