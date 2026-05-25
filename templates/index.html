@@ -606,6 +606,10 @@
             border-collapse: collapse;
             text-align: left;
         }
+        table th:not(:last-child), 
+        table td:not(:last-child) {
+            border-right: 1px solid var(--border);
+        }
 
         th {
             font-size: 0.75rem;
@@ -821,20 +825,24 @@
             font-size: 0.9rem;
         }
         .mc-label {
-            color: var(--text-secondary);
+            color: #7dc5ff;
+            background: rgba(10, 132, 255, 0.12);
+            border: 1px solid rgba(10, 132, 255, 0.35);
             font-size: 0.65rem;
             font-weight: 800;
             letter-spacing: 0.05em;
             margin-right: 6px;
-            background: rgba(255,255,255,0.06);
             border-radius: 4px;
-            padding: 1px 4px;
+            padding: 1.5px 5px;
             display: inline-block;
             text-align: center;
             min-width: 28px;
+            vertical-align: middle;
         }
         body.light-theme .mc-label {
-            background: rgba(0,0,0,0.05);
+            color: #007aff;
+            background: rgba(0, 122, 255, 0.08);
+            border-color: rgba(0, 122, 255, 0.25);
         }
         body.matrix-compact .card h2 + p {
             max-width: 52rem;
@@ -3078,7 +3086,7 @@
                 
                 return `
                     <div${tipAttrs(breakdown)} style="font-size:0.68rem; margin-top:6px; display:flex; flex-direction:column; gap:3px; font-weight:600; text-align:left; background:${scoreBg}; border:1px solid ${scoreBorderColor}; padding:5px 8px; border-radius:6px; width:fit-content; ${scoreGlow}">
-                        <div style="color:${scoreColor}; font-weight:800; font-size:0.72rem; text-shadow: 0 0 8px ${scoreColor}; letter-spacing:0.02em;">DQI ${dqiScore}% · ${dqiStatus}</div>
+                        <div style="color:${scoreColor}; font-weight:800; font-size:0.72rem; text-shadow: 0 0 3px ${scoreColor}; letter-spacing:0.02em;">DQI ${dqiScore}% · ${dqiStatus}</div>
                         <div style="font-size:0.64rem; font-weight:600; margin-top:1px; color:#ffffff;">${subHtml}</div>
                     </div>`;
             }
