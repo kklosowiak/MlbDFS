@@ -157,6 +157,8 @@ def apply_signal_exclusions(team_data):
     """Resolves logical GPP signal contradiction overlaps on a team dict (mutates in place)."""
     if team_data.get("is_trap", False):
         team_data["is_sneaky"] = False
+        team_data["is_physics_override"] = False
+        team_data["is_anti_chalk_smash"] = False
     if team_data.get("is_fade_risk", False):
         team_data["is_physics_override"] = False
         team_data["is_anti_chalk_smash"] = False

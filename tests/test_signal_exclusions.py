@@ -14,13 +14,15 @@ def test_trap_excludes_sneaky():
         "is_trap": True,
         "is_sneaky": True,
         "is_fade_risk": False,
-        "is_physics_override": False,
-        "is_anti_chalk_smash": False
+        "is_physics_override": True,
+        "is_anti_chalk_smash": True
     }
     
     cleaned = apply_signal_exclusions(team)
     assert cleaned["is_trap"] is True
     assert cleaned["is_sneaky"] is False
+    assert cleaned["is_physics_override"] is False
+    assert cleaned["is_anti_chalk_smash"] is False
 
 
 def test_fade_risk_excludes_positive_gpp():
