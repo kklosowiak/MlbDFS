@@ -239,6 +239,76 @@ def run_full_analysis():
     except Exception as vol_e:
         print(f"[WARNING]: Volatile preview skipped: {vol_e}")
 
+    # OMEGA: Compute GPP Leverage Index (GLI) for Team Stacks
+    try:
+        from utils.normalization import normalize_player_name
+        from utils.attack_confidence import score_stack_confidence
+        pitchers_dict = {normalize_player_name(p['pitcher']): p for p in p_reports}
+        
+        # Calculate raw ownership proxy for each team
+        raw_owns = []
+        for t in team_reports:
+            implied_total = float(t.get('implied_total', 4.5) or 4.5)
+            # Public ownership is highly exponential relative to implied runs
+            proj_own = implied_total ** 3.5
+            
+            # Apply public chasing multipliers
+            if t.get('is_whale'):
+                proj_own *= 1.40
+            if t.get('is_sharp') and not t.get('is_whale'):
+                proj_own *= 0.80
+                
+            # Stacking against trap SPs
+            opp_sp_name = t.get('opp_pitcher')
+            if opp_sp_name:
+                opp_sp_norm = normalize_player_name(opp_sp_name)
+                opp_sp = pitchers_dict.get(opp_sp_norm)
+                if opp_sp:
+                    if opp_sp.get('is_trap'):
+                        proj_own *= 1.30
+                    
+                    # Pitcher talent discount (public avoids aces)
+                    opp_sp_score = opp_sp.get('alpha_score')
+                    if isinstance(opp_sp_score, dict):
+                        opp_sp_val = opp_sp_score.get('final', 80)
+                    else:
+                        opp_sp_val = float(opp_sp_score or 80)
+                    if opp_sp_val >= 100:
+                        proj_own *= 0.60
+            
+            t['_raw_own'] = proj_own
+            raw_owns.append(proj_own)
+            
+        # Normalize ownership to sum to 200.0% (representing 2 stacks per entry)
+        sum_raw_owns = sum(raw_owns)
+        n_teams = len(team_reports)
+        if sum_raw_owns > 0 and n_teams > 0:
+            for t in team_reports:
+                scaled_own = (t['_raw_own'] / sum_raw_owns) * 200.0
+                conf, _ = score_stack_confidence(t, p_reports)
+                
+                # Leverage index = (CONF / 50) / (ownership / average_ownership)
+                avg_own = 200.0 / n_teams
+                gli = (conf / 50.0) / max(0.1, (scaled_own / avg_own))
+                
+                t['projected_ownership'] = round(scaled_own, 1)
+                t['gpp_leverage_index'] = round(gli, 2)
+                
+                if gli >= 1.5:
+                    t['leverage_label'] = 'LEVERAGE PIVOT'
+                    t['leverage_color'] = 'green'
+                elif gli < 0.6:
+                    t['leverage_label'] = 'CROWDED CHALK'
+                    t['leverage_color'] = 'red'
+                else:
+                    t['leverage_label'] = 'NEUTRAL'
+                    t['leverage_color'] = 'gray'
+                    
+                # Clean up raw temp variable
+                t.pop('_raw_own', None)
+    except Exception as gli_e:
+        print(f"[WARNING]: GPP Leverage Index calculation failed: {gli_e}")
+
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
 

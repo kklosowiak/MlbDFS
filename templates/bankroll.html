@@ -76,20 +76,58 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
         th, td {
             text-align: left;
-            padding: 12px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+        th:last-child, td:last-child {
+            border-right: none;
         }
         th {
             color: var(--text-secondary);
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
             font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.02);
+            letter-spacing: 0.05em;
+        }
+        tr {
+            transition: all 0.15s ease;
+        }
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+            outline: 2px solid var(--accent-blue);
+            outline-offset: -2px;
         }
         .val-up { color: var(--accent-green); }
         .val-down { color: var(--accent-red); }
+        .profit-badge {
+            background: rgba(50, 215, 75, 0.12);
+            border: 1px solid rgba(50, 215, 75, 0.35);
+            color: var(--accent-green);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 0 8px rgba(50, 215, 75, 0.1);
+        }
+        .loss-badge {
+            background: rgba(255, 69, 58, 0.12);
+            border: 1px solid rgba(255, 69, 58, 0.35);
+            color: var(--accent-red);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 0 8px rgba(255, 69, 58, 0.1);
+        }
         input, button {
             font-family: inherit;
             padding: 12px;
@@ -218,14 +256,17 @@
                 totBet += bet;
                 totWon += won;
 
+                const badgeClass = prof > 0 ? 'profit-badge' : (prof < 0 ? 'loss-badge' : '');
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight:600;">${e.date}</td>
-                    <td><strong style="color:#0a84ff;">${e.stack}</strong></td>
-                    <td>$${bet.toFixed(2)}</td>
-                    <td>$${won.toFixed(2)}</td>
-                    <td class="${prof > 0 ? 'val-up' : (prof < 0 ? 'val-down' : '')}">
-                        <strong>${prof > 0 ? '+' : ''}$${prof.toFixed(2)}</strong>
+                    <td style="font-weight:700; padding:14px 16px;">${e.date}</td>
+                    <td style="padding:14px 16px;"><strong style="color:#0a84ff;">${e.stack}</strong></td>
+                    <td style="padding:14px 16px; font-weight:500;">$${bet.toFixed(2)}</td>
+                    <td style="padding:14px 16px; font-weight:500;">$${won.toFixed(2)}</td>
+                    <td style="padding:14px 16px; vertical-align: middle;">
+                        <span class="${badgeClass}">
+                            ${prof > 0 ? '+' : ''}$${prof.toFixed(2)}
+                        </span>
                     </td>
                 `;
                 tbody.appendChild(tr);
