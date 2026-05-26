@@ -1,11 +1,52 @@
 """Shared platoon multiplier (team stacks + hitter scoring)."""
 
 
-def compute_platoon_multiplier(hitter_profile, pitch_hand):
+def compute_platoon_multiplier(hitter_profile, pitch_hand, hitter_name=None, pitcher_name=None, matchup_radar=None):
     """
-    Bayesian blend of 2026 vs 2025 OPS split ratios vs opposing pitcher hand.
+    Bayesian blend of 2026 vs 2025 OPS split ratios vs opposing pitcher hand,
+    or high-resolution Matchup DNA pitch mix vs pitch-type xwOBA.
     Returns 1.0 when data is insufficient.
     """
+    # 1. Try Matchup DNA pitch-mix mapping first
+    if hitter_name and pitcher_name and matchup_radar:
+        try:
+            from utils.normalization import normalize_player_name
+            p_name = normalize_player_name(pitcher_name)
+            h_name = normalize_player_name(hitter_name)
+            
+            pitcher_data = matchup_radar.data.get('pitchers', {}).get(p_name)
+            hitter_data = matchup_radar.data.get('hitters', {}).get(h_name)
+            league_avg = matchup_radar.data.get('league_avg', {})
+            
+            if pitcher_data and hitter_data and league_avg:
+                pitch_types = ['FF', 'SI', 'SL', 'CU', 'CH']
+                weighted_hitter_xwoba = 0.0
+                weighted_league_xwoba = 0.0
+                total_usage = 0.0
+                
+                for ptype in pitch_types:
+                    usage = float(pitcher_data.get(ptype, 0.0) or 0.0)
+                    h_xwoba = hitter_data.get(ptype)
+                    l_xwoba = league_avg.get(ptype, 0.300)
+                    
+                    if usage > 0.0:
+                        total_usage += usage
+                        if h_xwoba is not None:
+                            weighted_hitter_xwoba += usage * float(h_xwoba)
+                        else:
+                            weighted_hitter_xwoba += usage * float(l_xwoba)
+                        weighted_league_xwoba += usage * float(l_xwoba)
+                
+                if total_usage > 0.0 and weighted_league_xwoba > 0.0:
+                    h_expected = weighted_hitter_xwoba / total_usage
+                    l_expected = weighted_league_xwoba / total_usage
+                    
+                    if l_expected > 0.0:
+                        dna_multiplier = h_expected / l_expected
+                        return max(0.70, min(1.30, dna_multiplier))
+        except Exception:
+            pass
+
     if not pitch_hand or not hitter_profile:
         return 1.0
 

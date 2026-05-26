@@ -374,7 +374,7 @@ class SharpsWeighting:
         public_pressure = ml_move >= 12 or (divergence > 12 and not sharp_in_favor)
         return public_pressure
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
@@ -389,7 +389,11 @@ class SharpsWeighting:
             from utils.xwoba_estimates import cap_matchup_xwoba
 
             opp_label = "LHP" if str(pitch_hand).upper() == "L" else "RHP"
-            platoon_multiplier = compute_platoon_multiplier(hitter_splits, pitch_hand)
+            platoon_multiplier = compute_platoon_multiplier(
+                hitter_splits, pitch_hand,
+                hitter_name=player_name, pitcher_name=pitcher_name,
+                matchup_radar=matchup_radar
+            )
             platoon_percent = round((platoon_multiplier - 1.0) * 100)
             if abs(platoon_percent) >= 3:
                 platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"

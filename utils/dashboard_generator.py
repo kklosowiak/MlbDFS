@@ -47,7 +47,7 @@ class DashboardGenerator:
         
         # OMEGA v8.7: Final Intelligence Sort
         # Ensures highest-probability plays are always at the top after all gates/boosts
-        t_reports = sorted(t_reports, key=lambda x: x.get('stack_score', 0), reverse=True)
+        t_reports = sorted(t_reports, key=lambda x: x.get('blended_rating', (x.get('stack_score', 0) + x.get('attack_conf', 50)) / 2), reverse=True)
         p_reports = sorted(p_reports, key=lambda x: x.get('alpha_score', 0), reverse=True)
         h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
         
@@ -146,8 +146,11 @@ class DashboardGenerator:
             t_tooltip = f"Confidence: {t_conf}%\n" + "\n".join([f"- {r}" for r in t_reasons])
             t_tooltip_esc = t_tooltip.replace('"', '&quot;')
 
-            row = f"""<tr class="{'god-tier' if t['stack_score'] >= 85 else ''}" title="{t_tooltip_esc}">
-<td class="score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}">{t['stack_score']}</td>
+            blended = t.get('blended_rating', round((t.get('stack_score', 0) + t.get('attack_conf', 50)) / 2, 1))
+            row = f"""<tr class="{'god-tier' if blended >= 80 else ''}" title="{t_tooltip_esc}">
+<td class="score {'score-elite' if blended >= 85 else ('score-high' if blended >= 75 else '')}">{blended}</td>
+<td class="metric-sub" style="font-weight:700; color:#fff;">{t['stack_score']}</td>
+<td class="metric-sub" style="font-weight:700; color:#0a84ff;">{t.get('attack_conf', 0)}%</td>
 <td class="score-physics">{t.get('physics_score', 0)}</td>
 <td class="score-market">{t.get('market_score', 0)}</td>
 <td><div class="signals-container">
@@ -729,7 +732,7 @@ class DashboardGenerator:
                 <h2>Market Sentiment Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>OMEGA</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                        <tr><th>BLENDED</th><th>OMEGA</th><th>CONF</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody>
                         {"".join(team_rows)}

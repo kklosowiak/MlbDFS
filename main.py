@@ -203,7 +203,8 @@ def run_full_analysis():
         snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, 
         bullpen_analyzer, consensus_fetcher, splits_data, 
         umpire_assignments, weather_fetcher, previous_results, totals_data,
-        raw_hitters=raw_hitters, confirmed_lineups=confirmed_lineups
+        raw_hitters=raw_hitters, confirmed_lineups=confirmed_lineups,
+        matchup_radar=matchup_radar
     )
 
     # 5. Analyze Hitters
@@ -311,6 +312,12 @@ def run_full_analysis():
 
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
+
+    # OMEGA: Calculate Blended Stack Rating for all teams
+    for t in team_reports:
+        stack_score = float(t.get('stack_score', 0) or 0)
+        attack_conf = float(t.get('attack_conf', 0) or 0)
+        t['blended_rating'] = round((stack_score + attack_conf) / 2, 1)
 
     try:
         from utils.slate_signal_history import persist_slate_signals, attach_signal_deltas
@@ -495,7 +502,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
     return p_reports
 
-def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None):
+def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None, matchup_radar=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
     print(f"\n[STEP 2]: Ranking Team Omega ({len(snapshot.get('odds', []))} games)...")
     
@@ -662,7 +669,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     hitter_norm = normalize_player_name(h['name'])
                     h_profile = cache.get(hitter_norm, {})
                     
-                    platoon_multiplier = compute_platoon_multiplier(h_profile, pitch_hand) if h_profile else 1.0
+                    platoon_multiplier = compute_platoon_multiplier(
+                        h_profile, pitch_hand,
+                        hitter_name=h['name'], pitcher_name=opp_pitcher_name,
+                        matchup_radar=matchup_radar
+                    ) if h_profile else 1.0
                     base_xwoba = h.get('matchup_xwoba', 0.310)
                     adj_xwoba = cap_matchup_xwoba(base_xwoba * platoon_multiplier)
                     adjusted_h_list.append({
@@ -1217,7 +1228,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
             matchup_radar_boost=matchup_radar_boost, opp_csw=opp_csw,
-            pitch_hand=pitch_hand, hitter_splits=h_profile, smash_factor=smash_factor
+            pitch_hand=pitch_hand, hitter_splits=h_profile, smash_factor=smash_factor,
+            pitcher_name=opp_pitcher, matchup_radar=matchup_radar
         )
 
         # OMEGA v8.0: ICE_COLD_MARKET penalty

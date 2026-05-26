@@ -159,7 +159,8 @@ def analyze_export(data: dict) -> dict:
     stack_conf = []
     for t in teams:
         conf, reasons = score_stack_confidence(t, pitchers)
-        stack_conf.append((t.get("team"), conf, t.get("prop_pressure_label"), reasons[:1]))
+        blended = round((float(t.get("stack_score", 0) or 0) + conf) / 2, 1)
+        stack_conf.append((t.get("team"), conf, t.get("stack_score", 0), blended, t.get("prop_pressure_label"), reasons[:1]))
 
     n_pt = sum(1 for p in pitchers if p.get("is_juiced_target"))
     n_pj = sum(1 for p in pitchers if p.get("is_prop_juice"))
@@ -179,8 +180,8 @@ def analyze_export(data: dict) -> dict:
         "volatile_teams": sum(1 for t in teams if t.get("is_volatile")),
         "volatile_sp": sum(1 for p in pitchers if p.get("is_volatile")),
         "blind_spot": [t["team"] for t in teams if t.get("is_blind_spot")],
-        "stack_conf_top": sorted(stack_conf, key=lambda x: -x[1])[:8],
-        "stack_conf_bottom": sorted(stack_conf, key=lambda x: x[1])[:5],
+        "stack_conf_top": sorted(stack_conf, key=lambda x: -x[3])[:8],
+        "stack_conf_bottom": sorted(stack_conf, key=lambda x: x[3])[:5],
         "timestamp": data.get("timestamp") or data.get("generated_at") or "unknown",
     }
 
@@ -261,15 +262,15 @@ def print_analysis(path: Path, stats: dict) -> None:
 
     print(f"  Volatile: {stats['volatile_teams']} teams, {stats['volatile_sp']} SP")
 
-    print("\n  Top stack CONF (replayed):")
-    for team, conf, prop, reasons in stats["stack_conf_top"]:
+    print("\n  Top stack (replayed, sorted by BLENDED):")
+    for team, conf, omega, blended, prop, reasons in stats["stack_conf_top"]:
         reason = reasons[0][:55] if reasons else ""
-        print(f"    {conf:>3}  {prop or '—':<8}  {team[:22]:<22}  {reason}")
+        print(f"    BLENDED: {blended:>5} | CONF: {conf:>3}% | OMEGA: {omega:>5} | {prop or '-':<8} | {team[:20]:<20} | {reason}")
 
-    print("\n  Lowest stack CONF (replayed):")
-    for team, conf, prop, reasons in stats["stack_conf_bottom"]:
+    print("\n  Lowest stack (replayed, sorted by BLENDED):")
+    for team, conf, omega, blended, prop, reasons in stats["stack_conf_bottom"]:
         reason = reasons[0][:55] if reasons else ""
-        print(f"    {conf:>3}  {prop or '—':<8}  {team[:22]:<22}  {reason}")
+        print(f"    BLENDED: {blended:>5} | CONF: {conf:>3}% | OMEGA: {omega:>5} | {prop or '-':<8} | {team[:20]:<20} | {reason}")
 
 
 def health_checks(stats: dict | None) -> list[str]:

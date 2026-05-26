@@ -2066,19 +2066,20 @@
                 <table id="teams-table">
                     <thead>
                         <tr>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">MARKET INTEL ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TACTICAL MATCHUP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ML MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">TT MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">DIVERGENCE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">BLENDED ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 5, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TACTICAL MATCHUP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">TEAM ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 9, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ITT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">ML MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">TT MOVE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">DIVERGENCE ↕</th>
                         </tr>
                     </thead>
                     <tbody id="teams-body">
@@ -2397,6 +2398,7 @@
 
         /** Signal + column glossary — hover any [data-omega-tip] pill or header. */
         const OMEGA_TIPS = {
+            col_blended: 'Blended Stack Rating (average of OMEGA and CONF). In backtesting, this is the primary ranker and selection metric used to select winning slates.',
             col_omega: 'OMEGA master score (0–150 cap). Stacks/pitchers: physics + market + matchup multipliers. Higher = stronger overall play on the slate.',
             col_conf: 'Attack confidence (0–100%). How strongly the Attack Plan engine likes this play after physics, traps, and context — not the same as OMEGA rank.',
             col_conf_delta: 'Δ CONF since the first OMEGA run today. Swings ≥15 pts flag VOLATILE — often lineup or xwOBA refresh churn, not new sharp info.',
@@ -2753,12 +2755,12 @@
         const MATRIX_COLUMN_TIPS_FULL = {
             'pitchers-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
             'hitters-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', 'col_xwoba', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
-            'teams-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
+            'teams-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
         };
         const MATRIX_COLUMN_TIPS_COMPACT = {
             'pitchers-table': ['col_omega', 'col_trust_stack', 'col_profile', null, null, null, null, 'col_props_cluster'],
             'hitters-table': ['col_omega', 'col_trust_stack', 'col_match_cluster', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
-            'teams-table': ['col_omega', 'col_trust_stack', 'col_phy', null, null, null, null, 'col_market_cluster'],
+            'teams-table': ['col_blended', 'col_omega', 'col_trust_stack', 'col_phy', null, null, null, 'col_market_cluster'],
         };
 
         const MATRIX_HEADERS = {
@@ -2815,28 +2817,30 @@
             },
             teams: {
                 full: `
-                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">Δ ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">MKT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TEAM ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">vs PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 9, true)">ITT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ML MOVE ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">TT MOVE ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">DIVERGENCE ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 4, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 5, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 8, false)">TEAM ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 9, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ITT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">ML MOVE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">TT MOVE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">DIVERGENCE ↕</th>`,
                 compact: `
-                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">CONF·Δ ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">PHY ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 3, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TEAM ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">vs PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 7, true)">MARKET ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 2, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 3, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 4, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 5, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 6, false)">TEAM ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 7, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 8, true)">MARKET ↕</th>`,
             },
         };
 
@@ -3995,13 +3999,20 @@
             const compact = isMatrixCompact();
 
             const pitchers = latestData.pitchers || [];
-            const teams = latestData.teams || [];
+            const teams = [...(latestData.teams || [])];
+            teams.forEach(t => {
+                const stackScoreVal = numScore(t.stack_score);
+                const attackConfVal = t.attack_conf != null ? t.attack_conf : 50;
+                t.blended_rating = t.blended_rating != null ? t.blended_rating : Math.round((stackScoreVal + attackConfVal) / 2 * 10) / 10;
+            });
+            teams.sort((a, b) => (b.blended_rating || 0) - (a.blended_rating || 0));
+
             const hittersForRender = [...(latestData.hitters || [])].sort(
                 (a, b) => numScore(b.player_score) - numScore(a.player_score)
             );
             const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
             const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
-            const tRanks = computeScoreRankMap(teams, 'stack_score', 'team');
+            const tRanks = computeScoreRankMap(teams, 'blended_rating', 'team');
             
             // Build DQI Rank Map
             const activeDqiTeams = teams.filter(t => t.dqi_score !== undefined && t.dqi_score !== null);
@@ -4218,9 +4229,13 @@
                 const teamIdentity = `
                     <td><strong>${t.team}</strong></td>
                     <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>`;
+                const tBlended = t.blended_rating;
+                const blendedClass = tBlended >= 85 ? 'score elite' : (tBlended >= 75 ? 'score high' : 'score med');
+                
                 if (compact) {
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
+                        <td class="${blendedClass}">${tBlended.toFixed(1)}${slatePercentileHtml(tRank)}</td>
+                        <td class="metric-sub" style="font-weight:700; color:#fff;">${tStack.toFixed(1)}</td>
                         ${trustStackHtml(t)}
                         ${teamPhyCell(t)}
                         ${teamSignals}
@@ -4229,7 +4244,8 @@
                     `;
                 } else {
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${tStack}${slatePercentileHtml(tRank)}</td>
+                        <td class="${blendedClass}">${tBlended.toFixed(1)}${slatePercentileHtml(tRank)}</td>
+                        <td class="metric-sub" style="font-weight:700; color:#fff;">${tStack.toFixed(1)}</td>
                         ${attackConfHtml(t)}
                         ${confDeltaHtml(t)}
                         ${teamPhyCell(t)}

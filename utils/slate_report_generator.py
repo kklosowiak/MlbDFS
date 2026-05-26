@@ -38,6 +38,7 @@ class SlateReportGenerator:
             conf, reasons = score_stack_confidence(t, p_reports)
             t['attack_conf'] = conf
             t['attack_reasons'] = reasons
+            t['blended_rating'] = round((t.get('stack_score', 0) + conf) / 2, 1)
             scored_stacks.append(t)
             
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
@@ -73,7 +74,7 @@ class SlateReportGenerator:
         best_t = lock_stacks[0] if lock_stacks else (scored_stacks[0] if scored_stacks else None)
         
         if best_t:
-            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} ({best_t['attack_conf']}% Confidence)")
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {best_t['blended_rating']} | CONF: {best_t['attack_conf']}% | Ω: {best_t.get('stack_score', 0)})")
             for r in best_t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
@@ -96,7 +97,7 @@ class SlateReportGenerator:
         lines.append("## 🏟️ Core Stacks (Top 5)")
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
-            lines.append(f"### {i}. {t['team']} ({t['attack_conf']}% Confidence)")
+            lines.append(f"### {i}. {t['team']} (Blended: {t['blended_rating']} | CONF: {t['attack_conf']}% | Ω: {t.get('stack_score', 0)})")
             for r in t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
