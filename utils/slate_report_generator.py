@@ -29,6 +29,7 @@ class SlateReportGenerator:
             conf, reasons = score_pitcher_confidence(p, t_reports)
             p['attack_conf'] = conf
             p['attack_reasons'] = reasons
+            p['blended_rating'] = round((p.get('alpha_score', 0) + conf) / 2, 1)
             scored_pitchers.append(p)
             
         scored_pitchers.sort(key=lambda x: x['attack_conf'], reverse=True)
@@ -51,6 +52,7 @@ class SlateReportGenerator:
             conf, reasons = self._score_hitter_confidence(h, team_data, opp_p)
             h['attack_conf'] = conf
             h['attack_reasons'] = reasons
+            h['blended_rating'] = round((h.get('player_score', 0) + conf) / 2, 1)
 
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")

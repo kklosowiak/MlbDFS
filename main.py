@@ -319,6 +319,18 @@ def run_full_analysis():
         attack_conf = float(t.get('attack_conf', 0) or 0)
         t['blended_rating'] = round((stack_score + attack_conf) / 2, 1)
 
+    # OMEGA: Calculate Blended Pitcher Rating
+    for p in p_reports:
+        alpha_score = float(p.get('alpha_score', 0) or 0)
+        attack_conf = float(p.get('attack_conf', 0) or 0)
+        p['blended_rating'] = round((alpha_score + attack_conf) / 2, 1)
+
+    # OMEGA: Calculate Blended Hitter Rating
+    for h in h_reports:
+        player_score = float(h.get('player_score', 0) or 0)
+        attack_conf = float(h.get('attack_conf', 0) or 0)
+        h['blended_rating'] = round((player_score + attack_conf) / 2, 1)
+
     try:
         from utils.slate_signal_history import persist_slate_signals, attach_signal_deltas
 

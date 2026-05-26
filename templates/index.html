@@ -2008,17 +2008,18 @@
                 <table id="pitchers-table">
                     <thead>
                         <tr>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">MARKET INTEL ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">TACTICAL MATCHUP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">OUTS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">BLENDED ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">Δ ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 5, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">TACTICAL MATCHUP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 9, false)">vs OPPONENT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">K-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('pitchers-table', 11, true)">OUTS ↕</th>
                         </tr>
                     </thead>
                     <tbody id="pitchers-body">
@@ -2036,19 +2037,18 @@
                 <table id="hitters-table">
                     <thead>
                         <tr>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">PHY ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">MARKET INTEL ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">TACTICAL MATCHUP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">HITS ↕</th>
-                            <th class="sortable-th" onclick="sortTable('hitters-table', 12, true)">BASES ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">BLENDED ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 1, true, true)">OMEGA ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">CONF ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">PHY ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">MKT ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">MARKET INTEL ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">TACTICAL MATCHUP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">PLAYER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">vs PITCHER ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 9, true)">HR-PROP ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HITS ↕</th>
+                            <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">BASES ↕</th>
                         </tr>
                     </thead>
                     <tbody id="hitters-body">
@@ -2757,67 +2757,67 @@
         }
 
         const MATRIX_COLUMN_TIPS_FULL = {
-            'pitchers-table': ['col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
-            'hitters-table': ['col_omega', 'col_conf', 'col_phy', 'col_mkt', 'col_xwoba', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
+            'pitchers-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
+            'hitters-table': ['col_blended', 'col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
             'teams-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
         };
         const MATRIX_COLUMN_TIPS_COMPACT = {
-            'pitchers-table': ['col_omega', 'col_trust_stack', 'col_profile', null, null, null, null, 'col_props_cluster'],
-            'hitters-table': ['col_omega', 'col_trust_stack', 'col_match_cluster', null, null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
+            'pitchers-table': ['col_blended', 'col_omega', 'col_trust_stack', 'col_profile', null, null, null, null, 'col_props_cluster'],
+            'hitters-table': ['col_blended', 'col_omega', 'col_trust_stack', null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
             'teams-table': ['col_blended', 'col_omega', 'col_trust_stack', 'col_phy', null, null, null, 'col_market_cluster'],
         };
 
         const MATRIX_HEADERS = {
             pitchers: {
                 full: `
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">Δ ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PHY ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">MKT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">vs OPPONENT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 9, true)">K-PROP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">OUTS ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 8, false)">PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 9, false)">vs OPPONENT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 10, true)">K-PROP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 11, true)">OUTS ↕</th>`,
                 compact: `
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true)">CONF·Δ ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">PROFILE ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">vs OPP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, true)">PROPS ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 1, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 2, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 3, true)">PROFILE ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 4, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 5, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 6, false)">PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 7, false)">vs OPP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('pitchers-table', 8, true)">PROPS ↕</th>`,
             },
             hitters: {
                 full: `
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">PHY ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">MKT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">xwOBA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">PLAYER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, false)">vs PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HR-PROP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">HITS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 12, true)">BASES ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">CONF ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, true)">PHY ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, true)">MKT ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">PLAYER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, true)">HR-PROP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">HITS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 11, true)">BASES ↕</th>`,
                 compact: `
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true, true)">OMEGA ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true)">CONF·Δ ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">MATCH ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">PLT ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">MARKET INTEL ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">TACTICAL MATCHUP ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">PLAYER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, false)">vs PITCHER ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, true)">HR ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, true)">HITS ↕</th>
-                    <th class="sortable-th" onclick="sortTable('hitters-table', 10, true)">BASES ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 0, true)">BLENDED ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 1, true, true)">OMEGA ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 2, true)">CONF·Δ ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 3, false)">MARKET INTEL ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 4, false)">TACTICAL MATCHUP ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 5, false)">PLAYER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 6, false)">vs PITCHER ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 7, true)">HR ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 8, true)">HITS ↕</th>
+                    <th class="sortable-th" onclick="sortTable('hitters-table', 9, true)">BASES ↕</th>`,
             },
             teams: {
                 full: `
@@ -4002,7 +4002,14 @@
             syncMatrixTableHeaders();
             const compact = isMatrixCompact();
 
-            const pitchers = latestData.pitchers || [];
+            const pitchers = [...(latestData.pitchers || [])];
+            pitchers.forEach(p => {
+                const alphaScoreVal = numScore(p.alpha_score);
+                const attackConfVal = p.attack_conf != null ? p.attack_conf : 50;
+                p.blended_rating = p.blended_rating != null ? p.blended_rating : Math.round((alphaScoreVal + attackConfVal) / 2 * 10) / 10;
+            });
+            pitchers.sort((a, b) => (b.blended_rating || 0) - (a.blended_rating || 0));
+
             const teams = [...(latestData.teams || [])];
             teams.forEach(t => {
                 const stackScoreVal = numScore(t.stack_score);
@@ -4011,11 +4018,16 @@
             });
             teams.sort((a, b) => (b.blended_rating || 0) - (a.blended_rating || 0));
 
-            const hittersForRender = [...(latestData.hitters || [])].sort(
-                (a, b) => numScore(b.player_score) - numScore(a.player_score)
-            );
-            const pRanks = computeScoreRankMap(pitchers, 'alpha_score', 'pitcher');
-            const hRanks = computeScoreRankMap(hittersForRender, 'player_score', 'name');
+            const hittersForRender = [...(latestData.hitters || [])];
+            hittersForRender.forEach(h => {
+                const playerScoreVal = numScore(h.player_score);
+                const attackConfVal = h.attack_conf != null ? h.attack_conf : 50;
+                h.blended_rating = h.blended_rating != null ? h.blended_rating : Math.round((playerScoreVal + attackConfVal) / 2 * 10) / 10;
+            });
+            hittersForRender.sort((a, b) => (b.blended_rating || 0) - (a.blended_rating || 0));
+
+            const pRanks = computeScoreRankMap(pitchers, 'blended_rating', 'pitcher');
+            const hRanks = computeScoreRankMap(hittersForRender, 'blended_rating', 'name');
             const tRanks = computeScoreRankMap(teams, 'blended_rating', 'team');
             
             // Build DQI Rank Map
@@ -4075,6 +4087,9 @@
                     });
                 }
 
+                const pBlended = p.blended_rating != null ? p.blended_rating : Math.round((pScore + (p.attack_conf || 50)) / 2 * 10) / 10;
+                const pBlendedClass = pBlended >= 85 ? 'score elite' : (pBlended >= 75 ? 'score high' : 'score med');
+
                 const pRank = pRanks[p.pitcher];
                 const trapSpLabel = p.trap_type ? ` — ${p.trap_type}` : '';
                 const pitcherNameCell = `
@@ -4087,7 +4102,8 @@
                     <td><div class="signals-container">${pitcherTacticalMatchupHtml(p, trapSpLabel)}</div></td>`;
                 if (compact) {
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
+                        <td class="${pBlendedClass}">${pBlended.toFixed(1)}${slatePercentileHtml(pRank)}</td>
+                        <td class="${scoreClass}">${pScore}</td>
                         ${trustStackHtml(p)}
                         ${pitcherProfileCell(p)}
                         ${pitcherSignals}
@@ -4097,7 +4113,8 @@
                     `;
                 } else {
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${pScore}${slatePercentileHtml(pRank)}</td>
+                        <td class="${pBlendedClass}">${pBlended.toFixed(1)}${slatePercentileHtml(pRank)}</td>
+                        <td class="${scoreClass}">${pScore}</td>
                         ${attackConfHtml(p)}
                         ${confDeltaHtml(p)}
                         ${simpleMetricCell(scoreDisplay(p.physics_score), pitcherPhyTierStyle(p.physics_score), p.physics_talent != null ? `Stuff talent ${p.physics_talent}/100` : 'SIERA + CSW stuff grade')}
@@ -4131,17 +4148,8 @@
                 if (hScore >= 48) tr.classList.add('row-highlight');
                 
                 const scoreClass = hScore >= 55 ? 'score elite' : (hScore >= 45 ? 'score high' : 'score med');
-                
-                let platoonBadge = '';
-                if (h.platoon_multiplier && h.platoon_multiplier > 1.0) {
-                    const pct = Math.round((h.platoon_multiplier - 1.0) * 100);
-                    platoonBadge = `<span class="signal-pill" style="background:rgba(50, 215, 75, 0.15); border-color:#32d74b; color:#32d74b; font-weight:800;">+${pct}%</span>`;
-                } else if (h.platoon_multiplier && h.platoon_multiplier < 1.0) {
-                    const pct = Math.round((1.0 - h.platoon_multiplier) * 100);
-                    platoonBadge = `<span class="signal-pill" style="background:rgba(255, 69, 58, 0.15); color:#ff453a;">-${pct}%</span>`;
-                } else {
-                    platoonBadge = '<span style="color:var(--text-secondary); font-size:0.8rem;">—</span>';
-                }
+                const hBlended = h.blended_rating != null ? h.blended_rating : Math.round((hScore + (h.attack_conf || 50)) / 2 * 10) / 10;
+                const hBlendedClass = hBlended >= 85 ? 'score elite' : (hBlended >= 75 ? 'score high' : 'score med');
 
                 const hRank = hRanks[h.name];
                 const hitterCore = `
@@ -4152,23 +4160,20 @@
                     <td class="metric"><b>${h.tb_line || '-'}</b><br><span style="font-size:0.8em; color:var(--text-secondary);">(${h.tb_price > 0 ? '+' : ''}${h.tb_price || '-'})</span></td>`;
                 if (compact) {
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
+                        <td class="${hBlendedClass}">${hBlended.toFixed(1)}${slatePercentileHtml(hRank)}</td>
+                        <td class="${scoreClass}">${hScore}</td>
                         ${trustStackHtml(h)}
-                        ${hitterMatchClusterCell(h)}
-                        <td>${platoonBadge}</td>
                         <td><div class="signals-container">${hitterMarketIntelHtml(h, hTeam)}</div></td>
                         <td><div class="signals-container">${hitterTacticalMatchupHtml(h)}</div></td>
                         ${hitterCore}
                     `;
                 } else {
-                    const xwoba = (h.matchup_xwoba || 0.330).toFixed(3);
                     tr.innerHTML = `
-                        <td class="${scoreClass}">${hScore}${slatePercentileHtml(hRank)}</td>
+                        <td class="${hBlendedClass}">${hBlended.toFixed(1)}${slatePercentileHtml(hRank)}</td>
+                        <td class="${scoreClass}">${hScore}</td>
                         ${attackConfHtml(h)}
                         ${simpleMetricCell(scoreDisplay(h.physics_score), hitterPhyTierStyle(h.physics_score), omegaTip('col_phy'))}
                         ${simpleMetricCell(scoreDisplay(h.market_score), hitterMktTierStyle(h.market_score), omegaTip('col_mkt'))}
-                        ${simpleMetricCell(xwoba, xwobaTierStyle(xwoba), omegaTip('col_xwoba'))}
-                        <td>${platoonBadge}</td>
                         <td><div class="signals-container">${hitterMarketIntelHtml(h, hTeam)}</div></td>
                         <td><div class="signals-container">${hitterTacticalMatchupHtml(h)}</div></td>
                         ${hitterCore}
@@ -5768,6 +5773,9 @@
                 document.getElementById('hm-phys').innerText = h.physics_score || '—';
                 document.getElementById('hm-mkt').innerText = h.market_score || '—';
                 
+                const pMult = h.platoon_multiplier != null ? h.platoon_multiplier : 1.0;
+                document.getElementById('hm-platoon-mult').innerText = pMult.toFixed(2) + 'x';
+                
                 const xwobaVal = typeof h.matchup_xwoba === 'number' ? h.matchup_xwoba : parseFloat(h.matchup_xwoba || 0.330);
                 document.getElementById('hm-xwoba').innerText = !isNaN(xwobaVal) ? xwobaVal.toFixed(3) : '0.330';
                 
@@ -6028,6 +6036,7 @@
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Attack CONF</span><strong id="hm-conf">—</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Physics</span><strong id="hm-phys">—</strong></div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Market</span><strong id="hm-mkt">—</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>Platoon Multiplier (PLT)</span><strong id="hm-platoon-mult">—</strong></div>
                 <div style="display:flex; justify-content:space-between;"><span>Matchup xwOBA</span><strong id="hm-xwoba">—</strong></div>
             </div>
             <div class="card" style="padding:20px; margin:0;">
