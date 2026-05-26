@@ -1159,68 +1159,33 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             h_is_cold_streak_msmi = h_rolling_k_delta >= 12.0 and h_rolling_ops_delta <= -12.0
             h_is_hot_run_msmi = h_rolling_ops_delta >= 12.0 and h_rolling_k_delta <= -10.0
 
-
-
-        # Dynamic Platoon splits via NPAS
-        NPAS_xwOBA = 0.0
+        # Dynamic Platoon splits via Matchup DNA or hand-based NPAS
+        platoon_multiplier = 1.0
         try:
-            if h_profile:
-                h_vs_left_ops = float(h_profile.get("vs_left_ops", 0.0) or 0.0)
-                h_vs_right_ops = float(h_profile.get("vs_right_ops", 0.0) or 0.0)
-                
-                base_xw = h_prop_analyzer._resolve_xwoba(h['name'], h_profile)
-                h_vs_left_xwoba = ops_to_xwoba(h_vs_left_ops) if h_vs_left_ops > 0 else base_xw
-                h_vs_right_xwoba = ops_to_xwoba(h_vs_right_ops) if h_vs_right_ops > 0 else base_xw
-                
-                if pitch_hand == "L":
-                    hitter_vs_hand_xwoba = h_vs_left_xwoba
-                    h_pa = float(h_profile.get("vs_left_pa", 0) or 0)
-                else:
-                    hitter_vs_hand_xwoba = h_vs_right_xwoba
-                    h_pa = float(h_profile.get("vs_right_pa", 0) or 0)
-                    
-                # Regress hitter split toward baseline (M_h = 100)
-                h_vs_hand_reg = (hitter_vs_hand_xwoba * h_pa + base_xw * 100.0) / (h_pa + 100.0)
-                hitter_xwoba_diff = h_vs_hand_reg - base_xw
-                
-                p_vl = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vl", {})
-                p_vr = platoon_cache.get("pitchers", {}).get(opp_pitcher_norm, {}).get("vr", {})
-                
-                p_vl_ops = p_vl.get("ops", 0.0)
-                p_vl_woba = p_vl.get("wOBA_proxy", 0.0)
-                p_vr_ops = p_vr.get("ops", 0.0)
-                p_vr_woba = p_vr.get("wOBA_proxy", 0.0)
-                
-                p_vs_lhh_xwoba = woba_proxy_to_xwoba(p_vl_woba, p_vl_ops)
-                p_vs_rhh_xwoba = woba_proxy_to_xwoba(p_vr_woba, p_vr_ops)
-                
-                bat_side = h_profile.get("bat_side", "R") if h_profile.get("type") == "hitter" else "R"
-                if bat_side == "S":
-                    eff_bat_side = "R" if pitch_hand == "L" else "L"
-                else:
-                    eff_bat_side = bat_side
-                    
-                if eff_bat_side == "L":
-                    pitcher_vs_opp_hand_xwoba = p_vs_lhh_xwoba
-                    p_pa = float(p_vl.get("pa", 0) or 0)
-                else:
-                    pitcher_vs_opp_hand_xwoba = p_vs_rhh_xwoba
-                    p_pa = float(p_vr.get("pa", 0) or 0)
-                    
-                # Regress pitcher split toward league average (0.320, M_p = 250)
-                p_vs_hand_reg = (pitcher_vs_opp_hand_xwoba * p_pa + 0.320 * 250.0) / (p_pa + 250.0)
-                pitcher_splits_diff = p_vs_hand_reg - 0.320
-                
-                NPAS_xwOBA = hitter_xwoba_diff * 0.50 + pitcher_splits_diff * 0.25
+            platoon_multiplier = compute_platoon_multiplier(
+                h_profile, pitch_hand,
+                hitter_name=h['name'], pitcher_name=opp_pitcher,
+                matchup_radar=matchup_radar
+            ) if h_profile else 1.0
         except Exception:
             pass
 
-        # Adjust hitter's matchup_xwoba by NPAS
+        # Adjust hitter's matchup_xwoba by platoon_multiplier
         baseline_xwoba = float(h.get('matchup_xwoba', 0.330) or 0.330)
-        matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba + NPAS_xwOBA)
+        matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba * platoon_multiplier)
+        NPAS_xwOBA = matchup_xwoba_npas - baseline_xwoba
 
         # OMEGA v13.5 Hitter SMASH Calibration (Optimized via Grid Sweep)
         smash_factor = (matchup_xwoba_npas >= 0.370 and NPAS_xwOBA >= 0.0)
+
+        # Check if this hitter has a Matchup DNA edge
+        is_hitter_pitch_alignment = False
+        if matchup_radar and opp_pitcher and opp_pitcher != "TBD":
+            p_name = normalize_player_name(opp_pitcher)
+            h_name = normalize_player_name(h['name'])
+            if p_name in matchup_radar.data.get('pitchers', {}) and h_name in matchup_radar.data.get('hitters', {}):
+                if platoon_multiplier > 1.0:
+                    is_hitter_pitch_alignment = True
 
         res = sharps_weighting.calculate_individual_hitter_score(
             h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),
@@ -1259,7 +1224,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'is_hot': is_hot, 'is_juiced_target': h.get('is_juiced_target', False),
             'is_prop_juice': h.get('is_prop_juice', False),
             'is_speed_target': h.get('is_speed_target', False),
-            'platoon_multiplier': res.get('platoon_multiplier', 1.0),
+            'is_pitch_alignment': is_hitter_pitch_alignment,
+            'platoon_multiplier': platoon_multiplier,
             'platoon_label': res.get('platoon_label', 'Neutral'),
             'bat_side': h_profile.get('bat_side', 'R') if h_profile.get('type') == 'hitter' else 'R',
             'pitch_hand': pitch_hand,

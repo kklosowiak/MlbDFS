@@ -2722,6 +2722,10 @@
         function hitterTacticalMatchupHtml(h) {
             let pills = [];
 
+            if (h.is_pitch_alignment) {
+                pills.push(signalPillHtml('🎯 PITCH ALIGN', { className: 'pill-pitch-align', tip: 'Pitch Alignment Edge: Hitter matches the opposing SP\'s pitch mix above league average xwOBA.' }));
+            }
+
             const plat = h.platoon_label || '';
             if (plat.includes('ELITE')) {
                 pills.push(signalPillHtml('⚡ ELITE PLATOON', { className: 'pill-el-platoon', tipKey: 'platoon_elite' }));
