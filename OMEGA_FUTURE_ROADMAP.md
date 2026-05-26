@@ -9,24 +9,21 @@ These notes capture the proposed enhancements and long-term directions for the O
 3. **Statcast "Smash Factor"**: Completed and calibrated using the standard `f2_matchup_synergy` formula (season OPS floor, rolling OPS momentum, and elite matchup xwOBA).
 4. **Remove/Adjust Pitcher Debut Boost**: Completed. The debut visibility boost was removed/neutralized for starting pitchers.
 5. **Cap Market Boosts for Weak-Hitting Stacks**: Completed. Market whale/shark multipliers were capped, and a 3.8 implied run total floor was added for DQI Trust ratings.
+6. **Batting Order Weighting (Lineup Spot PA Decay)**: Completed and calibrated. Replaced steep decay with Moderate Lineup Spot PA Decay `[1.15, 1.12, 1.08, 1.04, 1.00, 0.96, 0.92, 0.88, 0.84]` to preserve bottom-of-the-order hitter variance.
+7. **GPP Ownership Projections Proxy (The Leverage Engine)**: Completed. Heuristically projects ownership based on implied run totals, slate size, and SP matchup, exporting `gpp_leverage_index` and flagging `LEVERAGE PIVOT` teams in the dashboard.
+8. **Ballpark Factor Dampening**: Completed and calibrated. Cuts stadium factor deviation from 1.0 in half (50% dampening) to eliminate venue bias.
+9. **MSMI (Slate Momentum Index) Tuning**: Completed. Optimized rolling team form slump penalty to `-24.0` and surge boost to `+12.0` based on full-season backtest coordinate sweeps.
 
 ---
 
 ## 🧠 High-Priority Research (Next Phase)
 
-### 1. Batting Order Weighting (The "Lineup" Pillar)
-*   **Concept**: Explicitly weight the lineup order when aggregating hitter physics and projections into the team stack score.
-*   **Logic**: 
-    - The top 4 batting positions capture over 60% of run-scoring upside.
-    - Apply decay multipliers (e.g., spots 1–4: `1.2x`, spots 8–9: `0.7x`) to hitter physics scores before sum/blend.
-*   **Objective**: Prevent teams with weak top-of-the-order hitters but deep benches from being artificially inflated.
-
-### 2. GPP Ownership Projections Proxy (The "Leverage" Engine)
-*   **Concept**: Heuristically estimate player/team ownership to isolate the leverage gap.
-*   **Logic**: 
-    - Estimate team ownership using implied run totals, slate size, and starting pitcher matchup.
-    - Compute a `GPP Leverage Index` defined as `OMEGA_Score / Projected_Ownership`.
-*   **Objective**: Directly highlight low-owned, high-upside stacks in the cockpit dashboard.
+### 1. Blended Stack Rating Display (The "Selection" Metric)
+*   **Concept**: Add the blended stack rating (`(stack_score + attack_conf) / 2`) directly to the daily output reports and dashboard cockpit.
+*   **Logic**:
+    - Calculate and export `"blended_rating"` in the daily `latest_results.json` file.
+    - Include a "Blended Score" column in the HTML dashboard cockpit for easier visual scanning.
+*   **Objective**: Expose the exact composite metric that the backtest simulation uses to select winning slates.
 
 ---
 
@@ -34,3 +31,4 @@ These notes capture the proposed enhancements and long-term directions for the O
 *   **Automation**: Automatic "Snapshot velocity" detection (alerting if a line moves > 10 cents in 15 minutes).
 *   **Weather 2.0**: Humidity and Air Density (DA) impact on HR potential.
 *   **DraftKings Value Matrix (The "CSV Drop")**: Ingest local `dk_salaries.csv` files, cross-reference with Hitters Alpha, and isolate punts (sub-$3,500).
+
