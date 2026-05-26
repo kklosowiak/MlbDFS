@@ -25,7 +25,7 @@ def calculate_dqi(team, pitchers=None):
     except (TypeError, ValueError):
         implied_total = 0.0
 
-    if divergence < 10 and implied_total < 5.0:
+    if divergence < 6.0:
         return None, None, [], []
 
     try:
@@ -58,11 +58,9 @@ def calculate_dqi(team, pitchers=None):
     pos_factors = []
     warn_factors = []
 
-    # OMEGA v13.9: Track if the team bypassed the divergence gate via Vegas total
-    if divergence < 10.0 and implied_total >= 5.0:
-        warn_factors.append(f"Divergence Gate Bypass (Div {round(divergence, 1)}% < 10% | ITT {round(implied_total, 2)} >= 5.0)")
+    # Strictly gated at >= 6.0% divergence
 
-    div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 15.0))
+    div_factor = min(1.0, max(0.0, (float(divergence) - 6.0) / 15.0))
     div_pts = 5.0 + 15.0 * div_factor
     pos_pts += div_pts
     pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
@@ -135,24 +133,23 @@ def calculate_dqi(team, pitchers=None):
         pos_pts += 20.0
         pos_factors.append("Opposing SP Trap (+20 pts)")
 
-    if divergence < 0:
-        warn_pts += 10.0
-        warn_factors.append("Negative Market Divergence (-10 pts)")
+    # Divergence is guaranteed >= 10.0% positive
 
     dqi_score = 30.0 + pos_pts - warn_pts
     dqi_score = max(0.0, min(100.0, dqi_score))
     
-    # OMEGA v13.8: Sharp Fade Score & Status Cap
-    # If a team is faded by sharps (negative divergence), they cannot be TRUST.
-    # We cap their score at 74.0 so it naturally aligns with the yellow CAUTION range in the UI.
-    if divergence < 0 and dqi_score >= 75.0:
-        dqi_score = 74.0
-        warn_factors.append(f"Sharp Fade Score Cap (Div {round(divergence, 1)}% < 0)")
+    # Divergence is guaranteed >= 10.0% positive, no score cap needed
         
     dqi_score_int = int(round(dqi_score))
     
     # Implied run total floor (3.8 runs) for GPP Trust
     status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
+    
+    # Dual-Gate Cap: TRUST requires >= 12% divergence
+    if status == "TRUST" and divergence < 12.0:
+        status = "CAUTION"
+        warn_factors.append(f"TRUST Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
+        
     if status == "TRUST" and implied_total < 3.8:
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")

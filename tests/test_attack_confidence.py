@@ -312,3 +312,36 @@ def test_matchup_boost_caps():
     assert any("SP Matchup Boost capped at +20" in r for r in reasons)
 
 
+def test_unanchored_chalk_stack_capping():
+    # High raw confidence stack but 0 conviction signals -> should cap at 75
+    t_unanchored = {
+        "team": "A",
+        "team_xwoba": 0.345,
+        "implied_total": 5.2,
+        "lineup_status": "CONFIRMED",
+        "weather_label": "🟢 82° / Out 12mph",
+        "dqi_status": "CAUTION",
+        "divergence": 0,
+        "bullpen_fatigue": 50,
+        "prop_pressure_elite": False,
+        "prop_pressure_label": LABEL_NEUTRAL,
+        "is_anti_chalk_smash": False,
+        "is_pitch_alignment": False,
+        "is_gassed": False,
+    }
+    conf, reasons = score_stack_confidence(t_unanchored, [])
+    assert conf == 75
+    assert any("Capped below 75" in r for r in reasons)
+
+    # Adding 2 conviction signals -> should remain uncapped (94)
+    t_anchored = {
+        **t_unanchored,
+        "divergence": 10,  # signal 1
+        "is_anti_chalk_smash": True,  # signal 2
+    }
+    conf_anchored, reasons_anchored = score_stack_confidence(t_anchored, [])
+    assert conf_anchored == 94
+    assert not any("Capped below 75" in r for r in reasons_anchored)
+
+
+

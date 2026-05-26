@@ -53,7 +53,12 @@ class DashboardGenerator:
         
         pitcher_rows = []
         for p in p_reports[:35]:
-            row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}">
+            p_conf = p.get('attack_conf')
+            p_reasons = p.get('attack_reasons', [])
+            p_tooltip = f"Confidence: {p_conf}%\n" + "\n".join([f"- {r}" for r in p_reasons])
+            p_tooltip_esc = p_tooltip.replace('"', '&quot;')
+
+            row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}" title="{p_tooltip_esc}">
 <td class="score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}">{p['alpha_score']}</td>
 <td class="metric-sub">{p.get('physics_score', '-')}</td>
 <td class="metric-sub">{p.get('market_score', '-')}</td>
@@ -91,7 +96,12 @@ class DashboardGenerator:
             else:
                 platoon_pill = ''
 
-            row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}">
+            h_conf = h.get('attack_conf')
+            h_reasons = h.get('attack_reasons', [])
+            h_tooltip = f"Confidence: {h_conf}%\n" + "\n".join([f"- {r}" for r in h_reasons])
+            h_tooltip_esc = h_tooltip.replace('"', '&quot;')
+
+            row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}" title="{h_tooltip_esc}">
 <td class="score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}">{h['player_score']}</td>
 <td><div class="signals-container">
 { '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }
@@ -131,7 +141,12 @@ class DashboardGenerator:
             else:
                 trend_pill = ''
 
-            row = f"""<tr class="{'god-tier' if t['stack_score'] >= 85 else ''}">
+            t_conf = t.get('attack_conf')
+            t_reasons = t.get('attack_reasons', [])
+            t_tooltip = f"Confidence: {t_conf}%\n" + "\n".join([f"- {r}" for r in t_reasons])
+            t_tooltip_esc = t_tooltip.replace('"', '&quot;')
+
+            row = f"""<tr class="{'god-tier' if t['stack_score'] >= 85 else ''}" title="{t_tooltip_esc}">
 <td class="score {'score-elite' if t['stack_score'] >= 100 else ('score-high' if t['stack_score'] >= 85 else '')}">{t['stack_score']}</td>
 <td class="score-physics">{t.get('physics_score', 0)}</td>
 <td class="score-market">{t.get('market_score', 0)}</td>

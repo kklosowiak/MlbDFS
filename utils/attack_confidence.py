@@ -308,18 +308,18 @@ def score_stack_confidence(t, p_reports):
         reasons.append("Neutral stack profile on this slate.")
 
     # High Conviction Gate Check
-    # (Require 2+ signals to exceed 82 CONF)
+    # (Require 2+ signals to exceed 75 CONF)
     raw_conf = conf
     if conf > 80:
         x = conf - 80
         conf = 80.0 + (20.0 * x) / (x + 12.0)
 
     conf = _clamp(conf)
-    if conf >= 85:
+    if conf >= 75:
         ok, _ = _has_high_conviction_stack(t)
         if not ok:
-            conf = min(conf, 82)
-            reasons.append("Capped below 85 — need 2+ conviction signals (DQI/div/pen/props).")
+            conf = min(conf, 75)
+            reasons.append("Capped below 75 — need 2+ conviction signals (DQI/div/pen/props).")
 
     return conf, reasons
 

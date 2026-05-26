@@ -8,8 +8,8 @@ from utils.dqi import calculate_dqi
 from utils.market_utils import calculate_ml_move
 
 
-def test_dqi_gated_below_10():
-    score, status, pos, warn = calculate_dqi({"divergence": 5})
+def test_dqi_gated_below_6():
+    score, status, pos, warn = calculate_dqi({"divergence": 5.9})
     assert score is None
     assert status is None
 
