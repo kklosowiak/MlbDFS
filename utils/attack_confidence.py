@@ -250,13 +250,41 @@ def score_stack_confidence(t, p_reports):
             else:
                 phys = max(phys, float(alpha or 0))
         if phys >= 22 and not opp_p.get("is_trap"):
+            # OMEGA v13.5.2: Tiered Hybrid Starting Pitcher Volatility Modifier
+            p_mkt = float(opp_p.get("market_score", 0.0) or 0.0)
+            p_conf = str(opp_p.get("confidence", "low")).lower()
+            
+            # Determine dampening factor based on tier
+            damp_factor = 1.0
+            is_volatile = False
+            volatility_reason = ""
+            
+            if p_conf in ("low", "med"):
+                damp_factor = 0.0  # 100% dampening (eliminate penalty)
+                is_volatile = True
+                volatility_reason = "low-sample SP"
+            elif p_mkt == 0.0:
+                damp_factor = 0.5  # 50% dampening
+                is_volatile = True
+                volatility_reason = "unanchored market SP"
+
             bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
             if bp_fatigue >= 90 or t.get("is_gassed"):
-                conf -= 9.0
-                reasons.append(f"Tough SP underlying profile ({opp_p_name}), but opponent bullpen is exhausted.")
+                penalty = 9.0
+                if is_volatile:
+                    penalty *= damp_factor
+                    reasons.append(f"Tough but volatile ({volatility_reason}) SP profile ({opp_p_name}), and opponent bullpen is exhausted.")
+                else:
+                    reasons.append(f"Tough SP underlying profile ({opp_p_name}), but opponent bullpen is exhausted.")
             else:
-                conf -= 24.0
-                reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
+                penalty = 24.0
+                if is_volatile:
+                    penalty *= damp_factor
+                    reasons.append(f"Tough but volatile ({volatility_reason}) SP profile ({opp_p_name}) — penalty dampened.")
+                else:
+                    reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
+            
+            conf -= penalty
 
     if sp_boost > 0:
         capped_sp_boost = min(20.0, sp_boost)

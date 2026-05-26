@@ -169,6 +169,8 @@ def test_bullpen_exhausted_dampens_tough_sp_penalty():
         "pitcher": "Tarik Skubal",
         "physics_score": 25.0,
         "is_trap": False,
+        "confidence": "high",
+        "market_score": 10.0,
     }
     conf, reasons = score_stack_confidence(t_gassed, [opp_p])
     # Base 50 + 12 (xwOBA) + 14 (gassed BP) - 9 (tough SP penalty cut in half) = 67
@@ -342,6 +344,55 @@ def test_unanchored_chalk_stack_capping():
     conf_anchored, reasons_anchored = score_stack_confidence(t_anchored, [])
     assert conf_anchored == 94
     assert not any("Capped below 75" in r for r in reasons_anchored)
+
+
+def test_tiered_volatile_sp_modifier():
+    # Base team stack config
+    t = {
+        "team": "Team A",
+        "team_xwoba": 0.330,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+        "divergence": 0,
+        "bullpen_fatigue": 50,
+        "opp_pitcher": "Tough SP",
+    }
+
+    # Case 1: Low-sample SP (confidence is low) -> 100% Dampening (0.0 multiplier, no penalty)
+    opp_p_low_ip = {
+        "pitcher": "Tough SP",
+        "physics_score": 25.0,  # tough SP physics
+        "confidence": "low",
+        "market_score": 10.0,
+    }
+    conf_low_ip, reasons_low_ip = score_stack_confidence(t, [opp_p_low_ip])
+
+    # Case 2: Standard tough SP -> Full penalty (-24.0)
+    opp_p_standard = {
+        "pitcher": "Tough SP",
+        "physics_score": 25.0,
+        "confidence": "high",
+        "market_score": 10.0,
+    }
+    conf_standard, reasons_standard = score_stack_confidence(t, [opp_p_standard])
+    
+    # Check that low IP did not receive the penalty, so its confidence is 24 points higher than standard
+    assert conf_low_ip - conf_standard == 24
+    assert any("Tough but volatile (low-sample SP) SP profile" in r for r in reasons_low_ip)
+    assert any("Tough SP underlying profile" in r for r in reasons_standard)
+
+    # Case 3: Market underdogs (market_score == 0.0) -> 50% Dampening (0.5 multiplier, penalty reduced by 12)
+    opp_p_market_0 = {
+        "pitcher": "Tough SP",
+        "physics_score": 25.0,
+        "confidence": "high",
+        "market_score": 0.0,
+    }
+    conf_market_0, reasons_market_0 = score_stack_confidence(t, [opp_p_market_0])
+    
+    # Check that market 0 penalty is dampened by 50% (difference of 12 points compared to standard)
+    assert conf_market_0 - conf_standard == 12
+    assert any("Tough but volatile (unanchored market SP) SP profile" in r for r in reasons_market_0)
 
 
 
