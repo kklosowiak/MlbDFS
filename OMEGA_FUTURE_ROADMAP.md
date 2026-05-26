@@ -13,17 +13,8 @@ These notes capture the proposed enhancements and long-term directions for the O
 7. **GPP Ownership Projections Proxy (The Leverage Engine)**: Completed. Heuristically projects ownership based on implied run totals, slate size, and SP matchup, exporting `gpp_leverage_index` and flagging `LEVERAGE PIVOT` teams in the dashboard.
 8. **Ballpark Factor Dampening**: Completed and calibrated. Cuts stadium factor deviation from 1.0 in half (50% dampening) to eliminate venue bias.
 9. **MSMI (Slate Momentum Index) Tuning**: Completed. Optimized rolling team form slump penalty to `-24.0` and surge boost to `+12.0` based on full-season backtest coordinate sweeps.
-
----
-
-## 🧠 High-Priority Research (Next Phase)
-
-### 1. Blended Stack Rating Display (The "Selection" Metric)
-*   **Concept**: Add the blended stack rating (`(stack_score + attack_conf) / 2`) directly to the daily output reports and dashboard cockpit.
-*   **Logic**:
-    - Calculate and export `"blended_rating"` in the daily `latest_results.json` file.
-    - Include a "Blended Score" column in the HTML dashboard cockpit for easier visual scanning.
-*   **Objective**: Expose the exact composite metric that the backtest simulation uses to select winning slates.
+10. **Blended Stack Rating Display**: Completed. Integrated `(stack_score + attack_conf) / 2` as primary selection metric on JSON reports, terminal outputs, static dashboard, and dynamic cockpit.
+11. **Matchup DNA: Pitch-Type Mapping**: Completed. Replaced standard platoon split multipliers with pitch-type usage xwOBA math vs. league averages when Statcast data is available.
 
 ---
 
@@ -31,4 +22,3 @@ These notes capture the proposed enhancements and long-term directions for the O
 *   **Automation**: Automatic "Snapshot velocity" detection (alerting if a line moves > 10 cents in 15 minutes).
 *   **Weather 2.0**: Humidity and Air Density (DA) impact on HR potential.
 *   **DraftKings Value Matrix (The "CSV Drop")**: Ingest local `dk_salaries.csv` files, cross-reference with Hitters Alpha, and isolate punts (sub-$3,500).
-
