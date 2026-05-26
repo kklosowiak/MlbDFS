@@ -395,4 +395,37 @@ def test_tiered_volatile_sp_modifier():
     assert any("Tough but volatile (unanchored market SP) SP profile" in r for r in reasons_market_0)
 
 
+def test_msmi_calibrations():
+    # Base team stack config with neutral xwOBA (0.300) to keep scores in the linear range (below 75)
+    t_neutral = {
+        "team": "Team A",
+        "team_xwoba": 0.300,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+    }
+    
+    t_slump = {
+        **t_neutral,
+        "is_cold_streak": True
+    }
+    
+    t_surge = {
+        **t_neutral,
+        "is_hot_run": True
+    }
+    
+    conf_neu, _ = score_stack_confidence(t_neutral, [])
+    conf_slump, reasons_slump = score_stack_confidence(t_slump, [])
+    conf_surge, reasons_surge = score_stack_confidence(t_surge, [])
+    
+    # Slump penalty is -24.0
+    assert conf_neu - conf_slump == 24
+    assert any("Team Slate Slump (MSMI)" in r for r in reasons_slump)
+    
+    # Surge boost is +12.0
+    assert conf_surge - conf_neu == 12
+    assert any("Team Hot Run (MSMI)" in r for r in reasons_surge)
+
+
+
 

@@ -577,7 +577,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # OMEGA v6.9.2: Location-Aware Park Factors
             # Both teams inherit the environment of the home_team's stadium.
             home_team_for_game = game.get('home_team')
-            park_factor = config.PARK_FACTORS.get(home_team_for_game, 1.0)
+            # OMEGA v13.6: Dampen ballpark factors by 50% to prevent venue bias
+            raw_pf = config.PARK_FACTORS.get(home_team_for_game, 1.0)
+            park_factor = 1.0 + (raw_pf - 1.0) * 0.5
             print(f"  - Stack: {team} vs {opponent} (bullpen fatigue lookup)...")
             opp_bullpen = bullpen_analyzer.get_fatigue_score(opponent)
             
@@ -683,7 +685,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     target_h = sorted_h[:9]
 
                 # OMEGA: Lineup Spot PA Decay (Batting Order Weighting)
-                BATTING_ORDER_WEIGHTS = [1.22, 1.16, 1.10, 1.04, 0.98, 0.92, 0.86, 0.80, 0.72]
+                # OMEGA v13.6: Moderate Lineup Spot PA Decay (prevents over-penalizing deep lineups)
+                BATTING_ORDER_WEIGHTS = [1.15, 1.12, 1.08, 1.04, 1.00, 0.96, 0.92, 0.88, 0.84]
                 weighted_xwoba_sum = 0.0
                 weight_sum = 0.0
                 for idx, h in enumerate(target_h[:9]):
@@ -1089,7 +1092,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         
         venue_team = next((tr['team'] if tr.get('is_home') else tr['opponent'] 
                           for tr in team_reports if tr['team'] == h['team']), h['team'])
-        park_factor = config.PARK_FACTORS.get(venue_team, 1.0)
+        # OMEGA v13.6: Dampen ballpark factors by 50% to prevent venue bias
+        raw_pf = config.PARK_FACTORS.get(venue_team, 1.0)
+        park_factor = 1.0 + (raw_pf - 1.0) * 0.5
         
         # Momentum & Vision
         is_hot = False

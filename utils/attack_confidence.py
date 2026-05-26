@@ -202,10 +202,12 @@ def score_stack_confidence(t, p_reports):
 
     # 8. Slate Momentum Index (MSMI)
     if t.get("is_cold_streak_msmi") or t.get("is_cold_streak"):
-        conf -= 18.0
+        # OMEGA v13.6.1: Optimized Team Slate Slump penalty
+        conf -= 24.0
         reasons.append("Team Slate Slump (MSMI): Elevated rolling K% surge & OPS drop.")
     elif t.get("is_hot_run_msmi") or t.get("is_hot_run"):
-        conf += 8.0
+        # OMEGA v13.6.1: Optimized Team Hot Run boost
+        conf += 12.0
         reasons.append("Team Hot Run (MSMI): Surging rolling OPS & reduced K%.")
 
     # 9. Tactical GPP Injections
