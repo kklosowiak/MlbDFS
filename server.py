@@ -1337,6 +1337,393 @@ def post_snapshot_lock_api():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save lock snapshot: {str(e)}")
 
+# OMEGA Slate Center: Dynamic Betting Edges & DFS Playbook Calculations
+@app.get("/api/slate-center", dependencies=[Depends(get_current_user)])
+def get_slate_center_api(date: str = None):
+    import json
+    import os
+    import math
+    from fastapi import HTTPException
+    from fastapi.responses import JSONResponse
+    from config import config
+    from utils.opening_lines import load_opening_lines_for_slate
+    from data.lineup_fetcher import LineupFetcher
+    from utils.normalization import normalize_player_name
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Load projections
+    if not date:
+        results_path = os.path.join(base_dir, "reports", "latest_results.json")
+    else:
+        results_path = os.path.join(base_dir, "reports", "archive", f"results_{date}_lock.json")
+        if not os.path.exists(results_path):
+            results_path = os.path.join(base_dir, "reports", "archive", f"results_{date}.json")
+            if not os.path.exists(results_path):
+                found = False
+                reports_dir = os.path.join(base_dir, "reports")
+                for f in os.listdir(reports_dir):
+                    if date in f and f.endswith(".json"):
+                        results_path = os.path.join(reports_dir, f)
+                        found = True
+                        break
+                if not found:
+                    raise HTTPException(status_code=404, detail=f"No lock file found containing date {date}")
+
+    if not os.path.exists(results_path):
+        results_path = os.path.join(base_dir, "reports", "latest_results.json")
+        if not os.path.exists(results_path):
+            raise HTTPException(status_code=404, detail="Projections data not found.")
+
+    try:
+        with open(results_path, "r", encoding="utf-8") as f:
+            results = json.load(f)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read projections: {str(e)}")
+
+    # Load market lines
+    opening_lines = load_opening_lines_for_slate(date)
+
+    # Load matchup data (pitch usages, hitter splits)
+    matchup_path = os.path.join(base_dir, "data", "matchup_data.json")
+    matchup_data = {"pitchers": {}, "hitters": {}, "league_avg": {}}
+    if os.path.exists(matchup_path):
+        try:
+            with open(matchup_path, "r", encoding="utf-8") as f:
+                raw_matchup = json.load(f)
+                matchup_data = {
+                    "pitchers": {normalize_player_name(k): v for k, v in raw_matchup.get("pitchers", {}).items()},
+                    "hitters": {normalize_player_name(k): v for k, v in raw_matchup.get("hitters", {}).items()},
+                    "league_avg": raw_matchup.get("league_avg", {})
+                }
+        except Exception as e:
+            print(f"Error loading matchup radar: {e}")
+
+    # Fetch confirmed lineups
+    try:
+        confirmed_lineups = LineupFetcher().fetch_confirmed_lineups(date)
+    except Exception as e:
+        print(f"Error fetching confirmed lineups: {e}")
+        confirmed_lineups = {}
+
+    def ml_to_prob(ml):
+        if not ml or ml == 0:
+            return 0.5
+        try:
+            ml = float(ml)
+            if ml < 0:
+                return abs(ml) / (abs(ml) + 100)
+            else:
+                return 100 / (ml + 100)
+        except:
+            return 0.5
+
+    def normal_cdf(x, mu, sigma):
+        return 0.5 * (1 + math.erf((x - mu) / (sigma * math.sqrt(2))))
+
+    def calculate_ev(prob, ml):
+        if not ml:
+            return 0.0
+        try:
+            ml = float(ml)
+            if ml > 0:
+                return (prob * (1.0 + ml / 100.0)) - 1.0
+            else:
+                return (prob * (1.0 + 100.0 / abs(ml))) - 1.0
+        except:
+            return 0.0
+
+    # Pair teams into games
+    games = []
+    processed_teams = set()
+    teams_list = results.get("teams", [])
+    pitchers_list = results.get("pitchers", [])
+    hitters_list = results.get("hitters", [])
+
+    # Global franchise abbreviation map
+    short_map = {
+        'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',
+        'Boston Red Sox': 'BOS', 'Chicago Cubs': 'CHC', 'Chicago White Sox': 'CWS',
+        'Cincinnati Reds': 'CIN', 'Cleveland Guardians': 'CLE', 'Colorado Rockies': 'COL',
+        'Detroit Tigers': 'DET', 'Houston Astros': 'HOU', 'Kansas City Royals': 'KC',
+        'Los Angeles Angels': 'LAA', 'Los Angeles Dodgers': 'LAD', 'Miami Marlins': 'MIA',
+        'Milwaukee Brewers': 'MIL', 'Minnesota Twins': 'MIN', 'New York Mets': 'NYM',
+        'New York Yankees': 'NYY', 'Athletics': 'OAK', 'Oakland Athletics': 'OAK',
+        'Philadelphia Phillies': 'PHI', 'Pittsburgh Pirates': 'PIT', 'San Diego Padres': 'SD',
+        'San Francisco Giants': 'SF', 'Seattle Mariners': 'SEA', 'St. Louis Cardinals': 'STL',
+        'Tampa Bay Rays': 'TB', 'Texas Rangers': 'TEX', 'Toronto Blue Jays': 'TOR',
+        'Washington Nationals': 'WSH'
+    }
+    
+    def get_abbrev(full_name):
+        return short_map.get(full_name, full_name)
+
+    betting_edges = []
+    dfs_playbook_teams = []
+
+    for t in teams_list:
+        team_name = t.get("team")
+        if not team_name or team_name in processed_teams:
+            continue
+
+        opponent_name = t.get("opponent")
+        opp_team_obj = next((x for x in teams_list if x.get("team") == opponent_name), None)
+        if not opp_team_obj:
+            continue
+
+        processed_teams.add(team_name)
+        processed_teams.add(opponent_name)
+
+        # SP resolution
+        team_sp = next((p for p in pitchers_list if p.get("team") == team_name), None)
+        opp_sp = next((p for p in pitchers_list if p.get("team") == opponent_name), None)
+
+        # Decide who is Away and who is Home
+        is_team_away = True
+        if team_sp and team_sp.get("side") == "home":
+            is_team_away = False
+        elif opp_sp and opp_sp.get("side") == "away":
+            is_team_away = False
+
+        away_team = team_name if is_team_away else opponent_name
+        home_team = opponent_name if is_team_away else team_name
+        
+        away_team_obj = t if is_team_away else opp_team_obj
+        home_team_obj = opp_team_obj if is_team_away else t
+
+        away_sp_obj = team_sp if is_team_away else opp_sp
+        home_sp_obj = opp_sp if is_team_away else team_sp
+
+        # Match Vegas odds
+        game_line = None
+        for o in opening_lines:
+            o_away = o.get("team_away") or ""
+            o_home = o.get("team_home") or ""
+            if (o_away == away_team and o_home == home_team) or \
+               (get_abbrev(o_away) == get_abbrev(away_team) and get_abbrev(o_home) == get_abbrev(home_team)):
+                game_line = o
+                break
+
+        away_ml = game_line.get("away_current_ml") if game_line else None
+        home_ml = game_line.get("home_current_ml") if game_line else None
+        open_away_ml = game_line.get("away_opening_ml") if game_line else None
+        open_home_ml = game_line.get("home_opening_ml") if game_line else None
+
+        if away_ml is None: away_ml = -110
+        if home_ml is None: home_ml = -110
+        if open_away_ml is None: open_away_ml = away_ml
+        if open_home_ml is None: open_home_ml = home_ml
+
+        curr_total = game_line.get("current_total") if game_line else 9.0
+        open_total = game_line.get("opening_total") if game_line else curr_total
+        if curr_total is None: curr_total = 9.0
+        if open_total is None: open_total = curr_total
+
+        # Win Probabilities
+        raw_prob_away = ml_to_prob(away_ml)
+        raw_prob_home = ml_to_prob(home_ml)
+        sum_prob = raw_prob_away + raw_prob_home
+        market_prob_away = raw_prob_away / sum_prob if sum_prob > 0 else 0.5
+        market_prob_home = raw_prob_home / sum_prob if sum_prob > 0 else 0.5
+
+        # OMEGA adjusted probability using logit (log-odds) space
+        away_rating = float(away_team_obj.get("blended_rating") or away_team_obj.get("stack_score") or 75.0)
+        home_rating = float(home_team_obj.get("blended_rating") or home_team_obj.get("stack_score") or 75.0)
+        away_sp_rating = float(away_sp_obj.get("blended_rating") or away_sp_obj.get("alpha_score") or 75.0) if away_sp_obj else 75.0
+        home_sp_rating = float(home_sp_obj.get("blended_rating") or home_sp_obj.get("alpha_score") or 75.0) if home_sp_obj else 75.0
+
+        away_div = float(away_team_obj.get("divergence") or 0.0)
+        home_div = float(home_team_obj.get("divergence") or 0.0)
+
+        # Scale deltas appropriately for log-odds space
+        rating_diff = (away_rating - home_rating) * 0.012
+        sp_diff = (home_sp_rating - away_sp_rating) * 0.012
+        div_diff = (away_div - home_div) * 0.02
+
+        # Convert market probability to log-odds, add deltas, and map back to probability via sigmoid
+        market_prob_away_clamped = max(0.01, min(0.99, market_prob_away))
+        market_logit = math.log(market_prob_away_clamped / (1.0 - market_prob_away_clamped))
+        omega_logit = market_logit + rating_diff + sp_diff + div_diff
+        
+        omega_prob_away = 1.0 / (1.0 + math.exp(-omega_logit))
+        omega_prob_away = max(0.05, min(0.95, omega_prob_away)) # safe bounds
+        omega_prob_home = 1.0 - omega_prob_away
+
+        # ML EV
+        away_ml_ev = calculate_ev(omega_prob_away, away_ml)
+        home_ml_ev = calculate_ev(omega_prob_home, home_ml)
+
+        # Spreads (Run Line)
+        if abs(away_ml) > abs(home_ml) or (away_ml < 0 and home_ml > 0):
+            away_spread = -1.5
+            home_spread = 1.5
+        else:
+            away_spread = 1.5
+            home_spread = -1.5
+
+        away_implied = float(away_team_obj.get("implied_total") or 4.5)
+        home_implied = float(home_team_obj.get("implied_total") or 4.5)
+
+        runs_omega_away = max(1.5, away_implied * (1.0 + (away_div / 100.0) + (away_rating - 75.0) * 0.005))
+        runs_omega_home = max(1.5, home_implied * (1.0 + (home_div / 100.0) + (home_rating - 75.0) * 0.005))
+
+        margin_mu = runs_omega_away - runs_omega_home
+        # Dynamic standard deviation based on Vegas game total (higher total -> higher run margin variance)
+        margin_sigma = 1.25 * math.sqrt(curr_total)
+
+        away_spread_cover_prob = 1.0 - normal_cdf(away_spread, margin_mu, margin_sigma)
+        home_spread_cover_prob = 1.0 - normal_cdf(home_spread, -margin_mu, margin_sigma)
+
+        away_spread_ev = (away_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0
+        home_spread_ev = (home_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0
+
+        # Game Totals
+        projected_total = runs_omega_away + runs_omega_home
+        total_edge = projected_total - curr_total
+        if total_edge > 0.25:
+            total_edge_type = "OVER"
+            total_edge_val = total_edge
+        elif total_edge < -0.25:
+            total_edge_type = "UNDER"
+            total_edge_val = abs(total_edge)
+        else:
+            total_edge_type = "NEUTRAL"
+            total_edge_val = 0.0
+
+        # Construct game edge response
+        betting_edges.append({
+            "game_id": game_line.get("game_id") if game_line else f"game_{len(betting_edges)}",
+            "away_team": away_team,
+            "home_team": home_team,
+            "away_pitcher": away_sp_obj.get("pitcher") if away_sp_obj else "TBD",
+            "home_pitcher": home_sp_obj.get("pitcher") if home_sp_obj else "TBD",
+            "commence_time": game_line.get("commence_time") if game_line else None,
+            "market": {
+                "away_ml": int(away_ml),
+                "home_ml": int(home_ml),
+                "away_spread": away_spread,
+                "away_spread_odds": -110,
+                "home_spread": home_spread,
+                "home_spread_odds": -110,
+                "total": curr_total,
+                "open_away_ml": int(open_away_ml),
+                "open_home_ml": int(open_home_ml),
+                "open_total": open_total
+            },
+            "omega": {
+                "away_win_prob": round(omega_prob_away, 3),
+                "home_win_prob": round(omega_prob_home, 3),
+                "away_ml_edge": round(away_ml_ev, 3),
+                "home_ml_edge": round(home_ml_ev, 3),
+                "away_spread_cover_prob": round(away_spread_cover_prob, 3),
+                "home_spread_cover_prob": round(home_spread_cover_prob, 3),
+                "away_spread_edge": round(away_spread_ev, 3),
+                "home_spread_edge": round(home_spread_ev, 3),
+                "projected_total": round(projected_total, 2),
+                "total_edge": round(total_edge_val, 2),
+                "total_edge_type": total_edge_type
+            }
+        })
+
+        # Process lineup and playbook for BOTH teams in the matchup
+        for team_name_side, opp_sp_obj_side in [(away_team, home_sp_obj), (home_team, away_sp_obj)]:
+            side_team_obj = away_team_obj if team_name_side == away_team else home_team_obj
+            side_opp_name = home_team if team_name_side == away_team else away_team
+
+            lineup_players = confirmed_lineups.get(team_name_side) or confirmed_lineups.get(get_abbrev(team_name_side))
+            is_confirmed = (lineup_players is not None and len(lineup_players) >= 7)
+
+            if not is_confirmed:
+                team_hitters = [h for h in hitters_list if h.get("team") == team_name_side]
+                team_hitters.sort(key=lambda x: x.get("player_score", 0), reverse=True)
+                lineup_players = [h.get("name") for h in team_hitters[:9]]
+
+            # opposing SP pitch parameters
+            opp_sp_name = opp_sp_obj_side.get("pitcher") if opp_sp_obj_side else "TBD"
+            opp_sp_hand = opp_sp_obj_side.get("pitch_hand") if opp_sp_obj_side else "R"
+            
+            sp_pitch_usages = matchup_data["pitchers"].get(normalize_player_name(opp_sp_name), {})
+            if not sp_pitch_usages:
+                sp_pitch_usages = {"FF": 45.0, "SL": 25.0, "CH": 15.0, "CU": 10.0, "SI": 5.0}
+
+            hitter_rows = []
+            for idx, p_name in enumerate(lineup_players[:9]):
+                hitter_obj = next((h for h in hitters_list if normalize_player_name(h.get("name", "")) == normalize_player_name(p_name)), None)
+                if not hitter_obj:
+                    p_norm = normalize_player_name(p_name)
+                    hitter_obj = next((h for h in hitters_list if p_norm in normalize_player_name(h.get("name", "")) or normalize_player_name(h.get("name", "")) in p_norm), None)
+
+                p_score = float(hitter_obj.get("player_score") or 0.0) if hitter_obj else 5.0
+                attack_conf = float(hitter_obj.get("attack_conf") or 50.0) if hitter_obj else 50.0
+                bat_side = hitter_obj.get("bat_side") if hitter_obj else "R"
+
+                # Pitch advantages vs the SP's specific arsenal
+                hitter_pitch_stats = matchup_data["hitters"].get(normalize_player_name(p_name), {})
+                
+                advantages = {}
+                advantage_ratios = {}
+                for ptype in ["FF", "SI", "SL", "CU", "CH"]:
+                    league_avg_val = matchup_data["league_avg"].get(ptype, 0.300)
+                    h_val = hitter_pitch_stats.get(ptype, league_avg_val)
+                    advantages[ptype] = round(h_val, 3)
+                    advantage_ratios[ptype] = round(h_val / league_avg_val, 2) if league_avg_val > 0 else 1.0
+
+                hitter_rows.append({
+                    "name": hitter_obj.get("name") if hitter_obj else p_name,
+                    "batting_order": idx + 1,
+                    "bat_side": bat_side,
+                    "player_score": p_score,
+                    "attack_conf": attack_conf,
+                    "pitch_advantages": advantages,
+                    "pitch_advantage_ratios": advantage_ratios
+                })
+
+            # Top 3 consecutive 4-man stack paths
+            paths = []
+            if len(hitter_rows) >= 4:
+                for start_idx in range(9):
+                    path_hitters = []
+                    path_score = 0.0
+                    path_indices = []
+                    for step in range(4):
+                        cur_step_idx = (start_idx + step) % len(hitter_rows)
+                        path_hitters.append(hitter_rows[cur_step_idx]["name"])
+                        path_score += hitter_rows[cur_step_idx]["player_score"]
+                        path_indices.append(str(hitter_rows[cur_step_idx]["batting_order"]))
+                    
+                    paths.append({
+                        "path": "-".join(path_indices),
+                        "hitters": path_hitters,
+                        "score": round(path_score, 1)
+                    })
+                
+                paths.sort(key=lambda x: x["score"], reverse=True)
+
+            dfs_playbook_teams.append({
+                "team": team_name_side,
+                "opponent": side_opp_name,
+                "opp_pitcher": opp_sp_name,
+                "opp_pitcher_hand": opp_sp_hand,
+                "lineup_status": "CONFIRMED" if is_confirmed else "PROJECTED",
+                "lineup": hitter_rows,
+                "sp_pitch_usages": sp_pitch_usages,
+                "top_stack_paths": paths[:3]
+            })
+
+    return JSONResponse(
+        content={
+            "betting_edges": betting_edges,
+            "dfs_playbook": {
+                "teams": dfs_playbook_teams
+            }
+        },
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        }
+    )
+
 # OMEGA Feedback Loop: Serve compiled feedback data
 @app.get("/api/learning-feedback", dependencies=[Depends(get_current_user)])
 def get_learning_feedback_api():

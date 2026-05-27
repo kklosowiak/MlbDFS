@@ -1794,7 +1794,7 @@
                 </li>
                 <li class="nav-item" onclick="switchTab(this, 'analysis')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    🔥 Attack Plan
+                    Ω OMEGA Slate Center
                 </li>
                 <li class="nav-item" onclick="switchTab(this, 'trends')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -2316,12 +2316,173 @@
             </div>
         </div>
 
-        <!-- ANALYSIS PANEL -->
+        <!-- OMEGA SLATE CENTER PANEL -->
         <div id="analysis-panel" class="tab-panel">
-            <div id="analysis-markdown">
-                Loading slate intelligence...
+            <style scoped>
+                .ev-badge {
+                    display: inline-block;
+                    font-size: 0.65rem;
+                    font-weight: 800;
+                    padding: 3px 6px;
+                    border-radius: 4px;
+                    text-align: center;
+                    white-space: nowrap;
+                    font-family: monospace;
+                }
+                .ev-positive {
+                    background: rgba(50,215,75,0.15) !important;
+                    color: #32d74b !important;
+                    border: 1px solid rgba(50,215,75,0.35) !important;
+                }
+                .ev-neutral {
+                    background: rgba(255,255,255,0.05) !important;
+                    color: var(--text-secondary) !important;
+                    border: 1px solid var(--border) !important;
+                }
+                #playbook-team-select {
+                    background-color: #121218;
+                    color: #ffffff;
+                }
+                #playbook-team-select option {
+                    background-color: #121218;
+                    color: #ffffff;
+                }
+                body.light-theme #playbook-team-select {
+                    background-color: #ffffff;
+                    color: #1e2229;
+                }
+                body.light-theme #playbook-team-select option {
+                    background-color: #ffffff;
+                    color: #1e2229;
+                }
+                .betting-row-hover:hover {
+                    background: rgba(255,255,255,0.015) !important;
+                }
+                .playbook-hitter-row-hover:hover {
+                    background: rgba(255,255,255,0.01) !important;
+                }
+                .badge.confirmed {
+                    background: rgba(50,205,50,0.15) !important;
+                    color: #32cd32 !important;
+                    border: 1px solid rgba(50,205,50,0.35) !important;
+                }
+                .badge.projected {
+                    background: rgba(255,159,10,0.15) !important;
+                    color: #ff9f0a !important;
+                    border: 1px solid rgba(255,159,10,0.35) !important;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+            <div class="slate-center-container" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: start; width: 100%; box-sizing: border-box;">
+                
+                <!-- Left Pane: Vegas Betting Edges -->
+                <div class="card" style="margin: 0; padding: 25px; box-sizing: border-box;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800;">Vegas Betting Edges</h2>
+                        <span class="badge" style="background: var(--accent-blue); color: #fff; font-weight: 800; font-size: 0.7rem; padding: 4px 10px; border-radius: 5px; text-transform: uppercase;">LIVE EDGES</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: -12px; margin-bottom: 20px;">
+                        Model-implied probabilities vs. live market pricing. Positive expected value (+EV) edges are color-coded in green.
+                    </p>
+                    <div style="overflow-x: auto; width: 100%;">
+                        <table id="betting-edges-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.82rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border); font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">
+                                    <th style="padding: 12px 8px;">Matchup</th>
+                                    <th style="padding: 12px 8px;">Moneyline (Market / OMEGA / Edge)</th>
+                                    <th style="padding: 12px 8px;">Run Line (Spread / odds / Edge)</th>
+                                    <th style="padding: 12px 8px;">Game Total (Market / OMEGA / Edge)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="betting-edges-body">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent-blue); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
+                                        <div>Loading betting convergence analytics...</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Pane: DFS Lineup Playbook -->
+                <div class="card" style="margin: 0; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; white-space: nowrap;">DFS Lineup Playbook</h2>
+                        <div class="select-wrapper" style="width: 185px;">
+                            <select id="playbook-team-select" class="form-select" onchange="switchPlaybookTeam()" style="width: 100%; padding: 8px 12px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; outline: none; transition: all 0.2s;">
+                                <option value="">SELECT TEAM...</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="playbook-content" style="display: none; flex-direction: column; gap: 25px;">
+                        
+                        <!-- Lineup Order & Pitch Alignment Heat Map -->
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                <span>Starting Order & Pitch Alignment Heat Map</span>
+                                <span id="playbook-lineup-status-badge" class="badge">PROJECTED</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: -6px; margin-bottom: 15px;" id="playbook-sp-matchup-desc">
+                                vs. Starting Pitcher
+                            </p>
+                            <div style="overflow-x: auto; width: 100%; border: 1px solid var(--border); border-radius: 8px; background: rgba(0,0,0,0.15);">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: center;">
+                                    <thead>
+                                        <tr style="border-bottom: 1px solid var(--border); font-size: 0.68rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.02em;">
+                                            <th style="padding: 10px; text-align: left; width: 150px;">Hitter</th>
+                                            <th style="padding: 10px; width: 45px;">Order</th>
+                                            <th style="padding: 10px; width: 45px;">Hand</th>
+                                            <!-- Pitch types -->
+                                            <th style="padding: 10px; width: 50px;" id="th-pitch-ff">FF</th>
+                                            <th style="padding: 10px; width: 50px;" id="th-pitch-si">SI</th>
+                                            <th style="padding: 10px; width: 50px;" id="th-pitch-sl">SL</th>
+                                            <th style="padding: 10px; width: 50px;" id="th-pitch-cu">CU</th>
+                                            <th style="padding: 10px; width: 50px;" id="th-pitch-ch">CH</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="playbook-lineup-body">
+                                        <!-- Rendered dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Heat Map Legend -->
+                            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; font-size: 0.65rem; font-weight: 700;">
+                                <span style="padding: 2px 6px; border-radius: 3px; background: rgba(50,215,75,0.15); color: #32d74b;">≥ 1.15 ELITE</span>
+                                <span style="padding: 2px 6px; border-radius: 3px; background: rgba(10,132,255,0.15); color: #0a84ff;">≥ 1.00 EDGE</span>
+                                <span style="padding: 2px 6px; border-radius: 3px; background: rgba(255,159,10,0.15); color: #ff9f0a;">≥ 0.85 NEUT</span>
+                                <span style="padding: 2px 6px; border-radius: 3px; background: rgba(255,69,58,0.15); color: #ff453a;">&lt; 0.85 TRAP</span>
+                            </div>
+                        </div>
+
+                        <!-- Top 3 Correlated Stack Paths -->
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px;">
+                                Top 3 Correlated Stack Paths (4-Man)
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;" id="playbook-paths-container">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div id="playbook-empty-state" style="text-align: center; padding: 60px; color: var(--text-secondary);">
+                        <span style="font-size: 2.2rem; display: block; margin-bottom: 10px;">📋</span>
+                        <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 5px;">No Team Selected</div>
+                        <div style="font-size: 0.78rem;">Choose a starting lineup from the dropdown above to analyze pitch alignment.</div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </div>
 
     <!-- AI CHAT FLOATING FAB -->
@@ -3657,7 +3818,7 @@
                 'teams': ['Teams Matrix', 'Market Sentiment & Stack Matrix'],
                 'platoons': ['Platoon Matrix', 'Team & Pitcher Handedness Splits Intelligence'],
                 'weather': ['Weather Matrix', 'Slate Ballpark Weather & Rainout Hazard Intelligence'],
-                'analysis': ['🔥 Attack Plan', 'OMEGA Automated Core Slate Strategy & Leverage Hunting'],
+                'analysis': ['OMEGA Slate Center', 'Live Vegas Betting Edges & DFS Lineup Playbook'],
                 'trends': ['Learning & Audits', 'OMEGA Systematic Target Feedback & Performance Audits']
             };
             document.getElementById('page-title').innerText = titles[tabId][0];
@@ -3743,6 +3904,27 @@
                 }
 
                 // Fetch weekly radar data
+                try {
+                    const centerRes = await fetch('/api/slate-center');
+                    const centerData = await centerRes.json();
+                    window.slateCenterData = centerData; // save globally
+                    
+                    renderBettingEdges(centerData.betting_edges);
+                    populatePlaybookTeamSelect(centerData.dfs_playbook.teams);
+                } catch (centerErr) {
+                    console.error('OMEGA Slate Center sync failed:', centerErr);
+                    const edgesBody = document.getElementById('betting-edges-body');
+                    if (edgesBody) {
+                        edgesBody.innerHTML = `
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 40px; color: var(--accent-red); font-weight: 700;">
+                                    ⚠️ Connection Interrupted: Failed to sync OMEGA betting edges.
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+
                 try {
                     const rRes = await fetch('/api/radar');
                     if (rRes.ok) {
@@ -3995,6 +4177,279 @@
                   tickerEl.innerHTML = tickerItems.map(item => `<span>${item}</span>`).join(' <span style="color:var(--text-secondary); margin: 0 10px;">•</span> ');
               }
           }
+
+        // --- OMEGA Slate Center Render Helpers ---
+        function getTeamAbbrev(name) {
+            return getTeamAbbr(name) || name;
+        }
+
+        function renderBettingEdges(edges) {
+            const tbody = document.getElementById('betting-edges-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (!edges || edges.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                            No live betting matchups active.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            edges.forEach(g => {
+                const awayMlStr = g.market.away_ml > 0 ? `+${g.market.away_ml}` : g.market.away_ml;
+                const homeMlStr = g.market.home_ml > 0 ? `+${g.market.home_ml}` : g.market.home_ml;
+                
+                const awayMlDiff = g.market.away_ml - g.market.open_away_ml;
+                const homeMlDiff = g.market.home_ml - g.market.open_home_ml;
+                const awayMlMoveStr = awayMlDiff === 0 ? '' : ` (${awayMlDiff > 0 ? '+' : ''}${awayMlDiff})`;
+                const homeMlMoveStr = homeMlDiff === 0 ? '' : ` (${homeMlDiff > 0 ? '+' : ''}${homeMlDiff})`;
+                
+                const awayProbPct = (g.omega.away_win_prob * 100).toFixed(1) + '%';
+                const homeProbPct = (g.omega.home_win_prob * 100).toFixed(1) + '%';
+                
+                const awayMlEdge = g.omega.away_ml_edge;
+                const homeMlEdge = g.omega.home_ml_edge;
+                const awayMlEdgeStr = awayMlEdge > 0 ? `+${(awayMlEdge * 100).toFixed(1)}% EV` : `${(awayMlEdge * 100).toFixed(1)}% EV`;
+                const homeMlEdgeStr = homeMlEdge > 0 ? `+${(homeMlEdge * 100).toFixed(1)}% EV` : `${(homeMlEdge * 100).toFixed(1)}% EV`;
+                
+                const awayMlBadgeClass = awayMlEdge > 0 ? 'ev-positive' : 'ev-neutral';
+                const homeMlBadgeClass = homeMlEdge > 0 ? 'ev-positive' : 'ev-neutral';
+                
+                const awaySpreadStr = g.market.away_spread > 0 ? `+${g.market.away_spread}` : g.market.away_spread;
+                const homeSpreadStr = g.market.home_spread > 0 ? `+${g.market.home_spread}` : g.market.home_spread;
+                
+                const awaySpreadEdge = g.omega.away_spread_edge;
+                const homeSpreadEdge = g.omega.home_spread_edge;
+                const awaySpreadEdgeStr = awaySpreadEdge > 0 ? `+${(awaySpreadEdge * 100).toFixed(1)}% EV` : `${(awaySpreadEdge * 100).toFixed(1)}% EV`;
+                const homeSpreadEdgeStr = homeSpreadEdge > 0 ? `+${(homeSpreadEdge * 100).toFixed(1)}% EV` : `${(homeSpreadEdge * 100).toFixed(1)}% EV`;
+                
+                const awaySpreadBadgeClass = awaySpreadEdge > 0 ? 'ev-positive' : 'ev-neutral';
+                const homeSpreadBadgeClass = homeSpreadEdge > 0 ? 'ev-positive' : 'ev-neutral';
+                
+                const totalEdge = g.omega.total_edge;
+                const totalEdgeType = g.omega.total_edge_type;
+                let totalEdgeStr = 'NEUTRAL';
+                let totalBadgeClass = 'ev-neutral';
+                if (totalEdgeType !== 'NEUTRAL') {
+                    totalEdgeStr = `${totalEdgeType} +${totalEdge.toFixed(2)} R`;
+                    totalBadgeClass = 'ev-positive';
+                }
+                
+                const tr = document.createElement('tr');
+                tr.style.cssText = 'border-bottom: 1px solid var(--border); transition: all 0.2s;';
+                tr.className = 'betting-row-hover';
+                
+                tr.innerHTML = `
+                    <td style="padding: 14px 8px; vertical-align: top; width: 22%;">
+                        <div style="font-weight: 800; color: #fff; font-size: 0.9rem;">
+                            ${getTeamAbbrev(g.away_team)} <span style="font-weight: 500; color: var(--text-secondary);">@</span> ${getTeamAbbrev(g.home_team)}
+                        </div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.3;">
+                            Away SP: <strong>${g.away_pitcher}</strong><br>
+                            Home SP: <strong>${g.home_pitcher}</strong>
+                        </div>
+                    </td>
+                    
+                    <td style="padding: 14px 8px; vertical-align: top;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                                <span>${getTeamAbbrev(g.away_team)}: <strong style="color: #fff;">${awayMlStr}</strong><span style="font-size: 0.7rem; color: var(--text-secondary);">${awayMlMoveStr}</span></span>
+                                <div style="display: flex; gap: 6px; align-items: center;">
+                                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-blue);">${awayProbPct}</span>
+                                    <span class="ev-badge ${awayMlBadgeClass}">${awayMlEdgeStr}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                                <span>${getTeamAbbrev(g.home_team)}: <strong style="color: #fff;">${homeMlStr}</strong><span style="font-size: 0.7rem; color: var(--text-secondary);">${homeMlMoveStr}</span></span>
+                                <div style="display: flex; gap: 6px; align-items: center;">
+                                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-blue);">${homeProbPct}</span>
+                                    <span class="ev-badge ${homeMlBadgeClass}">${homeMlEdgeStr}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td style="padding: 14px 8px; vertical-align: top;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                                <span>${getTeamAbbrev(g.away_team)}: <strong style="color: #fff;">${awaySpreadStr}</strong> <span style="font-size: 0.7rem; color: var(--text-secondary);">(-110)</span></span>
+                                <div style="display: flex; gap: 6px; align-items: center;">
+                                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-blue);">${(g.omega.away_spread_cover_prob * 100).toFixed(0)}%</span>
+                                    <span class="ev-badge ${awaySpreadBadgeClass}">${awaySpreadEdgeStr}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                                <span>${getTeamAbbrev(g.home_team)}: <strong style="color: #fff;">${homeSpreadStr}</strong> <span style="font-size: 0.7rem; color: var(--text-secondary);">(-110)</span></span>
+                                <div style="display: flex; gap: 6px; align-items: center;">
+                                    <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-blue);">${(g.omega.home_spread_cover_prob * 100).toFixed(0)}%</span>
+                                    <span class="ev-badge ${homeSpreadBadgeClass}">${homeSpreadEdgeStr}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td style="padding: 14px 8px; vertical-align: top;">
+                        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Market Total:</span>
+                                <strong style="color: #fff;">${g.market.total.toFixed(1)}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>OMEGA Total:</span>
+                                <strong style="color: var(--accent-blue);">${g.omega.projected_total.toFixed(2)}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                                <span>Edge:</span>
+                                <span class="ev-badge ${totalBadgeClass}">${totalEdgeStr}</span>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populatePlaybookTeamSelect(teams) {
+            const select = document.getElementById('playbook-team-select');
+            if (!select) return;
+            
+            const currentVal = select.value;
+            select.innerHTML = '<option value="">SELECT TEAM...</option>';
+            
+            teams.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.team;
+                opt.innerText = `${getTeamAbbrev(t.team)} (${t.lineup_status})`;
+                select.appendChild(opt);
+            });
+            
+            if (currentVal && teams.some(t => t.team === currentVal)) {
+                select.value = currentVal;
+                renderDfsPlaybook(teams.find(t => t.team === currentVal));
+            } else if (teams.length > 0) {
+                select.value = teams[0].team;
+                renderDfsPlaybook(teams[0]);
+            }
+        }
+
+        function switchPlaybookTeam() {
+            const select = document.getElementById('playbook-team-select');
+            if (!select || !window.slateCenterData) return;
+            
+            const teamName = select.value;
+            const teams = window.slateCenterData.dfs_playbook.teams;
+            const teamData = teams.find(t => t.team === teamName);
+            
+            if (teamData) {
+                renderDfsPlaybook(teamData);
+            } else {
+                document.getElementById('playbook-content').style.display = 'none';
+                document.getElementById('playbook-empty-state').style.display = 'block';
+            }
+        }
+
+        function renderDfsPlaybook(teamData) {
+            document.getElementById('playbook-empty-state').style.display = 'none';
+            const content = document.getElementById('playbook-content');
+            content.style.display = 'flex';
+            
+            const statusBadge = document.getElementById('playbook-lineup-status-badge');
+            statusBadge.innerText = teamData.lineup_status;
+            statusBadge.className = 'badge ' + (teamData.lineup_status === 'CONFIRMED' ? 'confirmed' : 'projected');
+            
+            document.getElementById('playbook-sp-matchup-desc').innerHTML = `
+                Opposing SP: <strong style="color: #fff;">${teamData.opp_pitcher}</strong> (${teamData.opp_pitcher_hand}HP) 
+                · Pitch usage: ${Object.entries(teamData.sp_pitch_usages).map(([k, v]) => `${k} ${v.toFixed(0)}%`).join(' · ')}
+            `;
+            
+            const tbody = document.getElementById('playbook-lineup-body');
+            tbody.innerHTML = '';
+            
+            for (const ptype of ['FF', 'SI', 'SL', 'CU', 'CH']) {
+                const th = document.getElementById(`th-pitch-${ptype.toLowerCase()}`);
+                const usage = teamData.sp_pitch_usages[ptype] || 0.0;
+                if (th) {
+                    th.innerHTML = `${ptype}<br><span style="font-size: 0.6rem; color: var(--text-secondary); font-weight: 500;">${usage.toFixed(0)}%</span>`;
+                }
+            }
+            
+            teamData.lineup.forEach(h => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                tr.className = 'playbook-hitter-row-hover';
+                
+                let cellsHtml = '';
+                ['FF', 'SI', 'SL', 'CU', 'CH'].forEach(ptype => {
+                    const ratio = h.pitch_advantage_ratios[ptype] || 1.0;
+                    const xwoba = h.pitch_advantages[ptype] || 0.300;
+                    
+                    let cellStyle = 'padding: 10px; font-weight: 800; font-size: 0.76rem; border-left: 1px solid rgba(255,255,255,0.03);';
+                    if (ratio >= 1.15) {
+                        cellStyle += ' background: rgba(50,215,75,0.18); color: #32d74b;';
+                    } else if (ratio >= 1.00) {
+                        cellStyle += ' background: rgba(10,132,255,0.15); color: #0a84ff;';
+                    } else if (ratio >= 0.85) {
+                        cellStyle += ' background: rgba(255,159,10,0.12); color: #ff9f0a;';
+                    } else {
+                        cellStyle += ' background: rgba(255,69,58,0.15); color: #ff453a;';
+                    }
+                    
+                    cellsHtml += `<td style="${cellStyle}" title="${ptype} xwOBA: ${xwoba.toFixed(3)} (Ratio: ${ratio.toFixed(2)}x)">${ratio.toFixed(2)}</td>`;
+                });
+                
+                tr.innerHTML = `
+                    <td style="padding: 10px; text-align: left; font-weight: 800; color: #fff;">
+                        ${h.name}
+                    </td>
+                    <td style="padding: 10px; color: var(--text-secondary); font-weight: bold;">
+                        ${h.batting_order}
+                    </td>
+                    <td style="padding: 10px;">
+                        <span style="font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 3px; background: rgba(255,255,255,0.06); color: var(--text-secondary);">${h.bat_side}</span>
+                    </td>
+                    ${cellsHtml}
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            const pathsContainer = document.getElementById('playbook-paths-container');
+            pathsContainer.innerHTML = '';
+            
+            teamData.top_stack_paths.forEach((path, idx) => {
+                const card = document.createElement('div');
+                card.style.cssText = `
+                    background: rgba(255, 255, 255, 0.02);
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    padding: 14px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    transition: all 0.2s;
+                `;
+                
+                const medalColors = ['#ffd700', '#c0c0c0', '#cd7f32'];
+                const rankText = idx === 0 ? '👑 Premier' : (idx === 1 ? '🥈 Secondary' : '🥉 Tertiary');
+                
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.68rem; font-weight: 800; color: ${medalColors[idx]}; text-transform: uppercase;">${rankText}</span>
+                        <span style="font-size: 0.72rem; font-weight: 800; background: rgba(0, 242, 254, 0.1); color: #00f2fe; padding: 2px 6px; border-radius: 4px;">Score: ${path.score}</span>
+                    </div>
+                    <div style="font-size: 1.1rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; margin: 4px 0;">
+                        ${path.path} Wrap
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3;">
+                        ${path.hitters.map(n => n.split(',')[0]).join(' → ')}
+                    </div>
+                `;
+                pathsContainer.appendChild(card);
+            });
+        }
 
         function renderTables() {
             if (!latestData) return;
