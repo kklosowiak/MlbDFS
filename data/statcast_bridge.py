@@ -143,7 +143,9 @@ class StatcastBridge:
                             splits_map[p_name] = {}
                         splits_map[p_name][code] = {
                             "ops": safe_float(stat.get("ops", 0.0)),
-                            "pa": safe_int(stat.get("plateAppearances", 0))
+                            "pa": safe_int(stat.get("plateAppearances", 0)),
+                            "bb": safe_int(stat.get("baseOnBalls", 0)),
+                            "k": safe_int(stat.get("strikeOuts", 0))
                         }
                     print(f"  - Loaded splits for {len(splits_map)} players in {season_year}.")
             except Exception as e:
@@ -192,12 +194,20 @@ class StatcastBridge:
                 "bat_side": bat_side,
                 "vs_left_ops": p_splits_2026.get("vl", {}).get("ops", 0.0),
                 "vs_left_pa": p_splits_2026.get("vl", {}).get("pa", 0),
+                "vs_left_bb": p_splits_2026.get("vl", {}).get("bb", 0),
+                "vs_left_k": p_splits_2026.get("vl", {}).get("k", 0),
                 "vs_right_ops": p_splits_2026.get("vr", {}).get("ops", 0.0),
                 "vs_right_pa": p_splits_2026.get("vr", {}).get("pa", 0),
+                "vs_right_bb": p_splits_2026.get("vr", {}).get("bb", 0),
+                "vs_right_k": p_splits_2026.get("vr", {}).get("k", 0),
                 "vs_left_ops_2025": p_splits_2025.get("vl", {}).get("ops", 0.0),
                 "vs_left_pa_2025": p_splits_2025.get("vl", {}).get("pa", 0),
+                "vs_left_bb_2025": p_splits_2025.get("vl", {}).get("bb", 0),
+                "vs_left_k_2025": p_splits_2025.get("vl", {}).get("k", 0),
                 "vs_right_ops_2025": p_splits_2025.get("vr", {}).get("ops", 0.0),
                 "vs_right_pa_2025": p_splits_2025.get("vr", {}).get("pa", 0),
+                "vs_right_bb_2025": p_splits_2025.get("vr", {}).get("bb", 0),
+                "vs_right_k_2025": p_splits_2025.get("vr", {}).get("k", 0),
                 "timestamp": datetime.now().isoformat()
             }
             if existing_xwoba is not None:

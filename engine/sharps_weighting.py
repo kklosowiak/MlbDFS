@@ -51,7 +51,7 @@ class SharpsWeighting:
         }
 
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None):
         """
         OMEGA v10.0 SE: Tiered Alpha/Beta Pitcher Scoring (Win Prob Base Market).
         """
@@ -95,8 +95,10 @@ class SharpsWeighting:
         
         if is_target and not gate_active: alpha_signals += 1
         
-        # Group market signals to prevent double-counting - cut in half to +7.5%
-        market_whale_bonus = 0.075 if (is_whale or is_shark) and not gate_active else 0.0
+        # Group market signals to prevent double-counting
+        # OMEGA v13.6: Removed is_whale (20.0% success rate)
+        # OMEGA v13.7: Removed PITCHER_SHARK boost (0/7 hit rate; sharp team money != pitcher signal)
+        market_whale_bonus = 0.0
         
         if k_prop and float(k_prop) >= 6.5: beta_signals += 1
         if abs(tt_move) >= 0.5: beta_signals += 1
@@ -133,6 +135,52 @@ class SharpsWeighting:
         if is_low_ceiling and not is_target:
             final_alpha *= 0.90
             
+        # 1. Calibrated Walks Penalty (-10.0 points)
+        walks_penalty = 0.0
+        if walks_line is not None:
+            is_high_walks = False
+            try:
+                wf = float(walks_line)
+                if wf >= 2.5:
+                    is_high_walks = True
+                elif wf >= 1.5 and walks_odds is not None:
+                    wo = float(walks_odds)
+                    if wo < 0:
+                        is_high_walks = True
+            except:
+                pass
+            if is_high_walks:
+                walks_penalty = -10.0
+
+        # 2. True Talent Sabermetrics Penalty (-15.0 points)
+        true_talent_penalty = 0.0
+        try:
+            from utils.normalization import normalize_player_name
+            import json
+            import os
+            cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+            if os.path.exists(cache_path):
+                with open(cache_path, 'r') as f:
+                    cache = json.load(f)
+                p_norm = normalize_player_name(name)
+                p_profile = cache.get(p_norm, {})
+                if p_profile and p_profile.get("type") == "pitcher":
+                    ip = float(p_profile.get("ip", 0.0))
+                    bb = float(p_profile.get("bb", 0.0))
+                    k = float(p_profile.get("k", 0.0))
+                    hr = float(p_profile.get("hr", 0.0))
+                    
+                    bf = ip * 2.9 + k + bb
+                    k_bb_pct = (k - bb) / bf if bf > 0 else 0.12
+                    hr_9 = (hr / ip * 9) if ip > 5.0 else 1.0
+                    
+                    if k_bb_pct < 0.14 and hr_9 > 1.4:
+                        true_talent_penalty = -15.0
+        except:
+            pass
+
+        final_alpha += walks_penalty + true_talent_penalty
+            
         return {
             "final": round(final_alpha, 1),
             "physics": round(physics_raw * 0.45, 1),
@@ -140,11 +188,51 @@ class SharpsWeighting:
             "market": round(market_raw * 0.20, 1),
             "csw": round(float(csw), 3),
             "is_coors": park_factor >= 114,
-            "is_trap": is_trap
+            "is_trap": is_trap,
+            "walks_penalty": walks_penalty < 0,
+            "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
+        # Resolve Dynamic Bullpen Grade
+        dyn_grade, dyn_mult, dyn_fatigue_mod = "Average", 1.00, 1.00
+        if opponent:
+            try:
+                import json
+                import os
+                cache_path = os.path.join(config.DATA_DIR, "bullpen_season_cache.json")
+                if os.path.exists(cache_path):
+                    with open(cache_path, 'r') as f:
+                        reliever_stats = json.load(f)
+                    
+                    matched_key = None
+                    for k in reliever_stats.keys():
+                        if str(opponent).lower() in k.lower() or k.lower() in str(opponent).lower():
+                            matched_key = k
+                            break
+                            
+                    if matched_key and matched_key in reliever_stats:
+                        stats = reliever_stats[matched_key]
+                        k_bb = stats["k_bb_pct"]
+                        era = stats["era"]
+                        whip = stats["whip"]
+                        
+                        score_val = (k_bb * 100 * 2.5) + (5.0 - era) * 10 + (1.5 - whip) * 30
+                        
+                        if score_val >= 60.0:
+                            dyn_grade, dyn_mult, dyn_fatigue_mod = "Elite", 0.90, 0.75
+                        elif score_val >= 48.0:
+                            dyn_grade, dyn_mult, dyn_fatigue_mod = "Strong", 0.95, 0.85
+                        elif score_val >= 35.0:
+                            dyn_grade, dyn_mult, dyn_fatigue_mod = "Average", 1.00, 1.00
+                        elif score_val >= 22.0:
+                            dyn_grade, dyn_mult, dyn_fatigue_mod = "Below Average", 1.07, 1.12
+                        else:
+                            dyn_grade, dyn_mult, dyn_fatigue_mod = "Weak", 1.15, 1.25
+            except:
+                pass
+
         # OMEGA v7.7: Physics Hardening (Hybrid Statcast + Market ITT)
         # OMEGA v7.0: Power Concentration (Burst Potential)
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
@@ -165,17 +253,12 @@ class SharpsWeighting:
         # If the opposing SP is a TRAP, force short leash (15.5 outs) to boost bullpen pressure
         effective_outs = 15.5 if opp_pitcher_trap else pitcher_outs
         if effective_outs <= 15.5:
-            bullpen_boost *= 1.20 # Soft 20% boost for short leash (previously 1.5x)
+            bullpen_boost *= 1.20 # Soft 20% boost for short leash
         elif effective_outs >= 18.0:
             bullpen_boost *= 0.85 # Soft 15% dampener for deep workhorse starters
             
         # OMEGA v13.5: Bullpen Skill Granularity for Fatigue Boost (Overhauled)
-        skill_modifier = 1.0
-        if opponent:
-            opp_name = str(opponent).strip()
-            bp_grade = self.bullpen_talent_grades.get(opp_name)
-            if bp_grade:
-                skill_modifier = bp_grade['fatigue_mod']
+        skill_modifier = dyn_fatigue_mod
         bullpen_boost *= skill_modifier
         
         bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
@@ -207,6 +290,7 @@ class SharpsWeighting:
         # Alpha (Market Convergence Grouping to prevent exponential stacking)
         market_alphas = 0
         if is_storm: market_alphas += 1
+        # OMEGA v13.6.2: Re-enabled is_whale for stacks because the threshold has been optimized to >=25% divergence (40.9% success rate)
         if is_whale: market_alphas += 1
         if is_shark: market_alphas += 1
         if is_steam: market_alphas += 1
@@ -266,12 +350,7 @@ class SharpsWeighting:
             magnetism_boost = 1.0 + (raw_magnetism_capped - 1.0) * anchor_ratio
 
         # OMEGA v9.8: Bullpen Skill Grades (Overhauled)
-        bullpen_skill_mult = 1.0
-        if opponent:
-            opp_name = str(opponent).strip()
-            bp_grade = self.bullpen_talent_grades.get(opp_name)
-            if bp_grade:
-                bullpen_skill_mult = bp_grade['multiplier']
+        bullpen_skill_mult = dyn_mult
 
         pre_trap_combined = (
             multiplier * div_multiplier * convergence_boost * magnetism_boost * bullpen_skill_mult
@@ -307,6 +386,70 @@ class SharpsWeighting:
             final_omega += 5.0
         if is_pitch_alignment:
             final_omega += 4.0
+
+        # Walks Stack Boost (+8.0 points)
+        walks_boost = 0.0
+        if opp_walks_line is not None:
+            is_high_walks = False
+            try:
+                wf = float(opp_walks_line)
+                if wf >= 2.5:
+                    is_high_walks = True
+                elif wf >= 1.5 and opp_walks_odds is not None:
+                    wo = float(opp_walks_odds)
+                    if wo < 0:
+                        is_high_walks = True
+            except:
+                pass
+            if is_high_walks:
+                walks_boost = 8.0
+
+        # Earned Runs Stack Boost (+8.0 points)
+        er_boost = 0.0
+        if opp_er_line is not None:
+            is_high_er = False
+            try:
+                ef = float(opp_er_line)
+                if ef >= 3.5:
+                    is_high_er = True
+                elif ef >= 2.5 and opp_er_odds is not None:
+                    eo = float(opp_er_odds)
+                    if eo < 0:
+                        is_high_er = True
+            except:
+                pass
+            if is_high_er:
+                er_boost = 8.0
+
+        # True Talent Opp Pitcher Stack Boost (+2.0 points)
+        true_talent_boost = 0.0
+        if opp_pitcher_name:
+            try:
+                from utils.normalization import normalize_player_name
+                import json
+                import os
+                cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+                if os.path.exists(cache_path):
+                    with open(cache_path, 'r') as f:
+                        cache = json.load(f)
+                    p_norm = normalize_player_name(opp_pitcher_name)
+                    p_profile = cache.get(p_norm, {})
+                    if p_profile and p_profile.get("type") == "pitcher":
+                        ip = float(p_profile.get("ip", 0.0))
+                        bb = float(p_profile.get("bb", 0.0))
+                        k = float(p_profile.get("k", 0.0))
+                        hr = float(p_profile.get("hr", 0.0))
+                        
+                        bf = ip * 2.9 + k + bb
+                        k_bb_pct = (k - bb) / bf if bf > 0 else 0.12
+                        hr_9 = (hr / ip * 9) if ip > 5.0 else 1.0
+                        
+                        if k_bb_pct < 0.14 and hr_9 > 1.4:
+                            true_talent_boost = 2.0
+            except:
+                pass
+
+        final_omega += walks_boost + er_boost + true_talent_boost
 
         if team_xwoba < 0.295 and dampened_market_premium > 0.10:
             final_omega = min(final_omega, score * (1.0 + min(0.22, dampened_market_premium)))
@@ -345,6 +488,10 @@ class SharpsWeighting:
             "is_trap": chalk_trap,
             "is_stack_chalk": chalk_trap,
             "is_fade_risk": is_fade_risk,
+            "bullpen_grade": dyn_grade,
+            "walks_boost": walks_boost > 0,
+            "er_boost": er_boost > 0,
+            "true_talent_boost": true_talent_boost > 0
         }
 
     @staticmethod
@@ -371,10 +518,11 @@ class SharpsWeighting:
             return False
 
         sharp_in_favor = (is_steam or is_shark) and ml_move <= -10
-        public_pressure = ml_move >= 12 or (divergence > 12 and not sharp_in_favor)
+        public_pressure = ml_move >= 12 or (divergence < -12 and not sharp_in_favor)
         return public_pressure
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None):
+
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None, walks_line=None, walks_price=None, strikeouts_line=None, strikeouts_price=None, runs_g_rbi_line=None, runs_g_rbi_price=None):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
@@ -384,6 +532,8 @@ class SharpsWeighting:
         platoon_multiplier = 1.0
         platoon_label = "Neutral"
         
+        # Platoon Splits walk/strikeout rate adjustment (Package 3)
+        bb_k_split_multiplier = 1.0
         if pitch_hand and hitter_splits:
             from utils.platoon_math import compute_platoon_multiplier
             from utils.xwoba_estimates import cap_matchup_xwoba
@@ -399,7 +549,26 @@ class SharpsWeighting:
                 platoon_label = f"Blended vs {opp_label} ({'+' if platoon_percent >= 0 else ''}{platoon_percent}%)"
             else:
                 platoon_label = f"Neutral vs {opp_label}"
-            # matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * platoon_multiplier)
+                
+            side = "left" if str(pitch_hand).upper() == "L" else "right"
+            bb = float(hitter_splits.get(f"vs_{side}_bb", 0.0) or 0.0)
+            k = float(hitter_splits.get(f"vs_{side}_k", 0.0) or 0.0)
+            pa = float(hitter_splits.get(f"vs_{side}_pa", 0.0) or 0.0)
+            
+            if pa < 40.0:
+                bb += float(hitter_splits.get(f"vs_{side}_bb_2025", 0.0) or 0.0)
+                k += float(hitter_splits.get(f"vs_{side}_k_2025", 0.0) or 0.0)
+                pa += float(hitter_splits.get(f"vs_{side}_pa_2025", 0.0) or 0.0)
+                
+            if pa > 10.0:
+                bb_pct = bb / pa
+                k_pct = k / pa
+                if bb_pct >= 0.12:
+                    bb_k_split_multiplier += 0.05
+                if k_pct >= 0.28:
+                    bb_k_split_multiplier -= 0.05
+                    
+            matchup_xwoba = matchup_xwoba * bb_k_split_multiplier
 
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))
@@ -435,20 +604,59 @@ class SharpsWeighting:
             individual_core *= 0.92  
         
         solo_score = max(0.0, individual_core * park_factor)
+
+        # 4. Ingest new prop modifiers directly into solo_score (Package 1)
+        walks_boost = 0.0
+        if walks_line != '-' and walks_line is not None:
+            try:
+                wf = float(walks_line)
+                wp = float(walks_price) if walks_price is not None else 0.0
+                if wf >= 0.5 and (wp < 0 or wp >= 100): # Favored over
+                    walks_boost = 3.0
+            except:
+                pass
+
+        so_penalty = 0.0
+        if strikeouts_line != '-' and strikeouts_line is not None:
+            try:
+                sf = float(strikeouts_line)
+                sp = float(strikeouts_price) if strikeouts_price is not None else 0.0
+                # Strikeout line >= 1.5 is high variance, or heavily juiced Over 0.5
+                if sf >= 1.5 or (sf >= 0.5 and sp < -130):
+                    so_penalty = -3.0
+            except:
+                pass
+
+        rr_boost = 1.0
+        if runs_g_rbi_line != '-' and runs_g_rbi_line is not None:
+            try:
+                rf = float(runs_g_rbi_line)
+                rp = float(runs_g_rbi_price) if runs_g_rbi_price is not None else 0.0
+                if rf >= 1.5 and rp < 0:
+                    rr_boost = 1.05 # +5% boost for elite runs+RBIs prop
+                elif rf >= 1.5:
+                    rr_boost = 1.02 # +2% boost
+            except:
+                pass
+
+        solo_score = (solo_score + walks_boost + so_penalty) * rr_boost
         
         # Stack-adjusted score (team tab / legacy); hitter matrix uses solo_score only
         individual_stacked = individual_core * protection_boost
         final_alpha = (individual_stacked * 0.65) + (team_score * 0.35)
         final_alpha *= park_factor
+        final_alpha = (final_alpha + walks_boost + so_penalty) * rr_boost
         
         return {
             "final": round(max(0, final_alpha), 1),
-            "solo_score": round(solo_score, 1),
+            "solo_score": round(max(0, solo_score), 1),
             "physics": round(p_comp, 1),
             "physics_component": round(p_comp, 1),
             "market": round(m_comp, 1),
             "matchup_xwoba": round(matchup_xwoba, 3),
             "matchup_boost": round(matchup_radar_boost, 2),
             "platoon_multiplier": round(platoon_multiplier, 2),
-            "platoon_label": platoon_label
+            "platoon_label": platoon_label,
+            "walks_boost": walks_boost > 0,
+            "strikeouts_penalty": so_penalty < 0
         }

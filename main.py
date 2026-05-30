@@ -91,9 +91,14 @@ def run_full_analysis():
     print("[INIT]: Syncing atmospheric and officiating sentiment...")
     umpire_assignments = umpire_fetcher.fetch_daily_assignments()
     
-    # OMEGA v6.8.5: Fetch Confirmed Lineups
+    # OMEGA v6.8.5: Fetch Confirmed and Projected Lineups
     lineup_fetcher = LineupFetcher()
     confirmed_lineups = lineup_fetcher.fetch_confirmed_lineups()
+    projected_lineups = lineup_fetcher.fetch_projected_lineups()
+    active_lineups = {}
+    active_lineups.update(projected_lineups)
+    active_lineups.update(confirmed_lineups)
+
     
     snapshot_path = _get_resilient_snapshot()
     if not snapshot_path:
@@ -173,19 +178,19 @@ def run_full_analysis():
     p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
  
     # 3. Extract Hitters Early for Team Analysis (v6.8)
-    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=confirmed_lineups)
+    raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=active_lineups)
     print(f"[STEP 2a]: {len(raw_hitters)} hitters before lineup purge.")
     
     # OMEGA v6.9.7: Fuzzy Franchise Purge
-    # Purge any hitter not in the confirmed starters using fuzzy team matching.
-    if confirmed_lineups:
+    # Purge any hitter not in the active starting lineup using fuzzy team matching.
+    if active_lineups:
         from utils.normalization import normalize_player_name
         purged_hitters = []
         for h in raw_hitters:
             h_team = h['team'].lower()
-            # Find the confirmed lineup by looking for a fuzzy match in the keys
+            # Find the active lineup by looking for a fuzzy match in the keys
             confirmed = None
-            for lineup_team, players in confirmed_lineups.items():
+            for lineup_team, players in active_lineups.items():
                 if h_team in lineup_team.lower() or lineup_team.lower() in h_team:
                     confirmed = players
                     break
@@ -196,7 +201,7 @@ def run_full_analysis():
             else:
                 purged_hitters.append(h)
         raw_hitters = purged_hitters
-        print(f"[PURGE]: Hitter pool {len(raw_hitters)} after lineup filter (from {len(confirmed_lineups)} team keys).")
+        print(f"[PURGE]: Hitter pool {len(raw_hitters)} after lineup filter (from {len(active_lineups)} team keys).")
 
     # 4. Analyze Teams
     team_reports = _get_team_reports(
@@ -204,8 +209,9 @@ def run_full_analysis():
         bullpen_analyzer, consensus_fetcher, splits_data, 
         umpire_assignments, weather_fetcher, previous_results, totals_data,
         raw_hitters=raw_hitters, confirmed_lineups=confirmed_lineups,
-        matchup_radar=matchup_radar
+        projected_lineups=projected_lineups, matchup_radar=matchup_radar
     )
+
 
     # 5. Analyze Hitters
     h_reports = _get_hitter_alpha(
@@ -221,7 +227,7 @@ def run_full_analysis():
     from utils.team_prop_pressure import attach_team_prop_pressure
     from utils.dqi import calculate_dqi
 
-    attach_team_prop_pressure(team_reports, raw_hitters, confirmed_lineups)
+    attach_team_prop_pressure(team_reports, raw_hitters, active_lineups)
     for t in team_reports:
         try:
             dqi_score, dqi_status, dqi_pos, dqi_warn = calculate_dqi(t, pitchers=p_reports)
@@ -242,71 +248,8 @@ def run_full_analysis():
 
     # OMEGA: Compute GPP Leverage Index (GLI) for Team Stacks
     try:
-        from utils.normalization import normalize_player_name
-        from utils.attack_confidence import score_stack_confidence
-        pitchers_dict = {normalize_player_name(p['pitcher']): p for p in p_reports}
-        
-        # Calculate raw ownership proxy for each team
-        raw_owns = []
-        for t in team_reports:
-            implied_total = float(t.get('implied_total', 4.5) or 4.5)
-            # Public ownership is highly exponential relative to implied runs
-            proj_own = implied_total ** 3.5
-            
-            # Apply public chasing multipliers
-            if t.get('is_whale'):
-                proj_own *= 1.40
-            if t.get('is_sharp') and not t.get('is_whale'):
-                proj_own *= 0.80
-                
-            # Stacking against trap SPs
-            opp_sp_name = t.get('opp_pitcher')
-            if opp_sp_name:
-                opp_sp_norm = normalize_player_name(opp_sp_name)
-                opp_sp = pitchers_dict.get(opp_sp_norm)
-                if opp_sp:
-                    if opp_sp.get('is_trap'):
-                        proj_own *= 1.30
-                    
-                    # Pitcher talent discount (public avoids aces)
-                    opp_sp_score = opp_sp.get('alpha_score')
-                    if isinstance(opp_sp_score, dict):
-                        opp_sp_val = opp_sp_score.get('final', 80)
-                    else:
-                        opp_sp_val = float(opp_sp_score or 80)
-                    if opp_sp_val >= 100:
-                        proj_own *= 0.60
-            
-            t['_raw_own'] = proj_own
-            raw_owns.append(proj_own)
-            
-        # Normalize ownership to sum to 200.0% (representing 2 stacks per entry)
-        sum_raw_owns = sum(raw_owns)
-        n_teams = len(team_reports)
-        if sum_raw_owns > 0 and n_teams > 0:
-            for t in team_reports:
-                scaled_own = (t['_raw_own'] / sum_raw_owns) * 200.0
-                conf, _ = score_stack_confidence(t, p_reports)
-                
-                # Leverage index = (CONF / 50) / (ownership / average_ownership)
-                avg_own = 200.0 / n_teams
-                gli = (conf / 50.0) / max(0.1, (scaled_own / avg_own))
-                
-                t['projected_ownership'] = round(scaled_own, 1)
-                t['gpp_leverage_index'] = round(gli, 2)
-                
-                if gli >= 1.5 and not t.get('is_trap', False) and not t.get('is_fade_risk', False):
-                    t['leverage_label'] = 'LEVERAGE PIVOT'
-                    t['leverage_color'] = 'green'
-                elif gli < 0.6:
-                    t['leverage_label'] = 'CROWDED CHALK'
-                    t['leverage_color'] = 'red'
-                else:
-                    t['leverage_label'] = 'NEUTRAL'
-                    t['leverage_color'] = 'gray'
-                    
-                # Clean up raw temp variable
-                t.pop('_raw_own', None)
+        from utils.gpp_leverage import compute_gpp_leverage
+        compute_gpp_leverage(team_reports, p_reports)
     except Exception as gli_e:
         print(f"[WARNING]: GPP Leverage Index calculation failed: {gli_e}")
 
@@ -514,7 +457,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
     p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
     return p_reports
 
-def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None, matchup_radar=None):
+def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None, projected_lineups=None, matchup_radar=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
     print(f"\n[STEP 2]: Ranking Team Omega ({len(snapshot.get('odds', []))} games)...")
     
@@ -611,6 +554,10 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     is_sharp = prev_team_data.get('is_sharp', False)
                     is_storm = prev_team_data.get('is_storm', False)
                     is_steam = prev_team_data.get('is_steam', False)
+                    # OMEGA v10.5: Protect from in-play live betting odds shifts
+                    ml_move = float(prev_team_data.get('ml_move', ml_move))
+                    tt_move = float(prev_team_data.get('tt_move', tt_move))
+                    curr_itt = float(prev_team_data.get('implied_total', curr_itt))
                 else:
                     divergence = 0
                     is_shark = False
@@ -658,11 +605,20 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # OMEGA v7.0: Power Concentration Discovery
             team_h = [h for h in (raw_hitters or []) if h['team'] == team]
             confirmed = None
-            for lineup_team, players in confirmed_lineups.items():
+            is_official = False
+            for lineup_team, players in (confirmed_lineups or {}).items():
                 if team.lower() in lineup_team.lower() or lineup_team.lower() in team.lower():
                     confirmed = players
+                    is_official = True
                     break
-            lineup_status = "CONFIRMED" if confirmed else "PROJECTED"
+            
+            if not confirmed and projected_lineups:
+                for lineup_team, players in projected_lineups.items():
+                    if team.lower() in lineup_team.lower() or lineup_team.lower() in team.lower():
+                        confirmed = players
+                        break
+            
+            lineup_status = "CONFIRMED" if is_official else "PROJECTED"
 
             team_xwoba = 0.330
             power_concentration = 0.330
@@ -695,17 +651,32 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
                 # Sort by adjusted matchup_xwoba descending
                 sorted_h = sorted(adjusted_h_list, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
-                # For confirmed lineups, we use starting players. For projected, top 9.
+
+                # OMEGA v14.0: High-fidelity projected lineup construction
+                # If confirmed lineups are not yet available, filter active players with rolling PA (last 10 days)
+                # and sort by season PA to get the standard starting lineup.
                 if confirmed:
                     confirmed_names = {normalize_player_name(p) for p in confirmed}
-                    
-                    # Map each confirmed player to their position in the confirmed starting lineup list
                     confirmed_order = {normalize_player_name(p): idx for idx, p in enumerate(confirmed)}
-                    # Filter and sort target_h to preserve the confirmed batting order
                     target_h = [h for h in adjusted_h_list if normalize_player_name(h['name']) in confirmed_order]
                     target_h = sorted(target_h, key=lambda x: confirmed_order[normalize_player_name(x['name'])])
                 else:
-                    target_h = sorted_h[:9]
+                    # Filter active roster hitters who have played recently (rolling_pa > 0)
+                    active_h = [
+                        h for h in adjusted_h_list 
+                        if int(cache.get(normalize_player_name(h['name']), {}).get('rolling_pa', 0) or 0) > 0
+                    ]
+                    
+                    # Fallback to all hitters if roster is thin/missing momentum data
+                    if len(active_h) < 9:
+                        active_h = adjusted_h_list
+                        
+                    # Sort active hitters by season PA descending to get everyday starters
+                    target_h = sorted(
+                        active_h, 
+                        key=lambda x: int(cache.get(normalize_player_name(x['name']), {}).get('pa', 0) or 0), 
+                        reverse=True
+                    )[:9]
 
                 # OMEGA: Lineup Spot PA Decay (Batting Order Weighting)
                 # OMEGA v13.6: Moderate Lineup Spot PA Decay (prevents over-penalizing deep lineups)
@@ -797,6 +768,11 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 opp_pitcher_physics,
             )
             
+            opp_walks_line = opp_pitcher_rep.get('walks_line') if opp_pitcher_rep else None
+            opp_walks_odds = opp_pitcher_rep.get('walks_odds') if opp_pitcher_rep else None
+            opp_er_line = opp_pitcher_rep.get('er_line') if opp_pitcher_rep else None
+            opp_er_odds = opp_pitcher_rep.get('er_odds') if opp_pitcher_rep else None
+
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
                 power_concentration=power_concentration,
@@ -807,7 +783,12 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
                 implied_total=curr_itt, is_burst=is_burst, opponent=opponent,
                 is_anti_chalk_smash=is_anti_chalk_smash, is_pitch_alignment=is_pitch_alignment,
-                opp_pitcher_trap=opp_sp_trap
+                opp_pitcher_trap=opp_sp_trap,
+                opp_pitcher_name=opp_pitcher_rep.get('pitcher') if opp_pitcher_rep else None,
+                opp_walks_line=opp_walks_line,
+                opp_walks_odds=opp_walks_odds,
+                opp_er_line=opp_er_line,
+                opp_er_odds=opp_er_odds
             )
             
             # Sentiment Divergence (Venue-Based)
@@ -1206,7 +1187,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             vision_boost=vision_boost, protection_boost=protection_boost,
             matchup_radar_boost=matchup_radar_boost, opp_csw=opp_csw,
             pitch_hand=pitch_hand, hitter_splits=h_profile, smash_factor=smash_factor,
-            pitcher_name=opp_pitcher, matchup_radar=matchup_radar
+            pitcher_name=opp_pitcher, matchup_radar=matchup_radar,
+            walks_line=h.get('walks_line'), walks_price=h.get('walks_price'),
+            strikeouts_line=h.get('strikeouts_line'), strikeouts_price=h.get('strikeouts_price'),
+            runs_g_rbi_line=h.get('runs_g_rbi_line'), runs_g_rbi_price=h.get('runs_g_rbi_price')
         )
 
         # OMEGA v8.0: ICE_COLD_MARKET penalty

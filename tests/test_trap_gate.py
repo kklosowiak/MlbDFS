@@ -62,5 +62,35 @@ class TestStackChalkTrap(unittest.TestCase):
         )
 
 
+    def test_divergence_trap_public_heavy(self):
+        self.assertTrue(
+            SharpsWeighting._stack_chalk_trap(
+                physics_raw=30.0,
+                team_xwoba=0.283,
+                physics_display=12.0,
+                ml_move=0,
+                divergence=-15,
+                is_steam=False,
+                is_shark=False,
+                pre_trap_score=85.0,
+            )
+        )
+
+    def test_divergence_sharp_backed_exempt(self):
+        self.assertFalse(
+            SharpsWeighting._stack_chalk_trap(
+                physics_raw=30.0,
+                team_xwoba=0.283,
+                physics_display=12.0,
+                ml_move=0,
+                divergence=15,
+                is_steam=False,
+                is_shark=False,
+                pre_trap_score=85.0,
+            )
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
+

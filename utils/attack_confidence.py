@@ -242,6 +242,16 @@ def score_stack_confidence(t, p_reports):
         if opp_p.get("sharp_fade") and not opp_p.get("is_trap"):
             sp_boost += 6.0
             sp_reasons.append(f"Opposing SP sharp fade ({opp_p_name}) — stack-friendly caution arm.")
+
+        # OMEGA v13.7: LOW_CEILING boost — backtested at +5.8pp over baseline (41.8% vs 36.0%)
+        # Standalone HAZARD excluded — backtest showed 15.4% hit rate, below baseline
+        if opp_p.get("is_low_ceiling"):
+            sp_boost += 6.0
+            sp_reasons.append(f"Opp SP {opp_p_name} flagged LOW CEILING (K-line \u22644.0) — stack-friendly.")
+            # Convergence bonus: both LOW_CEILING + HAZARD together hit at 50.0% (24 matchups)
+            if opp_p.get("is_hazard"):
+                sp_boost += 4.0
+                sp_reasons.append(f"LOW CEILING + HAZARD convergence vs elite offense — +4 convergence.")
         
         # Tough SP penalty
         phys = float(opp_p.get("physics_score", 0) or 0)

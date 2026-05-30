@@ -186,6 +186,12 @@ class HitterPropAnalyzer:
                         'rbis_price': 0,
                         'rbis_juice': False,
                         'rbis_target': False,
+                        'walks_line': '-',
+                        'walks_price': 0,
+                        'strikeouts_line': '-',
+                        'strikeouts_price': 0,
+                        'runs_g_rbi_line': '-',
+                        'runs_g_rbi_price': 0,
                         'is_speed_target': False,
                         'matchup_xwoba': xwoba
                     }
@@ -198,6 +204,7 @@ class HitterPropAnalyzer:
                 for m_key in [
                     'batter_home_runs', 'batter_hits', 'batter_total_bases',
                     'batter_stolen_bases', 'batter_runs', 'batter_rbis',
+                    'batter_walks', 'batter_strikeouts', 'batter_runs_g_rbi',
                 ]:
                     market_data = markets.get(m_key, [])
                     for entry in market_data:
@@ -344,6 +351,27 @@ class HitterPropAnalyzer:
                                 merge_hitter_market_juice(
                                     hitter_map[found_key], market_data, player_name, m_key
                                 )
+
+                        elif m_key == 'batter_walks':
+                            if entry.get('side') == 'Over':
+                                walks_price = entry.get('price', 0)
+                                if 1.0 < walks_price < 100.0: walks_price = self.decimal_to_american(walks_price)
+                                hitter_map[found_key]['walks_line'] = entry.get('point', 0.5)
+                                hitter_map[found_key]['walks_price'] = walks_price
+
+                        elif m_key == 'batter_strikeouts':
+                            if entry.get('side') == 'Over':
+                                so_price = entry.get('price', 0)
+                                if 1.0 < so_price < 100.0: so_price = self.decimal_to_american(so_price)
+                                hitter_map[found_key]['strikeouts_line'] = entry.get('point', 1.5)
+                                hitter_map[found_key]['strikeouts_price'] = so_price
+
+                        elif m_key == 'batter_runs_g_rbi':
+                            if entry.get('side') == 'Over':
+                                rr_price = entry.get('price', 0)
+                                if 1.0 < rr_price < 100.0: rr_price = self.decimal_to_american(rr_price)
+                                hitter_map[found_key]['runs_g_rbi_line'] = entry.get('point', 1.5)
+                                hitter_map[found_key]['runs_g_rbi_price'] = rr_price
 
         except Exception as e:
             print(f"[CRITICAL ERROR]: Hitter Discovery silent crash prevented: {e}")

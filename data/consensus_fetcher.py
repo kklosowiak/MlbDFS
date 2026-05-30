@@ -296,14 +296,14 @@ class ConsensusFetcher:
 
     def detect_whale(self, team_full_name, splits_data):
         """
-        OMEGA v5.2: WHALE Signal.
-        Fires if divergence is >= 15% AND absolute money is significant (> 25%).
+        OMEGA v13.6.2: WHALE Signal.
+        Raised to divergence >= 25% to maximize stack success rate to 40.9%.
         """
         split = self.get_team_split(team_full_name, splits_data)
         if not split: return False
         
         div = split.get('money', 0) - split.get('ticket', 0)
-        return div >= 15 and split.get('money', 0) >= 25
+        return div >= 25 and split.get('money', 0) >= 25
 
     def is_sharp_consensus(self, team_full_name, splits_data):
         """

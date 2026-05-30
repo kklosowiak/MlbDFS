@@ -46,7 +46,6 @@ class DashboardGenerator:
         safe_md = json.dumps(slate_analysis_md)
         
         # OMEGA v8.7: Final Intelligence Sort
-        # Ensures highest-probability plays are always at the top after all gates/boosts
         t_reports = sorted(t_reports, key=lambda x: x.get('blended_rating', (x.get('stack_score', 0) + x.get('attack_conf', 50)) / 2), reverse=True)
         p_reports = sorted(p_reports, key=lambda x: x.get('alpha_score', 0), reverse=True)
         h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
@@ -55,10 +54,90 @@ class DashboardGenerator:
         for p in p_reports[:35]:
             p_conf = p.get('attack_conf')
             p_reasons = p.get('attack_reasons', [])
-            p_tooltip = f"Confidence: {p_conf}%\n" + "\n".join([f"- {r}" for r in p_reasons])
-            p_tooltip_esc = p_tooltip.replace('"', '&quot;')
+            p_reasons_li = "".join([f"<div style='background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:6px; margin-bottom:8px; font-size:0.92rem; color:rgba(255,255,255,0.85);'>• {r}</div>" for r in p_reasons])
+            
+            # Statcast features
+            siera_val = p.get('siera', 4.10)
+            csw_val = p.get('csw', 0.25)
+            form_era = p.get('recent_era', '-')
+            form_k9 = p.get('recent_k9', '-')
+            
+            statcast_grid = f"""
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:20px;">
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">SIERA</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:#fff;">{f"{siera_val:.2f}" if isinstance(siera_val, float) else siera_val}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">CSW%</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:#fff;">{f"{(csw_val*100):.1f}%" if isinstance(csw_val, float) else csw_val}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form ERA</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:var(--accent-green);">{form_era}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form K/9</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:#fff;">{form_k9}</div>
+                </div>
+            </div>
+            """
 
-            row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}" title="{p_tooltip_esc}">
+            # Player props grid
+            props_list = []
+            if p.get('k_line') is not None:
+                props_list.append(("K Prop Limit", f"{p['k_line']} ({p.get('k_odds', 'EVEN')})"))
+            if p.get('outs_line') is not None:
+                props_list.append(("Outs Limit", f"{p['outs_line']} ({p.get('outs_odds', 'EVEN')})"))
+            if p.get('walks_line') is not None:
+                props_list.append(("Walks Limit", f"{p['walks_line']} ({p.get('walks_odds', 'EVEN')})"))
+            if p.get('er_line') is not None:
+                props_list.append(("ER Limit", f"{p['er_line']} ({p.get('er_odds', 'EVEN')})"))
+
+            props_grid_html = ""
+            if props_list:
+                cards = []
+                for name, value in props_list:
+                    cards.append(f"""
+                    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:500;">{name}</span>
+                        <span style="font-size:0.95rem; font-weight:700; color:#fff;">{value}</span>
+                    </div>
+                    """)
+                props_grid_html = f"""
+                <div style="margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em; margin-bottom:4px;">VEGAS PLAYER PROPS</div>
+                    {"".join(cards)}
+                </div>
+                """
+
+            # True Talent boundary warnings
+            talent_warning_html = ""
+            if p.get('true_talent_penalty'):
+                talent_warning_html = """
+                <div style="background:rgba(255,69,58,0.08); border:1px solid rgba(255,69,58,0.25); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">🚨</span>
+                    <div>
+                        <div style="color:#fff; font-weight:700; font-size:0.9rem;">SABERMETRIC TRAP ARMS</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Season K-BB% < 14% and HR/9 > 1.40. Poor control and high homer risk priced in.</div>
+                    </div>
+                </div>
+                """
+            
+            p_reasons_html = f"""
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
+                <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">OMEGA Confidence Score</span>
+                <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{p_conf}%</span>
+            </div>
+            {talent_warning_html}
+            {statcast_grid}
+            {props_grid_html}
+            <div style="margin-bottom:10px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em;">PITCHER ANALYTICS</div>
+            <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:10px;">{p_reasons_li}</div>
+            """
+            p_reasons_html = p_reasons_html.replace('"', '&quot;').replace('\n', ' ')
+
+            row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{p['pitcher']} ({abbrev_map.get(p['team'], p['team'])})', '{p_reasons_html}')">
 <td class="score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}">{p['alpha_score']}</td>
 <td class="metric-sub">{p.get('physics_score', '-')}</td>
 <td class="metric-sub">{p.get('market_score', '-')}</td>
@@ -87,21 +166,79 @@ class DashboardGenerator:
         for h in h_reports[:25]:
             platoon_mult = h.get('platoon_multiplier', 1.0)
             p_hand = h.get('pitch_hand', 'R')
+            
+            # Formulated platoon description (for popup details only)
+            platoon_desc = ""
             if platoon_mult > 1.0:
                 pct = round((platoon_mult - 1.0) * 100)
-                platoon_pill = f'<span class="signal-pill" style="background: linear-gradient(135deg, rgba(50, 215, 75, 0.15) 0%, rgba(50, 215, 75, 0.3) 100%); border: 1px solid #32d74b; color: #32d74b; font-weight:700; box-shadow: 0 0 8px rgba(50, 215, 75, 0.35);">⚡ VS {p_hand}HP (+{pct}%)</span>'
+                platoon_desc = f"""
+                <div style="background:rgba(50,215,75,0.08); border:1px solid rgba(50,215,75,0.25); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">⚡</span>
+                    <div>
+                        <div style="color:var(--accent-green); font-weight:700; font-size:0.9rem;">PLATOON SPLITS EDGE (+{pct}%)</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Excellent edge vs. opposing starter throwing with their hand ({p_hand}HP).</div>
+                    </div>
+                </div>
+                """
             elif platoon_mult < 1.0:
                 pct = round((1.0 - platoon_mult) * 100)
-                platoon_pill = f'<span class="signal-pill" style="background: linear-gradient(135deg, rgba(255, 69, 58, 0.15) 0%, rgba(255, 69, 58, 0.3) 100%); border: 1px solid #ff453a; color: #ff453a; font-weight:700; box-shadow: 0 0 8px rgba(255, 69, 58, 0.35);">📉 VS {p_hand}HP (-{pct}%)</span>'
-            else:
-                platoon_pill = ''
+                platoon_desc = f"""
+                <div style="background:rgba(255,69,58,0.08); border:1px solid rgba(255,69,58,0.25); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">📉</span>
+                    <div>
+                        <div style="color:var(--accent-red); font-weight:700; font-size:0.9rem;">PLATOON DISADVANTAGE (-{pct}%)</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Disadvantageous splits vs. opposing starter's hand ({p_hand}HP).</div>
+                    </div>
+                </div>
+                """
 
             h_conf = h.get('attack_conf')
             h_reasons = h.get('attack_reasons', [])
-            h_tooltip = f"Confidence: {h_conf}%\n" + "\n".join([f"- {r}" for r in h_reasons])
-            h_tooltip_esc = h_tooltip.replace('"', '&quot;')
+            h_reasons_li = "".join([f"<div style='background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:6px; margin-bottom:8px; font-size:0.92rem; color:rgba(255,255,255,0.85);'>• {r}</div>" for r in h_reasons])
+            
+            # Hitter player props (for popup details)
+            hitter_props = []
+            if h.get('hits_line') and h.get('hits_line') != '-':
+                hitter_props.append(("Hits Prop", f"{h['hits_line']} ({h.get('hits_price', 'EVEN')})"))
+            if h.get('tb_line') and h.get('tb_line') != '-':
+                hitter_props.append(("Total Bases", f"{h['tb_line']} ({h.get('tb_price', 'EVEN')})"))
+            if h.get('walks_line') and h.get('walks_line') != '-':
+                hitter_props.append(("Walks Prop", f"{h['walks_line']} ({h.get('walks_price', 'EVEN')})"))
+            if h.get('strikeouts_line') and h.get('strikeouts_line') != '-':
+                hitter_props.append(("Strikeouts", f"{h['strikeouts_line']} ({h.get('strikeouts_price', 'EVEN')})"))
+            if h.get('runs_g_rbi_line') and h.get('runs_g_rbi_line') != '-':
+                hitter_props.append(("Runs+RBI", f"{h['runs_g_rbi_line']} ({h.get('runs_g_rbi_price', 'EVEN')})"))
+                
+            h_props_html = ""
+            if hitter_props:
+                cards = []
+                for name, value in hitter_props:
+                    cards.append(f"""
+                    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:500;">{name}</span>
+                        <span style="font-size:0.95rem; font-weight:700; color:#fff;">{value}</span>
+                    </div>
+                    """)
+                h_props_html = f"""
+                <div style="margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em; margin-bottom:4px;">VEGAS PLAYER PROPS</div>
+                    {"".join(cards)}
+                </div>
+                """
+            
+            h_reasons_html = f"""
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
+                <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">Hitter Confidence Score</span>
+                <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{h_conf}%</span>
+            </div>
+            {platoon_desc}
+            {h_props_html}
+            <div style="margin-bottom:10px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em;">HITTER ANALYTICS</div>
+            <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:10px;">{h_reasons_li}</div>
+            """
+            h_reasons_html = h_reasons_html.replace('"', '&quot;').replace('\n', ' ')
 
-            row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}" title="{h_tooltip_esc}">
+            row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{h['name']} ({abbrev_map.get(h['team'], h['team'])})', '{h_reasons_html}')">
 <td class="score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}">{h['player_score']}</td>
 <td><div class="signals-container">
 { '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }
@@ -112,7 +249,6 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else '' }
 { '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }
 { '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }
-{ platoon_pill }
 </div></td>
 <td><strong>{h['name']}</strong> <span class="team-label" style="font-weight: 800; color: #ff9f0a;">({h.get('bat_side', 'R')}B)</span> <span class="team-label">({abbrev_map.get(h['team'], h['team'])})</span></td>
 <td><span class="vs">vs</span>{h.get('opp_pitcher', 'TBD')} <span class="team-label" style="font-weight: 800; color: #0a84ff;">({h.get('pitch_hand', 'R')}HP)</span> <span class="team-label">({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>
@@ -143,11 +279,74 @@ class DashboardGenerator:
 
             t_conf = t.get('attack_conf')
             t_reasons = t.get('attack_reasons', [])
-            t_tooltip = f"Confidence: {t_conf}%\n" + "\n".join([f"- {r}" for r in t_reasons])
-            t_tooltip_esc = t_tooltip.replace('"', '&quot;')
-
+            t_reasons_li = "".join([f"<div style='background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:6px; margin-bottom:8px; font-size:0.92rem; color:rgba(255,255,255,0.85);'>• {r}</div>" for r in t_reasons])
+            
+            # Vegas grid
+            implied_val = t.get('implied_total', '-')
+            ml_val = t.get('ml_move', 0.0)
+            tt_val = t.get('tt_move', 0.0)
+            div_val = t.get('divergence', 0)
+            
+            vegas_grid = f"""
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:20px;">
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Implied Runs</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:#fff;">{implied_val}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">ML Move</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:{'var(--accent-green)' if ml_val < 0 else ('var(--accent-red)' if ml_val > 0 else '#fff')};">{'+' if ml_val > 0 else ''}{ml_val if ml_val != 0 else 'EVEN'}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Total Move</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:{'var(--accent-green)' if tt_val > 0 else ('var(--accent-red)' if tt_val < 0 else '#fff')};">{'+' if tt_val > 0 else ''}{tt_val if tt_val != 0 else 'EVEN'}</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Divergence</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:{'var(--accent-green)' if div_val > 0 else ('var(--accent-red)' if div_val < 0 else '#fff')};">{'+' if div_val > 0 else ''}{div_val}%</div>
+                </div>
+            </div>
+            """
+            
             blended = t.get('blended_rating', round((t.get('stack_score', 0) + t.get('attack_conf', 50)) / 2, 1))
-            row = f"""<tr class="{'god-tier' if blended >= 80 else ''}" title="{t_tooltip_esc}">
+
+            # Dynamic bullpen details
+            opp = t.get('opponent', '')
+            bullpen_info = ""
+            if opp:
+                try:
+                    from data.bullpen_analyzer import BullpenAnalyzer
+                    grade, mult, fatigue, era, whip, k_bb = BullpenAnalyzer().get_dynamic_bullpen_grade(opp)
+                    bullpen_info = f"""
+                    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:14px; border-radius:10px; margin-bottom:20px;">
+                        <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em; margin-bottom:8px;">OPPOSING RELIEF PITCHING</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:0.9rem; color:#fff; font-weight:600;">{opp} Bullpen Quality</span>
+                            <span style="font-size:0.95rem; font-weight:700; color:{'var(--accent-green)' if grade in ('Elite', 'Strong') else ('var(--accent-red)' if grade in ('Weak', 'Below Average') else '#fff')};">{grade}</span>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5;">
+                            ERA: <b>{era:.2f}</b> | WHIP: <b>{whip:.2f}</b> | K-BB%: <b>{k_bb*100:.1f}%</b><br>
+                            Recent Usage Fatigue: <b>{t.get('bullpen_fatigue', 0)}%</b>
+                        </div>
+                    </div>
+                    """
+                except:
+                    pass
+                
+            t_reasons_html = f"""
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
+                <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">Stack Blended Score</span>
+                <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{blended}</span>
+            </div>
+            {vegas_grid}
+            {bullpen_info}
+            <div style="margin-bottom:10px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em;">STACK ANALYTICS</div>
+            <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:10px;">{t_reasons_li}</div>
+            """
+            t_reasons_html = t_reasons_html.replace('"', '&quot;').replace('\n', ' ')
+
+
+            row = f"""<tr class="{'god-tier' if blended >= 80 else ''}" style="cursor:pointer;" onclick="showDetails('{t['team']} vs {t['opponent']}', '{t_reasons_html}')">
 <td class="score {'score-elite' if blended >= 85 else ('score-high' if blended >= 75 else '')}">{blended}</td>
 <td class="metric-sub" style="font-weight:700; color:#fff;">{t['stack_score']}</td>
 <td class="metric-sub" style="font-weight:700; color:#0a84ff;">{t.get('attack_conf', 0)}%</td>
@@ -343,9 +542,6 @@ class DashboardGenerator:
         tr {{
             transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
         }}
-        tr:hover {{
-            transform: translateX(4px);
-        }}
         tr:hover td {{
             background: rgba(255, 255, 255, 0.035) !important;
             border-bottom-color: rgba(255, 255, 255, 0.08);
@@ -418,7 +614,6 @@ class DashboardGenerator:
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
         }}
-        /* Semantic pill colors */
         .pill-target {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
         .pill-shark {{ background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); }}
         .pill-storm {{ background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }}
@@ -486,7 +681,6 @@ class DashboardGenerator:
         .val-even {{ color: var(--text-secondary); }}
         
         /* Markdown container */
-        /* Model Analysis Premium Banner & Cards */
         #analysis-content {{
             line-height: 1.75;
             font-size: 0.98rem;
@@ -747,8 +941,16 @@ class DashboardGenerator:
                 Loading analysis...
             </div>
         </div>
+    </div>
 
-
+    <!-- Details Modal -->
+    <div id="details-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; justify-content:center; align-items:center; backdrop-filter:blur(8px); padding:20px;">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:30px; max-width:550px; width:100%; position:relative; box-shadow:0 15px 50px rgba(0,0,0,0.8); animation:fadeIn 0.2s ease; overflow-y:auto; max-height:90%;">
+            <span onclick="closeModal()" style="position:absolute; top:20px; right:25px; font-size:1.8rem; color:var(--text-secondary); cursor:pointer; font-weight:700; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-secondary)'">&times;</span>
+            <h2 id="modal-title" style="margin-top:0; font-size:1.6rem; font-weight:800; border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:20px; color:#fff;">Details</h2>
+            <div id="modal-body" style="font-size:0.95rem; color:var(--text-primary); line-height:1.6;">
+            </div>
+        </div>
     </div>
 
     <script>
@@ -769,6 +971,22 @@ class DashboardGenerator:
             evt.currentTarget.classList.add("active");
         }}
         
+        // Modal logic
+        function showDetails(title, detailsHtml) {{
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerHTML = detailsHtml;
+            document.getElementById('details-modal').style.display = 'flex';
+        }}
+        function closeModal() {{
+            document.getElementById('details-modal').style.display = 'none';
+        }}
+        window.onclick = function(event) {{
+            const modal = document.getElementById('details-modal');
+            if (event.target == modal) {{
+                modal.style.display = "none";
+            }}
+        }}
+
         // Render Markdown Analysis
         const markdownData = {safe_md};
         document.addEventListener('DOMContentLoaded', () => {{
@@ -780,7 +998,7 @@ class DashboardGenerator:
                 const container = document.getElementById('analysis-content');
                 container.innerHTML = ''; // clear loading
 
-                // Let's group children by H2 elements into separate visual cards!
+                // Group children by H2 elements into separate visual cards
                 let currentCard = null;
                 let cardBody = null;
 
@@ -800,12 +1018,10 @@ class DashboardGenerator:
                 // Loop through elements and create cards
                 Array.from(tempDiv.children).forEach(el => {{
                     if (el.tagName === 'H1' || (el.tagName === 'P' && el === tempDiv.querySelector('p')) || (el.tagName === 'P' && el.innerText.startsWith('Generated:'))) {{
-                        // skip banner elements and timestamp
                         return;
                     }}
 
                     if (el.tagName === 'H2') {{
-                        // Start a new card!
                         currentCard = document.createElement('div');
                         currentCard.className = 'card analysis-card';
                         
@@ -820,10 +1036,8 @@ class DashboardGenerator:
 
                         container.appendChild(currentCard);
                     }} else if (el.tagName === 'HR') {{
-                        // skip horizontal rules as cards act as dividers
                         return;
                     }} else {{
-                        // Append to active card body, or directly to container if no card yet
                         if (cardBody) {{
                             cardBody.appendChild(el.cloneNode(true));
                         }} else {{
@@ -842,7 +1056,7 @@ class DashboardGenerator:
         with open(self.output_path, "w", encoding="utf-8") as f:
             f.write(html)
             
-        # OMEGA v4.6.3: Mirror to user's active sports_agent path
+        # Mirror to user's active sports_agent path
         try:
             mirror_path = os.path.join(os.path.dirname(config.BASE_DIR), "sports_agent", "konrad_sharp_model_v45.html")
             os.makedirs(os.path.dirname(mirror_path), exist_ok=True)

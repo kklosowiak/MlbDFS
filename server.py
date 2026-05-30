@@ -503,6 +503,7 @@ def api_get_confirmed_lineups(request: Request):
     from data.lineup_fetcher import LineupFetcher
     fetcher = LineupFetcher()
     confirmed = fetcher.fetch_confirmed_lineups()
+    projected = fetcher.fetch_projected_lineups()
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     results_path = os.path.join(base_dir, "reports", "latest_results.json")
@@ -517,6 +518,7 @@ def api_get_confirmed_lineups(request: Request):
             
     return {
         "confirmed_lineups": confirmed,
+        "projected_lineups": projected,
         "projections": projections
     }
 
@@ -1058,6 +1060,15 @@ def get_platoons_api():
     # Build a lookup: team_name -> team result row
     results_lookup = {t["team"]: t for t in teams_results}
     
+    from data.lineup_fetcher import LineupFetcher
+    fetcher = LineupFetcher()
+    try:
+        confirmed_lineups = fetcher.fetch_confirmed_lineups()
+        projected_lineups = fetcher.fetch_projected_lineups()
+    except Exception:
+        confirmed_lineups = {}
+        projected_lineups = {}
+    
     matchups = []
     seen_games = set()
     
@@ -1080,28 +1091,95 @@ def get_platoons_api():
         pitcher_hand = pitcher_profile.get("pitch_hand", "R")
         pitcher_hand_label = "LHP" if pitcher_hand == "L" else "RHP"
         
-        # Team splits vs the pitcher's hand
-        # vl = vs left-handed pitching, vr = vs right-handed pitching
-        team_split_key = "vl" if pitcher_hand == "L" else "vr"
-        team_split_data = teams_splits.get(team_name, {}).get(team_split_key, {})
-        team_vs_hand_ops = team_split_data.get("ops", 0)
-        team_vs_hand_woba = team_split_data.get("wOBA_proxy", 0)
-        team_vs_hand_avg = team_split_data.get("avg", 0)
-        team_vs_hand_slg = team_split_data.get("slg", 0)
-        team_vs_hand_pa = team_split_data.get("pa", 0)
-        
-        # Also get the team's OTHER split for comparison
-        team_other_key = "vr" if pitcher_hand == "L" else "vl"
-        team_other_data = teams_splits.get(team_name, {}).get(team_other_key, {})
-        team_other_ops = team_other_data.get("ops", 0)
-        team_other_woba = team_other_data.get("wOBA_proxy", 0)
+        short_map = {
+            'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',
+            'Boston Red Sox': 'BOS', 'Chicago Cubs': 'CHC', 'Chicago White Sox': 'CWS',
+            'Cincinnati Reds': 'CIN', 'Cleveland Guardians': 'CLE', 'Colorado Rockies': 'COL',
+            'Detroit Tigers': 'DET', 'Houston Astros': 'HOU', 'Kansas City Royals': 'KC',
+            'Los Angeles Angels': 'LAA', 'Los Angeles Dodgers': 'LAD', 'Miami Marlins': 'MIA',
+            'Milwaukee Brewers': 'MIL', 'Minnesota Twins': 'MIN', 'New York Mets': 'NYM',
+            'New York Yankees': 'NYY', 'Athletics': 'OAK', 'Oakland Athletics': 'OAK',
+            'Philadelphia Phillies': 'PHI', 'Pittsburgh Pirates': 'PIT', 'San Diego Padres': 'SD',
+            'San Francisco Giants': 'SF', 'Seattle Mariners': 'SEA', 'St. Louis Cardinals': 'STL',
+            'Tampa Bay Rays': 'TB', 'Texas Rangers': 'TEX', 'Toronto Blue Jays': 'TOR',
+            'Washington Nationals': 'WSH'
+        }
+        def get_abbrev(name):
+            return short_map.get(name, name)
 
-        team_vs_hand_xwoba = woba_proxy_to_xwoba(team_vs_hand_woba, team_vs_hand_ops)
-        team_other_xwoba = woba_proxy_to_xwoba(team_other_woba, team_other_ops)
-        
-        # OPS differential (how much better/worse vs this hand)
-        ops_diff = round((team_vs_hand_ops - team_other_ops) * 1000) if team_other_ops else 0
-        xwoba_diff = round((team_vs_hand_xwoba - team_other_xwoba) * 1000) if team_other_xwoba else 0
+        confirmed = confirmed_lineups.get(team_name) or confirmed_lineups.get(get_abbrev(team_name))
+        is_confirmed = (confirmed is not None and len(confirmed) >= 7)
+
+        projected = None
+        if not is_confirmed:
+            projected = projected_lineups.get(team_name) or projected_lineups.get(get_abbrev(team_name))
+
+        team_hitters = [h for h in results_data.get("hitters", []) if h.get("team") == team_name]
+
+        if is_confirmed:
+            confirmed_order = {normalize_player_name(p): idx for idx, p in enumerate(confirmed)}
+            active_lineup = [h for h in team_hitters if normalize_player_name(h.get('name', '')) in confirmed_order]
+            active_lineup = sorted(active_lineup, key=lambda x: confirmed_order[normalize_player_name(x.get('name', ''))])[:9]
+            if not active_lineup:
+                team_hitters.sort(key=lambda x: x.get("player_score", 0.0), reverse=True)
+                active_lineup = team_hitters[:9]
+        else:
+            if projected:
+                projected_order = {normalize_player_name(p): idx for idx, p in enumerate(projected)}
+                active_lineup = [h for h in team_hitters if normalize_player_name(h.get('name', '')) in projected_order]
+                active_lineup = sorted(active_lineup, key=lambda x: projected_order[normalize_player_name(x.get('name', ''))])[:9]
+            
+            if not projected or not active_lineup:
+                # Filter active roster hitters who have played recently (rolling_pa > 0)
+                active_h = [
+                    h for h in team_hitters 
+                    if int(statcast.get(normalize_player_name(h.get("name", "")), {}).get("rolling_pa", 0) or 0) > 0
+                ]
+                if len(active_h) < 9:
+                    active_h = team_hitters
+                
+                # Sort active hitters by season PA descending to get everyday starters
+                active_h.sort(
+                    key=lambda x: int(statcast.get(normalize_player_name(x.get("name", "")), {}).get("pa", 0) or 0), 
+                    reverse=True
+                )
+                active_lineup = active_h[:9]
+
+        if active_lineup:
+            team_vs_hand_xwoba = sum(float(h.get("matchup_xwoba", 0.320) or 0.320) for h in active_lineup) / len(active_lineup)
+            xwoba_diff_val = sum(float(h.get("NPAS_xwOBA", 0.0) or 0.0) for h in active_lineup) / len(active_lineup)
+            team_other_xwoba = team_vs_hand_xwoba - xwoba_diff_val
+            
+            # Map xwOBA back to OPS: ops = (xwoba - 0.180) / 0.230
+            team_vs_hand_ops = max(0.400, (team_vs_hand_xwoba - 0.180) / 0.230)
+            team_other_ops = max(0.400, (team_other_xwoba - 0.180) / 0.230)
+            
+            ops_diff = round((team_vs_hand_ops - team_other_ops) * 1000)
+            xwoba_diff = round(xwoba_diff_val * 1000)
+            
+            team_vs_hand_avg = sum(float(statcast.get(normalize_player_name(h.get("name", "")), {}).get("avg", 0.250) or 0.250) for h in active_lineup) / len(active_lineup)
+            team_vs_hand_slg = sum(float(statcast.get(normalize_player_name(h.get("name", "")), {}).get("slg", 0.400) or 0.400) for h in active_lineup) / len(active_lineup)
+            team_vs_hand_pa = sum(int(statcast.get(normalize_player_name(h.get("name", "")), {}).get("pa", 400) or 400) for h in active_lineup)
+        else:
+            # Fallback to static splits vs the pitcher's hand
+            team_split_key = "vl" if pitcher_hand == "L" else "vr"
+            team_split_data = teams_splits.get(team_name, {}).get(team_split_key, {})
+            team_vs_hand_ops = team_split_data.get("ops", 0)
+            team_vs_hand_woba = team_split_data.get("wOBA_proxy", 0)
+            team_vs_hand_avg = team_split_data.get("avg", 0)
+            team_vs_hand_slg = team_split_data.get("slg", 0)
+            team_vs_hand_pa = team_split_data.get("pa", 0)
+            
+            team_other_key = "vr" if pitcher_hand == "L" else "vl"
+            team_other_data = teams_splits.get(team_name, {}).get(team_other_key, {})
+            team_other_ops = team_other_data.get("ops", 0)
+            team_other_woba = team_other_data.get("wOBA_proxy", 0)
+
+            team_vs_hand_xwoba = woba_proxy_to_xwoba(team_vs_hand_woba, team_vs_hand_ops)
+            team_other_xwoba = woba_proxy_to_xwoba(team_other_woba, team_other_ops)
+            
+            ops_diff = round((team_vs_hand_ops - team_other_ops) * 1000) if team_other_ops else 0
+            xwoba_diff = round((team_vs_hand_xwoba - team_other_xwoba) * 1000) if team_other_xwoba else 0
         
         # Pitcher splits (how hittable by LHH vs RHH)
         pitcher_split_data = pitchers_splits.get(norm_pitcher, {})
@@ -1349,8 +1427,21 @@ def get_slate_center_api(date: str = None):
     from utils.opening_lines import load_opening_lines_for_slate
     from data.lineup_fetcher import LineupFetcher
     from utils.normalization import normalize_player_name
+    from data.bullpen_analyzer import BullpenAnalyzer
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Load statcast cache
+    statcast_path = os.path.join(base_dir, "data", "statcast_cache.json")
+    statcast = {}
+    if os.path.exists(statcast_path):
+        try:
+            with open(statcast_path, "r", encoding="utf-8") as f:
+                statcast = json.load(f)
+        except Exception as e:
+            print(f"Error loading statcast cache: {e}")
+            
+    bp_analyzer = BullpenAnalyzer()
     
     # Load projections
     if not date:
@@ -1399,12 +1490,15 @@ def get_slate_center_api(date: str = None):
         except Exception as e:
             print(f"Error loading matchup radar: {e}")
 
-    # Fetch confirmed lineups
+    # Fetch confirmed and projected lineups
     try:
-        confirmed_lineups = LineupFetcher().fetch_confirmed_lineups(date)
+        fetcher = LineupFetcher()
+        confirmed_lineups = fetcher.fetch_confirmed_lineups(date)
+        projected_lineups = fetcher.fetch_projected_lineups(date)
     except Exception as e:
-        print(f"Error fetching confirmed lineups: {e}")
+        print(f"Error fetching lineups: {e}")
         confirmed_lineups = {}
+        projected_lineups = {}
 
     def ml_to_prob(ml):
         if not ml or ml == 0:
@@ -1634,9 +1728,60 @@ def get_slate_center_api(date: str = None):
             is_confirmed = (lineup_players is not None and len(lineup_players) >= 7)
 
             if not is_confirmed:
-                team_hitters = [h for h in hitters_list if h.get("team") == team_name_side]
-                team_hitters.sort(key=lambda x: x.get("player_score", 0), reverse=True)
-                lineup_players = [h.get("name") for h in team_hitters[:9]]
+                projected = projected_lineups.get(team_name_side) or projected_lineups.get(get_abbrev(team_name_side))
+                if projected:
+                    projected_order = {normalize_player_name(p): idx for idx, p in enumerate(projected)}
+                    lineup_players_obj = [h for h in hitters_list if h.get("team") == team_name_side and normalize_player_name(h.get("name", "")) in projected_order]
+                    lineup_players_obj = sorted(lineup_players_obj, key=lambda x: projected_order[normalize_player_name(x.get("name", ""))])[:9]
+                    lineup_players = [h.get("name") for h in lineup_players_obj]
+                
+                if not projected or len(lineup_players) < 7:
+                    team_hitters = [h for h in hitters_list if h.get("team") == team_name_side]
+                    # Filter active players who have played recently (rolling_pa > 0)
+                    active_h = [
+                        h for h in team_hitters
+                        if int(statcast.get(normalize_player_name(h.get("name", "")), {}).get("rolling_pa", 0) or 0) > 0
+                    ]
+                    if len(active_h) < 9:
+                        active_h = team_hitters
+                    
+                    # Sort active hitters by season PA descending to get everyday starters
+                    active_h.sort(
+                        key=lambda x: int(statcast.get(normalize_player_name(x.get("name", "")), {}).get("pa", 0) or 0),
+                        reverse=True
+                    )
+                    lineup_players = [h.get("name") for h in active_h[:9]]
+
+            # Fetch opposing bullpen stats
+            try:
+                opp_bp_fatigue = bp_analyzer.get_fatigue_score(side_opp_name)
+                grade, bp_mult, fatigue_mod, bp_era, bp_whip, bp_k_bb = bp_analyzer.get_dynamic_bullpen_grade(side_opp_name)
+                opp_bullpen_data = {
+                    "fatigue_score": opp_bp_fatigue.get("score", 0.0),
+                    "pitches": opp_bp_fatigue.get("pitches", 0),
+                    "relievers_used": opp_bp_fatigue.get("relievers_used", 0),
+                    "is_gassed": opp_bp_fatigue.get("is_gassed", False),
+                    "is_fatigued": opp_bp_fatigue.get("is_fatigued", False),
+                    "grade": grade,
+                    "multiplier": bp_mult,
+                    "era": bp_era,
+                    "whip": bp_whip,
+                    "k_bb_pct": round(bp_k_bb * 100, 1)
+                }
+            except Exception as bp_err:
+                print(f"Error compiling bullpen data for playbook: {bp_err}")
+                opp_bullpen_data = {
+                    "fatigue_score": 0.0,
+                    "pitches": 0,
+                    "relievers_used": 0,
+                    "is_gassed": False,
+                    "is_fatigued": False,
+                    "grade": "Average",
+                    "multiplier": 1.0,
+                    "era": 4.0,
+                    "whip": 1.25,
+                    "k_bb_pct": 12.0
+                }
 
             # opposing SP pitch parameters
             opp_sp_name = opp_sp_obj_side.get("pitcher") if opp_sp_obj_side else "TBD"
@@ -1668,6 +1813,20 @@ def get_slate_center_api(date: str = None):
                     advantages[ptype] = round(h_val, 3)
                     advantage_ratios[ptype] = round(h_val / league_avg_val, 2) if league_avg_val > 0 else 1.0
 
+                ahr_price = hitter_obj.get("ahr_price", 0) if hitter_obj else 0
+                hits_line = hitter_obj.get("hits_line", "-") if hitter_obj else "-"
+                hits_price = hitter_obj.get("hits_price", 0) if hitter_obj else 0
+                tb_line = hitter_obj.get("tb_line", "-") if hitter_obj else "-"
+                tb_price = hitter_obj.get("tb_price", 0) if hitter_obj else 0
+                platoon_label = hitter_obj.get("platoon_label", "NEUTRAL") if hitter_obj else "NEUTRAL"
+                smash_factor = hitter_obj.get("smash_factor", False) if hitter_obj else False
+                is_juiced_target = hitter_obj.get("is_juiced_target", False) if hitter_obj else False
+                is_speed_target = hitter_obj.get("is_speed_target", False) if hitter_obj else False
+                is_hot_run_msmi = hitter_obj.get("is_hot_run_msmi", False) if hitter_obj else False
+                is_cold_streak_msmi = hitter_obj.get("is_cold_streak_msmi", False) if hitter_obj else False
+                is_hot = hitter_obj.get("is_hot", False) if hitter_obj else False
+                is_cold_streak = hitter_obj.get("is_cold_streak", False) if hitter_obj else False
+
                 hitter_rows.append({
                     "name": hitter_obj.get("name") if hitter_obj else p_name,
                     "batting_order": idx + 1,
@@ -1675,7 +1834,20 @@ def get_slate_center_api(date: str = None):
                     "player_score": p_score,
                     "attack_conf": attack_conf,
                     "pitch_advantages": advantages,
-                    "pitch_advantage_ratios": advantage_ratios
+                    "pitch_advantage_ratios": advantage_ratios,
+                    "ahr_price": ahr_price,
+                    "hits_line": hits_line,
+                    "hits_price": hits_price,
+                    "tb_line": tb_line,
+                    "tb_price": tb_price,
+                    "platoon_label": platoon_label,
+                    "smash_factor": smash_factor,
+                    "is_juiced_target": is_juiced_target,
+                    "is_speed_target": is_speed_target,
+                    "is_hot_run_msmi": is_hot_run_msmi,
+                    "is_cold_streak_msmi": is_cold_streak_msmi,
+                    "is_hot": is_hot,
+                    "is_cold_streak": is_cold_streak
                 })
 
             # Top 3 consecutive 4-man stack paths
@@ -1707,7 +1879,8 @@ def get_slate_center_api(date: str = None):
                 "lineup_status": "CONFIRMED" if is_confirmed else "PROJECTED",
                 "lineup": hitter_rows,
                 "sp_pitch_usages": sp_pitch_usages,
-                "top_stack_paths": paths[:3]
+                "top_stack_paths": paths[:3],
+                "opp_bullpen_data": opp_bullpen_data
             })
 
     return JSONResponse(

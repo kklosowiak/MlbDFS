@@ -142,17 +142,24 @@ def calculate_dqi(team, pitchers=None):
         
     dqi_score_int = int(round(dqi_score))
     
-    # Implied run total floor (3.8 runs) for GPP Trust
     status = "TRUST" if dqi_score_int >= 75 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
     
-    # Dual-Gate Cap: TRUST requires >= 12% divergence
+    # Dual-Gate Cap: TRUST requires >= 12.0% divergence
     if status == "TRUST" and divergence < 12.0:
         status = "CAUTION"
         warn_factors.append(f"TRUST Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
-        
+
+    # Implied run total floor (3.8 runs) for GPP Trust
     if status == "TRUST" and implied_total < 3.8:
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
+
+    # Bullpen Fatigue Floor: TRUST requires opposing bullpen >= 65
+    # Data: 0/8 TRUST calls with bullpen < 65 scored 4+ runs (30-slate audit, May 2026)
+    # All 4 confirmed TRUST hits had bullpen fatigue >= 65
+    if status == "TRUST" and bullpen < 65:
+        status = "CAUTION"
+        warn_factors.append(f"TRUST Capped: Bullpen Too Fresh ({int(bullpen)} < 65 fatigue)")
         
     if isinstance(team, dict):
         team["dqi_pos_pts"] = pos_pts

@@ -113,6 +113,10 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         
         # v10.2: Refresh Pitcher Recent Form Cache
         bridge.refresh_pitcher_form_cache()
+
+        # Dynamic Reliever Stats Refresh
+        from data.bullpen_analyzer import BullpenAnalyzer
+        BullpenAnalyzer().refresh_bullpen_season_stats()
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
 

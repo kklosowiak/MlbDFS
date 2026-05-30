@@ -126,3 +126,92 @@ class BullpenAnalyzer:
         self._cache = cache
         self._save_cache_file()
         return result
+
+    def refresh_bullpen_season_stats(self, season=2026):
+        """
+        Fetches team relief pitching stats in bulk from the MLB Stats API
+        and caches them to data/bullpen_season_cache.json.
+        """
+        import requests
+        cache_path = os.path.join(config.DATA_DIR, "bullpen_season_cache.json")
+        print("[BULLPEN]: Refreshing reliever season stats from MLB API...")
+        
+        try:
+            resp = requests.get(
+                "https://statsapi.mlb.com/api/v1/teams/stats",
+                params={"stats": "statSplits", "group": "pitching", "sportId": 1, "season": season, "sitCodes": "rp"},
+                timeout=15
+            )
+            if resp.status_code == 200:
+                splits = resp.json().get("stats", [{}])[0].get("splits", [])
+                reliever_map = {}
+                for s in splits:
+                    team_name = s.get("team", {}).get("name")
+                    stat = s.get("stat", {})
+                    
+                    k = int(stat.get("strikeOuts", 0))
+                    bb = int(stat.get("baseOnBalls", 0))
+                    bf = int(stat.get("battersFaced", 1))
+                    k_bb = (k - bb) / bf if bf > 0 else 0.0
+                    
+                    reliever_map[team_name] = {
+                        "era": float(stat.get("era", 4.00)),
+                        "whip": float(stat.get("whip", 1.25)),
+                        "k_bb_pct": k_bb,
+                        "k": k,
+                        "bb": bb,
+                        "bf": bf
+                    }
+                
+                with open(cache_path, 'w') as f:
+                    json.dump(reliever_map, f, indent=2)
+                print(f"  - SUCCESS: Bullpen season cache saved with {len(reliever_map)} teams.")
+                return reliever_map
+        except Exception as e:
+            print(f"  - WARNING: Bullpen season fetch failed: {e}")
+        return {}
+
+    def get_dynamic_bullpen_grade(self, team_name):
+        """
+        Scores team bullpen based on reliever statistics.
+        Returns (grade, multiplier, fatigue_mod, era, whip, k_bb)
+        """
+        cache_path = os.path.join(config.DATA_DIR, "bullpen_season_cache.json")
+        reliever_stats = {}
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, 'r') as f:
+                    reliever_stats = json.load(f)
+            except:
+                pass
+                
+        # Resolve team name aliases
+        matched_key = None
+        for k in reliever_stats.keys():
+            if team_name.lower() in k.lower() or k.lower() in team_name.lower():
+                matched_key = k
+                break
+                
+        if not matched_key or matched_key not in reliever_stats:
+            # Fallback to neutral Average
+            return "Average", 1.00, 1.00, 4.00, 1.25, 0.12
+            
+        stats = reliever_stats[matched_key]
+        k_bb = stats["k_bb_pct"]
+        era = stats["era"]
+        whip = stats["whip"]
+        
+        # Continuous talent score
+        score = (k_bb * 100 * 2.5) + (5.0 - era) * 10 + (1.5 - whip) * 30
+        
+        if score >= 60.0:
+            return "Elite", 0.90, 0.75, era, whip, k_bb
+        elif score >= 48.0:
+            return "Strong", 0.95, 0.85, era, whip, k_bb
+        elif score >= 35.0:
+            return "Average", 1.00, 1.00, era, whip, k_bb
+        elif score >= 22.0:
+            return "Below Average", 1.07, 1.12, era, whip, k_bb
+        else:
+            return "Weak", 1.15, 1.25, era, whip, k_bb
+

@@ -214,6 +214,10 @@ class PitcherAnalyzer:
                 outs_line = None
                 k_odds = None
                 outs_odds = None
+                walks_line = None
+                walks_odds = None
+                er_line = None
+                er_odds = None
                 is_juiced_target = False
                 is_prop_juice = False
                 _juice_gap = 0
@@ -240,6 +244,10 @@ class PitcherAnalyzer:
                     outs_line = prev_pitcher_data.get('outs_line')
                     k_odds = prev_pitcher_data.get('k_odds')
                     outs_odds = prev_pitcher_data.get('outs_odds')
+                    walks_line = prev_pitcher_data.get('walks_line')
+                    walks_odds = prev_pitcher_data.get('walks_odds')
+                    er_line = prev_pitcher_data.get('er_line')
+                    er_odds = prev_pitcher_data.get('er_odds')
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
                     is_prop_juice = bool(prev_pitcher_data.get('is_prop_juice', False))
                     _juice_gap = int(prev_pitcher_data.get('_juice_gap', 0) or 0)
@@ -280,6 +288,26 @@ class PitcherAnalyzer:
                                 outs_line = statistics.median(points)
                                 o_odds = next((o.get('price') for o in p_outs if o.get('point') == outs_line and o.get('side') == 'Over'), None)
                                 if o_odds: outs_odds = o_odds
+
+                    # Walks recovery
+                    if 'pitcher_walks' in gid_props:
+                        p_walks = [o for o in gid_props['pitcher_walks'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
+                        if p_walks:
+                            points = [o.get('point', 0) for o in p_walks if o.get('point')]
+                            if points:
+                                walks_line = statistics.median(points)
+                                o_odds = next((o.get('price') for o in p_walks if o.get('point') == walks_line and o.get('side') == 'Over'), None)
+                                if o_odds: walks_odds = o_odds
+
+                    # Earned Runs recovery
+                    if 'pitcher_earned_runs' in gid_props:
+                        p_er = [o for o in gid_props['pitcher_earned_runs'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
+                        if p_er:
+                            points = [o.get('point', 0) for o in p_er if o.get('point')]
+                            if points:
+                                er_line = statistics.median(points)
+                                o_odds = next((o.get('price') for o in p_er if o.get('point') == er_line and o.get('side') == 'Over'), None)
+                                if o_odds: er_odds = o_odds
                     
                     norm_pitcher = normalize_player_name(pitcher_name)
                     if k_line is None and ext_props.get(norm_pitcher):
@@ -311,7 +339,7 @@ class PitcherAnalyzer:
                         k_odds = prev_pitcher_data.get("k_odds")
 
                     is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
-                    is_whale = (divergence >= 15)
+                    is_whale = (divergence >= 25)
                     is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
 
                 physics = self.fetch_pitcher_physics(pitcher_name)
@@ -398,7 +426,9 @@ class PitcherAnalyzer:
                     projected_outs=float(outs_line),
                     is_trap=is_trap,
                     is_sharp=is_sharp,
-                    curr_ml=curr_ml
+                    curr_ml=curr_ml,
+                    walks_line=walks_line,
+                    walks_odds=walks_odds
                 )
 
                 if is_death_sentence:
@@ -416,6 +446,10 @@ class PitcherAnalyzer:
                     'outs_line': outs_line,
                     'k_odds': k_odds,
                     'outs_odds': outs_odds,
+                    'walks_line': walks_line,
+                    'walks_odds': walks_odds,
+                    'er_line': er_line,
+                    'er_odds': er_odds,
                     'alpha_score': alpha_results,
                     'csw': physics['csw'],
                     'siera': physics['siera'],

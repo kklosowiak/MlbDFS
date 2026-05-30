@@ -116,8 +116,8 @@ def resolve_pitcher_trap(
     prev_type = prev_pitcher.get("trap_type") if prev_pitcher else None
     new_k = _norm_odds(k_odds)
 
-    # Prior TRAP + missing K price on feed → hold (even if last JSON already cleared is_trap)
-    if prev_trap and new_k is None:
+    # Prior TRAP + missing K price on feed → hold ONLY if there were active odds in the last run
+    if prev_trap and new_k is None and prev_pitcher and prev_pitcher.get("k_odds") is not None:
         return {
             "is_trap": True,
             "trap_type": prev_type or "Vulnerable",
