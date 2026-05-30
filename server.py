@@ -1846,7 +1846,7 @@ def get_slate_center_api(date: str = None):
                     reason = (f"Spread edge on {best['side']} ({best['line']}) — "
                               f"OMEGA cover probability supports this play.")
             elif best["bet_type"] == "TOTAL":
-                reason = (f"OMEGA projects {g.omega['projected_total']:.1f} total vs Vegas {curr_total} "
+                reason = (f"OMEGA projects {projected_total:.2f} total vs Vegas {curr_total} "
                           f"— {total_edge_type} edge of {total_edge_val:.2f} runs.")
             else:
                 reason = "No clear directional edge."
