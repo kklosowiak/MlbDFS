@@ -256,9 +256,30 @@ class LineupFetcher:
                 'status': 'CONFIRMED'
             }
 
-        # Handle game times pass-through
-        if "_game_times" in statsapi_confirmed:
-            all_lineups["_game_times"] = statsapi_confirmed["_game_times"]
+        # 3. Roster fallback: for any team still missing, pull from statcast cache sorted by OPS
+        #    This ensures the DFS Playbook always has players to display — nothing breaks silently.
+        try:
+            sc_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "statcast_cache.json")
+            if os.path.exists(sc_path):
+                with open(sc_path, 'r', encoding='utf-8') as f:
+                    sc_cache = json.load(f)
+                # Build team → sorted hitter list
+                roster_by_team = {}
+                for pname, pdata in sc_cache.items():
+                    if pdata.get('type') == 'hitter' and pdata.get('ops', 0) > 0:
+                        t = pdata.get('team', '')
+                        if t:
+                            roster_by_team.setdefault(t, []).append((pname, pdata.get('ops', 0)))
+                for t, players in roster_by_team.items():
+                    if t not in all_lineups:
+                        sorted_players = [p for p, _ in sorted(players, key=lambda x: x[1], reverse=True)[:9]]
+                        if sorted_players:
+                            all_lineups[t] = {
+                                'lineup': sorted_players,
+                                'status': 'ROSTER FALLBACK'
+                            }
+        except Exception as e:
+            print(f"[LINEUPS]: Roster fallback failed: {e}")
 
         return all_lineups
 
