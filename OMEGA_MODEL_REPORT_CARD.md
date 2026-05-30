@@ -106,3 +106,27 @@
 ### Betting EV Calibration (longer term)
 - After 30 slates: run a simple Brier score on OMEGA win probabilities vs actual outcomes
 - This gives an objective calibration number for how accurate the probability model actually is
+
+---
+
+## Tomorrow's Session — Priority List
+
+### 🎯 Signal & Scoring (B+ → A-)
+1. **Tighten SNEAKY_STACK** — raise xwOBA trigger from 0.345 → 0.365 AND require xwOBA + at least one structural trigger (not xwOBA alone). Keep the signal, make it earn its fires.
+2. **Individual hitter L7 game logs** — pull last 7 days OPS/HR per hitter from MLB StatsAPI game logs. Zero new dependencies. Biggest remaining hitter gap.
+
+### 📡 Signal Discipline (B → A)
+3. **Signal auto-flagging in audit** — any signal with 20+ fires and sub-35% hit rate auto-gets a ⚠️ RETIRE CANDIDATE tag in the audit output. Model tells you what's dying without you having to manually review.
+
+### 🏗️ Data Pipeline & Architecture (B+ → A)
+4. **Silent failure alerting** — if any data fetch (RotoWire, weather, consensus) fails silently, log it visibly to the dashboard status bar rather than returning empty/stale data without warning.
+5. **Second lineup projection source** — add FantasyPros or ESPN lineup scraper as fallback between RotoWire and the Statcast roster tier.
+6. **Cache pruning** — statcast_cache.json is getting large. Add a daily pruning job that drops players with no PA in 30+ days.
+7. **Staging environment** — set up a second Render service (free tier) that deploys from a `staging` branch so changes can be tested before going live.
+
+### 💰 Betting EV Engine (C+ → B)
+8. **ROI tracker** — add won/lost/push tracking per LOCK/LEAN pick to the lock snapshot so after 30 slates we have a real hit rate on the EV engine picks.
+
+### 📋 Model Versioning
+9. **Formal version file** — replace the manual v13.x comments with a `VERSION` file in the root so the dashboard header pulls the real version automatically.
+
