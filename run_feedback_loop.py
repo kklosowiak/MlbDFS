@@ -30,8 +30,7 @@ def run_feedback_loop(days=7):
         'PITCHER_HAZARD': {'fired': 0, 'hit': 0},            # Success = Hazard pitcher failed QS
         'PITCHER_LC_HAZARD_COMBO': {'fired': 0, 'hit': 0},  # Success = Attacking team scored 5+ runs vs pitcher with both LOW_CEILING + HAZARD
         'TEAM_WHALE': {'fired': 0, 'hit': 0},
-        'TEAM_STORM': {'fired': 0, 'hit': 0},
-        'TEAM_SURGING': {'fired': 0, 'hit': 0},             # Success = Surging team scored 5+ runs
+        # RETIRED (v13.9): TEAM_STORM (15%), TEAM_SURGING (24%) — noise signals removed
         'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},    # Success = Attacked team scored 5+ runs
         'TEAM_SNEAKY_STACK': {'fired': 0, 'hit': 0},        # Success = Sneaky stack scored 5+ runs
         'TEAM_BURST': {'fired': 0, 'hit': 0},               # Success = Team scored 5+ runs
@@ -213,15 +212,7 @@ def run_feedback_loop(days=7):
                 if is_hit_5:
                     signal_stats['TEAM_WHALE']['hit'] += 1
                     
-            if t.get('is_storm'):
-                signal_stats['TEAM_STORM']['fired'] += 1
-                if is_hit_5:
-                    signal_stats['TEAM_STORM']['hit'] += 1
-                    
-            if t.get('trend') == 'SURGING':
-                signal_stats['TEAM_SURGING']['fired'] += 1
-                if is_hit_5:
-                    signal_stats['TEAM_SURGING']['hit'] += 1
+            # OMEGA v13.9: TEAM_STORM and TEAM_SURGING retired — signals removed
                     
             if t.get('is_gassed'):
                 signal_stats['GASSED_BULLPEN_ATTACK']['fired'] += 1
@@ -467,7 +458,7 @@ def run_feedback_loop(days=7):
 
     # --- Signal bucket definitions ---
     pitcher_fade_signals = ['PITCHER_TRAP_FADE', 'PITCHER_LOW_CEILING', 'PITCHER_HAZARD', 'PITCHER_LC_HAZARD_COMBO']
-    team_attack_signals = ['TEAM_WHALE', 'TEAM_STORM', 'TEAM_SURGING', 'GASSED_BULLPEN_ATTACK', 'TEAM_SNEAKY_STACK', 'TEAM_BURST', 'ANTI_CHALK_SMASH', 'GPP_FADE_RISK', 'TEAM_COLD_STREAK_MSMI', 'DQI_TRUST', 'DQI_FADE']
+    team_attack_signals = ['TEAM_WHALE', 'GASSED_BULLPEN_ATTACK', 'TEAM_SNEAKY_STACK', 'TEAM_BURST', 'ANTI_CHALK_SMASH', 'GPP_FADE_RISK', 'TEAM_COLD_STREAK_MSMI', 'DQI_TRUST', 'DQI_FADE']
     ev_signals = ['EV_ML_POSITIVE', 'EV_ML_HIGH_CONV', 'EV_SPREAD_COVER', 'EV_TOTAL_OVER', 'EV_TOTAL_UNDER', 'STEAM_SUPPORT']
     hitter_signals = ['HITTER_SMASH']
 

@@ -2076,7 +2076,9 @@ def get_slate_center_api(date: str = None):
                     "is_hot_run_msmi": is_hot_run_msmi,
                     "is_cold_streak_msmi": is_cold_streak_msmi,
                     "is_hot": is_hot,
-                    "is_cold_streak": is_cold_streak
+                    "is_cold_streak": is_cold_streak,
+                    "barrel_pct": float(hitter_obj.get("barrel_pct", 0) or 0) if hitter_obj else 0.0,
+                    "hard_hit_pct": float(hitter_obj.get("hard_hit_pct", 0) or 0) if hitter_obj else 0.0
                 })
 
             # Top 3 consecutive 4-man stack paths
@@ -2198,7 +2200,6 @@ def post_chat_api(body: dict):
                 if t.get('is_whale'): signals.append('WHALE')
                 if t.get('is_sharp'): signals.append('SHARP')
                 if t.get('is_steam'): signals.append('STEAM')
-                if t.get('is_storm'): signals.append('STORM')
                 if t.get('is_trap'): signals.append('TRAP')
                 if t.get('is_fade_risk'): signals.append('FADE RISK')
                 if t.get('is_sneaky'): signals.append('SNEAKY STACK')
@@ -2224,7 +2225,6 @@ def post_chat_api(body: dict):
                 if p.get('is_whale'): signals.append('WHALE')
                 if p.get('is_sharp'): signals.append('SHARP')
                 if p.get('is_steam'): signals.append('STEAM')
-                if p.get('is_storm'): signals.append('STORM')
                 if p.get('is_trap'): signals.append('TRAP')
                 sig_str = ", ".join(signals) if signals else "None"
                 pitcher_summary_items.append(f"- {p['pitcher']} ({p['team']}): OMEGA {p['alpha_score']} | Opp ITT {teams_itt.get(p['opponent'], 'TBD')} | SIERA {p.get('siera', 'TBD')} | CSW {p.get('csw', 'TBD')} | Signals: {sig_str}")

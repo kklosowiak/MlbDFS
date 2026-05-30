@@ -299,6 +299,8 @@ class StatcastBridge:
             return {}
 
         xwoba_map = {}
+        barrel_map = {}
+        hardhit_map = {}
         for yr in (season, season - 1):
             try:
                 with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
@@ -323,6 +325,19 @@ class StatcastBridge:
                         continue
                     if yr == season or norm not in xwoba_map:
                         xwoba_map[norm] = cap_matchup_xwoba(xw)
+                    # Also pull barrel % and hard hit % from the same row
+                    try:
+                        brl = float(row.get("barrel_batted_rate", 0) or 0)
+                        if brl > 0 and (yr == season or norm not in barrel_map):
+                            barrel_map[norm] = round(brl * 100, 1)
+                    except (TypeError, ValueError):
+                        pass
+                    try:
+                        hh = float(row.get("hard_hit_percent", 0) or 0)
+                        if hh > 0 and (yr == season or norm not in hardhit_map):
+                            hardhit_map[norm] = round(hh, 1)
+                    except (TypeError, ValueError):
+                        pass
                 print(f"  - Loaded {len(df)} Savant rows for {yr}.")
             except concurrent.futures.TimeoutError:
                 print(f"  - WARNING: Savant xwOBA timed out for {yr}; skipping year.")
@@ -334,9 +349,15 @@ class StatcastBridge:
             if profile.get("type") != "hitter":
                 continue
             xw = xwoba_map.get(norm)
+            brl = barrel_map.get(norm)
+            hh  = hardhit_map.get(norm)
             if xw:
                 profile["xwoba"] = xw
                 updated += 1
+            if brl is not None:
+                profile["barrel_pct"] = brl
+            if hh is not None:
+                profile["hard_hit_pct"] = hh
 
         os.makedirs(os.path.dirname(self.cache_path), exist_ok=True)
         with open(self.cache_path, "w", encoding="utf-8") as f:

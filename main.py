@@ -569,8 +569,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
                 is_whale = consensus_fetcher.detect_whale(team, splits_data)
-                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
-                is_storm = (divergence >= 10 and tt_move >= 0.3)
+                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data, ml_move)
+                is_storm = False  # OMEGA v13.9: Retired — 15% hit rate, pure noise
                 is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
 
             # Opponent Physics discovery
@@ -824,10 +824,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 prev_div = previous_results.get(team, {}).get('divergence')
                 if prev_div is not None:
                     delta = divergence - prev_div
-                    # Must have velocity (delta) AND current divergence must confirm direction
-                    if delta >= 3.0 and divergence >= 5:
-                        trend = "SURGING"
-                    elif delta <= -3.0 and divergence <= -5:
+                    # OMEGA v13.9: SURGING retired (24% hit rate). Only FADING kept as suppression signal.
+                    # if delta >= 3.0 and divergence >= 5: trend = "SURGING"  # RETIRED
+                    if delta <= -3.0 and divergence <= -5:
                         trend = "FADING"
             
             # OMEGA v7.6: Total Divergence Signal (Active Scoring Suppression)
@@ -1148,6 +1147,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             if s_ops > 0:
                 h_rolling_ops_delta = round((r_ops - s_ops) / s_ops * 100, 1)
                 
+            # OMEGA v13.9: Batted ball profile (barrel % + hard hit %)
+            barrel_pct  = float(h_profile.get('barrel_pct', 0) or 0)
+            hard_hit_pct = float(h_profile.get('hard_hit_pct', 0) or 0)
+
             # OMEGA v12.1.1: Calibrated slate-wide balance (highly selective AND trigger)
             h_is_cold_streak_msmi = h_rolling_k_delta >= 12.0 and h_rolling_ops_delta <= -12.0
             h_is_hot_run_msmi = h_rolling_ops_delta >= 12.0 and h_rolling_k_delta <= -10.0
@@ -1193,6 +1196,12 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             runs_g_rbi_line=h.get('runs_g_rbi_line'), runs_g_rbi_price=h.get('runs_g_rbi_price')
         )
 
+        # OMEGA v13.9: Apply batted ball profile boosts
+        if hard_hit_pct >= 45.0:
+            res['final'] = round(res['final'] * 1.03, 1)  # Solid contact advantage
+        if barrel_pct >= 12.0:
+            res['final'] = round(res['final'] * 1.02, 1)  # Elite power threat
+
         # OMEGA v8.0: ICE_COLD_MARKET penalty
         try:
             h_line = h.get('hits_line')
@@ -1228,7 +1237,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'smash_factor': smash_factor,
             'NPAS_xwOBA': round(NPAS_xwOBA, 3),
             'is_cold_streak_msmi': h_is_cold_streak_msmi,
-            'is_hot_run_msmi': h_is_hot_run_msmi
+            'is_hot_run_msmi': h_is_hot_run_msmi,
+            'barrel_pct': barrel_pct,
+            'hard_hit_pct': hard_hit_pct
         })
 
     # Calibrate dynamic splits (platoon_label) slate-wide (OMEGA v12.1: Tightened, highly selective GPP criteria)
