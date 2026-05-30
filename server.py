@@ -1409,7 +1409,33 @@ def post_snapshot_lock_api():
             )
         except Exception as lock_dqi_e:
             print(f"[LOCK SNAPSHOT WARNING]: DQI persist failed: {lock_dqi_e}")
-        
+
+        # OMEGA v13.8: Auto-run feedback loop on every snapshot lock (non-blocking)
+        # Archives signal performance alongside the lock so every slate has a paired audit
+        def _run_feedback_bg(d_str, arch_dir):
+            try:
+                print(f"[LOCK AUTO-AUDIT]: Starting background signal feedback loop for {d_str}...")
+                from run_feedback_loop import run_feedback_loop
+                run_feedback_loop(30)
+                # Copy the freshly generated learning_feedback.json alongside the lock file
+                import shutil as _shutil
+                from config import config as _cfg
+                fb_src = os.path.join(_cfg.REPORTS_DIR, "learning_feedback.json")
+                fb_dst = os.path.join(arch_dir, f"feedback_{d_str}_lock.json")
+                if os.path.exists(fb_src):
+                    _shutil.copy2(fb_src, fb_dst)
+                    print(f"[LOCK AUTO-AUDIT]: Signal audit archived to {fb_dst}")
+                print(f"[LOCK AUTO-AUDIT]: ✅ Background feedback loop completed for {d_str}.")
+            except Exception as fb_err:
+                print(f"[LOCK AUTO-AUDIT ERROR]: {fb_err}")
+
+        import threading as _threading
+        _threading.Thread(
+            target=_run_feedback_bg,
+            args=(date_str, archive_dir),
+            daemon=True
+        ).start()
+
         print(f"[LOCK SNAPSHOT]: Saved lock snapshot to {snapshot_path}")
         return {"status": "success", "message": f"Lock snapshot saved successfully for {date_str}!", "file": f"results_{date_str}_lock.json"}
     except Exception as e:
@@ -1684,6 +1710,169 @@ def get_slate_center_api(date: str = None):
             total_edge_type = "NEUTRAL"
             total_edge_val = 0.0
 
+        # ── OMEGA v13.8: Conviction Scoring + Suggested Bet Engine ──────────────
+        # Conviction is based on (a) pp divergence from market and (b) corroborating signals
+
+        away_pp_div = round((omega_prob_away - market_prob_away) * 100, 1)
+        home_pp_div = round((omega_prob_home - market_prob_home) * 100, 1)
+
+        def _conviction(pp_div, ml_ev, spread_ev, total_ev_type, is_favored_side):
+            """Return (label, tier) where tier: LOCK/LEAN/PASS."""
+            corroborating = 0
+            abs_div = abs(pp_div)
+            if ml_ev > 0:        corroborating += 1
+            if spread_ev > 0:    corroborating += 1
+            if total_ev_type != "NEUTRAL": corroborating += 1
+
+            if abs_div >= 4.0 and corroborating >= 2:
+                return "LOCK", "lock"
+            elif abs_div >= 2.0 or corroborating >= 1:
+                return "LEAN", "lean"
+            else:
+                return "PASS", "pass"
+
+        # Determine which side (if any) has positive ML EV
+        away_conv_label, away_conv_tier = _conviction(
+            away_pp_div, away_ml_ev, away_spread_ev, total_edge_type, away_ml < home_ml
+        )
+        home_conv_label, home_conv_tier = _conviction(
+            home_pp_div, home_ml_ev, home_spread_ev, total_edge_type, home_ml < away_ml
+        )
+
+        # edge_conviction: HIGH if both ML and spread agree on same team
+        def _edge_conviction():
+            if away_ml_ev > 0 and away_spread_ev > 0:
+                return "HIGH"
+            if home_ml_ev > 0 and home_spread_ev > 0:
+                return "HIGH"
+            if (away_ml_ev > 0 or home_ml_ev > 0) and total_edge_type != "NEUTRAL":
+                return "MODERATE"
+            if away_ml_ev > 0 or home_ml_ev > 0:
+                return "SINGLE"
+            return "NONE"
+
+        edge_conviction = _edge_conviction()
+
+        # ── Suggested Bet: pick the single best play per game ────────────────────
+        def _build_suggested_bet():
+            candidates = []
+
+            # ML candidates
+            for team, ml, ml_ev, pp_div, opp_ml in [
+                (away_team, away_ml, away_ml_ev, away_pp_div, home_ml),
+                (home_team, home_ml, home_ml_ev, home_pp_div, away_ml)
+            ]:
+                if ml_ev > 0:
+                    candidates.append({
+                        "side": team, "bet_type": "ML",
+                        "line": f"+{ml}" if ml > 0 else str(ml),
+                        "odds": ml, "ev": round(ml_ev, 4),
+                        "pp_div": pp_div
+                    })
+
+            # Spread candidates — prefer underdog +1.5 when fav juice > -140
+            for team, spread, spread_ev, ml, pp_div in [
+                (away_team, away_spread, away_spread_ev, away_ml, away_pp_div),
+                (home_team, home_spread, home_spread_ev, home_ml, home_pp_div)
+            ]:
+                if spread_ev > 0:
+                    spread_str = f"+{spread}" if spread > 0 else str(spread)
+                    candidates.append({
+                        "side": team, "bet_type": "SPREAD",
+                        "line": f"{spread_str} (-110)",
+                        "odds": -110, "ev": round(spread_ev, 4),
+                        "pp_div": pp_div
+                    })
+
+            # Total candidates
+            if total_edge_type != "NEUTRAL" and total_edge_val >= 0.25:
+                total_odds = -110
+                total_ev_approx = (total_edge_val / max(curr_total, 1.0)) * 0.3
+                candidates.append({
+                    "side": f"{total_edge_type} {curr_total}",
+                    "bet_type": "TOTAL",
+                    "line": f"{total_edge_type} {curr_total} (-110)",
+                    "odds": total_odds,
+                    "ev": round(total_ev_approx, 4),
+                    "pp_div": 0
+                })
+
+            if not candidates:
+                return {
+                    "side": "Pass", "bet_type": "PASS",
+                    "line": "—", "odds": 0, "ev": 0.0,
+                    "conviction": "PASS", "conviction_tier": "pass",
+                    "reason": "No clear edge this game — juice eats any margin."
+                }
+
+            # Sort: prefer spread over ML if fav ML juice > -140 and both have positive EV
+            def _score(c):
+                bonus = 0
+                # Prefer underdog run line when same-game fav ML is expensive
+                if c["bet_type"] == "SPREAD" and c["odds"] == -110:
+                    same_team_ml = next((x for x in candidates
+                        if x["bet_type"] == "ML" and x["side"] == c["side"]), None)
+                    if same_team_ml and same_team_ml["odds"] < -140:
+                        bonus = 0.01  # tie-break toward run line
+                return c["ev"] + bonus
+
+            best = sorted(candidates, key=_score, reverse=True)[0]
+
+            # Build the reason string
+            if best["bet_type"] == "ML":
+                pp = best["pp_div"]
+                fav_juicy = best["odds"] < -140
+                if fav_juicy:
+                    other_spread = next((c for c in candidates
+                        if c["bet_type"] == "SPREAD" and c["ev"] > 0), None)
+                    if other_spread:
+                        reason = (f"OMEGA projects {best['side']} at {best['odds']} "
+                                  f"({'+' if pp > 0 else ''}{pp:.1f}pp edge vs market). "
+                                  f"ML is the pick — run line ({other_spread['line']}) also has edge.")
+                    else:
+                        reason = (f"OMEGA projects {best['side']} at {best['odds']} "
+                                  f"({'+' if pp > 0 else ''}{pp:.1f}pp edge vs market).")
+                else:
+                    reason = (f"OMEGA gives {best['side']} a {'+' if pp > 0 else ''}{pp:.1f}pp edge "
+                              f"at {best['odds']} — reasonable juice for the ML play.")
+            elif best["bet_type"] == "SPREAD":
+                # Find the correlated ML
+                same_ml = next((c for c in candidates
+                    if c["bet_type"] == "ML" and c["side"] == best["side"]), None)
+                if same_ml and same_ml["odds"] < -140:
+                    reason = (f"OMEGA favors {best['side']} but ML juice ({same_ml['odds']}) is steep. "
+                              f"Run line at -110 is better value — both signals agree.")
+                else:
+                    reason = (f"Spread edge on {best['side']} ({best['line']}) — "
+                              f"OMEGA cover probability supports this play.")
+            elif best["bet_type"] == "TOTAL":
+                reason = (f"OMEGA projects {g.omega['projected_total']:.1f} total vs Vegas {curr_total} "
+                          f"— {total_edge_type} edge of {total_edge_val:.2f} runs.")
+            else:
+                reason = "No clear directional edge."
+
+            # Conviction tier for the best bet
+            if abs(best["pp_div"]) >= 4.0 and edge_conviction == "HIGH":
+                conv, conv_tier = "LOCK", "lock"
+            elif abs(best["pp_div"]) >= 2.0 or best["ev"] > 0.01:
+                conv, conv_tier = "LEAN", "lean"
+            else:
+                conv, conv_tier = "PASS", "pass"
+
+            return {
+                "side": best["side"],
+                "bet_type": best["bet_type"],
+                "line": best["line"],
+                "odds": best["odds"],
+                "ev": best["ev"],
+                "ev_pct": f"+{best['ev']*100:.1f}%" if best["ev"] > 0 else f"{best['ev']*100:.1f}%",
+                "conviction": conv,
+                "conviction_tier": conv_tier,
+                "reason": reason
+            }
+
+        suggested_bet = _build_suggested_bet()
+
         # Construct game edge response
         betting_edges.append({
             "game_id": game_line.get("game_id") if game_line else f"game_{len(betting_edges)}",
@@ -1707,6 +1896,8 @@ def get_slate_center_api(date: str = None):
             "omega": {
                 "away_win_prob": round(omega_prob_away, 3),
                 "home_win_prob": round(omega_prob_home, 3),
+                "away_pp_div": away_pp_div,
+                "home_pp_div": home_pp_div,
                 "away_ml_edge": round(away_ml_ev, 3),
                 "home_ml_edge": round(home_ml_ev, 3),
                 "away_spread_cover_prob": round(away_spread_cover_prob, 3),
@@ -1715,8 +1906,10 @@ def get_slate_center_api(date: str = None):
                 "home_spread_edge": round(home_spread_ev, 3),
                 "projected_total": round(projected_total, 2),
                 "total_edge": round(total_edge_val, 2),
-                "total_edge_type": total_edge_type
-            }
+                "total_edge_type": total_edge_type,
+                "edge_conviction": edge_conviction
+            },
+            "suggested_bet": suggested_bet
         })
 
         # Process lineup and playbook for BOTH teams in the matchup
@@ -1804,14 +1997,50 @@ def get_slate_center_api(date: str = None):
 
                 # Pitch advantages vs the SP's specific arsenal
                 hitter_pitch_stats = matchup_data["hitters"].get(normalize_player_name(p_name), {})
-                
+                has_pitch_data = bool(hitter_pitch_stats)
+
                 advantages = {}
                 advantage_ratios = {}
-                for ptype in ["FF", "SI", "SL", "CU", "CH"]:
-                    league_avg_val = matchup_data["league_avg"].get(ptype, 0.300)
-                    h_val = hitter_pitch_stats.get(ptype, league_avg_val)
-                    advantages[ptype] = round(h_val, 3)
-                    advantage_ratios[ptype] = round(h_val / league_avg_val, 2) if league_avg_val > 0 else 1.0
+
+                if has_pitch_data:
+                    # Full Statcast pitch-type path
+                    for ptype in ["FF", "SI", "SL", "CU", "CH"]:
+                        league_avg_val = matchup_data["league_avg"].get(ptype, 0.300)
+                        h_val = hitter_pitch_stats.get(ptype, league_avg_val)
+                        advantages[ptype] = round(h_val, 3)
+                        advantage_ratios[ptype] = round(h_val / league_avg_val, 2) if league_avg_val > 0 else 1.0
+                else:
+                    # OMEGA v13.8: Smart fallback — build multiplier from available hitter signals
+                    # so the playbook never shows a flat row of 1.0 for every pitch type
+                    platoon_lbl = hitter_obj.get("platoon_label", "NEUTRAL") if hitter_obj else "NEUTRAL"
+                    matchup_xwoba = float(hitter_obj.get("matchup_xwoba", 0) or 0) if hitter_obj else 0
+                    smash_f = bool(hitter_obj.get("smash_factor")) if hitter_obj else False
+                    hot_msmi = bool(hitter_obj.get("is_hot_run_msmi")) if hitter_obj else False
+                    cold_msmi = bool(hitter_obj.get("is_cold_streak_msmi")) if hitter_obj else False
+
+                    # Base multiplier from platoon matchup quality
+                    base = 1.00
+                    if platoon_lbl == "ADVANTAGE":
+                        base = 1.08
+                    elif platoon_lbl == "DISADVANTAGE":
+                        base = 0.92
+
+                    # Adjustments from other signals
+                    if matchup_xwoba >= 0.370:
+                        base += 0.05
+                    elif matchup_xwoba > 0 and matchup_xwoba < 0.280:
+                        base -= 0.04
+
+                    if smash_f:     base += 0.05
+                    if hot_msmi:    base += 0.03
+                    if cold_msmi:   base -= 0.05
+
+                    base = round(max(0.70, min(base, 1.35)), 2)
+
+                    for ptype in ["FF", "SI", "SL", "CU", "CH"]:
+                        league_avg_val = matchup_data["league_avg"].get(ptype, 0.300)
+                        advantages[ptype] = round(league_avg_val * base, 3)
+                        advantage_ratios[ptype] = base
 
                 ahr_price = hitter_obj.get("ahr_price", 0) if hitter_obj else 0
                 hits_line = hitter_obj.get("hits_line", "-") if hitter_obj else "-"

@@ -2408,6 +2408,7 @@
         <!-- OMEGA SLATE CENTER PANEL -->
         <div id="analysis-panel" class="tab-panel">
             <style scoped>
+                /* ── OMEGA v13.8 Slate Center Premium Styles ── */
                 .ev-badge {
                     display: inline-block;
                     font-size: 0.65rem;
@@ -2428,73 +2429,149 @@
                     color: var(--text-secondary) !important;
                     border: 1px solid var(--border) !important;
                 }
-                #playbook-team-select {
-                    background-color: #121218;
-                    color: #ffffff;
+                #playbook-team-select { background-color: #121218; color: #ffffff; }
+                #playbook-team-select option { background-color: #121218; color: #ffffff; }
+                body.light-theme #playbook-team-select { background-color: #ffffff; color: #1e2229; }
+                body.light-theme #playbook-team-select option { background-color: #ffffff; color: #1e2229; }
+                .betting-row-hover:hover { background: rgba(255,255,255,0.015) !important; }
+                .playbook-hitter-row-hover:hover { background: rgba(255,255,255,0.01) !important; }
+                .badge.confirmed { background: rgba(50,205,50,0.15) !important; color: #32cd32 !important; border: 1px solid rgba(50,205,50,0.35) !important; }
+                .badge.projected { background: rgba(255,159,10,0.15) !important; color: #ff9f0a !important; border: 1px solid rgba(255,159,10,0.35) !important; }
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+                /* Best Bets leaderboard */
+                .best-bets-section {
+                    background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,0,0,0) 60%);
+                    border: 1px solid rgba(16,185,129,0.25);
+                    border-radius: 12px;
+                    padding: 20px 24px;
+                    margin-bottom: 24px;
                 }
-                #playbook-team-select option {
-                    background-color: #121218;
-                    color: #ffffff;
+                .best-bets-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin-bottom: 16px;
                 }
-                body.light-theme #playbook-team-select {
-                    background-color: #ffffff;
-                    color: #1e2229;
+                .best-bets-header h2 { margin: 0; font-size: 1.1rem; font-weight: 900; color: #fff; }
+                .best-bets-row {
+                    display: grid;
+                    grid-template-columns: 32px 1fr auto;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 14px;
+                    border-radius: 8px;
+                    margin-bottom: 8px;
+                    background: rgba(255,255,255,0.03);
+                    border: 1px solid rgba(255,255,255,0.05);
+                    transition: background 0.2s;
                 }
-                body.light-theme #playbook-team-select option {
-                    background-color: #ffffff;
-                    color: #1e2229;
+                .best-bets-row:hover { background: rgba(255,255,255,0.055); }
+                .best-bets-row:last-child { margin-bottom: 0; }
+                .best-bets-rank { font-size: 1rem; font-weight: 900; color: #f59e0b; text-align: center; }
+
+                /* Game cards grid */
+                .game-cards-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                    gap: 16px;
+                    width: 100%;
                 }
-                .betting-row-hover:hover {
-                    background: rgba(255,255,255,0.015) !important;
+                .game-card {
+                    border-radius: 12px;
+                    background: rgba(255,255,255,0.03);
+                    border: 1px solid rgba(255,255,255,0.08);
+                    overflow: hidden;
+                    transition: transform 0.2s, box-shadow 0.2s;
                 }
-                .playbook-hitter-row-hover:hover {
-                    background: rgba(255,255,255,0.01) !important;
+                .game-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+                /* Conviction tiers */
+                .game-card-play { border-left: 4px solid; padding: 14px 16px; position: relative; }
+                .game-card-play.lock {
+                    border-left-color: #10b981;
+                    background: linear-gradient(90deg, rgba(16,185,129,0.08) 0%, transparent 100%);
                 }
-                .badge.confirmed {
-                    background: rgba(50,205,50,0.15) !important;
-                    color: #32cd32 !important;
-                    border: 1px solid rgba(50,205,50,0.35) !important;
+                .game-card-play.lean {
+                    border-left-color: #f59e0b;
+                    background: linear-gradient(90deg, rgba(245,158,11,0.08) 0%, transparent 100%);
                 }
-                .badge.projected {
-                    background: rgba(255,159,10,0.15) !important;
-                    color: #ff9f0a !important;
-                    border: 1px solid rgba(255,159,10,0.35) !important;
+                .game-card-play.pass {
+                    border-left-color: rgba(255,255,255,0.15);
+                    background: transparent;
                 }
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
+                .conviction-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 0.68rem;
+                    font-weight: 900;
+                    padding: 3px 9px;
+                    border-radius: 20px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                }
+                .conviction-badge.lock { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+                .conviction-badge.lean { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4); }
+                .conviction-badge.pass { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); }
+                .market-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+                    font-size: 0.68rem;
+                    padding: 3px 8px;
+                    border-radius: 5px;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    color: var(--text-secondary);
+                    white-space: nowrap;
+                }
+                .market-pill.highlighted { border-color: rgba(16,185,129,0.5); color: #10b981; background: rgba(16,185,129,0.08); }
+                .signal-tag {
+                    display: inline-flex;
+                    align-items: center;
+                    font-size: 0.62rem;
+                    font-weight: 700;
+                    padding: 2px 7px;
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(255,255,255,0.08);
+                    color: var(--text-secondary);
+                    white-space: nowrap;
                 }
             </style>
-            <div class="slate-center-container" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: start; width: 100%; box-sizing: border-box;">
-                
-                <!-- Left Pane: Vegas Betting Edges -->
-                <div class="card" style="margin: 0; padding: 25px; box-sizing: border-box;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800;">Vegas Betting Edges</h2>
-                        <span class="badge" style="background: var(--accent-blue); color: #fff; font-weight: 800; font-size: 0.7rem; padding: 4px 10px; border-radius: 5px; text-transform: uppercase;">LIVE EDGES</span>
+
+            <!-- ⚡ TODAY'S BEST BETS leaderboard -->
+            <div class="best-bets-section">
+                <div class="best-bets-header">
+                    <span style="font-size:1.3rem;">⚡</span>
+                    <h2>TODAY'S BEST BETS</h2>
+                    <span style="font-size:0.72rem; color:var(--text-secondary); margin-left:4px;">Ranked by OMEGA EV · Pure math, no bias</span>
+                </div>
+                <div id="best-bets-container">
+                    <div style="display:flex;align-items:center;gap:10px;color:var(--text-secondary);font-size:0.82rem;padding:12px 0;">
+                        <div style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.1);border-top-color:#10b981;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
+                        Loading best bets...
                     </div>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: -12px; margin-bottom: 20px;">
-                        Model-implied probabilities vs. live market pricing. Positive expected value (+EV) edges are color-coded in green.
-                    </p>
-                    <div style="overflow-x: auto; width: 100%;">
-                        <table id="betting-edges-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.82rem;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid var(--border); font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">
-                                    <th style="padding: 12px 8px;">Matchup</th>
-                                    <th style="padding: 12px 8px;">Moneyline (Market / OMEGA / Edge)</th>
-                                    <th style="padding: 12px 8px;">Run Line (Spread / odds / Edge)</th>
-                                    <th style="padding: 12px 8px;">Game Total (Market / OMEGA / Edge)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="betting-edges-body">
-                                <tr>
-                                    <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent-blue); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px;"></div>
-                                        <div>Loading betting convergence analytics...</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </div>
+            </div>
+
+            <!-- Game Cards grid + DFS Playbook side by side -->
+            <div class="slate-center-container" style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 20px; align-items: start; width: 100%; box-sizing: border-box;">
+
+                <!-- Left Pane: Game Cards -->
+                <div style="display:flex;flex-direction:column;gap:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <div>
+                            <h2 style="margin:0;font-size:1.15rem;font-weight:900;">Game-by-Game Edge Cards</h2>
+                            <p style="margin:4px 0 0;font-size:0.75rem;color:var(--text-secondary);">🔒 LOCK = 4+ pp div + 2 signals · 📊 LEAN = 2+ pp or 1 signal · ⛔ PASS = no edge</p>
+                        </div>
+                        <span class="badge" style="background:var(--accent-blue);color:#fff;font-weight:800;font-size:0.7rem;padding:4px 10px;border-radius:5px;">LIVE</span>
+                    </div>
+                    <div class="game-cards-grid" id="game-cards-container">
+                        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">
+                            <div style="display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,0.1);border-top-color:var(--accent-blue);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:10px;"></div>
+                            <div>Loading betting convergence analytics...</div>
+                        </div>
                     </div>
                 </div>
 
@@ -3999,6 +4076,7 @@
                     window.slateCenterData = centerData; // save globally
                     
                     renderBettingEdges(centerData.betting_edges);
+                    renderBestBets(centerData.betting_edges);
                     populatePlaybookTeamSelect(centerData.dfs_playbook.teams);
                 } catch (centerErr) {
                     console.error('OMEGA Slate Center sync failed:', centerErr);
@@ -4267,15 +4345,182 @@
               }
           }
 
-        // --- OMEGA Slate Center Render Helpers ---
-        function getTeamAbbrev(name) {
-            return getTeamAbbr(name) || name;
-        }
+        // ── OMEGA v13.8 Slate Center Render Helpers ──────────────────────────────
+
+        function getTeamAbbrev(name) { return getTeamAbbr(name) || name; }
 
         function renderBettingEdges(edges) {
-            const tbody = document.getElementById('betting-edges-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
+            const container = document.getElementById('game-cards-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!edges || edges.length === 0) {
+                container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-secondary);">No live betting matchups active.</div>`;
+                return;
+            }
+
+            edges.forEach(g => {
+                const sb   = g.suggested_bet || {};
+                const tier = sb.conviction_tier || 'pass';
+                const conv = sb.conviction     || 'PASS';
+
+                // Conviction badge text + icon
+                const convIcon  = tier === 'lock' ? '🔒' : tier === 'lean' ? '📊' : '⛔';
+                const convLabel = tier === 'lock' ? 'LOCK — This is the play' : tier === 'lean' ? 'LEAN — Worth a look' : 'PASS — No clear edge';
+
+                // Main play label
+                const playLabel = (tier !== 'pass')
+                    ? `${sb.side ? getTeamAbbrev(sb.side) : sb.side} ${sb.line || ''}`
+                    : 'No Clear Edge This Game';
+
+                // EV pct string
+                const evStr = sb.ev_pct || (sb.ev > 0 ? `+${(sb.ev*100).toFixed(1)}%` : '');
+
+                // pp divergence display
+                const awayDiv = g.omega.away_pp_div || 0;
+                const homeDiv = g.omega.home_pp_div || 0;
+
+                // Build secondary market pills
+                const awayMl  = g.market.away_ml;
+                const homeMl  = g.market.home_ml;
+                const awayMlStr = awayMl > 0 ? `+${awayMl}` : `${awayMl}`;
+                const homeMlStr = homeMl > 0 ? `+${homeMl}` : `${homeMl}`;
+                const awaySpStr = g.market.away_spread > 0 ? `+${g.market.away_spread}` : `${g.market.away_spread}`;
+                const homeSpStr = g.market.home_spread > 0 ? `+${g.market.home_spread}` : `${g.market.home_spread}`;
+                const totalStr  = g.omega.total_edge_type !== 'NEUTRAL'
+                    ? `${g.omega.total_edge_type} ${g.market.total}`
+                    : `${g.market.total} (NEUT)`;
+
+                // Determine which pills to highlight (the suggested bet)
+                function isHighlighted(betType, side) {
+                    if (!sb.bet_type || tier === 'pass') return false;
+                    if (sb.bet_type === 'TOTAL') return betType === 'total';
+                    const sideAbbr = getTeamAbbrev(sb.side || '');
+                    if (betType === 'ml')     return sb.bet_type === 'ML'     && (getTeamAbbrev(side) === sideAbbr);
+                    if (betType === 'spread') return sb.bet_type === 'SPREAD' && (getTeamAbbrev(side) === sideAbbr);
+                    return false;
+                }
+
+                const awayMlHL  = isHighlighted('ml', g.away_team)     ? 'highlighted' : '';
+                const homeMlHL  = isHighlighted('ml', g.home_team)      ? 'highlighted' : '';
+                const awaySpHL  = isHighlighted('spread', g.away_team)  ? 'highlighted' : '';
+                const homeSpHL  = isHighlighted('spread', g.home_team)  ? 'highlighted' : '';
+                const totalHL   = isHighlighted('total', '')             ? 'highlighted' : '';
+
+                // Signal tags from omega conviction
+                const ecLabel = g.omega.edge_conviction;
+                const ecTag = ecLabel === 'HIGH' ? '<span class="signal-tag" style="color:#10b981;border-color:rgba(16,185,129,0.3);">⚡ HIGH CONV</span>'
+                            : ecLabel === 'MODERATE' ? '<span class="signal-tag" style="color:#f59e0b;border-color:rgba(245,158,11,0.3);">📡 MOD CONV</span>'
+                            : '';
+
+                // Game time
+                let timeStr = '';
+                if (g.commence_time) {
+                    try {
+                        const d = new Date(g.commence_time);
+                        timeStr = d.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+                    } catch(_) {}
+                }
+
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <!-- Card Header -->
+                    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <div style="font-weight:900;font-size:0.95rem;color:#fff;">
+                                ${getTeamAbbrev(g.away_team)} <span style="color:var(--text-secondary);font-weight:400;">@</span> ${getTeamAbbrev(g.home_team)}
+                            </div>
+                            <div style="font-size:0.68rem;color:var(--text-secondary);margin-top:2px;">
+                                ${g.away_pitcher} vs ${g.home_pitcher}
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            ${timeStr ? `<div style="font-size:0.7rem;color:var(--text-secondary);">${timeStr}</div>` : ''}
+                            <div style="font-size:0.68rem;color:var(--text-secondary);margin-top:2px;">
+                                O/U ${g.market.total} · OMEGA ${g.omega.projected_total.toFixed(1)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Play Section -->
+                    <div class="game-card-play ${tier}">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+                            <span class="conviction-badge ${tier}">${convIcon} ${convLabel}</span>
+                            ${evStr && tier !== 'pass' ? `<span style="font-size:0.75rem;font-weight:800;font-family:monospace;color:${tier==='lock'?'#10b981':'#f59e0b'};">${evStr} EV</span>` : ''}
+                            ${ecTag}
+                        </div>
+                        ${tier !== 'pass' ? `
+                        <div style="font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.01em;">
+                            ${playLabel}
+                        </div>
+                        ` : `
+                        <div style="font-size:0.9rem;font-weight:700;color:rgba(255,255,255,0.3);margin-bottom:6px;">⛔ Pass — No clear edge</div>
+                        `}
+                        ${sb.reason ? `<div style="font-size:0.72rem;color:var(--text-secondary);line-height:1.45;">${sb.reason}</div>` : ''}
+                    </div>
+
+                    <!-- Secondary Markets (for parlay building) -->
+                    <div style="padding:10px 16px;border-top:1px solid rgba(255,255,255,0.04);display:flex;flex-wrap:wrap;gap:6px;">
+                        <span class="market-pill ${awayMlHL}">${getTeamAbbrev(g.away_team)} ML ${awayMlStr} <span style="opacity:0.55;">${(g.omega.away_win_prob*100).toFixed(0)}%</span></span>
+                        <span class="market-pill ${homeMlHL}">${getTeamAbbrev(g.home_team)} ML ${homeMlStr} <span style="opacity:0.55;">${(g.omega.home_win_prob*100).toFixed(0)}%</span></span>
+                        <span class="market-pill ${awaySpHL}">${getTeamAbbrev(g.away_team)} ${awaySpStr} -110</span>
+                        <span class="market-pill ${homeSpHL}">${getTeamAbbrev(g.home_team)} ${homeSpStr} -110</span>
+                        <span class="market-pill ${totalHL}">${totalStr} -110</span>
+                    </div>
+
+                    <!-- pp Divergence row -->
+                    <div style="padding:8px 16px 10px;display:flex;gap:12px;font-size:0.68rem;color:var(--text-secondary);">
+                        <span>OMEGA vs Mkt: <strong style="color:${awayDiv>0?'#10b981':awayDiv<0?'#ff453a':'var(--text-secondary)'};">${awayDiv>0?'+':''}${awayDiv}pp ${getTeamAbbrev(g.away_team)}</strong></span>
+                        <span>·</span>
+                        <span><strong style="color:${homeDiv>0?'#10b981':homeDiv<0?'#ff453a':'var(--text-secondary)'};">${homeDiv>0?'+':''}${homeDiv}pp ${getTeamAbbrev(g.home_team)}</strong></span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBestBets(edges) {
+            const container = document.getElementById('best-bets-container');
+            if (!container) return;
+
+            // Collect all non-pass suggested bets, sort by EV desc
+            const bets = edges
+                .map(g => ({ ...g.suggested_bet, game: g }))
+                .filter(b => b && b.conviction_tier !== 'pass' && b.ev > 0)
+                .sort((a, b) => b.ev - a.ev)
+                .slice(0, 5);
+
+            if (bets.length === 0) {
+                container.innerHTML = `<div style="color:var(--text-secondary);font-size:0.82rem;padding:8px 0;">No positive-EV plays found on today's slate.</div>`;
+                return;
+            }
+
+            container.innerHTML = bets.map((b, i) => {
+                const tier  = b.conviction_tier || 'lean';
+                const icon  = tier === 'lock' ? '🔒' : '📊';
+                const color = tier === 'lock' ? '#10b981' : '#f59e0b';
+                const g     = b.game;
+                const matchup = `${getTeamAbbrev(g.away_team)} @ ${getTeamAbbrev(g.home_team)}`;
+                const evPct = b.ev_pct || `+${(b.ev*100).toFixed(1)}%`;
+                return `
+                    <div class="best-bets-row">
+                        <div class="best-bets-rank">#${i+1}</div>
+                        <div>
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+                                <span style="font-weight:900;color:#fff;font-size:0.9rem;">${getTeamAbbrev(b.side || '')} ${b.line || ''}</span>
+                                <span class="conviction-badge ${tier}" style="font-size:0.62rem;">${icon} ${b.conviction}</span>
+                            </div>
+                            <div style="font-size:0.7rem;color:var(--text-secondary);">${matchup} · ${b.reason || ''}</div>
+                        </div>
+                        <div style="text-align:right;flex-shrink:0;">
+                            <div style="font-weight:900;font-size:0.88rem;color:${color};font-family:monospace;">${evPct} EV</div>
+                            <div style="font-size:0.65rem;color:var(--text-secondary);">${b.odds ? (b.odds > 0 ? `+${b.odds}` : b.odds) : ''}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
             
             if (!edges || edges.length === 0) {
                 tbody.innerHTML = `

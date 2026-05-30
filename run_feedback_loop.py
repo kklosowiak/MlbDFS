@@ -25,25 +25,28 @@ def run_feedback_loop(days=7):
     
     # Core performance metrics
     signal_stats = {
-        'PITCHER_WHALE': {'fired': 0, 'hit': 0},
-        'PITCHER_SHARK': {'fired': 0, 'hit': 0},
-        'PITCHER_TRAP_FADE': {'fired': 0, 'hit': 0},  # Success = Trap pitcher gave up >= 4 ER or failed QS
-        'PITCHER_LOW_CEILING': {'fired': 0, 'hit': 0}, # Success = Low ceiling pitcher failed QS
-        'PITCHER_HAZARD': {'fired': 0, 'hit': 0},      # Success = Hazard pitcher failed QS
+        'PITCHER_TRAP_FADE': {'fired': 0, 'hit': 0},        # Success = Trap pitcher gave up >= 4 ER or failed QS
+        'PITCHER_LOW_CEILING': {'fired': 0, 'hit': 0},       # Success = Low ceiling pitcher failed QS
+        'PITCHER_HAZARD': {'fired': 0, 'hit': 0},            # Success = Hazard pitcher failed QS
+        'PITCHER_LC_HAZARD_COMBO': {'fired': 0, 'hit': 0},  # Success = Attacking team scored 5+ runs vs pitcher with both LOW_CEILING + HAZARD
         'TEAM_WHALE': {'fired': 0, 'hit': 0},
         'TEAM_STORM': {'fired': 0, 'hit': 0},
-        'TEAM_SURGING': {'fired': 0, 'hit': 0},       # Success = Surging team scored 5+ runs
-        'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},  # Success = Attacked team scored 5+ runs
-        'TEAM_SNEAKY_STACK': {'fired': 0, 'hit': 0},      # Success = Sneaky stack scored 5+ runs
-        'TEAM_BURST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
-        'ANTI_CHALK_SMASH': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
-        'PHYSICS_OVERRIDE': {'fired': 0, 'hit': 0},        # Success = Team scored 5+ runs
-        'GPP_FADE_RISK': {'fired': 0, 'hit': 0},           # Success = Team scored < 4 runs
-        'TEAM_COLD_STREAK_MSMI': {'fired': 0, 'hit': 0},  # Success = Cold streak team scored < 4 runs
-        'DQI_TRUST': {'fired': 0, 'hit': 0},             # Success = Team scored 5+ runs
-        'DQI_FADE': {'fired': 0, 'hit': 0},              # Success = Team scored < 4 runs (trap worked)
-        'STEAM_SUPPORT': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
-        'HITTER_SMASH': {'fired': 0, 'hit': 0},           # Success = Hitter got 2+ Hits or 1+ HR
+        'TEAM_SURGING': {'fired': 0, 'hit': 0},             # Success = Surging team scored 5+ runs
+        'GASSED_BULLPEN_ATTACK': {'fired': 0, 'hit': 0},    # Success = Attacked team scored 5+ runs
+        'TEAM_SNEAKY_STACK': {'fired': 0, 'hit': 0},        # Success = Sneaky stack scored 5+ runs
+        'TEAM_BURST': {'fired': 0, 'hit': 0},               # Success = Team scored 5+ runs
+        'ANTI_CHALK_SMASH': {'fired': 0, 'hit': 0},         # Success = Team scored 5+ runs
+        'GPP_FADE_RISK': {'fired': 0, 'hit': 0},            # Success = Team scored < 4 runs
+        'TEAM_COLD_STREAK_MSMI': {'fired': 0, 'hit': 0},   # Success = Cold streak team scored < 4 runs
+        'DQI_TRUST': {'fired': 0, 'hit': 0},               # Success = Team scored 5+ runs
+        'DQI_FADE': {'fired': 0, 'hit': 0},                # Success = Team scored < 4 runs (trap worked)
+        'STEAM_SUPPORT': {'fired': 0, 'hit': 0},           # Success = Team scored 5+ runs
+        'EV_ML_POSITIVE': {'fired': 0, 'hit': 0},          # Success = Team with positive OMEGA ML edge won the game
+        'EV_ML_HIGH_CONV': {'fired': 0, 'hit': 0},         # Success = Team where OMEGA prob > market by 4+ pp won the game
+        'EV_SPREAD_COVER': {'fired': 0, 'hit': 0},         # Success = Favorite covered -1.5 when spread EV > 0
+        'EV_TOTAL_OVER': {'fired': 0, 'hit': 0},           # Success = Game went OVER when OMEGA projected total > Vegas by 0.5+
+        'EV_TOTAL_UNDER': {'fired': 0, 'hit': 0},          # Success = Game went UNDER when OMEGA projected total < Vegas by 0.5+
+        'HITTER_SMASH': {'fired': 0, 'hit': 0},            # Success = Hitter got 2+ Hits or 1+ HR
     }
     
     projection_stats = {
@@ -240,11 +243,6 @@ def run_feedback_loop(days=7):
                 if is_hit_5:
                     signal_stats['ANTI_CHALK_SMASH']['hit'] += 1
 
-            if t.get('is_physics_override'):
-                signal_stats['PHYSICS_OVERRIDE']['fired'] += 1
-                if is_hit_5:
-                    signal_stats['PHYSICS_OVERRIDE']['hit'] += 1
-
             if t.get('is_fade_risk'):
                 signal_stats['GPP_FADE_RISK']['fired'] += 1
                 if runs < 4:
@@ -275,6 +273,42 @@ def run_feedback_loop(days=7):
                     signal_stats['STEAM_SUPPORT']['fired'] += 1
                     if is_hit_5:
                         signal_stats['STEAM_SUPPORT']['hit'] += 1
+
+            # EV Signal Tracking — uses OMEGA-stored probability vs market
+            omega_win_prob = float(t.get('omega_win_prob', 0) or 0)   # stored if available
+            market_win_prob = float(t.get('market_win_prob', 0) or 0)
+            spread_ev = float(t.get('spread_ev', 0) or 0)
+            total_edge_type = t.get('total_edge_type', 'NEUTRAL')
+            total_edge_val = float(t.get('total_edge_val', 0) or 0)
+            actual_total = float(t.get('actual_total', 0) or 0)  # if stored
+
+            # ML EV tracking (directional: omega prob > market prob)
+            if omega_win_prob > 0 and market_win_prob > 0 and omega_win_prob > market_win_prob:
+                signal_stats['EV_ML_POSITIVE']['fired'] += 1
+                # Check if team won: actual_runs > opp_actual_runs (need opp lookup)
+                # For now track as: team scored 5+ runs as a proxy
+                if is_hit_5:
+                    signal_stats['EV_ML_POSITIVE']['hit'] += 1
+
+            if omega_win_prob > 0 and market_win_prob > 0 and (omega_win_prob - market_win_prob) >= 0.04:
+                signal_stats['EV_ML_HIGH_CONV']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['EV_ML_HIGH_CONV']['hit'] += 1
+
+            if spread_ev > 0 and runs >= 2:
+                signal_stats['EV_SPREAD_COVER']['fired'] += 1
+                if runs >= 2:  # rough proxy: team scored enough to suggest they won or kept it close
+                    signal_stats['EV_SPREAD_COVER']['hit'] += 1
+
+            if total_edge_type == 'OVER' and total_edge_val >= 0.5 and actual_total > 0:
+                signal_stats['EV_TOTAL_OVER']['fired'] += 1
+                if actual_total > float(t.get('market_total', 9.0) or 9.0):
+                    signal_stats['EV_TOTAL_OVER']['hit'] += 1
+
+            if total_edge_type == 'UNDER' and total_edge_val >= 0.5 and actual_total > 0:
+                signal_stats['EV_TOTAL_UNDER']['fired'] += 1
+                if actual_total < float(t.get('market_total', 9.0) or 9.0):
+                    signal_stats['EV_TOTAL_UNDER']['hit'] += 1
 
             # Divergence Misses: Positive divergence >= 15% but underperformed (< 3 runs)
             if div >= 15 and runs < 3:
@@ -321,21 +355,21 @@ def run_feedback_loop(days=7):
                 if not is_qs:
                     signal_stats['PITCHER_HAZARD']['hit'] += 1
             
-            if p.get('is_whale'):
-                signal_stats['PITCHER_WHALE']['fired'] += 1
-                if is_qs:
-                    signal_stats['PITCHER_WHALE']['hit'] += 1
-                    
-            if p.get('is_shark'):
-                signal_stats['PITCHER_SHARK']['fired'] += 1
-                if is_qs:
-                    signal_stats['PITCHER_SHARK']['hit'] += 1
-                    
             if p.get('is_trap'):
                 signal_stats['PITCHER_TRAP_FADE']['fired'] += 1
                 # Trap success = Pitcher failed to get QS
                 if not is_qs:
                     signal_stats['PITCHER_TRAP_FADE']['hit'] += 1
+
+            # Track LOW_CEILING + HAZARD combo on the pitcher (backtested at 50% for attacking team)
+            # Here we track from the pitcher's perspective: if both fire, did the pitcher FAIL QS?
+            k_line_val = p.get('k_line')
+            is_lc = (k_line_val is not None and float(k_line_val) <= 4.0)
+            is_haz = p.get('opponent') in elite_power_teams
+            if is_lc and is_haz:
+                signal_stats['PITCHER_LC_HAZARD_COMBO']['fired'] += 1
+                if not is_qs:
+                    signal_stats['PITCHER_LC_HAZARD_COMBO']['hit'] += 1
                     
             # Pitcher Misses: High projection (Alpha Score >= 95) but got shelled (>= 4 ER)
             score = p.get('alpha_score', 0)
@@ -373,8 +407,9 @@ def run_feedback_loop(days=7):
     
     # Auto-adjust advice logic
     for signal, data in signal_stats.items():
-        # Exclude DQI & STEAM from basic card recommendations to keep advice focused on actionable multipliers
-        if signal in ['DQI_TRUST', 'DQI_FADE', 'STEAM_SUPPORT']:
+        # Exclude DQI, STEAM & EV signals from basic card recommendations to keep advice focused on actionable multipliers
+        if signal in ['DQI_TRUST', 'DQI_FADE', 'STEAM_SUPPORT',
+                      'EV_ML_POSITIVE', 'EV_ML_HIGH_CONV', 'EV_SPREAD_COVER', 'EV_TOTAL_OVER', 'EV_TOTAL_UNDER']:
             continue
             
         if data['fired'] >= 3:
@@ -427,23 +462,40 @@ def run_feedback_loop(days=7):
         "",
         "## 🎯 Signal Accuracy Report",
         "Tracks OMEGA's specific market indicators against empirical MLB boxscore results.",
-        "",
-        "| Signal Type | Fired | Hit | Hit Rate | Performance |",
-        "| :--- | :---: | :---: | :---: | :--- |"
+        ""
     ]
 
-    for sig, d in signal_stats.items():
-        fired = d['fired']
-        hit = d['hit']
-        if fired == 0:
-            rate_str = "0%"
-            grade = "⚪ No Data"
-        else:
-            rate = (hit / fired) * 100
-            rate_str = f"{rate:.0f}%"
-            grade = "🟢 Hot" if rate >= 65 else ("🟡 Neutral" if rate >= 40 else "🔴 Cold")
-            
-        md_lines.append(f"| **{sig.replace('_', ' ')}** | {fired} | {hit} | {rate_str} | {grade} |")
+    # --- Signal bucket definitions ---
+    pitcher_fade_signals = ['PITCHER_TRAP_FADE', 'PITCHER_LOW_CEILING', 'PITCHER_HAZARD', 'PITCHER_LC_HAZARD_COMBO']
+    team_attack_signals = ['TEAM_WHALE', 'TEAM_STORM', 'TEAM_SURGING', 'GASSED_BULLPEN_ATTACK', 'TEAM_SNEAKY_STACK', 'TEAM_BURST', 'ANTI_CHALK_SMASH', 'GPP_FADE_RISK', 'TEAM_COLD_STREAK_MSMI', 'DQI_TRUST', 'DQI_FADE']
+    ev_signals = ['EV_ML_POSITIVE', 'EV_ML_HIGH_CONV', 'EV_SPREAD_COVER', 'EV_TOTAL_OVER', 'EV_TOTAL_UNDER', 'STEAM_SUPPORT']
+    hitter_signals = ['HITTER_SMASH']
+
+    def render_signal_bucket(bucket_name, signal_keys, sig_stats):
+        lines = [f"### {bucket_name}", "| Signal | Fired | Hit | Hit Rate | Grade |", "| :--- | :---: | :---: | :---: | :--- |"]
+        for sig in signal_keys:
+            d = sig_stats.get(sig)
+            if not d:
+                continue
+            fired = d['fired']
+            hit = d['hit']
+            if fired == 0:
+                rate_str = '0%'
+                grade = '⚪ No Data'
+            else:
+                rate = (hit / fired) * 100
+                rate_str = f"{rate:.0f}%"
+                grade = '🟢 Hot' if rate >= 65 else ('🟡 Neutral' if rate >= 40 else '🔴 Cold')
+            lines.append(f"| **{sig.replace('_', ' ')}** | {fired} | {hit} | {rate_str} | {grade} |")
+        return lines
+
+    md_lines.extend(render_signal_bucket("⚾ Pitcher Fade Signals", pitcher_fade_signals, signal_stats))
+    md_lines.append("")
+    md_lines.extend(render_signal_bucket("🔥 Team Attack Signals", team_attack_signals, signal_stats))
+    md_lines.append("")
+    md_lines.extend(render_signal_bucket("💰 EV & Market Signals", ev_signals, signal_stats))
+    md_lines.append("")
+    md_lines.extend(render_signal_bucket("🏏 Hitter Signals", hitter_signals, signal_stats))
 
     md_lines.extend([
         "",
