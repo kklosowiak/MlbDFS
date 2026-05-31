@@ -623,6 +623,25 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             team_xwoba = 0.330
             power_concentration = 0.330
             xwoba_dampened = False
+
+            # OMEGA v15.1: Statcast Lineup Fallback
+            # When hitter props unavailable (team not in snapshot — e.g. evening games before DK
+            # posts prop lines), compute xwOBA directly from lineup + statcast cache.
+            # No DK snapshot needed. Eliminates blanket 0.330 defaults.
+            if not team_h and confirmed:
+                lineup_players = confirmed if isinstance(confirmed, list) else confirmed.get('lineup', [])
+                lineup_xwobas = []
+                for player_name in lineup_players[:9]:
+                    pnorm = normalize_player_name(player_name)
+                    p_data = cache.get(pnorm, {})
+                    xw = p_data.get('xwoba')
+                    if xw and isinstance(xw, (int, float)) and 0.200 <= float(xw) <= 0.500:
+                        lineup_xwobas.append(float(xw))
+                if len(lineup_xwobas) >= 3:
+                    team_xwoba = round(sum(lineup_xwobas) / len(lineup_xwobas), 3)
+                    power_concentration = team_xwoba
+                    print(f"  [STATCAST FALLBACK]: {team} xwOBA={team_xwoba:.3f} ({len(lineup_xwobas)}/{len(lineup_players[:9])} players matched)")
+
             if team_h:
                 # Resolve opposing pitcher throw hand
                 pitch_hand = "R"
