@@ -679,8 +679,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     )[:9]
 
                 # OMEGA: Lineup Spot PA Decay (Batting Order Weighting)
-                # OMEGA v13.6: Moderate Lineup Spot PA Decay (prevents over-penalizing deep lineups)
-                BATTING_ORDER_WEIGHTS = [1.15, 1.12, 1.08, 1.04, 1.00, 0.96, 0.92, 0.88, 0.84]
+                # OMEGA v14.0 Calibration: Flat weighting prevents over-valuing top-heavy lineups.
+                BATTING_ORDER_WEIGHTS = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
                 weighted_xwoba_sum = 0.0
                 weight_sum = 0.0
                 for idx, h in enumerate(target_h[:9]):
