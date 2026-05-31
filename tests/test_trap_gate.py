@@ -39,7 +39,7 @@ class TestStackChalkTrap(unittest.TestCase):
                 physics_raw=30.0,
                 team_xwoba=0.283,
                 physics_display=12.0,
-                ml_move=14,
+                ml_move=-14,
                 divergence=5,
                 is_steam=False,
                 is_shark=False,

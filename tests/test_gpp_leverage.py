@@ -12,8 +12,10 @@ def test_selective_pivots_on_small_slate():
         {"team": f"Team {i}", "implied_total": 4.5, "team_xwoba": 0.320}
         for i in range(6)
     ]
-    # Set one team to have higher confidence via a mock override
+    # Set one team to have higher confidence via a mock override and conviction signals
     teams[0]["is_physics_override"] = True  # Boosts confidence -> higher GLI
+    teams[0]["dqi_status"] = "TRUST"
+    teams[0]["is_anti_chalk_smash"] = True
     
     compute_gpp_leverage(teams, [])
     

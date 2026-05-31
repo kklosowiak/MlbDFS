@@ -315,7 +315,7 @@ def test_matchup_boost_caps():
 
 
 def test_unanchored_chalk_stack_capping():
-    # High raw confidence stack but 0 conviction signals -> should cap at 75
+    # High raw confidence stack but 0 conviction signals -> should soft-cap at 77
     t_unanchored = {
         "team": "A",
         "team_xwoba": 0.345,
@@ -332,8 +332,8 @@ def test_unanchored_chalk_stack_capping():
         "is_gassed": False,
     }
     conf, reasons = score_stack_confidence(t_unanchored, [])
-    assert conf == 75
-    assert any("Capped below 75" in r for r in reasons)
+    assert conf == 77
+    assert any("Soft-capped above 70" in r for r in reasons)
 
     # Adding 2 conviction signals -> should remain uncapped (94)
     t_anchored = {
@@ -343,7 +343,7 @@ def test_unanchored_chalk_stack_capping():
     }
     conf_anchored, reasons_anchored = score_stack_confidence(t_anchored, [])
     assert conf_anchored == 94
-    assert not any("Capped below 75" in r for r in reasons_anchored)
+    assert not any("Soft-capped above 70" in r for r in reasons_anchored)
 
 
 def test_tiered_volatile_sp_modifier():

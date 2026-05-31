@@ -518,7 +518,7 @@ class SharpsWeighting:
             return False
 
         sharp_in_favor = (is_steam or is_shark) and ml_move <= -10
-        public_pressure = ml_move >= 12 or (divergence < -12 and not sharp_in_favor)
+        public_pressure = ml_move <= -12 or (divergence < -12 and not sharp_in_favor)
         return public_pressure
 
 

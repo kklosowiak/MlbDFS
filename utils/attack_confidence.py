@@ -261,7 +261,7 @@ def score_stack_confidence(t, p_reports):
                 phys = max(phys, float(alpha.get("physics", 0) or 0))
             else:
                 phys = max(phys, float(alpha or 0))
-        if phys >= 22 and not opp_p.get("is_trap"):
+        if phys >= 20.0:
             # OMEGA v13.5.2: Tiered Hybrid Starting Pitcher Volatility Modifier
             p_mkt = float(opp_p.get("market_score", 0.0) or 0.0)
             p_conf = str(opp_p.get("confidence", "low")).lower()
@@ -295,6 +295,11 @@ def score_stack_confidence(t, p_reports):
                     reasons.append(f"Tough but volatile ({volatility_reason}) SP profile ({opp_p_name}) — penalty dampened.")
                 else:
                     reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
+            
+            # Apply 50% scale if SP is a TRAP
+            if opp_p.get("is_trap"):
+                penalty *= 0.50
+                reasons.append(f"Attacking TRAP SP ({opp_p_name}) — skill penalty scaled to 50%.")
             
             conf -= penalty
 
@@ -358,10 +363,11 @@ def score_stack_confidence(t, p_reports):
     if conf >= 75:
         ok, _ = _has_high_conviction_stack(t)
         if not ok:
-            conf = min(conf, 75)
-            reasons.append("Capped below 75 — need 2+ conviction signals (DQI/div/pen/props).")
+            # Apply 0.30 soft-cap above 70 instead of a hard cap at 75
+            conf = 70.0 + (conf - 70.0) * 0.30
+            reasons.append("Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).")
 
-    return conf, reasons
+    return _clamp(conf), reasons
 
 
 def score_pitcher_confidence(p, t_reports):
