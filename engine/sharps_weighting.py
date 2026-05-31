@@ -247,7 +247,7 @@ class SharpsWeighting:
         # OMEGA v8.7: Linear Fatigue Pressure (Sliding Scale v1.0)
         # Pressure starts building at 65% instead of a hard cliff at 80%
         fatigue_floor = 65.0
-        bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 3.5)
+        bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 2.5)  # OMEGA v15.0: Steeper fatigue ramp (was /3.5)
         
         # Soft starter hook multipliers to prevent over-aggression
         # If the opposing SP is a TRAP, force short leash (15.5 outs) to boost bullpen pressure
@@ -261,7 +261,7 @@ class SharpsWeighting:
         skill_modifier = dyn_fatigue_mod
         bullpen_boost *= skill_modifier
         
-        bullpen_boost = min(15.0, bullpen_boost) # Cap total pressure at 15 pts
+        bullpen_boost = min(25.0, bullpen_boost)  # OMEGA v15.0: Higher cap (was 15.0 pts, now 25.0)
 
         # OMEGA v8.9: Absolute-Delta Hybrid Market Pillar
         # Incorporate absolute Vegas ITT (scale 3.0 to 5.5 -> 0 to 100 pts) so flat high-total stacks are rewarded
@@ -280,9 +280,10 @@ class SharpsWeighting:
         # OMEGA v6.9: Pitcher Vulnerability
         vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
 
-        # OMEGA v7.7.1: REVERTED WEIGHTS (Baseline Restored, Filters Kept)
-        # Physics 40% | Market 20% | Baseline 40.0
-        score = 40.0 + (physics_raw * 0.40) + (market_raw * 0.20) + vulnerability_mod + bullpen_boost
+        # OMEGA v15.0: Regression-Optimal Weights (Physics 80% | Market 20% | Baseline 40.0)
+        # Rationale: OLS Market:Physics optimal ratio is 1.0:8.20 (was 1.0:3.57).
+        # vulnerability_mod REMOVED: Pitcher quality is priced into Vegas ITT (r=+0.226 proven).
+        score = 40.0 + (physics_raw * 0.80) + (market_raw * 0.20) + bullpen_boost
         
         alpha_signals = 0
         beta_signals = 0
@@ -292,7 +293,7 @@ class SharpsWeighting:
         if is_storm: market_alphas += 1
         # OMEGA v13.6.2: Re-enabled is_whale for stacks because the threshold has been optimized to >=25% divergence (40.9% success rate)
         if is_whale: market_alphas += 1
-        if is_shark: market_alphas += 1
+        # OMEGA v15.0: is_shark MOVED to beta_signals (r=-0.0879 in 2026; dampened to +5% instead of +15%)
         if is_steam: market_alphas += 1
         
         # Flatten: Group all market alphas into a max of 1 signal (+15%), 
@@ -309,7 +310,8 @@ class SharpsWeighting:
         if is_sharp: beta_signals += 1
         if is_burst: beta_signals += 1
         if tt_move > 0.5: beta_signals += 1
-        if bullpen_fatigue >= 65: beta_signals += 1 
+        if bullpen_fatigue >= 65: beta_signals += 1
+        if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
         # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums
@@ -379,11 +381,11 @@ class SharpsWeighting:
         # we add an extra +5.0 GPP premium directly to final_omega
         is_gassed_attack = (bullpen_fatigue >= 65) and (pitcher_outs <= 15.5)
         if is_gassed_attack:
-            final_omega += 5.0
+            final_omega += 8.0  # OMEGA v15.0: Increased from +5.0 to +8.0 (r=+0.1270 strongest positive predictor)
 
         # Inject GPP Decision Intelligence bonuses directly to OMEGA master score
         if is_anti_chalk_smash:
-            final_omega += 5.0
+            final_omega += 10.0  # OMEGA v15.0: Increased from +5.0 to +10.0 (highest regression weight binary: +3.139 expected runs)
         if is_pitch_alignment:
             final_omega += 4.0
 

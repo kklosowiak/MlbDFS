@@ -811,7 +811,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 final_stack_score = prev_team_data.get('stack_score', 50.0)
             else:
                 final_stack_score = round((res['final'] - dominance_penalty) * sentiment_mod * env_synergy, 1)
-                if is_shark: final_stack_score = round(final_stack_score * 1.15, 1)
+                # OMEGA v15.0: is_shark +15% hardcoded boost REMOVED.
+                # Rogue double-boost: engine already handles shark via beta signal.
+                # Empirical result: is_shark avg_runs=1.60 vs 3.93 baseline (0/5 five-run games).
 
             # Trend Analysis (OMEGA v6.3: Velocity-Gated Momentum)
             # PATCH (4/19/26): SURGING/FADING now requires BOTH a meaningful delta
@@ -1171,8 +1173,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba * platoon_multiplier)
         NPAS_xwOBA = matchup_xwoba_npas - baseline_xwoba
 
-        # OMEGA v13.5 Hitter SMASH Calibration (Optimized via Grid Sweep)
-        smash_factor = (matchup_xwoba_npas >= 0.370 and NPAS_xwOBA >= 0.0)
+        # OMEGA v15.0: Smash gate tightened (grid sweep: xwOBA>=0.360 AND plat>=1.03 = +7.7pp over baseline)
+        # Old: matchup_xwoba_npas >= 0.370 only. New: require genuine platoon advantage too.
+        smash_factor = (matchup_xwoba_npas >= 0.360 and platoon_multiplier >= 1.03)
 
         # Check if this hitter has a Matchup DNA edge
         is_hitter_pitch_alignment = False

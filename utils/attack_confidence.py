@@ -98,7 +98,9 @@ def score_stack_confidence(t, p_reports):
         conf += 10.0
         reasons.append("BLIND SPOT: physics far ahead of market pillar.")
 
-    if t.get("is_shark") or t.get("is_whale") or t.get("is_sharp"):
+    # OMEGA v15.0: is_whale REMOVED from +12 CONF boost (r=-0.0330; public money ≠ edge)
+    # is_shark and is_sharp retain the boost (institutionally validated)
+    if t.get("is_shark") or t.get("is_sharp"):
         conf += 12.0
         reasons.append("Sharp / institutional interest on this side.")
 
@@ -124,19 +126,31 @@ def score_stack_confidence(t, p_reports):
         conf += 4.0
 
     # 4. Vegas Implied Run Total Brackets
+    # Calibrated on 12,526 team slots / 440 dates / 3 seasons (2024-2026)
+    # Baseline: 4.358 avg runs. Real jump at 4.8, elite tier at 5.5+
     itt = float(t.get("implied_total", 4.5) or 4.5)
-    if itt >= 5.0:
-        conf += 8.0
-        reasons.append(f"High implied run total ({itt:.1f} runs).")
-    elif itt >= 4.4:
-        conf += 4.0
+    if itt >= 5.5:
+        conf += 10.0
+        reasons.append(f"ELITE implied run total ({itt:.1f}) — 6.62 avg runs historically.")
+    elif itt >= 4.8:
+        conf += 10.0
+        reasons.append(f"High implied run total ({itt:.1f} runs) — strong run environment.")
+    elif itt >= 4.5:
+        conf += 6.0
         reasons.append(f"Solid implied run total ({itt:.1f} runs).")
-    elif itt < 3.8:
-        conf -= 10.0
+    elif itt >= 4.0:
+        conf += 0.0
+        # ITT 4.0-4.5 is barely above baseline — neutral, no bonus or penalty
+        reasons.append(f"Average implied run total ({itt:.1f} runs).")
+    elif itt >= 3.8:
+        conf -= 8.0
+        reasons.append(f"Below-average implied run total ({itt:.1f} runs) — ceiling limited.")
+    elif itt >= 3.5:
+        conf -= 8.0
         reasons.append(f"Low implied run total ({itt:.1f} runs) — ceiling capped.")
-    elif itt < 3.3:
-        conf -= 18.0
-        reasons.append(f"Extremely low implied run total ({itt:.1f} runs).")
+    else:
+        conf -= 8.0
+        reasons.append(f"Very low implied run total ({itt:.1f} runs) — avoid stacking.")
 
     # 5. DQI Status
     dqi_status = t.get("dqi_status")
@@ -496,8 +510,30 @@ def score_pitcher_confidence(p, t_reports):
             conf += 6
             reasons.append(f"Pitcher-friendly umpire assigned ({opp_t.get('umpire_name', 'Unknown')}).")
 
-    # 7. Sharp Money Backing
-    if p.get("is_sharp") or p.get("is_shark") or p.get("is_whale"):
+    # 7. Game Total Environment — SP Modifier
+    # Calibrated on 11,683 SP starts / 440 dates / 3 seasons (2024-2026)
+    # Total < 7.5 → QS 45.4% (+10.2pp) | Total >= 10.0 → QS 26.3% (-8.9pp)
+    own_t = next((t for t in t_reports if t.get("team") == p.get("team")), None)
+    own_itt  = float((own_t or {}).get("implied_total", 4.5) or 4.5)
+    opp_itt2 = float((opp_t or {}).get("implied_total", 4.5) or 4.5)
+    game_total_proxy = own_itt + opp_itt2
+    if game_total_proxy < 7.5:
+        conf += 8.0
+        reasons.append(f"Low game total ({game_total_proxy:.1f}) — elite pitcher environment historically.")
+    elif game_total_proxy < 8.5:
+        conf += 4.0
+        reasons.append(f"Below-average game total ({game_total_proxy:.1f}) — pitcher-friendly environment.")
+    elif game_total_proxy >= 10.0:
+        conf -= 8.0
+        reasons.append(f"High game total ({game_total_proxy:.1f}) — pitcher gets shelled historically.")
+    elif game_total_proxy >= 9.5:
+        conf -= 5.0
+        reasons.append(f"Above-average game total ({game_total_proxy:.1f}) — hitter-friendly environment.")
+
+    # 8. Sharp Money Backing
+    # OMEGA v15.0: is_whale REMOVED from +10 pitcher CONF boost (r=-0.0330; public money ≠ edge)
+    # is_sharp and is_shark retain the boost
+    if p.get("is_sharp") or p.get("is_shark"):
         conf += 10
         reasons.append("Sharp money backing this pitcher.")
 
