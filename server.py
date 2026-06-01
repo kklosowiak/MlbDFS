@@ -2292,13 +2292,13 @@ def post_chat_api(body: dict):
     if os.path.exists(analysis_path):
         try:
             with open(analysis_path, "r", encoding="utf-8") as f:
-                slate_analysis_md = f.read()[:5000] # Cap to prevent context blowup
+                slate_analysis_md = f.read()[:15000] # Cap raised to prevent context truncation
         except: pass
         
     if os.path.exists(feedback_path):
         try:
             with open(feedback_path, "r", encoding="utf-8") as f:
-                feedback_md = f.read()[:4000]
+                feedback_md = f.read()[:10000] # Cap raised to prevent feedback truncation
         except: pass
 
     # Dynamic Eastern Time zone calculation (prevents UTC container clock drift)
@@ -2338,6 +2338,21 @@ Top Individual Hitter Projections:
 ### OMEGA HISTORICAL ACCURACY & LEARNING LOOP:
 {feedback_md}
 
+### 🧠 OMEGA ELITE BACKTESTED COMBINATIONS:
+You must understand and refer to these 7 high-probability combinations:
+1. **ELITE OFFENSE (Elite Physics + Weak Arm):** Team xwOBA >= 0.330 and opposing SP Physics <= 35. This has a **66.3% hit rate** for scoring 4+ runs (and 51.7% for 5+ runs).
+2. **GASSED BULLPEN ATTACK:** Attacking team xwOBA >= 0.315, opposing SP projected outs <= 15.5, and opposing bullpen fatigue >= 75%. Provides a strong late-inning ceiling (+8.0 pts).
+3. **ANTI-CHALK SMASH:** Offense targeting highly popular starting pitcher with hidden contact/physical vulnerabilities (highest GPP leverage pivot).
+4. **DQI TRUST:** DQI >= 80, Divergence >= 14%, and Implied Team Total >= 4.2. Extremely reliable sharp money alignment.
+5. **PITCHER SHELLING ALERT (Low-Ceiling + Hazard):** SP has low K-upside (K-prop <= 4.5) and faces a high-power offense in a hitter-friendly park. **100% backtested hit rate** (5-for-5) for predicting pitchers getting shelled.
+6. **TRUE TALENT & WALKS FADE:** Opposing SP has Walks Penalty + True Talent Penalty (rating reduced by -25.0 pts due to high control risks and bad metrics).
+7. **TRAP FADE & WHALE CONVERGENCE:** SP is flagged as a value TRAP and has divergence < -10% (underperforms expectations, fade).
+
+### ⚾ STARTING PITCHER SELECTION GUIDELINES:
+- **SP1 Anchors (Safe plays):** Elite underlying Physics score (Physics >= 20), SURGING recent form (high K/9, low ERA L3 starts), and Pinnacle +4% moneyline boost.
+- **SP2 GPP Leans (Value plays):** positive sharp money divergence (+10% to +20%), and playing in low game total environments (park/weather overlays like cold temps).
+- **Fades / Traps (Avoid):** Flagged as TRAP (public value bait), Walks + True Talent penalty, or Paradox SP (good pitchers in lethal matchups).
+
 ### 🧠 UNDERSTANDING DQI (Divergence Quality Index):
 DQI fires only when team divergence >= 10% (sharp money interest). Base score starts at 30 points; teams earn TRUST through layered evidence:
 - **Baseline:** 30 points (must earn up to TRUST)
@@ -2349,6 +2364,7 @@ DQI fires only when team divergence >= 10% (sharp money interest). Base score st
   - `CAUTION` (50-74): Mixed signals — proceed carefully
   - `FADE` (under 50): Likely retail trap despite divergence
 - **HEAVY $ (`is_sharp`):** Money >= 65% AND divergence >= 10% (not chalk alone)
+- **ML WHALE FADE:** Smart money (divergence >= 25%) backing a team while the public tickets go the other way (+2-4% ROI edge in ML betting).
 
 When Konrad asks you questions:
 1. Proactively refer to the **DQI (Divergence Quality Index)** scores, strengths, and warning factors of each team! For instance, if a team has DQI TRUST, highlight it as a top high-conviction play for today. If it has DQI CAUTION or FADE, explain the specific warning factors (like Public Chalk or weak opposing SP) causing the flag.
