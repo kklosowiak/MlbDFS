@@ -4560,6 +4560,7 @@
 
                     function sectionTabLabel(h2Text) {
                         const plain = h2Text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+                        if (/elite combo/i.test(plain)) return 'Elite Alerts';
                         if (/ultimate/i.test(plain)) return 'Ultimate';
                         if (/core stacks/i.test(plain)) return 'Stacks';
                         if (/core pitchers/i.test(plain)) return 'Pitchers';
