@@ -1,5 +1,6 @@
 from datetime import datetime
 from config import config
+from engine.constants import *
 
 class SharpsWeighting:
     def __init__(self):
@@ -51,7 +52,7 @@ class SharpsWeighting:
         }
 
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None, is_death_sentence=False, form_boost=0.0, pinnacle_boost_active=False):
         """
         OMEGA v10.0 SE: Tiered Alpha/Beta Pitcher Scoring (Win Prob Base Market).
         """
@@ -180,6 +181,17 @@ class SharpsWeighting:
             pass
 
         final_alpha += walks_penalty + true_talent_penalty
+        
+        # Apply death sentence penalty (-15%)
+        if is_death_sentence:
+            final_alpha *= 0.85
+            
+        # Apply Pinnacle SP boost (+5.0 engine points)
+        if pinnacle_boost_active:
+            final_alpha += 5.0
+            
+        # Apply recent form boost
+        final_alpha += form_boost
             
         return {
             "final": round(final_alpha, 1),
@@ -193,7 +205,7 @@ class SharpsWeighting:
             "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # Resolve Dynamic Bullpen Grade
         dyn_grade, dyn_mult, dyn_fatigue_mod = "Average", 1.00, 1.00
@@ -290,7 +302,6 @@ class SharpsWeighting:
         
         # Alpha (Market Convergence Grouping to prevent exponential stacking)
         market_alphas = 0
-        if is_storm: market_alphas += 1
         # OMEGA v13.6.2: Re-enabled is_whale for stacks because the threshold has been optimized to >=25% divergence (40.9% success rate)
         if is_whale: market_alphas += 1
         # OMEGA v15.0: is_shark MOVED to beta_signals (r=-0.0879 in 2026; dampened to +5% instead of +15%)
@@ -312,6 +323,7 @@ class SharpsWeighting:
         if tt_move > 0.5: beta_signals += 1
         if bullpen_fatigue >= 65: beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
+        if is_storm: beta_signals += 1  # OMEGA v16.0: Demoted from alpha (+15%) to beta (+5%)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
         # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums
@@ -469,13 +481,46 @@ class SharpsWeighting:
         if confidence == 'low':
             final_omega = min(80.0, final_omega)
         
+        # OMEGA v16.0 Consolidated Scoring Post-Processing:
+        sentiment_mod = (1.0 / (umpire_factor or 1.0))
+        env_synergy = 1.0 + (weather_boost / 100.0)
+        
+        dominance_penalty = 0.0
+        if opp_pitcher_alpha > SP_DOMINANCE_THRESHOLD:
+            dominance_penalty = (opp_pitcher_alpha - SP_DOMINANCE_THRESHOLD) * SP_DOMINANCE_FACTOR
+            
+        final_omega = (final_omega - dominance_penalty) * sentiment_mod * env_synergy
+        
+        if is_opp_debut:
+            final_omega *= 1.10
+            
+        ud_penalty = 0.0
+        od_boost = 0.0
+        if under_divergence >= UNDER_DIVERGENCE_HIGH:
+            ud_penalty = 0.15
+        elif under_divergence >= UNDER_DIVERGENCE_LOW:
+            ud_penalty = 0.05
+            
+        if over_divergence >= OVER_DIVERGENCE_HIGH:
+            od_boost = 8.0
+        elif over_divergence >= OVER_DIVERGENCE_LOW:
+            od_boost = 5.0
+            
+        final_omega = max(0.0, (final_omega + od_boost) * (1.0 - ud_penalty))
+        
+        if is_sneaky:
+            final_omega += SNEAKY_STACK_PREMIUM
+            
+        final_omega_capped = min(150.0, final_omega)
+
         # OMEGA v9.9: GPP Leverage Fade Risk
         # If a team has a high implied total (>= 5.0) and negative divergence (< -10),
         # they represent public chalk being faded by sharps (high-ownership fade risk).
         is_fade_risk = (eff_itt >= 5.0) and (divergence < -10)
         
         return {
-            "final": round(final_omega, 1),
+            "final": round(final_omega_capped, 1),
+            "final_raw": round(final_omega, 1),
             "physics": round(physics_raw * 0.40, 1),
             "physics_raw": round(physics_raw, 1),
             "market": round(market_raw * 0.20, 1),
@@ -524,7 +569,7 @@ class SharpsWeighting:
         return public_pressure
 
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None, walks_line=None, walks_price=None, strikeouts_line=None, strikeouts_price=None, runs_g_rbi_line=None, runs_g_rbi_price=None):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None, walks_line=None, walks_price=None, strikeouts_line=None, strikeouts_price=None, runs_g_rbi_line=None, runs_g_rbi_price=None, hard_hit_pct=0.0, barrel_pct=0.0, hits_line=None, hits_price=None):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
@@ -648,6 +693,24 @@ class SharpsWeighting:
         final_alpha = (individual_stacked * 0.65) + (team_score * 0.35)
         final_alpha *= park_factor
         final_alpha = (final_alpha + walks_boost + so_penalty) * rr_boost
+        
+        # OMEGA v13.9 / v16.0: Apply batted ball profile and market suppression boosts/penalties inside the engine
+        if hard_hit_pct >= 45.0:
+            final_alpha *= 1.03
+            solo_score *= 1.03
+        if barrel_pct >= 12.0:
+            final_alpha *= 1.02
+            solo_score *= 1.02
+
+        if hits_line is not None and hits_price is not None:
+            try:
+                hl = float(hits_line)
+                hp = float(hits_price)
+                if hl <= 0.5 and hp > 0:
+                    final_alpha *= 0.80
+                    solo_score *= 0.80
+            except:
+                pass
         
         return {
             "final": round(max(0, final_alpha), 1),

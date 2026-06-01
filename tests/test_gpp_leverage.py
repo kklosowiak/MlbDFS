@@ -72,5 +72,5 @@ def test_crowded_chalk_corrected_for_unpopular_teams():
     # Unpopular team has low confidence, so low GLI, but it's under-owned, so it's NEUTRAL (not CROWDED CHALK)
     assert unpopular["leverage_label"] == "NEUTRAL"
     
-    # Chalky bad team has low confidence and is over-owned (above avg), so it's CROWDED CHALK
-    assert chalky_bad["leverage_label"] == "CROWDED CHALK"
+    # Chalky bad team has low confidence and is over-owned (above avg), so it's OVEROWNED
+    assert chalky_bad["leverage_label"] == "OVEROWNED"

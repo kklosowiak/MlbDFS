@@ -104,18 +104,20 @@ def score_stack_confidence(t, p_reports):
         conf += 12.0
         reasons.append("Sharp / institutional interest on this side.")
 
-    # 2. Divergence (Sharp money vs Public tickets)
+    # 2. Divergence (Sharp money vs Public tickets - GPP calibrated v16.1)
     div = float(t.get("divergence", 0) or 0)
-    if div >= 15:
+    dqi_status = t.get("dqi_status")
+    
+    if div <= -20:
         conf += 10.0
-        reasons.append(f"Strong positive divergence ({div:+.0f}%).")
-    elif div >= 8:
-        conf += 1.0
+        reasons.append(f"Institutional GPP leverage: Heavy public fade ({div:+.0f}% div).")
     elif div <= -12:
-        conf -= 10.0
-        reasons.append(f"Sharp ticket fade on this team ({div:+.0f}%).")
-    elif div <= -6:
+        conf += 6.0
+        reasons.append(f"Under-the-radar GPP leverage: Public fade ({div:+.0f}% div).")
+    elif div >= 10 and div < 20 and dqi_status != "TRUST":
+        # Steam trap penalty - sharps betting win probability, not run-scoring ceiling
         conf -= 8.0
+        reasons.append(f"Public/ML steam trap: Divergence ({div:+.0f}% div) drags run ceiling.")
 
     # 3. Game Total Signals
     ts = (t.get("total_signal") or "").upper()
@@ -537,7 +539,12 @@ def score_pitcher_confidence(p, t_reports):
         conf += 10
         reasons.append("Sharp money backing this pitcher.")
 
-    # 8. Intraday Volatility
+    # 9. Pinnacle SP Boost (implied probability delta >= 4% in totals < 8.5) (OMEGA v16.0)
+    if p.get("pinnacle_boost_active"):
+        conf += 10.0
+        reasons.append("Pinnacle SP Boost — sharps backing this low-scoring matchup.")
+
+    # 10. Intraday Volatility
     if p.get("is_volatile"):
         conf -= 8
         reasons.append("VOLATILE CONF intraday — re-check before lock.")

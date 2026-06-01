@@ -25,7 +25,7 @@ def calculate_dqi(team, pitchers=None):
     except (TypeError, ValueError):
         implied_total = 0.0
 
-    if divergence < 6.0:
+    if divergence < 10.0:
         return None, None, [], []
 
     try:
@@ -58,10 +58,10 @@ def calculate_dqi(team, pitchers=None):
     pos_factors = []
     warn_factors = []
 
-    # Strictly gated at >= 6.0% divergence
+    # Strictly gated at >= 10.0% divergence
 
-    div_factor = min(1.0, max(0.0, (float(divergence) - 6.0) / 15.0))
-    div_pts = 5.0 + 15.0 * div_factor
+    div_factor = min(1.0, max(0.0, (float(divergence) - 10.0) / 10.0))
+    div_pts = 10.0 + 10.0 * div_factor
     pos_pts += div_pts
     pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
 
@@ -70,6 +70,19 @@ def calculate_dqi(team, pitchers=None):
     if phys_pts > 0:
         pos_pts += phys_pts
         pos_factors.append(f"Targetable Starter SP (+{round(phys_pts, 1)} pts)")
+
+    # Tough SP Physics Penalty
+    if opp_phys >= 75.0:
+        warn_pts += 25.0
+        warn_factors.append(f"Elite Opposing SP Penalty (-25 pts)")
+    elif opp_phys >= 60.0:
+        warn_pts += 15.0
+        warn_factors.append(f"Tough Opposing SP Penalty (-15 pts)")
+
+    # ML Shark Target Drag (Defensive steam trap)
+    if team.get('is_shark', False):
+        warn_pts += 20.0
+        warn_factors.append("ML Shark/Sharp Target Drag (-20 pts)")
 
     pen_factor = min(1.0, max(0.0, (float(bullpen) - 50.0) / 50.0))
     pen_pts = 15.0 * pen_factor
@@ -149,10 +162,10 @@ def calculate_dqi(team, pitchers=None):
         status = "CAUTION"
         warn_factors.append(f"TRUST Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
 
-    # Implied run total floor (3.8 runs) for GPP Trust
-    if status == "TRUST" and implied_total < 3.8:
+    # Implied run total floor (4.2 runs) for GPP Trust
+    if status == "TRUST" and implied_total < 4.2:
         status = "CAUTION"
-        warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 3.8)")
+        warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 4.2)")
 
     # Bullpen Fatigue Floor: TRUST requires opposing bullpen >= 65
     # Data: 0/8 TRUST calls with bullpen < 65 scored 4+ runs (30-slate audit, May 2026)

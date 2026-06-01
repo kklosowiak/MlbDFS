@@ -2,486 +2,790 @@
     "teams": {
         "Athletics": {
             "vl": {
-                "ops": 0.671,
-                "avg": 0.242,
-                "slg": 0.359,
-                "wOBA_proxy": 0.3402,
-                "pa": 560
+                "ops": 0.666,
+                "avg": 0.239,
+                "slg": 0.354,
+                "wOBA_proxy": 0.3372,
+                "pa": 603
             },
             "vr": {
-                "ops": 0.746,
-                "avg": 0.252,
-                "slg": 0.41,
-                "wOBA_proxy": 0.38039999999999996,
-                "pa": 1412
+                "ops": 0.735,
+                "avg": 0.249,
+                "slg": 0.402,
+                "wOBA_proxy": 0.3744,
+                "pa": 1589
             }
         },
         "Pittsburgh Pirates": {
             "vl": {
-                "ops": 0.659,
-                "avg": 0.241,
-                "slg": 0.354,
-                "wOBA_proxy": 0.3344,
-                "pa": 596
+                "ops": 0.69,
+                "avg": 0.252,
+                "slg": 0.372,
+                "wOBA_proxy": 0.3504,
+                "pa": 658
             },
             "vr": {
-                "ops": 0.741,
-                "avg": 0.255,
-                "slg": 0.398,
-                "wOBA_proxy": 0.376,
-                "pa": 1455
+                "ops": 0.738,
+                "avg": 0.25,
+                "slg": 0.4,
+                "wOBA_proxy": 0.3752,
+                "pa": 1619
             }
         },
         "San Diego Padres": {
             "vl": {
-                "ops": 0.599,
-                "avg": 0.211,
-                "slg": 0.325,
-                "wOBA_proxy": 0.30460000000000004,
-                "pa": 361
+                "ops": 0.615,
+                "avg": 0.219,
+                "slg": 0.333,
+                "wOBA_proxy": 0.3126,
+                "pa": 472
             },
             "vr": {
-                "ops": 0.677,
-                "avg": 0.224,
-                "slg": 0.38,
-                "wOBA_proxy": 0.3468,
-                "pa": 1461
+                "ops": 0.667,
+                "avg": 0.219,
+                "slg": 0.372,
+                "wOBA_proxy": 0.34119999999999995,
+                "pa": 1568
             }
         },
         "Seattle Mariners": {
             "vl": {
-                "ops": 0.592,
-                "avg": 0.189,
-                "slg": 0.315,
-                "wOBA_proxy": 0.2998,
-                "pa": 591
+                "ops": 0.614,
+                "avg": 0.204,
+                "slg": 0.329,
+                "wOBA_proxy": 0.3114,
+                "pa": 661
             },
             "vr": {
-                "ops": 0.725,
-                "avg": 0.238,
-                "slg": 0.395,
-                "wOBA_proxy": 0.369,
-                "pa": 1397
+                "ops": 0.748,
+                "avg": 0.245,
+                "slg": 0.416,
+                "wOBA_proxy": 0.38239999999999996,
+                "pa": 1532
             }
         },
         "San Francisco Giants": {
             "vl": {
-                "ops": 0.646,
-                "avg": 0.245,
-                "slg": 0.353,
-                "wOBA_proxy": 0.32899999999999996,
-                "pa": 511
+                "ops": 0.677,
+                "avg": 0.251,
+                "slg": 0.374,
+                "wOBA_proxy": 0.3456,
+                "pa": 568
             },
             "vr": {
-                "ops": 0.686,
+                "ops": 0.687,
                 "avg": 0.246,
-                "slg": 0.393,
-                "wOBA_proxy": 0.353,
-                "pa": 1410
+                "slg": 0.395,
+                "wOBA_proxy": 0.3538,
+                "pa": 1538
             }
         },
         "St. Louis Cardinals": {
             "vl": {
-                "ops": 0.705,
-                "avg": 0.246,
-                "slg": 0.376,
-                "wOBA_proxy": 0.3572,
-                "pa": 523
+                "ops": 0.689,
+                "avg": 0.235,
+                "slg": 0.372,
+                "wOBA_proxy": 0.35,
+                "pa": 596
             },
             "vr": {
-                "ops": 0.718,
-                "avg": 0.241,
-                "slg": 0.397,
-                "wOBA_proxy": 0.36660000000000004,
-                "pa": 1423
+                "ops": 0.712,
+                "avg": 0.24,
+                "slg": 0.394,
+                "wOBA_proxy": 0.36360000000000003,
+                "pa": 1511
             }
         },
         "Tampa Bay Rays": {
             "vl": {
-                "ops": 0.699,
+                "ops": 0.695,
                 "avg": 0.261,
-                "slg": 0.373,
-                "wOBA_proxy": 0.3542,
-                "pa": 576
+                "slg": 0.37,
+                "wOBA_proxy": 0.352,
+                "pa": 632
             },
             "vr": {
-                "ops": 0.736,
-                "avg": 0.261,
-                "slg": 0.397,
-                "wOBA_proxy": 0.3738,
-                "pa": 1294
+                "ops": 0.74,
+                "avg": 0.262,
+                "slg": 0.4,
+                "wOBA_proxy": 0.376,
+                "pa": 1442
             }
         },
         "Texas Rangers": {
             "vl": {
-                "ops": 0.627,
-                "avg": 0.218,
-                "slg": 0.326,
-                "wOBA_proxy": 0.316,
-                "pa": 441
+                "ops": 0.611,
+                "avg": 0.207,
+                "slg": 0.322,
+                "wOBA_proxy": 0.3088,
+                "pa": 479
             },
             "vr": {
-                "ops": 0.72,
-                "avg": 0.243,
-                "slg": 0.396,
-                "wOBA_proxy": 0.3672,
-                "pa": 1438
+                "ops": 0.711,
+                "avg": 0.238,
+                "slg": 0.392,
+                "wOBA_proxy": 0.3628,
+                "pa": 1645
             }
         },
         "Toronto Blue Jays": {
             "vl": {
-                "ops": 0.649,
-                "avg": 0.219,
-                "slg": 0.344,
-                "wOBA_proxy": 0.32839999999999997,
-                "pa": 520
+                "ops": 0.646,
+                "avg": 0.214,
+                "slg": 0.349,
+                "wOBA_proxy": 0.3282,
+                "pa": 588
             },
             "vr": {
-                "ops": 0.693,
-                "avg": 0.251,
-                "slg": 0.385,
-                "wOBA_proxy": 0.35419999999999996,
-                "pa": 1420
+                "ops": 0.704,
+                "avg": 0.254,
+                "slg": 0.391,
+                "wOBA_proxy": 0.3598,
+                "pa": 1574
             }
         },
         "Minnesota Twins": {
             "vl": {
-                "ops": 0.711,
-                "avg": 0.244,
-                "slg": 0.364,
-                "wOBA_proxy": 0.35719999999999996,
-                "pa": 640
+                "ops": 0.696,
+                "avg": 0.237,
+                "slg": 0.36,
+                "wOBA_proxy": 0.35040000000000004,
+                "pa": 697
             },
             "vr": {
-                "ops": 0.712,
-                "avg": 0.236,
-                "slg": 0.4,
-                "wOBA_proxy": 0.3648,
-                "pa": 1339
+                "ops": 0.701,
+                "avg": 0.233,
+                "slg": 0.394,
+                "wOBA_proxy": 0.3592,
+                "pa": 1502
             }
         },
         "Philadelphia Phillies": {
             "vl": {
-                "ops": 0.676,
-                "avg": 0.217,
-                "slg": 0.376,
-                "wOBA_proxy": 0.3456,
-                "pa": 588
+                "ops": 0.652,
+                "avg": 0.208,
+                "slg": 0.361,
+                "wOBA_proxy": 0.33299999999999996,
+                "pa": 662
             },
             "vr": {
                 "ops": 0.687,
-                "avg": 0.235,
-                "slg": 0.39,
-                "wOBA_proxy": 0.3528,
-                "pa": 1363
+                "avg": 0.233,
+                "slg": 0.392,
+                "wOBA_proxy": 0.35319999999999996,
+                "pa": 1459
             }
         },
         "Atlanta Braves": {
             "vl": {
-                "ops": 0.745,
-                "avg": 0.259,
-                "slg": 0.426,
-                "wOBA_proxy": 0.3832,
-                "pa": 698
+                "ops": 0.726,
+                "avg": 0.251,
+                "slg": 0.411,
+                "wOBA_proxy": 0.3726,
+                "pa": 822
             },
             "vr": {
-                "ops": 0.769,
-                "avg": 0.263,
-                "slg": 0.44,
-                "wOBA_proxy": 0.39560000000000006,
-                "pa": 1316
+                "ops": 0.778,
+                "avg": 0.267,
+                "slg": 0.446,
+                "wOBA_proxy": 0.4004,
+                "pa": 1390
             }
         },
         "Chicago White Sox": {
             "vl": {
-                "ops": 0.775,
-                "avg": 0.242,
+                "ops": 0.782,
+                "avg": 0.244,
                 "slg": 0.442,
-                "wOBA_proxy": 0.3984,
-                "pa": 518
+                "wOBA_proxy": 0.4012,
+                "pa": 581
             },
             "vr": {
-                "ops": 0.703,
-                "avg": 0.231,
-                "slg": 0.384,
-                "wOBA_proxy": 0.358,
-                "pa": 1420
+                "ops": 0.708,
+                "avg": 0.235,
+                "slg": 0.389,
+                "wOBA_proxy": 0.361,
+                "pa": 1591
             }
         },
         "Miami Marlins": {
             "vl": {
-                "ops": 0.696,
-                "avg": 0.237,
-                "slg": 0.38,
-                "wOBA_proxy": 0.3544,
-                "pa": 565
+                "ops": 0.697,
+                "avg": 0.24,
+                "slg": 0.378,
+                "wOBA_proxy": 0.35440000000000005,
+                "pa": 582
             },
             "vr": {
-                "ops": 0.697,
-                "avg": 0.246,
-                "slg": 0.377,
-                "wOBA_proxy": 0.35419999999999996,
-                "pa": 1408
+                "ops": 0.701,
+                "avg": 0.248,
+                "slg": 0.38,
+                "wOBA_proxy": 0.3564,
+                "pa": 1583
             }
         },
         "New York Yankees": {
             "vl": {
-                "ops": 0.793,
-                "avg": 0.244,
-                "slg": 0.458,
-                "wOBA_proxy": 0.4088,
-                "pa": 646
+                "ops": 0.806,
+                "avg": 0.252,
+                "slg": 0.47,
+                "wOBA_proxy": 0.4164,
+                "pa": 695
             },
             "vr": {
-                "ops": 0.736,
-                "avg": 0.23,
-                "slg": 0.411,
-                "wOBA_proxy": 0.3766,
-                "pa": 1313
+                "ops": 0.757,
+                "avg": 0.239,
+                "slg": 0.427,
+                "wOBA_proxy": 0.3882,
+                "pa": 1464
             }
         },
         "Milwaukee Brewers": {
             "vl": {
-                "ops": 0.627,
-                "avg": 0.219,
-                "slg": 0.315,
-                "wOBA_proxy": 0.3138,
-                "pa": 601
+                "ops": 0.631,
+                "avg": 0.223,
+                "slg": 0.318,
+                "wOBA_proxy": 0.316,
+                "pa": 664
             },
             "vr": {
-                "ops": 0.73,
-                "avg": 0.258,
-                "slg": 0.386,
-                "wOBA_proxy": 0.3692,
-                "pa": 1300
+                "ops": 0.724,
+                "avg": 0.254,
+                "slg": 0.384,
+                "wOBA_proxy": 0.3664,
+                "pa": 1413
             }
         },
         "Los Angeles Angels": {
             "vl": {
-                "ops": 0.743,
-                "avg": 0.242,
-                "slg": 0.411,
-                "wOBA_proxy": 0.37939999999999996,
-                "pa": 589
+                "ops": 0.725,
+                "avg": 0.235,
+                "slg": 0.4,
+                "wOBA_proxy": 0.37,
+                "pa": 620
             },
             "vr": {
-                "ops": 0.672,
-                "avg": 0.219,
-                "slg": 0.368,
-                "wOBA_proxy": 0.3424,
-                "pa": 1375
+                "ops": 0.681,
+                "avg": 0.226,
+                "slg": 0.373,
+                "wOBA_proxy": 0.347,
+                "pa": 1566
             }
         },
         "Arizona Diamondbacks": {
             "vl": {
-                "ops": 0.777,
-                "avg": 0.277,
-                "slg": 0.44,
-                "wOBA_proxy": 0.39880000000000004,
-                "pa": 555
+                "ops": 0.793,
+                "avg": 0.281,
+                "slg": 0.452,
+                "wOBA_proxy": 0.4076,
+                "pa": 593
             },
             "vr": {
-                "ops": 0.677,
-                "avg": 0.23,
-                "slg": 0.378,
-                "wOBA_proxy": 0.3464,
-                "pa": 1295
+                "ops": 0.69,
+                "avg": 0.237,
+                "slg": 0.385,
+                "wOBA_proxy": 0.353,
+                "pa": 1497
             }
         },
         "Baltimore Orioles": {
             "vl": {
-                "ops": 0.674,
-                "avg": 0.225,
-                "slg": 0.366,
-                "wOBA_proxy": 0.3428,
-                "pa": 548
+                "ops": 0.66,
+                "avg": 0.221,
+                "slg": 0.357,
+                "wOBA_proxy": 0.3354,
+                "pa": 661
             },
             "vr": {
-                "ops": 0.721,
-                "avg": 0.241,
-                "slg": 0.402,
-                "wOBA_proxy": 0.3688,
-                "pa": 1369
+                "ops": 0.732,
+                "avg": 0.244,
+                "slg": 0.41,
+                "wOBA_proxy": 0.37479999999999997,
+                "pa": 1531
             }
         },
         "Boston Red Sox": {
             "vl": {
-                "ops": 0.738,
-                "avg": 0.272,
-                "slg": 0.4,
-                "wOBA_proxy": 0.3752,
-                "pa": 464
+                "ops": 0.746,
+                "avg": 0.274,
+                "slg": 0.406,
+                "wOBA_proxy": 0.37960000000000005,
+                "pa": 507
             },
             "vr": {
-                "ops": 0.656,
-                "avg": 0.228,
-                "slg": 0.35,
-                "wOBA_proxy": 0.33240000000000003,
-                "pa": 1451
+                "ops": 0.671,
+                "avg": 0.236,
+                "slg": 0.362,
+                "wOBA_proxy": 0.3408,
+                "pa": 1600
             }
         },
         "Chicago Cubs": {
             "vl": {
-                "ops": 0.745,
-                "avg": 0.258,
-                "slg": 0.395,
-                "wOBA_proxy": 0.377,
-                "pa": 624
+                "ops": 0.728,
+                "avg": 0.251,
+                "slg": 0.384,
+                "wOBA_proxy": 0.368,
+                "pa": 644
             },
             "vr": {
-                "ops": 0.715,
-                "avg": 0.229,
-                "slg": 0.387,
-                "wOBA_proxy": 0.3634,
-                "pa": 1408
+                "ops": 0.722,
+                "avg": 0.234,
+                "slg": 0.389,
+                "wOBA_proxy": 0.36660000000000004,
+                "pa": 1634
             }
         },
         "Cincinnati Reds": {
             "vl": {
-                "ops": 0.742,
-                "avg": 0.226,
-                "slg": 0.421,
-                "wOBA_proxy": 0.381,
-                "pa": 452
+                "ops": 0.751,
+                "avg": 0.239,
+                "slg": 0.418,
+                "wOBA_proxy": 0.384,
+                "pa": 510
             },
             "vr": {
                 "ops": 0.696,
-                "avg": 0.23,
-                "slg": 0.388,
-                "wOBA_proxy": 0.356,
-                "pa": 1506
+                "avg": 0.228,
+                "slg": 0.387,
+                "wOBA_proxy": 0.3558,
+                "pa": 1633
             }
         },
         "Cleveland Guardians": {
             "vl": {
-                "ops": 0.727,
-                "avg": 0.247,
-                "slg": 0.397,
-                "wOBA_proxy": 0.3702,
-                "pa": 616
+                "ops": 0.746,
+                "avg": 0.258,
+                "slg": 0.406,
+                "wOBA_proxy": 0.37960000000000005,
+                "pa": 660
             },
             "vr": {
-                "ops": 0.678,
-                "avg": 0.219,
-                "slg": 0.362,
-                "wOBA_proxy": 0.3436,
-                "pa": 1413
+                "ops": 0.669,
+                "avg": 0.22,
+                "slg": 0.358,
+                "wOBA_proxy": 0.3392,
+                "pa": 1545
             }
         },
         "Colorado Rockies": {
             "vl": {
-                "ops": 0.641,
+                "ops": 0.64,
                 "avg": 0.239,
-                "slg": 0.347,
+                "slg": 0.349,
                 "wOBA_proxy": 0.3258,
-                "pa": 486
+                "pa": 522
             },
             "vr": {
-                "ops": 0.709,
-                "avg": 0.245,
-                "slg": 0.393,
-                "wOBA_proxy": 0.3622,
-                "pa": 1457
+                "ops": 0.706,
+                "avg": 0.244,
+                "slg": 0.391,
+                "wOBA_proxy": 0.36060000000000003,
+                "pa": 1644
             }
         },
         "Detroit Tigers": {
             "vl": {
-                "ops": 0.681,
-                "avg": 0.213,
-                "slg": 0.352,
-                "wOBA_proxy": 0.3428,
-                "pa": 516
+                "ops": 0.67,
+                "avg": 0.209,
+                "slg": 0.347,
+                "wOBA_proxy": 0.3374,
+                "pa": 587
             },
             "vr": {
-                "ops": 0.69,
-                "avg": 0.241,
-                "slg": 0.379,
-                "wOBA_proxy": 0.3518,
-                "pa": 1434
+                "ops": 0.686,
+                "avg": 0.239,
+                "slg": 0.375,
+                "wOBA_proxy": 0.3494,
+                "pa": 1589
             }
         },
         "Houston Astros": {
             "vl": {
-                "ops": 0.717,
-                "avg": 0.243,
-                "slg": 0.401,
-                "wOBA_proxy": 0.367,
-                "pa": 518
+                "ops": 0.757,
+                "avg": 0.248,
+                "slg": 0.436,
+                "wOBA_proxy": 0.39,
+                "pa": 574
             },
             "vr": {
-                "ops": 0.726,
-                "avg": 0.247,
-                "slg": 0.404,
-                "wOBA_proxy": 0.3712,
-                "pa": 1482
+                "ops": 0.72,
+                "avg": 0.243,
+                "slg": 0.401,
+                "wOBA_proxy": 0.3682,
+                "pa": 1660
             }
         },
         "Kansas City Royals": {
             "vl": {
-                "ops": 0.667,
-                "avg": 0.223,
-                "slg": 0.36,
-                "wOBA_proxy": 0.3388,
-                "pa": 541
+                "ops": 0.653,
+                "avg": 0.22,
+                "slg": 0.351,
+                "wOBA_proxy": 0.3314,
+                "pa": 588
             },
             "vr": {
-                "ops": 0.696,
-                "avg": 0.241,
-                "slg": 0.382,
-                "wOBA_proxy": 0.3548,
-                "pa": 1400
+                "ops": 0.69,
+                "avg": 0.239,
+                "slg": 0.38,
+                "wOBA_proxy": 0.352,
+                "pa": 1528
             }
         },
         "Los Angeles Dodgers": {
             "vl": {
-                "ops": 0.769,
-                "avg": 0.253,
-                "slg": 0.424,
-                "wOBA_proxy": 0.39239999999999997,
-                "pa": 496
+                "ops": 0.784,
+                "avg": 0.255,
+                "slg": 0.444,
+                "wOBA_proxy": 0.4024,
+                "pa": 551
             },
             "vr": {
-                "ops": 0.775,
-                "avg": 0.262,
-                "slg": 0.43,
-                "wOBA_proxy": 0.396,
-                "pa": 1504
+                "ops": 0.789,
+                "avg": 0.263,
+                "slg": 0.443,
+                "wOBA_proxy": 0.4042,
+                "pa": 1630
             }
         },
         "Washington Nationals": {
             "vl": {
-                "ops": 0.777,
+                "ops": 0.766,
                 "avg": 0.265,
-                "slg": 0.426,
-                "wOBA_proxy": 0.396,
-                "pa": 591
+                "slg": 0.416,
+                "wOBA_proxy": 0.38959999999999995,
+                "pa": 671
             },
             "vr": {
-                "ops": 0.723,
-                "avg": 0.235,
-                "slg": 0.412,
-                "wOBA_proxy": 0.3716,
-                "pa": 1482
+                "ops": 0.735,
+                "avg": 0.238,
+                "slg": 0.421,
+                "wOBA_proxy": 0.3782,
+                "pa": 1595
             }
         },
         "New York Mets": {
             "vl": {
-                "ops": 0.647,
-                "avg": 0.224,
-                "slg": 0.358,
-                "wOBA_proxy": 0.33039999999999997,
-                "pa": 532
+                "ops": 0.646,
+                "avg": 0.222,
+                "slg": 0.359,
+                "wOBA_proxy": 0.3302,
+                "pa": 603
             },
             "vr": {
-                "ops": 0.644,
-                "avg": 0.229,
-                "slg": 0.35,
-                "wOBA_proxy": 0.3276,
-                "pa": 1406
+                "ops": 0.642,
+                "avg": 0.228,
+                "slg": 0.348,
+                "wOBA_proxy": 0.32639999999999997,
+                "pa": 1516
             }
         }
     },
     "pitchers": {
+        "framber valdez": {
+            "vl": {
+                "ops": 0.692,
+                "avg": 0.246,
+                "slg": 0.386,
+                "wOBA_proxy": 0.354,
+                "pa": 62
+            },
+            "vr": {
+                "ops": 0.677,
+                "avg": 0.242,
+                "slg": 0.352,
+                "wOBA_proxy": 0.34119999999999995,
+                "pa": 206
+            }
+        },
+        "anthony kay": {
+            "vl": {
+                "ops": 0.303,
+                "avg": 0.067,
+                "slg": 0.111,
+                "wOBA_proxy": 0.1434,
+                "pa": 52
+            },
+            "vr": {
+                "ops": 0.909,
+                "avg": 0.307,
+                "slg": 0.51,
+                "wOBA_proxy": 0.4656,
+                "pa": 184
+            }
+        },
+        "michael king": {
+            "vl": {
+                "ops": 0.569,
+                "avg": 0.186,
+                "slg": 0.295,
+                "wOBA_proxy": 0.2866,
+                "pa": 147
+            },
+            "vr": {
+                "ops": 0.676,
+                "avg": 0.224,
+                "slg": 0.329,
+                "wOBA_proxy": 0.3362,
+                "pa": 101
+            }
+        },
+        "foster griffin": {
+            "vl": {
+                "ops": 0.65,
+                "avg": 0.188,
+                "slg": 0.377,
+                "wOBA_proxy": 0.33540000000000003,
+                "pa": 77
+            },
+            "vr": {
+                "ops": 0.694,
+                "avg": 0.232,
+                "slg": 0.396,
+                "wOBA_proxy": 0.3568,
+                "pa": 182
+            }
+        },
+        "seth lugo": {
+            "vl": {
+                "ops": 0.718,
+                "avg": 0.274,
+                "slg": 0.372,
+                "wOBA_proxy": 0.3616,
+                "pa": 182
+            },
+            "vr": {
+                "ops": 0.746,
+                "avg": 0.265,
+                "slg": 0.446,
+                "wOBA_proxy": 0.3876,
+                "pa": 91
+            }
+        },
+        "kumar rocker": {
+            "vl": {
+                "ops": 0.748,
+                "avg": 0.253,
+                "slg": 0.4,
+                "wOBA_proxy": 0.3792,
+                "pa": 112
+            },
+            "vr": {
+                "ops": 0.614,
+                "avg": 0.232,
+                "slg": 0.316,
+                "wOBA_proxy": 0.30879999999999996,
+                "pa": 104
+            }
+        },
+        "trey yesavage": {
+            "vl": {
+                "ops": 0.558,
+                "avg": 0.221,
+                "slg": 0.294,
+                "wOBA_proxy": 0.282,
+                "pa": 72
+            },
+            "vr": {
+                "ops": 0.578,
+                "avg": 0.188,
+                "slg": 0.292,
+                "wOBA_proxy": 0.28959999999999997,
+                "pa": 56
+            }
+        },
+        "brandon young": {
+            "vl": {
+                "ops": 0.68,
+                "avg": 0.226,
+                "slg": 0.381,
+                "wOBA_proxy": 0.3482,
+                "pa": 97
+            },
+            "vr": {
+                "ops": 0.745,
+                "avg": 0.271,
+                "slg": 0.407,
+                "wOBA_proxy": 0.37939999999999996,
+                "pa": 65
+            }
+        },
+        "bailey ober": {
+            "vl": {
+                "ops": 0.712,
+                "avg": 0.202,
+                "slg": 0.454,
+                "wOBA_proxy": 0.3756,
+                "pa": 129
+            },
+            "vr": {
+                "ops": 0.635,
+                "avg": 0.235,
+                "slg": 0.339,
+                "wOBA_proxy": 0.3218,
+                "pa": 125
+            }
+        },
+        "mitch keller": {
+            "vl": {
+                "ops": 0.701,
+                "avg": 0.253,
+                "slg": 0.397,
+                "wOBA_proxy": 0.3598,
+                "pa": 158
+            },
+            "vr": {
+                "ops": 0.401,
+                "avg": 0.148,
+                "slg": 0.159,
+                "wOBA_proxy": 0.19219999999999998,
+                "pa": 99
+            }
+        },
+        "sonny gray": {
+            "vl": {
+                "ops": 0.676,
+                "avg": 0.242,
+                "slg": 0.368,
+                "wOBA_proxy": 0.344,
+                "pa": 104
+            },
+            "vr": {
+                "ops": 0.719,
+                "avg": 0.26,
+                "slg": 0.411,
+                "wOBA_proxy": 0.3698,
+                "pa": 78
+            }
+        },
+        "parker messick": {
+            "vl": {
+                "ops": 0.591,
+                "avg": 0.22,
+                "slg": 0.288,
+                "wOBA_proxy": 0.294,
+                "pa": 66
+            },
+            "vr": {
+                "ops": 0.597,
+                "avg": 0.206,
+                "slg": 0.335,
+                "wOBA_proxy": 0.3058,
+                "pa": 184
+            }
+        },
+        "reid detmers": {
+            "vl": {
+                "ops": 0.536,
+                "avg": 0.2,
+                "slg": 0.267,
+                "wOBA_proxy": 0.26780000000000004,
+                "pa": 67
+            },
+            "vr": {
+                "ops": 0.675,
+                "avg": 0.233,
+                "slg": 0.381,
+                "wOBA_proxy": 0.3462,
+                "pa": 198
+            }
+        },
+        "drew rasmussen": {
+            "vl": {
+                "ops": 0.697,
+                "avg": 0.258,
+                "slg": 0.394,
+                "wOBA_proxy": 0.35760000000000003,
+                "pa": 142
+            },
+            "vr": {
+                "ops": 0.388,
+                "avg": 0.135,
+                "slg": 0.23,
+                "wOBA_proxy": 0.20120000000000002,
+                "pa": 76
+            }
+        },
+        "tyler phillips": {
+            "vl": {
+                "ops": 0.596,
+                "avg": 0.209,
+                "slg": 0.284,
+                "wOBA_proxy": 0.29519999999999996,
+                "pa": 77
+            },
+            "vr": {
+                "ops": 0.525,
+                "avg": 0.172,
+                "slg": 0.241,
+                "wOBA_proxy": 0.2582,
+                "pa": 67
+            }
+        },
+        "christian scott": {
+            "vl": {
+                "ops": 0.519,
+                "avg": 0.18,
+                "slg": 0.213,
+                "wOBA_proxy": 0.2502,
+                "pa": 72
+            },
+            "vr": {
+                "ops": 0.9,
+                "avg": 0.294,
+                "slg": 0.471,
+                "wOBA_proxy": 0.45419999999999994,
+                "pa": 42
+            }
+        },
+        "brandon sproat": {
+            "vl": {
+                "ops": 0.88,
+                "avg": 0.25,
+                "slg": 0.474,
+                "wOBA_proxy": 0.4468,
+                "pa": 98
+            },
+            "vr": {
+                "ops": 0.792,
+                "avg": 0.261,
+                "slg": 0.455,
+                "wOBA_proxy": 0.40780000000000005,
+                "pa": 98
+            }
+        },
+        "peter lambert": {
+            "vl": {
+                "ops": 0.444,
+                "avg": 0.138,
+                "slg": 0.161,
+                "wOBA_proxy": 0.2098,
+                "pa": 106
+            },
+            "vr": {
+                "ops": 0.805,
+                "avg": 0.293,
+                "slg": 0.466,
+                "wOBA_proxy": 0.4152,
+                "pa": 62
+            }
+        },
+        "ben brown": {
+            "vl": {
+                "ops": 0.528,
+                "avg": 0.205,
+                "slg": 0.241,
+                "wOBA_proxy": 0.25939999999999996,
+                "pa": 94
+            },
+            "vr": {
+                "ops": 0.432,
+                "avg": 0.167,
+                "slg": 0.218,
+                "wOBA_proxy": 0.2164,
+                "pa": 84
+            }
+        },
         "kyle leahy": {
             "vl": {
                 "ops": 0.971,
@@ -498,132 +802,36 @@
                 "pa": 103
             }
         },
-        "chase petty": {
+        "martin perez": {
             "vl": {
-                "ops": 0.1,
-                "avg": 0.0,
-                "slg": 0.0,
-                "wOBA_proxy": 0.04000000000000001,
-                "pa": 10
+                "ops": 0.619,
+                "avg": 0.2,
+                "slg": 0.36,
+                "wOBA_proxy": 0.3196,
+                "pa": 54
             },
             "vr": {
-                "ops": 1.052,
-                "avg": 0.333,
-                "slg": 0.667,
-                "wOBA_proxy": 0.5542,
-                "pa": 13
+                "ops": 0.634,
+                "avg": 0.2,
+                "slg": 0.357,
+                "wOBA_proxy": 0.32499999999999996,
+                "pa": 131
             }
         },
-        "kaiwei teng": {
+        "brady singer": {
             "vl": {
-                "ops": 0.759,
-                "avg": 0.226,
-                "slg": 0.435,
-                "wOBA_proxy": 0.39060000000000006,
-                "pa": 71
+                "ops": 1.104,
+                "avg": 0.385,
+                "slg": 0.68,
+                "wOBA_proxy": 0.5776,
+                "pa": 133
             },
             "vr": {
-                "ops": 0.41,
-                "avg": 0.152,
-                "slg": 0.167,
-                "wOBA_proxy": 0.19740000000000002,
-                "pa": 74
-            }
-        },
-        "colin rea": {
-            "vl": {
-                "ops": 0.787,
-                "avg": 0.308,
-                "slg": 0.423,
-                "wOBA_proxy": 0.3994,
-                "pa": 144
-            },
-            "vr": {
-                "ops": 0.665,
-                "avg": 0.205,
-                "slg": 0.398,
-                "wOBA_proxy": 0.3456,
-                "pa": 90
-            }
-        },
-        "paul skenes": {
-            "vl": {
-                "ops": 0.519,
-                "avg": 0.174,
-                "slg": 0.303,
-                "wOBA_proxy": 0.2682,
-                "pa": 141
-            },
-            "vr": {
-                "ops": 0.598,
-                "avg": 0.202,
-                "slg": 0.345,
-                "wOBA_proxy": 0.30820000000000003,
-                "pa": 91
-            }
-        },
-        "patrick corbin": {
-            "vl": {
-                "ops": 0.694,
-                "avg": 0.306,
-                "slg": 0.361,
-                "wOBA_proxy": 0.3498,
-                "pa": 40
-            },
-            "vr": {
-                "ops": 0.797,
-                "avg": 0.286,
-                "slg": 0.444,
-                "wOBA_proxy": 0.40759999999999996,
-                "pa": 150
-            }
-        },
-        "slade cecconi": {
-            "vl": {
-                "ops": 0.711,
-                "avg": 0.269,
-                "slg": 0.37,
-                "wOBA_proxy": 0.35840000000000005,
-                "pa": 135
-            },
-            "vr": {
-                "ops": 0.893,
-                "avg": 0.306,
-                "slg": 0.537,
-                "wOBA_proxy": 0.4646,
-                "pa": 118
-            }
-        },
-        "zack wheeler": {
-            "vl": {
-                "ops": 0.416,
-                "avg": 0.134,
-                "slg": 0.207,
-                "wOBA_proxy": 0.20779999999999998,
-                "pa": 91
-            },
-            "vr": {
-                "ops": 0.607,
-                "avg": 0.245,
-                "slg": 0.347,
-                "wOBA_proxy": 0.3122,
-                "pa": 50
-            }
-        },
-        "bryan hudson": {
-            "vl": {
-                "ops": 0.729,
-                "avg": 0.297,
-                "slg": 0.351,
-                "wOBA_proxy": 0.3618,
-                "pa": 46
-            },
-            "vr": {
-                "ops": 0.517,
-                "avg": 0.208,
-                "slg": 0.208,
-                "wOBA_proxy": 0.2484,
-                "pa": 57
+                "ops": 0.782,
+                "avg": 0.247,
+                "slg": 0.481,
+                "wOBA_proxy": 0.409,
+                "pa": 83
             }
         },
         "adrian houser": {
@@ -642,132 +850,100 @@
                 "pa": 94
             }
         },
-        "george kirby": {
+        "ryan feltner": {
             "vl": {
-                "ops": 0.634,
-                "avg": 0.233,
-                "slg": 0.333,
-                "wOBA_proxy": 0.32020000000000004,
-                "pa": 143
-            },
-            "vr": {
-                "ops": 0.703,
-                "avg": 0.285,
-                "slg": 0.392,
-                "wOBA_proxy": 0.35960000000000003,
-                "pa": 135
-            }
-        },
-        "stephen kolek": {
-            "vl": {
-                "ops": 0.475,
+                "ops": 0.653,
                 "avg": 0.182,
-                "slg": 0.258,
-                "wOBA_proxy": 0.24159999999999998,
-                "pa": 69
+                "slg": 0.424,
+                "wOBA_proxy": 0.346,
+                "pa": 35
             },
             "vr": {
-                "ops": 0.699,
-                "avg": 0.192,
-                "slg": 0.423,
-                "wOBA_proxy": 0.36419999999999997,
-                "pa": 29
+                "ops": 1.075,
+                "avg": 0.34,
+                "slg": 0.66,
+                "wOBA_proxy": 0.562,
+                "pa": 53
             }
         },
-        "taj bradley": {
+        "ryan weathers": {
             "vl": {
-                "ops": 0.599,
-                "avg": 0.187,
-                "slg": 0.336,
-                "wOBA_proxy": 0.3068,
-                "pa": 119
-            },
-            "vr": {
-                "ops": 0.706,
-                "avg": 0.253,
-                "slg": 0.379,
-                "wOBA_proxy": 0.35819999999999996,
-                "pa": 98
-            }
-        },
-        "jovani moran": {
-            "vl": {
-                "ops": 0.444,
-                "avg": 0.132,
-                "slg": 0.211,
-                "wOBA_proxy": 0.2198,
-                "pa": 43
-            },
-            "vr": {
-                "ops": 0.802,
-                "avg": 0.232,
-                "slg": 0.464,
-                "wOBA_proxy": 0.41359999999999997,
-                "pa": 68
-            }
-        },
-        "jake irvin": {
-            "vl": {
-                "ops": 0.707,
-                "avg": 0.22,
-                "slg": 0.374,
-                "wOBA_proxy": 0.35760000000000003,
-                "pa": 144
-            },
-            "vr": {
-                "ops": 0.767,
-                "avg": 0.276,
-                "slg": 0.434,
-                "wOBA_proxy": 0.39359999999999995,
-                "pa": 84
-            }
-        },
-        "grant holmes": {
-            "vl": {
-                "ops": 0.686,
-                "avg": 0.211,
-                "slg": 0.386,
-                "wOBA_proxy": 0.3516,
-                "pa": 130
-            },
-            "vr": {
-                "ops": 0.741,
-                "avg": 0.238,
-                "slg": 0.429,
-                "wOBA_proxy": 0.3822,
-                "pa": 93
-            }
-        },
-        "freddy peralta": {
-            "vl": {
-                "ops": 0.707,
+                "ops": 0.488,
                 "avg": 0.227,
-                "slg": 0.403,
-                "wOBA_proxy": 0.3634,
-                "pa": 172
+                "slg": 0.227,
+                "wOBA_proxy": 0.24059999999999998,
+                "pa": 46
             },
             "vr": {
-                "ops": 0.59,
-                "avg": 0.205,
-                "slg": 0.282,
-                "wOBA_proxy": 0.2924,
-                "pa": 91
+                "ops": 0.692,
+                "avg": 0.225,
+                "slg": 0.408,
+                "wOBA_proxy": 0.35839999999999994,
+                "pa": 184
             }
         },
-        "max meyer": {
+        "jt ginn": {
             "vl": {
-                "ops": 0.531,
-                "avg": 0.171,
-                "slg": 0.276,
-                "wOBA_proxy": 0.2676,
-                "pa": 137
+                "ops": 0.726,
+                "avg": 0.229,
+                "slg": 0.39,
+                "wOBA_proxy": 0.3684,
+                "pa": 122
             },
             "vr": {
-                "ops": 0.622,
-                "avg": 0.21,
-                "slg": 0.33,
-                "wOBA_proxy": 0.3148,
-                "pa": 113
+                "ops": 0.519,
+                "avg": 0.167,
+                "slg": 0.274,
+                "wOBA_proxy": 0.2624,
+                "pa": 95
+            }
+        },
+        "ryne nelson": {
+            "vl": {
+                "ops": 0.635,
+                "avg": 0.197,
+                "slg": 0.377,
+                "wOBA_proxy": 0.3294,
+                "pa": 132
+            },
+            "vr": {
+                "ops": 0.796,
+                "avg": 0.255,
+                "slg": 0.482,
+                "wOBA_proxy": 0.41479999999999995,
+                "pa": 122
+            }
+        },
+        "bryan woo": {
+            "vl": {
+                "ops": 0.616,
+                "avg": 0.205,
+                "slg": 0.346,
+                "wOBA_proxy": 0.3156,
+                "pa": 141
+            },
+            "vr": {
+                "ops": 0.597,
+                "avg": 0.236,
+                "slg": 0.336,
+                "wOBA_proxy": 0.306,
+                "pa": 115
+            }
+        },
+        "jesus luzardo": {
+            "vl": {
+                "ops": 0.556,
+                "avg": 0.224,
+                "slg": 0.306,
+                "wOBA_proxy": 0.28359999999999996,
+                "pa": 52
+            },
+            "vr": {
+                "ops": 0.744,
+                "avg": 0.273,
+                "slg": 0.406,
+                "wOBA_proxy": 0.3788,
+                "pa": 208
             }
         },
         "roki sasaki": {
@@ -785,183 +961,7 @@
                 "wOBA_proxy": 0.4174,
                 "pa": 87
             }
-        },
-        "robert gasser": {
-            "vl": {
-                "ops": 1.583,
-                "avg": 0.444,
-                "slg": 1.0,
-                "wOBA_proxy": 0.8331999999999999,
-                "pa": 12
-            },
-            "vr": {
-                "ops": 0.614,
-                "avg": 0.13,
-                "slg": 0.304,
-                "wOBA_proxy": 0.3064,
-                "pa": 29
-            }
-        },
-        "jt ginn": {
-            "vl": {
-                "ops": 0.729,
-                "avg": 0.233,
-                "slg": 0.398,
-                "wOBA_proxy": 0.37120000000000003,
-                "pa": 118
-            },
-            "vr": {
-                "ops": 0.505,
-                "avg": 0.177,
-                "slg": 0.291,
-                "wOBA_proxy": 0.2602,
-                "pa": 85
-            }
-        },
-        "lucas giolito": {
-            "vl": {
-                "ops": 0.408,
-                "avg": 0.1,
-                "slg": 0.1,
-                "wOBA_proxy": 0.1832,
-                "pa": 13
-            },
-            "vr": {
-                "ops": 0.143,
-                "avg": 0.0,
-                "slg": 0.0,
-                "wOBA_proxy": 0.0572,
-                "pa": 7
-            }
-        },
-        "nathan eovaldi": {
-            "vl": {
-                "ops": 0.759,
-                "avg": 0.254,
-                "slg": 0.463,
-                "wOBA_proxy": 0.3962,
-                "pa": 142
-            },
-            "vr": {
-                "ops": 0.61,
-                "avg": 0.224,
-                "slg": 0.316,
-                "wOBA_proxy": 0.3072,
-                "pa": 85
-            }
-        },
-        "walbert urena": {
-            "vl": {
-                "ops": 0.523,
-                "avg": 0.149,
-                "slg": 0.239,
-                "wOBA_proxy": 0.257,
-                "pa": 81
-            },
-            "vr": {
-                "ops": 0.727,
-                "avg": 0.281,
-                "slg": 0.368,
-                "wOBA_proxy": 0.3644,
-                "pa": 64
-            }
-        },
-        "michael lorenzen": {
-            "vl": {
-                "ops": 1.209,
-                "avg": 0.408,
-                "slg": 0.748,
-                "wOBA_proxy": 0.6332,
-                "pa": 115
-            },
-            "vr": {
-                "ops": 0.748,
-                "avg": 0.304,
-                "slg": 0.393,
-                "wOBA_proxy": 0.3778,
-                "pa": 122
-            }
-        },
-        "zac gallen": {
-            "vl": {
-                "ops": 0.744,
-                "avg": 0.27,
-                "slg": 0.42,
-                "wOBA_proxy": 0.38160000000000005,
-                "pa": 111
-            },
-            "vr": {
-                "ops": 0.836,
-                "avg": 0.292,
-                "slg": 0.49,
-                "wOBA_proxy": 0.4324,
-                "pa": 105
-            }
-        },
-        "drew rasmussen": {
-            "vl": {
-                "ops": 0.724,
-                "avg": 0.259,
-                "slg": 0.414,
-                "wOBA_proxy": 0.37239999999999995,
-                "pa": 126
-            },
-            "vr": {
-                "ops": 0.386,
-                "avg": 0.134,
-                "slg": 0.239,
-                "wOBA_proxy": 0.2022,
-                "pa": 68
-            }
-        },
-        "ryan weathers": {
-            "vl": {
-                "ops": 0.52,
-                "avg": 0.25,
-                "slg": 0.25,
-                "wOBA_proxy": 0.258,
-                "pa": 37
-            },
-            "vr": {
-                "ops": 0.705,
-                "avg": 0.227,
-                "slg": 0.422,
-                "wOBA_proxy": 0.36639999999999995,
-                "pa": 167
-            }
-        },
-        "framber valdez": {
-            "vl": {
-                "ops": 0.638,
-                "avg": 0.241,
-                "slg": 0.333,
-                "wOBA_proxy": 0.3218,
-                "pa": 59
-            },
-            "vr": {
-                "ops": 0.724,
-                "avg": 0.261,
-                "slg": 0.382,
-                "wOBA_proxy": 0.366,
-                "pa": 187
-            }
-        },
-        "brandon young": {
-            "vl": {
-                "ops": 0.732,
-                "avg": 0.239,
-                "slg": 0.423,
-                "wOBA_proxy": 0.37739999999999996,
-                "pa": 81
-            },
-            "vr": {
-                "ops": 0.784,
-                "avg": 0.277,
-                "slg": 0.426,
-                "wOBA_proxy": 0.3988,
-                "pa": 53
-            }
         }
     },
-    "timestamp": "2026-05-23T22:41:29.664356"
+    "timestamp": "2026-05-30T13:29:12.125124"
 }

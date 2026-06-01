@@ -569,8 +569,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
                 is_whale = consensus_fetcher.detect_whale(team, splits_data)
-                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
-                is_storm = False  # OMEGA v13.9: Retired — 15% hit rate, pure noise
+                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data, ml_move)
+                is_storm = (divergence >= 10 and tt_move >= 0.3)
                 is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
 
             # Opponent Physics discovery
@@ -792,6 +792,57 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_er_line = opp_pitcher_rep.get('er_line') if opp_pitcher_rep else None
             opp_er_odds = opp_pitcher_rep.get('er_odds') if opp_pitcher_rep else None
 
+            # Calculate consolidated parameters before calling engine
+            ump_data = umpire_assignments.get(home, {"factor": 1.0, "name": "Unknown"})
+            weather_data = weather_fetcher.get_alpha_modifier(home)
+            umpire_factor = float(ump_data.get('factor', 1.0) or 1.0)
+            weather_boost = float(weather_data.get('boost', 0.0) or 0.0)
+
+            opp_pitcher_alpha = 0.0
+            if opp_pitcher_rep:
+                alpha = opp_pitcher_rep.get('alpha_score', 0)
+                opp_pitcher_alpha = alpha.get('final', 0) if isinstance(alpha, dict) else alpha
+
+            is_opp_debut = False
+            if opp_pitcher_rep and opp_pitcher_rep.get('is_debut', False):
+                is_opp_debut = True
+
+            under_divergence = 0
+            over_divergence = 0
+            total_signal = ""
+            if totals_data:
+                def get_clean_team_key(team_name):
+                    t_up = team_name.upper()
+                    if "WHITE SOX" in t_up: return "WHITE SOX"
+                    if "RED SOX" in t_up: return "RED SOX"
+                    return team_name.split()[-1].upper()
+                
+                home_key = get_clean_team_key(home)
+                away_key = get_clean_team_key(away)
+                for gk, gv in totals_data.items():
+                    gk_up = gk.upper()
+                    if home_key in gk_up and away_key in gk_up:
+                        over_divergence = gv.get('over_divergence', 0)
+                        under_divergence = gv.get('under_divergence', 0)
+                        
+                        if over_divergence >= 8:
+                            total_signal = f"📈 O-DIV +{over_divergence}"
+                        elif under_divergence >= 8:
+                            total_signal = f"📉 U-DIV +{under_divergence}"
+                        elif over_divergence >= 4:
+                            total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
+                        break
+
+            is_sneaky = evaluate_sneaky_stack(
+                curr_itt,
+                team_xwoba,
+                float(opp_outs),
+                is_opp_debut,
+                opp_bullpen['score'],
+                opp_bullpen['is_gassed'],
+                opp_bullpen.get('is_fatigued', False)
+            )
+
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
                 power_concentration=power_concentration,
@@ -807,106 +858,38 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 opp_walks_line=opp_walks_line,
                 opp_walks_odds=opp_walks_odds,
                 opp_er_line=opp_er_line,
-                opp_er_odds=opp_er_odds
+                opp_er_odds=opp_er_odds,
+                umpire_factor=umpire_factor,
+                weather_boost=weather_boost,
+                opp_pitcher_alpha=opp_pitcher_alpha,
+                is_opp_debut=is_opp_debut,
+                over_divergence=over_divergence,
+                under_divergence=under_divergence,
+                is_sneaky=is_sneaky
             )
-            
-            # Sentiment Divergence (Venue-Based)
-            ump_data = umpire_assignments.get(home, {"factor": 1.0, "name": "Unknown"})
-            weather_data = weather_fetcher.get_alpha_modifier(home)
-            
-            # Dampened Environmental Synergy
-            sentiment_mod = (1.0 / ump_data.get('factor', 1.0))
-            env_synergy = 1.0 + (weather_data['boost'] / 100.0)
-            
-            # Dominance Penalty
-            dominance_penalty = 0.0
-            if opp_pitcher_rep:
-                alpha = opp_pitcher_rep.get('alpha_score', 0)
-                opp_pitcher_alpha = alpha.get('final', 0) if isinstance(alpha, dict) else alpha
-                if opp_pitcher_alpha > 80:
-                    dominance_penalty = (opp_pitcher_alpha - 80) * 0.5
             
             if game_started and has_prev:
                 final_stack_score = prev_team_data.get('stack_score', 50.0)
-            else:
-                final_stack_score = round((res['final'] - dominance_penalty) * sentiment_mod * env_synergy, 1)
-                # OMEGA v15.0: is_shark +15% hardcoded boost REMOVED.
-                # Rogue double-boost: engine already handles shark via beta signal.
-                # Empirical result: is_shark avg_runs=1.60 vs 3.93 baseline (0/5 five-run games).
-
-            # Trend Analysis (OMEGA v6.3: Velocity-Gated Momentum)
-            # PATCH (4/19/26): SURGING/FADING now requires BOTH a meaningful delta
-            # AND a directionally-consistent current divergence to prevent false
-            # signals near zero (e.g. -8 → -5 delta firing SURGING on a net-fade).
-            trend = "STABLE"
-            if game_started and has_prev:
+                stack_score_raw = prev_team_data.get('stack_score_raw')
                 trend = prev_team_data.get('trend', 'STABLE')
+                total_signal = prev_team_data.get('total_signal', '')
+                is_opp_debut = prev_team_data.get('is_opp_debut', False)
+                is_sneaky = prev_team_data.get('is_sneaky', False)
             else:
+                final_stack_score = res['final']
+                stack_score_raw = res.get('final_raw', final_stack_score)
+                
+                # Trend Analysis (OMEGA v6.3: Velocity-Gated Momentum)
+                trend = "STABLE"
                 prev_div = previous_results.get(team, {}).get('divergence')
                 if prev_div is not None:
                     delta = divergence - prev_div
-                    # OMEGA v13.9: SURGING retired (24% hit rate). Only FADING kept as suppression signal.
-                    # if delta >= 3.0 and divergence >= 5: trend = "SURGING"  # RETIRED
                     if delta <= -3.0 and divergence <= -5:
                         trend = "FADING"
             
-            # OMEGA v7.6: Total Divergence Signal (Active Scoring Suppression)
-            total_signal = ""
-            ud_penalty = 0.0
-            od_boost = 0.0
-            if game_started and has_prev:
-                total_signal = prev_team_data.get('total_signal', '')
-            else:
-                if totals_data:
-                    # Match game by searching for both team names in the key
-                    def get_clean_team_key(team_name):
-                        t_up = team_name.upper()
-                        if "WHITE SOX" in t_up: return "WHITE SOX"
-                        if "RED SOX" in t_up: return "RED SOX"
-                        return team_name.split()[-1].upper()
-                    
-                    home_key = get_clean_team_key(home)
-                    away_key = get_clean_team_key(away)
-                    for gk, gv in totals_data.items():
-                        gk_up = gk.upper()
-                        if home_key in gk_up and away_key in gk_up:
-                            od = gv.get('over_divergence', 0)
-                            ud = gv.get('under_divergence', 0)
-                            
-                            if ud >= 15:
-                                ud_penalty = 0.15 # OMEGA v8.1: 15% multiplier
-                            elif ud >= 10:
-                                ud_penalty = 0.05
-                                
-                            # OMEGA v8.0: Mechanicalize O-DIV
-                            if od >= 15:
-                                od_boost = 8.0
-                            elif od >= 8:
-                                od_boost = 5.0
-                                
-                            if od >= 8:
-                                total_signal = f"📈 O-DIV +{od}"
-                            elif ud >= 8:
-                                total_signal = f"📉 U-DIV +{ud}"
-                            elif od >= 4:
-                                total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
-                            break
-            
-            # OMEGA v9.1: Apply +10% Stack Boost against uncalibrated Debut/Rookie pitchers
-            is_opp_debut = False
-            if game_started and has_prev:
-                is_opp_debut = prev_team_data.get('is_opp_debut', False)
-            else:
-                if opp_pitcher_rep and opp_pitcher_rep.get('is_debut', False):
-                    is_opp_debut = True
-                    final_stack_score = round(final_stack_score * 1.10, 1)
-                    print(f"  - DEBUT BOOST: Applied +10% stack multiplier vs. debut pitcher {opp_pitcher_name} (new score: {final_stack_score})")
-
-                # OMEGA v8.0: Apply U-DIV as multiplier
-                final_stack_score = max(0.0, round((final_stack_score + od_boost) * (1.0 - ud_penalty), 1))
-
-            stack_score_raw = final_stack_score
-            final_stack_score = min(150.0, final_stack_score)
+            # Print debut boost if active inside the engine to preserve logs
+            if is_opp_debut and not (game_started and has_prev):
+                print(f"  - DEBUT BOOST: Applied +10% stack multiplier vs. debut pitcher {opp_pitcher_name}")
 
             # OMEGA v10.1: Physics Override Detection
             # When our lineup's PHY beats the opponent's PHY by 10+ pts but the market
@@ -918,20 +901,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 final_stack_score < 85.0
             )
 
-            # OMEGA v13.0: Sneaky Stack Detection (Low-owned GPP gems)
-            is_sneaky = evaluate_sneaky_stack(
-                curr_itt,
-                team_xwoba,
-                float(opp_outs),
-                is_opp_debut,
-                opp_bullpen['score'],
-                opp_bullpen['is_gassed'],
-                opp_bullpen.get('is_fatigued', False)
-            )
 
-            # Apply +4.0 point GPP premium for sneaky stacks (low implied total leverage)
-            if is_sneaky:
-                final_stack_score = round(final_stack_score + 4.0, 1)
 
             # OMEGA v12.0: Multi-Factor Slate Momentum Index (MSMI)
             # Compare rolling K rate and rolling OPS vs season rates across confirmed lineup hitters.
@@ -1215,23 +1185,12 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             pitcher_name=opp_pitcher, matchup_radar=matchup_radar,
             walks_line=h.get('walks_line'), walks_price=h.get('walks_price'),
             strikeouts_line=h.get('strikeouts_line'), strikeouts_price=h.get('strikeouts_price'),
-            runs_g_rbi_line=h.get('runs_g_rbi_line'), runs_g_rbi_price=h.get('runs_g_rbi_price')
+            runs_g_rbi_line=h.get('runs_g_rbi_line'), runs_g_rbi_price=h.get('runs_g_rbi_price'),
+            hard_hit_pct=hard_hit_pct,
+            barrel_pct=barrel_pct,
+            hits_line=h.get('hits_line'),
+            hits_price=h.get('hits_price')
         )
-
-        # OMEGA v13.9: Apply batted ball profile boosts
-        if hard_hit_pct >= 45.0:
-            res['final'] = round(res['final'] * 1.03, 1)  # Solid contact advantage
-        if barrel_pct >= 12.0:
-            res['final'] = round(res['final'] * 1.02, 1)  # Elite power threat
-
-        # OMEGA v8.0: ICE_COLD_MARKET penalty
-        try:
-            h_line = h.get('hits_line')
-            h_price = h.get('hits_price')
-            if h_line != '-' and float(h_line) >= 0.5 and float(h_price) >= 100:
-                res['final'] = round(res['final'] * 0.80, 1)
-        except (ValueError, TypeError):
-            pass
 
         h_reports.append({
             'name': h['name'].title(), 'team': h['team'], 
@@ -1252,6 +1211,9 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'is_prop_juice': h.get('is_prop_juice', False),
             'is_speed_target': h.get('is_speed_target', False),
             'is_pitch_alignment': is_hitter_pitch_alignment,
+            'walks_boost': res.get('walks_boost', False),
+            'strikeouts_penalty': res.get('strikeouts_penalty', False),
+            'is_anti_chalk_smash': team_data.get('is_anti_chalk_smash', False) if team_data else False,
             'platoon_multiplier': platoon_multiplier,
             'platoon_label': res.get('platoon_label', 'Neutral'),
             'bat_side': h_profile.get('bat_side', 'R') if h_profile.get('type') == 'hitter' else 'R',

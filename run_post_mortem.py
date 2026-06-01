@@ -18,7 +18,7 @@ def run_post_mortem(date_str=None):
         print(f"ERROR: No latest_results.json found at {results_path}")
         return
     
-    with open(results_path, 'r') as f:
+    with open(results_path, 'r', encoding='utf-8') as f:
         projections = json.load(f)
     
     # 2. Fetch Actuals via AuditEngine

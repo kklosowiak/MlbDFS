@@ -113,7 +113,7 @@ def compute_gpp_leverage(team_reports: list[dict], p_reports: list[dict]) -> Non
                 t['leverage_label'] = 'LEVERAGE PIVOT'
                 t['leverage_color'] = 'green'
             elif gli < 0.6 and scaled_own >= avg_own:
-                t['leverage_label'] = 'CROWDED CHALK'
+                t['leverage_label'] = 'OVEROWNED'
                 t['leverage_color'] = 'red'
             else:
                 t['leverage_label'] = 'NEUTRAL'

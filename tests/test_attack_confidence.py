@@ -338,8 +338,10 @@ def test_unanchored_chalk_stack_capping():
     # Adding 2 conviction signals -> should remain uncapped (94)
     t_anchored = {
         **t_unanchored,
-        "divergence": 10,  # signal 1
+        "divergence": 0,
+        "is_pitch_alignment": True,  # signal 1
         "is_anti_chalk_smash": True,  # signal 2
+        "weather_label": "🟢 82° / Neutral 5mph", # drop wind boost to keep raw score at 108
     }
     conf_anchored, reasons_anchored = score_stack_confidence(t_anchored, [])
     assert conf_anchored == 94
@@ -425,6 +427,62 @@ def test_msmi_calibrations():
     # Surge boost is +12.0
     assert conf_surge - conf_neu == 12
     assert any("Team Hot Run (MSMI)" in r for r in reasons_surge)
+
+
+def test_divergence_calibrations_v16_1():
+    # 1. Base control team stack (no divergence, no DQI)
+    # Using team_xwoba=0.280 to keep scores in the linear range (below 75) to test exact deltas
+    t_base = {
+        "team": "A",
+        "team_xwoba": 0.280,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+        "divergence": 0,
+        "dqi_status": "CAUTION"
+    }
+    
+    # 2. Test negative divergence GPP leverage boost (div <= -12% -> +6.0 CONF)
+    t_neg_12 = {
+        **t_base,
+        "divergence": -15
+    }
+    conf_base, _ = score_stack_confidence(t_base, [])
+    conf_neg_12, reasons_neg_12 = score_stack_confidence(t_neg_12, [])
+    
+    assert conf_neg_12 - conf_base == 6
+    assert any("Under-the-radar GPP leverage" in r for r in reasons_neg_12)
+    
+    # 3. Test elite negative divergence GPP leverage boost (div <= -20% -> +10.0 CONF)
+    t_neg_20 = {
+        **t_base,
+        "divergence": -22
+    }
+    conf_neg_20, reasons_neg_20 = score_stack_confidence(t_neg_20, [])
+    assert conf_neg_20 - conf_base == 10
+    assert any("Institutional GPP leverage" in r for r in reasons_neg_20)
+
+    # 4. Test positive divergence steam trap penalty (div >= 10% and < 20% -> -8.0 CONF)
+    t_pos_15 = {
+        **t_base,
+        "divergence": 15
+    }
+    conf_pos_15, reasons_pos_15 = score_stack_confidence(t_pos_15, [])
+    assert conf_base - conf_pos_15 == 8
+    assert any("Public/ML steam trap" in r for r in reasons_pos_15)
+
+    # 5. Test DQI TRUST override (divergence >= 12%, dqi_status = TRUST -> no penalty, adds +10.0 CONF)
+    t_trust = {
+        **t_base,
+        "divergence": 15,
+        "dqi_status": "TRUST",
+        "dqi_score": 80,
+        "bullpen_fatigue": 70  # to pass DQI TRUST gates
+    }
+    conf_trust, reasons_trust = score_stack_confidence(t_trust, [])
+    # Should get +10.0 boost from DQI TRUST and bypass the -8.0 penalty
+    assert conf_trust - conf_base == 10
+    assert any("DQI TRUST" in r for r in reasons_trust)
+    assert not any("Public/ML steam trap" in r for r in reasons_trust)
 
 
 

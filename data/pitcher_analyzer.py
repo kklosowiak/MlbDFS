@@ -412,6 +412,16 @@ class PitcherAnalyzer:
                         form_boost = -5.0
                         form_status = "COLD"
 
+                # Pinnacle SP Boost check (OMEGA v16.0)
+                from utils.market_utils import get_pinnacle_and_dk_ml, ml_to_implied_prob
+                pinnacle_boost_active = False
+                pin_ml, dk_ml = get_pinnacle_and_dk_ml(game, team_name)
+                if pin_ml is not None and dk_ml is not None:
+                    pin_prob = ml_to_implied_prob(pin_ml)
+                    dk_prob = ml_to_implied_prob(dk_ml)
+                    if (pin_prob - dk_prob >= 0.04) and (curr_total is not None and curr_total < 8.5):
+                        pinnacle_boost_active = True
+
                 # Scoring (v7.8 Trap-Aware)
                 alpha_results = self.analyzer.calculate_pitcher_score(
                     pitcher_name, ml_move, tt_move, money_gap, k_line,
@@ -428,14 +438,11 @@ class PitcherAnalyzer:
                     is_sharp=is_sharp,
                     curr_ml=curr_ml,
                     walks_line=walks_line,
-                    walks_odds=walks_odds
+                    walks_odds=walks_odds,
+                    is_death_sentence=is_death_sentence,
+                    form_boost=form_boost,
+                    pinnacle_boost_active=pinnacle_boost_active
                 )
-
-                if is_death_sentence:
-                    alpha_results['final'] = round(alpha_results['final'] * 0.85, 1)
-                    
-                # Apply conservative form boost to final score
-                alpha_results['final'] = round(alpha_results['final'] + form_boost, 1)
                 
                 pitcher_reports.append({
                     'pitcher': pitcher_name,
@@ -481,7 +488,8 @@ class PitcherAnalyzer:
                     'recent_k9': recent_k9,
                     'recent_era': recent_era,
                     'is_home': side == 'home',
-                    'side': side
+                    'side': side,
+                    'pinnacle_boost_active': pinnacle_boost_active
                 })
         
         return pitcher_reports
