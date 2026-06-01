@@ -196,7 +196,8 @@ def run_full_analysis():
                     break
             
             if confirmed and len(confirmed) >= 7:
-                if normalize_player_name(h['name']) in confirmed:
+                normalized_confirmed = {normalize_player_name(p) for p in confirmed}
+                if normalize_player_name(h['name']) in normalized_confirmed:
                     purged_hitters.append(h)
             else:
                 purged_hitters.append(h)
