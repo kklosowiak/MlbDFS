@@ -2214,7 +2214,11 @@ def post_chat_api(body: dict):
     user_msg = body.get("message", "")
     history = body.get("history", [])
     custom_api_key = body.get("api_key", "")
+    model_choice = body.get("model", "gemini-2.5-flash")
     
+    if model_choice not in ["gemini-2.5-flash", "gemini-2.5-pro"]:
+        model_choice = "gemini-2.5-flash"
+        
     api_key = custom_api_key or os.getenv("GEMINI_API_KEY") or ""
     
     if not api_key:
@@ -2396,7 +2400,7 @@ Keep your tone engaging, sharp, and focused on finding maximum expected value (E
     })
 
     # Call Gemini API directly via HTTP post
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_choice}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     payload = {"contents": messages_payload}
 
