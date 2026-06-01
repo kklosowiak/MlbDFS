@@ -1889,6 +1889,118 @@
             color: var(--text-primary);
             border-color: var(--border);
         }
+
+        /* CARD AND PORTALS CORRECTIONS IN LIGHT MODE */
+        body.light-theme .card {
+            background: var(--surface) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 10px 30px rgba(22, 28, 45, 0.05) !important;
+        }
+        body.light-theme .card [style*="color: #fff"],
+        body.light-theme .card [style*="color:#fff"],
+        body.light-theme .card [style*="color: #ffffff"],
+        body.light-theme .card [style*="color:#ffffff"] {
+            color: var(--text-primary) !important;
+        }
+        body.light-theme .card [style*="color: var(--text-secondary)"] {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Sidebar active tab style fix */
+        body.light-theme .sidebar {
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+        }
+        body.light-theme .nav-item.active {
+            background: #f1f5f9 !important;
+            color: var(--accent-blue) !important;
+            border-left: 4px solid var(--accent-blue) !important;
+            box-shadow: none !important;
+        }
+        body.light-theme .nav-item:hover {
+            background: #f8fafc !important;
+            color: var(--text-primary) !important;
+        }
+        body.light-theme .logo-txt {
+            background: var(--logo-txt-grad) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
+
+        /* Controls Card and Search wrapper corrections */
+        body.light-theme .controls-card {
+            background: var(--surface) !important;
+            border-color: var(--border) !important;
+            box-shadow: 0 8px 24px rgba(22, 28, 45, 0.04) !important;
+        }
+        body.light-theme .search-input {
+            background: var(--bg) !important;
+            border-color: var(--border) !important;
+            color: var(--text-primary) !important;
+        }
+        body.light-theme .search-input:focus {
+            border-color: var(--accent-blue) !important;
+            background: var(--surface) !important;
+        }
+
+        /* Settings Drawer Overrides */
+        body.light-theme .settings-drawer {
+            background: var(--surface) !important;
+            border-left: 1px solid var(--border) !important;
+            box-shadow: -10px 0 35px rgba(22, 28, 45, 0.1) !important;
+        }
+        body.light-theme .settings-drawer-header {
+            border-bottom-color: var(--border) !important;
+        }
+        body.light-theme .settings-drawer-close {
+            color: var(--text-secondary) !important;
+        }
+        body.light-theme .settings-drawer-close:hover {
+            color: var(--accent-red) !important;
+        }
+        body.light-theme .settings-drawer p {
+            color: var(--text-secondary) !important;
+        }
+        body.light-theme .settings-drawer span {
+            color: var(--text-primary) !important;
+        }
+        body.light-theme .settings-drawer .widget-label {
+            color: var(--text-secondary) !important;
+        }
+        body.light-theme .settings-drawer .widget-val {
+            color: var(--text-primary) !important;
+        }
+
+        /* Live Intel Scrolling Ticker Text contrast correction */
+        body.light-theme #omega-ticker {
+            color: var(--accent-blue) !important;
+        }
+
+        /* Premium Dashboard Accents for top metrics cards */
+        body.light-theme .card[style*="border-top: 3px solid var(--accent-blue)"] {
+            background: linear-gradient(to bottom, #f0f7ff, #ffffff) !important;
+            border-color: rgba(10, 132, 255, 0.25) !important;
+        }
+        body.light-theme .card[style*="border-top: 3px solid var(--accent-green)"] {
+            background: linear-gradient(to bottom, #f0fdf4, #ffffff) !important;
+            border-color: rgba(50, 215, 75, 0.25) !important;
+        }
+        body.light-theme .card[style*="border-top: 3px solid var(--accent-purple)"] {
+            background: linear-gradient(to bottom, #faf5ff, #ffffff) !important;
+            border-color: rgba(143, 58, 214, 0.25) !important;
+        }
+        body.light-theme .card[style*="border-top: 3px solid #ff9f0a"] {
+            background: linear-gradient(to bottom, #fffbeb, #ffffff) !important;
+            border-color: rgba(255, 159, 10, 0.25) !important;
+        }
+        body.light-theme .card[style*="border-top: 3px solid #00f2fe"] {
+            background: linear-gradient(to bottom, #ecfeff, #ffffff) !important;
+            border-color: rgba(0, 242, 254, 0.25) !important;
+        }
+        body.light-theme .card[style*="border-top: 3px solid #bf5af2"] {
+            background: linear-gradient(to bottom, #faf5ff, #ffffff) !important;
+            border-color: rgba(191, 90, 242, 0.25) !important;
+        }
     </style>
 </head>
 <body>
