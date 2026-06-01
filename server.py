@@ -2405,7 +2405,7 @@ Keep your tone engaging, sharp, and focused on finding maximum expected value (E
     payload = {"contents": messages_payload}
 
     try:
-        res = requests.post(url, headers=headers, json=payload, timeout=15)
+        res = requests.post(url, headers=headers, json=payload, timeout=35)
         res_json = res.json()
         
         if res.status_code == 200:
