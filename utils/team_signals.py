@@ -109,29 +109,38 @@ def evaluate_sneaky_stack(
     """
     Evaluates whether a team represents a high-leverage contrarian stack (Sneaky Stack).
     Vegas implied total must be <= 4.1.
-    Requires one of the volatile/high-leverage triggers.
+    Requires meeting a baseline floor (xwOBA >= 0.310) and one structural trigger,
+    OR having elite xwOBA >= 0.350 as an exception.
     """
     itt = float(implied_total or 4.5)
     if itt > 4.1:
         return False
 
     xw = float(team_xwoba or 0.320)
+    
+    # Elite Exception
+    if xw >= 0.350:
+        return True
+
+    # Baseline Floor
+    if xw < 0.310:
+        return False
+
     outs = float(opp_pitcher_outs or 18.0)
     debut = bool(is_opp_debut)
     pen_score = float(opp_bullpen_score or 0)
     gassed = bool(opp_bullpen_is_gassed)
     fatigued = bool(opp_bullpen_is_fatigued)
 
-    # Trigger 1: Elite Physics vs. Market Doubt (Optimized: xw >= 0.345)
-    if xw >= 0.345:
-        return True
-    # Trigger 2: Opener / Bullpen Game (Optimized: outs <= 13.5)
+    # Trigger 1: Opener / Bullpen Game (outs <= 13.5)
     if outs <= 13.5:
         return True
-    # Trigger 3: Debut Starting Pitcher
+
+    # Trigger 2: Debut Starting Pitcher
     if debut:
         return True
-    # Trigger 4: Short SP Leash + Gassed Bullpen (Optimized: outs <= 14.5, pen_score >= 55)
+
+    # Trigger 3: Short SP Leash + Gassed Bullpen (outs <= 14.5, pen_score >= 55)
     is_bp_fatigued = pen_score >= 55 or gassed or fatigued
     if outs <= 14.5 and is_bp_fatigued:
         return True

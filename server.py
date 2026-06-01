@@ -706,6 +706,19 @@ def get_data_health_api():
         except Exception:
             pass
 
+    # Read data_health.json for any scraping warnings/errors
+    health_status = "ok"
+    health_warnings = []
+    try:
+        health_path = os.path.join(data_dir, "data_health.json")
+        if os.path.exists(health_path):
+            with open(health_path, "r", encoding="utf-8") as f:
+                health_data = json.load(f)
+            health_status = health_data.get("status", "ok")
+            health_warnings = health_data.get("warnings", [])
+    except Exception:
+        pass
+
     return JSONResponse(
         content={
             "latest_snapshot": latest_snap,
@@ -717,6 +730,8 @@ def get_data_health_api():
             "teams_confirmed": teams_confirmed,
             "teams_total": teams_total,
             "odds_api_configured": bool(config.ODDS_API_KEY),
+            "health_status": health_status,
+            "health_warnings": health_warnings,
         },
         headers={
             "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -724,6 +739,7 @@ def get_data_health_api():
             "Expires": "0",
         },
     )
+
 
 
 @app.get("/api/refresh-status", dependencies=[Depends(get_current_user)])

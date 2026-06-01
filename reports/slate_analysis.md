@@ -1,5 +1,5 @@
 # 🔥 OMEGA Daily Attack Plan
-**Generated:** 2026-05-31 08:28 PM ET
+**Generated:** 2026-05-31 09:17 PM ET
 
 > [!TIP]
 > This Attack Plan evaluates all stacks and pitchers on a strict Confidence scale (0-100%). It ignores raw Omega scores and builds comprehensive arguments based on Physics, Platoon Edges, Traps, Recent Form, and Market Divergence.
@@ -7,10 +7,11 @@
 ---
 
 ## 👑 The Ultimate Suggestion
-### 🏟️ Lock Stack: St. Louis Cardinals (Blended: 102.9 | CONF: 74% | Ω: 131.8)
-- Strong team physics (.332 xwOBA).
+### 🏟️ Lock Stack: St. Louis Cardinals (Blended: 102.8 | CONF: 74% | Ω: 131.6)
+- Strong team physics (.328 xwOBA).
 - ELITE implied run total (9.3) — 6.62 avg runs historically.
 - Confirmed lineup — projection stable.
+- xwOBA held steady on confirmed lineup (minor refresh).
 - Opp SP Jordan Wicks flagged LOW CEILING (K-line ≤4.0) — stack-friendly.
 - Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
 
@@ -31,17 +32,19 @@
 
 ## 🏟️ Core Stacks (Top 5)
 
-### 1. St. Louis Cardinals (Blended: 102.9 | CONF: 74% | Ω: 131.8)
-- Strong team physics (.332 xwOBA).
+### 1. St. Louis Cardinals (Blended: 102.8 | CONF: 74% | Ω: 131.6)
+- Strong team physics (.328 xwOBA).
 - ELITE implied run total (9.3) — 6.62 avg runs historically.
 - Confirmed lineup — projection stable.
+- xwOBA held steady on confirmed lineup (minor refresh).
 - Opp SP Jordan Wicks flagged LOW CEILING (K-line ≤4.0) — stack-friendly.
 - Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
 
 ### 2. Chicago Cubs (Blended: 70.9 | CONF: 33% | Ω: 108.8)
-- Strong team physics (.332 xwOBA).
+- Strong team physics (.333 xwOBA).
 - Very low implied run total (0.8 runs) — avoid stacking.
 - Confirmed lineup — projection stable.
+- xwOBA held steady on confirmed lineup (minor refresh).
 - Tough SP underlying profile (Matthew Liberatore).
 
 ## ⚾ Core Pitchers (Top 5)

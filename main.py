@@ -535,6 +535,37 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # ITT Calc
             prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
             curr_itt = (curr_total if curr_total else 8.5) * prob
+
+            # OMEGA v11.0: Sharp Delta and moneyline Velocity boosts
+            is_velocity_boost = False
+            open_time_str = open_data.get("opening_captured_at")
+            if open_time_str and ml_move < 0:
+                try:
+                    try:
+                        open_dt = datetime.datetime.strptime(open_time_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S.%f")
+                    except:
+                        open_dt = datetime.datetime.strptime(open_time_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
+                    
+                    now_dt = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+                    hours_elapsed = (now_dt - open_dt).total_seconds() / 3600.0
+                    if hours_elapsed > 0.1:
+                        ml_velocity = ml_move / hours_elapsed
+                        if ml_velocity <= -4.0:
+                            is_velocity_boost = True
+                except:
+                    pass
+
+            is_pinnacle_offense_boost = False
+            try:
+                from utils.market_utils import get_pinnacle_and_dk_ml, ml_to_implied_prob
+                pin_ml, dk_ml = get_pinnacle_and_dk_ml(game, team)
+                if pin_ml is not None and dk_ml is not None:
+                    pin_prob = ml_to_implied_prob(pin_ml)
+                    dk_prob = ml_to_implied_prob(dk_ml)
+                    if (pin_prob - dk_prob) >= 0.03:
+                        is_pinnacle_offense_boost = True
+            except:
+                pass
             
             # OMEGA v6.9.2: Location-Aware Park Factors
             # Both teams inherit the environment of the home_team's stadium.
@@ -558,6 +589,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     ml_move = float(prev_team_data.get('ml_move', ml_move))
                     tt_move = float(prev_team_data.get('tt_move', tt_move))
                     curr_itt = float(prev_team_data.get('implied_total', curr_itt))
+                    is_velocity_boost = bool(prev_team_data.get('is_velocity_boost', False))
+                    is_pinnacle_offense_boost = bool(prev_team_data.get('is_pinnacle_offense_boost', False))
                 else:
                     divergence = 0
                     is_shark = False
@@ -565,6 +598,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     is_sharp = False
                     is_storm = False
                     is_steam = False
+                    is_velocity_boost = False
+                    is_pinnacle_offense_boost = False
             else:
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
@@ -891,7 +926,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 is_opp_debut=is_opp_debut,
                 over_divergence=over_divergence,
                 under_divergence=under_divergence,
-                is_sneaky=is_sneaky
+                is_sneaky=is_sneaky,
+                is_pinnacle_offense_boost=is_pinnacle_offense_boost,
+                is_velocity_boost=is_velocity_boost
             )
             
             if game_started and has_prev:
@@ -901,9 +938,13 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 total_signal = prev_team_data.get('total_signal', '')
                 is_opp_debut = prev_team_data.get('is_opp_debut', False)
                 is_sneaky = prev_team_data.get('is_sneaky', False)
+                is_pinnacle_offense_boost = prev_team_data.get('is_pinnacle_offense_boost', False)
+                is_velocity_boost = prev_team_data.get('is_velocity_boost', False)
             else:
                 final_stack_score = res['final']
                 stack_score_raw = res.get('final_raw', final_stack_score)
+                is_pinnacle_offense_boost = res.get('is_pinnacle_offense_boost', False)
+                is_velocity_boost = res.get('is_velocity_boost', False)
                 
                 # Trend Analysis (OMEGA v6.3: Velocity-Gated Momentum)
                 trend = "STABLE"
@@ -1022,7 +1063,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_anti_chalk_smash': is_anti_chalk_smash,
                 'is_pitch_alignment': is_pitch_alignment,
                 'is_fade_risk': res.get('is_fade_risk', False),
-                'is_sneaky': is_sneaky
+                'is_sneaky': is_sneaky,
+                'is_pinnacle_offense_boost': is_pinnacle_offense_boost,
+                'is_velocity_boost': is_velocity_boost
             }
             apply_team_blind_spot(team_row)
             apply_signal_exclusions(team_row)
@@ -1100,6 +1143,17 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         except Exception as e:
             print(f"[WARNING]: Could not load platoon cache: {e}")
 
+    # Load hitter form cache (L7 game logs)
+    hitter_form_path = os.path.join(config.DATA_DIR, "hitter_form_cache.json")
+    hitter_form_cache = {}
+    if os.path.exists(hitter_form_path):
+        try:
+            with open(hitter_form_path, 'r', encoding='utf-8') as hf:
+                hitter_form_cache = json.load(hf)
+            print(f"[FORM]: Loaded {len(hitter_form_cache)} profiles for recent form factor.")
+        except Exception as e:
+            print(f"[WARNING]: Could not load hitter form cache: {e}")
+
     h_reports = []
     pitcher_csw_map = {}
     for pr in (pitcher_reports or []):
@@ -1141,6 +1195,17 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         hitter_norm = normalize_player_name(h['name'])
         h_profile = cache.get(hitter_norm, {})
         opp_csw = pitcher_csw_map.get(opp_pitcher_norm) or float(p_profile.get('csw', 0) or 0)
+
+        # L7 hitter form boost calculation
+        form_boost = 0.0
+        h_form = hitter_form_cache.get(hitter_norm)
+        if h_form:
+            recent_ops = float(h_form.get('recent_ops', 0.0) or 0.0)
+            recent_k = float(h_form.get('recent_k_pct', 0.0) or 0.0)
+            if recent_ops >= 1.000 and recent_k <= 20.0:
+                form_boost = 3.0
+            elif recent_ops <= 0.500 and recent_k >= 30.0:
+                form_boost = -3.0
 
         # Individual Multi-Factor Slate Momentum Index (MSMI)
         h_rolling_k_delta = 0.0
@@ -1215,7 +1280,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             hard_hit_pct=hard_hit_pct,
             barrel_pct=barrel_pct,
             hits_line=h.get('hits_line'),
-            hits_price=h.get('hits_price')
+            hits_price=h.get('hits_price'),
+            form_boost=form_boost
         )
 
         h_reports.append({

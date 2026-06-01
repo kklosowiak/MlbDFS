@@ -28,11 +28,19 @@ def get_slate_date(dt_utc=None):
 def perform_fetch(custom_date_from=None, capture_opening=False):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
 
+    health = {
+        "status": "ok",
+        "warnings": [],
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
     # OMEGA v6.6.5: Live Weather Overlay Sync
     try:
         PropfinderScraper().refresh()
     except Exception as e:
         print(f"  - WARNING: Weather refresh failed: {e}")
+        health["warnings"].append(f"Weather sync failed: {e}")
+        health["status"] = "warning"
     
     # OMEGA v6.5: Dynamic Probable Sync
     ProbablePitcherFetcher().refresh()
@@ -66,6 +74,13 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
     
     if not snapshot_path or not os.path.exists(snapshot_path):
         print("  - CRITICAL: Market ingestion failed. Aborting.")
+        health["status"] = "error"
+        health["warnings"].append("Market ingestion failed (Odds API down or no events).")
+        try:
+            with open(os.path.join(config.DATA_DIR, "data_health.json"), "w") as hf:
+                json.dump(health, hf, indent=4)
+        except:
+            pass
         return None
 
 
@@ -114,11 +129,23 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         # v10.2: Refresh Pitcher Recent Form Cache
         bridge.refresh_pitcher_form_cache()
 
+        # v11.0: Refresh Hitter Recent Form Cache
+        try:
+            from data.lineup_fetcher import LineupFetcher
+            lineup_fetcher = LineupFetcher()
+            active_lineups = lineup_fetcher.fetch_all_lineups()
+            bridge.refresh_hitter_form_cache(active_lineups)
+        except Exception as eh:
+            print(f"  - WARNING: Hitter form refresh failed: {eh}")
+
         # Dynamic Reliever Stats Refresh
         from data.bullpen_analyzer import BullpenAnalyzer
         BullpenAnalyzer().refresh_bullpen_season_stats()
     except Exception as e:
         print(f"  - WARNING: Statcast refresh failed (non-critical): {e}")
+        health["warnings"].append(f"Statcast momentum cache sync failed: {e}")
+        if health["status"] == "ok":
+            health["status"] = "warning"
 
     # 5. OMEGA v9.5: Platoon Splits Cache Refresh
     print("\n[STEP 5]: Refreshing Platoon Splits Cache...")
@@ -128,6 +155,16 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         platoon.fetch_platoon_data()
     except Exception as e:
         print(f"  - WARNING: Platoon splits refresh failed (non-critical): {e}")
+        health["warnings"].append(f"Platoon splits sync failed: {e}")
+        if health["status"] == "ok":
+            health["status"] = "warning"
+
+    # Save final health status
+    try:
+        with open(os.path.join(config.DATA_DIR, "data_health.json"), "w") as hf:
+            json.dump(health, hf, indent=4)
+    except:
+        pass
 
     return snapshot_path
 

@@ -2174,9 +2174,17 @@
                 <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Lineups</span>
                 <span class="widget-val" id="health-lineups-pct" style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary);">—</span>
             </div>
-            <div class="widget-row" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
+            <div class="widget-row" style="margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
                 <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Splits</span>
                 <span class="widget-val" id="health-splits-status" style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary);">—</span>
+            </div>
+            <div class="widget-row" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500;">
+                <span class="widget-label" style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Scraper Health</span>
+                <span class="widget-val" id="health-scraper-status" style="font-size: 0.75rem; font-weight: 700; color: var(--accent-green);">OK</span>
+            </div>
+            <div id="health-warnings-container" style="display: none; margin-bottom: 12px; padding: 8px; background: rgba(255, 165, 0, 0.1); border-left: 3px solid var(--accent-orange); border-radius: 4px; font-size: 0.7rem; color: var(--text-primary); text-align: left; max-height: 80px; overflow-y: auto;">
+                <strong style="color: var(--accent-orange); display: block; margin-bottom: 4px;">Health Warnings:</strong>
+                <div id="health-warnings-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
             </div>
             
             <!-- Mini Buttons Row -->
@@ -4047,6 +4055,10 @@
                 const snapEl = document.getElementById('health-snapshot-age');
                 const splitsEl = document.getElementById('health-splits-status');
                 const lineupsEl = document.getElementById('health-lineups-pct');
+                const healthStatusEl = document.getElementById('health-scraper-status');
+                const warningsContainer = document.getElementById('health-warnings-container');
+                const warningsList = document.getElementById('health-warnings-list');
+
                 if (snapEl) {
                     snapEl.innerText = h.snapshot_age_minutes != null
                         ? `${h.snapshot_age_minutes}m ago`
@@ -4065,6 +4077,26 @@
                     lineupsEl.innerText = h.lineups_confirmed_pct != null
                         ? `${h.lineups_confirmed_pct}% confirmed`
                         : '—';
+                }
+                if (healthStatusEl) {
+                    const status = h.health_status || 'ok';
+                    healthStatusEl.innerText = status.toUpperCase();
+                    if (status === 'ok') {
+                        healthStatusEl.style.color = 'var(--accent-green)';
+                    } else if (status === 'warning') {
+                        healthStatusEl.style.color = 'var(--accent-orange)';
+                    } else {
+                        healthStatusEl.style.color = 'var(--accent-red)';
+                    }
+                }
+                if (warningsContainer && warningsList) {
+                    const warnings = h.health_warnings || [];
+                    if (warnings.length > 0) {
+                        warningsList.innerHTML = warnings.map(w => `<div style="margin: 2px 0;">• ${w}</div>`).join('');
+                        warningsContainer.style.display = 'block';
+                    } else {
+                        warningsContainer.style.display = 'none';
+                    }
                 }
             } catch (e) {
                 console.error('Data health poll failed:', e);

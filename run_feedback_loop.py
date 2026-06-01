@@ -9,10 +9,111 @@ import os
 import json
 import datetime
 from datetime import timedelta
+import math
 from utils.audit_engine import AuditEngine
 from utils.dqi import calculate_dqi
 from config import config
 from utils.team_signals import evaluate_sneaky_stack, apply_signal_exclusions
+
+def ml_to_prob(ml):
+    if ml is None: return 0.5
+    val = float(ml)
+    if val > 0:
+        return 100.0 / (val + 100.0)
+    elif val < 0:
+        return -val / (-val + 100.0)
+    return 0.5
+
+def calculate_ev(prob, odds):
+    if odds > 0:
+        return (prob * (1.0 + odds / 100.0)) - 1.0
+    else:
+        return (prob * (1.0 + 100.0 / abs(odds))) - 1.0
+
+def normal_cdf(x, mu, sigma):
+    if sigma <= 0: return 0.5
+    return 0.5 * (1.0 + math.erf((x - mu) / (sigma * math.sqrt(2.0))))
+
+def find_cached_odds(date_str, team1, team2, cache):
+    day_odds = cache.get(date_str, {})
+    def clean_name(n):
+        return n.replace(".", "").replace("St ", "St. ").replace("St.Louis", "St. Louis").lower().strip()
+    t1_clean = clean_name(team1)
+    t2_clean = clean_name(team2)
+    for matchup, odds in day_odds.items():
+        m_clean = clean_name(matchup)
+        if (t1_clean in m_clean) and (t2_clean in m_clean):
+            return odds
+    return None
+
+def evaluate_bet(bet, away_team, home_team, results):
+    bet_type = bet.get("bet_type")
+    side = bet.get("side")
+    odds = bet.get("odds", -110)
+    
+    if bet_type == "PASS" or not side:
+        return "PASS", 0.0
+
+    away_res = results.get(away_team)
+    home_res = results.get(home_team)
+    if not away_res or not home_res:
+        return "UNKNOWN", 0.0
+        
+    away_runs = away_res.get('runs', 0)
+    home_runs = home_res.get('runs', 0)
+    total_runs = away_runs + home_runs
+
+    if bet_type == "ML":
+        winner = away_team if away_runs > home_runs else home_team if home_runs > away_runs else "PUSH"
+        if winner == "PUSH":
+            return "PUSH", 0.0
+        elif winner == side:
+            profit = 100.0 / abs(odds) if odds < 0 else odds / 100.0
+            return "WON", profit
+        else:
+            return "LOST", -1.0
+
+    elif bet_type == "SPREAD":
+        line_str = bet.get("line", "")
+        spread_val = 1.5
+        if "-1.5" in line_str:
+            spread_val = -1.5
+        elif "+1.5" in line_str:
+            spread_val = 1.5
+            
+        is_away = (side == away_team)
+        margin = (away_runs - home_runs) if is_away else (home_runs - away_runs)
+        net = margin + spread_val
+        if net > 0:
+            profit = 100.0 / abs(odds) if odds < 0 else odds / 100.0
+            return "WON", profit
+        elif net < 0:
+            return "LOST", -1.0
+        else:
+            return "PUSH", 0.0
+
+    elif bet_type == "TOTAL":
+        try:
+            line_val = float(side.split()[-1])
+        except:
+            line_val = 9.0
+        is_over = "OVER" in side.upper()
+        if total_runs > line_val:
+            outcome = "WON" if is_over else "LOST"
+        elif total_runs < line_val:
+            outcome = "LOST" if is_over else "WON"
+        else:
+            outcome = "PUSH"
+            
+        if outcome == "WON":
+            profit = 100.0 / abs(odds) if odds < 0 else odds / 100.0
+            return "WON", profit
+        elif outcome == "LOST":
+            return "LOST", -1.0
+        else:
+            return "PUSH", 0.0
+
+    return "UNKNOWN", 0.0
 
 def run_feedback_loop(days=7):
     print("\n" + "="*60)
@@ -53,6 +154,22 @@ def run_feedback_loop(days=7):
         'top3_stacks': {'total': 0, 'hit': 0},    # Top 3 OMEGA stack score scoring 5+ runs
         'top5_hitters': {'total': 0, 'hit': 0},   # Top 5 hitters getting 2+ hits or 1+ HR
     }
+
+    bet_stats = {
+        'LOCK': {'total': 0, 'won': 0, 'lost': 0, 'push': 0, 'profit': 0.0},
+        'LEAN': {'total': 0, 'won': 0, 'lost': 0, 'push': 0, 'profit': 0.0},
+        'PASS': {'total': 0, 'won': 0, 'lost': 0, 'push': 0, 'profit': 0.0}
+    }
+    
+    odds_cache_path = os.path.join(config.DATA_DIR, "historical_odds_cache.json")
+    historical_odds_cache = {}
+    if os.path.exists(odds_cache_path):
+        try:
+            with open(odds_cache_path, 'r', encoding='utf-8') as f:
+                historical_odds_cache = json.load(f)
+            print(f"[BETTING ENGINE]: Loaded historical odds for {len(historical_odds_cache)} slates.")
+        except Exception as e:
+            print(f"[WARNING]: Could not load historical odds cache: {e}")
 
     what_we_missed = []
     analyzed_dates = []
@@ -393,6 +510,174 @@ def run_feedback_loop(days=7):
                 if h.get('success_flag') == '[WIN]':
                     signal_stats['HITTER_SMASH']['hit'] += 1
 
+        # 4. Audit Suggested Bets
+        processed_matchups = set()
+        for t in t_audit:
+            team = t['team']
+            opp = t['opponent']
+            matchup_key = tuple(sorted([team, opp]))
+            if matchup_key in processed_matchups:
+                continue
+            processed_matchups.add(matchup_key)
+            
+            # Find away and home objects
+            away_team_obj = next((row for row in t_audit if row['team'] == team and not row.get('is_home')), t)
+            home_team_obj = next((row for row in t_audit if row['team'] == opp and row.get('is_home')), None)
+            if not home_team_obj:
+                away_team_obj = t
+                home_team_obj = next((row for row in t_audit if row['team'] == opp), None)
+                if not home_team_obj:
+                    continue
+            away_team = away_team_obj['team']
+            home_team = home_team_obj['team']
+            
+            away_sp_name = away_team_obj.get('opp_pitcher') or 'TBD'
+            home_sp_name = home_team_obj.get('opp_pitcher') or 'TBD'
+            
+            away_sp_obj = next((p for p in pitchers if p.get('pitcher') == away_sp_name), None)
+            home_sp_obj = next((p for p in pitchers if p.get('pitcher') == home_sp_name), None)
+            
+            odds_entry = find_cached_odds(date_str, team, opp, historical_odds_cache)
+            if not odds_entry:
+                continue
+                
+            # Perform logit calculation and evaluation
+            away_ml = odds_entry.get("draftkings_away_ml") or odds_entry.get("pinnacle_away_ml") or -110
+            home_ml = odds_entry.get("draftkings_home_ml") or odds_entry.get("pinnacle_home_ml") or -110
+            curr_total = odds_entry.get("draftkings_total") or odds_entry.get("pinnacle_total") or 9.0
+            
+            # Win Probabilities
+            raw_prob_away = ml_to_prob(away_ml)
+            raw_prob_home = ml_to_prob(home_ml)
+            sum_prob = raw_prob_away + raw_prob_home
+            market_prob_away = raw_prob_away / sum_prob if sum_prob > 0 else 0.5
+            market_prob_home = raw_prob_home / sum_prob if sum_prob > 0 else 0.5
+            
+            # Logit rating differentials
+            away_rating = float(away_team_obj.get("stack_score") or 75.0)
+            home_rating = float(home_team_obj.get("stack_score") or 75.0)
+            away_sp_rating = float(away_sp_obj.get("alpha_score") or 75.0) if away_sp_obj else 75.0
+            home_sp_rating = float(home_sp_obj.get("alpha_score") or 75.0) if home_sp_obj else 75.0
+            
+            away_div = float(away_team_obj.get("divergence") or 0.0)
+            home_div = float(home_team_obj.get("divergence") or 0.0)
+            
+            rating_diff = (away_rating - home_rating) * 0.012
+            sp_diff = (home_sp_rating - away_sp_rating) * 0.012
+            div_diff = (away_div - home_div) * 0.02
+            
+            market_prob_away_clamped = max(0.01, min(0.99, market_prob_away))
+            market_logit = math.log(market_prob_away_clamped / (1.0 - market_prob_away_clamped))
+            omega_logit = market_logit + rating_diff + sp_diff + div_diff
+            
+            omega_prob_away = max(0.05, min(0.95, 1.0 / (1.0 + math.exp(-omega_logit))))
+            omega_prob_home = 1.0 - omega_prob_away
+            
+            # ML EV
+            away_ml_ev = calculate_ev(omega_prob_away, away_ml)
+            home_ml_ev = calculate_ev(omega_prob_home, home_ml)
+            
+            # Spread Selection
+            if abs(away_ml) > abs(home_ml) or (away_ml < 0 and home_ml > 0):
+                away_spread = -1.5
+                home_spread = 1.5
+            else:
+                away_spread = 1.5
+                home_spread = -1.5
+                
+            away_implied = float(away_team_obj.get("implied_total") or 4.5)
+            home_implied = float(home_team_obj.get("implied_total") or 4.5)
+            
+            runs_omega_away = max(1.5, away_implied * (1.0 + (away_div / 100.0) + (away_rating - 75.0) * 0.005))
+            runs_omega_home = max(1.5, home_implied * (1.0 + (home_div / 100.0) + (home_rating - 75.0) * 0.005))
+            
+            margin_mu = runs_omega_away - runs_omega_home
+            margin_sigma = 1.25 * math.sqrt(curr_total)
+            
+            away_spread_cover_prob = 1.0 - normal_cdf(away_spread, margin_mu, margin_sigma)
+            home_spread_cover_prob = 1.0 - normal_cdf(home_spread, -margin_mu, margin_sigma)
+            
+            away_spread_ev = (away_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0
+            home_spread_ev = (home_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0
+            
+            # Total Edge
+            projected_total = runs_omega_away + runs_omega_home
+            total_edge = projected_total - curr_total
+            if total_edge > 0.25:
+                total_edge_type = "OVER"
+                total_edge_val = total_edge
+            elif total_edge < -0.25:
+                total_edge_type = "UNDER"
+                total_edge_val = abs(total_edge)
+            else:
+                total_edge_type = "NEUTRAL"
+                total_edge_val = 0.0
+                
+            # Build candidates
+            candidates = []
+            if away_ml_ev > 0:
+                candidates.append({"side": away_team, "bet_type": "ML", "line": f"+{away_ml}" if away_ml > 0 else str(away_ml), "odds": away_ml, "ev": away_ml_ev, "pp_div": (omega_prob_away - market_prob_away) * 100})
+            if home_ml_ev > 0:
+                candidates.append({"side": home_team, "bet_type": "ML", "line": f"+{home_ml}" if home_ml > 0 else str(home_ml), "odds": home_ml, "ev": home_ml_ev, "pp_div": (omega_prob_home - market_prob_home) * 100})
+                
+            if away_spread_ev > 0:
+                candidates.append({"side": away_team, "bet_type": "SPREAD", "line": f"{'+' if away_spread > 0 else ''}{away_spread} (-110)", "odds": -110, "ev": away_spread_ev, "pp_div": (omega_prob_away - market_prob_away) * 100})
+            if home_spread_ev > 0:
+                candidates.append({"side": home_team, "bet_type": "SPREAD", "line": f"{'+' if home_spread > 0 else ''}{home_spread} (-110)", "odds": -110, "ev": home_spread_ev, "pp_div": (omega_prob_home - market_prob_home) * 100})
+                
+            if total_edge_type != "NEUTRAL" and total_edge_val >= 0.25:
+                candidates.append({"side": f"{total_edge_type} {curr_total}", "bet_type": "TOTAL", "line": f"{total_edge_type} {curr_total} (-110)", "odds": -110, "ev": (total_edge_val / max(curr_total, 1.0)) * 0.3, "pp_div": 0})
+                
+            if not candidates:
+                suggested_bet = {"side": "Pass", "bet_type": "PASS", "line": "—", "odds": 0, "ev": 0.0, "conviction": "PASS", "conviction_tier": "pass"}
+            else:
+                def _score(c):
+                    bonus = 0.0
+                    if c["bet_type"] == "SPREAD" and c["odds"] == -110:
+                        same_team_ml = next((x for x in candidates if x["bet_type"] == "ML" and x["side"] == c["side"]), None)
+                        if same_team_ml and same_team_ml["odds"] < -140:
+                            bonus = 0.01
+                    return c["ev"] + bonus
+                best = sorted(candidates, key=_score, reverse=True)[0]
+                
+                # conviction
+                away_pp_div = (omega_prob_away - market_prob_away) * 100
+                home_pp_div = (omega_prob_home - market_prob_home) * 100
+                best_pp_div = home_pp_div if best["side"] == home_team else away_pp_div if best["side"] == away_team else 0.0
+                
+                def _edge_conviction_val():
+                    if away_ml_ev > 0 and away_spread_ev > 0: return "HIGH"
+                    if home_ml_ev > 0 and home_spread_ev > 0: return "HIGH"
+                    if (away_ml_ev > 0 or home_ml_ev > 0) and total_edge_type != "NEUTRAL": return "MODERATE"
+                    return "SINGLE"
+                
+                edge_conv = _edge_conviction_val()
+                if abs(best_pp_div) >= 4.0 and edge_conv == "HIGH":
+                    conv, conv_tier = "LOCK", "lock"
+                elif abs(best_pp_div) >= 2.0 or best["ev"] > 0.01:
+                    conv, conv_tier = "LEAN", "lean"
+                else:
+                    conv, conv_tier = "PASS", "pass"
+                    
+                suggested_bet = {
+                    "side": best["side"], "bet_type": best["bet_type"],
+                    "line": best["line"], "odds": best["odds"],
+                    "ev": best["ev"], "conviction": conv, "conviction_tier": conv_tier
+                }
+                
+            outcome, profit = evaluate_bet(suggested_bet, team, opp, actuals)
+            if outcome != "UNKNOWN":
+                conv = suggested_bet['conviction']
+                bet_stats[conv]['total'] += 1
+                if outcome == "WON":
+                    bet_stats[conv]['won'] += 1
+                    bet_stats[conv]['profit'] += profit
+                elif outcome == "LOST":
+                    bet_stats[conv]['lost'] += 1
+                    bet_stats[conv]['profit'] += profit
+                elif outcome == "PUSH":
+                    bet_stats[conv]['push'] += 1
+
     # Output learning loops and parameter suggestions
     recommendations = []
     
@@ -409,6 +694,9 @@ def run_feedback_loop(days=7):
                 recommendations.append(f"✅ **{signal}** is highly profitable at **{rate:.0f}%** hit rate. Increase projection weight and trust indicators.")
             elif rate < 40:
                 recommendations.append(f"⚠️ **{signal}** has been cold at **{rate:.0f}%** hit rate. Downweight exposure and recommend faded caution.")
+            
+            if data['fired'] >= 15 and rate < 35:
+                recommendations.append(f"🚨 **RETIRE CANDIDATE**: **{signal}** has a poor hit rate of **{rate:.0f}%** over **{data['fired']}** fires. Highly recommend disabling this signal's multiplier boosts in config.")
 
     # Explicit DQI Tuning Logic
     if signal_stats['DQI_TRUST']['fired'] >= 3:
@@ -421,6 +709,16 @@ def run_feedback_loop(days=7):
     if not recommendations:
         recommendations.append("🔍 Signal sample size too small for adjustment thresholds. Keep baseline parameters active.")
 
+    # Reconstructed Suggested Bets EV ROI Tracker stats
+    total_bets = bet_stats['LOCK']['total'] + bet_stats['LEAN']['total']
+    total_profit = bet_stats['LOCK']['profit'] + bet_stats['LEAN']['profit']
+    total_wins = bet_stats['LOCK']['won'] + bet_stats['LEAN']['won']
+    total_losses = bet_stats['LOCK']['lost'] + bet_stats['LEAN']['lost']
+    total_pushes = bet_stats['LOCK']['push'] + bet_stats['LEAN']['push']
+    
+    overall_hit_rate = (total_wins / (total_bets - total_pushes) * 100) if (total_bets - total_pushes) > 0 else 0.0
+    overall_roi = (total_profit / total_bets * 100) if total_bets > 0 else 0.0
+
     # Write files
     feedback_payload = {
         'generated_at': datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p ET"),
@@ -428,7 +726,17 @@ def run_feedback_loop(days=7):
         'signal_stats': signal_stats,
         'projection_stats': projection_stats,
         'what_we_missed': what_we_missed[:5],  # Limit to top 5 misses
-        'recommendations': recommendations
+        'recommendations': recommendations,
+        'bet_stats': bet_stats,
+        'overall_roi_metrics': {
+            'total_bets': total_bets,
+            'total_wins': total_wins,
+            'total_losses': total_losses,
+            'total_pushes': total_pushes,
+            'total_profit': round(total_profit, 2),
+            'hit_rate': round(overall_hit_rate, 1),
+            'roi_pct': round(overall_roi, 1)
+        }
     }
 
     # Save JSON to active dashboard report
@@ -476,7 +784,14 @@ def run_feedback_loop(days=7):
             else:
                 rate = (hit / fired) * 100
                 rate_str = f"{rate:.0f}%"
-                grade = '🟢 Hot' if rate >= 65 else ('🟡 Neutral' if rate >= 40 else '🔴 Cold')
+                if rate >= 65:
+                    grade = '🟢 Hot'
+                elif rate >= 40:
+                    grade = '🟡 Neutral'
+                else:
+                    grade = '🔴 Cold'
+                    if fired >= 15 and rate < 35:
+                        grade = '🔴 COLD ⚠️ RETIRE CANDIDATE'
             lines.append(f"| **{sig.replace('_', ' ')}** | {fired} | {hit} | {rate_str} | {grade} |")
         return lines
 
@@ -503,6 +818,49 @@ def run_feedback_loop(days=7):
         rate_str = f"{(hit/total)*100:.0f}%" if total > 0 else "0%"
         label = "Top 3 Pitchers (QS)" if cat == 'top3_pitchers' else ("Top 3 Stacks (5+ Runs)" if cat == 'top3_stacks' else "Top 5 Hitters (2+ H / HR)")
         md_lines.append(f"| {label} | {total} | {hit} | {rate_str} |")
+
+    # EV Betting ROI Tracker Table
+    md_lines.extend([
+        "",
+        "## 💰 Suggested Bets EV ROI Tracker",
+        "Grades OMEGA's LOCK and LEAN game conviction recommendations against boxscore outcomes (assumes flat 1-unit bet size on LOCK and LEAN plays; PASS plays are excluded).",
+        "",
+        "| Bet Category | Suggested Plays | Won | Lost | Push | Net Units | Hit Rate | ROI % |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+    ])
+    
+    for category in ['LOCK', 'LEAN', 'PASS']:
+        stats = bet_stats[category]
+        total = stats['total']
+        won = stats['won']
+        lost = stats['lost']
+        push = stats['push']
+        net = stats['profit']
+        
+        if total == 0:
+            hit_str = "0%"
+            roi_str = "0%"
+            net_str = "—"
+        else:
+            hit_str = f"{(won / (total - push) * 100):.1f}%" if (total - push) > 0 else "0%"
+            roi_str = f"{(net / total * 100):+.1f}%"
+            net_str = f"{net:+.2f} u"
+            
+        if category == 'PASS':
+            net_str = "—"
+            hit_str = "—"
+            roi_str = "—"
+            label = "🪵 **PASSES**"
+        elif category == 'LOCK':
+            label = "🔒 **LOCKS**"
+        else:
+            label = "⚡ **LEANS**"
+            
+        md_lines.append(f"| {label} | {total} | {won} | {lost} | {push} | {net_str} | {hit_str} | {roi_str} |")
+        
+    md_lines.append(
+        f"| 📊 **OVERALL (LOCK+LEAN)** | **{total_bets}** | **{total_wins}** | **{total_losses}** | **{total_pushes}** | **{total_profit:+.2f} u** | **{overall_hit_rate:.1f}%** | **{overall_roi:+.1f}%** |"
+    )
 
     md_lines.extend([
         "",

@@ -220,7 +220,7 @@ class SharpsWeighting:
             "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False, is_pinnacle_offense_boost=False, is_velocity_boost=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # Defensive Input Normalization
         team_xwoba = float(team_xwoba) if team_xwoba is not None else 0.330
@@ -544,6 +544,16 @@ class SharpsWeighting:
         if is_sneaky:
             final_omega += SNEAKY_STACK_PREMIUM
             
+        # Apply Pinnacle Offense Premium and moneyline velocity boosts
+        # OMEGA v11.0
+        from config import config
+        sharp_boost = 0.0
+        if is_pinnacle_offense_boost:
+            sharp_boost += getattr(config, 'PINNACLE_OFFENSE_BOOST', 2.0)
+        if is_velocity_boost:
+            sharp_boost += getattr(config, 'VELOCITY_BOOST', 3.0)
+        final_omega += sharp_boost
+
         final_omega_capped = min(150.0, final_omega)
 
         # OMEGA v9.9: GPP Leverage Fade Risk
@@ -571,7 +581,9 @@ class SharpsWeighting:
             "bullpen_grade": dyn_grade,
             "walks_boost": walks_boost > 0,
             "er_boost": er_boost > 0,
-            "true_talent_boost": true_talent_boost > 0
+            "true_talent_boost": true_talent_boost > 0,
+            "is_pinnacle_offense_boost": is_pinnacle_offense_boost,
+            "is_velocity_boost": is_velocity_boost
         }
 
     @staticmethod
@@ -602,7 +614,7 @@ class SharpsWeighting:
         return public_pressure
 
 
-    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None, walks_line=None, walks_price=None, strikeouts_line=None, strikeouts_price=None, runs_g_rbi_line=None, runs_g_rbi_price=None, hard_hit_pct=0.0, barrel_pct=0.0, hits_line=None, hits_price=None):
+    def calculate_individual_hitter_score(self, player_name, team_score, matchup_xwoba, ahr_price, park_factor=1.0, is_target=False, is_speed_target=False, is_hot=False, protection_boost=1.0, vision_boost=1.0, opp_csw=0.0, matchup_radar_boost=1.0, pitch_hand=None, hitter_splits=None, smash_factor=False, pitcher_name=None, matchup_radar=None, walks_line=None, walks_price=None, strikeouts_line=None, strikeouts_price=None, runs_g_rbi_line=None, runs_g_rbi_price=None, hard_hit_pct=0.0, barrel_pct=0.0, hits_line=None, hits_price=None, form_boost=0.0):
         """
         OMEGA v6.22: Individual Hitter Alpha HARDENED.
         Combines Statcast xwOBA (Physics), AHR Pricing (Market), Team Context,
@@ -757,6 +769,10 @@ class SharpsWeighting:
             except:
                 pass
         
+        # Apply recent form boost/penalty from StatsAPI L7 game logs
+        final_alpha += form_boost
+        solo_score += form_boost
+
         return {
             "final": round(max(0, final_alpha), 1),
             "solo_score": round(max(0, solo_score), 1),

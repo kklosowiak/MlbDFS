@@ -13,6 +13,10 @@ class Config:
     SHARP_WEIGHT_THRESHOLD = 0.05  # 5% movement threshold
     DEFAULT_SLATE_SIZE = 10
     
+    # Sharp Delta & Line Velocity Boosts
+    PINNACLE_OFFENSE_BOOST = 2.0
+    VELOCITY_BOOST = 3.0
+    
     # OMEGA Shadow Market Settings (v6.15)
     # Including global sharp books to catch early prop movements
     BOOKMAKERS = "draftkings,fanduel,betmgm,caesars,pinnacle,betonlineag,bovada"

@@ -5,6 +5,7 @@ import requests
 import json
 import time
 import random
+import concurrent.futures
 
 # Support for standalone execution
 if __name__ == "__main__":
@@ -45,6 +46,18 @@ class StatcastBridge:
             with open(form_path, 'r') as f:
                 form_cache = json.load(f)
             return form_cache.get(normalize_player_name(pitcher_name))
+        except Exception:
+            return None
+
+    def get_hitter_form(self, hitter_name):
+        """OMEGA v11.0: Returns recent form data for a hitter."""
+        form_path = os.path.join(os.path.dirname(self.cache_path), "hitter_form_cache.json")
+        if not os.path.exists(form_path):
+            return None
+        try:
+            with open(form_path, 'r') as f:
+                form_cache = json.load(f)
+            return form_cache.get(normalize_player_name(hitter_name))
         except Exception:
             return None
 
@@ -528,6 +541,149 @@ class StatcastBridge:
             json.dump(form_cache, f, indent=4)
             
         print(f"  - SUCCESS: Pitcher form cache saved with {len(form_cache)} profiles.")
+        return form_cache
+
+    def _fetch_single_hitter_form(self, player_name, season):
+        try:
+            search_url = f"https://statsapi.mlb.com/api/v1/people/search?names={requests.utils.quote(player_name)}&sportId=1"
+            resp = requests.get(search_url, timeout=10)
+            if resp.status_code != 200:
+                return None
+            people = resp.json().get('people', [])
+            if not people:
+                return None
+            player_id = people[0]['id']
+            full_name = people[0].get('fullName', player_name)
+
+            log_url = f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats?stats=gameLog&group=hitting&season={season}"
+            log_resp = requests.get(log_url, timeout=10)
+            if log_resp.status_code != 200:
+                return None
+            stats_data = log_resp.json().get('stats', [])
+            if not stats_data:
+                return None
+            splits = stats_data[0].get('splits', [])
+            if not splits:
+                return None
+
+            # Get last 7 games
+            recent_games = splits[-7:]
+            total_pa = 0
+            total_ab = 0
+            total_hits = 0
+            total_bb = 0
+            total_hbp = 0
+            total_sf = 0
+            total_k = 0
+            total_2b = 0
+            total_3b = 0
+            total_hr = 0
+
+            for g in recent_games:
+                stat = g.get('stat', {})
+                total_pa += int(stat.get('plateAppearances', 0))
+                total_ab += int(stat.get('atBats', 0))
+                total_hits += int(stat.get('hits', 0))
+                total_bb += int(stat.get('baseOnBalls', 0))
+                total_hbp += int(stat.get('hitByPitch', 0))
+                total_sf += int(stat.get('sacFlies', 0))
+                total_k += int(stat.get('strikeOuts', 0))
+                total_2b += int(stat.get('doubles', 0))
+                total_3b += int(stat.get('triples', 0))
+                total_hr += int(stat.get('homeRuns', 0))
+
+            if total_pa == 0:
+                return None
+
+            obp_denom = total_ab + total_bb + total_hbp + total_sf
+            obp = (total_hits + total_bb + total_hbp) / obp_denom if obp_denom > 0 else 0.0
+
+            singles = total_hits - total_2b - total_3b - total_hr
+            tb = singles + 2 * total_2b + 3 * total_3b + 4 * total_hr
+            slg = tb / total_ab if total_ab > 0 else 0.0
+
+            ops = obp + slg
+            k_rate = total_k / total_pa if total_pa > 0 else 0.0
+
+            return {
+                "player": full_name,
+                "games_sampled": len(recent_games),
+                "recent_pa": total_pa,
+                "recent_k": total_k,
+                "recent_k_pct": round(k_rate * 100.0, 1),
+                "recent_ops": round(ops, 3),
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception:
+            return None
+
+    def refresh_hitter_form_cache(self, active_lineups, season=2026):
+        """
+        OMEGA v11.0: Pulls the last 7 game logs for all starting hitters
+        on the active slate to calculate recent OPS and K%.
+        Uses concurrent thread pool and daily local caching.
+        """
+        print("[STATCAST]: Refreshing hitter recent form (L7 games)...")
+        form_path = os.path.join(os.path.dirname(self.cache_path), "hitter_form_cache.json")
+        
+        hitters_to_fetch = set()
+        if active_lineups:
+            for team, info in active_lineups.items():
+                if team == "_game_times":
+                    continue
+                if isinstance(info, dict) and 'lineup' in info:
+                    for player in info['lineup']:
+                        hitters_to_fetch.add(normalize_player_name(player))
+                elif isinstance(info, list):
+                    for player in info:
+                        hitters_to_fetch.add(normalize_player_name(player))
+                        
+        if not hitters_to_fetch:
+            print("  - WARNING: No active starting hitters found to cache form for.")
+            return {}
+
+        try:
+            with open(form_path, 'r') as f:
+                form_cache = json.load(f)
+        except Exception:
+            form_cache = {}
+
+        def is_fresh(entry):
+            if not entry or 'timestamp' not in entry:
+                return False
+            try:
+                ts = datetime.fromisoformat(entry['timestamp'])
+                return (datetime.now() - ts).total_seconds() < 12 * 3600
+            except:
+                return False
+
+        stale_hitters = [h for h in hitters_to_fetch if not is_fresh(form_cache.get(h))]
+        
+        if stale_hitters:
+            print(f"[STATCAST]: Querying MLB StatsAPI for {len(stale_hitters)}/{len(hitters_to_fetch)} hitters concurrently...")
+            with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+                future_to_hitter = {
+                    executor.submit(self._fetch_single_hitter_form, hitter, season): hitter
+                    for hitter in stale_hitters
+                }
+                for future in concurrent.futures.as_completed(future_to_hitter):
+                    hitter = future_to_hitter[future]
+                    try:
+                        res = future.result()
+                        if res:
+                            form_cache[hitter] = res
+                    except Exception as e:
+                        print(f"    ! Failed to fetch form for {hitter}: {e}")
+            
+            try:
+                with open(form_path, 'w') as f:
+                    json.dump(form_cache, f, indent=4)
+                print(f"  - SUCCESS: Hitter form cache saved with {len(form_cache)} profiles.")
+            except Exception as e:
+                print(f"  - ERROR: Failed to save hitter form cache: {e}")
+        else:
+            print("[STATCAST]: Hitter form cache is fresh. 0 API calls required.")
+            
         return form_cache
 
     def get_team_roster(self, team_name, player_type='hitter'):
