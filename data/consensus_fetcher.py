@@ -305,7 +305,7 @@ class ConsensusFetcher:
         div = split.get('money', 0) - split.get('ticket', 0)
         return div >= 25 and split.get('money', 0) >= 25
 
-    def is_sharp_consensus(self, team_full_name, splits_data):
+    def is_sharp_consensus(self, team_full_name, splits_data, ml_move=None):
         """
         OMEGA v10.1: HEAVY MONEY Signal (stored as is_sharp).
         Fires when money >= 65% AND divergence (money - tickets) >= 10%.

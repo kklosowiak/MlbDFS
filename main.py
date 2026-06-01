@@ -604,7 +604,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
                 is_whale = consensus_fetcher.detect_whale(team, splits_data)
-                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data, ml_move)
+                is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
                 is_storm = (divergence >= 10 and tt_move >= 0.3)
                 is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
 
