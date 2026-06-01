@@ -52,13 +52,24 @@ class SharpsWeighting:
         }
 
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=0, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None, is_death_sentence=False, form_boost=0.0, pinnacle_boost_active=False):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=100, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None, is_death_sentence=False, form_boost=0.0, pinnacle_boost_active=False):
         """
         OMEGA v10.0 SE: Tiered Alpha/Beta Pitcher Scoring (Win Prob Base Market).
         """
-        s_score = max(0, min(100, (6.0 - siera) * 20))
-        c_score = max(0, min(100, (csw / 0.35) * 100))
-        physics_raw_base = (s_score + c_score) / 2
+        # Defensive Input Normalization
+        siera = float(siera) if siera is not None else 4.10
+        csw = float(csw) if csw is not None else 0.25
+        ml_move = float(ml_move) if ml_move is not None else 0.0
+        tt_move = float(tt_move) if tt_move is not None else 0.0
+        divergence = float(divergence) if divergence is not None else 0.0
+        curr_ml = float(curr_ml) if curr_ml is not None else -110.0
+        park_factor = float(park_factor) if park_factor is not None and park_factor != 0 else 100.0
+        projected_outs = float(projected_outs) if projected_outs is not None else 18.0
+        opponent_k_boost = float(opponent_k_boost) if opponent_k_boost is not None else 0.0
+
+        s_score = max(0.0, min(100.0, (6.0 - siera) * 20.0))
+        c_score = max(0.0, min(100.0, (csw / 0.35) * 100.0))
+        physics_raw_base = (s_score + c_score) / 2.0
         
         # OMEGA v6.2.5: The Pure Talent Gate
         gate_active = physics_raw_base < 55.0
@@ -71,18 +82,18 @@ class SharpsWeighting:
         # OMEGA v10.0: Market Win Probability Base
         def _ml_to_prob(ml):
             if ml == 0: return 0.5
-            if ml < 0: return abs(ml) / (abs(ml) + 100)
-            return 100 / (ml + 100)
+            if ml < 0: return abs(ml) / (abs(ml) + 100.0)
+            return 100.0 / (ml + 100.0)
             
         win_prob = _ml_to_prob(curr_ml)
         # Scale probability from 30% to 80% -> 0 to 100 (expanded linear scale)
-        base_market_score = max(0, min(100, ((win_prob - 0.30) / 0.50) * 100))
+        base_market_score = max(0.0, min(100.0, ((win_prob - 0.30) / 0.50) * 100.0))
         
-        ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
-        tt_score = max(0, min(100, (abs(tt_move) / 0.7) * 100))
+        ml_score = max(0.0, min(100.0, (abs(ml_move) / 20.0) * 100.0)) if ml_move < 0 else 0.0
+        tt_score = max(0.0, min(100.0, (abs(tt_move) / 0.7) * 100.0))
         
         market_raw = base_market_score + (ml_score * 0.20) + (tt_score * 0.20)
-        market_raw = max(0, min(100, market_raw))
+        market_raw = max(0.0, min(100.0, market_raw))
         
         # OMEGA v6.8.6: Talent-First Weighting
         score = 45.0 + (physics_raw * 0.45) + (market_raw * 0.20)
@@ -101,17 +112,21 @@ class SharpsWeighting:
         # OMEGA v13.7: Removed PITCHER_SHARK boost (0/7 hit rate; sharp team money != pitcher signal)
         market_whale_bonus = 0.0
         
-        if k_prop and float(k_prop) >= 6.5: beta_signals += 1
+        try:
+            if k_prop is not None and float(k_prop) >= 6.5: beta_signals += 1
+        except (ValueError, TypeError):
+            pass
+
         if abs(tt_move) >= 0.5: beta_signals += 1
-        if divergence >= 10: beta_signals += 1
+        if divergence >= 10.0: beta_signals += 1
         
         multiplier = 1.0 + (alpha_signals * 0.15) + (beta_signals * 0.05) + market_whale_bonus
             
-        if park_factor >= 114:
+        if park_factor >= 114.0:
             multiplier -= 0.20
             
         # Cap div boost at 10%
-        div_boost = 1.0 + min(0.10, (max(0, divergence) / 150.0))
+        div_boost = 1.0 + min(0.10, (max(0.0, divergence) / 150.0))
         
         volume_factor = min(1.0, projected_outs / 18.0)
         
@@ -125,7 +140,7 @@ class SharpsWeighting:
         # If divergence is negative (market fading) and it's a high-alpha target,
         # apply a multiplicative penalty to simulate institutional skepticism.
         market_anchor = 1.0
-        if divergence < -10 and physics_raw_base > 60 and is_trap:
+        if divergence < -10.0 and physics_raw_base > 60.0 and is_trap:
             market_anchor = 0.90 # -10% institutional anchor
             
         # OMEGA v8.7.7: Pitcher Sharp Premium (+7.5%)
@@ -207,6 +222,24 @@ class SharpsWeighting:
 
     def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
+        # Defensive Input Normalization
+        team_xwoba = float(team_xwoba) if team_xwoba is not None else 0.330
+        power_concentration = float(power_concentration) if power_concentration is not None else 0.330
+        curr_itt = float(curr_itt) if curr_itt is not None else 4.5
+        implied_total = float(implied_total) if implied_total is not None else curr_itt
+        park_factor = float(park_factor) if park_factor is not None else 1.0
+        bullpen_fatigue = float(bullpen_fatigue) if bullpen_fatigue is not None else 0.0
+        ml_move = float(ml_move) if ml_move is not None else 0.0
+        tt_move = float(tt_move) if tt_move is not None else 0.0
+        divergence = float(divergence) if divergence is not None else 0.0
+        opp_pitcher_physics = float(opp_pitcher_physics) if opp_pitcher_physics is not None else 50.0
+        pitcher_outs = float(pitcher_outs) if pitcher_outs is not None else 18.0
+        umpire_factor = float(umpire_factor) if umpire_factor is not None else 1.0
+        weather_boost = float(weather_boost) if weather_boost is not None else 0.0
+        opp_pitcher_alpha = float(opp_pitcher_alpha) if opp_pitcher_alpha is not None else 0.0
+        over_divergence = float(over_divergence) if over_divergence is not None else 0.0
+        under_divergence = float(under_divergence) if under_divergence is not None else 0.0
+
         # Resolve Dynamic Bullpen Grade
         dyn_grade, dyn_mult, dyn_fatigue_mod = "Average", 1.00, 1.00
         if opponent:
@@ -249,7 +282,7 @@ class SharpsWeighting:
         # OMEGA v7.0: Power Concentration (Burst Potential)
         effective_physics = (team_xwoba * 0.4) + (power_concentration * 0.6)
         physics_raw = (effective_physics - 0.260) / (0.400 - 0.260) * 100
-        physics_raw = max(0, min(100, physics_raw))
+        physics_raw = max(0.0, min(100.0, physics_raw))
         # PARK_FACTORS are run multipliers (~0.92–1.15), not percentage points
         pf = float(park_factor or 1.0)
         if pf > 3.0:
@@ -259,7 +292,7 @@ class SharpsWeighting:
         # OMEGA v8.7: Linear Fatigue Pressure (Sliding Scale v1.0)
         # Pressure starts building at 65% instead of a hard cliff at 80%
         fatigue_floor = 65.0
-        bullpen_boost = max(0, (bullpen_fatigue - fatigue_floor) / 2.5)  # OMEGA v15.0: Steeper fatigue ramp (was /3.5)
+        bullpen_boost = max(0.0, (bullpen_fatigue - fatigue_floor) / 2.5)  # OMEGA v15.0: Steeper fatigue ramp (was /3.5)
         
         # Soft starter hook multipliers to prevent over-aggression
         # If the opposing SP is a TRAP, force short leash (15.5 outs) to boost bullpen pressure
@@ -278,16 +311,16 @@ class SharpsWeighting:
         # OMEGA v8.9: Absolute-Delta Hybrid Market Pillar
         # Incorporate absolute Vegas ITT (scale 3.0 to 5.5 -> 0 to 100 pts) so flat high-total stacks are rewarded
         eff_itt = implied_total if implied_total is not None else curr_itt
-        base_market_score = max(0, min(100, ((eff_itt - 3.0) / 2.5) * 100))
+        base_market_score = max(0.0, min(100.0, ((eff_itt - 3.0) / 2.5) * 100.0))
         
         # Calculate delta-based movement scores
-        ml_score = max(0, min(100, (abs(ml_move) / 20.0) * 100)) if ml_move < 0 else 0
-        tt_score = max(0, min(100, (tt_move / 0.5) * 100)) if tt_move > 0 else 0
+        ml_score = max(0.0, min(100.0, (abs(ml_move) / 20.0) * 100.0)) if ml_move < 0 else 0.0
+        tt_score = max(0.0, min(100.0, (tt_move / 0.5) * 100.0)) if tt_move > 0 else 0.0
         
         # OMEGA v10.0: Base + Bonus Model
         # Base is the implied total. Movement acts as an additive bonus rather than averaging out.
         market_raw = base_market_score + (ml_score * 0.25) + (tt_score * 0.25)
-        market_raw = max(0, min(120, market_raw))
+        market_raw = max(0.0, min(120.0, market_raw))
 
         # OMEGA v6.9: Pitcher Vulnerability
         vulnerability_mod = (100.0 - opp_pitcher_physics) / 5.0 
@@ -576,6 +609,18 @@ class SharpsWeighting:
         and new Synergy Logic (Protection + Vision + MatchupRadar).
         OMEGA v9.5 splits update: Blends player vs LHP/RHP split ratios dynamically.
         """
+        # Defensive Input Normalization
+        team_score = float(team_score) if team_score is not None else 50.0
+        matchup_xwoba = float(matchup_xwoba) if matchup_xwoba is not None else 0.310
+        ahr_price = float(ahr_price) if ahr_price is not None else 450.0
+        park_factor = float(park_factor) if park_factor is not None else 1.0
+        protection_boost = float(protection_boost) if protection_boost is not None else 1.0
+        vision_boost = float(vision_boost) if vision_boost is not None else 1.0
+        opp_csw = float(opp_csw) if opp_csw is not None else 0.25
+        matchup_radar_boost = float(matchup_radar_boost) if matchup_radar_boost is not None else 1.0
+        hard_hit_pct = float(hard_hit_pct) if hard_hit_pct is not None else 0.0
+        barrel_pct = float(barrel_pct) if barrel_pct is not None else 0.0
+
         platoon_multiplier = 1.0
         platoon_label = "Neutral"
         

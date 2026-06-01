@@ -164,9 +164,9 @@ class PitcherAnalyzer:
             commence_str = game.get('commence_time')
             if commence_str:
                 try:
-                    from datetime import datetime
+                    from datetime import datetime, UTC
                     commence_dt = datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
-                    if datetime.utcnow() >= commence_dt:
+                    if datetime.now(UTC).replace(tzinfo=None) >= commence_dt:
                         game_started = True
                 except Exception:
                     pass

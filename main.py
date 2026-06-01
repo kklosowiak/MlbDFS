@@ -513,7 +513,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             if commence_str:
                 try:
                     commence_dt = datetime.datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
-                    if datetime.datetime.utcnow() >= commence_dt:
+                    if datetime.datetime.now(datetime.UTC).replace(tzinfo=None) >= commence_dt:
                         game_started = True
                 except Exception:
                     pass

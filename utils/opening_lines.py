@@ -4,7 +4,7 @@ backfill from earliest same-day snapshot when games appear later.
 """
 import json
 import os
-from datetime import datetime
+from datetime import datetime, UTC
 
 from config import config
 from utils.market_utils import get_market_prices
@@ -55,7 +55,7 @@ def _game_entry(g_id, game, away_ml, home_ml, total, source):
         "current_total": total,
         "commence_time": game.get("commence_time"),
         "opening_source": source,
-        "opening_captured_at": datetime.utcnow().isoformat() + "Z",
+        "opening_captured_at": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
     }
 
 
