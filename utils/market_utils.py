@@ -57,3 +57,36 @@ def calculate_ml_move(open_ml, curr_ml):
     delta = get_cents(curr_ml) - get_cents(open_ml)
     return float(delta)
 
+def get_pinnacle_and_dk_ml(game_json, target_team):
+    """
+    Extracts Moneyline prices specifically for Pinnacle and DraftKings from game JSON.
+    """
+    pin_ml = None
+    dk_ml = None
+    for book in game_json.get('bookmakers', []):
+        book_key = book['key'].lower()
+        if book_key in ['pinnacle', 'draftkings']:
+            for market in book.get('markets', []):
+                if market['key'] == 'h2h':
+                    for outcome in market['outcomes']:
+                        if outcome['name'] == target_team:
+                            if book_key == 'pinnacle':
+                                pin_ml = outcome['price']
+                            elif book_key == 'draftkings':
+                                dk_ml = outcome['price']
+    return pin_ml, dk_ml
+
+def ml_to_implied_prob(ml):
+    """
+    Converts American Moneyline odds to implied probability (range 0.0 to 1.0).
+    """
+    if ml is None:
+        return 0.0
+    val = float(ml)
+    if val > 0:
+        return 100.0 / (val + 100.0)
+    elif val < 0:
+        return -val / (-val + 100.0)
+    return 0.5
+
+

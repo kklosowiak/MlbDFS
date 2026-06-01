@@ -1,332 +1,332 @@
 {
-    "framber valdez": {
-        "pitcher": "Framber Valdez",
-        "team": "Detroit Tigers",
-        "games_sampled": 3,
-        "recent_ip": 17.7,
-        "recent_k": 15,
-        "recent_er": 7,
-        "recent_k9": 7.64,
-        "recent_era": 3.57,
-        "timestamp": "2026-05-30T13:28:20.410380"
-    },
-    "anthony kay": {
-        "pitcher": "Anthony Kay",
-        "team": "Chicago White Sox",
-        "games_sampled": 3,
-        "recent_ip": 17.3,
-        "recent_k": 14,
-        "recent_er": 4,
-        "recent_k9": 7.27,
-        "recent_era": 2.08,
-        "timestamp": "2026-05-30T13:28:22.022773"
-    },
-    "michael king": {
-        "pitcher": "Michael King",
-        "team": "San Diego Padres",
-        "games_sampled": 3,
-        "recent_ip": 16.3,
-        "recent_k": 18,
-        "recent_er": 5,
-        "recent_k9": 9.92,
-        "recent_era": 2.76,
-        "timestamp": "2026-05-30T13:28:23.748735"
-    },
-    "foster griffin": {
-        "pitcher": "Foster Griffin",
-        "team": "Washington Nationals",
-        "games_sampled": 3,
-        "recent_ip": 15.3,
-        "recent_k": 18,
-        "recent_er": 14,
-        "recent_k9": 10.57,
-        "recent_era": 8.22,
-        "timestamp": "2026-05-30T13:28:25.470372"
-    },
-    "seth lugo": {
-        "pitcher": "Seth Lugo",
-        "team": "Kansas City Royals",
-        "games_sampled": 3,
-        "recent_ip": 17.3,
-        "recent_k": 12,
-        "recent_er": 10,
-        "recent_k9": 6.23,
-        "recent_era": 5.19,
-        "timestamp": "2026-05-30T13:28:27.141989"
-    },
-    "kumar rocker": {
-        "pitcher": "Kumar Rocker",
-        "team": "Texas Rangers",
-        "games_sampled": 3,
-        "recent_ip": 17.7,
-        "recent_k": 15,
-        "recent_er": 4,
-        "recent_k9": 7.64,
-        "recent_era": 2.04,
-        "timestamp": "2026-05-30T13:28:28.593270"
-    },
-    "trey yesavage": {
-        "pitcher": "Trey Yesavage",
+    "spencer miles": {
+        "pitcher": "Spencer Miles",
         "team": "Toronto Blue Jays",
         "games_sampled": 3,
-        "recent_ip": 18.7,
-        "recent_k": 20,
+        "recent_ip": 11.7,
+        "recent_k": 11,
         "recent_er": 7,
-        "recent_k9": 9.64,
-        "recent_era": 3.38,
-        "timestamp": "2026-05-30T13:28:30.234610"
+        "recent_k9": 8.49,
+        "recent_era": 5.4,
+        "timestamp": "2026-05-31T20:25:48.939213"
     },
-    "brandon young": {
-        "pitcher": "Brandon Young",
+    "kyle bradish": {
+        "pitcher": "Kyle Bradish",
         "team": "Baltimore Orioles",
         "games_sampled": 3,
-        "recent_ip": 15.7,
-        "recent_k": 12,
-        "recent_er": 4,
-        "recent_k9": 6.89,
-        "recent_era": 2.3,
-        "timestamp": "2026-05-30T13:28:31.836923"
+        "recent_ip": 18.3,
+        "recent_k": 13,
+        "recent_er": 3,
+        "recent_k9": 6.38,
+        "recent_era": 1.47,
+        "timestamp": "2026-05-31T20:25:50.281854"
     },
-    "bailey ober": {
-        "pitcher": "Bailey Ober",
+    "griffin canning": {
+        "pitcher": "Griffin Canning",
+        "team": "San Diego Padres",
+        "games_sampled": 3,
+        "recent_ip": 16.7,
+        "recent_k": 13,
+        "recent_er": 9,
+        "recent_k9": 7.02,
+        "recent_era": 4.86,
+        "timestamp": "2026-05-31T20:25:51.727381"
+    },
+    "zack littell": {
+        "pitcher": "Zack Littell",
+        "team": "Washington Nationals",
+        "games_sampled": 3,
+        "recent_ip": 18.0,
+        "recent_k": 15,
+        "recent_er": 5,
+        "recent_k9": 7.5,
+        "recent_era": 2.5,
+        "timestamp": "2026-05-31T20:25:53.090447"
+    },
+    "zebby matthews": {
+        "pitcher": "Zebby Matthews",
         "team": "Minnesota Twins",
         "games_sampled": 3,
-        "recent_ip": 19.0,
-        "recent_k": 11,
-        "recent_er": 7,
-        "recent_k9": 5.21,
-        "recent_era": 3.32,
-        "timestamp": "2026-05-30T13:28:33.413255"
+        "recent_ip": 16.3,
+        "recent_k": 19,
+        "recent_er": 12,
+        "recent_k9": 10.47,
+        "recent_era": 6.61,
+        "timestamp": "2026-05-31T20:25:54.316506"
     },
-    "mitch keller": {
-        "pitcher": "Mitch Keller",
+    "braxton ashcraft": {
+        "pitcher": "Braxton Ashcraft",
         "team": "Pittsburgh Pirates",
         "games_sampled": 3,
-        "recent_ip": 17.3,
-        "recent_k": 11,
-        "recent_er": 11,
-        "recent_k9": 5.71,
-        "recent_era": 5.71,
-        "timestamp": "2026-05-30T13:28:35.031644"
+        "recent_ip": 19.3,
+        "recent_k": 25,
+        "recent_er": 4,
+        "recent_k9": 11.64,
+        "recent_era": 1.86,
+        "timestamp": "2026-05-31T20:25:55.715051"
     },
-    "sonny gray": {
-        "pitcher": "Sonny Gray",
+    "ranger suarez": {
+        "pitcher": "Ranger Suarez",
         "team": "Boston Red Sox",
         "games_sampled": 3,
-        "recent_ip": 16.0,
-        "recent_k": 19,
-        "recent_er": 5,
-        "recent_k9": 10.69,
-        "recent_era": 2.81,
-        "timestamp": "2026-05-30T13:28:36.762889"
+        "recent_ip": 14.3,
+        "recent_k": 17,
+        "recent_er": 10,
+        "recent_k9": 10.67,
+        "recent_era": 6.28,
+        "timestamp": "2026-05-31T20:25:56.974532"
     },
-    "parker messick": {
-        "pitcher": "Parker Messick",
+    "tanner bibee": {
+        "pitcher": "Tanner Bibee",
         "team": "Cleveland Guardians",
         "games_sampled": 3,
-        "recent_ip": 17.3,
-        "recent_k": 19,
-        "recent_er": 4,
-        "recent_k9": 9.87,
-        "recent_era": 2.08,
-        "timestamp": "2026-05-30T13:28:38.166606"
+        "recent_ip": 17.0,
+        "recent_k": 13,
+        "recent_er": 11,
+        "recent_k9": 6.88,
+        "recent_era": 5.82,
+        "timestamp": "2026-05-31T20:25:58.260175"
     },
-    "reid detmers": {
-        "pitcher": "Reid Detmers",
+    "jack kochanowicz": {
+        "pitcher": "Jack Kochanowicz",
         "team": "Los Angeles Angels",
         "games_sampled": 3,
-        "recent_ip": 19.3,
-        "recent_k": 28,
+        "recent_ip": 12.3,
+        "recent_k": 12,
         "recent_er": 11,
-        "recent_k9": 13.03,
-        "recent_era": 5.12,
-        "timestamp": "2026-05-30T13:28:39.706831"
+        "recent_k9": 8.76,
+        "recent_era": 8.03,
+        "timestamp": "2026-05-31T20:25:59.719147"
     },
-    "drew rasmussen": {
-        "pitcher": "Drew Rasmussen",
+    "shane mcclanahan": {
+        "pitcher": "Shane McClanahan",
         "team": "Tampa Bay Rays",
+        "games_sampled": 3,
+        "recent_ip": 15.3,
+        "recent_k": 12,
+        "recent_er": 5,
+        "recent_k9": 7.04,
+        "recent_era": 2.93,
+        "timestamp": "2026-05-31T20:26:01.097071"
+    },
+    "spencer strider": {
+        "pitcher": "Spencer Strider",
+        "team": "Atlanta Braves",
+        "games_sampled": 3,
+        "recent_ip": 16.3,
+        "recent_k": 22,
+        "recent_er": 9,
+        "recent_k9": 12.12,
+        "recent_era": 4.96,
+        "timestamp": "2026-05-31T20:26:02.312577"
+    },
+    "nick lodolo": {
+        "pitcher": "Nick Lodolo",
+        "team": "Cincinnati Reds",
         "games_sampled": 3,
         "recent_ip": 18.3,
         "recent_k": 14,
-        "recent_er": 5,
+        "recent_er": 7,
         "recent_k9": 6.87,
-        "recent_era": 2.45,
-        "timestamp": "2026-05-30T13:28:41.291156"
+        "recent_era": 3.44,
+        "timestamp": "2026-05-31T20:26:03.561009"
     },
-    "tyler phillips": {
-        "pitcher": "Tyler Phillips",
+    "john king": {
+        "pitcher": "John King",
         "team": "Miami Marlins",
         "games_sampled": 3,
-        "recent_ip": 8.7,
-        "recent_k": 6,
-        "recent_er": 1,
-        "recent_k9": 6.23,
-        "recent_era": 1.04,
-        "timestamp": "2026-05-30T13:28:42.742366"
+        "recent_ip": 3.7,
+        "recent_k": 3,
+        "recent_er": 2,
+        "recent_k9": 7.36,
+        "recent_era": 4.91,
+        "timestamp": "2026-05-31T20:26:04.654868"
     },
-    "christian scott": {
-        "pitcher": "Christian Scott",
+    "nolan mclean": {
+        "pitcher": "Nolan McLean",
         "team": "New York Mets",
         "games_sampled": 3,
-        "recent_ip": 14.3,
-        "recent_k": 15,
-        "recent_er": 5,
-        "recent_k9": 9.42,
-        "recent_era": 3.14,
-        "timestamp": "2026-05-30T13:28:44.526029"
-    },
-    "brandon sproat": {
-        "pitcher": "Brandon Sproat",
-        "team": "Milwaukee Brewers",
-        "games_sampled": 3,
         "recent_ip": 14.0,
-        "recent_k": 18,
-        "recent_er": 9,
-        "recent_k9": 11.57,
-        "recent_era": 5.79,
-        "timestamp": "2026-05-30T13:28:46.273640"
+        "recent_k": 13,
+        "recent_er": 14,
+        "recent_k9": 8.36,
+        "recent_era": 9.0,
+        "timestamp": "2026-05-31T20:26:05.774133"
     },
-    "peter lambert": {
-        "pitcher": "Peter Lambert",
-        "team": "Houston Astros",
-        "games_sampled": 3,
-        "recent_ip": 18.0,
-        "recent_k": 17,
-        "recent_er": 11,
-        "recent_k9": 8.5,
-        "recent_era": 5.5,
-        "timestamp": "2026-05-30T13:28:48.208167"
-    },
-    "ben brown": {
-        "pitcher": "Ben Brown",
-        "team": "Chicago Cubs",
-        "games_sampled": 3,
-        "recent_ip": 15.0,
-        "recent_k": 20,
-        "recent_er": 4,
-        "recent_k9": 12.0,
-        "recent_era": 2.4,
-        "timestamp": "2026-05-30T13:28:49.987565"
-    },
-    "kyle leahy": {
-        "pitcher": "Kyle Leahy",
-        "team": "St. Louis Cardinals",
-        "games_sampled": 3,
-        "recent_ip": 16.0,
-        "recent_k": 15,
-        "recent_er": 6,
-        "recent_k9": 8.44,
-        "recent_era": 3.38,
-        "timestamp": "2026-05-30T13:28:51.772601"
-    },
-    "martin perez": {
-        "pitcher": "Mart\u00edn P\u00e9rez",
-        "team": "Atlanta Braves",
-        "games_sampled": 3,
-        "recent_ip": 11.7,
-        "recent_k": 14,
-        "recent_er": 5,
-        "recent_k9": 10.8,
-        "recent_era": 3.86,
-        "timestamp": "2026-05-30T13:28:53.771412"
-    },
-    "brady singer": {
-        "pitcher": "Brady Singer",
-        "team": "Cincinnati Reds",
-        "games_sampled": 3,
-        "recent_ip": 13.7,
-        "recent_k": 14,
-        "recent_er": 12,
-        "recent_k9": 9.22,
-        "recent_era": 7.9,
-        "timestamp": "2026-05-30T13:28:55.690525"
-    },
-    "adrian houser": {
-        "pitcher": "Adrian Houser",
-        "team": "San Francisco Giants",
-        "games_sampled": 3,
-        "recent_ip": 16.3,
-        "recent_k": 12,
-        "recent_er": 6,
-        "recent_k9": 6.61,
-        "recent_era": 3.31,
-        "timestamp": "2026-05-30T13:28:57.677188"
-    },
-    "ryan feltner": {
-        "pitcher": "Ryan Feltner",
-        "team": "Colorado Rockies",
-        "games_sampled": 3,
-        "recent_ip": 11.7,
-        "recent_k": 12,
-        "recent_er": 10,
-        "recent_k9": 9.26,
-        "recent_era": 7.71,
-        "timestamp": "2026-05-30T13:28:59.469252"
-    },
-    "ryan weathers": {
-        "pitcher": "Ryan Weathers",
-        "team": "New York Yankees",
-        "games_sampled": 3,
-        "recent_ip": 18.7,
-        "recent_k": 20,
-        "recent_er": 7,
-        "recent_k9": 9.64,
-        "recent_era": 3.38,
-        "timestamp": "2026-05-30T13:29:01.338884"
-    },
-    "jt ginn": {
-        "pitcher": "J.T. Ginn",
-        "team": "Athletics",
-        "games_sampled": 3,
-        "recent_ip": 16.3,
-        "recent_k": 17,
-        "recent_er": 4,
-        "recent_k9": 9.37,
-        "recent_era": 2.2,
-        "timestamp": "2026-05-30T13:29:03.268773"
-    },
-    "ryne nelson": {
-        "pitcher": "Ryne Nelson",
-        "team": "Arizona Diamondbacks",
-        "games_sampled": 3,
-        "recent_ip": 22.0,
-        "recent_k": 14,
-        "recent_er": 7,
-        "recent_k9": 5.73,
-        "recent_era": 2.86,
-        "timestamp": "2026-05-30T13:29:05.218094"
-    },
-    "bryan woo": {
-        "pitcher": "Bryan Woo",
-        "team": "Seattle Mariners",
+    "keider montero": {
+        "pitcher": "Keider Montero",
+        "team": "Detroit Tigers",
         "games_sampled": 3,
         "recent_ip": 16.7,
-        "recent_k": 21,
-        "recent_er": 6,
-        "recent_k9": 11.34,
-        "recent_era": 3.24,
-        "timestamp": "2026-05-30T13:29:07.137969"
+        "recent_k": 12,
+        "recent_er": 7,
+        "recent_k9": 6.48,
+        "recent_era": 3.78,
+        "timestamp": "2026-05-31T20:26:07.032785"
     },
-    "jesus luzardo": {
-        "pitcher": "Jes\u00fas Luzardo",
-        "team": "Philadelphia Phillies",
-        "games_sampled": 3,
-        "recent_ip": 18.0,
-        "recent_k": 15,
-        "recent_er": 2,
-        "recent_k9": 7.5,
-        "recent_era": 1.0,
-        "timestamp": "2026-05-30T13:29:09.089674"
-    },
-    "roki sasaki": {
-        "pitcher": "Roki Sasaki",
-        "team": "Los Angeles Dodgers",
+    "sean burke": {
+        "pitcher": "Sean Burke",
+        "team": "Chicago White Sox",
         "games_sampled": 3,
         "recent_ip": 17.0,
-        "recent_k": 17,
-        "recent_er": 6,
+        "recent_k": 19,
+        "recent_er": 5,
+        "recent_k9": 10.06,
+        "recent_era": 2.65,
+        "timestamp": "2026-05-31T20:26:08.205244"
+    },
+    "jacob misiorowski": {
+        "pitcher": "Jacob Misiorowski",
+        "team": "Milwaukee Brewers",
+        "games_sampled": 3,
+        "recent_ip": 20.0,
+        "recent_k": 28,
+        "recent_er": 1,
+        "recent_k9": 12.6,
+        "recent_era": 0.45,
+        "timestamp": "2026-05-31T20:26:09.345882"
+    },
+    "tatsuya imai": {
+        "pitcher": "Tatsuya Imai",
+        "team": "Houston Astros",
+        "games_sampled": 3,
+        "recent_ip": 16.7,
+        "recent_k": 12,
+        "recent_er": 5,
+        "recent_k9": 6.48,
+        "recent_era": 2.7,
+        "timestamp": "2026-05-31T20:26:10.588849"
+    },
+    "michael wacha": {
+        "pitcher": "Michael Wacha",
+        "team": "Kansas City Royals",
+        "games_sampled": 3,
+        "recent_ip": 18.0,
+        "recent_k": 18,
+        "recent_er": 9,
         "recent_k9": 9.0,
-        "recent_era": 3.18,
-        "timestamp": "2026-05-30T13:29:10.970293"
+        "recent_era": 4.5,
+        "timestamp": "2026-05-31T20:26:11.832643"
+    },
+    "jack leiter": {
+        "pitcher": "Jack Leiter",
+        "team": "Texas Rangers",
+        "games_sampled": 3,
+        "recent_ip": 16.7,
+        "recent_k": 19,
+        "recent_er": 8,
+        "recent_k9": 10.26,
+        "recent_era": 4.32,
+        "timestamp": "2026-05-31T20:26:12.910563"
+    },
+    "robbie ray": {
+        "pitcher": "Robbie Ray",
+        "team": "San Francisco Giants",
+        "games_sampled": 3,
+        "recent_ip": 12.3,
+        "recent_k": 10,
+        "recent_er": 14,
+        "recent_k9": 7.3,
+        "recent_era": 10.22,
+        "timestamp": "2026-05-31T20:26:14.067838"
+    },
+    "tanner gordon": {
+        "pitcher": "Tanner Gordon",
+        "team": "Colorado Rockies",
+        "games_sampled": 3,
+        "recent_ip": 14.3,
+        "recent_k": 10,
+        "recent_er": 12,
+        "recent_k9": 6.28,
+        "recent_era": 7.53,
+        "timestamp": "2026-05-31T20:26:15.399188"
+    },
+    "will warren": {
+        "pitcher": "Will Warren",
+        "team": "New York Yankees",
+        "games_sampled": 3,
+        "recent_ip": 17.0,
+        "recent_k": 11,
+        "recent_er": 5,
+        "recent_k9": 5.82,
+        "recent_era": 2.65,
+        "timestamp": "2026-05-31T20:26:16.641756"
+    },
+    "jacob lopez": {
+        "pitcher": "Jacob Lopez",
+        "team": "Athletics",
+        "games_sampled": 3,
+        "recent_ip": 10.3,
+        "recent_k": 8,
+        "recent_er": 12,
+        "recent_k9": 6.97,
+        "recent_era": 10.45,
+        "timestamp": "2026-05-31T20:26:17.940150"
+    },
+    "merrill kelly": {
+        "pitcher": "Merrill Kelly",
+        "team": "Arizona Diamondbacks",
+        "games_sampled": 3,
+        "recent_ip": 18.3,
+        "recent_k": 10,
+        "recent_er": 7,
+        "recent_k9": 4.91,
+        "recent_era": 3.44,
+        "timestamp": "2026-05-31T20:26:19.123141"
+    },
+    "bryce miller": {
+        "pitcher": "Bryce Miller",
+        "team": "Seattle Mariners",
+        "games_sampled": 3,
+        "recent_ip": 15.7,
+        "recent_k": 17,
+        "recent_er": 2,
+        "recent_k9": 9.77,
+        "recent_era": 1.15,
+        "timestamp": "2026-05-31T20:26:20.280774"
+    },
+    "andrew painter": {
+        "pitcher": "Andrew Painter",
+        "team": "Philadelphia Phillies",
+        "games_sampled": 3,
+        "recent_ip": 15.7,
+        "recent_k": 9,
+        "recent_er": 8,
+        "recent_k9": 5.17,
+        "recent_era": 4.6,
+        "timestamp": "2026-05-31T20:26:21.533354"
+    },
+    "yoshinobu yamamoto": {
+        "pitcher": "Yoshinobu Yamamoto",
+        "team": "Los Angeles Dodgers",
+        "games_sampled": 3,
+        "recent_ip": 19.3,
+        "recent_k": 21,
+        "recent_er": 2,
+        "recent_k9": 9.78,
+        "recent_era": 0.93,
+        "timestamp": "2026-05-31T20:26:22.841775"
+    },
+    "jordan wicks": {
+        "pitcher": "Jordan Wicks",
+        "team": "Chicago Cubs",
+        "games_sampled": 2,
+        "recent_ip": 6.3,
+        "recent_k": 6,
+        "recent_er": 10,
+        "recent_k9": 8.53,
+        "recent_era": 14.21,
+        "timestamp": "2026-05-31T20:26:24.113392"
+    },
+    "matthew liberatore": {
+        "pitcher": "Matthew Liberatore",
+        "team": "St. Louis Cardinals",
+        "games_sampled": 3,
+        "recent_ip": 12.7,
+        "recent_k": 22,
+        "recent_er": 7,
+        "recent_k9": 15.63,
+        "recent_era": 4.97,
+        "timestamp": "2026-05-31T20:26:25.922605"
     }
 }
