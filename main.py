@@ -668,34 +668,60 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                         'matchup_xwoba': adj_xwoba
                     })
 
-                # Sort by adjusted matchup_xwoba descending
-                sorted_h = sorted(adjusted_h_list, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
-
                 # OMEGA v14.0: High-fidelity projected lineup construction
-                # If confirmed lineups are not yet available, filter active players with rolling PA (last 10 days)
-                # and sort by season PA to get the standard starting lineup.
+                target_h = []
+                lineup_names = []
                 if confirmed:
-                    confirmed_names = {normalize_player_name(p) for p in confirmed}
-                    confirmed_order = {normalize_player_name(p): idx for idx, p in enumerate(confirmed)}
-                    target_h = [h for h in adjusted_h_list if normalize_player_name(h['name']) in confirmed_order]
-                    target_h = sorted(target_h, key=lambda x: confirmed_order[normalize_player_name(x['name'])])
+                    lineup_names = confirmed[:9]
                 else:
-                    # Filter active roster hitters who have played recently (rolling_pa > 0)
-                    active_h = [
-                        h for h in adjusted_h_list 
-                        if int(cache.get(normalize_player_name(h['name']), {}).get('rolling_pa', 0) or 0) > 0
-                    ]
+                    # Find all hitters for this team in cache
+                    team_hitters = []
+                    for pname, pdata in cache.items():
+                        if pdata.get('type') == 'hitter' and pdata.get('team'):
+                            if team.lower() in pdata.get('team', '').lower():
+                                team_hitters.append((pname, int(pdata.get('pa', 0) or 0)))
+                    # Sort by season PA descending to find Everyday Starters
+                    sorted_team_hitters = sorted(team_hitters, key=lambda x: x[1], reverse=True)
+                    lineup_names = [p[0].title() for p in sorted_team_hitters[:9]]
                     
-                    # Fallback to all hitters if roster is thin/missing momentum data
-                    if len(active_h) < 9:
-                        active_h = adjusted_h_list
+                    # Fallback to adjusted_h_list if cache is empty or incomplete
+                    if len(lineup_names) < 9:
+                        for h in adjusted_h_list:
+                            hname = h['name']
+                            if hname not in lineup_names and len(lineup_names) < 9:
+                                lineup_names.append(hname)
+
+                # Now compile target_h using the 9 lineup spots
+                for p in lineup_names:
+                    pnorm = normalize_player_name(p)
+                    # Check if player has props in adjusted_h_list
+                    found_h = next((h for h in adjusted_h_list if normalize_player_name(h['name']) == pnorm), None)
+                    if found_h:
+                        target_h.append(found_h)
+                    else:
+                        # Backfill from statcast cache
+                        p_profile = cache.get(pnorm, {})
+                        platoon_multiplier = compute_platoon_multiplier(
+                            p_profile, pitch_hand,
+                            hitter_name=p, pitcher_name=opp_pitcher_name,
+                            matchup_radar=matchup_radar
+                        ) if p_profile else 1.0
                         
-                    # Sort active hitters by season PA descending to get everyday starters
-                    target_h = sorted(
-                        active_h, 
-                        key=lambda x: int(cache.get(normalize_player_name(x['name']), {}).get('pa', 0) or 0), 
-                        reverse=True
-                    )[:9]
+                        base_xwoba = p_profile.get('xwoba') if p_profile else None
+                        if not base_xwoba or not (0.200 <= float(base_xwoba) <= 0.500):
+                            woba_val = p_profile.get("woba") if p_profile else None
+                            ops_val = p_profile.get("ops", 0.0) if p_profile else 0.0
+                            from utils.xwoba_estimates import woba_proxy_to_xwoba
+                            base_xwoba = woba_proxy_to_xwoba(woba_val, ops_val)
+                            
+                        adj_xwoba = cap_matchup_xwoba(base_xwoba * platoon_multiplier)
+                        target_h.append({
+                            'name': p,
+                            'matchup_xwoba': adj_xwoba
+                        })
+
+                # Sort by adjusted matchup_xwoba descending for concentration calculation
+                sorted_h = sorted(target_h, key=lambda x: x.get('matchup_xwoba', 0.330), reverse=True)
 
                 # OMEGA: Lineup Spot PA Decay (Batting Order Weighting)
                 # OMEGA v14.0 Calibration: Flat weighting prevents over-valuing top-heavy lineups.
@@ -961,7 +987,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'lineup_status': lineup_status,
                 'ml_move': ml_move, 'tt_move': tt_move,
                 'stack_score': final_stack_score,
-                'stack_score_raw': round(stack_score_raw, 1) if stack_score_raw > 150.0 else None,
+                'stack_score_raw': round(stack_score_raw, 1) if (stack_score_raw is not None and stack_score_raw > 150.0) else None,
                 'physics_score': xwoba_to_phy_score(res.get('team_xwoba', team_xwoba)),
                 'market_score': res.get('market_raw', res['market']),
                 'market_raw': res.get('market_raw'),
