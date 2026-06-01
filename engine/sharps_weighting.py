@@ -421,10 +421,10 @@ class SharpsWeighting:
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
 
-        # OMEGA v9.9: Gassed Bullpen Attack Premium
-        # If opponent bullpen is tired (>= 65) and starter is on a short leash (<= 15.5 outs),
-        # we add an extra +5.0 GPP premium directly to final_omega
-        is_gassed_attack = (bullpen_fatigue >= 65) and (pitcher_outs <= 15.5)
+        # OMEGA v15.2: Gassed Bullpen Attack Premium (Optimized)
+        # If opponent bullpen is tired (>= 75), starter is on a short leash (<= 15.5 outs),
+        # and attacking team has solid offensive baseline (xwOBA >= 0.315).
+        is_gassed_attack = (bullpen_fatigue >= 75) and (pitcher_outs <= 15.5) and (team_xwoba >= 0.315)
         if is_gassed_attack:
             final_omega += 8.0  # OMEGA v15.0: Increased from +5.0 to +8.0 (r=+0.1270 strongest positive predictor)
 

@@ -1253,9 +1253,12 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba * platoon_multiplier)
         NPAS_xwOBA = matchup_xwoba_npas - baseline_xwoba
 
-        # OMEGA v15.0: Smash gate tightened (grid sweep: xwOBA>=0.360 AND plat>=1.03 = +7.7pp over baseline)
-        # Old: matchup_xwoba_npas >= 0.370 only. New: require genuine platoon advantage too.
-        smash_factor = (matchup_xwoba_npas >= 0.360 and platoon_multiplier >= 1.03)
+        # OMEGA v15.2: Smash gate optimized via 21-slate grid sweep sweep
+        # Requires matchup xwOBA >= 0.350 AND hitter has active momentum (is_hot or is_hot_run_msmi)
+        is_hitter_hot = False
+        if h_profile:
+            is_hitter_hot = bool(h_profile.get('is_hot', False)) or bool(h_profile.get('is_hot_run_msmi', False))
+        smash_factor = (matchup_xwoba_npas >= 0.350 and is_hitter_hot)
 
         # Check if this hitter has a Matchup DNA edge
         is_hitter_pitch_alignment = False

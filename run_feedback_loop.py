@@ -331,7 +331,12 @@ def run_feedback_loop(days=7):
                     
             # OMEGA v13.9: TEAM_STORM and TEAM_SURGING retired — signals removed
                     
-            if t.get('is_gassed'):
+            # OMEGA v15.2: Gassed Bullpen Attack defined by fatigue >= 75, starter outs <= 15.5, and attacking xwOBA >= 0.315
+            bp_fatigue = float(t.get('bullpen_fatigue', 0.0) or 0.0)
+            opp_outs = float(t.get('opp_pitcher_outs', 18.0) or 18.0)
+            team_xwoba = float(t.get('team_xwoba', 0.320) or 0.320)
+            is_gassed_attack = (bp_fatigue >= 75) and (opp_outs <= 15.5) and (team_xwoba >= 0.315)
+            if is_gassed_attack:
                 signal_stats['GASSED_BULLPEN_ATTACK']['fired'] += 1
                 if runs >= 5:
                     signal_stats['GASSED_BULLPEN_ATTACK']['hit'] += 1
@@ -500,10 +505,10 @@ def run_feedback_loop(days=7):
         for h in h_audit:
             is_smash = h.get('smash_factor') or h.get('is_smash')
             if is_smash is None:
-                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.370 and NPAS_xwOBA >= 0.0
+                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.350 and is_hot/is_hot_run_msmi
                 matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
-                npas = float(h.get('NPAS_xwOBA', 0.0) or 0.0)
-                is_smash = (matchup_xwoba >= 0.370 and npas >= 0.0)
+                is_hot = bool(h.get('is_hot', False)) or bool(h.get('is_hot_run_msmi', False))
+                is_smash = (matchup_xwoba >= 0.350 and is_hot)
             
             if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1
