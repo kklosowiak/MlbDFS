@@ -17,67 +17,67 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg: #030303;
-            --surface: rgba(20, 20, 25, 0.7);
-            --surface-hover: rgba(35, 35, 45, 0.85);
-            --text-primary: #f5f5f7;
-            --text-secondary: #86868b;
-            --accent-blue: #0a84ff;
-            --accent-green: #32d74b;
-            --accent-red: #ff453a;
-            --accent-orange: #ff9f0a;
-            --accent-purple: #bf5af2;
-            --border: rgba(255, 255, 255, 0.08);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --radius-sm: 10px;
+            --bg: #0b0d10; /* Deep Charcoal Dark background */
+            --surface: rgba(20, 24, 30, 0.75); /* Translucent surface */
+            --surface-hover: rgba(30, 36, 45, 0.9);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --accent-orange: #fb923c;
+            --accent-purple: #c084fc;
+            --border: rgba(255, 255, 255, 0.06);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
 
-            --sidebar-bg: rgba(15, 15, 20, 0.85);
-            --nav-hover: rgba(255, 255, 255, 0.04);
-            --nav-active: rgba(255, 255, 255, 0.08);
-            --widget-bg: rgba(255, 255, 255, 0.03);
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            --logo-txt-grad: linear-gradient(135deg, #fff 0%, #888 100%);
-            --row-hover-bg: rgba(255, 255, 255, 0.035);
-            --row-hover-border: rgba(255, 255, 255, 0.08);
-            --input-bg: rgba(255, 255, 255, 0.04);
-            --border-td: rgba(255, 255, 255, 0.04);
-            --body-gradient: radial-gradient(circle at 50% 0%, #0d1b2a 0%, #030303 60%);
-            --drawer-bg: rgba(15, 15, 20, 0.95);
-            --handbook-sidebar-bg: rgba(10, 10, 15, 0.5);
-            --handbook-bg: rgba(3, 3, 3, 0.96);
-            --modal-bg: rgba(15, 15, 20, 0.95);
-            --modal-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(10, 132, 255, 0.15);
+            --sidebar-bg: rgba(11, 13, 16, 0.9);
+            --nav-hover: rgba(255, 255, 255, 0.03);
+            --nav-active: rgba(255, 255, 255, 0.06);
+            --widget-bg: rgba(255, 255, 255, 0.02);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --logo-txt-grad: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            --row-hover-bg: rgba(255, 255, 255, 0.02);
+            --row-hover-border: rgba(56, 189, 248, 0.2);
+            --input-bg: rgba(255, 255, 255, 0.02);
+            --border-td: rgba(255, 255, 255, 0.03);
+            --body-gradient: radial-gradient(circle at 50% 0%, #171d29 0%, #0b0d10 80%);
+            --drawer-bg: rgba(11, 13, 16, 0.96);
+            --handbook-sidebar-bg: rgba(11, 13, 16, 0.5);
+            --handbook-bg: #0b0d10;
+            --modal-bg: #11141b;
+            --modal-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(56, 189, 248, 0.08);
         }
 
         body.light-theme {
-            --bg: #eef1f6;
-            --surface: #ffffff;
-            --surface-hover: #e2e8f0;
-            --text-primary: #11151c;
-            --text-secondary: #343a40;
-            --border: #a1b0cb;
-            --sidebar-bg: #e4e7eb;
-            --nav-hover: rgba(0, 122, 255, 0.04);
-            --nav-active: #ffffff;
-            --widget-bg: #dee2e6;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --logo-txt-grad: linear-gradient(135deg, #11151c 0%, #343a40 100%);
-            --row-hover-bg: rgba(0, 0, 0, 0.025);
-            --row-hover-border: #889ab8;
+            --bg: #e4e8ec; /* Beautiful Slate-Grey background */
+            --surface: #f8fafc; /* Slate 50 - light gray card/widget surface */
+            --surface-hover: #ffffff; /* Crisp white hover surface */
+            --text-primary: #0f172a; /* Deep slate charcoal text */
+            --text-secondary: #475569; /* Slate secondary body text */
+            --border: #cbd5e1; /* Slate 300 - clean, crisp borders */
+            --sidebar-bg: #f1f5f9; /* Slate 100 sidebar background */
+            --nav-hover: rgba(15, 23, 42, 0.04);
+            --nav-active: #ffffff; /* White active item */
+            --widget-bg: #e2e8f0; /* Slate 200 widgets */
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --logo-txt-grad: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            --row-hover-bg: #ffffff; /* Table rows highlight in pure white! */
+            --row-hover-border: #94a3b8; /* Slate 400 hover boundary */
             --input-bg: #ffffff;
-            --border-td: #b0bfc9;
-            --body-gradient: radial-gradient(circle at 50% 0%, #e4e7eb 0%, #eef1f6 75%) ;
-            --drawer-bg: rgba(241, 243, 245, 0.98);
-            --handbook-sidebar-bg: rgba(222, 226, 230, 0.6);
-            --handbook-bg: #ffffff;
-            --modal-bg: #ffffff;
-            --modal-shadow: 0 30px 60px rgba(0,0,0,0.1), 0 0 40px rgba(0, 0, 0, 0.05);
-            --accent-blue: #007aff;
-            --accent-green: #1e8a38;
-            --accent-red: #d32f2f;
-            --accent-orange: #d97300;
-            --accent-purple: #8f3ad6;
+            --border-td: #e2e8f0; /* Slate-200 row dividers */
+            --body-gradient: radial-gradient(circle at 50% 0%, #f1f5f9 0%, #e4e8ec 100%);
+            --drawer-bg: rgba(248, 250, 252, 0.98);
+            --handbook-sidebar-bg: #f1f5f9;
+            --handbook-bg: #f8fafc;
+            --modal-bg: #f8fafc;
+            --modal-shadow: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+            --accent-blue: #2563eb; /* Premium Indigo Blue */
+            --accent-green: #16a34a; /* Emerald green */
+            --accent-red: #dc2626; /* Crimson Red */
+            --accent-orange: #ea580c;
+            --accent-purple: #7c3aed;
         }
 
         /* Light Theme badge overrides to maximize premium visual contrast */
@@ -111,30 +111,34 @@
 
         /* Table header structure in Light Mode */
         body.light-theme th {
-            background: #f1f3f7;
-            color: #2c3e50;
-            border-bottom: 2px solid #cbd5e1;
+            background: #f8fafc !important; /* Soft header background */
+            color: #1e293b !important; /* Slate 800 for high-contrast legibility */
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            border-bottom: 2px solid #cbd5e1 !important; /* Solid Slate 300 bottom border */
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
         }
         body.light-theme .sortable-th:hover {
-            background: #e2e8f0;
-            color: var(--text-primary);
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
         }
 
         /* Accessible Active Chips for Filters in Light Mode */
         body.light-theme .signal-filter-chip {
-            background: #e5e9f0;
-            border-color: #cfd6e0;
-            color: var(--text-secondary);
+            background: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+            color: #475569 !important;
         }
         body.light-theme .signal-filter-chip:hover {
-            background: #e2e8f0;
-            color: var(--text-primary);
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
         }
         body.light-theme .signal-filter-chip.active {
-            border-color: var(--accent-blue);
-            background: rgba(0, 122, 255, 0.08);
-            color: var(--accent-blue);
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2) !important;
         }
 
         /* Unified Matchup Chips styles */
@@ -613,29 +617,23 @@
             text-align: left;
         }
 
-        /* Column Grid Mode: Vertical dividers separating columns */
-        table th:not(:last-child), 
-        table td:not(:last-child) {
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        body.light-theme table th:not(:last-child),
-        body.light-theme table td:not(:last-child) {
-            border-right: 1px solid rgba(0, 0, 0, 0.05);
+        /* Column Grid Mode: Vertical dividers completely removed for premium SaaS look */
+        table th, 
+        table td {
+            border-left: none !important;
+            border-right: none !important;
         }
 
         th {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 14px 16px;
-            border-top: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-        }
-        body.light-theme th {
-            border-top: 1px solid rgba(0, 0, 0, 0.12);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.05em;
+            padding: 12px 16px;
+            border-top: none;
+            border-bottom: 2px solid var(--border);
+            background: transparent;
         }
         
         .sortable-th {
@@ -648,72 +646,32 @@
             background: var(--nav-hover);
         }
 
-        /* Bold outer borders enclosing each row */
+        /* Clean, horizontal-only row borders */
         td {
-            padding: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 0.95rem;
+            padding: 14px 16px;
+            border-top: none;
+            border-bottom: 1px solid var(--border-td);
+            font-size: 0.88rem;
             font-weight: 500;
             vertical-align: middle;
-            transition: background 0.2s ease, border-color 0.2s ease;
-        }
-        body.light-theme td {
-            border-top: 1px solid rgba(0, 0, 0, 0.12);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        }
-
-        /* Close outer row sides on left and right edges */
-        table td:first-child, table th:first-child {
-            border-left: 1.5px solid rgba(255, 255, 255, 0.12);
-        }
-        table td:last-child, table th:last-child {
-            border-right: 1.5px solid rgba(255, 255, 255, 0.12);
-        }
-        body.light-theme table td:first-child, body.light-theme table th:first-child {
-            border-left: 1.5px solid rgba(0, 0, 0, 0.12);
-        }
-        body.light-theme table td:last-child, body.light-theme table th:last-child {
-            border-right: 1.5px solid rgba(0, 0, 0, 0.12);
+            transition: background 0.15s ease;
         }
 
         tr.row-highlight td {
-            background: rgba(10, 132, 255, 0.03);
+            background: rgba(56, 189, 248, 0.04);
         }
         tr.row-highlight td:first-child {
-            border-left: 3px solid var(--accent-blue);
+            border-left: 3px solid var(--accent-blue) !important;
         }
 
         tr {
-            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
+            transition: background-color 0.15s ease;
         }
 
-        tr:hover {
-            transform: translateX(4px);
-        }
-
-        /* Dynamic Blue Glow highlights on row hover */
+        /* Modern, non-shifting hover styles */
         tr:hover td {
             background: var(--row-hover-bg) !important;
-            border-top-color: rgba(10, 132, 255, 0.2) !important;
-            border-bottom-color: rgba(10, 132, 255, 0.2) !important;
-        }
-        tr:hover td:first-child {
-            border-left-color: rgba(10, 132, 255, 0.35) !important;
-        }
-        tr:hover td:last-child {
-            border-right-color: rgba(10, 132, 255, 0.35) !important;
-        }
-
-        body.light-theme tr:hover td {
-            border-top-color: rgba(0, 122, 255, 0.2) !important;
-            border-bottom-color: rgba(0, 122, 255, 0.2) !important;
-        }
-        body.light-theme tr:hover td:first-child {
-            border-left-color: rgba(0, 122, 255, 0.35) !important;
-        }
-        body.light-theme tr:hover td:last-child {
-            border-right-color: rgba(0, 122, 255, 0.35) !important;
+            border-bottom-color: var(--row-hover-border) !important;
         }
 
         /* Pill styling */
@@ -1891,7 +1849,9 @@
         }
 
         /* CARD AND PORTALS CORRECTIONS IN LIGHT MODE */
-        body.light-theme .card {
+        body.light-theme .card,
+        body.light-theme .team-modal,
+        body.light-theme .handbook-modal {
             background: var(--surface) !important;
             border: 1px solid var(--border) !important;
             box-shadow: 0 10px 30px rgba(22, 28, 45, 0.05) !important;
@@ -1899,11 +1859,138 @@
         body.light-theme .card [style*="color: #fff"],
         body.light-theme .card [style*="color:#fff"],
         body.light-theme .card [style*="color: #ffffff"],
-        body.light-theme .card [style*="color:#ffffff"] {
+        body.light-theme .card [style*="color:#ffffff"],
+        body.light-theme .team-modal [style*="color: #fff"],
+        body.light-theme .team-modal [style*="color:#fff"],
+        body.light-theme .team-modal [style*="color: #ffffff"],
+        body.light-theme .team-modal [style*="color:#ffffff"],
+        body.light-theme .handbook-modal [style*="color: #fff"],
+        body.light-theme .handbook-modal [style*="color:#fff"] {
             color: var(--text-primary) !important;
         }
-        body.light-theme .card [style*="color: var(--text-secondary)"] {
+        body.light-theme .card [style*="color: var(--text-secondary)"],
+        body.light-theme .team-modal [style*="color: var(--text-secondary)"] {
             color: var(--text-secondary) !important;
+        }
+
+        /* 
+           HIGH-CONTRAST LIGHT THEME BADGES & INLINE OVERRIDES
+           Intercepts bright neon colors injected inline by JS and maps them to dark-vibrant premium palettes.
+        */
+        body.light-theme [style*="background: rgba(50,215,75"],
+        body.light-theme [style*="background:rgba(50,215,75"],
+        body.light-theme [style*="background: rgba(50, 215, 75"],
+        body.light-theme [style*="background:rgba(50, 215, 75"] {
+            background: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
+            color: #15803d !important;
+        }
+        body.light-theme [style*="background: rgba(255,159,10"],
+        body.light-theme [style*="background:rgba(255,159,10"],
+        body.light-theme [style*="background: rgba(255, 159, 10"],
+        body.light-theme [style*="background:rgba(255, 159, 10"] {
+            background: #fff7ed !important;
+            border-color: #ffedd5 !important;
+            color: #b45309 !important;
+        }
+        body.light-theme [style*="background: rgba(255,69,58"],
+        body.light-theme [style*="background:rgba(255,69,58"],
+        body.light-theme [style*="background: rgba(255, 69, 58"],
+        body.light-theme [style*="background:rgba(255, 69, 58"] {
+            background: #fef2f2 !important;
+            border-color: #fee2e2 !important;
+            color: #b91c1c !important;
+        }
+        body.light-theme [style*="background: rgba(10,132,255"],
+        body.light-theme [style*="background:rgba(10,132,255"],
+        body.light-theme [style*="background: rgba(10, 132, 255"],
+        body.light-theme [style*="background:rgba(10, 132, 255"] {
+            background: #eff6ff !important;
+            border-color: #dbeafe !important;
+            color: #1d4ed8 !important;
+        }
+        body.light-theme [style*="background: rgba(0,242,254"],
+        body.light-theme [style*="background:rgba(0,242,254"],
+        body.light-theme [style*="background: rgba(0, 242, 254"],
+        body.light-theme [style*="background:rgba(0, 242, 254"] {
+            background: #ecfeff !important;
+            border-color: #c5f2f7 !important;
+            color: #0891b2 !important;
+        }
+
+        /* Direct text color mappings to fix unreadable neon green/red/orange/blue text in cells */
+        body.light-theme [style*="color: #32d74b"],
+        body.light-theme [style*="color:#32d74b"],
+        body.light-theme [style*="color: #32cd32"],
+        body.light-theme [style*="color:#32cd32"] {
+            color: #16a34a !important; /* Premium dark emerald green */
+        }
+        body.light-theme [style*="color: #ff9f0a"],
+        body.light-theme [style*="color:#ff9f0a"] {
+            color: #d97706 !important; /* Premium dark amber orange */
+        }
+        body.light-theme [style*="color: #ff453a"],
+        body.light-theme [style*="color:#ff453a"] {
+            color: #dc2626 !important; /* Premium dark crimson red */
+        }
+        body.light-theme [style*="color: #0a84ff"],
+        body.light-theme [style*="color:#0a84ff"] {
+            color: #2563eb !important; /* Premium dark indigo blue */
+        }
+        body.light-theme [style*="color: #00f2fe"],
+        body.light-theme [style*="color:#00f2fe"],
+        body.light-theme [style*="color: #00e5ff"],
+        body.light-theme [style*="color:#00e5ff"] {
+            color: #0891b2 !important; /* Premium dark cyan */
+        }
+
+        /* Force invisible white/transparent signal pills to render as crisp slate grey tags */
+        body.light-theme .signal-pill,
+        body.light-theme .pill-neutral,
+        body.light-theme .badge-mini,
+        body.light-theme [style*="background: rgba(255, 255, 255, 0.08)"],
+        body.light-theme [style*="background:rgba(255, 255, 255, 0.08)"],
+        body.light-theme [style*="background: rgba(255, 255, 255, 0.06)"],
+        body.light-theme [style*="background:rgba(255, 255, 255, 0.06)"],
+        body.light-theme [style*="background: rgba(255,255,255,0.06)"],
+        body.light-theme [style*="background:rgba(255,255,255,0.06)"] {
+            background: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #334155 !important;
+        }
+
+        /* Table cells overall readability boost */
+        body.light-theme td {
+            font-weight: 500 !important;
+            color: #0f172a !important; /* Maximum dark slate text */
+        }
+
+        /* Specific overrides for dynamic DQI badges in Light Mode */
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(50, 215, 75"],
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(255, 159, 10"],
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(255, 69, 58"],
+        body.light-theme [style*="box-shadow:0 0 10px rgba(50, 215, 75"],
+        body.light-theme [style*="box-shadow:0 0 10px rgba(255, 159, 10"],
+        body.light-theme [style*="box-shadow:0 0 10px rgba(255, 69, 58"] {
+            box-shadow: none !important;
+        }
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(50, 215, 75"] *,
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(255, 159, 10"] *,
+        body.light-theme [style*="box-shadow: 0 0 10px rgba(255, 69, 58"] *,
+        body.light-theme [style*="box-shadow:0 0 10px rgba(50, 215, 75"] *,
+        body.light-theme [style*="box-shadow:0 0 10px rgba(255, 159, 10"] *,
+        body.light-theme [style*="box-shadow:0 0 10px rgba(255, 69, 58"] * {
+            color: inherit !important; /* Forces child elements to inherit the dark green/orange/red parent text color */
+        }
+        body.light-theme [style*="border:1px dashed rgba(255,255,255"],
+        body.light-theme [style*="border: 1px dashed rgba(255,255,255"] {
+            border: 1px dashed #cbd5e1 !important;
+            background: #f8fafc !important;
+        }
+        body.light-theme [style*="border:1px dashed rgba(255,255,255"] *,
+        body.light-theme [style*="border: 1px dashed rgba(255,255,255"] * {
+            color: #475569 !important; /* Muted grey for faded status content */
+            text-shadow: none !important;
         }
         
         /* Sidebar active tab style fix */
@@ -2000,6 +2087,12 @@
         body.light-theme .card[style*="border-top: 3px solid #bf5af2"] {
             background: linear-gradient(to bottom, #faf5ff, #ffffff) !important;
             border-color: rgba(191, 90, 242, 0.25) !important;
+        }
+        body.light-theme .sidebar-legend {
+            scrollbar-color: rgba(15, 23, 42, 0.1) transparent !important;
+        }
+        body.light-theme .sidebar-legend::-webkit-scrollbar-thumb {
+            background: rgba(15, 23, 42, 0.1) !important;
         }
     </style>
 </head>
