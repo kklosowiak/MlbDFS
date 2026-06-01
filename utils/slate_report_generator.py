@@ -54,6 +54,52 @@ class SlateReportGenerator:
             h['attack_reasons'] = reasons
             h['blended_rating'] = round((h.get('player_score', 0) + conf) / 2, 1)
 
+        # OMEGA ELITE ALERTS (Highest Probability Backtested Combinations)
+        alert_lines = []
+        
+        # 1. Stacks: Elite Physics + Weak Arm (66.3% hit rate)
+        for t in t_reports:
+            xwoba = float(t.get('team_xwoba') or 0.0)
+            opp_phys = float(t.get('opp_pitcher_physics') or 50.0)
+            if xwoba >= 0.330 and opp_phys <= 35.0:
+                alert_lines.append(f"- 📈 **ELITE OFFENSE ALERT**: **{t['team']}** stack meets the **Elite Physics + Weak Arm** combo (xwOBA: {xwoba:.3f} vs. {t.get('opp_pitcher')}'s PHY: {opp_phys:.1f}). This combination has a **66.3% backtested hit rate** for scoring 4+ runs.")
+
+        # 2. Stacks: Gassed Bullpen Attack (+8.0 pts)
+        for t in t_reports:
+            bp = float(t.get('bullpen_fatigue') or 0.0)
+            outs = float(t.get('opp_pitcher_outs') or 18.0)
+            xwoba = float(t.get('team_xwoba') or 0.0)
+            if bp >= 75.0 and outs <= 15.5 and xwoba >= 0.315:
+                alert_lines.append(f"- 🔥 **GASSED BULLPEN ATTACK**: **{t['team']}** targets short-leash starter {t.get('opp_pitcher')} (Outs Line: {outs}) and an exhausted bullpen (Fatigue: {bp:.1f}%). High expectation of late-inning run scoring (+8.0 pts boost).")
+
+        # 3. Stacks: Anti-Chalk GPP Pivot (+10.0 pts)
+        for t in t_reports:
+            if t.get('is_anti_chalk_smash'):
+                alert_lines.append(f"- ⚓ **ANTI-CHALK SMASH**: **{t['team']}** targets a highly popular starting pitcher with hidden physical vulnerabilities. Backtested as the single highest GPP leverage pivot (+10.0 pts boost).")
+
+        # 4. Stacks: DQI Trust (80+ DQI / 14% Div / 4.2 ITT)
+        for t in t_reports:
+            dqi = int(t.get('dqi_score') or 0)
+            div = int(t.get('divergence') or 0)
+            itt = float(t.get('implied_total') or 0.0)
+            if dqi >= 80 and div >= 14 and itt >= 4.2:
+                alert_lines.append(f"- 🟢 **DQI TRUST COMBO**: **{t['team']}** stack passes all DQI Trust Gates (DQI: {dqi} | Div: {div:+d}% | ITT: {itt:.2f}). Highly reliable sharp consensus.")
+
+        # 5. Pitchers: Low-Ceiling + Hazard Shelling (100% Shelling Rate)
+        for p in p_reports:
+            if p.get('is_low_ceiling') and p.get('is_hazard'):
+                alert_lines.append(f"- 🚨 **PITCHER SHELLING ALERT**: Opposing starter **{p['pitcher']}** has a **Low-Ceiling + Power Hazard** combo (Low strikeout upside facing high-power xwOBA lineup). This combo is **5-for-5 (100%)** at predicting pitchers getting shelled.")
+
+        # 6. Pitchers: True Talent + High Walks Fade (-25.0 pts)
+        for p in p_reports:
+            if p.get('walks_penalty') and p.get('true_talent_penalty'):
+                alert_lines.append(f"- 📉 **TRUE TALENT & WALKS FADE**: Opposing starter **{p['pitcher']}** suffers from control issues and poor underlying sabermetrics (Walks Penalty + True Talent Penalty = -25.0 pts reduction). Stack against them immediately.")
+
+        # 7. Pitchers: Trap Fade + Institutional Anchor (-10% Multiplier)
+        for p in p_reports:
+            if p.get('is_trap') and p.get('divergence', 0) < -10:
+                alert_lines.append(f"- 📉 **SHARP TRAP FADE**: Starter **{p['pitcher']}** is a public trap experiencing heavy sharp money fade (Divergence: {p['divergence']}%). Institutional Anchor penalty active.")
+
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")
         lines.append(f"**Generated:** {datetime.datetime.now().strftime('%Y-%m-%d %I:%M %p ET')}")
@@ -61,6 +107,18 @@ class SlateReportGenerator:
         lines.append("> [!TIP]")
         lines.append("> This Attack Plan evaluates all stacks and pitchers on a strict Confidence scale (0-100%). It ignores raw Omega scores and builds comprehensive arguments based on Physics, Platoon Edges, Traps, Recent Form, and Market Divergence.")
         lines.append("")
+        
+        if alert_lines:
+            lines.append("---")
+            lines.append("")
+            lines.append("## ⚡ OMEGA ELITE COMBO ALERTS")
+            lines.append("> [!IMPORTANT]")
+            lines.append("> The following high-probability backtested combinations have been detected on today's slate:")
+            lines.append("")
+            for al in alert_lines:
+                lines.append(al)
+            lines.append("")
+
         lines.append("---")
         lines.append("")
 

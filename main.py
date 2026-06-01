@@ -365,11 +365,15 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
             report['market_score'] = res.get('market', 0)
             report['is_trap'] = res.get('is_trap', False)
             report['is_coors'] = res.get('is_coors', False)
+            report['walks_penalty'] = res.get('walks_penalty', False)
+            report['true_talent_penalty'] = res.get('true_talent_penalty', False)
         else:
             report['alpha_score'] = float(res or 0)
             report['physics_score'] = report.get('physics_score', 0)
             report['physics_talent'] = report.get('physics_talent', 0)
             report['market_score'] = report.get('market_score', 0)
+            report['walks_penalty'] = report.get('walks_penalty', False)
+            report['true_talent_penalty'] = report.get('true_talent_penalty', False)
         report['siera'] = report.get('siera', 4.10)
         report['is_paradox'] = False
         report['is_hazard'] = False
