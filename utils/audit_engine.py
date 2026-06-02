@@ -138,25 +138,38 @@ class AuditEngine:
                 else:
                     h_stat_line = "DNP/No Stats"
 
+            # Check if pitcher matched or was scratched
+            is_scratched = False
+            if 'alpha_score' in r:
+                from utils.normalization import normalize_player_name
+                norm_proj = normalize_player_name(r.get('pitcher', ''))
+                norm_act = normalize_player_name(sp_stats.get('name', ''))
+                if norm_proj and norm_act and norm_proj != norm_act:
+                    is_scratched = True
+
             # Calculate a summary outcome for the target type
             if 'stack_score' in r:
                 success = stack_success
             elif 'alpha_score' in r: # Pitcher
-                success = p_success
+                success = p_success if not is_scratched else False
             else: # Hitters
                 success = h_success
+
+            success_flag = "[WIN]" if success else "[LOSS]" if status == "Final" else "[BUSY]"
+            if is_scratched:
+                success_flag = "[SCRATCH]"
 
             audit_data.append({
                 **r,
                 'actual_runs': runs,
                 'actual_sp': sp_stats.get('name'),
-                'actual_k': k,
-                'actual_er': er,
-                'actual_ip': ip_raw,
+                'actual_k': k if not is_scratched else 0,
+                'actual_er': er if not is_scratched else 0,
+                'actual_ip': ip_raw if not is_scratched else "0.0",
                 'hitter_stat_line': h_stat_line,
-                'game_status': status,
-                'success_flag': "[WIN]" if success else "[LOSS]" if status == "Final" else "[BUSY]",
-                'grade': "A" if success and (r.get('stack_score', 0) > 85 or r.get('alpha_score', 0) > 95 or r.get('player_score', 0) > 95) else "B" if success else "F"
+                'game_status': status if not is_scratched else "Scratched",
+                'success_flag': success_flag,
+                'grade': "SCRATCH" if is_scratched else ("A" if success and (r.get('stack_score', 0) > 85 or r.get('alpha_score', 0) > 95 or r.get('player_score', 0) > 95) else "B" if success else "F")
             })
             
         return audit_data
