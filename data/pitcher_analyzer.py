@@ -218,6 +218,8 @@ class PitcherAnalyzer:
                 walks_odds = None
                 er_line = None
                 er_odds = None
+                hits_allowed_line = None
+                hits_allowed_odds = None
                 is_juiced_target = False
                 is_prop_juice = False
                 _juice_gap = 0
@@ -248,6 +250,8 @@ class PitcherAnalyzer:
                     walks_odds = prev_pitcher_data.get('walks_odds')
                     er_line = prev_pitcher_data.get('er_line')
                     er_odds = prev_pitcher_data.get('er_odds')
+                    hits_allowed_line = prev_pitcher_data.get('hits_allowed_line')
+                    hits_allowed_odds = prev_pitcher_data.get('hits_allowed_odds')
                     is_juiced_target = bool(prev_pitcher_data.get('is_juiced_target', False))
                     is_prop_juice = bool(prev_pitcher_data.get('is_prop_juice', False))
                     _juice_gap = int(prev_pitcher_data.get('_juice_gap', 0) or 0)
@@ -308,6 +312,16 @@ class PitcherAnalyzer:
                                 er_line = statistics.median(points)
                                 o_odds = next((o.get('price') for o in p_er if o.get('point') == er_line and o.get('side') == 'Over'), None)
                                 if o_odds: er_odds = o_odds
+                    
+                    # Hits Allowed recovery
+                    if 'pitcher_hits_allowed' in gid_props:
+                        p_ha = [o for o in gid_props['pitcher_hits_allowed'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pitcher_name)]
+                        if p_ha:
+                            points = [o.get('point', 0) for o in p_ha if o.get('point')]
+                            if points:
+                                hits_allowed_line = statistics.median(points)
+                                o_odds = next((o.get('price') for o in p_ha if o.get('point') == hits_allowed_line and o.get('side') == 'Over'), None)
+                                if o_odds: hits_allowed_odds = o_odds
                     
                     norm_pitcher = normalize_player_name(pitcher_name)
                     if k_line is None and ext_props.get(norm_pitcher):
@@ -457,6 +471,8 @@ class PitcherAnalyzer:
                     'walks_odds': walks_odds,
                     'er_line': er_line,
                     'er_odds': er_odds,
+                    'hits_allowed_line': hits_allowed_line,
+                    'hits_allowed_odds': hits_allowed_odds,
                     'alpha_score': alpha_results,
                     'csw': physics['csw'],
                     'siera': physics['siera'],

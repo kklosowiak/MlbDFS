@@ -93,21 +93,27 @@ class DashboardGenerator:
                 props_list.append(("Walks Limit", f"{p['walks_line']} ({p.get('walks_odds', 'EVEN')})"))
             if p.get('er_line') is not None:
                 props_list.append(("ER Limit", f"{p['er_line']} ({p.get('er_odds', 'EVEN')})"))
+            if p.get('hits_allowed_line') is not None:
+                props_list.append(("Hits Allowed", f"{p['hits_allowed_line']} ({p.get('hits_allowed_odds', 'EVEN')})"))
 
             props_grid_html = ""
             if props_list:
                 cards = []
-                for name, value in props_list:
+                for i, (name, value) in enumerate(props_list):
+                    is_last_odd = (i == len(props_list) - 1) and (len(props_list) % 2 != 0)
+                    span_style = "grid-column: span 2;" if is_last_odd else ""
                     cards.append(f"""
-                    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; {span_style}">
                         <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:500;">{name}</span>
                         <span style="font-size:0.95rem; font-weight:700; color:#fff;">{value}</span>
                     </div>
                     """)
                 props_grid_html = f"""
-                <div style="margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
-                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em; margin-bottom:4px;">VEGAS PLAYER PROPS</div>
-                    {"".join(cards)}
+                <div style="margin-bottom:20px;">
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em; margin-bottom:10px;">VEGAS PLAYER PROPS</div>
+                    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
+                        {"".join(cards)}
+                    </div>
                 </div>
                 """
 

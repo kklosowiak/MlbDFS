@@ -532,14 +532,22 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 ml_move = calculate_ml_move(open_ml, curr_ml)
             else:
                 ml_move = 0.0
-            if open_total is not None and curr_total is not None:
-                tt_move = curr_total - open_total
-            else:
-                tt_move = 0.0
+            # Delta Calc for team totals - try direct FL scraped totals first
+            fl_tt_live = open_data.get(f'{field_key}_tt_live')
+            fl_tt_open = open_data.get(f'{field_key}_tt_open')
             
-            # ITT Calc
-            prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
-            curr_itt = (curr_total if curr_total else 8.5) * prob
+            if fl_tt_live is not None and fl_tt_open is not None:
+                curr_itt = float(fl_tt_live)
+                tt_move = round(float(fl_tt_live) - float(fl_tt_open), 2)
+                print(f"  [VEGAS ENRICH]: Using direct FL team total for {team}: {curr_itt} (Open: {fl_tt_open}, Move: {tt_move:+.2f})")
+            else:
+                # Math-based fallback
+                if open_total is not None and curr_total is not None:
+                    tt_move = curr_total - open_total
+                else:
+                    tt_move = 0.0
+                prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
+                curr_itt = (curr_total if curr_total else 8.5) * prob
 
             # OMEGA v11.0: Sharp Delta and moneyline Velocity boosts
             is_velocity_boost = False

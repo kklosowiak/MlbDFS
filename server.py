@@ -62,8 +62,8 @@ try:
 except Exception as init_err:
     print(f"[INIT WARNING]: Failed to load cached timestamp: {init_err}")
 
-# Auth config (no defaults — set OMEGA_PASSWORD in environment)
-PASSWORD = os.getenv("OMEGA_PASSWORD") or ""
+# Auth config (default to "omega" if not set in environment)
+PASSWORD = os.getenv("OMEGA_PASSWORD") or "omega"
 COOKIE_NAME = "omega_session"
 COOKIE_VALUE = "active"
 

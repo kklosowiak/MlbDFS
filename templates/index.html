@@ -3913,11 +3913,35 @@
         }
 
         function pitcherPropsClusterCell(p) {
-            const tip = `${omegaTip('col_props_cluster')} K ${p.k_line || '-'} (${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'}) · OUTS ${p.outs_line || '-'}`;
-            return `<td class="metric"${tipAttrs(tip)}>
-                <div><span class="mc-label">K</span><b>${p.k_line || '-'}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></div>
-                <div style="margin-top:4px;"><span class="mc-label">OUT</span><b>${p.outs_line || '-'}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></div>
-            </td>`;
+            let tooltipParts = [];
+            if (p.k_line) tooltipParts.push(`K ${p.k_line} (${p.k_odds > 0 ? '+' : ''}${p.k_odds})`);
+            if (p.outs_line) tooltipParts.push(`OUTS ${p.outs_line} (${p.outs_odds > 0 ? '+' : ''}${p.outs_odds})`);
+            if (p.walks_line) tooltipParts.push(`BB ${p.walks_line} (${p.walks_odds > 0 ? '+' : ''}${p.walks_odds})`);
+            if (p.er_line) tooltipParts.push(`ER ${p.er_line} (${p.er_odds > 0 ? '+' : ''}${p.er_odds})`);
+            if (p.hits_allowed_line) tooltipParts.push(`HA ${p.hits_allowed_line} (${p.hits_allowed_odds > 0 ? '+' : ''}${p.hits_allowed_odds})`);
+            
+            const tip = `${omegaTip('col_props_cluster')} ` + tooltipParts.join(' · ');
+            
+            let html = `<td class="metric"${tipAttrs(tip)}>`;
+            let divs = [];
+            if (p.k_line) {
+                divs.push(`<div><span class="mc-label">K</span><b>${p.k_line}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.k_odds > 0 ? '+' : ''}${p.k_odds || '-'})</span></div>`);
+            }
+            if (p.outs_line) {
+                divs.push(`<div style="margin-top:4px;"><span class="mc-label" style="color:#8bfb9d; background:rgba(50,215,75,0.12); border-color:rgba(50,215,75,0.35);">OUT</span><b>${p.outs_line}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.outs_odds > 0 ? '+' : ''}${p.outs_odds || '-'})</span></div>`);
+            }
+            if (p.walks_line) {
+                divs.push(`<div style="margin-top:4px;"><span class="mc-label" style="color:#ffd28c; background:rgba(255,159,10,0.12); border-color:rgba(255,159,10,0.35);">BB</span><b>${p.walks_line}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.walks_odds > 0 ? '+' : ''}${p.walks_odds || '-'})</span></div>`);
+            }
+            if (p.er_line) {
+                divs.push(`<div style="margin-top:4px;"><span class="mc-label" style="color:#ff9c96; background:rgba(255,69,58,0.12); border-color:rgba(255,69,58,0.35);">ER</span><b>${p.er_line}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.er_odds > 0 ? '+' : ''}${p.er_odds || '-'})</span></div>`);
+            }
+            if (p.hits_allowed_line) {
+                divs.push(`<div style="margin-top:4px;"><span class="mc-label" style="color:#dfb0ff; background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.35);">HA</span><b>${p.hits_allowed_line}</b> <span style="font-size:0.72em;color:var(--text-secondary);">(${p.hits_allowed_odds > 0 ? '+' : ''}${p.hits_allowed_odds || '-'})</span></div>`);
+            }
+            html += divs.join('');
+            html += `</td>`;
+            return html;
         }
 
         function buildTeamDqiBadgeHtml(t, dqiRankInfo = null) {
@@ -6713,23 +6737,44 @@
                 document.getElementById('pm-phys').innerText = p.physics_score || 0;
                 document.getElementById('pm-mkt').innerText = p.market_score || 0;
                 
-                let kStr = '-';
-                if (p.k_line) {
-                    kStr = p.k_line;
-                    if (p.k_odds !== null && p.k_odds !== undefined && p.k_odds !== 0) {
-                        kStr += ` (${p.k_odds > 0 ? '+' : ''}${p.k_odds})`;
+                // Build Vegas player props list dynamically
+                const propsGrid = document.getElementById('pm-props-grid');
+                if (propsGrid) {
+                    let propsHTML = '';
+                    const propsList = [];
+                    if (p.k_line) {
+                        propsList.push({ name: 'Strikeouts', value: `${p.k_line} (${p.k_odds > 0 ? '+' : ''}${p.k_odds})` });
+                    }
+                    if (p.outs_line) {
+                        propsList.push({ name: 'Recorded Outs', value: `${p.outs_line} (${p.outs_odds > 0 ? '+' : ''}${p.outs_odds})` });
+                    }
+                    if (p.walks_line) {
+                        propsList.push({ name: 'Walks Allowed', value: `${p.walks_line} (${p.walks_odds > 0 ? '+' : ''}${p.walks_odds})` });
+                    }
+                    if (p.er_line) {
+                        propsList.push({ name: 'Earned Runs', value: `${p.er_line} (${p.er_odds > 0 ? '+' : ''}${p.er_odds})` });
+                    }
+                    if (p.hits_allowed_line) {
+                        propsList.push({ name: 'Hits Allowed', value: `${p.hits_allowed_line} (${p.hits_allowed_odds > 0 ? '+' : ''}${p.hits_allowed_odds})` });
+                    }
+
+                    if (propsList.length > 0) {
+                        propsList.forEach((prop, idx) => {
+                            const isLastOdd = (idx === propsList.length - 1) && (propsList.length % 2 !== 0);
+                            const spanStyle = isLastOdd ? 'grid-column: span 2;' : '';
+                            propsHTML += `
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:12px 16px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; ${spanStyle}">
+                                <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:500;">${prop.name}</span>
+                                <span style="font-size:0.95rem; font-weight:700; color:#fff;">${prop.value}</span>
+                            </div>
+                            `;
+                        });
+                        document.getElementById('pm-props-card').style.display = 'block';
+                        propsGrid.innerHTML = propsHTML;
+                    } else {
+                        document.getElementById('pm-props-card').style.display = 'none';
                     }
                 }
-                document.getElementById('pm-kline').innerText = kStr;
-                
-                let outsStr = '-';
-                if (p.outs_line) {
-                    outsStr = p.outs_line;
-                    if (p.outs_odds !== null && p.outs_odds !== undefined && p.outs_odds !== 0) {
-                        outsStr += ` (${p.outs_odds > 0 ? '+' : ''}${p.outs_odds})`;
-                    }
-                }
-                document.getElementById('pm-outsline').innerText = outsStr;
 
                 let badgesHTML = '';
                 if (p.is_juiced_target) badgesHTML += '<span class="signal-pill pill-target">🎯 TARGET</span>';
@@ -7530,9 +7575,7 @@
                 <div class="card" style="padding:20px; margin:0;">
                     <h4 style="margin:0 0 15px 0; color:var(--accent-green);">Pitcher Metrics & Stuff</h4>
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Physics Score</span><strong id="pm-phys">0.0</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Market Score</span><strong id="pm-mkt">0.0</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Strikeouts Line</span><strong id="pm-kline">-</strong></div>
-                    <div style="display:flex; justify-content:space-between;"><span>Outs Line</span><strong id="pm-outsline">-</strong></div>
+                    <div style="display:flex; justify-content:space-between;"><span>Market Score</span><strong id="pm-mkt">0.0</strong></div>
                 </div>
                 <div class="card" style="padding:20px; margin:0;" id="pm-platoon-card">
                     <h4 style="margin:0 0 15px 0; color:#00f2fe;">Platoon Splits & Edge</h4>
@@ -7541,6 +7584,11 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>vs RHH OPS / wOBA</span><strong id="pm-plat-vr">-</strong></div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Opp vs Hand OPS</span><strong id="pm-plat-opp-ops">-</strong></div>
                     <div style="display:flex; justify-content:space-between;"><span>Platoon Advantage</span><strong id="pm-plat-advantage">-</strong></div>
+                </div>
+            </div>
+            <div class="card" style="padding:20px; margin:20px 0 0 0; display:none;" id="pm-props-card">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-blue);">Vegas Player Props</h4>
+                <div id="pm-props-grid" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
                 </div>
             </div>
         </div>

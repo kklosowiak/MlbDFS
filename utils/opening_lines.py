@@ -39,7 +39,7 @@ def _pair_key(away_team, home_team):
     return f"{away_team}|{home_team}"
 
 
-def _game_entry(g_id, game, away_ml, home_ml, total, source):
+def _game_entry(g_id, game, away_ml, home_ml, total, source, away_tt_open=None, away_tt_live=None, home_tt_open=None, home_tt_live=None):
     away = game["away_team"]
     home = game["home_team"]
     return {
@@ -56,6 +56,10 @@ def _game_entry(g_id, game, away_ml, home_ml, total, source):
         "commence_time": game.get("commence_time"),
         "opening_source": source,
         "opening_captured_at": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",
+        "away_tt_open": away_tt_open,
+        "away_tt_live": away_tt_live,
+        "home_tt_open": home_tt_open,
+        "home_tt_live": home_tt_live
     }
 
 
@@ -140,7 +144,7 @@ def _has_odds_api_open(row):
 
 
 def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
-    """FantasyLabs backup only — fills games missing Odds API / snapshot opens."""
+    """FantasyLabs backup only — fills games missing Odds API / snapshot opens, and enriches all with team totals."""
     manuals = load_manual_vegas_opens(slate_date_iso)
     if not manuals:
         return 0
@@ -158,6 +162,18 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
             continue
 
         row = open_lookup.get(g_id)
+        
+        # Enrichment: always copy team totals if available in manual opens
+        if row:
+            if manual.get("away_tt_open") is not None:
+                row["away_tt_open"] = manual["away_tt_open"]
+            if manual.get("away_tt_live") is not None:
+                row["away_tt_live"] = manual["away_tt_live"]
+            if manual.get("home_tt_open") is not None:
+                row["home_tt_open"] = manual["home_tt_open"]
+            if manual.get("home_tt_live") is not None:
+                row["home_tt_live"] = manual["home_tt_live"]
+
         if row and _has_odds_api_open(row):
             continue
 
@@ -172,6 +188,10 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
                 manual.get("home_opening_ml") or home_ml or -110,
                 manual.get("opening_total") or total or 8.5,
                 "fantasylabs_vegas_fallback",
+                away_tt_open=manual.get("away_tt_open"),
+                away_tt_live=manual.get("away_tt_live"),
+                home_tt_open=manual.get("home_tt_open"),
+                home_tt_live=manual.get("home_tt_live")
             )
         else:
             row = open_lookup[g_id]
@@ -190,7 +210,7 @@ def apply_manual_vegas_opens(open_lookup, structured_odds, slate_date_iso=None):
         applied += 1
 
     if applied:
-        print(f"  - [LINES]: FantasyLabs fallback opens applied for {applied} game(s).")
+        print(f"  - [LINES]: FantasyLabs fallback opens/enrichment applied for {applied} game(s).")
     return applied
 
 

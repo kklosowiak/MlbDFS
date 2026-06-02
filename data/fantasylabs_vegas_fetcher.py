@@ -57,8 +57,15 @@ def fetch_vegas_opens(slate_date_iso: str | None = None) -> list[dict]:
     resp.raise_for_status()
     html = resp.text
 
-    # Each vegasProperties row contains eventId + open/current ML/OU
-    chunks = re.split(r'\\"eventId\\":\d+', html)
+    # Robust Event Chunk Split using finditer to capture all matches (including Marlins/Nationals)
+    matches = re.finditer(r'\\"eventId\\":(\d+)', html)
+    indices = [m.start() for m in matches]
+    chunks = []
+    for i in range(len(indices)):
+        start = indices[i]
+        end = indices[i+1] if i + 1 < len(indices) else len(html)
+        chunks.append(html[start:end])
+
     games = []
     seen = set()
 
@@ -81,6 +88,12 @@ def fetch_vegas_opens(slate_date_iso: str | None = None) -> list[dict]:
             continue
         seen.add(pair)
 
+        # Parse direct team totals
+        away_tt_open = _extract_float(chunk, "visitorVegasRunsOpen")
+        away_tt_live = _extract_float(chunk, "visitorVegasRuns")
+        home_tt_open = _extract_float(chunk, "homeVegasRunsOpen")
+        home_tt_live = _extract_float(chunk, "homeVegasRuns")
+
         games.append(
             {
                 "away": away,
@@ -88,6 +101,10 @@ def fetch_vegas_opens(slate_date_iso: str | None = None) -> list[dict]:
                 "away_opening_ml": away_ml,
                 "home_opening_ml": home_ml,
                 "opening_total": ou if ou is not None else 8.5,
+                "away_tt_open": away_tt_open,
+                "away_tt_live": away_tt_live,
+                "home_tt_open": home_tt_open,
+                "home_tt_live": home_tt_live
             }
         )
 
@@ -119,5 +136,7 @@ if __name__ == "__main__":
     for g in data["games"]:
         print(
             f"  {g['away']} @ {g['home']}: "
-            f"{g['away_opening_ml']}/{g['home_opening_ml']} O/U {g['opening_total']}"
+            f"Open: {g['away_tt_open']}/{g['home_tt_open']} | "
+            f"Live: {g['away_tt_live']}/{g['home_tt_live']} | "
+            f"ML: {g['away_opening_ml']}/{g['home_opening_ml']} O/U {g['opening_total']}"
         )
