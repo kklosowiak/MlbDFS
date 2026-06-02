@@ -65,7 +65,7 @@ def calculate_dqi(team, pitchers=None):
     pos_pts += div_pts
     pos_factors.append(f"Divergence Sharp Interest (+{round(div_pts, 1)} pts)")
 
-    phys_factor = min(1.0, max(0.0, (40.0 - float(opp_phys)) / 25.0))
+    phys_factor = min(1.0, max(0.0, (35.0 - float(opp_phys)) / 20.0))
     phys_pts = 20.0 * phys_factor
     if phys_pts > 0:
         pos_pts += phys_pts
@@ -104,7 +104,7 @@ def calculate_dqi(team, pitchers=None):
         warn_pts += 12.0
         warn_factors.append("Market U-DIV (-12 pts)")
 
-    xwoba_factor = min(1.0, max(0.0, (float(team_xwoba) - 0.300) / 0.050))
+    xwoba_factor = min(1.0, max(0.0, (float(team_xwoba) - 0.315) / 0.040))
     xwoba_pts = 12.0 * xwoba_factor
     if xwoba_pts > 0:
         pos_pts += xwoba_pts
