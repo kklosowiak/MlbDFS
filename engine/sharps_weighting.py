@@ -515,7 +515,7 @@ class SharpsWeighting:
             final_omega = min(80.0, final_omega)
         
         # OMEGA v16.0 Consolidated Scoring Post-Processing:
-        sentiment_mod = (1.0 / (umpire_factor or 1.0))
+        sentiment_mod = (umpire_factor or 1.0)
         env_synergy = 1.0 + (weather_boost / 100.0)
         
         dominance_penalty = 0.0
