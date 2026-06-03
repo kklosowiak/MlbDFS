@@ -2500,7 +2500,7 @@
 
             <!-- Doppler Radar Map -->
             <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius-lg); height: 350px; margin-bottom: 20px;">
-                <iframe id="doppler-iframe" width="100%" height="100%" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=4&overlay=radar&product=radar&level=surface&lat=38.000&lon=-97.000&detailLat=38.000&detailLon=-97.000&detail=true&marker=true&message=true" frameborder="0"></iframe>
+                <iframe id="doppler-iframe" width="100%" height="100%" src="https://www.rainviewer.com/map.html?loc=38.0000,-97.0000,4" frameborder="0"></iframe>
             </div>
 
             <!-- Weather Summary Cards -->
@@ -5699,7 +5699,7 @@
                     activeBtn.style.borderColor = 'var(--accent-blue)';
                 }
 
-                const newSrc = `https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=9&overlay=radar&product=radar&level=surface&lat=${coords.lat}&lon=${coords.lon}&detailLat=${coords.lat}&detailLon=${coords.lon}&detail=true&marker=true&message=true`;
+                const newSrc = `https://www.rainviewer.com/map.html?loc=${coords.lat},${coords.lon},9`;
                 iframe.src = newSrc;
             }
         }
