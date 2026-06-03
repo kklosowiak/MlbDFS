@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         :root {
             --bg: #0b0d10; /* Deep Charcoal Dark background */
@@ -2499,8 +2501,8 @@
             </div>
 
             <!-- Doppler Radar Map -->
-            <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius-lg); height: 350px; margin-bottom: 20px;">
-                <iframe id="doppler-iframe" width="100%" height="100%" src="https://www.rainviewer.com/map.html?loc=38.0000,-97.0000,4" frameborder="0"></iframe>
+            <div class="card" style="padding:0; overflow:hidden; border-radius:var(--radius-lg); height: 350px; margin-bottom: 20px; position: relative;">
+                <div id="doppler-map" style="width: 100%; height: 100%; z-index: 1;"></div>
             </div>
 
             <!-- Weather Summary Cards -->
@@ -5684,23 +5686,85 @@
             'WAS': { lat: 38.8730, lon: -77.0074 }
         };
 
+        let dopplerMap = null;
+        let baseLayer = null;
+        let radarLayer = null;
+        let radarPath = null;
+
+        function initDopplerMap() {
+            if (dopplerMap) {
+                setTimeout(() => {
+                    dopplerMap.invalidateSize();
+                }, 200);
+                return;
+            }
+
+            const container = document.getElementById('doppler-map');
+            if (!container) return;
+
+            const isLight = document.documentElement.classList.contains('light-theme');
+            const tileUrl = isLight 
+                ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+                : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+            dopplerMap = L.map('doppler-map', {
+                zoomControl: true,
+                attributionControl: true
+            }).setView([38.000, -97.000], 4);
+
+            baseLayer = L.tileLayer(tileUrl, {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(dopplerMap);
+
+            fetch('https://api.rainviewer.com/public/weather-maps.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.radar && data.radar.past && data.radar.past.length > 0) {
+                        radarPath = data.radar.past[data.radar.past.length - 1].path;
+                        updateRadarLayer();
+                    } else if (data && data.radar && data.radar.nowcast && data.radar.nowcast.length > 0) {
+                        radarPath = data.radar.nowcast[0].path;
+                        updateRadarLayer();
+                    }
+                })
+                .catch(err => console.error("Error loading RainViewer JSON:", err));
+                
+            setTimeout(() => {
+                dopplerMap.invalidateSize();
+            }, 100);
+        }
+
+        function updateRadarLayer() {
+            if (!dopplerMap || !radarPath) return;
+            if (radarLayer) {
+                dopplerMap.removeLayer(radarLayer);
+            }
+            radarLayer = L.tileLayer(`https://tilecache.rainviewer.com${radarPath}/256/{z}/{x}/{y}/2/1_1.png`, {
+                attribution: 'Weather data by <a href="https://www.rainviewer.com/">RainViewer</a>',
+                opacity: 0.55,
+                zIndex: 100
+            }).addTo(dopplerMap);
+        }
+
         function retargetRadar(abbr) {
             const coords = STADIUM_COORDS[abbr];
             if (!coords) return;
-            const iframe = document.getElementById('doppler-iframe');
-            if (iframe) {
-                document.querySelectorAll('.radar-btn').forEach(b => {
-                    b.style.opacity = '0.4';
-                    b.style.borderColor = 'transparent';
-                });
-                const activeBtn = document.getElementById('radar-btn-' + abbr);
-                if (activeBtn) {
-                    activeBtn.style.opacity = '1';
-                    activeBtn.style.borderColor = 'var(--accent-blue)';
-                }
+            
+            document.querySelectorAll('.radar-btn').forEach(b => {
+                b.style.opacity = '0.4';
+                b.style.borderColor = 'transparent';
+            });
+            const activeBtn = document.getElementById('radar-btn-' + abbr);
+            if (activeBtn) {
+                activeBtn.style.opacity = '1';
+                activeBtn.style.borderColor = 'var(--accent-blue)';
+            }
 
-                const newSrc = `https://www.rainviewer.com/map.html?loc=${coords.lat},${coords.lon},9`;
-                iframe.src = newSrc;
+            if (dopplerMap) {
+                dopplerMap.setView([coords.lat, coords.lon], 8);
+                dopplerMap.invalidateSize();
             }
         }
         
@@ -5732,6 +5796,7 @@
         async function loadWeather() {
             try {
                 populateRadarTargeting(latestData);
+                initDopplerMap();
                 const res = await fetch('/api/weather');
                 if (res.status === 401) {
                     window.location.href = '/login';
