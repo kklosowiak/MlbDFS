@@ -5744,7 +5744,8 @@
             radarLayer = L.tileLayer(`https://tilecache.rainviewer.com${radarPath}/256/{z}/{x}/{y}/2/1_1.png`, {
                 attribution: 'Weather data by <a href="https://www.rainviewer.com/">RainViewer</a>',
                 opacity: 0.55,
-                zIndex: 100
+                zIndex: 100,
+                maxNativeZoom: 7
             }).addTo(dopplerMap);
         }
 
