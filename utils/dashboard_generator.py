@@ -397,41 +397,69 @@ class DashboardGenerator:
             'NYY': 147, 'MIL': 158
         }
 
-        def py_format_diff_pill(diff, is_moneyline=False):
-            if diff is None:
-                return '<span style="color:var(--text-secondary);">—</span>'
-            
-            val_text = ''
-            is_positive_change = False
-            is_zero = False
-            
-            if is_moneyline:
-                if diff < 0:
-                    val_text = f"{diff}"
-                    is_positive_change = True
-                elif diff > 0:
-                    val_text = f"+{diff}"
-                    is_positive_change = False
+        def get_implied_runs_class(val):
+            if val is None or val == '' or val == '—': return 'cell-empty'
+            try:
+                v = float(val)
+                if v >= 5.5: return 'cell-implied-elite'
+                if v >= 5.0: return 'cell-implied-high'
+                if v >= 4.5: return 'cell-implied-neutral'
+                if v >= 4.0: return 'cell-implied-low-mid'
+                if v >= 3.5: return 'cell-implied-low'
+                return 'cell-implied-verylow'
+            except ValueError:
+                return 'cell-empty'
+
+        def get_over_under_class(val):
+            if val is None or val == '' or val == '—': return 'cell-empty'
+            try:
+                v = float(val)
+                if v >= 10.5: return 'cell-ou-elite'
+                if v >= 9.5: return 'cell-ou-high'
+                if v >= 8.5: return 'cell-ou-neutral'
+                if v >= 7.5: return 'cell-ou-low'
+                return 'cell-ou-verylow'
+            except ValueError:
+                return 'cell-empty'
+
+        def get_moneyline_class(val):
+            if val is None or val == '' or val == '—': return 'cell-empty'
+            try:
+                v = float(val)
+                if v < 0:
+                    if v <= -180: return 'cell-ml-fav-heavy'
+                    if v <= -130: return 'cell-ml-fav-medium'
+                    return 'cell-ml-fav-light'
                 else:
-                    val_text = '0'
-                    is_zero = True
-            else:
-                if diff > 0:
-                    val_text = f"+{diff:.2f}"
-                    is_positive_change = True
-                elif diff < 0:
-                    val_text = f"{diff:.2f}"
-                    is_positive_change = False
-                else:
-                    val_text = '0.00'
-                    is_zero = True
-                    
-            if is_zero:
-                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary); font-variant-numeric: tabular-nums;">{val_text}</span>'
-            elif is_positive_change:
-                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(50, 215, 75, 0.12); border: 1px solid rgba(50, 215, 75, 0.3); color: var(--accent-green); font-variant-numeric: tabular-nums;">{val_text}</span>'
-            else:
-                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--accent-red); font-variant-numeric: tabular-nums;">{val_text}</span>'
+                    if v >= 180: return 'cell-ml-dog-heavy'
+                    if v >= 130: return 'cell-ml-dog-medium'
+                    return 'cell-ml-dog-light'
+            except ValueError:
+                return 'cell-empty'
+
+        def get_pct_class(val):
+            if val is None or val == '' or val == '—' or val == '-': return 'cell-empty'
+            try:
+                v = float(str(val).replace('%', ''))
+                if v >= 65: return 'cell-pct-elite'
+                if v >= 55: return 'cell-pct-high'
+                if v >= 45: return 'cell-pct-neutral'
+                if v >= 35: return 'cell-pct-low'
+                return 'cell-pct-verylow'
+            except ValueError:
+                return 'cell-empty'
+
+        def get_diff_class(val, is_moneyline=False):
+            if val is None or val == '' or val == '—': return 'cell-empty'
+            try:
+                v = float(val)
+                if v == 0: return 'cell-diff-neutral'
+                is_positive = v > 0
+                if is_moneyline:
+                    is_positive = v < 0
+                return 'cell-diff-pos' if is_positive else 'cell-diff-neg'
+            except ValueError:
+                return 'cell-empty'
 
         def py_format_numeric_odds(val):
             if val is None or val == '':
@@ -443,9 +471,9 @@ class DashboardGenerator:
                 return str(val)
 
         if not vegas_board:
-            vegas_rows.append('<tr><td colspan="12" style="text-align:center; padding:45px 30px; color:var(--text-secondary); font-size:0.85rem;">No Vegas Board slate data available for this run.</td></tr>')
+            vegas_rows.append('<tr><td colspan="13" style="text-align:center; padding:45px 30px; color:var(--text-secondary); font-size:0.85rem;">No Vegas Board slate data available for this run.</td></tr>')
         else:
-            for g in vegas_board:
+            for idx, g in enumerate(vegas_board):
                 implied_away_diff = None
                 if g.get('away_tt_live') is not None and g.get('away_tt_open') is not None:
                     implied_away_diff = g['away_tt_live'] - g['away_tt_open']
@@ -502,12 +530,18 @@ class DashboardGenerator:
                 home_tt_open_val = f"{g['home_tt_open']:.2f}" if g.get('home_tt_open') is not None else '—'
                 home_tt_live_val = f"{g['home_tt_live']:.2f}" if g.get('home_tt_live') is not None else '—'
 
+                away_diff_txt = f"{'+' if implied_away_diff > 0 else ''}{implied_away_diff:.2f}" if implied_away_diff is not None else '—'
+                home_diff_txt = f"{'+' if implied_home_diff > 0 else ''}{implied_home_diff:.2f}" if implied_home_diff is not None else '—'
+                total_diff_txt = f"{'+' if total_diff > 0 else ''}{total_diff:.1f}" if total_diff is not None else '—'
+                ml_away_diff_txt = f"{'+' if ml_away_diff > 0 else ''}{ml_away_diff}" if ml_away_diff is not None else '—'
+                ml_home_diff_txt = f"{'+' if ml_home_diff > 0 else ''}{ml_home_diff}" if ml_home_diff is not None else '—'
+
                 row_away = f"""
-                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
-                    <td rowspan="2" style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-weight:700; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle; line-height:1.3; font-variant-numeric: tabular-nums;">
+                <tr>
+                    <td rowspan="2" class="time-cell" style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-weight:700; padding:12px 8px; vertical-align:middle; line-height:1.3; font-variant-numeric: tabular-nums;">
                         {t_str}
                     </td>
-                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                    <td class="team-cell" style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             {away_logo_html}
                             <div>
@@ -519,35 +553,34 @@ class DashboardGenerator:
                             </div>
                         </div>
                     </td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">{away_tt_open_val}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">{away_tt_live_val}</td>
-                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">{py_format_diff_pill(implied_away_diff)}</td>
                     
-                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-right:1px solid rgba(255,255,255,0.02); font-size:0.85rem; color:rgba(255,255,255,0.7); vertical-align:middle;">
+                    <td class="{get_implied_runs_class(g.get('away_tt_open'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem;">{away_tt_open_val}</td>
+                    <td class="{get_implied_runs_class(g.get('away_tt_live'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700;">{away_tt_live_val}</td>
+                    <td class="{get_diff_class(implied_away_diff)}" style="text-align:center; padding:12px 8px;">{away_diff_txt}</td>
+                    
+                    <td rowspan="2" class="{get_over_under_class(g.get('opening_total'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; vertical-align:middle;">
                         {ou_open}
                     </td>
-                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:800; color:#fff; vertical-align:middle;">
+                    <td rowspan="2" class="{get_over_under_class(g.get('current_total'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:800; vertical-align:middle;">
                         {ou_live}
                     </td>
-                    <td rowspan="2" style="text-align:center; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle;">
-                        {py_format_diff_pill(total_diff)}
+                    <td rowspan="2" class="{get_diff_class(total_diff)}" style="text-align:center; padding:12px 8px; vertical-align:middle;">
+                        <span style="font-weight:700;">{total_diff_txt}</span>
                         <br>
                         {total_splits_html}
                     </td>
                     
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['away_opening_ml'])}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['away_current_ml'])}</td>
-                    <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_away_diff, True)}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.3;" title="Consensus Splits: {away_t} of total ticket bets vs. {away_m} of total dollar handle placed on this team">
-                        <span style="font-weight:700; color:#fff;">{away_t}</span> Bets<br>
-                        <span style="font-weight:700; color:var(--accent-green);">{away_m}</span> Money
-                    </td>
+                    <td class="{get_pct_class(away_t)}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; font-weight:700;">{away_t}</td>
+                    <td class="{get_moneyline_class(g.get('away_opening_ml'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem;">{py_format_numeric_odds(g['away_opening_ml'])}</td>
+                    <td class="{get_moneyline_class(g.get('away_current_ml'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700;">{py_format_numeric_odds(g['away_current_ml'])}</td>
+                    <td class="{get_diff_class(ml_away_diff, True)}" style="text-align:center; padding:12px 8px;">{ml_away_diff_txt}</td>
+                    <td class="{get_pct_class(away_m)}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; font-weight:700;">{away_m}</td>
                 </tr>
                 """
 
                 row_home = f"""
-                <tr style="border-bottom: 2px solid rgba(255, 255, 255, 0.22);">
-                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                <tr>
+                    <td class="team-cell" style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             {home_logo_html}
                             <div>
@@ -559,22 +592,25 @@ class DashboardGenerator:
                             </div>
                         </div>
                     </td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">{home_tt_open_val}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">{home_tt_live_val}</td>
-                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">{py_format_diff_pill(implied_home_diff)}</td>
+                    <td class="{get_implied_runs_class(g.get('home_tt_open'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem;">{home_tt_open_val}</td>
+                    <td class="{get_implied_runs_class(g.get('home_tt_live'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700;">{home_tt_live_val}</td>
+                    <td class="{get_diff_class(implied_home_diff)}" style="text-align:center; padding:12px 8px;">{home_diff_txt}</td>
                     
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['home_opening_ml'])}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['home_current_ml'])}</td>
-                    <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_home_diff, True)}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.3;" title="Consensus Splits: {home_t} of total ticket bets vs. {home_m} of total dollar handle placed on this team">
-                        <span style="font-weight:700; color:#fff;">{home_t}</span> Bets<br>
-                        <span style="font-weight:700; color:var(--accent-green);">{home_m}</span> Money
-                    </td>
+                    <td class="{get_pct_class(home_t)}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; font-weight:700;">{home_t}</td>
+                    <td class="{get_moneyline_class(g.get('home_opening_ml'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem;">{py_format_numeric_odds(g['home_opening_ml'])}</td>
+                    <td class="{get_moneyline_class(g.get('home_current_ml'))}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700;">{py_format_numeric_odds(g['home_current_ml'])}</td>
+                    <td class="{get_diff_class(ml_home_diff, True)}" style="text-align:center; padding:12px 8px;">{ml_home_diff_txt}</td>
+                    <td class="{get_pct_class(home_m)}" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; font-weight:700;">{home_m}</td>
                 </tr>
                 """
 
                 vegas_rows.append(row_away)
                 vegas_rows.append(row_home)
+
+                # Add physical gap spacer row between matches (but not after the last game)
+                if idx < len(vegas_board) - 1:
+                    tr_spacer = '<tr class="vegas-spacer-row"><td colspan="13"></td></tr>'
+                    vegas_rows.append(tr_spacer)
 
         html = f"""
 <!DOCTYPE html>
@@ -1036,6 +1072,102 @@ class DashboardGenerator:
             font-weight: 600;
         }}
         
+        /* ── PREMIUM VEGAS BOARD REDESIGN STYLES ── */
+        #vegas-board-table {{
+            border-collapse: collapse !important;
+            width: 100%;
+        }}
+        #vegas-board-table th {{
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 12px 8px;
+            vertical-align: middle;
+        }}
+        #vegas-board-table td {{
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 10px 8px;
+            vertical-align: middle;
+        }}
+        #vegas-board-table tr.vegas-spacer-row td {{
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+            height: 12px !important;
+        }}
+        
+        body.light-theme #vegas-board-table th,
+        body.light-theme #vegas-board-table td {{
+            border: 1px solid rgba(15, 23, 42, 0.15) !important;
+        }}
+        body.light-theme #vegas-board-table tr.vegas-spacer-row td {{
+            border: none !important;
+            background: transparent !important;
+        }}
+
+        /* Vegas Board Cell Color Coding Tints */
+        #vegas-board-table td.cell-implied-elite {{ background: rgba(50, 215, 75, 0.22) !important; color: #fff !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-implied-high {{ background: rgba(50, 215, 75, 0.12) !important; color: rgba(255,255,255,0.95) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-implied-neutral {{ background: rgba(255, 255, 255, 0.02) !important; color: rgba(255,255,255,0.85) !important; }}
+        #vegas-board-table td.cell-implied-low-mid {{ background: rgba(255, 69, 58, 0.05) !important; color: rgba(255,255,255,0.8) !important; }}
+        #vegas-board-table td.cell-implied-low {{ background: rgba(255, 69, 58, 0.15) !important; color: #fff !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-implied-verylow {{ background: rgba(255, 69, 58, 0.25) !important; color: #fff !important; font-weight: 700 !important; }}
+
+        #vegas-board-table td.cell-ou-elite {{ background: rgba(50, 215, 75, 0.22) !important; color: #fff !important; font-weight: 800 !important; }}
+        #vegas-board-table td.cell-ou-high {{ background: rgba(50, 215, 75, 0.12) !important; color: rgba(255,255,255,0.95) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-ou-neutral {{ background: rgba(255, 255, 255, 0.02) !important; color: rgba(255,255,255,0.85) !important; }}
+        #vegas-board-table td.cell-ou-low {{ background: rgba(255, 69, 58, 0.15) !important; color: #fff !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-ou-verylow {{ background: rgba(255, 69, 58, 0.25) !important; color: #fff !important; font-weight: 700 !important; }}
+
+        #vegas-board-table td.cell-ml-fav-heavy {{ background: rgba(50, 215, 75, 0.22) !important; color: #fff !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-ml-fav-medium {{ background: rgba(50, 215, 75, 0.12) !important; color: rgba(255,255,255,0.95) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-ml-fav-light {{ background: rgba(50, 215, 75, 0.06) !important; color: rgba(255,255,255,0.85) !important; }}
+        #vegas-board-table td.cell-ml-dog-light {{ background: rgba(255, 69, 58, 0.06) !important; color: rgba(255,255,255,0.85) !important; }}
+        #vegas-board-table td.cell-ml-dog-medium {{ background: rgba(255, 69, 58, 0.12) !important; color: rgba(255,255,255,0.95) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-ml-dog-heavy {{ background: rgba(255, 69, 58, 0.22) !important; color: #fff !important; font-weight: 700 !important; }}
+
+        #vegas-board-table td.cell-pct-elite {{ background: rgba(50, 215, 75, 0.22) !important; color: #fff !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-pct-high {{ background: rgba(50, 215, 75, 0.12) !important; color: rgba(255,255,255,0.95) !important; }}
+        #vegas-board-table td.cell-pct-neutral {{ background: rgba(255, 255, 255, 0.02) !important; color: rgba(255,255,255,0.85) !important; }}
+        #vegas-board-table td.cell-pct-low {{ background: rgba(255, 69, 58, 0.12) !important; color: rgba(255,255,255,0.95) !important; }}
+        #vegas-board-table td.cell-pct-verylow {{ background: rgba(255, 69, 58, 0.22) !important; color: #fff !important; font-weight: 700 !important; }}
+
+        #vegas-board-table td.cell-diff-pos {{ background: rgba(50, 215, 75, 0.15) !important; color: var(--accent-green) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-diff-neg {{ background: rgba(255, 69, 58, 0.15) !important; color: var(--accent-red) !important; font-weight: 700 !important; }}
+        #vegas-board-table td.cell-diff-neutral {{ background: rgba(255, 255, 255, 0.02) !important; color: var(--text-secondary) !important; }}
+
+        #vegas-board-table td.cell-empty {{ background: rgba(255, 255, 255, 0.01) !important; color: var(--text-secondary) !important; }}
+
+        /* Light Theme Overrides */
+        body.light-theme #vegas-board-table td.cell-implied-elite {{ background: rgba(22, 163, 74, 0.22) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-implied-high {{ background: rgba(22, 163, 74, 0.12) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-implied-neutral {{ background: rgba(0, 0, 0, 0.01) !important; color: var(--text-primary) !important; }}
+        body.light-theme #vegas-board-table td.cell-implied-low-mid {{ background: rgba(220, 38, 38, 0.05) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-implied-low {{ background: rgba(220, 38, 38, 0.12) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-implied-verylow {{ background: rgba(220, 38, 38, 0.22) !important; color: #991b1b !important; }}
+
+        body.light-theme #vegas-board-table td.cell-ou-elite {{ background: rgba(22, 163, 74, 0.22) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-ou-high {{ background: rgba(22, 163, 74, 0.12) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-ou-neutral {{ background: rgba(0, 0, 0, 0.01) !important; color: var(--text-primary) !important; }}
+        body.light-theme #vegas-board-table td.cell-ou-low {{ background: rgba(220, 38, 38, 0.12) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-ou-verylow {{ background: rgba(220, 38, 38, 0.22) !important; color: #991b1b !important; }}
+
+        body.light-theme #vegas-board-table td.cell-ml-fav-heavy {{ background: rgba(22, 163, 74, 0.22) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-ml-fav-medium {{ background: rgba(22, 163, 74, 0.12) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-ml-fav-light {{ background: rgba(22, 163, 74, 0.06) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-ml-dog-light {{ background: rgba(220, 38, 38, 0.06) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-ml-dog-medium {{ background: rgba(220, 38, 38, 0.12) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-ml-dog-heavy {{ background: rgba(220, 38, 38, 0.22) !important; color: #991b1b !important; }}
+
+        body.light-theme #vegas-board-table td.cell-pct-elite {{ background: rgba(22, 163, 74, 0.22) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-pct-high {{ background: rgba(22, 163, 74, 0.12) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-pct-neutral {{ background: rgba(0, 0, 0, 0.01) !important; color: var(--text-primary) !important; }}
+        body.light-theme #vegas-board-table td.cell-pct-low {{ background: rgba(220, 38, 38, 0.12) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-pct-verylow {{ background: rgba(220, 38, 38, 0.22) !important; color: #991b1b !important; }}
+
+        body.light-theme #vegas-board-table td.cell-diff-pos {{ background: rgba(22, 163, 74, 0.15) !important; color: #166534 !important; }}
+        body.light-theme #vegas-board-table td.cell-diff-neg {{ background: rgba(220, 38, 38, 0.15) !important; color: #991b1b !important; }}
+        body.light-theme #vegas-board-table td.cell-diff-neutral {{ background: rgba(0, 0, 0, 0.01) !important; color: var(--text-secondary) !important; }}
+
+        body.light-theme #vegas-board-table td.cell-empty {{ background: rgba(0, 0, 0, 0.02) !important; color: var(--text-secondary) !important; }}
     </style>
 </head>
 <body>
@@ -1136,28 +1268,27 @@ class DashboardGenerator:
             <div class="card">
                 <h2 style="display:flex; align-items:center; justify-content:center; gap:10px;">📊 Live Vegas Board & Line Movement</h2>
                 <div style="overflow-x:auto;">
-                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                    <table id="vegas-board-table" style="width:100%; text-align:left;">
                         <thead>
-                            <tr style="border-bottom: 2px solid var(--border); background:rgba(255,255,255,0.01);">
-                                <th title="Game commencement time (EST)" style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Date/Time</th>
-                                <th title="Team name and designation (Away/Home)" style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Team</th>
-                                <th colspan="3" title="Opening and live team implied run totals and movement delta" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-left:1px solid var(--border); border-right:1px solid var(--border); cursor:help;">Score (Implied Runs)</th>
-                                <th colspan="3" title="Opening and live game totals, movement delta, and Over/Under consensus splits" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-right:1px solid var(--border); cursor:help;">Over / Under</th>
-                                <th colspan="4" title="Opening and live moneylines, movement delta, and Moneyline consensus splits" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Moneyline</th>
+                            <tr style="background:rgba(255,255,255,0.01);">
+                                <th rowspan="2" title="Game commencement time (EST)" style="text-align:left; font-size:0.75rem; color:var(--text-secondary); font-weight:700; cursor:help;">Date/Time</th>
+                                <th rowspan="2" title="Team name and designation (Away/Home)" style="text-align:left; font-size:0.75rem; color:var(--text-secondary); font-weight:700; cursor:help;">Team</th>
+                                <th colspan="3" title="Opening and live team implied run totals and movement delta" style="text-align:center; font-size:0.75rem; color:var(--text-secondary); font-weight:700; cursor:help;">Score (Implied Runs)</th>
+                                <th colspan="3" title="Opening and live game totals, movement delta, and Over/Under consensus splits" style="text-align:center; font-size:0.75rem; color:var(--text-secondary); font-weight:700; cursor:help;">Over / Under</th>
+                                <th colspan="5" title="Opening and live moneylines, movement delta, and consensus splits" style="text-align:center; font-size:0.75rem; color:var(--text-secondary); font-weight:700; cursor:help;">Moneyline</th>
                             </tr>
-                            <tr style="border-bottom: 1px solid var(--border); font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.02);">
-                                <th style="padding:8px;"></th>
-                                <th style="padding:8px;"></th>
-                                <th title="Opening team implied run total" style="text-align:center; padding:8px; border-left:1px solid var(--border); color:var(--text-secondary); cursor:help;">Open</th>
-                                <th title="Current live team implied run total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
-                                <th title="Run total movement delta (positive green means Vegas expects more runs)" style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary); cursor:help;">Diff</th>
-                                <th title="Opening game Over/Under total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Open</th>
-                                <th title="Current live game Over/Under total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
-                                <th title="Game total movement delta" style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary); cursor:help;">Diff</th>
-                                <th title="Opening team moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Open</th>
-                                <th title="Current live team moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
-                                <th title="Moneyline movement delta (negative green is steam in team's favor)" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Diff</th>
-                                <th title="Public betting consensus: percentage of total ticket bets vs. percentage of total dollars (Money) handle on moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Money %</th>
+                            <tr style="font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.02);">
+                                <th title="Opening team implied run total" style="text-align:center; color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live team implied run total" style="text-align:center; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Run total movement delta" style="text-align:center; color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Opening game Over/Under total" style="text-align:center; color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live game Over/Under total" style="text-align:center; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Game total movement delta" style="text-align:center; color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Consensus Bets: percentage of ticket bets placed on this team" style="text-align:center; color:var(--text-secondary); cursor:help;">Bets %</th>
+                                <th title="Opening team moneyline" style="text-align:center; color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live team moneyline" style="text-align:center; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Moneyline movement delta" style="text-align:center; color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Consensus Money: percentage of total dollar handle placed on this team" style="text-align:center; color:var(--text-secondary); cursor:help;">Money %</th>
                             </tr>
                         </thead>
                         <tbody>

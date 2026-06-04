@@ -293,16 +293,36 @@ def run_full_analysis():
     # OMEGA v9.5: Vegas Board Data Merging
     vegas_board = []
     abbrev_map = {
-        'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',
-        'Boston Red Sox': 'BOS', 'Chicago Cubs': 'CHC', 'Chicago White Sox': 'CWS',
-        'Cincinnati Reds': 'CIN', 'Cleveland Guardians': 'CLE', 'Colorado Rockies': 'COL',
-        'Detroit Tigers': 'DET', 'Houston Astros': 'HOU', 'Kansas City Royals': 'KC',
-        'Los Angeles Angels': 'LAA', 'Los Angeles Dodgers': 'LAD', 'Miami Marlins': 'MIA',
-        'Milwaukee Brewers': 'MIL', 'Minnesota Twins': 'MIN', 'New York Mets': 'NYM',
-        'New York Yankees': 'NYY', 'Oakland Athletics': 'OAK', 'Philadelphia Phillies': 'PHI',
-        'Pittsburgh Pirates': 'PIT', 'San Diego Padres': 'SD', 'San Francisco Giants': 'SF',
-        'Seattle Mariners': 'SEA', 'St. Louis Cardinals': 'STL', 'Tampa Bay Rays': 'TB',
-        'Texas Rangers': 'TEX', 'Toronto Blue Jays': 'TOR', 'Washington Nationals': 'WSH'
+        'Arizona Diamondbacks': 'ARI', 'Arizona': 'ARI', 'D-backs': 'ARI', 'Diamondbacks': 'ARI',
+        'Atlanta Braves': 'ATL', 'Atlanta': 'ATL', 'Braves': 'ATL',
+        'Baltimore Orioles': 'BAL', 'Baltimore': 'BAL', 'Orioles': 'BAL',
+        'Boston Red Sox': 'BOS', 'Boston': 'BOS', 'Red Sox': 'BOS',
+        'Chicago Cubs': 'CHC', 'Cubs': 'CHC',
+        'Chicago White Sox': 'CWS', 'White Sox': 'CWS',
+        'Cincinnati Reds': 'CIN', 'Cincinnati': 'CIN', 'Reds': 'CIN',
+        'Cleveland Guardians': 'CLE', 'Cleveland': 'CLE', 'Guardians': 'CLE',
+        'Colorado Rockies': 'COL', 'Colorado': 'COL', 'Rockies': 'COL',
+        'Detroit Tigers': 'DET', 'Detroit': 'DET', 'Tigers': 'DET',
+        'Houston Astros': 'HOU', 'Houston': 'HOU', 'Astros': 'HOU',
+        'Kansas City Royals': 'KC', 'Kansas City': 'KC', 'Royals': 'KC',
+        'Los Angeles Angels': 'LAA', 'Angels': 'LAA',
+        'Los Angeles Dodgers': 'LAD', 'Dodgers': 'LAD',
+        'Miami Marlins': 'MIA', 'Miami': 'MIA', 'Marlins': 'MIA',
+        'Milwaukee Brewers': 'MIL', 'Milwaukee': 'MIL', 'Brewers': 'MIL',
+        'Minnesota Twins': 'MIN', 'Minnesota': 'MIN', 'Twins': 'MIN',
+        'New York Mets': 'NYM', 'Mets': 'NYM',
+        'New York Yankees': 'NYY', 'Yankees': 'NYY',
+        'Oakland Athletics': 'OAK', 'Oakland': 'OAK', 'Athletics': 'OAK', 'A\'s': 'OAK',
+        'Philadelphia Phillies': 'PHI', 'Philadelphia': 'PHI', 'Phillies': 'PHI',
+        'Pittsburgh Pirates': 'PIT', 'Pittsburgh': 'PIT', 'Pirates': 'PIT',
+        'San Diego Padres': 'SD', 'San Diego': 'SD', 'Padres': 'SD',
+        'San Francisco Giants': 'SF', 'San Francisco': 'SF', 'Giants': 'SF',
+        'Seattle Mariners': 'SEA', 'Seattle': 'SEA', 'Mariners': 'SEA',
+        'St. Louis Cardinals': 'STL', 'St. Louis': 'STL', 'Cardinals': 'STL',
+        'Tampa Bay Rays': 'TB', 'Tampa Bay': 'TB', 'Rays': 'TB',
+        'Texas Rangers': 'TEX', 'Texas': 'TEX', 'Rangers': 'TEX',
+        'Toronto Blue Jays': 'TOR', 'Toronto': 'TOR', 'Blue Jays': 'TOR',
+        'Washington Nationals': 'WSH', 'Washington': 'WSH', 'Nationals': 'WSH'
     }
     
     def find_totals_split(away, home, totals_cache):
