@@ -3337,26 +3337,7 @@
                 pills.push(trendPill);
             }
             
-            // GPP Leverage Index integration (⚖️ for Pivot, 👥 for Crowded Chalk)
-            if (t.gpp_leverage_index !== undefined) {
-                const gli = t.gpp_leverage_index;
-                const label = t.leverage_label || 'NEUTRAL';
-                const own = t.projected_ownership || 0;
-                
-                if (label === 'LEVERAGE PIVOT') {
-                    pills.push(signalPillHtml('⚖️ LEVERAGE PIVOT', { 
-                        className: 'pill-sharp', 
-                        tip: `GPP Leverage Index: ${gli} | Projected Ownership: ${own}% (Under-owned stack with elite confidence. Target for GPP leverage.)`,
-                        style: 'background:rgba(46,204,113,0.12); border-color:#2ecc71; color:#2ecc71; font-weight:700;'
-                    }));
-                } else if (label === 'CROWDED CHALK' || label === 'OVEROWNED') {
-                    pills.push(signalPillHtml('👥 OVEROWNED', { 
-                        className: 'pill-neutral', 
-                        tip: `GPP Leverage Index: ${gli} | Projected Ownership: ${own}% (Over-owned stack relative to confidence. High fade value in single-entry.)`,
-                        style: 'background:rgba(231,76,60,0.12); border-color:#e74c3c; color:#e74c3c; font-weight:700;'
-                    }));
-                }
-            }
+            // GPP Leverage Index integration removed (stripped ownership)
 
             return pills.length > 0 ? pills.join(' ') : '<span style="color:var(--text-secondary); font-size:0.85rem;">—</span>';
         }
@@ -3371,7 +3352,7 @@
             }
 
             if (t.is_fade_risk) {
-                pills.push(signalPillHtml('⚠️ FADE RISK', { className: 'pill-fade-risk', tip: 'GPP Leverage Fade Risk: High implied total backed by public but faded by sharps.' }));
+                pills.push(signalPillHtml('⚠️ MARKET FADE', { className: 'pill-fade-risk', tip: 'Market Divergence Fade Risk: High implied total faded by sharp cash (divergence < -10).' }));
             }
 
             if (t.is_sneaky) {
@@ -4600,7 +4581,7 @@
                         if (/core stacks/i.test(plain)) return 'Stacks';
                         if (/core pitchers/i.test(plain)) return 'Pitchers';
                         if (/vegas traps/i.test(plain)) return 'Traps';
-                        if (/leverage pivots/i.test(plain)) return 'Leverage';
+                        if (/physics & market pivots/i.test(plain)) return 'Pivots';
                         return plain.length > 22 ? plain.substring(0, 22) + '…' : plain || 'Section';
                     }
 
@@ -7483,7 +7464,7 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>SP vs LHH / RHH OPS</span><strong id="tm-plat-p-splits">-</strong></div>
                     <div style="display:flex; justify-content:space-between;"><span>Platoon Advantage</span><strong id="tm-plat-advantage">-</strong></div>
                 </div>
-                <div class="card" style="padding:20px; margin:0;" id="tm-leverage-card">
+                <div class="card" style="padding:20px; margin:0; display: none !important;" id="tm-leverage-card">
                     <h4 style="margin:0 0 15px 0; color:#ff9f0a; display:flex; align-items:center; gap:6px;">⚖️ DFS Contest Intel</h4>
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>Projected Ownership</span><strong id="tm-proj-own">-</strong></div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><span>GPP Leverage Index (GLI)</span><strong id="tm-gli">-</strong></div>

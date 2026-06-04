@@ -72,10 +72,10 @@ class SlateReportGenerator:
             if bp >= 75.0 and outs <= 15.5 and xwoba >= 0.315:
                 alert_lines.append(f"- 🔥 **GASSED BULLPEN ATTACK**: **{t['team']}** targets short-leash starter {t.get('opp_pitcher')} (Outs Line: {outs}) and an exhausted bullpen (Fatigue: {bp:.1f}%). High expectation of late-inning run scoring (+8.0 pts boost).")
 
-        # 3. Stacks: Anti-Chalk GPP Pivot (+10.0 pts)
+        # 3. Stacks: Anti-Chalk Matchup Mismatch (+10.0 pts)
         for t in t_reports:
             if t.get('is_anti_chalk_smash'):
-                alert_lines.append(f"- ⚓ **ANTI-CHALK SMASH**: **{t['team']}** targets a highly popular starting pitcher with hidden physical vulnerabilities. Backtested as the single highest GPP leverage pivot (+10.0 pts boost).")
+                alert_lines.append(f"- ⚓ **ANTI-CHALK SMASH**: **{t['team']}** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).")
 
         # 4. Stacks: DQI Trust (80+ DQI / 14% Div / 4.2 ITT)
         for t in t_reports:
@@ -203,7 +203,7 @@ class SlateReportGenerator:
             lines.append("- *No sharp-fade SP caution flags today.*")
         lines.append("")
 
-        lines.append("## 🎯 Leverage Pivots (GPP Tournaments)")
+        lines.append("## 🎯 Physics & Market Pivots")
         pivots = [t for t in t_reports if t.get('is_physics_override')]
         if pivots:
             for t in pivots[:3]:

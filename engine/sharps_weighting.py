@@ -556,9 +556,9 @@ class SharpsWeighting:
 
         final_omega_capped = min(150.0, final_omega)
 
-        # OMEGA v9.9: GPP Leverage Fade Risk
+        # OMEGA v9.9: Market Divergence Fade Risk
         # If a team has a high implied total (>= 5.0) and negative divergence (< -10),
-        # they represent public chalk being faded by sharps (high-ownership fade risk).
+        # they represent public betting sentiment being faded by sharps (sharp money fade risk).
         is_fade_risk = (eff_itt >= 5.0) and (divergence < -10)
         
         return {

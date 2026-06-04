@@ -247,12 +247,12 @@ def run_full_analysis():
     except Exception as vol_e:
         print(f"[WARNING]: Volatile preview skipped: {vol_e}")
 
-    # OMEGA: Compute GPP Leverage Index (GLI) for Team Stacks
-    try:
-        from utils.gpp_leverage import compute_gpp_leverage
-        compute_gpp_leverage(team_reports, p_reports)
-    except Exception as gli_e:
-        print(f"[WARNING]: GPP Leverage Index calculation failed: {gli_e}")
+    # OMEGA: Disabled GPP Leverage Index (GLI) for Team Stacks (Stripped Ownership)
+    # try:
+    #     from utils.gpp_leverage import compute_gpp_leverage
+    #     compute_gpp_leverage(team_reports, p_reports)
+    # except Exception as gli_e:
+    #     print(f"[WARNING]: GPP Leverage Index calculation failed: {gli_e}")
 
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
