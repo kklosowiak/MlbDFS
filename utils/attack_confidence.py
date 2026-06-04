@@ -544,6 +544,16 @@ def score_pitcher_confidence(p, t_reports):
         conf += 10.0
         reasons.append("Pinnacle SP Boost — sharps backing this low-scoring matchup.")
 
+    # 10. Underdog Pitcher Steam Boost (ML move <= -15, underdog, total < 9.0) (OMEGA v17.0)
+    # Backtested: Underdog steam hit K Over at 71.4% (75% when game total < 9.0) and massive steam (<= -20) hit at 77.8%!
+    if own_t:
+        is_underdog = (own_itt < 4.2)
+        ml_move = float(p.get("ml_move", 0.0) or 0.0)
+        if ml_move <= -15 and is_underdog and game_total_proxy < 9.0:
+            boost_val = 10.0 if ml_move <= -20 else 6.0
+            conf += boost_val
+            reasons.append(f"Underdog Pitcher Steam Boost ({ml_move:+.0f} move) — backtested edge.")
+
     # 10. Intraday Volatility
     if p.get("is_volatile"):
         conf -= 8
