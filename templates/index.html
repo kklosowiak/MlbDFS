@@ -2155,6 +2155,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     ML Betting EV
                 </li>
+                <li class="nav-item" onclick="switchTab(this, 'vegas')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                    Vegas Board
+                </li>
                 <li class="nav-item" onclick="switchTab(this, 'trends')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                     Learning & Audits
@@ -3032,6 +3036,52 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <!-- VEGAS BOARD PANEL -->
+        <div id="vegas-panel" class="tab-panel">
+            <div class="card" style="margin-bottom:30px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:30px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <h2 style="margin:0; display:flex; align-items:center; gap:8px;">
+                            <span>📊 Live Vegas Board & Line Movement</span>
+                        </h2>
+                        <p style="margin:5px 0 0 0; font-size:0.8rem; color:var(--text-secondary);">
+                            Real-time tracking of team implied run totals, game totals, and moneylines. Gaining lines are highlighted in green, fading in red.
+                        </p>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-x:auto;">
+                    <table id="vegas-board-table" style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border); background:rgba(255,255,255,0.01);">
+                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Date/Time</th>
+                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Team</th>
+                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-left:1px solid var(--border); border-right:1px solid var(--border);">Score (Implied Runs)</th>
+                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-right:1px solid var(--border);">Over / Under</th>
+                                <th colspan="4" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Moneyline</th>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border); font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.02);">
+                                <th style="padding:8px;"></th>
+                                <th style="padding:8px;"></th>
+                                <th style="text-align:center; padding:8px; border-left:1px solid var(--border); color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Money %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vegas-board-body">
+                            <tr><td colspan="12" style="text-align:center; padding:30px; color:var(--text-secondary); font-size:0.85rem;">No Vegas Board data loaded yet. Run a Refresh.</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -4411,7 +4461,8 @@
                 'weather': ['Weather Matrix', 'Slate Ballpark Weather & Rainout Hazard Intelligence'],
                 'analysis': ['OMEGA Slate Center', 'Live Vegas Betting Edges & DFS Lineup Playbook'],
                 'trends': ['Learning & Audits', 'OMEGA Systematic Target Feedback & Performance Audits'],
-                'betting': ['ML Betting EV', 'Machine Learning Expected Value & Sharp Betting Signals']
+                'betting': ['ML Betting EV', 'Machine Learning Expected Value & Sharp Betting Signals'],
+                'vegas': ['Vegas Board', 'Vegas Odds Movement, Implied Run Totals, & Consensus Splits']
             };
             document.getElementById('page-title').innerText = titles[tabId][0];
             document.getElementById('page-subtitle').innerText = titles[tabId][1];
@@ -4481,6 +4532,11 @@
                 populateMatchupFilter(latestData);
                 updateWelcomeHub(latestData);
                 renderTables();
+                try {
+                    renderVegasBoard(latestData);
+                } catch (vErr) {
+                    console.error("Vegas Board render failed:", vErr);
+                }
                 setSignalFilter('');
                 filterData();
 
@@ -4771,6 +4827,203 @@
                   tickerEl.innerHTML = tickerItems.map(item => `<span>${item}</span>`).join(' <span style="color:var(--text-secondary); margin: 0 10px;">•</span> ');
               }
           }
+
+        // ── OMEGA Vegas Board Render Helper ──────────────────────────────
+        const teamIdMap = {
+            'LAA': 108, 'ARI': 109, 'BAL': 110, 'BOS': 111, 'CHC': 112, 'CIN': 113, 'CLE': 114,
+            'COL': 115, 'DET': 116, 'HOU': 117, 'KC': 118, 'LAD': 119, 'WSH': 120, 'NYM': 121,
+            'OAK': 133, 'PIT': 134, 'SD': 135, 'SEA': 136, 'SF': 137, 'STL': 138, 'TB': 139,
+            'TEX': 140, 'TOR': 141, 'MIN': 142, 'PHI': 143, 'ATL': 144, 'CWS': 145, 'MIA': 146,
+            'NYY': 147, 'MIL': 158
+        };
+
+        function formatDiffPill(diff, isMoneyline = false) {
+            if (diff === null || diff === undefined || isNaN(diff)) return '<span style="color:var(--text-secondary);">—</span>';
+            
+            let valText = '';
+            let isPositiveChange = false;
+            let isZero = false;
+            
+            if (isMoneyline) {
+                if (diff < 0) {
+                    valText = `${diff}`;
+                    isPositiveChange = true;
+                } else if (diff > 0) {
+                    valText = `+${diff}`;
+                    isPositiveChange = false;
+                } else {
+                    valText = '0';
+                    isZero = true;
+                }
+            } else {
+                if (diff > 0) {
+                    valText = `+${diff.toFixed(2)}`;
+                    isPositiveChange = true;
+                } else if (diff < 0) {
+                    valText = `${diff.toFixed(2)}`;
+                    isPositiveChange = false;
+                } else {
+                    valText = '0.00';
+                    isZero = true;
+                }
+            }
+            
+            if (isZero) {
+                return `<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary); font-variant-numeric: tabular-nums;">${valText}</span>`;
+            } else if (isPositiveChange) {
+                return `<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(50, 215, 75, 0.12); border: 1px solid rgba(50, 215, 75, 0.3); color: var(--accent-green); font-variant-numeric: tabular-nums;">${valText}</span>`;
+            } else {
+                return `<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--accent-red); font-variant-numeric: tabular-nums;">${valText}</span>`;
+            }
+        }
+
+        function formatNumericOdds(val) {
+            if (val === null || val === undefined || val === '') return '—';
+            if (typeof val === 'number') {
+                return val > 0 ? `+${val}` : `${val}`;
+            }
+            const n = parseFloat(val);
+            if (!isNaN(n)) {
+                return n > 0 ? `+${n}` : `${n}`;
+            }
+            return val;
+        }
+
+        function renderVegasBoard(data) {
+            const tbody = document.getElementById('vegas-board-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const games = data ? data.vegas_board : null;
+            if (!games || games.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:45px 30px; color:var(--text-secondary); font-size:0.85rem;">No Vegas Board slate data available for this run.</td></tr>`;
+                return;
+            }
+
+            games.forEach(g => {
+                let impliedAwayDiff = null;
+                if (g.away_tt_live !== null && g.away_tt_open !== null) impliedAwayDiff = g.away_tt_live - g.away_tt_open;
+
+                let impliedHomeDiff = null;
+                if (g.home_tt_live !== null && g.home_tt_open !== null) impliedHomeDiff = g.home_tt_live - g.home_tt_open;
+
+                let totalDiff = null;
+                if (g.current_total !== null && g.opening_total !== null) totalDiff = g.current_total - g.opening_total;
+
+                let mlAwayDiff = null;
+                if (g.away_current_ml !== null && g.away_opening_ml !== null) mlAwayDiff = g.away_current_ml - g.away_opening_ml;
+
+                let mlHomeDiff = null;
+                if (g.home_current_ml !== null && g.home_opening_ml !== null) mlHomeDiff = g.home_current_ml - g.home_opening_ml;
+
+                let tStr = g.time_str || 'TBD';
+                tStr = tStr.replace('am', 'AM').replace('pm', 'PM');
+                if (tStr.length > 3) tStr = tStr.charAt(0).toUpperCase() + tStr.slice(1);
+
+                const awayLogoId = teamIdMap[g.away_ab.toUpperCase()];
+                const homeLogoId = teamIdMap[g.home_ab.toUpperCase()];
+                
+                const awayLogoHtml = awayLogoId 
+                    ? `<img src="https://www.mlbstatic.com/team-logos/${awayLogoId}.svg" style="width:24px; height:24px; border-radius:4px; vertical-align:middle; background:rgba(255,255,255,0.03); padding:2px;" alt="${g.away_ab}">`
+                    : `<div style="width:24px; height:24px; border-radius:12px; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); font-size:0.65rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center;">${g.away_ab}</div>`;
+                
+                const homeLogoHtml = homeLogoId 
+                    ? `<img src="https://www.mlbstatic.com/team-logos/${homeLogoId}.svg" style="width:24px; height:24px; border-radius:4px; vertical-align:middle; background:rgba(255,255,255,0.03); padding:2px;" alt="${g.home_ab}">`
+                    : `<div style="width:24px; height:24px; border-radius:12px; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); font-size:0.65rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center;">${g.home_ab}</div>`;
+
+                const ouOpen = g.opening_total ? g.opening_total.toFixed(1) : '—';
+                const ouLive = g.current_total ? g.current_total.toFixed(1) : '—';
+                
+                const overT = g.over_ticket !== undefined && g.over_ticket !== null ? `${g.over_ticket}%` : '—';
+                const overM = g.over_money !== undefined && g.over_money !== null ? `${g.over_money}%` : '—';
+                const underT = g.under_ticket !== undefined && g.under_ticket !== null ? `${g.under_ticket}%` : '—';
+                const underM = g.under_money !== undefined && g.under_money !== null ? `${g.under_money}%` : '—';
+
+                const totalSplitsHtml = `
+                    <div style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); padding:4px 6px; border-radius:4px; border:1px solid rgba(255,255,255,0.04); margin-top:6px; display:inline-block; text-align:left; font-variant-numeric:tabular-nums; line-height:1.2;">
+                        <span style="color:var(--accent-green); font-weight:700; font-size:0.65rem;">▲ O:</span> ${overT} t / ${overM} m<br>
+                        <span style="color:var(--accent-red); font-weight:700; font-size:0.65rem;">▼ U:</span> ${underT} t / ${underM} m
+                    </div>
+                `;
+
+                const awayT = g.away_ml_ticket !== undefined && g.away_ml_ticket !== null ? `${g.away_ml_ticket}%` : '—';
+                const awayM = g.away_ml_money !== undefined && g.away_ml_money !== null ? `${g.away_ml_money}%` : '—';
+                const homeT = g.home_ml_ticket !== undefined && g.home_ml_ticket !== null ? `${g.home_ml_ticket}%` : '—';
+                const homeM = g.home_ml_money !== undefined && g.home_ml_money !== null ? `${g.home_ml_money}%` : '—';
+
+                const trAway = document.createElement('tr');
+                trAway.style.borderBottom = '1px solid rgba(255, 255, 255, 0.02)';
+                trAway.innerHTML = `
+                    <td rowspan="2" style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-weight:700; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle; line-height:1.3; font-variant-numeric: tabular-nums;">
+                        ${tStr}
+                    </td>
+                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            ${awayLogoHtml}
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:4px;">
+                                    <span>${g.away_ab}</span>
+                                    <span style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px; font-weight:500;">AWAY</span>
+                                </div>
+                                <div style="font-size:0.7rem; color:var(--text-secondary); max-width:130px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${g.away_team}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">${g.away_tt_open !== null ? g.away_tt_open.toFixed(2) : '—'}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">${g.away_tt_live !== null ? g.away_tt_live.toFixed(2) : '—'}</td>
+                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">${formatDiffPill(impliedAwayDiff)}</td>
+                    
+                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-right:1px solid rgba(255,255,255,0.02); font-size:0.85rem; color:rgba(255,255,255,0.7); vertical-align:middle;">
+                        ${ouOpen}
+                    </td>
+                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:800; color:#fff; vertical-align:middle;">
+                        ${ouLive}
+                    </td>
+                    <td rowspan="2" style="text-align:center; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle;">
+                        ${formatDiffPill(totalDiff)}
+                        <br>
+                        ${totalSplitsHtml}
+                    </td>
+                    
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">${formatNumericOdds(g.away_opening_ml)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">${formatNumericOdds(g.away_current_ml)}</td>
+                    <td style="text-align:center; padding:12px 8px;">${formatDiffPill(mlAwayDiff, true)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
+                        <span style="font-weight:700; color:#fff;">${awayT}</span> t / <span style="font-weight:700; color:var(--accent-green);">${awayM}</span> m
+                    </td>
+                `;
+
+                const trHome = document.createElement('tr');
+                trHome.style.borderBottom = '2px solid var(--border)';
+                trHome.innerHTML = `
+                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            ${homeLogoHtml}
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:4px;">
+                                    <span>${g.home_ab}</span>
+                                    <span style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px; font-weight:500;">HOME</span>
+                                </div>
+                                <div style="font-size:0.7rem; color:var(--text-secondary); max-width:130px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${g.home_team}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">${g.home_tt_open !== null ? g.home_tt_open.toFixed(2) : '—'}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">${g.home_tt_live !== null ? g.home_tt_live.toFixed(2) : '—'}</td>
+                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">${formatDiffPill(impliedHomeDiff)}</td>
+                    
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">${formatNumericOdds(g.home_opening_ml)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">${formatNumericOdds(g.home_current_ml)}</td>
+                    <td style="text-align:center; padding:12px 8px;">${formatDiffPill(mlHomeDiff, true)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
+                        <span style="font-weight:700; color:#fff;">${homeT}</span> t / <span style="font-weight:700; color:var(--accent-green);">${homeM}</span> m
+                    </td>
+                `;
+
+                tbody.appendChild(trAway);
+                tbody.appendChild(trHome);
+            });
+        }
 
         // ── OMEGA v13.8 Slate Center Render Helpers ──────────────────────────────
 

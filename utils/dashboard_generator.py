@@ -8,8 +8,8 @@ class DashboardGenerator:
         self.output_path = os.path.join(config.BASE_DIR, "reports", "dashboard.html")
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
 
-    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5):
-        """Generates a premium 3-Tab dashboard (Pitchers | Hitters | Teams)."""
+    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5, vegas_board=None):
+        """Generates a premium 4-Tab dashboard including the Vegas Board."""
         if skipped_events is None: skipped_events = []
         emoji_key = {
             "elite": "🔥", "high": "⚡", "med": "📈", "low": "📉",
@@ -386,6 +386,193 @@ class DashboardGenerator:
 </div></td>
 </tr>"""
             team_rows.append(row)
+
+        # OMEGA Vegas Board Row Building for Static Standalone HTML
+        vegas_rows = []
+        team_id_map = {
+            'LAA': 108, 'ARI': 109, 'BAL': 110, 'BOS': 111, 'CHC': 112, 'CIN': 113, 'CLE': 114,
+            'COL': 115, 'DET': 116, 'HOU': 117, 'KC': 118, 'LAD': 119, 'WSH': 120, 'NYM': 121,
+            'OAK': 133, 'PIT': 134, 'SD': 135, 'SEA': 136, 'SF': 137, 'STL': 138, 'TB': 139,
+            'TEX': 140, 'TOR': 141, 'MIN': 142, 'PHI': 143, 'ATL': 144, 'CWS': 145, 'MIA': 146,
+            'NYY': 147, 'MIL': 158
+        }
+
+        def py_format_diff_pill(diff, is_moneyline=False):
+            if diff is None:
+                return '<span style="color:var(--text-secondary);">—</span>'
+            
+            val_text = ''
+            is_positive_change = False
+            is_zero = False
+            
+            if is_moneyline:
+                if diff < 0:
+                    val_text = f"{diff}"
+                    is_positive_change = True
+                elif diff > 0:
+                    val_text = f"+{diff}"
+                    is_positive_change = False
+                else:
+                    val_text = '0'
+                    is_zero = True
+            else:
+                if diff > 0:
+                    val_text = f"+{diff:.2f}"
+                    is_positive_change = True
+                elif diff < 0:
+                    val_text = f"{diff:.2f}"
+                    is_positive_change = False
+                else:
+                    val_text = '0.00'
+                    is_zero = True
+                    
+            if is_zero:
+                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary); font-variant-numeric: tabular-nums;">{val_text}</span>'
+            elif is_positive_change:
+                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(50, 215, 75, 0.12); border: 1px solid rgba(50, 215, 75, 0.3); color: var(--accent-green); font-variant-numeric: tabular-nums;">{val_text}</span>'
+            else:
+                return f'<span style="padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--accent-red); font-variant-numeric: tabular-nums;">{val_text}</span>'
+
+        def py_format_numeric_odds(val):
+            if val is None or val == '':
+                return '—'
+            try:
+                n = float(val)
+                return f"+{int(n)}" if n > 0 else f"{int(n)}"
+            except ValueError:
+                return str(val)
+
+        if not vegas_board:
+            vegas_rows.append('<tr><td colspan="12" style="text-align:center; padding:45px 30px; color:var(--text-secondary); font-size:0.85rem;">No Vegas Board slate data available for this run.</td></tr>')
+        else:
+            for g in vegas_board:
+                implied_away_diff = None
+                if g.get('away_tt_live') is not None and g.get('away_tt_open') is not None:
+                    implied_away_diff = g['away_tt_live'] - g['away_tt_open']
+
+                implied_home_diff = None
+                if g.get('home_tt_live') is not None and g.get('home_tt_open') is not None:
+                    implied_home_diff = g['home_tt_live'] - g['home_tt_open']
+
+                total_diff = None
+                if g.get('current_total') is not None and g.get('opening_total') is not None:
+                    total_diff = g['current_total'] - g['opening_total']
+
+                ml_away_diff = None
+                if g.get('away_current_ml') is not None and g.get('away_opening_ml') is not None:
+                    ml_away_diff = g['away_current_ml'] - g['away_opening_ml']
+
+                ml_home_diff = None
+                if g.get('home_current_ml') is not None and g.get('home_opening_ml') is not None:
+                    ml_home_diff = g['home_current_ml'] - g['home_opening_ml']
+
+                t_str = g.get('time_str', 'TBD')
+                t_str = t_str.replace('am', 'AM').replace('pm', 'PM')
+                if len(t_str) > 3:
+                    t_str = t_str[0].upper() + t_str[1:]
+
+                away_logo_id = team_id_map.get(g['away_ab'].upper())
+                home_logo_id = team_id_map.get(g['home_ab'].upper())
+
+                away_logo_html = f'<img src="https://www.mlbstatic.com/team-logos/{away_logo_id}.svg" style="width:24px; height:24px; border-radius:4px; vertical-align:middle; background:rgba(255,255,255,0.03); padding:2px;" alt="{g["away_ab"]}">' if away_logo_id else f'<div style="width:24px; height:24px; border-radius:12px; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); font-size:0.65rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center;">{g["away_ab"]}</div>'
+                home_logo_html = f'<img src="https://www.mlbstatic.com/team-logos/{home_logo_id}.svg" style="width:24px; height:24px; border-radius:4px; vertical-align:middle; background:rgba(255,255,255,0.03); padding:2px;" alt="{g["home_ab"]}">' if home_logo_id else f'<div style="width:24px; height:24px; border-radius:12px; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); font-size:0.65rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center;">{g["home_ab"]}</div>'
+
+                ou_open = f"{g['opening_total']:.1f}" if g.get('opening_total') else '—'
+                ou_live = f"{g['current_total']:.1f}" if g.get('current_total') else '—'
+
+                over_t = f"{g['over_ticket']}%" if g.get('over_ticket') is not None else '—'
+                over_m = f"{g['over_money']}%" if g.get('over_money') is not None else '—'
+                under_t = f"{g['under_ticket']}%" if g.get('under_ticket') is not None else '—'
+                under_m = f"{g['under_money']}%" if g.get('under_money') is not None else '—'
+
+                total_splits_html = f"""
+                    <div style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); padding:4px 6px; border-radius:4px; border:1px solid rgba(255,255,255,0.04); margin-top:6px; display:inline-block; text-align:left; font-variant-numeric:tabular-nums; line-height:1.2;">
+                        <span style="color:var(--accent-green); font-weight:700; font-size:0.65rem;">▲ O:</span> {over_t} t / {over_m} m<br>
+                        <span style="color:var(--accent-red); font-weight:700; font-size:0.65rem;">▼ U:</span> {under_t} t / {under_m} m
+                    </div>
+                """
+
+                away_t = f"{g['away_ml_ticket']}%" if g.get('away_ml_ticket') is not None else '—'
+                away_m = f"{g['away_ml_money']}%" if g.get('away_ml_money') is not None else '—'
+                home_t = f"{g['home_ml_ticket']}%" if g.get('home_ml_ticket') is not None else '—'
+                home_m = f"{g['home_ml_money']}%" if g.get('home_ml_money') is not None else '—'
+
+                away_tt_open_val = f"{g['away_tt_open']:.2f}" if g.get('away_tt_open') is not None else '—'
+                away_tt_live_val = f"{g['away_tt_live']:.2f}" if g.get('away_tt_live') is not None else '—'
+                home_tt_open_val = f"{g['home_tt_open']:.2f}" if g.get('home_tt_open') is not None else '—'
+                home_tt_live_val = f"{g['home_tt_live']:.2f}" if g.get('home_tt_live') is not None else '—'
+
+                row_away = f"""
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.02);">
+                    <td rowspan="2" style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-weight:700; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle; line-height:1.3; font-variant-numeric: tabular-nums;">
+                        {t_str}
+                    </td>
+                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            {away_logo_html}
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:4px;">
+                                    <span>{g['away_ab']}</span>
+                                    <span style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px; font-weight:500;">AWAY</span>
+                                </div>
+                                <div style="font-size:0.7rem; color:var(--text-secondary); max-width:130px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">{g['away_team']}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">{away_tt_open_val}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">{away_tt_live_val}</td>
+                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">{py_format_diff_pill(implied_away_diff)}</td>
+                    
+                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-right:1px solid rgba(255,255,255,0.02); font-size:0.85rem; color:rgba(255,255,255,0.7); vertical-align:middle;">
+                        {ou_open}
+                    </td>
+                    <td rowspan="2" style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:800; color:#fff; vertical-align:middle;">
+                        {ou_live}
+                    </td>
+                    <td rowspan="2" style="text-align:center; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle;">
+                        {py_format_diff_pill(total_diff)}
+                        <br>
+                        {total_splits_html}
+                    </td>
+                    
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['away_opening_ml'])}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['away_current_ml'])}</td>
+                    <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_away_diff, True)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
+                        <span style="font-weight:700; color:#fff;">{away_t}</span> t / <span style="font-weight:700; color:var(--accent-green);">{away_m}</span> m
+                    </td>
+                </tr>
+                """
+
+                row_home = f"""
+                <tr style="border-bottom: 2px solid var(--border);">
+                    <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            {home_logo_html}
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:4px;">
+                                    <span>{g['home_ab']}</span>
+                                    <span style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px; font-weight:500;">HOME</span>
+                                </div>
+                                <div style="font-size:0.7rem; color:var(--text-secondary); max-width:130px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">{g['home_team']}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; border-left:1px solid var(--border); font-size:0.85rem; color:rgba(255,255,255,0.7);">{home_tt_open_val}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.88rem; font-weight:700; color:#fff;">{home_tt_live_val}</td>
+                    <td style="text-align:center; padding:12px 8px; border-right:1px solid var(--border);">{py_format_diff_pill(implied_home_diff)}</td>
+                    
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['home_opening_ml'])}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['home_current_ml'])}</td>
+                    <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_home_diff, True)}</td>
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
+                        <span style="font-weight:700; color:#fff;">{home_t}</span> t / <span style="font-weight:700; color:var(--accent-green);">{home_m}</span> m
+                    </td>
+                </tr>
+                """
+
+                vegas_rows.append(row_away)
+                vegas_rows.append(row_home)
 
         html = f"""
 <!DOCTYPE html>
@@ -893,6 +1080,7 @@ class DashboardGenerator:
             <button class="tab-btn active" onclick="openTab(event, 'pitchers')">Pitchers Matrix</button>
             <button class="tab-btn" onclick="openTab(event, 'hitters')">Hitters Matrix</button>
             <button class="tab-btn" onclick="openTab(event, 'teams')">Teams Matrix</button>
+            <button class="tab-btn" onclick="openTab(event, 'vegas')">Vegas Board</button>
             <button class="tab-btn" onclick="openTab(event, 'analysis')">Model Analysis</button>
         </div>
 
@@ -938,6 +1126,43 @@ class DashboardGenerator:
                         {"".join(team_rows)}
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- VEGAS TAB -->
+        <div id="vegas" class="tab-content">
+            <div class="card">
+                <h2 style="display:flex; align-items:center; justify-content:center; gap:10px;">📊 Live Vegas Board & Line Movement</h2>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border); background:rgba(255,255,255,0.01);">
+                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Date/Time</th>
+                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Team</th>
+                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-left:1px solid var(--border); border-right:1px solid var(--border);">Score (Implied Runs)</th>
+                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-right:1px solid var(--border);">Over / Under</th>
+                                <th colspan="4" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Moneyline</th>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border); font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.02);">
+                                <th style="padding:8px;"></th>
+                                <th style="padding:8px;"></th>
+                                <th style="text-align:center; padding:8px; border-left:1px solid var(--border); color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Diff</th>
+                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Money %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {"".join(vegas_rows)}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         

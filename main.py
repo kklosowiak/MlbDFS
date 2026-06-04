@@ -290,15 +290,88 @@ def run_full_analysis():
     except Exception as audit_e:
         print(f"[WARNING]: Target audit log failed: {audit_e}")
 
+    # OMEGA v9.5: Vegas Board Data Merging
+    vegas_board = []
+    abbrev_map = {
+        'Arizona Diamondbacks': 'ARI', 'Atlanta Braves': 'ATL', 'Baltimore Orioles': 'BAL',
+        'Boston Red Sox': 'BOS', 'Chicago Cubs': 'CHC', 'Chicago White Sox': 'CWS',
+        'Cincinnati Reds': 'CIN', 'Cleveland Guardians': 'CLE', 'Colorado Rockies': 'COL',
+        'Detroit Tigers': 'DET', 'Houston Astros': 'HOU', 'Kansas City Royals': 'KC',
+        'Los Angeles Angels': 'LAA', 'Los Angeles Dodgers': 'LAD', 'Miami Marlins': 'MIA',
+        'Milwaukee Brewers': 'MIL', 'Minnesota Twins': 'MIN', 'New York Mets': 'NYM',
+        'New York Yankees': 'NYY', 'Oakland Athletics': 'OAK', 'Philadelphia Phillies': 'PHI',
+        'Pittsburgh Pirates': 'PIT', 'San Diego Padres': 'SD', 'San Francisco Giants': 'SF',
+        'Seattle Mariners': 'SEA', 'St. Louis Cardinals': 'STL', 'Tampa Bay Rays': 'TB',
+        'Texas Rangers': 'TEX', 'Toronto Blue Jays': 'TOR', 'Washington Nationals': 'WSH'
+    }
+    
+    def find_totals_split(away, home, totals_cache):
+        if not totals_cache:
+            return {}
+        away_ab = abbrev_map.get(away, '').upper()
+        home_ab = abbrev_map.get(home, '').upper()
+        away_nick = away.split()[-1].upper() if away else ''
+        home_nick = home.split()[-1].upper() if home else ''
+        for k, v in totals_cache.items():
+            k_upper = k.upper()
+            if (away_nick in k_upper or away_ab in k_upper) and (home_nick in k_upper or home_ab in k_upper):
+                return v
+        return {}
+
+    for g in (opening_lines or []):
+        away = g.get('team_away')
+        home = g.get('team_home')
+        away_ab = abbrev_map.get(away, '')
+        home_ab = abbrev_map.get(home, '')
+        
+        away_ml_split = splits_data.get(away_ab, {}) if splits_data else {}
+        home_ml_split = splits_data.get(home_ab, {}) if splits_data else {}
+        total_split = find_totals_split(away, home, totals_data) if totals_data else {}
+        
+        time_str = g.get('commence_time', '')
+        try:
+            dt = datetime.datetime.strptime(time_str.replace('Z', ''), '%Y-%m-%dT%H:%M:%S')
+            time_str = dt.strftime('%a %m/%d %I:%M %p').lower()
+        except Exception:
+            pass
+            
+        vegas_board.append({
+            'game_id': g.get('game_id'),
+            'time_str': time_str,
+            'away_team': away,
+            'home_team': home,
+            'away_ab': away_ab,
+            'home_ab': home_ab,
+            'away_tt_open': g.get('away_tt_open'),
+            'away_tt_live': g.get('away_tt_live'),
+            'home_tt_open': g.get('home_tt_open'),
+            'home_tt_live': g.get('home_tt_live'),
+            'opening_total': g.get('opening_total'),
+            'current_total': g.get('current_total'),
+            'away_opening_ml': g.get('away_opening_ml'),
+            'away_current_ml': g.get('away_current_ml'),
+            'home_opening_ml': g.get('home_opening_ml'),
+            'home_current_ml': g.get('home_current_ml'),
+            'away_ml_ticket': away_ml_split.get('ticket'),
+            'away_ml_money': away_ml_split.get('money'),
+            'home_ml_ticket': home_ml_split.get('ticket'),
+            'home_ml_money': home_ml_split.get('money'),
+            'over_ticket': total_split.get('over_tickets'),
+            'over_money': total_split.get('over_money'),
+            'under_ticket': total_split.get('under_tickets'),
+            'under_money': total_split.get('under_money'),
+        })
+
     # 7. Generate Dashboard
-    dash_gen.generate_report(p_reports, team_reports, h_reports)
+    dash_gen.generate_report(p_reports, team_reports, h_reports, vegas_board=vegas_board)
     
     # OMEGA v4.5: Export Summary for Bot/Sentry
     summary = {
         "timestamp": datetime.datetime.now().isoformat(),
         "pitchers": p_reports,
         "teams": team_reports,
-        "hitters": h_reports
+        "hitters": h_reports,
+        "vegas_board": vegas_board
     }
     results_path = os.path.join(config.REPORTS_DIR, "latest_results.json")
     with open(results_path, 'w') as f:
