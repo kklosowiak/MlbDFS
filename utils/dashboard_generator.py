@@ -486,9 +486,9 @@ class DashboardGenerator:
                 under_m = f"{g['under_money']}%" if g.get('under_money') is not None else '—'
 
                 total_splits_html = f"""
-                    <div style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); padding:4px 6px; border-radius:4px; border:1px solid rgba(255,255,255,0.04); margin-top:6px; display:inline-block; text-align:left; font-variant-numeric:tabular-nums; line-height:1.2;">
-                        <span style="color:var(--accent-green); font-weight:700; font-size:0.65rem;">▲ O:</span> {over_t} t / {over_m} m<br>
-                        <span style="color:var(--accent-red); font-weight:700; font-size:0.65rem;">▼ U:</span> {under_t} t / {under_m} m
+                    <div style="font-size:0.68rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); padding:4px 6px; border-radius:4px; border:1px solid rgba(255,255,255,0.04); margin-top:6px; display:inline-block; text-align:left; font-variant-numeric:tabular-nums; line-height:1.2;" title="Consensus Splits: percentage of total ticket bets placed vs. percentage of total dollars (Money) handle on the Over/Under">
+                        <span style="color:var(--accent-green); font-weight:700; font-size:0.65rem;">▲ O:</span> {over_t} Bets / {over_m} Money<br>
+                        <span style="color:var(--accent-red); font-weight:700; font-size:0.65rem;">▼ U:</span> {under_t} Bets / {under_m} Money
                     </div>
                 """
 
@@ -538,8 +538,9 @@ class DashboardGenerator:
                     <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['away_opening_ml'])}</td>
                     <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['away_current_ml'])}</td>
                     <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_away_diff, True)}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
-                        <span style="font-weight:700; color:#fff;">{away_t}</span> t / <span style="font-weight:700; color:var(--accent-green);">{away_m}</span> m
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.3;" title="Consensus Splits: {away_t} of total ticket bets vs. {away_m} of total dollar handle placed on this team">
+                        <span style="font-weight:700; color:#fff;">{away_t}</span> Bets<br>
+                        <span style="font-weight:700; color:var(--accent-green);">{away_m}</span> Money
                     </td>
                 </tr>
                 """
@@ -565,8 +566,9 @@ class DashboardGenerator:
                     <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.82rem; color:rgba(255,255,255,0.7);">{py_format_numeric_odds(g['home_opening_ml'])}</td>
                     <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.85rem; font-weight:700; color:#fff;">{py_format_numeric_odds(g['home_current_ml'])}</td>
                     <td style="text-align:center; padding:12px 8px;">{py_format_diff_pill(ml_home_diff, True)}</td>
-                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.2;">
-                        <span style="font-weight:700; color:#fff;">{home_t}</span> t / <span style="font-weight:700; color:var(--accent-green);">{home_m}</span> m
+                    <td style="text-align:center; font-variant-numeric: tabular-nums; padding:12px 8px; font-size:0.75rem; color:var(--text-secondary); line-height:1.3;" title="Consensus Splits: {home_t} of total ticket bets vs. {home_m} of total dollar handle placed on this team">
+                        <span style="font-weight:700; color:#fff;">{home_t}</span> Bets<br>
+                        <span style="font-weight:700; color:var(--accent-green);">{home_m}</span> Money
                     </td>
                 </tr>
                 """
@@ -1137,25 +1139,25 @@ class DashboardGenerator:
                     <table style="width:100%; border-collapse:collapse; text-align:left;">
                         <thead>
                             <tr style="border-bottom: 2px solid var(--border); background:rgba(255,255,255,0.01);">
-                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Date/Time</th>
-                                <th style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Team</th>
-                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-left:1px solid var(--border); border-right:1px solid var(--border);">Score (Implied Runs)</th>
-                                <th colspan="3" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-right:1px solid var(--border);">Over / Under</th>
-                                <th colspan="4" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700;">Moneyline</th>
+                                <th title="Game commencement time (EST)" style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Date/Time</th>
+                                <th title="Team name and designation (Away/Home)" style="text-align:left; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Team</th>
+                                <th colspan="3" title="Opening and live team implied run totals and movement delta" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-left:1px solid var(--border); border-right:1px solid var(--border); cursor:help;">Score (Implied Runs)</th>
+                                <th colspan="3" title="Opening and live game totals, movement delta, and Over/Under consensus splits" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; border-right:1px solid var(--border); cursor:help;">Over / Under</th>
+                                <th colspan="4" title="Opening and live moneylines, movement delta, and Moneyline consensus splits" style="text-align:center; font-size:0.75rem; padding:12px 8px; color:var(--text-secondary); font-weight:700; cursor:help;">Moneyline</th>
                             </tr>
                             <tr style="border-bottom: 1px solid var(--border); font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.02);">
                                 <th style="padding:8px;"></th>
                                 <th style="padding:8px;"></th>
-                                <th style="text-align:center; padding:8px; border-left:1px solid var(--border); color:var(--text-secondary);">Open</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
-                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
-                                <th style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary);">Diff</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Open</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Live</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Diff</th>
-                                <th style="text-align:center; padding:8px; color:var(--text-secondary);">Money %</th>
+                                <th title="Opening team implied run total" style="text-align:center; padding:8px; border-left:1px solid var(--border); color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live team implied run total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Run total movement delta (positive green means Vegas expects more runs)" style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Opening game Over/Under total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live game Over/Under total" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Game total movement delta" style="text-align:center; padding:8px; border-right:1px solid var(--border); color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Opening team moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Open</th>
+                                <th title="Current live team moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Live</th>
+                                <th title="Moneyline movement delta (negative green is steam in team's favor)" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Diff</th>
+                                <th title="Public betting consensus: percentage of total ticket bets vs. percentage of total dollars (Money) handle on moneyline" style="text-align:center; padding:8px; color:var(--text-secondary); cursor:help;">Money %</th>
                             </tr>
                         </thead>
                         <tbody>
