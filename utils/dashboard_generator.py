@@ -503,7 +503,7 @@ class DashboardGenerator:
                 home_tt_live_val = f"{g['home_tt_live']:.2f}" if g.get('home_tt_live') is not None else '—'
 
                 row_away = f"""
-                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.02);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                     <td rowspan="2" style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-weight:700; padding:12px 8px; border-right:1px solid var(--border); vertical-align:middle; line-height:1.3; font-variant-numeric: tabular-nums;">
                         {t_str}
                     </td>
@@ -546,7 +546,7 @@ class DashboardGenerator:
                 """
 
                 row_home = f"""
-                <tr style="border-bottom: 2px solid var(--border);">
+                <tr style="border-bottom: 2px solid rgba(255, 255, 255, 0.22);">
                     <td style="padding:12px 8px; vertical-align:middle; min-width: 140px;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             {home_logo_html}
