@@ -683,9 +683,20 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             opp_bullpen = bullpen_analyzer.get_fatigue_score(opponent)
             
             # Market Divergence & Signal Detection
+            ticket_pct = None
+            money_pct = None
+            t_split = consensus_fetcher.get_team_split(team, splits_data)
+            if t_split:
+                ticket_pct = t_split.get('ticket')
+                money_pct = t_split.get('money')
+
             if game_started:
                 if has_prev:
                     divergence = prev_team_data.get('divergence', 0)
+                    if prev_team_data.get('ticket_pct') is not None:
+                        ticket_pct = prev_team_data.get('ticket_pct')
+                    if prev_team_data.get('money_pct') is not None:
+                        money_pct = prev_team_data.get('money_pct')
                     is_shark = prev_team_data.get('is_shark', False)
                     is_whale = prev_team_data.get('is_whale', False)
                     is_sharp = prev_team_data.get('is_sharp', False)
@@ -1151,6 +1162,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_fatigued': opp_bullpen.get('is_fatigued', False), 'is_shark': is_shark,
                 'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
+                'ticket_pct': ticket_pct, 'money_pct': money_pct,
                 'confidence': res.get('confidence', 'low'),
                 'is_burst': is_burst,
                 'burst_conc_gap': burst_conc_gap,

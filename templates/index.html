@@ -2547,7 +2547,9 @@
                             <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ITT ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">ML MOVE ↕</th>
                             <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">TT MOVE ↕</th>
-                            <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">DIVERGENCE ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">TICKET % ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 14, true)">MONEY % ↕</th>
+                            <th class="sortable-th" onclick="sortTable('teams-table', 15, true)">DIVERGENCE ↕</th>
                         </tr>
                     </thead>
                     <tbody id="teams-body">
@@ -3282,6 +3284,8 @@
             col_itt: 'Implied team total from current ML + game total — how many runs Vegas expects this offense to score.',
             col_ml_move: 'Moneyline move since open (negative = line toward this team / favorite steam).',
             col_tt_move: 'Game total move since open (positive = total steamed up).',
+            col_tkt: 'Consensus Ticket %: percentage of total ticket bets placed on this team.',
+            col_mny: 'Consensus Money %: percentage of total dollar handle placed on this team.',
             col_div: 'Ticket vs money divergence (%). Positive = more handle than public tickets on this side.',
             col_k_prop: 'DraftKings strikeout prop line (and price when shown).',
             col_outs: 'Recorded outs / pitch-count proxy line for leash and workload.',
@@ -3609,7 +3613,7 @@
         const MATRIX_COLUMN_TIPS_FULL = {
             'pitchers-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_k_prop', 'col_outs'],
             'hitters-table': ['col_blended', 'col_omega', 'col_conf', 'col_phy', 'col_mkt', null, null, null, null, 'col_hr', 'col_hits', 'col_tb'],
-            'teams-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_div'],
+            'teams-table': ['col_blended', 'col_omega', 'col_conf', 'col_conf_delta', 'col_phy', 'col_mkt', null, null, null, null, 'col_itt', 'col_ml_move', 'col_tt_move', 'col_tkt', 'col_mny', 'col_div'],
         };
         const MATRIX_COLUMN_TIPS_COMPACT = {
             'pitchers-table': ['col_blended', 'col_omega', 'col_trust_stack', 'col_profile', null, null, null, null, 'col_props_cluster'],
@@ -3684,7 +3688,9 @@
                     <th class="sortable-th" onclick="sortTable('teams-table', 10, true)">ITT ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 11, true)">ML MOVE ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 12, true)">TT MOVE ↕</th>
-                    <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">DIVERGENCE ↕</th>`,
+                    <th class="sortable-th" onclick="sortTable('teams-table', 13, true)">TICKET % ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 14, true)">MONEY % ↕</th>
+                    <th class="sortable-th" onclick="sortTable('teams-table', 15, true)">DIVERGENCE ↕</th>`,
                 compact: `
                     <th class="sortable-th" onclick="sortTable('teams-table', 0, true)">BLENDED ↕</th>
                     <th class="sortable-th" onclick="sortTable('teams-table', 1, true)">OMEGA ↕</th>
@@ -5894,6 +5900,8 @@
                         ${simpleMetricCell(t.implied_total || '-', 'color: var(--accent-green); font-weight:600;', omegaTip('col_itt'))}
                         ${simpleMetricCell(`${t.ml_move > 0 ? '+' : ''}${t.ml_move !== 0 ? t.ml_move : 'EVEN'}`, '', omegaTip('col_ml_move'), mlClass)}
                         ${simpleMetricCell(`${t.tt_move > 0 ? '+' : ''}${t.tt_move !== 0 ? t.tt_move : 'EVEN'}`, '', omegaTip('col_tt_move'), ttClass)}
+                        ${simpleMetricCell(t.ticket_pct != null ? `${t.ticket_pct}%` : '—', 'font-weight:700;', omegaTip('col_tkt'), getPctClass(t.ticket_pct != null ? `${t.ticket_pct}%` : '—'))}
+                        ${simpleMetricCell(t.money_pct != null ? `${t.money_pct}%` : '—', 'font-weight:700;', omegaTip('col_mny'), getPctClass(t.money_pct != null ? `${t.money_pct}%` : '—'))}
                         <td class="metric ${divClass}" style="vertical-align: middle; overflow: visible;">
                             <div${tipAttrs(omegaTip('col_div'))} style="display: inline-block;">
                                 <strong style="font-size:1.05rem;">${t.divergence > 0 ? '+' : ''}${t.divergence}%</strong>

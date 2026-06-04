@@ -21,3 +21,14 @@ def test_is_sharp_consensus_invalid_team():
         "NYY": {"ticket": 40, "money": 70}
     }
     assert fetcher.is_sharp_consensus("Invalid Team Name", splits_data) is False
+
+
+def test_get_team_split_retrieval():
+    fetcher = ConsensusFetcher()
+    splits_data = {
+        "NYY": {"ticket": 40, "money": 70},
+        "SF": {"ticket": 13, "money": 62}
+    }
+    split = fetcher.get_team_split("New York Yankees", splits_data)
+    assert split == {"ticket": 40, "money": 70}
+    assert fetcher.get_divergence("San Francisco Giants", splits_data) == 49
