@@ -434,39 +434,31 @@ class SharpsWeighting:
         if is_pitch_alignment:
             final_omega += 4.0
 
-        # Walks Stack Boost (+8.0 points)
+        # Walks Stack Boost (Continuous Scaling OMEGA v16.2)
         walks_boost = 0.0
         if opp_walks_line is not None:
-            is_high_walks = False
             try:
                 wf = float(opp_walks_line)
-                if wf >= 2.5:
-                    is_high_walks = True
-                elif wf >= 1.5 and opp_walks_odds is not None:
-                    wo = float(opp_walks_odds)
-                    if wo < 0:
-                        is_high_walks = True
+                wo = float(opp_walks_odds) if opp_walks_odds is not None else -110.0
+                prob = abs(wo) / (abs(wo) + 100.0) if wo < 0 else 100.0 / (wo + 100.0)
+                # Base points: 1.5 line = 4 pts, 2.5 line = 8 pts
+                base_pts = 4.0 + (wf - 1.5) * 4.0
+                walks_boost = max(0.0, base_pts * (prob / 0.52))
             except:
                 pass
-            if is_high_walks:
-                walks_boost = 8.0
 
-        # Earned Runs Stack Boost (+8.0 points)
+        # Earned Runs Stack Boost (Continuous Scaling OMEGA v16.2)
         er_boost = 0.0
         if opp_er_line is not None:
-            is_high_er = False
             try:
                 ef = float(opp_er_line)
-                if ef >= 3.5:
-                    is_high_er = True
-                elif ef >= 2.5 and opp_er_odds is not None:
-                    eo = float(opp_er_odds)
-                    if eo < 0:
-                        is_high_er = True
+                eo = float(opp_er_odds) if opp_er_odds is not None else -110.0
+                prob = abs(eo) / (abs(eo) + 100.0) if eo < 0 else 100.0 / (eo + 100.0)
+                # Base points: 2.5 line = 6 pts, 3.5 line = 10 pts
+                base_pts = 6.0 + (ef - 2.5) * 4.0
+                er_boost = max(0.0, base_pts * (prob / 0.52))
             except:
                 pass
-            if is_high_er:
-                er_boost = 8.0
 
         # True Talent Opp Pitcher Stack Boost (+2.0 points)
         true_talent_boost = 0.0

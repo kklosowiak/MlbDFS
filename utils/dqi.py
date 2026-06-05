@@ -143,8 +143,10 @@ def calculate_dqi(team, pitchers=None):
         warn_pts += penalty
         warn_factors.append(f"Stack Chalk Warning (-{round(penalty, 1)} pts)")
     if opp_pitcher_trap:
-        pos_pts += 20.0
-        pos_factors.append("Opposing SP Trap (+20 pts)")
+        scaled_pts = 20.0 + (35.0 - float(opp_phys)) * 0.5
+        trap_pts = max(10.0, min(30.0, scaled_pts))
+        pos_pts += trap_pts
+        pos_factors.append(f"Opposing SP Trap (+{round(trap_pts, 1)} pts)")
 
     # Divergence is guaranteed >= 10.0% positive
 
