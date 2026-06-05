@@ -335,8 +335,6 @@ class SharpsWeighting:
         
         # Alpha (Market Convergence Grouping to prevent exponential stacking)
         market_alphas = 0
-        # OMEGA v13.6.2: Re-enabled is_whale for stacks because the threshold has been optimized to >=25% divergence (40.9% success rate)
-        if is_whale: market_alphas += 1
         # OMEGA v15.0: is_shark MOVED to beta_signals (r=-0.0879 in 2026; dampened to +5% instead of +15%)
         if is_steam: market_alphas += 1
         
@@ -357,6 +355,7 @@ class SharpsWeighting:
         if bullpen_fatigue >= 65: beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
         if is_storm: beta_signals += 1  # OMEGA v16.0: Demoted from alpha (+15%) to beta (+5%)
+        if is_whale: beta_signals += 1  # OMEGA v16.2: Demoted from alpha (+15%) to beta (+5%)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
         # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums

@@ -338,17 +338,90 @@ def run_full_analysis():
                 return v
         return {}
 
-    for g in (opening_lines or []):
-        away = g.get('team_away')
-        home = g.get('team_home')
+    from utils.opening_lines import _pair_key
+    from utils.market_utils import get_market_prices
+
+    # Load previous results for freezing started games
+    prev_vegas_board = {}
+    results_path = os.path.join(config.REPORTS_DIR, "latest_results.json")
+    if os.path.exists(results_path):
+        try:
+            with open(results_path, 'r', encoding='utf-8') as f:
+                prev_data = json.load(f)
+                prev_vegas_board = {g.get('game_id'): g for g in prev_data.get('vegas_board', []) if g.get('game_id')}
+        except Exception:
+            pass
+
+    # Build open_lookup dict
+    open_lookup = {}
+    for o in (opening_lines or []):
+        pk = o.get('pair_key') or _pair_key(o.get('team_away'), o.get('team_home'))
+        open_lookup[pk] = o
+        if o.get('game_id'):
+            open_lookup[o['game_id']] = o
+
+    for game in snapshot.get('odds', []):
+        away = game.get('away_team')
+        home = game.get('home_team')
+        gid = game.get('id')
         away_ab = abbrev_map.get(away, '')
         home_ab = abbrev_map.get(home, '')
+        
+        # Look up opening lines
+        pk = _pair_key(away, home)
+        open_game = open_lookup.get(pk) or open_lookup.get(gid) or {}
+        
+        # Fetch current odds dynamically from the live game in the snapshot
+        curr_away_ml, curr_away_total = get_market_prices(game, away)
+        curr_home_ml, curr_home_total = get_market_prices(game, home)
+        curr_total = curr_away_total if curr_away_total is not None else curr_home_total
+        
+        # Check if game has commenced to prevent live-betting/in-progress odds shifts
+        game_started = False
+        commence_str = game.get('commence_time') or open_game.get('commence_time', '')
+        if commence_str:
+            try:
+                commence_dt = datetime.datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
+                if datetime.datetime.now(datetime.UTC).replace(tzinfo=None) >= commence_dt:
+                    game_started = True
+            except Exception:
+                pass
+                
+        if game_started and prev_vegas_board.get(gid):
+            prev_g = prev_vegas_board[gid]
+            curr_away_ml = prev_g.get('away_current_ml', curr_away_ml)
+            curr_home_ml = prev_g.get('home_current_ml', curr_home_ml)
+            curr_total = prev_g.get('current_total', curr_total)
+            
+        # Fallbacks to open_game values if snapshot current is None (rare)
+        if curr_away_ml is None:
+            curr_away_ml = open_game.get('away_current_ml') or open_game.get('away_opening_ml')
+        if curr_home_ml is None:
+            curr_home_ml = open_game.get('home_current_ml') or open_game.get('home_opening_ml')
+        if curr_total is None:
+            curr_total = open_game.get('current_total') or open_game.get('opening_total')
+            
+        # Determine opening values (prefer open_game, fallback to current)
+        away_opening_ml = open_game.get('away_opening_ml')
+        if away_opening_ml is None:
+            away_opening_ml = curr_away_ml
+        home_opening_ml = open_game.get('home_opening_ml')
+        if home_opening_ml is None:
+            home_opening_ml = curr_home_ml
+        opening_total = open_game.get('opening_total')
+        if opening_total is None:
+            opening_total = curr_total
+            
+        away_tt_open = open_game.get('away_tt_open')
+        away_tt_live = open_game.get('away_tt_live')
+        home_tt_open = open_game.get('home_tt_open')
+        home_tt_live = open_game.get('home_tt_live')
         
         away_ml_split = splits_data.get(away_ab, {}) if splits_data else {}
         home_ml_split = splits_data.get(home_ab, {}) if splits_data else {}
         total_split = find_totals_split(away, home, totals_data) if totals_data else {}
         
-        time_str = g.get('commence_time', '')
+        time_str = game.get('commence_time') or open_game.get('commence_time', '')
         try:
             dt = datetime.datetime.strptime(time_str.replace('Z', ''), '%Y-%m-%dT%H:%M:%S')
             time_str = dt.strftime('%a %m/%d %I:%M %p').lower()
@@ -356,22 +429,22 @@ def run_full_analysis():
             pass
             
         vegas_board.append({
-            'game_id': g.get('game_id'),
+            'game_id': gid,
             'time_str': time_str,
             'away_team': away,
             'home_team': home,
             'away_ab': away_ab,
             'home_ab': home_ab,
-            'away_tt_open': g.get('away_tt_open'),
-            'away_tt_live': g.get('away_tt_live'),
-            'home_tt_open': g.get('home_tt_open'),
-            'home_tt_live': g.get('home_tt_live'),
-            'opening_total': g.get('opening_total'),
-            'current_total': g.get('current_total'),
-            'away_opening_ml': g.get('away_opening_ml'),
-            'away_current_ml': g.get('away_current_ml'),
-            'home_opening_ml': g.get('home_opening_ml'),
-            'home_current_ml': g.get('home_current_ml'),
+            'away_tt_open': away_tt_open,
+            'away_tt_live': away_tt_live,
+            'home_tt_open': home_tt_open,
+            'home_tt_live': home_tt_live,
+            'opening_total': opening_total,
+            'current_total': curr_total,
+            'away_opening_ml': away_opening_ml,
+            'away_current_ml': curr_away_ml,
+            'home_opening_ml': home_opening_ml,
+            'home_current_ml': curr_home_ml,
             'away_ml_ticket': away_ml_split.get('ticket'),
             'away_ml_money': away_ml_split.get('money'),
             'home_ml_ticket': home_ml_split.get('ticket'),

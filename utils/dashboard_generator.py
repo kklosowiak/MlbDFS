@@ -488,11 +488,13 @@ class DashboardGenerator:
 
                 ml_away_diff = None
                 if g.get('away_current_ml') is not None and g.get('away_opening_ml') is not None:
-                    ml_away_diff = g['away_current_ml'] - g['away_opening_ml']
+                    from utils.market_utils import calculate_ml_move
+                    ml_away_diff = calculate_ml_move(g['away_opening_ml'], g['away_current_ml'])
 
                 ml_home_diff = None
                 if g.get('home_current_ml') is not None and g.get('home_opening_ml') is not None:
-                    ml_home_diff = g['home_current_ml'] - g['home_opening_ml']
+                    from utils.market_utils import calculate_ml_move
+                    ml_home_diff = calculate_ml_move(g['home_opening_ml'], g['home_current_ml'])
 
                 t_str = g.get('time_str', 'TBD')
                 t_str = t_str.replace('am', 'AM').replace('pm', 'PM')
