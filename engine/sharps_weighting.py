@@ -521,6 +521,10 @@ class SharpsWeighting:
         dominance_penalty = 0.0
         if opp_pitcher_alpha > SP_DOMINANCE_THRESHOLD:
             dominance_penalty = (opp_pitcher_alpha - SP_DOMINANCE_THRESHOLD) * SP_DOMINANCE_FACTOR
+            # Game-Total Floor Scaling (OMEGA v16.1): Dampen the dominance penalty in high implied run environments
+            if eff_itt >= 4.5:
+                dampener = max(0.5, 1.0 - (eff_itt - 4.5) * 0.5)
+                dominance_penalty *= dampener
             
         final_omega = (final_omega - dominance_penalty) * sentiment_mod * env_synergy
         
