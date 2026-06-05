@@ -1170,6 +1170,47 @@ class DashboardGenerator:
         body.light-theme #vegas-board-table td.cell-diff-neutral {{ background: rgba(0, 0, 0, 0.01) !important; color: var(--text-secondary) !important; }}
 
         body.light-theme #vegas-board-table td.cell-empty {{ background: rgba(0, 0, 0, 0.02) !important; color: var(--text-secondary) !important; }}
+
+        @media (max-width: 768px) {{
+            body {{
+                padding: 10px 5px;
+            }}
+            .container {{
+                max-width: 100%;
+            }}
+            .header {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 20px;
+            }}
+            .header h1 {{
+                font-size: 2rem;
+            }}
+            .header-meta {{
+                text-align: left;
+            }}
+            .card {{
+                padding: 15px 10px;
+                border-radius: var(--radius-md);
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }}
+            table {{
+                min-width: 900px;
+            }}
+            td, th {{
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }}
+            .tabs {{
+                flex-wrap: wrap;
+            }}
+            .tab-btn {{
+                padding: 8px;
+                font-size: 0.85rem;
+            }}
+        }}
     </style>
 </head>
 <body>
