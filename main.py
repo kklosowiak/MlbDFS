@@ -81,6 +81,23 @@ def run_full_analysis():
     import datetime
     if datetime.datetime.now().weekday() == 6: # Sunday
         matchup_radar.refresh_data()
+
+    # OMEGA: Auto-refresh probable pitchers if missing or older than 4 hours
+    probables_path = os.path.join(config.DATA_DIR, "probable_pitchers.json")
+    should_refresh = True
+    if os.path.exists(probables_path):
+        import time
+        file_age = time.time() - os.path.getmtime(probables_path)
+        if file_age < 14400: # 4 hours
+            should_refresh = False
+
+    if should_refresh:
+        try:
+            print("[INIT]: Probable pitchers missing or stale. Running auto-refresh...")
+            from data.probable_pitcher_fetcher import ProbablePitcherFetcher
+            ProbablePitcherFetcher().refresh()
+        except Exception as e:
+            print(f"[WARNING]: Auto-refresh of probable pitchers failed: {e}")
     dash_gen = DashboardGenerator()
     weather_fetcher = WeatherFetcher()
     consensus_fetcher = ConsensusFetcher()
