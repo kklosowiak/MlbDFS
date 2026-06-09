@@ -229,6 +229,8 @@ class StatcastBridge:
             
         # Merge Pitchers
         for name in set(list(p_seasonal.keys()) + list(p_rolling.keys()) + list(p_seasonal_2025.keys())):
+            if name == "willi castro":
+                continue
             s = p_seasonal.get(name, {})
             r = p_rolling.get(name, {})
             s25 = p_seasonal_2025.get(name, {})
@@ -267,6 +269,11 @@ class StatcastBridge:
         # Ensure data directory exists
         os.makedirs(os.path.dirname(self.cache_path), exist_ok=True)
         
+        # OMEGA Override: Force Willi Castro as hitter on Colorado Rockies
+        if "willi castro" in cache:
+            cache["willi castro"]["type"] = "hitter"
+            cache["willi castro"]["team"] = "Colorado Rockies"
+            
         with open(self.cache_path, 'w') as f:
             json.dump(cache, f, indent=4)
             
