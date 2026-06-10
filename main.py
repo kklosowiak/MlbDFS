@@ -128,43 +128,7 @@ def run_full_analysis():
     with open(snapshot_path, 'r') as f:
         snapshot = json.load(f)
         
-    # OMEGA Bulk Relief Override: Brandon Eisert replaced with Erick Fedde
-    modified_odds = 0
-    for entry in snapshot.get('odds', []):
-        if entry.get('home_pitcher') == 'Brandon Eisert':
-            entry['home_pitcher'] = 'Erick Fedde'
-            modified_odds += 1
-        if entry.get('away_pitcher') == 'Brandon Eisert':
-            entry['away_pitcher'] = 'Erick Fedde'
-            modified_odds += 1
-    if modified_odds > 0:
-        print(f"[OVERRIDE]: Replaced {modified_odds} occurrences of Brandon Eisert with Erick Fedde in snapshot odds.")
-        
-    if 'props' in snapshot:
-        props = snapshot['props']
-        if 'Brandon Eisert' in props:
-            props['Erick Fedde'] = props.pop('Brandon Eisert')
-            print("[OVERRIDE]: Replaced Brandon Eisert with Erick Fedde in snapshot props.")
-            
-    probables_path = os.path.join(config.DATA_DIR, "probable_pitchers.json")
-    if os.path.exists(probables_path):
-        try:
-            with open(probables_path, 'r', encoding='utf-8') as pf:
-                probables = json.load(pf)
-            modified_probables = False
-            for k, v in probables.items():
-                if v == 'Brandon Eisert':
-                    probables[k] = 'Erick Fedde'
-                    modified_probables = True
-            if 'Chicago White Sox' in probables:
-                probables['Chicago White Sox'] = 'Erick Fedde'
-                modified_probables = True
-            if modified_probables:
-                with open(probables_path, 'w', encoding='utf-8') as pf:
-                    json.dump(probables, pf, indent=4)
-                print("[OVERRIDE]: Updated Erick Fedde in probable_pitchers.json.")
-        except Exception as e:
-            print(f"[WARNING]: Could not update probable_pitchers.json: {e}")
+
 
     print(f"[INIT]: Analysis targeting {len(snapshot.get('odds', []))} Night Slate matchups.")
     
