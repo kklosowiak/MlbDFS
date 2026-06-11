@@ -572,7 +572,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
     
     # OMEGA v4.6.1: Backfill rosters with discovered pitchers
     for report in p_reports:
-        if report['pitcher'] != "TBD":
+        if report['pitcher'] not in ["TBD", "Tbd"]:
             rosters[report['team']] = report['pitcher']
     
     # OMEGA v3.2.3.2: Improved Duplicate Purge
@@ -582,14 +582,14 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
     # OMEGA v6.1: Debut & Visibility Logic + Deduplication
     for report in p_reports:
         # If we have a real name, but no lines/odds, it is likely a late callup/debut
-        if report['pitcher'] != "TBD" and (not report.get('k_line') or report.get('k_line') == '-'):
+        if report['pitcher'] not in ["TBD", "Tbd"] and (not report.get('k_line') or report.get('k_line') == '-'):
             report['is_debut'] = True
             report['alpha_score'] = round(report['alpha_score'] * 1.00, 1) # Removed visibility boost for debuts
         else:
             report['is_debut'] = False
 
         # Deduplication
-        if report['pitcher'] == "TBD":
+        if report['pitcher'] in ["TBD", "Tbd"]:
             cleaned_p_reports.append(report)
         elif report['pitcher'] not in seen_pitchers:
             seen_pitchers.add(report['pitcher'])
@@ -630,7 +630,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
             # OMEGA v7.5: The Veteran Paradox Shield
             # If a pitcher is a proven veteran (SIERA < 3.80), soften the penalty.
             is_veteran = float(p.get('siera', 4.10)) < 3.80
-            penalty = 0.925 if is_veteran else 0.85 # -7.5% for vets, -15% for others
+            penalty = 0.96 if is_veteran else 0.92 # OMEGA v17.0: Softened from 0.925/0.85 to 0.96/0.92
             p['alpha_score'] = round(p['alpha_score'] * penalty, 1)
             shield_label = " (SHIELDED)" if is_veteran else ""
             print(f"  - PARADOX: {p['pitcher']} ({p['team']}) penalized{shield_label} for facing Top-3 Stack {p['opponent']}")
@@ -835,7 +835,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 if api_opp_pitcher: opp_pitcher_name = api_opp_pitcher
                 
                 # If we have a name but no report, try a fresh fetch
-                if opp_pitcher_name != "TBD":
+                if opp_pitcher_name not in ["TBD", "Tbd"]:
                     print(f"  [RESCUE]: Attempting fresh physics fetch for {opp_pitcher_name}...")
                     physics = p_analyzer.fetch_pitcher_physics(opp_pitcher_name)
                     rescue_phys = min(100.0, round(physics['bm_score'] * 1.8, 1))
@@ -890,7 +890,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             if team_h:
                 # Resolve opposing pitcher throw hand
                 pitch_hand = "R"
-                if opp_pitcher_name and opp_pitcher_name != "TBD":
+                if opp_pitcher_name and opp_pitcher_name not in ["TBD", "Tbd"]:
                     opp_pitcher_norm = normalize_player_name(opp_pitcher_name)
                     p_profile = cache.get(opp_pitcher_norm, {})
                     pitch_hand = p_profile.get("pitch_hand", "R") if p_profile.get("type") == "pitcher" else "R"
@@ -1473,7 +1473,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
 
         # Check if this hitter has a Matchup DNA edge
         is_hitter_pitch_alignment = False
-        if matchup_radar and opp_pitcher and opp_pitcher != "TBD":
+        if matchup_radar and opp_pitcher and opp_pitcher not in ["TBD", "Tbd"]:
             p_name = normalize_player_name(opp_pitcher)
             h_name = normalize_player_name(h['name'])
             if p_name in matchup_radar.data.get('pitchers', {}) and h_name in matchup_radar.data.get('hitters', {}):

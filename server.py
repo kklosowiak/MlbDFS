@@ -1107,7 +1107,7 @@ def get_platoons_api():
             stack_score = team_result.get("stack_score", 0)
             implied_total = team_result.get("implied_total", 0)
             
-            if not team_name or not opponent or opp_pitcher_name == "TBD":
+            if not team_name or not opponent or opp_pitcher_name in ["TBD", "Tbd"]:
                 continue
             
             # Avoid duplicate games (we want each team row independently)

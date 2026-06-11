@@ -354,8 +354,8 @@ class SharpsWeighting:
         if tt_move > 0.5: beta_signals += 1
         if bullpen_fatigue >= 65: beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
-        if is_storm: beta_signals += 1  # OMEGA v16.0: Demoted from alpha (+15%) to beta (+5%)
-        if is_whale: beta_signals += 1  # OMEGA v16.2: Demoted from alpha (+15%) to beta (+5%)
+        if is_storm and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
+        if is_whale and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
         # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums
