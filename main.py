@@ -1369,6 +1369,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
     pitcher_csw_map = {}
     for pr in (pitcher_reports or []):
         pitcher_csw_map[normalize_player_name(pr.get('pitcher', ''))] = float(pr.get('csw', 0.25) or 0.25)
+    opp_pitcher_map = {normalize_player_name(pr.get('pitcher', '')): pr for pr in (pitcher_reports or [])}
 
     for h in raw_hitters:
         team_score = 50.0
@@ -1464,12 +1465,22 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba * platoon_multiplier)
         NPAS_xwOBA = matchup_xwoba_npas - baseline_xwoba
 
-        # OMEGA v15.2: Smash gate optimized via 21-slate grid sweep sweep
-        # Requires matchup xwOBA >= 0.350 AND hitter has active momentum (is_hot or is_hot_run_msmi)
-        is_hitter_hot = False
-        if h_profile:
-            is_hitter_hot = bool(h_profile.get('is_hot', False)) or bool(h_profile.get('is_hot_run_msmi', False))
-        smash_factor = (matchup_xwoba_npas >= 0.350 and is_hitter_hot)
+        # OMEGA v17.0: Smash factor upgraded to f2_matchup_synergy formula (optimized via multi-slate sweep)
+        # Requires season OPS >= 0.740, stable rolling OPS >= 95% of season, 
+        # and matchup xwOBA >= 0.355 OR radar edge >= 1.05 OR facing vulnerable pitcher
+        is_vuln_pitcher = False
+        opp_pitcher_norm = normalize_player_name(opp_pitcher)
+        opp_p_rep = opp_pitcher_map.get(opp_pitcher_norm)
+        if opp_p_rep:
+            is_vuln_pitcher = bool(opp_p_rep.get('is_trap') or opp_p_rep.get('form_status') == 'COLD' or opp_p_rep.get('sharp_fade'))
+            
+        s_ops = float(h_profile.get('ops', 0.0) or 0.0) if h_profile else 0.0
+        r_ops = float(h_profile.get('rolling_ops', 0.0) or 0.0) if h_profile else 0.0
+        
+        smash_factor = False
+        if s_ops >= 0.740 and r_ops >= s_ops * 0.95:
+            if (matchup_xwoba_npas >= 0.355 or matchup_radar_boost >= 1.05 or is_vuln_pitcher):
+                smash_factor = True
 
         # Check if this hitter has a Matchup DNA edge
         is_hitter_pitch_alignment = False

@@ -171,6 +171,17 @@ def run_feedback_loop(days=7):
         except Exception as e:
             print(f"[WARNING]: Could not load historical odds cache: {e}")
 
+    # Load statcast cache for momentum lookups
+    statcast_cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+    statcast_cache = {}
+    if os.path.exists(statcast_cache_path):
+        try:
+            with open(statcast_cache_path, 'r', encoding='utf-8') as f:
+                statcast_cache = json.load(f)
+            print(f"[LEARNING LOOP]: Loaded Statcast Cache with {len(statcast_cache)} hitter profiles.")
+        except Exception as e:
+            print(f"[WARNING]: Could not load statcast cache: {e}")
+
     what_we_missed = []
     analyzed_dates = []
 
@@ -502,13 +513,27 @@ def run_feedback_loop(days=7):
             if h.get('success_flag') == '[WIN]':
                 projection_stats['top5_hitters']['hit'] += 1
 
+        pitcher_map = {normalize_player_name(x.get('pitcher', '')): x for x in pitchers}
         for h in h_audit:
-            is_smash = h.get('smash_factor') or h.get('is_smash')
-            if is_smash is None:
-                # Dynamically calculate the optimized smash factor: Matchup xwOBA >= 0.350 and is_hot/is_hot_run_msmi
-                matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
-                is_hot = bool(h.get('is_hot', False)) or bool(h.get('is_hot_run_msmi', False))
-                is_smash = (matchup_xwoba >= 0.350 and is_hot)
+            # Dynamically calculate the OMEGA v17.0 optimized smash factor (f2_matchup_synergy)
+            norm_name = normalize_player_name(h.get('name', ''))
+            mom = statcast_cache.get(norm_name, {})
+            s_ops = float(mom.get('ops', 0.0) or 0.0)
+            r_ops = float(mom.get('rolling_ops', 0.0) or 0.0)
+            matchup_xwoba = float(h.get('matchup_xwoba', 0.0) or 0.0)
+            radar_boost = float(h.get('matchup_radar_boost', 1.0) or 1.0)
+            
+            opp_pitcher_name = h.get('opp_pitcher', '')
+            opp_p_rep = pitcher_map.get(normalize_player_name(opp_pitcher_name))
+            
+            is_vuln_pitcher = False
+            if opp_p_rep:
+                is_vuln_pitcher = bool(opp_p_rep.get('is_trap') or opp_p_rep.get('form_status') == 'COLD' or opp_p_rep.get('sharp_fade'))
+                
+            is_smash = False
+            if s_ops >= 0.740 and r_ops >= s_ops * 0.95:
+                if (matchup_xwoba >= 0.355 or radar_boost >= 1.05 or is_vuln_pitcher):
+                    is_smash = True
             
             if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1
