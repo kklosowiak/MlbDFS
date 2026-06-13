@@ -45,18 +45,27 @@ def test_stack_score_consolidation_regression():
     assert round(debut_res['final'] / base_res['final'], 2) == 1.10
 
     # 4. Test storm demoted to Beta signal (+5% instead of Alpha +15%)
-    storm_res = engine.calculate_stack_score(
+    # Note: is_storm requires sharp or steam to trigger since v17.0
+    control_res = engine.calculate_stack_score(
         team="Boston Red Sox", ml_move=0, tt_move=0, curr_itt=4.5,
         team_xwoba=0.330, power_concentration=0.330, park_factor=1.0,
         bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False,
-        is_storm=True, is_shark=False, is_steam=False, opp_pitcher_physics=50.0,
+        is_storm=False, is_shark=False, is_steam=True, opp_pitcher_physics=50.0,
         confidence='high', pitcher_outs=18.0, implied_total=4.5,
         is_burst=False, opponent="NYY", is_anti_chalk_smash=False,
         is_pitch_alignment=False, opp_pitcher_trap=False
     )
-    # With a beta signal active, the multiplier is 1.05 instead of 1.00
-    assert storm_res['final'] > base_res['final']
-    assert round(storm_res['final'] / base_res['final'], 2) == 1.05
+    storm_res = engine.calculate_stack_score(
+        team="Boston Red Sox", ml_move=0, tt_move=0, curr_itt=4.5,
+        team_xwoba=0.330, power_concentration=0.330, park_factor=1.0,
+        bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False,
+        is_storm=True, is_shark=False, is_steam=True, opp_pitcher_physics=50.0,
+        confidence='high', pitcher_outs=18.0, implied_total=4.5,
+        is_burst=False, opponent="NYY", is_anti_chalk_smash=False,
+        is_pitch_alignment=False, opp_pitcher_trap=False
+    )
+    assert storm_res['final'] > control_res['final']
+    assert round(storm_res['final'] / control_res['final'], 2) == round(1.20 / 1.15, 2)
 
 
 def test_pitcher_score_consolidation_regression():

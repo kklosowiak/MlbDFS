@@ -630,7 +630,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
             # OMEGA v7.5: The Veteran Paradox Shield
             # If a pitcher is a proven veteran (SIERA < 3.80), soften the penalty.
             is_veteran = float(p.get('siera', 4.10)) < 3.80
-            penalty = 0.96 if is_veteran else 0.92 # OMEGA v17.0: Softened from 0.925/0.85 to 0.96/0.92
+            penalty = 0.98 if is_veteran else 0.95 # OMEGA v17.1: Optimized via parameter sweep (was 0.96/0.92)
             p['alpha_score'] = round(p['alpha_score'] * penalty, 1)
             shield_label = " (SHIELDED)" if is_veteran else ""
             print(f"  - PARADOX: {p['pitcher']} ({p['team']}) penalized{shield_label} for facing Top-3 Stack {p['opponent']}")
