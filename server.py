@@ -1489,6 +1489,34 @@ def post_snapshot_lock_api():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save lock snapshot: {str(e)}")
 
+@app.get("/api/snapshots", dependencies=[Depends(get_current_user)])
+def list_snapshots_api():
+    """Lists all available lock snapshots in the reports/archive directory."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    archive_dir = os.path.join(base_dir, "reports", "archive")
+    if not os.path.exists(archive_dir):
+        return {"snapshots": []}
+    
+    files = [f for f in os.listdir(archive_dir) if f.startswith("results_") and f.endswith("_lock.json")]
+    files.sort(reverse=True)
+    return {"snapshots": files}
+
+@app.get("/api/snapshot/download/{filename}", dependencies=[Depends(get_current_user)])
+def download_snapshot_api(filename: str):
+    """Downloads a specific lock snapshot file from the reports/archive directory."""
+    from fastapi.responses import FileResponse
+    # Ensure filename is safe (prevent directory traversal)
+    if ".." in filename or "/" in filename or "\\" in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, "reports", "archive", filename)
+    
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type="application/json", filename=filename)
+    else:
+        raise HTTPException(status_code=404, detail=f"Snapshot file {filename} not found")
+
 # OMEGA Slate Center: Dynamic Betting Edges & DFS Playbook Calculations
 @app.get("/api/slate-center", dependencies=[Depends(get_current_user)])
 def get_slate_center_api(date: str = None):
