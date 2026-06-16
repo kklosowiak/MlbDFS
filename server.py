@@ -2450,5 +2450,26 @@ Keep your tone engaging, sharp, and focused on finding maximum expected value (E
 
 if __name__ == "__main__":
     import uvicorn
+    import threading
+    import time
+    
+    # Start background thread to auto-sync snapshots from Render when running locally
+    def start_local_sync():
+        from scripts.download_snapshots import download_snapshots
+        
+        def sync_worker():
+            print("\n[BACKGROUND AUTO-SYNC]: Started Render snapshot sync worker thread.")
+            while True:
+                try:
+                    download_snapshots("https://mlbdfs.onrender.com")
+                except Exception as e:
+                    print(f"[BACKGROUND AUTO-SYNC WARNING]: Sync failed: {e}")
+                time.sleep(300) # Sync every 5 minutes
+                
+        t = threading.Thread(target=sync_worker, daemon=True)
+        t.start()
+        
+    start_local_sync()
+
     # Run locally on all interfaces, port 8000
     uvicorn.run(app, host="0.0.0.0", port=8000)

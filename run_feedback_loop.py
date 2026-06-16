@@ -124,6 +124,14 @@ def run_feedback_loop(days=7):
     audit = AuditEngine()
     archive_dir = os.path.join(config.REPORTS_DIR, "archive")
     
+    # Auto-sync snapshots from Render if running locally
+    if not os.getenv("RENDER"):
+        try:
+            from scripts.download_snapshots import download_snapshots
+            download_snapshots("https://mlbdfs.onrender.com")
+        except Exception as sync_err:
+            print(f"[AUTO-SYNC WARNING]: Could not sync snapshots from Render: {sync_err}")
+    
     # Core performance metrics
     signal_stats = {
         'PITCHER_TRAP_FADE': {'fired': 0, 'hit': 0},        # Success = Trap pitcher gave up >= 4 ER or failed QS
