@@ -167,7 +167,12 @@ def score_stack_confidence(t, p_reports):
         reasons.append(f"DQI FADE ({t.get('dqi_score')}%).")
 
     if t.get("is_trap"):
-        conf -= 24.0
+        num_games = len(p_reports) // 2 if p_reports else 15
+        if num_games <= 0:
+            num_games = 15
+        dampener = min(1.0, num_games / 15.0)
+        scaled_penalty = max(8.0, 24.0 * dampener)
+        conf -= scaled_penalty
         reasons.append("CHALK TRAP: market loves this stack more than model.")
 
     # 6. Lineup Status

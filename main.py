@@ -161,11 +161,44 @@ def run_full_analysis():
     # OMEGA v6.8: Load Totals Divergence (Visual-only, isolated from scoring)
     totals_data = consensus_fetcher.load_totals_cache()
     
+    # OMEGA Bulk Reliever Override Logic:
+    bulk_path = os.path.join("data", "bulk_relievers.json")
+    bulk_map = {}
+    if os.path.exists(bulk_path):
+        try:
+            with open(bulk_path, 'r', encoding='utf-8') as f:
+                bulk_map = json.load(f)
+            print(f"[BULK INIT]: Loaded {len(bulk_map)} bulk reliever overrides.")
+        except Exception as e:
+            print(f"[BULK INIT WARNING]: Failed to load bulk relievers cache: {e}")
+
     # Roster Mapping
     rosters = {}
     for entry in snapshot.get('odds', []):
-        rosters[entry['home_team']] = entry.get('home_pitcher') or "TBD"
-        rosters[entry['away_team']] = entry.get('away_pitcher') or "TBD"
+        home_team = entry['home_team']
+        away_team = entry['away_team']
+        
+        home_pitcher = entry.get('home_pitcher') or "TBD"
+        away_pitcher = entry.get('away_pitcher') or "TBD"
+        
+        # Override home pitcher
+        if home_team in bulk_map:
+            bulk_info = bulk_map[home_team]
+            if bulk_info.get("opener") == home_pitcher or not bulk_info.get("opener"):
+                print(f"  [BULK OVERRIDE]: Replacing home opener {home_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {home_team}")
+                home_pitcher = bulk_info["bulk_pitcher"]
+                entry["home_pitcher"] = home_pitcher
+                
+        # Override away pitcher
+        if away_team in bulk_map:
+            bulk_info = bulk_map[away_team]
+            if bulk_info.get("opener") == away_pitcher or not bulk_info.get("opener"):
+                print(f"  [BULK OVERRIDE]: Replacing away opener {away_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {away_team}")
+                away_pitcher = bulk_info["bulk_pitcher"]
+                entry["away_pitcher"] = away_pitcher
+                
+        rosters[home_team] = home_pitcher
+        rosters[away_team] = away_pitcher
 
     # Movement Tracker (v7.8 Trap Detector Support)
     movement_tracker = MovementTracker()
@@ -651,6 +684,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
 def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None, projected_lineups=None, matchup_radar=None):
     """STEP 2: Ranking Team Omega (Multiplicative Core)"""
     print(f"\n[STEP 2]: Ranking Team Omega ({len(snapshot.get('odds', []))} games)...")
+    num_games = len(snapshot.get('odds', []))
     
     # Load Statcast Cache for platoon resolution
     cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
@@ -1138,7 +1172,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 under_divergence=under_divergence,
                 is_sneaky=is_sneaky,
                 is_pinnacle_offense_boost=is_pinnacle_offense_boost,
-                is_velocity_boost=is_velocity_boost
+                is_velocity_boost=is_velocity_boost,
+                num_games=num_games
             )
             
             if game_started and has_prev:

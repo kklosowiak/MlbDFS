@@ -220,7 +220,7 @@ class SharpsWeighting:
             "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False, is_pinnacle_offense_boost=False, is_velocity_boost=False):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False, is_pinnacle_offense_boost=False, is_velocity_boost=False, num_games=15):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # Defensive Input Normalization
         team_xwoba = float(team_xwoba) if team_xwoba is not None else 0.330
@@ -239,6 +239,7 @@ class SharpsWeighting:
         opp_pitcher_alpha = float(opp_pitcher_alpha) if opp_pitcher_alpha is not None else 0.0
         over_divergence = float(over_divergence) if over_divergence is not None else 0.0
         under_divergence = float(under_divergence) if under_divergence is not None else 0.0
+        num_games = int(num_games) if num_games is not None else 15
 
         # Resolve Dynamic Bullpen Grade
         dyn_grade, dyn_mult, dyn_fatigue_mod = "Average", 1.00, 1.00
@@ -415,7 +416,9 @@ class SharpsWeighting:
             is_shark=is_shark,
             pre_trap_score=pre_trap_score,
         )
-        trap_multiplier = 0.90 if chalk_trap else 1.0
+        dampener = min(1.0, num_games / 15.0)
+        scaled_penalty = 0.10 * dampener
+        trap_multiplier = 1.0 - scaled_penalty if chalk_trap else 1.0
 
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
