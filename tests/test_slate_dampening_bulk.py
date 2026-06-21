@@ -43,7 +43,8 @@ def test_sharps_weighting_dampening():
         team_xwoba=0.280,
         power_concentration=0.330,
         divergence=-15.0,
-        num_games=15
+        num_games=15,
+        opp_pitcher_physics=50.0
     )
     
     res_small = sw.calculate_stack_score(
@@ -54,7 +55,8 @@ def test_sharps_weighting_dampening():
         team_xwoba=0.280,
         power_concentration=0.330,
         divergence=-15.0,
-        num_games=4
+        num_games=4,
+        opp_pitcher_physics=50.0
     )
     
     # Small slate stack score should be higher because the chalk trap penalty is scaled down

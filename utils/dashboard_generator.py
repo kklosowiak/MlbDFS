@@ -365,6 +365,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>' if t.get('is_sharp') and not t.get('is_shark') else '' }
 { '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
 { '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }
+{ '<span class="signal-pill pill-talent">🎯 SMASH SPOT</span>' if t.get('is_true_talent_penalty') else '' }
 { '<span class="signal-pill pill-neutral" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%); border-color: #00f2fe; color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);">👁️ BLIND SPOT</span>' if t.get('is_blind_spot') else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT TARGET</span>' if t.get('is_opp_debut') else '' }
 </div></td>
@@ -860,6 +861,7 @@ class DashboardGenerator:
         .pill-exhausted {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
         .pill-weary {{ background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }}
         .pill-gassed {{ background: rgba(255, 69, 58, 0.15); color: var(--accent-red); }}
+        .pill-talent {{ background: rgba(255, 69, 58, 0.2); color: #ff453a; border: 1px solid rgba(255, 69, 58, 0.3); }}
         .pill-neutral {{ background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }}
 
         /* Legend */
@@ -1249,6 +1251,7 @@ class DashboardGenerator:
                     <div class="legend-item"><span class="signal-pill pill-gassed">♨️ GASSED</span> <b>80+:</b> Heavy Fatigue (176+ pitches)</div>
                     <div class="legend-item"><span class="signal-pill pill-weary">♨️ WEARY</span> <b>70+:</b> Bullpen Weary (154+ pitches)</div>
                     <div class="legend-item"><span class="signal-pill pill-trap">⚠️ TRAP</span> Suspicious prop lines</div>
+                    <div class="legend-item"><span class="signal-pill pill-talent">🎯 SMASH SPOT</span> <b>TTP:</b> Statcast Trap (Opponent K-BB%&lt;14%, HR/9&gt;1.4)</div>
                 </div>
             </div>
         </div>

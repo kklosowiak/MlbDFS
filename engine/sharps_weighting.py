@@ -336,8 +336,9 @@ class SharpsWeighting:
         
         # Alpha (Market Convergence Grouping to prevent exponential stacking)
         market_alphas = 0
+        # OMEGA v17.2: is_steam REMOVED from alpha market signals (r=-0.0760 in 2026; informational only)
         # OMEGA v15.0: is_shark MOVED to beta_signals (r=-0.0879 in 2026; dampened to +5% instead of +15%)
-        if is_steam: market_alphas += 1
+        pass
         
         # Flatten: Group all market alphas into a max of 1 signal (+15%), 
         # but keep the convergence bonus if 3+ agree
@@ -356,7 +357,7 @@ class SharpsWeighting:
         if bullpen_fatigue >= 65: beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
         if is_storm and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
-        if is_whale and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
+        # OMEGA v17.2: is_whale REMOVED from beta_signals count (r=-0.0930 in 2026; public money != edge)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
         # Low-power contact offenses (xwOBA < 0.295) get their market signal premiums
@@ -389,8 +390,11 @@ class SharpsWeighting:
         # We cap the raw boost at 1.30 (max 30% boost) and scale it by the team's anchor_ratio 
         # to ensure weak offenses don't over-inflate.
         magnetism_boost = 1.0
-        if opp_pitcher_physics < 20.0:
-            vulnerability_gap = (20.0 - opp_pitcher_physics) / 10.0
+        if opp_pitcher_physics < 30.0:
+            # OMEGA v17.1 (Fix 4): Raised threshold from <20 to <30, recalibrated divisor
+            # Closes the artificial cliff: a 19.9-physics pitcher triggered a big boost
+            # while a 20.1-physics pitcher got nothing — no physical reason for that gap
+            vulnerability_gap = (30.0 - opp_pitcher_physics) / 15.0
             fatigue_boost = 1.0 + (bullpen_fatigue / 100.0) * 0.30
             raw_magnetism = 1.0 + 0.20 + (vulnerability_gap ** 1.0) * 0.50 * fatigue_boost
             raw_magnetism_capped = min(1.30, raw_magnetism)
@@ -415,6 +419,7 @@ class SharpsWeighting:
             is_steam=is_steam,
             is_shark=is_shark,
             pre_trap_score=pre_trap_score,
+            opp_pitcher_physics=opp_pitcher_physics,  # OMEGA v17.1 (Fix 3)
         )
         dampener = min(1.0, num_games / 15.0)
         scaled_penalty = 0.10 * dampener
@@ -496,9 +501,10 @@ class SharpsWeighting:
             final_omega = min(final_omega, score * (1.0 + min(0.22, dampened_market_premium)))
         
         # OMEGA v7.3: ITT Sanity Gate (Refined to trust sharp leverage)
-        # If Vegas says it's a low total, but sharps disagree (WHALE/STORM), we trust the sharps.
+        # If Vegas says it's a low total, but sharps disagree, we trust the sharps.
         # We only apply the penalty if there is no major sharp divergence backing them.
-        is_sharp_backed = is_whale or is_storm or (divergence > 15)
+        # OMEGA v17.2: Only trust genuinely sharp signals as backing; WHALE/STORM removed.
+        is_sharp_backed = (divergence > 15) or is_sharp
         
         if eff_itt < 4.0 and final_omega > 90.0 and not is_sharp_backed:
             final_omega *= 0.85  
@@ -539,8 +545,8 @@ class SharpsWeighting:
             
         final_omega = max(0.0, (final_omega + od_boost) * (1.0 - ud_penalty))
         
-        if is_sneaky:
-            final_omega += SNEAKY_STACK_PREMIUM
+        # OMEGA v17.2: is_sneaky stack premium removed (r=-0.1260 in 2026; low ownership != run scoring edge)
+        pass
             
         # Apply Pinnacle Offense Premium and moneyline velocity boosts
         # OMEGA v11.0
@@ -594,13 +600,23 @@ class SharpsWeighting:
         is_steam,
         is_shark,
         pre_trap_score,
+        opp_pitcher_physics=50.0,  # OMEGA v17.1 (Fix 3)
     ):
         """
         Package A: chalk-only stack warning — not sharp dog steam, not elite stacks.
+        OMEGA v17.1: Added pitcher quality escape hatch. If the opposing pitcher is
+        genuinely hittable (physics < 30), the market being right about this team
+        is not a 'trap' — it's just a good play. Don't punish stacking against bad pitchers.
         """
         if (is_steam or is_shark) and ml_move <= -10:
             return False
         if pre_trap_score >= 110.0:
+            return False
+
+        # OMEGA v17.1 (Fix 3): Escape hatch — don't trap stacks against weak pitchers
+        # A pitcher with physics_score < 30 is genuinely hittable; the market loving
+        # the stack is not evidence of a trap, it's evidence the market is correct.
+        if opp_pitcher_physics < 30.0:
             return False
 
         weak_offense = team_xwoba < 0.300 or physics_display < 25.0 or physics_raw < 36.0

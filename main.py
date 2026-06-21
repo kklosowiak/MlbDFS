@@ -1288,6 +1288,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'umpire_factor': ump_data.get('factor', 1.0),  # v10.1: Exposed for hitter/pitcher label
                 'bullpen_fatigue': opp_bullpen['score'], 'is_gassed': opp_bullpen['is_gassed'],
                 'is_fatigued': opp_bullpen.get('is_fatigued', False), 'is_shark': is_shark,
+                'is_true_talent_penalty': opp_pitcher_rep.get('true_talent_penalty', False) if opp_pitcher_rep else False,
                 'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
                 'ticket_pct': ticket_pct, 'money_pct': money_pct,

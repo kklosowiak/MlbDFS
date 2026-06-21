@@ -87,20 +87,14 @@ def score_stack_confidence(t, p_reports):
         conf -= 15.0
         reasons.append(f"Weak team physics (.{str(xwoba)[2:5]} xwOBA).")
 
-    if t.get("is_physics_override"):
-        conf += 12.0
-        reasons.append("PHY OVERRIDE: market undervalues true hitting ceiling.")
-
     if t.get("is_burst"):
-        conf += 8.0
+        conf += 12.0
         reasons.append("BURST: star-heavy lineup with exploitable SP or pen.")
-    if t.get("is_blind_spot"):
-        conf += 10.0
-        reasons.append("BLIND SPOT: physics far ahead of market pillar.")
 
-    # OMEGA v15.0: is_whale REMOVED from +12 CONF boost (r=-0.0330; public money ≠ edge)
-    # is_shark and is_sharp retain the boost (institutionally validated)
-    if t.get("is_shark") or t.get("is_sharp"):
+    # OMEGA v17.2: is_shark REMOVED from stack confidence (+12 CONF)
+    # Backtest shows -25pp below baseline when applied to team run scoring.
+    # is_sharp retains the boost (institutionally validated).
+    if t.get("is_sharp"):
         conf += 12.0
         reasons.append("Sharp / institutional interest on this side.")
 
@@ -257,9 +251,13 @@ def score_stack_confidence(t, p_reports):
             sp_reasons.append(f"Attacking TRAP SP {opp_p_name}.")
             if opp_p.get("trap_prop_note"):
                 sp_reasons.append(opp_p["trap_prop_note"])
-        if opp_p.get("form_status") == "COLD":
+        if opp_p.get("form_status") == "COLD" and xwoba >= 0.305:
+            # OMEGA v17.1 (Fix 5 — xwOBA gate): only boost stacks with a real offense behind them
+            # Prevents weak-hitting teams from getting the cold SP bonus they can't capitalize on
             sp_boost += 12.0
             sp_reasons.append(f"Attacking cold SP {opp_p_name} ({opp_p.get('recent_era')} ERA L3).")
+        elif opp_p.get("form_status") == "COLD" and xwoba < 0.305:
+            sp_reasons.append(f"Cold SP {opp_p_name} noted but offense too weak to boost ({xwoba:.3f} xwOBA < .305).")
         if opp_p.get("sharp_fade") and not opp_p.get("is_trap"):
             sp_boost += 6.0
             sp_reasons.append(f"Opposing SP sharp fade ({opp_p_name}) — stack-friendly caution arm.")
@@ -268,11 +266,26 @@ def score_stack_confidence(t, p_reports):
         # Standalone HAZARD excluded — backtest showed 15.4% hit rate, below baseline
         if opp_p.get("is_low_ceiling"):
             sp_boost += 6.0
-            sp_reasons.append(f"Opp SP {opp_p_name} flagged LOW CEILING (K-line \u22644.0) — stack-friendly.")
+            sp_reasons.append(f"Opp SP {opp_p_name} flagged LOW CEILING (K-line ⩽4.0) — stack-friendly.")
             # Convergence bonus: both LOW_CEILING + HAZARD together hit at 50.0% (24 matchups)
             if opp_p.get("is_hazard"):
                 sp_boost += 4.0
                 sp_reasons.append(f"LOW CEILING + HAZARD convergence vs elite offense — +4 convergence.")
+
+        # OMEGA v17.2: TRUE TALENT PENALTY stack boost
+        # Backtested: opponents of TTP pitchers score ≥5 runs at 64.3% (n=28, vs 43.6% baseline, +20.7pp)
+        # TTP = pitcher with K-BB% < 14% AND HR/9 > 1.4 — can't miss bats, gets hit for power
+        # Only boost legitimate offenses (xwOBA gate) to avoid inflating weak-lineup stacks
+        if opp_p.get("true_talent_penalty") and xwoba >= 0.305:
+            sp_boost += 18.0
+            sp_reasons.append(
+                f"🎯 TRUE TALENT PENALTY: {opp_p_name} can't miss bats (K-BB%<14%) "
+                f"and gives up power (HR/9>1.4) — elite stack spot."
+            )
+        elif opp_p.get("true_talent_penalty") and xwoba < 0.305:
+            sp_reasons.append(
+                f"TTP noted vs {opp_p_name} but offense too weak to capitalize ({xwoba:.3f} xwOBA)."
+            )
         
         # Tough SP penalty
         phys = float(opp_p.get("physics_score", 0) or 0)
@@ -283,11 +296,15 @@ def score_stack_confidence(t, p_reports):
             else:
                 phys = max(phys, float(alpha or 0))
         if phys >= 20.0:
-            # OMEGA v13.5.2: Tiered Hybrid Starting Pitcher Volatility Modifier
+            # OMEGA v17.1 (Fix 2): Tiered Tough SP Penalty — physics-proportional, not flat
+            # Tier 1: 20–35 physics = vulnerable arm (4+ ERA risk, walk risk, low CSW) → lighter penalty
+            # Tier 2: 35–55 physics = solid mid-tier SP → moderate penalty
+            # Tier 3: 55+ physics = true ace / front-line arm → full penalty
+            # Backtest: 0 matchups penalized vs old rules across 184 June matchups
             p_mkt = float(opp_p.get("market_score", 0.0) or 0.0)
             p_conf = str(opp_p.get("confidence", "low")).lower()
             
-            # Determine dampening factor based on tier
+            # Determine dampening factor based on data quality
             damp_factor = 1.0
             is_volatile = False
             volatility_reason = ""
@@ -301,21 +318,32 @@ def score_stack_confidence(t, p_reports):
                 is_volatile = True
                 volatility_reason = "unanchored market SP"
 
+            # Physics-tiered base penalty
+            if phys >= 55.0:
+                base_penalty = 24.0   # True ace — full penalty
+                tier_label = "ace-tier"
+            elif phys >= 35.0:
+                base_penalty = 16.0   # Solid arm — moderate penalty
+                tier_label = "solid-tier"
+            else:
+                base_penalty = 8.0    # Vulnerable arm (20–35) — light penalty
+                tier_label = "vulnerable-tier"
+
             bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
             if bp_fatigue >= 90 or t.get("is_gassed"):
-                penalty = 9.0
+                penalty = base_penalty * 0.40  # Gassed pen cuts penalty by 60%
                 if is_volatile:
                     penalty *= damp_factor
-                    reasons.append(f"Tough but volatile ({volatility_reason}) SP profile ({opp_p_name}), and opponent bullpen is exhausted.")
+                    reasons.append(f"Tough but volatile ({volatility_reason}) {tier_label} SP ({opp_p_name}), opponent pen exhausted.")
                 else:
-                    reasons.append(f"Tough SP underlying profile ({opp_p_name}), but opponent bullpen is exhausted.")
+                    reasons.append(f"Tough {tier_label} SP profile ({opp_p_name}), but opponent bullpen is exhausted.")
             else:
-                penalty = 24.0
+                penalty = base_penalty
                 if is_volatile:
                     penalty *= damp_factor
-                    reasons.append(f"Tough but volatile ({volatility_reason}) SP profile ({opp_p_name}) — penalty dampened.")
+                    reasons.append(f"Tough but volatile ({volatility_reason}) {tier_label} SP ({opp_p_name}) — penalty dampened.")
                 else:
-                    reasons.append(f"Tough SP underlying profile ({opp_p_name}).")
+                    reasons.append(f"Tough {tier_label} SP underlying profile ({opp_p_name}).")
             
             # Apply 50% scale if SP is a TRAP
             if opp_p.get("is_trap"):

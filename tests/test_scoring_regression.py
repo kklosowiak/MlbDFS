@@ -27,8 +27,8 @@ def test_stack_score_consolidation_regression():
         is_sneaky=True
     )
     
-    # The final sneaky stack score should be exactly base_res['final'] + 4.0
-    assert round(sneaky_res['final'] - base_res['final'], 1) == 4.0
+    # OMEGA v17.2: sneaky stack score premium removed, so difference should be 0.0
+    assert round(sneaky_res['final'] - base_res['final'], 1) == 0.0
     
     # 3. Test debut pitcher boost (1.10x final stack score multiplier)
     debut_res = engine.calculate_stack_score(
@@ -65,7 +65,8 @@ def test_stack_score_consolidation_regression():
         is_pitch_alignment=False, opp_pitcher_trap=False
     )
     assert storm_res['final'] > control_res['final']
-    assert round(storm_res['final'] / control_res['final'], 2) == round(1.20 / 1.15, 2)
+    # OMEGA v17.2: steam removed from alpha_signals (1.00 multiplier), storm is beta_signal (1.05 multiplier)
+    assert round(storm_res['final'] / control_res['final'], 2) == round(1.05 / 1.00, 2)
 
 
 def test_pitcher_score_consolidation_regression():
