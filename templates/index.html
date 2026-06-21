@@ -98,6 +98,7 @@
         body.light-theme .pill-trap { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
         body.light-theme .pill-fade-risk { color: #c62828; background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.25); }
         body.light-theme .pill-sneaky { color: #8e24aa; background: rgba(142, 36, 170, 0.08); border-color: rgba(142, 36, 170, 0.25); }
+        body.light-theme .pill-talent { color: #dc2626; background: rgba(220, 38, 38, 0.08); border-color: rgba(220, 38, 38, 0.25); }
 
         /* Light Mode Sidebar Active Tab & General Navigation Styles */
         body.light-theme .nav-item.active {
@@ -890,6 +891,7 @@
         .pill-el-platoon { background: rgba(48, 209, 88, 0.15); color: #30d158; border-color: rgba(48, 209, 88, 0.35); font-weight: 800; }
         .pill-fade-risk { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 69, 58, 0.35); font-weight: 800; }
         .pill-sneaky { background: rgba(187, 134, 252, 0.15); color: #bb86fc; border: 1px solid rgba(187, 134, 252, 0.35); font-weight: 800; }
+        .pill-talent { background: rgba(255, 69, 58, 0.18); color: #ff453a; border: 1px solid rgba(255, 69, 58, 0.35); font-weight: 800; }
 
         
         .mini-icon {
@@ -3342,6 +3344,7 @@
             platoon_fade: 'Slight platoon fade. Use: downgrade or pivot within stack.',
             platoon_trap: 'Platoon trap — looks good but model flags a split trap. Use: avoid primary exposure.',
             weather_label: 'Game weather context for this pitcher/team. Use: SP risk (delay) or hitter environment.',
+            true_talent_penalty: '🎯 SMASH SPOT (TTP): Opponent starting pitcher K-BB% < 14% and HR/9 > 1.4, indicating premium matchup vulnerability (True Talent Penalty). Stack confidence receives +18 CONF boost.',
             opp_phys: 'Opposing SP talent 0–100 (low = targetable). Use: stack quality filter vs pitcher.',
             form_surging: 'Pitcher recent form trending up in Statcast/form engine. Use: tie-break toward arm.',
             form_cold: 'Pitcher form cold. Use: slight fade or target opposing stack.',
@@ -3495,6 +3498,9 @@
         function teamTacticalMatchupHtml(t) {
             let pills = [];
 
+            if (t.is_true_talent_penalty) {
+                pills.push(signalPillHtml('🎯 SMASH SPOT', { className: 'pill-talent', tipKey: 'true_talent_penalty' }));
+            }
             if (t.is_anti_chalk_smash) {
                 pills.push(signalPillHtml('⚓ ANTI-CHALK', { className: 'pill-anti-chalk', tipKey: 'anti_chalk_smash' }));
             } else if (t.is_trap) {
@@ -6765,6 +6771,7 @@
                 statusEl.style.color = color;
                 
                 let badgesHTML = buildMarketSignalPills(t, true);
+                if (t.is_true_talent_penalty) badgesHTML += '<span class="signal-pill pill-talent">🎯 SMASH SPOT</span>';
                 if (t.is_burst) badgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
                 if (t.is_trap) badgesHTML += '<span class="signal-pill pill-chalk">⚠️ VALUE TRAP</span>';
                 if (t.is_fade_risk) badgesHTML += '<span class="signal-pill pill-fade-risk">⚠️ FADE RISK</span>';
@@ -8290,6 +8297,11 @@
                             <td><span class="badge pill-gassed">🔥 GASSED BP</span></td>
                             <td>Opposing starting pitcher has a short leash and the relief bullpen is exhausted.</td>
                             <td>**High ceiling buy signal.** The stack will face tired relievers in the middle-to-late innings.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge pill-talent">🎯 SMASH SPOT</span></td>
+                            <td>Opposing starting pitcher K-BB% &lt; 14% and HR/9 &gt; 1.4, indicating premium matchup vulnerability (True Talent Penalty).</td>
+                            <td>**Auto-Boost Stack.** Boosts stack confidence by +18% CONF. Target this team's hitters aggressively for elite ceiling potential.</td>
                         </tr>
                     </tbody>
                 </table>

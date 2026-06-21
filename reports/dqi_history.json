@@ -5,14 +5,14 @@
     "recorded_at": "2026-05-20T22:27:41.947358"
   },
   "Minnesota Twins": {
-    "score": 100,
-    "status": "TRUST",
-    "recorded_at": "2026-05-23T22:02:33.182541"
+    "score": 59,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-11T10:22:41.610405"
   },
   "St. Louis Cardinals": {
-    "score": 74,
+    "score": 57,
     "status": "CAUTION",
-    "recorded_at": "2026-05-30T13:33:29.568771"
+    "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Pittsburgh Pirates": {
     "score": 92,
@@ -20,14 +20,14 @@
     "recorded_at": "2026-05-23T11:29:48.082713"
   },
   "Texas Rangers": {
-    "score": 55,
+    "score": 64,
     "status": "CAUTION",
-    "recorded_at": "2026-05-26T00:02:34.584290"
+    "recorded_at": "2026-06-11T10:22:41.610405"
   },
   "Chicago White Sox": {
-    "score": 74,
-    "status": "CAUTION",
-    "recorded_at": "2026-05-30T13:33:29.568771"
+    "score": 45,
+    "status": "FADE",
+    "recorded_at": "2026-06-01T11:51:56.180728"
   },
   "Milwaukee Brewers": {
     "score": 74,
@@ -35,9 +35,9 @@
     "recorded_at": "2026-05-24T00:05:10.416493"
   },
   "Cleveland Guardians": {
-    "score": 41,
-    "status": "FADE",
-    "recorded_at": "2026-05-23T22:02:33.182541"
+    "score": 72,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Athletics": {
     "score": 95,
@@ -50,9 +50,9 @@
     "recorded_at": "2026-05-29T23:44:20.844143"
   },
   "Arizona Diamondbacks": {
-    "score": 61,
+    "score": 58,
     "status": "CAUTION",
-    "recorded_at": "2026-05-30T13:33:29.568771"
+    "recorded_at": "2026-06-01T11:51:56.180728"
   },
   "Kansas City Royals": {
     "score": 74,
@@ -60,8 +60,38 @@
     "recorded_at": "2026-05-30T13:33:29.568771"
   },
   "Miami Marlins": {
-    "score": 72,
+    "score": 41,
+    "status": "FADE",
+    "recorded_at": "2026-06-12T12:07:47.910880"
+  },
+  "San Francisco Giants": {
+    "score": 44,
+    "status": "FADE",
+    "recorded_at": "2026-06-04T14:58:30.081598"
+  },
+  "Seattle Mariners": {
+    "score": 60,
     "status": "CAUTION",
-    "recorded_at": "2026-05-30T13:33:29.568771"
+    "recorded_at": "2026-06-11T10:22:41.610405"
+  },
+  "Cincinnati Reds": {
+    "score": 77,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-09T18:50:42.575869"
+  },
+  "Tampa Bay Rays": {
+    "score": 27,
+    "status": "FADE",
+    "recorded_at": "2026-06-09T18:50:42.575869"
+  },
+  "Colorado Rockies": {
+    "score": 84,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-11T10:22:41.610405"
+  },
+  "Atlanta Braves": {
+    "score": 64,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-12T12:07:47.910880"
   }
 }

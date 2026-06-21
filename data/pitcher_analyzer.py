@@ -422,8 +422,15 @@ class PitcherAnalyzer:
                     if recent_k9 >= (season_k9 + 1.5) and recent_era < 3.50:
                         form_boost = 5.0
                         form_status = "SURGING"
-                    elif recent_k9 <= (season_k9 - 1.5) and recent_era > 5.00:
+                    elif recent_k9 <= (season_k9 - 1.5) and recent_era > 4.25:
+                        # OMEGA v17.1: Lowered from >5.00 — catches genuinely hittable arms earlier
                         form_boost = -5.0
+                        form_status = "COLD"
+                    elif recent_era > 4.00 and walks_line is not None and float(walks_line) >= 2.5:
+                        # OMEGA v17.1: Secondary COLD trigger — high ERA + market-priced walk risk
+                        # walks_line >= 2.5 means the prop board already sees this pitcher walking batters
+                        # No K-rate gate: a walk-prone, ERA-bloated arm is hittable regardless of strikeouts
+                        form_boost = -3.0
                         form_status = "COLD"
 
                 # Pinnacle SP Boost check (OMEGA v16.0)
