@@ -90,3 +90,22 @@ def ml_to_implied_prob(ml):
     return 0.5
 
 
+def calibrate_vegas_itt(itt):
+    """
+    OMEGA v17.3: Non-Linear Vegas Calibration.
+    Corrects historical Vegas bias:
+    - Underpriced low totals (<3.5 by +0.93 runs)
+    - Overpriced high totals (>5.5 by -0.66 runs)
+    """
+    if itt is None:
+        return 4.5
+    val = float(itt)
+    if val < 3.5:
+        # Interpolate upward: add up to +0.75 runs as ITT goes lower
+        val += (3.5 - val) * 0.75
+    elif val > 5.5:
+        # Interpolate downward: subtract up to 50% of the excess above 5.5
+        val -= (val - 5.5) * 0.50
+    return round(val, 3)
+
+

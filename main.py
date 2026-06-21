@@ -26,7 +26,7 @@ from utils.audit_engine import AuditEngine
 from utils.slate_report_generator import SlateReportGenerator
 from config import config
 from utils.normalization import normalize_player_name
-from utils.market_utils import get_market_prices, calculate_ml_move
+from utils.market_utils import get_market_prices, calculate_ml_move, calibrate_vegas_itt
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
@@ -768,6 +768,9 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     tt_move = 0.0
                 prob = p_analyzer._ml_to_prob(curr_ml if curr_ml else -110)
                 curr_itt = (curr_total if curr_total else 8.5) * prob
+
+            # OMEGA v17.3: Calibrate Vegas Implied Team Total to correct for bias
+            curr_itt = calibrate_vegas_itt(curr_itt)
 
             # OMEGA v11.0: Sharp Delta and moneyline Velocity boosts
             is_velocity_boost = False
