@@ -1251,7 +1251,7 @@ class DashboardGenerator:
                     <div class="legend-item"><span class="signal-pill pill-gassed">♨️ GASSED</span> <b>80+:</b> Heavy Fatigue (176+ pitches)</div>
                     <div class="legend-item"><span class="signal-pill pill-weary">♨️ WEARY</span> <b>70+:</b> Bullpen Weary (154+ pitches)</div>
                     <div class="legend-item"><span class="signal-pill pill-trap">⚠️ TRAP</span> Suspicious prop lines</div>
-                    <div class="legend-item"><span class="signal-pill pill-talent">🎯 SMASH SPOT</span> <b>TTP:</b> Statcast Trap (Opponent K-BB%&lt;14%, HR/9&gt;1.4)</div>
+                    <div class="legend-item"><span class="signal-pill pill-talent">🎯 SMASH SPOT</span> <b>TTP:</b> Statcast Trap (Opponent K-BB%&lt;14%, HR/9&gt;1.6, IP&ge;50)</div>
                 </div>
             </div>
         </div>
