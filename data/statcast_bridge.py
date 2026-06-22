@@ -229,7 +229,7 @@ class StatcastBridge:
             
         # Merge Pitchers
         for name in set(list(p_seasonal.keys()) + list(p_rolling.keys()) + list(p_seasonal_2025.keys())):
-            if name == "willi castro":
+            if name in ["willi castro", "jake bauers", "alec burleson"]:
                 continue
             s = p_seasonal.get(name, {})
             r = p_rolling.get(name, {})
@@ -269,10 +269,16 @@ class StatcastBridge:
         # Ensure data directory exists
         os.makedirs(os.path.dirname(self.cache_path), exist_ok=True)
         
-        # OMEGA Override: Force Willi Castro as hitter on Colorado Rockies
+        # OMEGA Override: Force Willi Castro, Jake Bauers, and Alec Burleson as hitters
         if "willi castro" in cache:
             cache["willi castro"]["type"] = "hitter"
             cache["willi castro"]["team"] = "Colorado Rockies"
+        if "jake bauers" in cache:
+            cache["jake bauers"]["type"] = "hitter"
+            cache["jake bauers"]["team"] = "Milwaukee Brewers"
+        if "alec burleson" in cache:
+            cache["alec burleson"]["type"] = "hitter"
+            cache["alec burleson"]["team"] = "St. Louis Cardinals"
             
         with open(self.cache_path, 'w') as f:
             json.dump(cache, f, indent=4)
