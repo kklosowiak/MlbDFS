@@ -251,10 +251,16 @@ class LineupFetcher:
         for team_name, players in statsapi_confirmed.items():
             if team_name == "_game_times":
                 continue
+            if team_name == "Milwaukee Brewers":
+                continue
             all_lineups[team_name] = {
                 'lineup': players,
                 'status': 'CONFIRMED'
             }
+        
+        # Force Milwaukee Brewers custom lineup to CONFIRMED status
+        if "Milwaukee Brewers" in all_lineups:
+            all_lineups["Milwaukee Brewers"]["status"] = "CONFIRMED"
 
         # 3. Roster fallback: for any team still missing, pull from statcast cache sorted by OPS
         #    This ensures the DFS Playbook always has players to display — nothing breaks silently.
@@ -280,6 +286,12 @@ class LineupFetcher:
                             }
         except Exception as e:
             print(f"[LINEUPS]: Roster fallback failed: {e}")
+
+        # Force Milwaukee Brewers to use user's manual projected lineup override
+        all_lineups["Milwaukee Brewers"] = {
+            'lineup': ['Christian Yelich', 'Jackson Chourio', 'Brice Turang', 'William Contreras', 'Jake Bauers', 'Garrett Mitchell', 'Sal Frelick', 'Cooper Pratt', 'David Hamilton'],
+            'status': 'CONFIRMED'
+        }
 
         return all_lineups
 

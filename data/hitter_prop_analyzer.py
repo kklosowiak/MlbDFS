@@ -153,9 +153,16 @@ class HitterPropAnalyzer:
 
                 for p in roster:
                     name = p['name']
-                    # OMEGA v7.9: Strict 50-PA Gate to eliminate ghosts/rookies
+                    # OMEGA v7.9: Strict 50-PA Gate to eliminate ghosts/rookies. Bypass if starting.
                     pa_count = int(p.get('pa', 0) or 0)
-                    if pa_count < 30 and name not in self.xwoba_registry:
+                    is_in_starting = False
+                    if confirmed_lineups:
+                        norm_name = normalize_player_name(name)
+                        for t_lineup in confirmed_lineups.values():
+                            if any(normalize_player_name(lp) == norm_name for lp in t_lineup):
+                                is_in_starting = True
+                                break
+                    if pa_count < 30 and name not in self.xwoba_registry and not is_in_starting:
                         continue
 
                     # OMEGA v7.8: Pitcher Rejection Gate
@@ -414,7 +421,14 @@ class HitterPropAnalyzer:
                     name = p['name']
                     if name not in hitter_map:
                         pa_count = int(p.get('pa', 0) or 0)
-                        if pa_count < 30 and name not in self.xwoba_registry:
+                        is_in_starting = False
+                        if confirmed_lineups:
+                            norm_name = normalize_player_name(name)
+                            for t_lineup in confirmed_lineups.values():
+                                if any(normalize_player_name(lp) == norm_name for lp in t_lineup):
+                                    is_in_starting = True
+                                    break
+                        if pa_count < 30 and name not in self.xwoba_registry and not is_in_starting:
                             continue
                         
                         xwoba = self._resolve_xwoba(name, p)
