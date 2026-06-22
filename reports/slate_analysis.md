@@ -1,5 +1,5 @@
 # 🔥 OMEGA Daily Attack Plan
-**Generated:** 2026-06-19 12:28 AM ET
+**Generated:** 2026-06-22 01:19 PM ET
 
 > [!TIP]
 > This Attack Plan evaluates all stacks and pitchers on a strict Confidence scale (0-100%). It ignores raw Omega scores and builds comprehensive arguments based on Physics, Platoon Edges, Traps, Recent Form, and Market Divergence.
@@ -10,138 +10,130 @@
 > [!IMPORTANT]
 > The following high-probability backtested combinations have been detected on today's slate:
 
-- 📈 **ELITE OFFENSE ALERT**: **Atlanta Braves** stack meets the **Elite Physics + Weak Arm** combo (xwOBA: 0.349 vs. Chris Paddack's PHY: 32.9). This combination has a **66.3% backtested hit rate** for scoring 4+ runs.
-- 🔥 **GASSED BULLPEN ATTACK**: **Cincinnati Reds** targets short-leash starter Landen Roupp (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 100.0%). High expectation of late-inning run scoring (+8.0 pts boost).
-- 🔥 **GASSED BULLPEN ATTACK**: **Texas Rangers** targets short-leash starter Gage Jump (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 100.0%). High expectation of late-inning run scoring (+8.0 pts boost).
-- 🔥 **GASSED BULLPEN ATTACK**: **Los Angeles Dodgers** targets short-leash starter Sean Manaea (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 77.3%). High expectation of late-inning run scoring (+8.0 pts boost).
-- 🔥 **GASSED BULLPEN ATTACK**: **Detroit Tigers** targets short-leash starter Noah Cameron (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 81.4%). High expectation of late-inning run scoring (+8.0 pts boost).
-- 🔥 **GASSED BULLPEN ATTACK**: **Milwaukee Brewers** targets short-leash starter Trey Yesavage (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 97.3%). High expectation of late-inning run scoring (+8.0 pts boost).
-- 🔥 **GASSED BULLPEN ATTACK**: **Chicago Cubs** targets short-leash starter Aaron Nola (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 94.5%). High expectation of late-inning run scoring (+8.0 pts boost).
-- ⚓ **ANTI-CHALK SMASH**: **Cincinnati Reds** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).
-- ⚓ **ANTI-CHALK SMASH**: **Texas Rangers** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).
-- ⚓ **ANTI-CHALK SMASH**: **Athletics** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).
-- ⚓ **ANTI-CHALK SMASH**: **Philadelphia Phillies** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).
-- ⚓ **ANTI-CHALK SMASH**: **Pittsburgh Pirates** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).
+- 📈 **ELITE OFFENSE ALERT**: **Milwaukee Brewers** stack meets the **Elite Physics + Weak Arm** combo (xwOBA: 0.350 vs. Brady Singer's PHY: 30.2). This combination has a **66.3% backtested hit rate** for scoring 4+ runs.
+- 🔥 **GASSED BULLPEN ATTACK**: **Baltimore Orioles** targets short-leash starter Sam Aldegheri (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 99.5%). High expectation of late-inning run scoring (+8.0 pts boost).
+- 🔥 **GASSED BULLPEN ATTACK**: **San Diego Padres** targets short-leash starter Grant Holmes (Outs Line: 14.5) and an exhausted bullpen (Fatigue: 78.2%). High expectation of late-inning run scoring (+8.0 pts boost).
+- 📉 **TRUE TALENT & WALKS FADE**: Opposing starter **Eric Lauer** suffers from control issues and poor underlying sabermetrics (Walks Penalty + True Talent Penalty = -25.0 pts reduction). Stack against them immediately.
+- 📉 **TRUE TALENT & WALKS FADE**: Opposing starter **Merrill Kelly** suffers from control issues and poor underlying sabermetrics (Walks Penalty + True Talent Penalty = -25.0 pts reduction). Stack against them immediately.
 
 ---
 
 ## 👑 The Ultimate Suggestion
-### 🏟️ Lock Stack: Texas Rangers (Blended: 123.0 | CONF: 96% | Ω: 150.0)
-- Strong team physics (.322 xwOBA).
-- High implied run total (5.1 runs) — strong run environment.
-- Confirmed lineup — projection stable.
-- High temperature boost (101°F).
-- ⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.
-- Tough but volatile (low-sample SP) SP profile (Gage Jump), and opponent bullpen is exhausted.
-- Attacking TRAP SP (Gage Jump) — skill penalty scaled to 50%.
-- Attacking TRAP SP Gage Jump.
-- Bullpen Attack Boost capped at +15: Opposing pen exhausted — late-inning ceiling., GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12)..
+### 🏟️ Lock Stack: Milwaukee Brewers (Blended: 114.0 | CONF: 78% | Ω: 150.0)
+- Elite team physics (.350 xwOBA).
+- BURST: star-heavy lineup with exploitable SP or pen.
+- High implied run total (5.4 runs) — strong run environment.
+- Projected lineup — higher uncertainty.
+- Team Hot Run (MSMI): Surging rolling OPS & reduced K%.
+- 🎯 PITCH ALIGNMENT: 60%+ of starting lineup matches opposing SP's top 2 weapons.
+- SP Matchup Boost capped at +20: Attacking TRAP SP Brady Singer., 🎯 TRUE TALENT PENALTY: Brady Singer can't miss bats (K-BB%<14%), gives up power (HR/9>1.6), and has IP>=50 — elite stack spot..
+- Elite xwOBA but cold prop board — market not agreeing.
+- Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
 
-### ⚾ SP1 Lock: Jack Flaherty (87% Confidence)
-- SURGING form (12.64 K/9, 3.45 ERA L3).
-- Strong underlying physics (24.8).
+### ⚾ SP1 Lock: Hunter Brown (84% Confidence)
+- SURGING form (13.22 K/9, 1.1 ERA L3).
+- Strong underlying physics (34.9).
+- K prop TARGET — strict juiced Over vs Under.
+- Hits-allowed prop juiced Over — run risk priced in.
+- Below-average game total (7.7) — pitcher-friendly environment.
+
+### ⚾ SP2 Lock: Andre Pallante (75% Confidence)
+- SURGING form (7.71 K/9, 2.41 ERA L3).
+- Strong underlying physics (23.3).
 - K prop JUICE on board.
-- Below-average game total (8.0) — pitcher-friendly environment.
-
-### ⚾ SP2 Lock: Bryan Woo (85% Confidence)
-- Strong underlying physics (32.6).
-- Below-average game total (8.4) — pitcher-friendly environment.
-- Sharp money backing this pitcher.
-- Underdog Pitcher Steam Boost (-17 move) — backtested edge.
+- Low K ceiling on props.
 
 ---
 
 ## 🏟️ Core Stacks (Top 5)
 
-### 1. Texas Rangers (Blended: 123.0 | CONF: 96% | Ω: 150.0)
-- Strong team physics (.322 xwOBA).
-- High implied run total (5.1 runs) — strong run environment.
-- Confirmed lineup — projection stable.
-- High temperature boost (101°F).
-- ⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.
-- Tough but volatile (low-sample SP) SP profile (Gage Jump), and opponent bullpen is exhausted.
-- Attacking TRAP SP (Gage Jump) — skill penalty scaled to 50%.
-- Attacking TRAP SP Gage Jump.
-- Bullpen Attack Boost capped at +15: Opposing pen exhausted — late-inning ceiling., GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12)..
-
-### 2. Cincinnati Reds (Blended: 122.5 | CONF: 95% | Ω: 150.0)
-- Strong team physics (.336 xwOBA).
-- ELITE implied run total (6.4) — 6.62 avg runs historically.
-- Projected lineup — higher uncertainty.
-- High temperature boost (81°F).
-- ⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.
-- Tough SP underlying profile (Landen Roupp), but opponent bullpen is exhausted.
-- Attacking TRAP SP (Landen Roupp) — skill penalty scaled to 50%.
-- Attacking TRAP SP Landen Roupp.
-- Bullpen Attack Boost capped at +15: Opposing pen exhausted — late-inning ceiling., GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12)..
-- Moderate prop interest (19, WARM) — secondary board signal.
-
-### 3. Toronto Blue Jays (Blended: 94.3 | CONF: 80% | Ω: 108.7)
-- Average implied run total (4.2 runs).
-- Confirmed lineup — projection stable.
-- Tough SP underlying profile (Shane Drohan), but opponent bullpen is exhausted.
-- Attacking TRAP SP (Shane Drohan) — skill penalty scaled to 50%.
-- Attacking TRAP SP Shane Drohan.
-- Bullpen Attack Boost capped at +15: Opposing pen exhausted — late-inning ceiling., GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12)..
-
-### 4. Atlanta Braves (Blended: 99.8 | CONF: 77% | Ω: 122.5)
-- Elite team physics (.349 xwOBA).
+### 1. Milwaukee Brewers (Blended: 114.0 | CONF: 78% | Ω: 150.0)
+- Elite team physics (.350 xwOBA).
 - BURST: star-heavy lineup with exploitable SP or pen.
-- ELITE implied run total (5.6) — 6.62 avg runs historically.
+- High implied run total (5.4 runs) — strong run environment.
 - Projected lineup — higher uncertainty.
-- Wind blowing in (13 mph) — dampens power.
-- SP Matchup Boost capped at +20: Attacking TRAP SP Chris Paddack., Opp SP Chris Paddack flagged LOW CEILING (K-line ≤4.0) — stack-friendly..
-- Moderate prop interest (19, WARM) — secondary board signal.
+- Team Hot Run (MSMI): Surging rolling OPS & reduced K%.
+- 🎯 PITCH ALIGNMENT: 60%+ of starting lineup matches opposing SP's top 2 weapons.
+- SP Matchup Boost capped at +20: Attacking TRAP SP Brady Singer., 🎯 TRUE TALENT PENALTY: Brady Singer can't miss bats (K-BB%<14%), gives up power (HR/9>1.6), and has IP>=50 — elite stack spot..
+- Elite xwOBA but cold prop board — market not agreeing.
 - Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
 
-### 5. New York Yankees (Blended: 93.9 | CONF: 75% | Ω: 112.8)
-- ELITE implied run total (7.2) — 6.62 avg runs historically.
-- Confirmed lineup — projection stable.
-- High temperature boost (81°F).
-- Wind blowing in (15 mph) — dampens power.
-- Attacking TRAP SP Ryan Johnson.
+### 2. Baltimore Orioles (Blended: 105.8 | CONF: 77% | Ω: 134.6)
+- Strong team physics (.327 xwOBA).
+- High implied run total (5.1 runs) — strong run environment.
+- Projected lineup — higher uncertainty.
+- Tough vulnerable-tier SP profile (Sam Aldegheri), but opponent bullpen is exhausted.
+- Bullpen Attack Boost capped at +15: Opposing pen exhausted — late-inning ceiling., GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12)..
+
+### 3. St. Louis Cardinals (Blended: 104.0 | CONF: 77% | Ω: 131.1)
+- Strong team physics (.325 xwOBA).
+- Solid implied run total (4.6 runs).
+- Projected lineup — higher uncertainty.
+- Team Hot Run (MSMI): Surging rolling OPS & reduced K%.
+- SP Matchup Boost capped at +20: Opp SP Merrill Kelly flagged LOW CEILING (K-line ⩽4.0) — stack-friendly., 🎯 TRUE TALENT PENALTY: Merrill Kelly can't miss bats (K-BB%<14%), gives up power (HR/9>1.6), and has IP>=50 — elite stack spot..
+- Opposing pen exhausted — late-inning ceiling.
+- Moderate prop interest (21, WARM) — secondary board signal.
 - Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
+
+### 4. Minnesota Twins (Blended: 101.2 | CONF: 76% | Ω: 126.4)
+- Average implied run total (4.4 runs).
+- Projected lineup — higher uncertainty.
+- Team Hot Run (MSMI): Surging rolling OPS & reduced K%.
+- SP Matchup Boost capped at +20: Opp SP Eric Lauer flagged LOW CEILING (K-line ⩽4.0) — stack-friendly., 🎯 TRUE TALENT PENALTY: Eric Lauer can't miss bats (K-BB%<14%), gives up power (HR/9>1.6), and has IP>=50 — elite stack spot..
+- Opposing pen exhausted — late-inning ceiling.
+- Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).
+
+### 5. Los Angeles Dodgers (Blended: 112.0 | CONF: 74% | Ω: 150.0)
+- Elite team physics (.348 xwOBA).
+- BURST: star-heavy lineup with exploitable SP or pen.
+- High implied run total (5.4 runs) — strong run environment.
+- Projected lineup — higher uncertainty.
+- Team Slate Slump (MSMI): Elevated rolling K% surge & OPS drop.
+- Tough vulnerable-tier SP profile (Zebby Matthews), but opponent bullpen is exhausted.
+- Opposing pen exhausted — late-inning ceiling.
 
 ## ⚾ Core Pitchers (Top 5)
 
-### 1. Jack Flaherty (87% Confidence)
-- SURGING form (12.64 K/9, 3.45 ERA L3).
-- Strong underlying physics (24.8).
-- K prop JUICE on board.
-- Below-average game total (8.0) — pitcher-friendly environment.
-
-### 2. Bryan Woo (85% Confidence)
-- Strong underlying physics (32.6).
-- Below-average game total (8.4) — pitcher-friendly environment.
-- Sharp money backing this pitcher.
-- Underdog Pitcher Steam Boost (-17 move) — backtested edge.
-
-### 3. Randy Vásquez (83% Confidence)
-- Strong underlying physics (25.7).
-- K prop JUICE on board.
-- Below-average game total (8.4) — pitcher-friendly environment.
-- Sharp money backing this pitcher.
-
-### 4. Trey Yesavage (78% Confidence)
-- Strong underlying physics (27.6).
-- Below-average game total (7.8) — pitcher-friendly environment.
-- Underdog Pitcher Steam Boost (-129 move) — backtested edge.
-
-### 5. Shohei Ohtani (76% Confidence)
-- Strong underlying physics (35.3).
+### 1. Hunter Brown (84% Confidence)
+- SURGING form (13.22 K/9, 1.1 ERA L3).
+- Strong underlying physics (34.9).
 - K prop TARGET — strict juiced Over vs Under.
-- Below-average game total (7.8) — pitcher-friendly environment.
+- Hits-allowed prop juiced Over — run risk priced in.
+- Below-average game total (7.7) — pitcher-friendly environment.
+
+### 2. Andre Pallante (75% Confidence)
+- SURGING form (7.71 K/9, 2.41 ERA L3).
+- Strong underlying physics (23.3).
+- K prop JUICE on board.
+- Low K ceiling on props.
+
+### 3. Michael King (68% Confidence)
+- Strong underlying physics (26.6).
+- K prop JUICE on board.
+- Hits-allowed prop juiced Over — run risk priced in.
+- Low game total (7.2) — elite pitcher environment historically.
+
+### 4. Grant Holmes (68% Confidence)
+- Strong underlying physics (24.1).
+- K prop JUICE on board.
+- Hits-allowed prop juiced Over — run risk priced in.
+- Low game total (7.2) — elite pitcher environment historically.
+
+### 5. Anthony Kay (64% Confidence)
+- COLD form (8.31 ERA L3).
+- Strong underlying physics (20.7).
+- K prop JUICE on board.
+- Soft matchup: Cleveland Guardians weak lineup xwOBA.
+- Below-average game total (8.2) — pitcher-friendly environment.
 
 ---
 ## 🚨 TRAP SP (Stack Against)
-- **Gage Jump**: Prop TRAP (Vulnerable). Attack opposing hitters.
-- **Landen Roupp**: Prop TRAP (Vulnerable). Attack opposing hitters.
-- **Shane Drohan**: Prop TRAP (Vulnerable). Attack opposing hitters.
-- **Sean Manaea**: Prop TRAP (Vulnerable). Attack opposing hitters.
-- **Jesse Scholtens**: Prop TRAP (Vulnerable). Attack opposing hitters.
+- **Tbd**: Prop TRAP (Vulnerable). Attack opposing hitters.
+- **Brady Singer**: Prop TRAP (Short Leash). Attack opposing hitters.
 
 ## 📉 Sharp Fade (SP Caution)
-- *No sharp-fade SP caution flags today.*
+- **Dylan Cease**: Sharp money fading this side (-18% divergence). Playable with caution — not a prop TRAP.
+- **Gavin Williams**: Sharp money fading this side (-17% divergence). Playable with caution — not a prop TRAP.
 
 ## 🎯 Physics & Market Pivots
 - *No extreme physics overrides detected today.*

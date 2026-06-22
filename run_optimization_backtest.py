@@ -78,7 +78,7 @@ def compute_true_talent_boost(opp_pitcher_name):
             bf = ip * 2.9 + k + bb
             k_bb_pct = (k - bb) / bf if bf > 0 else 0.12
             hr_9 = (hr / ip * 9) if ip > 5.0 else 1.0
-            if k_bb_pct < 0.14 and hr_9 > 1.4:
+            if ip >= 50.0 and k_bb_pct < 0.14 and hr_9 > 1.6:
                 return 2.0
     except:
         pass

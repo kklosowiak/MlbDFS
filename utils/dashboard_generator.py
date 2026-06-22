@@ -125,7 +125,7 @@ class DashboardGenerator:
                     <span style="font-size:1.5rem;">🚨</span>
                     <div>
                         <div style="color:#fff; font-weight:700; font-size:0.9rem;">SABERMETRIC TRAP ARMS</div>
-                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Season K-BB% < 14% and HR/9 > 1.40. Poor control and high homer risk priced in.</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Season K-BB% < 14%, HR/9 > 1.60, and IP >= 50. Poor control and high homer risk priced in.</div>
                     </div>
                 </div>
                 """

@@ -274,13 +274,13 @@ def score_stack_confidence(t, p_reports):
 
         # OMEGA v17.2: TRUE TALENT PENALTY stack boost
         # Backtested: opponents of TTP pitchers score ≥5 runs at 64.3% (n=28, vs 43.6% baseline, +20.7pp)
-        # TTP = pitcher with K-BB% < 14% AND HR/9 > 1.4 — can't miss bats, gets hit for power
+        # TTP = pitcher with K-BB% < 14% AND HR/9 > 1.6 AND IP >= 50 — can't miss bats, gets hit for power
         # Only boost legitimate offenses (xwOBA gate) to avoid inflating weak-lineup stacks
         if opp_p.get("true_talent_penalty") and xwoba >= 0.305:
             sp_boost += 18.0
             sp_reasons.append(
-                f"🎯 TRUE TALENT PENALTY: {opp_p_name} can't miss bats (K-BB%<14%) "
-                f"and gives up power (HR/9>1.4) — elite stack spot."
+                f"🎯 TRUE TALENT PENALTY: {opp_p_name} can't miss bats (K-BB%<14%), "
+                f"gives up power (HR/9>1.6), and has IP>=50 — elite stack spot."
             )
         elif opp_p.get("true_talent_penalty") and xwoba < 0.305:
             sp_reasons.append(
