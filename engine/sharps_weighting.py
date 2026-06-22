@@ -408,7 +408,7 @@ class SharpsWeighting:
         )
         pre_trap_combined = min(pre_trap_combined, 1.35)
         pre_trap_score = score * pre_trap_combined
-        physics_display = physics_raw * 0.40
+        physics_display = physics_raw * 0.80
 
         chalk_trap = self._stack_chalk_trap(
             physics_raw=physics_raw,
@@ -568,7 +568,7 @@ class SharpsWeighting:
         return {
             "final": round(final_omega_capped, 1),
             "final_raw": round(final_omega, 1),
-            "physics": round(physics_raw * 0.40, 1),
+            "physics": round(physics_raw * 0.80, 1),
             "physics_raw": round(physics_raw, 1),
             "market": round(market_raw * 0.20, 1),
             "market_raw": round(market_raw, 1),
