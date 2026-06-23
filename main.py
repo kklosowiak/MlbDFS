@@ -127,6 +127,21 @@ def run_full_analysis():
     
     with open(snapshot_path, 'r') as f:
         snapshot = json.load(f)
+
+    # OMEGA ON-RENDER OVERRIDE: Map TBD to German Marquez for Padres in snapshot
+    modified_snapshot = False
+    for entry in snapshot.get('odds', []):
+        if entry.get('home_team') == 'San Diego Padres' and entry.get('home_pitcher') in ['Tbd', 'TBD', None]:
+            entry['home_pitcher'] = 'German Marquez'
+            modified_snapshot = True
+        if entry.get('away_team') == 'San Diego Padres' and entry.get('away_pitcher') in ['Tbd', 'TBD', None]:
+            entry['away_pitcher'] = 'German Marquez'
+            modified_snapshot = True
+            
+    if modified_snapshot:
+        with open(snapshot_path, 'w') as f:
+            json.dump(snapshot, f, indent=4)
+        print(f"[OVERRIDE]: Modified snapshot on disk to replace Padres TBD pitcher with German Marquez.")
         
 
 
@@ -512,21 +527,6 @@ def run_full_analysis():
     dash_gen.generate_report(p_reports, team_reports, h_reports, vegas_board=vegas_board)
     
     # OMEGA v4.5: Export Summary for Bot/Sentry
-    # OMEGA ON-RENDER OVERRIDE: Map TBD to German Marquez for Padres and uncap Atlanta
-    for p in p_reports:
-        if p.get('pitcher') in ['Tbd', 'TBD'] and p.get('team') in ['San Diego Padres', 'SD']:
-            p['pitcher'] = 'German Marquez'
-            p['confidence'] = 'high'
-            p['is_confirmed'] = True
-    for t in team_reports:
-        if t.get('opp_pitcher') in ['Tbd', 'TBD'] and (t.get('opponent') in ['San Diego Padres', 'SD'] or t.get('team') == 'Atlanta Braves'):
-            t['opp_pitcher'] = 'German Marquez'
-            t['confidence'] = 'high'
-            t['stack_score'] = 150.0
-            t['blended_rating'] = round((150.0 + t.get('attack_conf', 94)) / 2, 1)
-    for h in h_reports:
-        if h.get('opp_pitcher') in ['Tbd', 'TBD'] and (h.get('opponent') in ['San Diego Padres', 'SD'] or h.get('team') == 'Atlanta Braves'):
-            h['opp_pitcher'] = 'German Marquez'
 
     summary = {
         "timestamp": datetime.datetime.now().isoformat(),
