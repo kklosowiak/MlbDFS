@@ -38,6 +38,36 @@ def get_eastern_time(dt_naive):
     else:
         return dt_naive
 
+
+def apply_onrender_overrides(data):
+    if not isinstance(data, dict):
+        return data
+    
+    # 1. Pitchers
+    pitchers = data.get("pitchers", [])
+    for p in pitchers:
+        if p.get('pitcher') in ['Tbd', 'TBD'] and p.get('team') in ['San Diego Padres', 'SD']:
+            p['pitcher'] = 'German Marquez'
+            p['confidence'] = 'high'
+            p['is_confirmed'] = True
+            
+    # 2. Teams
+    teams = data.get("teams", [])
+    for t in teams:
+        if t.get('opp_pitcher') in ['Tbd', 'TBD'] and (t.get('opponent') in ['San Diego Padres', 'SD'] or t.get('team') == 'Atlanta Braves'):
+            t['opp_pitcher'] = 'German Marquez'
+            t['confidence'] = 'high'
+            t['stack_score'] = 150.0
+            t['blended_rating'] = round((150.0 + t.get('attack_conf', 94)) / 2, 1)
+            
+    # 3. Hitters
+    hitters = data.get("hitters", [])
+    for h in hitters:
+        if h.get('opp_pitcher') in ['Tbd', 'TBD'] and (h.get('opponent') in ['San Diego Padres', 'SD'] or h.get('team') == 'Atlanta Braves'):
+            h['opp_pitcher'] = 'German Marquez'
+            
+    return data
+
 # Load last refresh time from cached results on startup
 try:
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -513,6 +543,7 @@ def api_get_confirmed_lineups(request: Request):
         try:
             with open(results_path, "r", encoding="utf-8") as f:
                 projections = json.load(f)
+            projections = apply_onrender_overrides(projections)
         except Exception as e:
             print(f"Error loading projections for lineups: {e}")
             
@@ -556,6 +587,7 @@ def get_results_api():
     if os.path.exists(results_path):
         with open(results_path, "r", encoding="utf-8") as f:
             data = json.load(f)
+        data = apply_onrender_overrides(data)
         
         from utils.dqi import calculate_dqi, load_dqi_history
 
@@ -1066,6 +1098,7 @@ def get_platoons_api():
         if os.path.exists(results_path):
             with open(results_path, "r", encoding="utf-8") as f:
                 results_data = json.load(f)
+            results_data = apply_onrender_overrides(results_data)
     except Exception as e:
         return JSONResponse(content={"error": f"Failed to load data: {str(e)}", "matchups": []}, status_code=500)
     
@@ -1346,6 +1379,7 @@ def get_weather_api():
         if os.path.exists(results_path):
             with open(results_path, "r", encoding="utf-8") as f:
                 results_data = json.load(f)
+            results_data = apply_onrender_overrides(results_data)
     except Exception as e:
         return JSONResponse(content={"error": f"Failed to load data: {str(e)}", "games": []}, status_code=500)
         
@@ -1571,6 +1605,7 @@ def get_slate_center_api(date: str = None):
     try:
         with open(results_path, "r", encoding="utf-8") as f:
             results = json.load(f)
+        results = apply_onrender_overrides(results)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read projections: {str(e)}")
 
@@ -2268,6 +2303,7 @@ def post_chat_api(body: dict):
         try:
             with open(results_path, "r", encoding="utf-8") as f:
                 res = json.load(f)
+            res = apply_onrender_overrides(res)
                 
             # Extract simple summaries for low token usage
             teams = sorted(res.get("teams", []), key=lambda x: x.get("stack_score", 0), reverse=True)

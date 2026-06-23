@@ -229,7 +229,7 @@ class StatcastBridge:
             
         # Merge Pitchers
         for name in set(list(p_seasonal.keys()) + list(p_rolling.keys()) + list(p_seasonal_2025.keys())):
-            if name in ["willi castro", "jake bauers", "alec burleson"]:
+            if name in ["willi castro", "jake bauers", "alec burleson", "anthony seigler"]:
                 continue
             s = p_seasonal.get(name, {})
             r = p_rolling.get(name, {})

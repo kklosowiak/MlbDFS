@@ -1,581 +1,3005 @@
 {
-  "slate_date": "2026-06-19",
+  "slate_date": "2026-06-22",
   "teams": {
-    "Cincinnati Reds": {
-      "open_conf": 95,
+    "Milwaukee Brewers": {
+      "open_conf": 78,
       "open_stack": 150.0,
-      "open_xwoba": 0.3362222222222222,
+      "open_xwoba": 0.35000000000000003,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 95,
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 78,
           "stack_score": 150.0,
-          "team_xwoba": 0.3362222222222222
-        }
-      ]
-    },
-    "Texas Rangers": {
-      "open_conf": 96,
-      "open_stack": 150.0,
-      "open_xwoba": 0.32255555555555554,
-      "entries": [
+          "team_xwoba": 0.35000000000000003
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35000000000000003
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35000000000000003
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35000000000000003
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 97,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
           "attack_conf": 96,
           "stack_score": 150.0,
-          "team_xwoba": 0.32255555555555554
-        }
-      ]
-    },
-    "Athletics": {
-      "open_conf": 58,
-      "open_stack": 130.7,
-      "open_xwoba": 0.30977777777777776,
-      "entries": [
+          "team_xwoba": 0.35
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 58,
-          "stack_score": 130.7,
-          "team_xwoba": 0.30977777777777776
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.35
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.353
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3552222222222222
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 96,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3552222222222222
         }
       ]
     },
     "Los Angeles Dodgers": {
       "open_conf": 74,
-      "open_stack": 129.7,
-      "open_xwoba": 0.33444444444444443,
+      "open_stack": 150.0,
+      "open_xwoba": 0.3486666666666667,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
           "attack_conf": 74,
-          "stack_score": 129.7,
-          "team_xwoba": 0.33444444444444443
-        }
-      ]
-    },
-    "Philadelphia Phillies": {
-      "open_conf": 59,
-      "open_stack": 126.9,
-      "open_xwoba": 0.32277777777777783,
-      "entries": [
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 59,
-          "stack_score": 126.9,
-          "team_xwoba": 0.32277777777777783
-        }
-      ]
-    },
-    "Pittsburgh Pirates": {
-      "open_conf": 74,
-      "open_stack": 125.6,
-      "open_xwoba": 0.33699999999999997,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:07:49.872689",
           "attack_conf": 74,
-          "stack_score": 125.6,
-          "team_xwoba": 0.33699999999999997
-        }
-      ]
-    },
-    "Atlanta Braves": {
-      "open_conf": 77,
-      "open_stack": 122.5,
-      "open_xwoba": 0.34922222222222227,
-      "entries": [
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 77,
-          "stack_score": 122.5,
-          "team_xwoba": 0.34922222222222227
-        }
-      ]
-    },
-    "Houston Astros": {
-      "open_conf": 74,
-      "open_stack": 121.6,
-      "open_xwoba": 0.3318888888888889,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:45:39.338752",
           "attack_conf": 74,
-          "stack_score": 121.6,
-          "team_xwoba": 0.3318888888888889
-        }
-      ]
-    },
-    "Detroit Tigers": {
-      "open_conf": 73,
-      "open_stack": 116.8,
-      "open_xwoba": 0.33111111111111113,
-      "entries": [
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 73,
-          "stack_score": 116.8,
-          "team_xwoba": 0.33111111111111113
-        }
-      ]
-    },
-    "New York Yankees": {
-      "open_conf": 75,
-      "open_stack": 112.8,
-      "open_xwoba": 0.3187777777777778,
-      "entries": [
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 75,
-          "stack_score": 112.8,
-          "team_xwoba": 0.3187777777777778
-        }
-      ]
-    },
-    "Toronto Blue Jays": {
-      "open_conf": 80,
-      "open_stack": 108.7,
-      "open_xwoba": 0.3072222222222222,
-      "entries": [
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 80,
-          "stack_score": 108.7,
-          "team_xwoba": 0.3072222222222222
-        }
-      ]
-    },
-    "Tampa Bay Rays": {
-      "open_conf": 53,
-      "open_stack": 108.0,
-      "open_xwoba": 0.2946666666666667,
-      "entries": [
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3486666666666667
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 53,
-          "stack_score": 108.0,
-          "team_xwoba": 0.2946666666666667
-        }
-      ]
-    },
-    "Milwaukee Brewers": {
-      "open_conf": 63,
-      "open_stack": 103.9,
-      "open_xwoba": 0.3167777777777778,
-      "entries": [
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.349
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 63,
-          "stack_score": 103.9,
-          "team_xwoba": 0.3167777777777778
-        }
-      ]
-    },
-    "Chicago Cubs": {
-      "open_conf": 53,
-      "open_stack": 103.4,
-      "open_xwoba": 0.32922222222222225,
-      "entries": [
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.349
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 53,
-          "stack_score": 103.4,
-          "team_xwoba": 0.32922222222222225
-        }
-      ]
-    },
-    "Chicago White Sox": {
-      "open_conf": 57,
-      "open_stack": 93.7,
-      "open_xwoba": 0.3148888888888889,
-      "entries": [
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.349
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 57,
-          "stack_score": 93.7,
-          "team_xwoba": 0.3148888888888889
-        }
-      ]
-    },
-    "Los Angeles Angels": {
-      "open_conf": 49,
-      "open_stack": 93.6,
-      "open_xwoba": 0.3244444444444444,
-      "entries": [
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.349
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 49,
-          "stack_score": 93.6,
-          "team_xwoba": 0.3244444444444444
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.345
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3446666666666667
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 74,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3446666666666667
         }
       ]
     },
     "Miami Marlins": {
-      "open_conf": 38,
-      "open_stack": 92.2,
-      "open_xwoba": 0.31077777777777776,
+      "open_conf": 65,
+      "open_stack": 143.3,
+      "open_xwoba": 0.33366666666666667,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 38,
-          "stack_score": 92.2,
-          "team_xwoba": 0.31077777777777776
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 65,
+          "stack_score": 143.3,
+          "team_xwoba": 0.33366666666666667
         }
       ]
     },
-    "Seattle Mariners": {
-      "open_conf": 29,
-      "open_stack": 87.7,
-      "open_xwoba": 0.31733333333333336,
+    "Baltimore Orioles": {
+      "open_conf": 77,
+      "open_stack": 134.6,
+      "open_xwoba": 0.3273333333333334,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 29,
-          "stack_score": 87.7,
-          "team_xwoba": 0.31733333333333336
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 77,
+          "stack_score": 134.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 77,
+          "stack_score": 134.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 77,
+          "stack_score": 134.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 77,
+          "stack_score": 134.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 81,
+          "stack_score": 142.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 81,
+          "stack_score": 142.6,
+          "team_xwoba": 0.3273333333333334
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 90,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3355555555555556
+        }
+      ]
+    },
+    "Texas Rangers": {
+      "open_conf": 85,
+      "open_stack": 133.5,
+      "open_xwoba": 0.32066666666666666,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 85,
+          "stack_score": 133.5,
+          "team_xwoba": 0.32066666666666666
+        }
+      ]
+    },
+    "Philadelphia Phillies": {
+      "open_conf": 57,
+      "open_stack": 132.1,
+      "open_xwoba": 0.31322222222222224,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 57,
+          "stack_score": 132.1,
+          "team_xwoba": 0.31322222222222224
+        }
+      ]
+    },
+    "St. Louis Cardinals": {
+      "open_conf": 77,
+      "open_stack": 131.1,
+      "open_xwoba": 0.3255555555555556,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 77,
+          "stack_score": 131.1,
+          "team_xwoba": 0.3255555555555556
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 77,
+          "stack_score": 131.1,
+          "team_xwoba": 0.3255555555555556
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 77,
+          "stack_score": 131.1,
+          "team_xwoba": 0.3255555555555556
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 77,
+          "stack_score": 131.1,
+          "team_xwoba": 0.3255555555555556
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3377777777777778
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.338
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3377777777777778
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 78,
+          "stack_score": 150.0,
+          "team_xwoba": 0.3377777777777778
+        }
+      ]
+    },
+    "Minnesota Twins": {
+      "open_conf": 76,
+      "open_stack": 126.4,
+      "open_xwoba": 0.3175555555555556,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 76,
+          "stack_score": 126.4,
+          "team_xwoba": 0.3175555555555556
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 76,
+          "stack_score": 129.4,
+          "team_xwoba": 0.3175555555555556
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 76,
+          "stack_score": 126.4,
+          "team_xwoba": 0.3175555555555556
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 76,
+          "stack_score": 126.4,
+          "team_xwoba": 0.3175555555555556
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 77,
+          "stack_score": 131.7,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 77,
+          "stack_score": 131.4,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 77,
+          "stack_score": 131.4,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 77,
+          "stack_score": 131.4,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 77,
+          "stack_score": 131.4,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 77,
+          "stack_score": 130.4,
+          "team_xwoba": 0.318
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 77,
+          "stack_score": 129.3,
+          "team_xwoba": 0.314
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 77,
+          "stack_score": 129.3,
+          "team_xwoba": 0.3138888888888889
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 94,
+          "stack_score": 121.5,
+          "team_xwoba": 0.3138888888888889
         }
       ]
     },
     "Colorado Rockies": {
-      "open_conf": 23,
-      "open_stack": 85.0,
-      "open_xwoba": 0.3341111111111112,
+      "open_conf": 74,
+      "open_stack": 121.2,
+      "open_xwoba": 0.31255555555555553,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 23,
-          "stack_score": 85.0,
-          "team_xwoba": 0.3341111111111112
-        }
-      ]
-    },
-    "Washington Nationals": {
-      "open_conf": 27,
-      "open_stack": 83.4,
-      "open_xwoba": 0.3385555555555555,
-      "entries": [
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 74,
+          "stack_score": 121.2,
+          "team_xwoba": 0.31255555555555553
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 27,
-          "stack_score": 83.4,
-          "team_xwoba": 0.3385555555555555
-        }
-      ]
-    },
-    "Kansas City Royals": {
-      "open_conf": 21,
-      "open_stack": 81.8,
-      "open_xwoba": 0.311,
-      "entries": [
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 74,
+          "stack_score": 121.2,
+          "team_xwoba": 0.31255555555555553
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 21,
-          "stack_score": 81.8,
-          "team_xwoba": 0.311
-        }
-      ]
-    },
-    "San Francisco Giants": {
-      "open_conf": 66,
-      "open_stack": 81.2,
-      "open_xwoba": 0.30777777777777776,
-      "entries": [
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 74,
+          "stack_score": 121.2,
+          "team_xwoba": 0.31255555555555553
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 66,
-          "stack_score": 81.2,
-          "team_xwoba": 0.30777777777777776
-        }
-      ]
-    },
-    "San Diego Padres": {
-      "open_conf": 19,
-      "open_stack": 77.7,
-      "open_xwoba": 0.3185555555555555,
-      "entries": [
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 74,
+          "stack_score": 121.2,
+          "team_xwoba": 0.31255555555555553
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 19,
-          "stack_score": 77.7,
-          "team_xwoba": 0.3185555555555555
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 72,
+          "stack_score": 115.5,
+          "team_xwoba": 0.31255555555555553
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 75,
+          "stack_score": 115.5,
+          "team_xwoba": 0.3125555555555556
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 73,
+          "stack_score": 115.6,
+          "team_xwoba": 0.3125555555555556
         }
       ]
     },
     "New York Mets": {
-      "open_conf": 33,
-      "open_stack": 57.8,
-      "open_xwoba": 0.33222222222222225,
+      "open_conf": 45,
+      "open_stack": 119.9,
+      "open_xwoba": 0.36311111111111116,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 45,
+          "stack_score": 119.9,
+          "team_xwoba": 0.36311111111111116
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 45,
+          "stack_score": 119.9,
+          "team_xwoba": 0.36311111111111116
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 45,
+          "stack_score": 119.9,
+          "team_xwoba": 0.36311111111111116
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 45,
+          "stack_score": 119.9,
+          "team_xwoba": 0.36311111111111116
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 72,
+          "stack_score": 129.9,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 65,
+          "stack_score": 129.9,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 65,
+          "stack_score": 128.7,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 65,
+          "stack_score": 128.7,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 65,
+          "stack_score": 128.7,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 67,
+          "stack_score": 134.2,
+          "team_xwoba": 0.363
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 67,
+          "stack_score": 132.9,
+          "team_xwoba": 0.357
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 67,
+          "stack_score": 132.9,
+          "team_xwoba": 0.35700000000000004
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 71,
+          "stack_score": 129.9,
+          "team_xwoba": 0.35700000000000004
+        }
+      ]
+    },
+    "Tampa Bay Rays": {
+      "open_conf": 35,
+      "open_stack": 119.7,
+      "open_xwoba": 0.31877777777777777,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 35,
+          "stack_score": 119.7,
+          "team_xwoba": 0.31877777777777777
+        }
+      ]
+    },
+    "Los Angeles Angels": {
+      "open_conf": 24,
+      "open_stack": 113.1,
+      "open_xwoba": 0.33044444444444443,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 24,
+          "stack_score": 113.1,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 24,
+          "stack_score": 113.1,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 24,
+          "stack_score": 113.1,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 24,
+          "stack_score": 113.1,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 51,
+          "stack_score": 116.0,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 39,
+          "stack_score": 116.7,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 39,
+          "stack_score": 116.7,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 39,
+          "stack_score": 116.7,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 39,
+          "stack_score": 116.7,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 39,
+          "stack_score": 116.7,
+          "team_xwoba": 0.33044444444444443
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 49,
+          "stack_score": 113.7,
+          "team_xwoba": 0.33
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 49,
+          "stack_score": 112.3,
+          "team_xwoba": 0.3241111111111111
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 49,
+          "stack_score": 110.0,
+          "team_xwoba": 0.3241111111111111
+        }
+      ]
+    },
+    "Houston Astros": {
+      "open_conf": 38,
+      "open_stack": 113.0,
+      "open_xwoba": 0.3320000000000001,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 38,
+          "stack_score": 113.0,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 38,
+          "stack_score": 113.0,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 38,
+          "stack_score": 113.0,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 38,
+          "stack_score": 113.0,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 50,
+          "stack_score": 63.7,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 50,
+          "stack_score": 63.7,
+          "team_xwoba": 0.3320000000000001
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 60,
+          "stack_score": 63.3,
+          "team_xwoba": 0.332
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 48,
+          "stack_score": 63.3,
+          "team_xwoba": 0.332
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 48,
+          "stack_score": 63.3,
+          "team_xwoba": 0.332
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 48,
+          "stack_score": 60.5,
+          "team_xwoba": 0.332
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 48,
+          "stack_score": 60.0,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 48,
+          "stack_score": 60.0,
+          "team_xwoba": 0.32911111111111113
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 48,
+          "stack_score": 59.7,
+          "team_xwoba": 0.32911111111111113
+        }
+      ]
+    },
+    "Boston Red Sox": {
+      "open_conf": 70,
+      "open_stack": 109.5,
+      "open_xwoba": 0.29411111111111116,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 70,
+          "stack_score": 109.5,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 70,
+          "stack_score": 112.5,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 70,
+          "stack_score": 112.5,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 70,
+          "stack_score": 109.5,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 74,
+          "stack_score": 114.0,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 74,
+          "stack_score": 114.0,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 74,
+          "stack_score": 114.0,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 74,
+          "stack_score": 114.0,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 74,
+          "stack_score": 114.0,
+          "team_xwoba": 0.29411111111111116
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 74,
+          "stack_score": 112.5,
+          "team_xwoba": 0.29233333333333333
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 74,
+          "stack_score": 114.2,
+          "team_xwoba": 0.294
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 74,
+          "stack_score": 115.1,
+          "team_xwoba": 0.2972222222222223
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 76,
+          "stack_score": 129.9,
+          "team_xwoba": 0.2972222222222223
+        }
+      ]
+    },
+    "Chicago White Sox": {
+      "open_conf": 33,
+      "open_stack": 109.0,
+      "open_xwoba": 0.3185555555555556,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
           "attack_conf": 33,
-          "stack_score": 57.8,
-          "team_xwoba": 0.33222222222222225
+          "stack_score": 109.0,
+          "team_xwoba": 0.3185555555555556
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 33,
+          "stack_score": 112.0,
+          "team_xwoba": 0.3185555555555556
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 33,
+          "stack_score": 109.0,
+          "team_xwoba": 0.3185555555555556
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 33,
+          "stack_score": 109.0,
+          "team_xwoba": 0.3185555555555556
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 45,
+          "stack_score": 106.1,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 45,
+          "stack_score": 101.9,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 45,
+          "stack_score": 101.9,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 45,
+          "stack_score": 101.9,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 45,
+          "stack_score": 101.9,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 45,
+          "stack_score": 108.1,
+          "team_xwoba": 0.319
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 57,
+          "stack_score": 109.4,
+          "team_xwoba": 0.324
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 45,
+          "stack_score": 109.5,
+          "team_xwoba": 0.32444444444444454
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 45,
+          "stack_score": 108.0,
+          "team_xwoba": 0.32444444444444454
+        }
+      ]
+    },
+    "New York Yankees": {
+      "open_conf": 51,
+      "open_stack": 106.4,
+      "open_xwoba": 0.335,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 51,
+          "stack_score": 106.4,
+          "team_xwoba": 0.335
+        }
+      ]
+    },
+    "Chicago Cubs": {
+      "open_conf": 57,
+      "open_stack": 104.6,
+      "open_xwoba": 0.32077777777777783,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 57,
+          "stack_score": 104.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 57,
+          "stack_score": 107.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 39,
+          "stack_score": 107.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 27,
+          "stack_score": 104.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 69,
+          "stack_score": 138.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 69,
+          "stack_score": 138.6,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 73,
+          "stack_score": 138.7,
+          "team_xwoba": 0.321
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 73,
+          "stack_score": 138.7,
+          "team_xwoba": 0.321
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 73,
+          "stack_score": 138.7,
+          "team_xwoba": 0.321
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 93,
+          "stack_score": 150.0,
+          "team_xwoba": 0.321
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 93,
+          "stack_score": 150.0,
+          "team_xwoba": 0.321
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 93,
+          "stack_score": 150.0,
+          "team_xwoba": 0.32077777777777783
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 93,
+          "stack_score": 147.2,
+          "team_xwoba": 0.32077777777777783
+        }
+      ]
+    },
+    "Arizona Diamondbacks": {
+      "open_conf": 57,
+      "open_stack": 102.6,
+      "open_xwoba": 0.3104444444444444,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 57,
+          "stack_score": 102.6,
+          "team_xwoba": 0.3104444444444444
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 57,
+          "stack_score": 102.6,
+          "team_xwoba": 0.3104444444444444
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 57,
+          "stack_score": 102.6,
+          "team_xwoba": 0.3104444444444444
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 57,
+          "stack_score": 102.6,
+          "team_xwoba": 0.3104444444444444
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 63,
+          "stack_score": 96.0,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 63,
+          "stack_score": 96.2,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 63,
+          "stack_score": 96.2,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 63,
+          "stack_score": 96.2,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 63,
+          "stack_score": 96.2,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 63,
+          "stack_score": 95.8,
+          "team_xwoba": 0.31
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 63,
+          "stack_score": 94.4,
+          "team_xwoba": 0.304
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 63,
+          "stack_score": 94.3,
+          "team_xwoba": 0.30377777777777776
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 63,
+          "stack_score": 94.3,
+          "team_xwoba": 0.30377777777777776
+        }
+      ]
+    },
+    "Cleveland Guardians": {
+      "open_conf": 25,
+      "open_stack": 100.9,
+      "open_xwoba": 0.28744444444444445,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 25,
+          "stack_score": 100.9,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 31,
+          "stack_score": 103.5,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 31,
+          "stack_score": 103.5,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 31,
+          "stack_score": 103.5,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 40,
+          "stack_score": 107.3,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 28,
+          "stack_score": 107.3,
+          "team_xwoba": 0.28744444444444445
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 38,
+          "stack_score": 105.8,
+          "team_xwoba": 0.287
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 38,
+          "stack_score": 105.8,
+          "team_xwoba": 0.287
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 38,
+          "stack_score": 105.8,
+          "team_xwoba": 0.287
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 38,
+          "stack_score": 105.4,
+          "team_xwoba": 0.287
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 38,
+          "stack_score": 104.4,
+          "team_xwoba": 0.283
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 38,
+          "stack_score": 104.2,
+          "team_xwoba": 0.28255555555555556
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 38,
+          "stack_score": 103.9,
+          "team_xwoba": 0.28255555555555556
+        }
+      ]
+    },
+    "Detroit Tigers": {
+      "open_conf": 56,
+      "open_stack": 100.4,
+      "open_xwoba": 0.32555555555555554,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 56,
+          "stack_score": 100.4,
+          "team_xwoba": 0.32555555555555554
+        }
+      ]
+    },
+    "San Diego Padres": {
+      "open_conf": 49,
+      "open_stack": 99.7,
+      "open_xwoba": 0.32833333333333337,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 49,
+          "stack_score": 99.7,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 49,
+          "stack_score": 102.7,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 49,
+          "stack_score": 99.7,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 49,
+          "stack_score": 99.7,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 61,
+          "stack_score": 105.6,
+          "team_xwoba": 0.32833333333333337
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 71,
+          "stack_score": 105.9,
+          "team_xwoba": 0.3293333333333333
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 59,
+          "stack_score": 105.9,
+          "team_xwoba": 0.3293333333333333
+        }
+      ]
+    },
+    "Atlanta Braves": {
+      "open_conf": 62,
+      "open_stack": 92.8,
+      "open_xwoba": 0.33011111111111113,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 62,
+          "stack_score": 92.8,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 62,
+          "stack_score": 92.8,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 62,
+          "stack_score": 92.8,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 62,
+          "stack_score": 92.8,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 66,
+          "stack_score": 113.2,
+          "team_xwoba": 0.33011111111111113
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 72,
+          "stack_score": 114.4,
+          "team_xwoba": 0.33677777777777773
+        }
+      ]
+    },
+    "Cincinnati Reds": {
+      "open_conf": 69,
+      "open_stack": 86.3,
+      "open_xwoba": 0.3288888888888889,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 69,
+          "stack_score": 86.3,
+          "team_xwoba": 0.3288888888888889
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 73,
+          "stack_score": 89.3,
+          "team_xwoba": 0.3288888888888889
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 73,
+          "stack_score": 89.3,
+          "team_xwoba": 0.3288888888888889
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 73,
+          "stack_score": 89.3,
+          "team_xwoba": 0.3288888888888889
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 71,
+          "stack_score": 106.5,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 71,
+          "stack_score": 104.8,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 71,
+          "stack_score": 104.8,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 71,
+          "stack_score": 104.8,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 71,
+          "stack_score": 104.8,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 71,
+          "stack_score": 104.7,
+          "team_xwoba": 0.329
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 71,
+          "stack_score": 104.4,
+          "team_xwoba": 0.328
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 71,
+          "stack_score": 104.5,
+          "team_xwoba": 0.3283333333333333
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 71,
+          "stack_score": 101.3,
+          "team_xwoba": 0.3283333333333333
+        }
+      ]
+    },
+    "Washington Nationals": {
+      "open_conf": 74,
+      "open_stack": 82.1,
+      "open_xwoba": 0.3225555555555556,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 74,
+          "stack_score": 82.1,
+          "team_xwoba": 0.3225555555555556
+        }
+      ]
+    },
+    "Kansas City Royals": {
+      "open_conf": 51,
+      "open_stack": 70.9,
+      "open_xwoba": 0.32899999999999996,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 51,
+          "stack_score": 70.9,
+          "team_xwoba": 0.32899999999999996
+        }
+      ]
+    },
+    "Toronto Blue Jays": {
+      "open_conf": 49,
+      "open_stack": 68.9,
+      "open_xwoba": 0.3084444444444444,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 49,
+          "stack_score": 68.9,
+          "team_xwoba": 0.3084444444444444
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 49,
+          "stack_score": 71.9,
+          "team_xwoba": 0.3084444444444444
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 49,
+          "stack_score": 68.9,
+          "team_xwoba": 0.3084444444444444
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 49,
+          "stack_score": 68.9,
+          "team_xwoba": 0.3084444444444444
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 48,
+          "stack_score": 52.2,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 48,
+          "stack_score": 61.6,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 48,
+          "stack_score": 61.6,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 48,
+          "stack_score": 61.6,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 48,
+          "stack_score": 61.6,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 48,
+          "stack_score": 57.4,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 48,
+          "stack_score": 57.4,
+          "team_xwoba": 0.308
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 48,
+          "stack_score": 57.5,
+          "team_xwoba": 0.3084444444444444
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 48,
+          "stack_score": 57.5,
+          "team_xwoba": 0.3084444444444444
         }
       ]
     }
   },
   "pitchers": {
-    "Shohei Ohtani": {
-      "open_conf": 76,
-      "open_alpha": 140.1,
+    "Hunter Brown": {
+      "open_conf": 84,
+      "open_alpha": 126.5,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 76,
-          "alpha_score": 140.1
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 84,
+          "alpha_score": 126.5
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 84,
+          "alpha_score": 126.5
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 84,
+          "alpha_score": 126.5
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 84,
+          "alpha_score": 126.5
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 89,
+          "alpha_score": 122.1
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 86,
+          "alpha_score": 105.5
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 86,
+          "alpha_score": 105.5
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 86,
+          "alpha_score": 105.5
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 86,
+          "alpha_score": 105.5
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 86,
+          "alpha_score": 114.8
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 86,
+          "alpha_score": 114.8
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 86,
+          "alpha_score": 114.8
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 86,
+          "alpha_score": 114.8
         }
       ]
     },
-    "Randy V\u00e1squez": {
-      "open_conf": 83,
-      "open_alpha": 100.0,
+    "Drew Rasmussen": {
+      "open_conf": 90,
+      "open_alpha": 122.5,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 83,
-          "alpha_score": 100.0
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 90,
+          "alpha_score": 122.5
         }
       ]
     },
-    "Bryan Woo": {
-      "open_conf": 85,
-      "open_alpha": 98.2,
+    "Dylan Cease": {
+      "open_conf": 79,
+      "open_alpha": 118.9,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 85,
-          "alpha_score": 98.2
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 79,
+          "alpha_score": 118.9
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 79,
+          "alpha_score": 118.9
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 79,
+          "alpha_score": 118.9
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 79,
+          "alpha_score": 118.9
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 92,
+          "alpha_score": 126.8
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 92,
+          "alpha_score": 126.8
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 92,
+          "alpha_score": 126.8
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 92,
+          "alpha_score": 126.8
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 92,
+          "alpha_score": 126.8
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 92,
+          "alpha_score": 135.8
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 92,
+          "alpha_score": 135.8
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 92,
+          "alpha_score": 135.8
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 92,
+          "alpha_score": 135.8
         }
       ]
     },
-    "Spencer Arrighetti": {
-      "open_conf": 64,
-      "open_alpha": 92.3,
+    "Gavin Williams": {
+      "open_conf": 56,
+      "open_alpha": 88.9,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 64,
-          "alpha_score": 92.3
-        }
-      ]
-    },
-    "Ryan Weathers": {
-      "open_conf": 57,
-      "open_alpha": 82.3,
-      "entries": [
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 56,
+          "alpha_score": 88.9
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 57,
-          "alpha_score": 82.3
-        }
-      ]
-    },
-    "Jack Flaherty": {
-      "open_conf": 87,
-      "open_alpha": 79.9,
-      "entries": [
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 56,
+          "alpha_score": 88.9
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 87,
-          "alpha_score": 79.9
-        }
-      ]
-    },
-    "Trey Yesavage": {
-      "open_conf": 78,
-      "open_alpha": 79.5,
-      "entries": [
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 56,
+          "alpha_score": 88.9
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 78,
-          "alpha_score": 79.5
-        }
-      ]
-    },
-    "Mart\u00edn P\u00e9rez": {
-      "open_conf": 70,
-      "open_alpha": 78.4,
-      "entries": [
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 56,
+          "alpha_score": 88.9
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 70,
-          "alpha_score": 78.4
-        }
-      ]
-    },
-    "Mason Montgomery": {
-      "open_conf": 64,
-      "open_alpha": 76.4,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 64,
-          "alpha_score": 76.4
-        }
-      ]
-    },
-    "Noah Cameron": {
-      "open_conf": 68,
-      "open_alpha": 74.8,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T15:47:49.825928",
           "attack_conf": 68,
-          "alpha_score": 74.8
+          "alpha_score": 88.9
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 68,
+          "alpha_score": 98.9
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 68,
+          "alpha_score": 98.9
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 68,
+          "alpha_score": 98.9
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 68,
+          "alpha_score": 98.9
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 63,
+          "alpha_score": 84.8
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 63,
+          "alpha_score": 84.8
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 63,
+          "alpha_score": 84.8
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 74,
+          "alpha_score": 88.7
         }
       ]
     },
-    "Bryan Hudson": {
-      "open_conf": 76,
-      "open_alpha": 73.2,
+    "Michael King": {
+      "open_conf": 68,
+      "open_alpha": 88.7,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 76,
-          "alpha_score": 73.2
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 68,
+          "alpha_score": 88.7
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 68,
+          "alpha_score": 88.7
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 68,
+          "alpha_score": 88.7
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 68,
+          "alpha_score": 88.7
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 68,
+          "alpha_score": 68.8
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 68,
+          "alpha_score": 68.8
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 68,
+          "alpha_score": 68.8
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 68,
+          "alpha_score": 68.8
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 68,
+          "alpha_score": 68.8
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 68,
+          "alpha_score": 68.7
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 68,
+          "alpha_score": 68.7
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 68,
+          "alpha_score": 68.7
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 68,
+          "alpha_score": 68.7
         }
       ]
     },
-    "Aaron Nola": {
+    "Kyle Bradish": {
+      "open_conf": 56,
+      "open_alpha": 87.3,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 56,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 60,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 60,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 60,
+          "alpha_score": 87.3
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 60,
+          "alpha_score": 87.3
+        }
+      ]
+    },
+    "Gerrit Cole": {
       "open_conf": 64,
-      "open_alpha": 72.3,
+      "open_alpha": 86.6,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
           "attack_conf": 64,
-          "alpha_score": 72.3
+          "alpha_score": 86.6
         }
       ]
     },
-    "Jack Leiter": {
-      "open_conf": 29,
-      "open_alpha": 67.8,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 29,
-          "alpha_score": 67.8
-        }
-      ]
-    },
-    "Sean Burke": {
-      "open_conf": 64,
-      "open_alpha": 65.2,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 64,
-          "alpha_score": 65.2
-        }
-      ]
-    },
-    "Gage Jump": {
-      "open_conf": 14,
-      "open_alpha": 61.6,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 14,
-          "alpha_score": 61.6
-        }
-      ]
-    },
-    "Landen Roupp": {
-      "open_conf": 0,
-      "open_alpha": 58.5,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 0,
-          "alpha_score": 58.5
-        }
-      ]
-    },
-    "Shane Drohan": {
-      "open_conf": 38,
-      "open_alpha": 55.9,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 38,
-          "alpha_score": 55.9
-        }
-      ]
-    },
-    "Sean Manaea": {
-      "open_conf": 38,
-      "open_alpha": 53.5,
-      "entries": [
-        {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 38,
-          "alpha_score": 53.5
-        }
-      ]
-    },
-    "Jose Quintana": {
+    "Foster Griffin": {
       "open_conf": 46,
-      "open_alpha": 48.6,
+      "open_alpha": 83.6,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
           "attack_conf": 46,
-          "alpha_score": 48.6
+          "alpha_score": 83.6
         }
       ]
     },
-    "Jesse Scholtens": {
-      "open_conf": 34,
-      "open_alpha": 45.0,
+    "Framber Valdez": {
+      "open_conf": 75,
+      "open_alpha": 70.3,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 75,
+          "alpha_score": 70.3
+        }
+      ]
+    },
+    "Shota Imanaga": {
+      "open_conf": 10,
+      "open_alpha": 66.7,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 10,
+          "alpha_score": 66.7
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 10,
+          "alpha_score": 66.7
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 10,
+          "alpha_score": 66.7
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 10,
+          "alpha_score": 66.7
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 32,
+          "alpha_score": 72.8
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 24,
+          "alpha_score": 72.8
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 24,
+          "alpha_score": 72.8
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 24,
+          "alpha_score": 72.8
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 24,
+          "alpha_score": 72.8
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 24,
+          "alpha_score": 80.0
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 24,
+          "alpha_score": 80.0
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 24,
+          "alpha_score": 80.0
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 24,
+          "alpha_score": 80.0
+        }
+      ]
+    },
+    "Sam Aldegheri": {
+      "open_conf": 64,
+      "open_alpha": 65.0,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 64,
+          "alpha_score": 65.0
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 42,
+          "alpha_score": 61.8
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
           "attack_conf": 34,
-          "alpha_score": 45.0
+          "alpha_score": 61.8
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 34,
+          "alpha_score": 61.8
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 56,
+          "alpha_score": 59.2
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 56,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 56,
+          "alpha_score": 59.9
         }
       ]
     },
-    "Rhett Lowder": {
-      "open_conf": 3,
-      "open_alpha": 43.3,
+    "Andre Pallante": {
+      "open_conf": 75,
+      "open_alpha": 64.9,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 3,
-          "alpha_score": 43.3
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 75,
+          "alpha_score": 64.9
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 75,
+          "alpha_score": 64.9
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 75,
+          "alpha_score": 64.9
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 75,
+          "alpha_score": 64.9
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 75,
+          "alpha_score": 68.0
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 75,
+          "alpha_score": 68.0
         }
       ]
     },
-    "Jake Irvin": {
-      "open_conf": 30,
-      "open_alpha": 42.1,
+    "Tyler Alexander": {
+      "open_conf": 42,
+      "open_alpha": 62.0,
       "entries": [
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 42,
+          "alpha_score": 62.0
+        }
+      ]
+    },
+    "Tbd": {
+      "open_conf": 19,
+      "open_alpha": 61.8,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 19,
+          "alpha_score": 61.8
+        },
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 29,
+          "alpha_score": 57.5
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 29,
+          "alpha_score": 57.5
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 29,
+          "alpha_score": 57.5
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 29,
+          "alpha_score": 57.5
+        }
+      ]
+    },
+    "Michael Wacha": {
+      "open_conf": 64,
+      "open_alpha": 59.3,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 64,
+          "alpha_score": 59.3
+        }
+      ]
+    },
+    "Kodai Senga": {
+      "open_conf": 48,
+      "open_alpha": 52.9,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 48,
+          "alpha_score": 52.9
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 48,
+          "alpha_score": 52.9
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 48,
+          "alpha_score": 67.9
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 48,
+          "alpha_score": 67.9
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 20,
+          "alpha_score": 54.9
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 12,
+          "alpha_score": 54.9
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 12,
+          "alpha_score": 54.9
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 12,
+          "alpha_score": 54.9
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 12,
+          "alpha_score": 54.9
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 0,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 0,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 0,
+          "alpha_score": 59.5
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 12,
+          "alpha_score": 60.7
+        }
+      ]
+    },
+    "Zebby Matthews": {
+      "open_conf": 15,
+      "open_alpha": 52.3,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 15,
+          "alpha_score": 52.3
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 15,
+          "alpha_score": 52.3
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 15,
+          "alpha_score": 52.3
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 15,
+          "alpha_score": 52.3
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 15,
+          "alpha_score": 52.3
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 15,
+          "alpha_score": 52.1
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 15,
+          "alpha_score": 52.1
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 15,
+          "alpha_score": 52.1
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 15,
+          "alpha_score": 52.1
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 12,
+          "alpha_score": 57.8
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 12,
+          "alpha_score": 57.8
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 12,
+          "alpha_score": 57.8
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 12,
+          "alpha_score": 57.8
+        }
+      ]
+    },
+    "Tyler Phillips": {
+      "open_conf": 36,
+      "open_alpha": 49.1,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 36,
+          "alpha_score": 49.1
+        }
+      ]
+    },
+    "Grant Holmes": {
+      "open_conf": 68,
+      "open_alpha": 47.8,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 68,
+          "alpha_score": 47.8
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 68,
+          "alpha_score": 47.8
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 68,
+          "alpha_score": 47.8
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 68,
+          "alpha_score": 47.8
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 64,
+          "alpha_score": 40.7
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 64,
+          "alpha_score": 39.9
+        }
+      ]
+    },
+    "Anthony Kay": {
+      "open_conf": 64,
+      "open_alpha": 46.7,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 64,
+          "alpha_score": 46.7
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 64,
+          "alpha_score": 46.7
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 64,
+          "alpha_score": 61.7
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 64,
+          "alpha_score": 61.7
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 56,
+          "alpha_score": 54.7
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 56,
+          "alpha_score": 54.7
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 56,
+          "alpha_score": 54.7
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 56,
+          "alpha_score": 54.7
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 56,
+          "alpha_score": 54.7
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 64,
+          "alpha_score": 54.4
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 64,
+          "alpha_score": 54.4
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 64,
+          "alpha_score": 54.4
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 64,
+          "alpha_score": 54.9
+        }
+      ]
+    },
+    "Jake Bennett": {
+      "open_conf": 35,
+      "open_alpha": 46.0,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 35,
+          "alpha_score": 46.0
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 35,
+          "alpha_score": 46.0
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 35,
+          "alpha_score": 46.0
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 35,
+          "alpha_score": 46.0
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 39,
+          "alpha_score": 46.6
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 49,
+          "alpha_score": 62.7
+        }
+      ]
+    },
+    "Eric Lauer": {
+      "open_conf": 33,
+      "open_alpha": 35.1,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 33,
+          "alpha_score": 35.1
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 33,
+          "alpha_score": 35.1
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 33,
+          "alpha_score": 35.1
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 33,
+          "alpha_score": 35.1
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 33,
+          "alpha_score": 37.1
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 33,
+          "alpha_score": 37.1
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 33,
+          "alpha_score": 37.1
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 33,
+          "alpha_score": 37.1
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 33,
+          "alpha_score": 37.1
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 38,
+          "alpha_score": 52.9
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 38,
+          "alpha_score": 52.9
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 38,
+          "alpha_score": 52.9
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 42,
+          "alpha_score": 51.7
+        }
+      ]
+    },
+    "Merrill Kelly": {
+      "open_conf": 38,
+      "open_alpha": 34.8,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 38,
+          "alpha_score": 34.8
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 38,
+          "alpha_score": 34.8
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 38,
+          "alpha_score": 34.8
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 38,
+          "alpha_score": 34.8
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 16,
+          "alpha_score": 30.5
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 4,
+          "alpha_score": 30.5
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 4,
+          "alpha_score": 30.5
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 4,
+          "alpha_score": 30.5
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 4,
+          "alpha_score": 30.5
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
           "attack_conf": 30,
-          "alpha_score": 42.1
-        }
-      ]
-    },
-    "Ryan Johnson": {
-      "open_conf": 13,
-      "open_alpha": 30.7,
-      "entries": [
+          "alpha_score": 32.1
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
-          "attack_conf": 13,
-          "alpha_score": 30.7
-        }
-      ]
-    },
-    "Chris Paddack": {
-      "open_conf": 8,
-      "open_alpha": 25.2,
-      "entries": [
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 30,
+          "alpha_score": 32.1
+        },
         {
-          "at": "2026-06-19T00:28:45.685046",
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 30,
+          "alpha_score": 32.1
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
           "attack_conf": 8,
-          "alpha_score": 25.2
+          "alpha_score": 30.5
+        }
+      ]
+    },
+    "Brady Singer": {
+      "open_conf": 0,
+      "open_alpha": 29.3,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 0,
+          "alpha_score": 29.3
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 0,
+          "alpha_score": 29.3
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 0,
+          "alpha_score": 29.3
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 0,
+          "alpha_score": 29.3
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 0,
+          "alpha_score": 21.7
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 0,
+          "alpha_score": 21.7
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 0,
+          "alpha_score": 21.7
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 0,
+          "alpha_score": 21.7
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 0,
+          "alpha_score": 21.7
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 0,
+          "alpha_score": 21.5
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 0,
+          "alpha_score": 21.5
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 0,
+          "alpha_score": 21.5
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 0,
+          "alpha_score": 21.5
+        }
+      ]
+    },
+    "Ryan Feltner": {
+      "open_conf": 37,
+      "open_alpha": 17.3,
+      "entries": [
+        {
+          "at": "2026-06-22T12:03:24.606505",
+          "attack_conf": 37,
+          "alpha_score": 17.3
+        },
+        {
+          "at": "2026-06-22T12:07:49.872689",
+          "attack_conf": 37,
+          "alpha_score": 17.3
+        },
+        {
+          "at": "2026-06-22T12:45:39.338752",
+          "attack_conf": 37,
+          "alpha_score": 32.3
+        },
+        {
+          "at": "2026-06-22T13:19:03.400460",
+          "attack_conf": 37,
+          "alpha_score": 32.3
+        },
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 37,
+          "alpha_score": 30.1
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 37,
+          "alpha_score": 30.1
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 37,
+          "alpha_score": 30.1
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 37,
+          "alpha_score": 30.1
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 37,
+          "alpha_score": 30.1
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 37,
+          "alpha_score": 30.2
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 37,
+          "alpha_score": 30.2
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 37,
+          "alpha_score": 30.2
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 25,
+          "alpha_score": 34.1
+        }
+      ]
+    },
+    "Brandon Woodruff": {
+      "open_conf": 90,
+      "open_alpha": 102.5,
+      "entries": [
+        {
+          "at": "2026-06-22T15:47:49.825928",
+          "attack_conf": 90,
+          "alpha_score": 102.5
+        },
+        {
+          "at": "2026-06-22T16:01:38.345513",
+          "attack_conf": 90,
+          "alpha_score": 105.9
+        },
+        {
+          "at": "2026-06-22T16:35:46.165122",
+          "attack_conf": 90,
+          "alpha_score": 105.9
+        },
+        {
+          "at": "2026-06-22T16:39:23.632729",
+          "attack_conf": 90,
+          "alpha_score": 105.9
+        },
+        {
+          "at": "2026-06-22T16:43:11.325486",
+          "attack_conf": 90,
+          "alpha_score": 105.9
+        },
+        {
+          "at": "2026-06-22T16:52:38.376562",
+          "attack_conf": 90,
+          "alpha_score": 106.0
+        },
+        {
+          "at": "2026-06-22T17:07:55.233706",
+          "attack_conf": 90,
+          "alpha_score": 106.0
+        },
+        {
+          "at": "2026-06-22T17:49:12.363697",
+          "attack_conf": 90,
+          "alpha_score": 106.0
+        },
+        {
+          "at": "2026-06-22T18:21:00.375601",
+          "attack_conf": 90,
+          "alpha_score": 102.1
         }
       ]
     }
