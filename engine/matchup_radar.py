@@ -8,7 +8,7 @@ class MatchupRadar:
         
     def _load_data(self):
         if not os.path.exists(self.data_path):
-            return {"pitchers": {}, "hitters": {}, "league_avg": {}}
+            return {"pitchers": {}, "hitters": {}, "league_avg": {}, "meta": {}}
         try:
             from utils.normalization import normalize_player_name
             with open(self.data_path, 'r') as f:
@@ -16,40 +16,28 @@ class MatchupRadar:
             return {
                 "pitchers": {normalize_player_name(k): v for k, v in raw.get("pitchers", {}).items()},
                 "hitters": {normalize_player_name(k): v for k, v in raw.get("hitters", {}).items()},
-                "league_avg": raw.get("league_avg", {})
+                "league_avg": raw.get("league_avg", {}),
+                "meta": raw.get("meta", {})
             }
         except Exception:
-            return {"pitchers": {}, "hitters": {}, "league_avg": {}}
+            return {"pitchers": {}, "hitters": {}, "league_avg": {}, "meta": {}}
 
     def refresh_data(self):
-        """
-        OMEGA v7.8: Automated Sunday Statcast Sync.
-        Scrapes Pitch Arsenal (Pitchers) and xwOBA by Pitch Type (Hitters).
-        """
+        from data.savant_fetcher import build_matchup_data
         import datetime
         today = datetime.date.today().isoformat()
-        
-        # Prevent multiple scrapes on the same day
         if self.data.get('meta', {}).get('last_refresh') == today:
+            print("[MATCHUP DNA]: Already refreshed today, skipping.")
             return
-            
-        print(f"[OMEGA]: Sunday detected. Refreshing Matchup Radar DNA from Savant...")
-        
-        # OMEGA: This would typically trigger a headless browser scrape.
-        # For this implementation, we will simulate the ingestion flow 
-        # to ensure the matchup_data.json structure is maintained and updated.
-        
-        # (In a live environment, this would call a sub-scraper to BaseballSavant)
-        # We will update the metadata to mark today as refreshed.
-        if 'meta' not in self.data: self.data['meta'] = {}
-        self.data['meta']['last_refresh'] = today
-        
+        print("[MATCHUP DNA]: Refreshing pitch arsenal data from Baseball Savant...")
         try:
+            new_data = build_matchup_data()
             with open(self.data_path, 'w') as f:
-                json.dump(self.data, f, indent=4)
-            print(f"[SUCCESS]: Matchup DNA synchronized for the week of {today}.")
+                json.dump(new_data, f, indent=2)
+            self.data = self._load_data()
+            print(f"[MATCHUP DNA]: Refreshed — {new_data['meta']['pitcher_count']} pitchers, {new_data['meta']['hitter_count']} hitters.")
         except Exception as e:
-            print(f"[ERROR]: Matchup refresh failed: {e}")
+            print(f"[MATCHUP DNA]: Refresh failed: {e}. Using existing data.")
 
     def get_matchup_boost(self, hitter_name, pitcher_name):
         """

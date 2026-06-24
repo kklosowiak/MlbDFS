@@ -338,6 +338,10 @@ auto_audit_thread.start()
 nightly_maintenance_last_date_triggered = None
 nightly_maintenance_lock = threading.Lock()
 
+# Matchup DNA Scheduler (Sunday 2:00 AM ET)
+matchup_dna_last_date_triggered = None
+matchup_dna_lock = threading.Lock()
+
 def prune_statcast_cache():
     """
     Prunes statcast_cache.json by dropping players inactive for >= 30 days.
@@ -451,6 +455,7 @@ def nightly_maintenance_loop():
         et_minute = et_now.minute
         today_date_str = et_now.strftime("%Y-%m-%d")
         
+        # 1. 3:00 AM ET Nightly Maintenance (Cache Prune + Feedback Loop)
         is_maintenance_window = (et_hour == 3 and et_minute == 0)
         
         with nightly_maintenance_lock:
@@ -472,6 +477,24 @@ def nightly_maintenance_loop():
                 print("[NIGHTLY-MAINTENANCE]: ✅ Nightly signal feedback loop completed successfully!")
             except Exception as loop_err:
                 print(f"[NIGHTLY-MAINTENANCE ERROR]: Feedback loop failed: {loop_err}")
+                
+        # 2. Sunday 2:00 AM ET Matchup Radar Refresh
+        is_sunday = (et_now.weekday() == 6)
+        is_sunday_2am = (is_sunday and et_hour == 2)
+        
+        with matchup_dna_lock:
+            dna_already_triggered_today = (matchup_dna_last_date_triggered == today_date_str)
+            
+        if is_sunday_2am and not dna_already_triggered_today:
+            print(f"[NIGHTLY-MAINTENANCE]: Triggering Sunday Matchup Radar Sync at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            with matchup_dna_lock:
+                matchup_dna_last_date_triggered = today_date_str
+            try:
+                from engine.matchup_radar import MatchupRadar
+                radar = MatchupRadar()
+                radar.refresh_data()
+            except Exception as e:
+                print(f"[NIGHTLY-MAINTENANCE ERROR]: Matchup Radar sync failed: {e}")
         
         time.sleep(45)
 
