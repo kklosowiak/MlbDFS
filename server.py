@@ -1307,6 +1307,243 @@ def post_trends_resolve_api(body: dict):
             raise e
         raise HTTPException(status_code=500, detail=f"Database writeback failure: {str(e)}")
 
+# ----------------- NEW DFS OPTIMIZER & SLATE API ENDPOINTS -----------------
+from fastapi import UploadFile, File
+
+@app.post("/api/upload-salaries", dependencies=[Depends(get_current_user)])
+async def upload_salaries_api(file: UploadFile = File(...)):
+    """Uploads a DraftKings salaries CSV file and saves it in the data directory."""
+    try:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(base_dir, "data")
+        os.makedirs(data_dir, exist_ok=True)
+        salaries_path = os.path.join(data_dir, "DKSalaries.csv")
+        
+        contents = await file.read()
+        with open(salaries_path, "wb") as f:
+            f.write(contents)
+            
+        # Get count of players in the file
+        import csv
+        players_count = 0
+        try:
+            csv_text = contents.decode("utf-8-sig").splitlines()
+            reader = csv.DictReader(csv_text)
+            for row in reader:
+                players_count += 1
+        except:
+            pass
+            
+        return {
+            "status": "success",
+            "message": f"Successfully uploaded DraftKings salaries CSV ({players_count} players mapped)."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+
+@app.get("/api/slate-info", dependencies=[Depends(get_current_user)])
+def get_slate_info_api():
+    """Gets slate games list from the latest snapshot, alongside active filter settings."""
+    try:
+        from sync_slate import find_latest_snapshot, TEAM_MAP
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(base_dir, "data")
+        
+        # Load filter
+        allowed_teams = None
+        filter_enabled = False
+        filter_path = os.path.join(data_dir, "slate_filter.json")
+        if os.path.exists(filter_path):
+            try:
+                with open(filter_path, 'r', encoding='utf-8') as f:
+                    filter_data = json.load(f)
+                filter_enabled = filter_data.get("enabled", False)
+                allowed_teams = filter_data.get("allowed_teams")
+            except:
+                pass
+                
+        # Find latest snapshot
+        snap_path = find_latest_snapshot(data_dir)
+        games = []
+        
+        if snap_path:
+            with open(snap_path, 'r', encoding='utf-8') as f:
+                snapshot = json.load(f)
+            
+            now_utc = datetime.datetime.now(datetime.timezone.utc)
+            for g in snapshot.get('odds', []):
+                home = g.get('home_team')
+                away = g.get('away_team')
+                ct = g.get('commence_time') or g.get('game_time') or ''
+                if not ct: continue
+                
+                try:
+                    game_dt = datetime.datetime.fromisoformat(ct.replace('Z', '+00:00'))
+                    game_time_str = game_dt.strftime("%Y-%m-%d %I:%M %p UTC")
+                    started = (now_utc - game_dt).total_seconds() > 5400  # 90 mins ago
+                    is_day_game = game_dt.hour < 22 # 22 UTC is 6:00 PM ET
+                except:
+                    game_time_str = ct
+                    started = False
+                    is_day_game = False
+                    
+                games.append({
+                    "home_team": home,
+                    "away_team": away,
+                    "commence_time": game_time_str,
+                    "started": started,
+                    "is_day_game": is_day_game,
+                    "home_selected": allowed_teams is None or home in allowed_teams,
+                    "away_selected": allowed_teams is None or away in allowed_teams
+                })
+                
+        # Check if salaries exist
+        salaries_exist = os.path.exists(os.path.join(data_dir, "DKSalaries.csv"))
+        
+        return {
+            "games": games,
+            "filter_enabled": filter_enabled,
+            "allowed_teams": allowed_teams,
+            "salaries_uploaded": salaries_exist
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/slate-filter", dependencies=[Depends(get_current_user)])
+def post_slate_filter_api(payload: dict):
+    """Updates the allowed teams list in slate_filter.json."""
+    try:
+        allowed_teams = payload.get("allowed_teams", [])
+        enabled = payload.get("enabled", True)
+        
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(base_dir, "data")
+        filter_path = os.path.join(data_dir, "slate_filter.json")
+        
+        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        filter_data = {
+            "enabled": enabled,
+            "active_date": today,
+            "allowed_teams": allowed_teams
+        }
+        
+        with open(filter_path, 'w', encoding='utf-8') as f:
+            json.dump(filter_data, f, indent=4)
+            
+        return {"status": "success", "message": "Slate filter updated."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/slate-auto-sync", dependencies=[Depends(get_current_user)])
+def post_slate_auto_sync_api(payload: dict):
+    """Triggers sync_slate double-header/night filter logic."""
+    try:
+        night_only = payload.get("night_only", False)
+        cutoff_mins = payload.get("cutoff_mins", 90)
+        
+        # Execute in python
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(base_dir, "data")
+        
+        from sync_slate import find_latest_snapshot, TEAM_MAP
+        snap_path = find_latest_snapshot(data_dir)
+        if not snap_path:
+            return {"status": "error", "message": "No snapshot found."}
+            
+        with open(snap_path, 'r', encoding='utf-8') as f:
+            snapshot = json.load(f)
+            
+        now_utc = datetime.datetime.now(datetime.timezone.utc)
+        active_teams = set()
+        
+        for g in snapshot.get('odds', []):
+            home = g.get('home_team')
+            away = g.get('away_team')
+            ct = g.get('commence_time') or g.get('game_time') or ''
+            if not ct: continue
+            
+            try:
+                game_dt = datetime.datetime.fromisoformat(ct.replace('Z', '+00:00'))
+            except:
+                continue
+                
+            # Doubleheader Cutoff
+            if (now_utc - game_dt).total_seconds() > (cutoff_mins * 60):
+                continue
+                
+            # Night only
+            if night_only and game_dt.hour < 22:
+                continue
+                
+            active_teams.add(home)
+            active_teams.add(away)
+            
+        filter_path = os.path.join(data_dir, "slate_filter.json")
+        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        
+        filter_data = {
+            "enabled": True,
+            "active_date": today,
+            "allowed_teams": sorted(list(active_teams))
+        }
+        
+        with open(filter_path, 'w', encoding='utf-8') as f:
+            json.dump(filter_data, f, indent=4)
+            
+        return {"status": "success", "allowed_teams": list(active_teams)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/optimize", dependencies=[Depends(get_current_user)])
+def post_optimize_api(payload: dict):
+    """Runs PuLP optimizer and returns generated lineups."""
+    try:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(base_dir, "data")
+        salaries_path = os.path.join(data_dir, "DKSalaries.csv")
+        
+        if not os.path.exists(salaries_path):
+            return {"status": "error", "message": "DraftKings salaries CSV file missing. Please upload it first."}
+            
+        results_path = os.path.join(base_dir, "reports", "latest_results.json")
+        if not os.path.exists(results_path):
+            return {"status": "error", "message": "Projections latest_results.json not found. Please refresh slate first."}
+            
+        # Parse payload settings
+        class WebArgs:
+            def __init__(self, d):
+                self.stack = d.get("stack")
+                self.secondary_stack = d.get("secondary_stack")
+                self.lock = d.get("lock", [])
+                self.exclude = d.get("exclude", [])
+                self.metric = d.get("metric", "stack_adjusted")
+                self.num_lineups = d.get("num_lineups", 1)
+                
+        args = WebArgs(payload)
+        
+        # We will capture optimization output print statements
+        import io
+        import sys
+        from run_dk_optimizer import run_optimization
+        
+        old_stdout = sys.stdout
+        sys.stdout = mystdout = io.StringIO()
+        
+        try:
+            run_optimization(salaries_path, results_path, args)
+        finally:
+            sys.stdout = old_stdout
+            
+        output_text = mystdout.getvalue()
+        
+        return {
+            "status": "success",
+            "output": output_text
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/platoons", dependencies=[Depends(get_current_user)])
 def get_platoons_api():
     """Platoon Matrix: Cross-reference team/pitcher splits with today's matchups."""
