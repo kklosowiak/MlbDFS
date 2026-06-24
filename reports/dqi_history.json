@@ -15,9 +15,9 @@
     "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Pittsburgh Pirates": {
-    "score": 92,
-    "status": "TRUST",
-    "recorded_at": "2026-05-23T11:29:48.082713"
+    "score": 54,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Texas Rangers": {
     "score": 64,
@@ -40,9 +40,9 @@
     "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Athletics": {
-    "score": 95,
-    "status": "TRUST",
-    "recorded_at": "2026-05-26T00:02:34.584290"
+    "score": 64,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Philadelphia Phillies": {
     "score": 49,
@@ -50,9 +50,9 @@
     "recorded_at": "2026-05-29T23:44:20.844143"
   },
   "Arizona Diamondbacks": {
-    "score": 58,
-    "status": "CAUTION",
-    "recorded_at": "2026-06-01T11:51:56.180728"
+    "score": 92,
+    "status": "TRUST",
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Kansas City Royals": {
     "score": 74,
@@ -90,9 +90,9 @@
     "recorded_at": "2026-06-11T10:22:41.610405"
   },
   "Atlanta Braves": {
-    "score": 64,
+    "score": 73,
     "status": "CAUTION",
-    "recorded_at": "2026-06-12T12:07:47.910880"
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Los Angeles Angels": {
     "score": 39,
@@ -100,9 +100,9 @@
     "recorded_at": "2026-06-22T13:19:03.538899"
   },
   "Houston Astros": {
-    "score": 43,
+    "score": 46,
     "status": "FADE",
-    "recorded_at": "2026-06-22T13:19:03.538899"
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Washington Nationals": {
     "score": 83,
@@ -110,13 +110,18 @@
     "recorded_at": "2026-06-22T12:03:24.791211"
   },
   "Chicago Cubs": {
-    "score": 79,
-    "status": "TRUST",
-    "recorded_at": "2026-06-22T18:21:00.519193"
+    "score": 58,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-24T12:15:32.027044"
   },
   "Boston Red Sox": {
     "score": 78,
     "status": "CAUTION",
     "recorded_at": "2026-06-22T18:21:00.519193"
+  },
+  "New York Yankees": {
+    "score": 58,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-24T12:15:32.027044"
   }
 }

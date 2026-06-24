@@ -92,6 +92,8 @@ class PitcherAnalyzer:
         """
         if not probables:
             return "TBD"
+            
+        pitcher = "TBD"
         if f"{team_name}_2" in probables:
             from datetime import datetime
             try:
@@ -109,11 +111,32 @@ class PitcherAnalyzer:
                             min_diff = diff
                             best_pitcher = probables[p_key]
                 if best_pitcher:
-                    return best_pitcher
+                    pitcher = best_pitcher
             except Exception as e:
                 print(f"  - [WARNING]: Doubleheader time match failed for {team_name}: {e}")
+                pitcher = probables.get(team_name, "TBD")
+        else:
+            pitcher = probables.get(team_name, "TBD")
+
+        # OMEGA Bulk Reliever Override Logic
+        if not hasattr(self, '_bulk_map_cached'):
+            self._bulk_map_cached = {}
+            bulk_path = os.path.join(self.config.DATA_DIR, "bulk_relievers.json")
+            if os.path.exists(bulk_path):
+                try:
+                    import json
+                    with open(bulk_path, 'r', encoding='utf-8') as f:
+                        self._bulk_map_cached = json.load(f)
+                except Exception as e:
+                    print(f"  - [WARNING]: Failed to load bulk relievers cache: {e}")
+        
+        if team_name in self._bulk_map_cached:
+            bulk_info = self._bulk_map_cached[team_name]
+            if bulk_info.get("opener") == pitcher or not bulk_info.get("opener"):
+                print(f"  - [BULK OVERRIDE RESOLVE]: Replacing opener {pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {team_name}")
+                pitcher = bulk_info["bulk_pitcher"]
                 
-        return probables.get(team_name, "TBD")
+        return pitcher
 
     def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[], movement_data=None, previous_results=None):
         if props_data is None: props_data = {}

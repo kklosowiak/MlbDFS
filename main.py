@@ -189,6 +189,7 @@ def run_full_analysis():
 
     # Roster Mapping
     rosters = {}
+    modified_snapshot_bulk = False
     for entry in snapshot.get('odds', []):
         home_team = entry['home_team']
         away_team = entry['away_team']
@@ -203,6 +204,7 @@ def run_full_analysis():
                 print(f"  [BULK OVERRIDE]: Replacing home opener {home_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {home_team}")
                 home_pitcher = bulk_info["bulk_pitcher"]
                 entry["home_pitcher"] = home_pitcher
+                modified_snapshot_bulk = True
                 
         # Override away pitcher
         if away_team in bulk_map:
@@ -211,9 +213,15 @@ def run_full_analysis():
                 print(f"  [BULK OVERRIDE]: Replacing away opener {away_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {away_team}")
                 away_pitcher = bulk_info["bulk_pitcher"]
                 entry["away_pitcher"] = away_pitcher
+                modified_snapshot_bulk = True
                 
         rosters[home_team] = home_pitcher
         rosters[away_team] = away_pitcher
+
+    if modified_snapshot_bulk:
+        with open(snapshot_path, 'w') as f:
+            json.dump(snapshot, f, indent=4)
+        print(f"[OVERRIDE]: Modified snapshot on disk to apply bulk reliever overrides.")
 
     # Movement Tracker (v7.8 Trap Detector Support)
     movement_tracker = MovementTracker()
