@@ -3522,6 +3522,13 @@
             'Blue Jays': 'TOR', 'Nationals': 'WSH'
         };
 
+        function getFullTeamName(abbr) {
+            const candidates = Object.keys(abbrevMap).filter(k => abbrevMap[k] === abbr);
+            if (candidates.length === 0) return abbr;
+            candidates.sort((a, b) => b.length - a.length);
+            return candidates[0];
+        }
+
         /** Signal + column glossary — hover any [data-omega-tip] pill or header. */
         const OMEGA_TIPS = {
             col_blended: 'Blended Stack Rating (average of OMEGA and CONF). In backtesting, this is the primary ranker and selection metric used to select winning slates.',
@@ -4889,13 +4896,6 @@
                 return;
             }
 
-            const getFullTeamName = (abbr) => {
-                const candidates = Object.keys(abbrevMap).filter(k => abbrevMap[k] === abbr);
-                if (candidates.length === 0) return abbr;
-                candidates.sort((a, b) => b.length - a.length);
-                return candidates[0];
-            };
-
             container.innerHTML = '';
             panel.style.display = 'block';
 
@@ -5001,12 +5001,41 @@
             }
         }
 
-        function toggleAllMatchups(checkAll) {
+        async function toggleAllMatchups(checkAll) {
+            const container = document.getElementById('matchups-checkbox-container');
             document.querySelectorAll('.matchup-checkbox').forEach(cb => {
                 cb.checked = checkAll;
                 syncMatchupChipStyle(cb);
             });
+            if (container) saveUncheckedMatchups(container);
             filterData();
+            
+            // Sync to server-side slate filter!
+            try {
+                const allowed = [];
+                document.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                    if (cb.checked) {
+                        const teamA = cb.getAttribute('data-team-a');
+                        const teamB = cb.getAttribute('data-team-b');
+                        const fullA = getFullTeamName(teamA);
+                        const fullB = getFullTeamName(teamB);
+                        if (fullA && !allowed.includes(fullA)) allowed.push(fullA);
+                        if (fullB && !allowed.includes(fullB)) allowed.push(fullB);
+                    }
+                });
+                
+                await fetch('/api/slate-filter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ allowed_teams: allowed, enabled: true })
+                });
+                
+                if (typeof loadOptimizerInfo === 'function') {
+                    loadOptimizerInfo();
+                }
+            } catch (err) {
+                console.error("Failed to sync slate filter to server:", err);
+            }
         }
 
         // Generic Table Sorter (defaultDesc: first click sorts high→low for OMEGA-style columns)
