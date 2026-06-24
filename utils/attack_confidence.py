@@ -113,6 +113,20 @@ def score_stack_confidence(t, p_reports):
         conf -= 8.0
         reasons.append(f"Public/ML steam trap: Divergence ({div:+.0f}% div) drags run ceiling.")
 
+    # Public Steam Trap Penalty
+    if t.get("is_public_steam_trap"):
+        conf -= 8.0
+        reasons.append("🚨 PUBLIC STEAM TRAP: Retail total steamed up but sharp bookmakers held steady (-8).")
+
+    # Implied Total Velocity (Sharp total movement close to lock)
+    vel_dir = t.get("sharp_velocity_direction", 0)
+    if vel_dir == 1:
+        conf += 4.0
+        reasons.append("⚡ SHARP TOTAL STEAM BOOST: Late sharp total movement pushes run ceiling higher (+4).")
+    elif vel_dir == -1:
+        conf -= 6.0
+        reasons.append("📉 SHARP TOTAL STEAM FADE: Late sharp total movement drags run ceiling lower (-6).")
+
     # 3. Game Total Signals
     ts = (t.get("total_signal") or "").upper()
     if "U-DIV" in ts:
@@ -174,9 +188,15 @@ def score_stack_confidence(t, p_reports):
     if lineup == "CONFIRMED":
         conf += 3.0
         reasons.append("Confirmed lineup — projection stable.")
-    elif lineup == "PROJECTED":
+    elif lineup == "PROJECTED_HIGH_CONF":
+        conf -= 2.0
+        reasons.append("Projected lineup (High Conf) — consensus validated.")
+    elif lineup == "PROJECTED_LOW_CONF":
+        conf -= 8.0
+        reasons.append("Projected lineup (Low Conf) — scraper disagreement penalty (-8).")
+    elif lineup == "PROJECTED" or lineup == "ROSTER FALLBACK":
         conf -= 7.0
-        reasons.append("Projected lineup — higher uncertainty.")
+        reasons.append(f"Projected/Fallback lineup ({lineup}) — higher uncertainty.")
 
     if t.get("is_volatile"):
         conf -= 12.0

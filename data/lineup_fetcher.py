@@ -144,10 +144,122 @@ class LineupFetcher:
                     with open(self.cache_file, 'r', encoding='utf-8') as f:
                         cache_data = json.load(f)
                     print("[LINEUPS]: Returning expired RotoWire cache as fallback.")
-                    return cache_data.get('lineups', {})
-                except:
-                    pass
             return {}
+
+    def fetch_mlbdotcom_lineups(self):
+        """
+        Scrapes projected starting lineups from MLB.com/starting-lineups.
+        MLB.com publishes projected lineups in a __NEXT_DATA__ JSON blob by ~10am ET daily,
+        which is several hours before StatsAPI confirms them — making it ideal for
+        projected lineup consensus validation.
+
+        Returns a dict: {
+            'Team Name': {
+                'lineup': ['Player 1', 'Player 2', ...],
+                'is_confirmed': True/False
+            }
+        }
+        """
+        import json as _json
+        import re as _re
+
+        mlbdotcom_lineups = {}
+        try:
+            url = "https://www.mlb.com/starting-lineups"
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Accept-Language': 'en-US,en;q=0.9',
+            }
+            r = requests.get(url, headers=headers, timeout=15)
+            if r.status_code != 200:
+                print(f"[LINEUPS]: MLB.com Starting Lineups returned status {r.status_code}")
+                return {}
+
+            # Extract the __NEXT_DATA__ JSON blob embedded in the page
+            match = _re.search(r'<script id="__NEXT_DATA__" type="application/json">(.+?)</script>', r.text, _re.DOTALL)
+            if not match:
+                print("[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found")
+                return {}
+
+            raw_json = match.group(1)
+            page_data = _json.loads(raw_json)
+
+            # Navigate the Next.js data structure to find lineup entries
+            # Path: props -> pageProps -> lineups (list of game lineup objects)
+            props = page_data.get('props', {})
+            page_props = props.get('pageProps', {})
+
+            # Try multiple known paths for the lineup data
+            lineups_list = (
+                page_props.get('lineups') or
+                page_props.get('data', {}).get('lineups') or
+                page_props.get('initialData', {}).get('lineups') or
+                []
+            )
+
+            if not lineups_list:
+                # Fallback: flatten the entire props dict looking for lineup arrays
+                raw_str = raw_json
+                # Look for battingOrder arrays as a signal of lineup data
+                if 'battingOrder' not in raw_str and 'lineup' not in raw_str.lower():
+                    print("[LINEUPS]: MLB.com page has no lineup data yet today")
+                    return {}
+
+            for game_obj in lineups_list:
+                for side in ['away', 'home']:
+                    team_obj = game_obj.get(side) or game_obj.get(f'{side}Team') or {}
+                    team_name = (
+                        team_obj.get('fullName') or
+                        team_obj.get('teamName') or
+                        team_obj.get('name')
+                    )
+                    if not team_name:
+                        continue
+
+                    # Normalize to full franchise name
+                    team_name_norm = ROTOWIRE_TEAM_MAP.get(team_name, team_name)
+
+                    lineup_data = (
+                        game_obj.get(f'{side}Lineup') or
+                        team_obj.get('lineup') or
+                        team_obj.get('battingOrder') or
+                        []
+                    )
+
+                    players = []
+                    is_confirmed = False
+                    for entry in lineup_data:
+                        if isinstance(entry, dict):
+                            name = (
+                                entry.get('fullName') or
+                                entry.get('name') or
+                                entry.get('displayName')
+                            )
+                            if name:
+                                players.append(normalize_player_name(name))
+                            # Check confirmation status
+                            if entry.get('status') == 'confirmed' or entry.get('isConfirmed'):
+                                is_confirmed = True
+                        elif isinstance(entry, str):
+                            players.append(normalize_player_name(entry))
+
+                    if len(players) >= 7:
+                        mlbdotcom_lineups[team_name_norm] = {
+                            'lineup': players,
+                            'is_confirmed': is_confirmed
+                        }
+
+            if mlbdotcom_lineups:
+                print(f"[LINEUPS]: MLB.com Starting Lineups returned {len(mlbdotcom_lineups)} teams")
+            else:
+                print("[LINEUPS]: MLB.com returned page but no structured lineup data parsed — likely pre-release")
+
+            return mlbdotcom_lineups
+
+        except Exception as e:
+            print(f"[LINEUPS]: Error fetching MLB.com Starting Lineups: {e}")
+            return {}
+
 
     def fetch_statsapi_confirmed_lineups(self, date_str=None):
         """
@@ -227,24 +339,56 @@ class LineupFetcher:
 
     def fetch_all_lineups(self, date_str=None):
         """
-        Combines StatsAPI confirmed and RotoWire projected/confirmed lineups.
+        Combines StatsAPI confirmed, RotoWire projected/confirmed, and ESPN lineups with consensus logic.
         Returns a dict: {
             'Team Name': {
                 'lineup': ['Player 1', 'Player 2', ...],
-                'status': 'CONFIRMED' | 'PROJECTED'
+                'status': 'CONFIRMED' | 'PROJECTED_HIGH_CONF' | 'PROJECTED_LOW_CONF' | 'ROSTER FALLBACK'
             }
         }
         """
         statsapi_confirmed = self.fetch_statsapi_confirmed_lineups(date_str)
         rotowire_lineups = self.fetch_rotowire_lineups()
+        
+        # Sprint 2 (Updated): MLB.com Starting Lineups as secondary consensus source
+        # MLB.com publishes projected lineups ~10am ET daily via __NEXT_DATA__ JSON,
+        # much earlier than ESPN which only shows confirmed lineups.
+        mlbdotcom_lineups = {}
+        try:
+            mlbdotcom_lineups = self.fetch_mlbdotcom_lineups()
+        except Exception as e:
+            print(f"[LINEUPS]: Failed fetching MLB.com Starting Lineups: {e}")
 
         all_lineups = {}
 
-        # 1. Base on RotoWire projected or confirmed lineups (keeps the correct order)
+        # 1. Base on RotoWire projected or confirmed lineups
         for team_name, info in rotowire_lineups.items():
+            lineup_players = info['lineup']
+            is_confirmed = info['is_confirmed']
+            
+            if is_confirmed:
+                status = 'CONFIRMED'
+            else:
+                # If RotoWire is projected, check consensus with MLB.com Starting Lineups
+                mlb_info = mlbdotcom_lineups.get(team_name)
+                if not mlb_info or not mlb_info.get('lineup'):
+                    # Default to high confidence if MLB.com is empty (pre-release window)
+                    status = 'PROJECTED_HIGH_CONF'
+                else:
+                    mlb_players = set(mlb_info['lineup'])
+                    rw_players = set(lineup_players)
+                    if not rw_players:
+                        status = 'PROJECTED_LOW_CONF'
+                    else:
+                        overlap = len(rw_players.intersection(mlb_players)) / len(rw_players)
+                        if overlap >= 0.80:
+                            status = 'PROJECTED_HIGH_CONF'
+                        else:
+                            status = 'PROJECTED_LOW_CONF'
+            
             all_lineups[team_name] = {
-                'lineup': info['lineup'],
-                'status': 'CONFIRMED' if info['is_confirmed'] else 'PROJECTED'
+                'lineup': lineup_players,
+                'status': status
             }
 
         # 2. Overwrite with official StatsAPI confirmed lineups (highest authority)
@@ -257,7 +401,6 @@ class LineupFetcher:
             }
 
         # 3. Roster fallback: for any team still missing, pull from statcast cache sorted by OPS
-        #    This ensures the DFS Playbook always has players to display — nothing breaks silently.
         try:
             sc_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "statcast_cache.json")
             if os.path.exists(sc_path):
@@ -305,7 +448,7 @@ class LineupFetcher:
         for team, info in all_lineups.items():
             if team == "_game_times":
                 continue
-            if isinstance(info, dict) and info.get('status') == 'PROJECTED':
+            if isinstance(info, dict) and info.get('status') in ('PROJECTED', 'PROJECTED_HIGH_CONF', 'PROJECTED_LOW_CONF'):
                 projected[team] = info['lineup']
         return projected
 

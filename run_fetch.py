@@ -28,15 +28,29 @@ def get_slate_date(dt_utc=None):
 def perform_fetch(custom_date_from=None, capture_opening=False):
     print("[INGEST]: Initiating OMEGA v3.2.1 Data Sync...")
 
+    # Load existing health data to preserve last successful timestamps
+    health_path = os.path.join(config.DATA_DIR, "data_health.json")
+    existing_health = {}
+    if os.path.exists(health_path):
+        try:
+            with open(health_path, "r", encoding="utf-8") as f:
+                existing_health = json.load(f)
+        except:
+            pass
+
     health = {
         "status": "ok",
         "warnings": [],
-        "timestamp": datetime.now(timezone.utc).isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "last_successful_weather": existing_health.get("last_successful_weather"),
+        "last_successful_odds": existing_health.get("last_successful_odds"),
+        "last_successful_lineups": existing_health.get("last_successful_lineups"),
     }
 
     # OMEGA v6.6.5: Live Weather Overlay Sync
     try:
         PropfinderScraper().refresh()
+        health["last_successful_weather"] = datetime.now(timezone.utc).isoformat()
     except Exception as e:
         print(f"  - WARNING: Weather refresh failed: {e}")
         health["warnings"].append(f"Weather sync failed: {e}")
@@ -77,11 +91,13 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         health["status"] = "error"
         health["warnings"].append("Market ingestion failed (Odds API down or no events).")
         try:
-            with open(os.path.join(config.DATA_DIR, "data_health.json"), "w") as hf:
+            with open(health_path, "w", encoding="utf-8") as hf:
                 json.dump(health, hf, indent=4)
         except:
             pass
         return None
+
+    health["last_successful_odds"] = datetime.now(timezone.utc).isoformat()
 
 
     # 2. Fetch Betting Splits (Consensus)
@@ -135,6 +151,7 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
             lineup_fetcher = LineupFetcher()
             active_lineups = lineup_fetcher.fetch_all_lineups()
             bridge.refresh_hitter_form_cache(active_lineups)
+            health["last_successful_lineups"] = datetime.now(timezone.utc).isoformat()
         except Exception as eh:
             print(f"  - WARNING: Hitter form refresh failed: {eh}")
 

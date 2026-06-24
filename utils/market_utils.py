@@ -109,3 +109,18 @@ def calibrate_vegas_itt(itt):
     return round(val, 3)
 
 
+def get_bookmaker_total(game_json, bookmaker_key):
+    """
+    Extracts the current game total for a specific bookmaker (e.g. pinnacle, draftkings, fanduel, circa).
+    """
+    bookmaker_key = bookmaker_key.lower()
+    for book in game_json.get('bookmakers', []):
+        if book['key'].lower() == bookmaker_key:
+            for market in book.get('markets', []):
+                if market['key'] == 'totals':
+                    outcomes = market.get('outcomes', [])
+                    if outcomes:
+                        return outcomes[0].get('point')
+    return None
+
+

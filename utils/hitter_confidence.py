@@ -85,6 +85,22 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf += 8
         reasons.append("Smash factor: rolling OPS above season baseline.")
 
+    # Continuous Form Index (Sprint 1)
+    recent_ops = float(h.get("recent_ops", 0.0) or 0.0)
+    season_ops = float(h.get("season_ops", 0.0) or 0.0)
+    if season_ops > 0.0 and recent_ops > 0.0:
+        ratio = (recent_ops - season_ops) / season_ops
+        form_boost = max(-15.0, min(15.0, ratio * 20.0))
+        conf += form_boost
+        reasons.append(f"Continuous Form Index boost ({form_boost:+.1f} CONF) based on L7 OPS {recent_ops:.3f} vs Season OPS {season_ops:.3f}")
+
+    # Statcast Batted-Ball Profiles (Sprint 1)
+    barrel_pct = float(h.get("barrel_pct", 0.0) or 0.0)
+    hard_hit_pct = float(h.get("hard_hit_pct", 0.0) or 0.0)
+    if barrel_pct >= 12.0 and hard_hit_pct >= 45.0:
+        conf += 8.0
+        reasons.append(f"Statcast Batted-Ball profile edge: Barrel% ({barrel_pct:.1f}%) and HardHit% ({hard_hit_pct:.1f}%) are elite.")
+
     # 5. Team Stack & Market Sentiment Context
     if team_data:
         if team_data.get("stack_score", 0) >= 105:

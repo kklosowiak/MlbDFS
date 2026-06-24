@@ -326,6 +326,151 @@ auto_audit_thread = threading.Thread(target=auto_audit_capture_loop, daemon=True
 auto_audit_thread.start()
 
 
+# Nightly Maintenance Scheduler (3:00 AM ET): Cache Pruning & Signal Loops
+nightly_maintenance_last_date_triggered = None
+nightly_maintenance_lock = threading.Lock()
+
+def prune_statcast_cache():
+    """
+    Prunes statcast_cache.json by dropping players inactive for >= 30 days.
+    """
+    import os
+    import json
+    import datetime
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    cache_path = os.path.join(base_dir, "data", "statcast_cache.json")
+    if not os.path.exists(cache_path):
+        return
+        
+    try:
+        with open(cache_path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+            
+        active_players = set()
+        archive_dir = os.path.join(base_dir, "reports", "archive")
+        
+        today = datetime.date.today()
+        for i in range(30):
+            date_str = (today - datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+            res_path = os.path.join(archive_dir, f"results_{date_str}.json")
+            if not os.path.exists(res_path):
+                res_path = os.path.join(archive_dir, f"results_{date_str}_lock.json")
+            if os.path.exists(res_path):
+                try:
+                    with open(res_path, "r", encoding="utf-8") as rf:
+                        data = json.load(rf)
+                    for p in data.get("pitchers", []):
+                        if p.get("pitcher"):
+                            from utils.normalization import normalize_player_name
+                            active_players.add(normalize_player_name(p["pitcher"]))
+                    for h in data.get("hitters", []):
+                        if h.get("name"):
+                            from utils.normalization import normalize_player_name
+                            active_players.add(normalize_player_name(h["name"]))
+                except:
+                    pass
+                    
+        latest_path = os.path.join(base_dir, "reports", "latest_results.json")
+        if os.path.exists(latest_path):
+            try:
+                with open(latest_path, "r", encoding="utf-8") as lf:
+                    data = json.load(lf)
+                for p in data.get("pitchers", []):
+                    if p.get("pitcher"):
+                        from utils.normalization import normalize_player_name
+                        active_players.add(normalize_player_name(p["pitcher"]))
+                for h in data.get("hitters", []):
+                    if h.get("name"):
+                        from utils.normalization import normalize_player_name
+                        active_players.add(normalize_player_name(h["name"]))
+            except:
+                pass
+                
+        if not active_players:
+            print("[CACHE PRUNE]: No active players found in archives. Skipping pruning to prevent data loss.")
+            return
+            
+        pruned_cache = {}
+        pruned_count = 0
+        
+        for name, profile in cache.items():
+            from utils.normalization import normalize_player_name
+            norm_name = normalize_player_name(name)
+            
+            is_active = norm_name in active_players
+            
+            last_active_str = profile.get("last_active_date")
+            if last_active_str:
+                try:
+                    last_active_dt = datetime.datetime.strptime(last_active_str, "%Y-%m-%d").date()
+                    if (today - last_active_dt).days < 30:
+                        is_active = True
+                except:
+                    pass
+            
+            if is_active:
+                if norm_name in active_players:
+                    profile["last_active_date"] = today.strftime("%Y-%m-%d")
+                pruned_cache[name] = profile
+            else:
+                pruned_count += 1
+                
+        if pruned_count > 0:
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(pruned_cache, f, indent=4)
+            print(f"[CACHE PRUNE]: Successfully pruned {pruned_count} inactive player profiles.")
+        else:
+            print("[CACHE PRUNE]: No inactive profiles to prune.")
+    except Exception as e:
+        print(f"[CACHE PRUNE ERROR]: {e}")
+
+def nightly_maintenance_loop():
+    """Background thread: runs cache pruning and feedback loop nightly at 3:00 AM ET."""
+    global nightly_maintenance_last_date_triggered
+    print("[SERVER]: 3:00 AM ET Nightly Maintenance thread started.")
+    
+    while True:
+        try:
+            from zoneinfo import ZoneInfo
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            utc_now = datetime.datetime.now(datetime.timezone.utc)
+            et_now = utc_now - datetime.timedelta(hours=4)
+        
+        et_hour = et_now.hour
+        et_minute = et_now.minute
+        today_date_str = et_now.strftime("%Y-%m-%d")
+        
+        is_maintenance_window = (et_hour == 3 and et_minute == 0)
+        
+        with nightly_maintenance_lock:
+            already_triggered_today = (nightly_maintenance_last_date_triggered == today_date_str)
+        
+        if is_maintenance_window and not already_triggered_today:
+            print(f"[NIGHTLY-MAINTENANCE]: Triggered at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            with nightly_maintenance_lock:
+                nightly_maintenance_last_date_triggered = today_date_str
+            
+            try:
+                prune_statcast_cache()
+            except Exception as prune_err:
+                print(f"[NIGHTLY-MAINTENANCE ERROR]: Cache pruning failed: {prune_err}")
+                
+            try:
+                from run_feedback_loop import run_feedback_loop
+                run_feedback_loop(7)
+                print("[NIGHTLY-MAINTENANCE]: ✅ Nightly signal feedback loop completed successfully!")
+            except Exception as loop_err:
+                print(f"[NIGHTLY-MAINTENANCE ERROR]: Feedback loop failed: {loop_err}")
+        
+        time.sleep(45)
+
+nightly_maintenance_thread = threading.Thread(target=nightly_maintenance_loop, daemon=True)
+nightly_maintenance_thread.start()
+
+
 # Auth validation dependency
 def get_current_user(request: Request):
     cookie = request.cookies.get(COOKIE_NAME)
@@ -681,6 +826,30 @@ def get_analysis_api():
     else:
         return {"markdown": "No analysis available yet."}
 
+@app.get("/api/betting-roi", dependencies=[Depends(get_current_user)])
+def get_betting_roi_api():
+    import json
+    import os
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "data", "betting_history.json")
+    
+    if not os.path.exists(db_path):
+        try:
+            from utils.audit_engine import AuditEngine
+            engine = AuditEngine()
+            engine.backfill_betting_history()
+        except Exception as e:
+            print(f"Error backfilling history: {e}")
+            
+    if os.path.exists(db_path):
+        try:
+            with open(db_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            return {"error": f"Failed to read history: {e}"}
+            
+    return {"picks": [], "roi_summary": {}, "brier_score": 0.0}
+
 @app.get("/api/data-health", dependencies=[Depends(get_current_user)])
 def get_data_health_api():
     """Safe operational health for the live dashboard (no secrets)."""
@@ -721,6 +890,7 @@ def get_data_health_api():
 
     results_timestamp = None
     lineups_confirmed_pct = None
+    lineup_status_counts = {}
     teams_total = 0
     teams_confirmed = 0
     results_path = os.path.join(reports_dir, "latest_results.json")
@@ -731,7 +901,9 @@ def get_data_health_api():
             results_timestamp = res.get("timestamp")
             for t in res.get("teams", []):
                 teams_total += 1
-                if t.get("lineup_status") == "CONFIRMED":
+                status = t.get("lineup_status", "ROSTER FALLBACK")
+                lineup_status_counts[status] = lineup_status_counts.get(status, 0) + 1
+                if status == "CONFIRMED":
                     teams_confirmed += 1
             if teams_total > 0:
                 lineups_confirmed_pct = round((teams_confirmed / teams_total) * 100)
@@ -741,6 +913,10 @@ def get_data_health_api():
     # Read data_health.json for any scraping warnings/errors
     health_status = "ok"
     health_warnings = []
+    last_successful_weather = None
+    last_successful_odds = None
+    last_successful_lineups = None
+    last_scraper_timestamps = {}
     try:
         health_path = os.path.join(data_dir, "data_health.json")
         if os.path.exists(health_path):
@@ -748,6 +924,16 @@ def get_data_health_api():
                 health_data = json.load(f)
             health_status = health_data.get("status", "ok")
             health_warnings = health_data.get("warnings", [])
+            last_successful_weather = health_data.get("last_successful_weather")
+            last_successful_odds = health_data.get("last_successful_odds")
+            last_successful_lineups = health_data.get("last_successful_lineups")
+            # Collect scraper timestamps for dashboard display
+            last_scraper_timestamps = {
+                "rotowire":    health_data.get("last_successful_lineups"),
+                "statsapi":    health_data.get("last_successful_statsapi") or health_data.get("last_successful_lineups"),
+                "market_lines": health_data.get("last_successful_odds"),
+                "prop_board":  health_data.get("last_successful_props") or health_data.get("last_successful_weather"),
+            }
     except Exception:
         pass
 
@@ -759,11 +945,16 @@ def get_data_health_api():
             "splits_teams_count": splits_teams_count,
             "results_timestamp": results_timestamp,
             "lineups_confirmed_pct": lineups_confirmed_pct,
+            "lineup_status_counts": lineup_status_counts,
             "teams_confirmed": teams_confirmed,
             "teams_total": teams_total,
             "odds_api_configured": bool(config.ODDS_API_KEY),
             "health_status": health_status,
             "health_warnings": health_warnings,
+            "last_successful_weather": last_successful_weather,
+            "last_successful_odds": last_successful_odds,
+            "last_successful_lineups": last_successful_lineups,
+            "last_scraper_timestamps": last_scraper_timestamps,
         },
         headers={
             "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -1798,12 +1989,11 @@ def get_slate_center_api(date: str = None):
         runs_omega_away = max(1.5, away_implied * (1.0 + (away_div / 100.0) + (away_rating - 75.0) * 0.005))
         runs_omega_home = max(1.5, home_implied * (1.0 + (home_div / 100.0) + (home_rating - 75.0) * 0.005))
 
-        margin_mu = runs_omega_away - runs_omega_home
-        # Dynamic standard deviation based on Vegas game total (higher total -> higher run margin variance)
-        margin_sigma = 1.25 * math.sqrt(curr_total)
-
-        away_spread_cover_prob = 1.0 - normal_cdf(away_spread, margin_mu, margin_sigma)
-        home_spread_cover_prob = 1.0 - normal_cdf(home_spread, -margin_mu, margin_sigma)
+        # Bivariate Poisson simulation for spread cover probabilities
+        from utils.audit_engine import simulate_game_poisson
+        _, _, away_spread_cover_prob, home_spread_cover_prob = simulate_game_poisson(
+            runs_omega_away, runs_omega_home, away_spread, home_spread
+        )
 
         away_spread_ev = (away_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0
         home_spread_ev = (home_spread_cover_prob * (1.0 + 100.0/110.0)) - 1.0

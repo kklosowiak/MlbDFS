@@ -42,6 +42,13 @@ def _pair_key(away_team, home_team):
 def _game_entry(g_id, game, away_ml, home_ml, total, source, away_tt_open=None, away_tt_live=None, home_tt_open=None, home_tt_live=None):
     away = game["away_team"]
     home = game["home_team"]
+    
+    from utils.market_utils import get_bookmaker_total
+    pin_tot = get_bookmaker_total(game, "pinnacle")
+    dk_tot = get_bookmaker_total(game, "draftkings")
+    fd_tot = get_bookmaker_total(game, "fanduel")
+    circa_tot = get_bookmaker_total(game, "circa")
+    
     return {
         "game_id": g_id,
         "pair_key": _pair_key(away, home),
@@ -53,6 +60,10 @@ def _game_entry(g_id, game, away_ml, home_ml, total, source, away_tt_open=None, 
         "home_current_ml": home_ml,
         "opening_total": total,
         "current_total": total,
+        "pinnacle_total": pin_tot if pin_tot is not None else total,
+        "draftkings_total": dk_tot if dk_tot is not None else total,
+        "fanduel_total": fd_tot if fd_tot is not None else total,
+        "circa_total": circa_tot if circa_tot is not None else total,
         "commence_time": game.get("commence_time"),
         "opening_source": source,
         "opening_captured_at": datetime.now(UTC).replace(tzinfo=None).isoformat() + "Z",

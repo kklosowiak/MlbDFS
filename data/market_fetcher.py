@@ -538,6 +538,21 @@ class MarketFetcher:
                 open_lookup[g_id]["away_current_ml"] = away_ml
                 open_lookup[g_id]["home_current_ml"] = home_ml
                 open_lookup[g_id]["current_total"] = total
+                
+                from utils.market_utils import get_bookmaker_total
+                pin_tot = get_bookmaker_total(game, "pinnacle")
+                dk_tot = get_bookmaker_total(game, "draftkings")
+                fd_tot = get_bookmaker_total(game, "fanduel")
+                circa_tot = get_bookmaker_total(game, "circa")
+                
+                if pin_tot is not None:
+                    open_lookup[g_id]["pinnacle_total"] = pin_tot
+                if dk_tot is not None:
+                    open_lookup[g_id]["draftkings_total"] = dk_tot
+                if fd_tot is not None:
+                    open_lookup[g_id]["fanduel_total"] = fd_tot
+                if circa_tot is not None:
+                    open_lookup[g_id]["circa_total"] = circa_tot
 
         sync_fantasylabs_vegas_opens(slate_date)
         apply_manual_vegas_opens(open_lookup, structured_odds, slate_date)

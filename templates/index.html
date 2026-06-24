@@ -4280,8 +4280,144 @@
                         warningsContainer.style.display = 'none';
                     }
                 }
+
+                // ── Lineup Confidence Breakdown ──
+                const lineupBreakdownEl = document.getElementById('health-lineup-breakdown');
+                if (lineupBreakdownEl && h.lineup_status_counts) {
+                    const c = h.lineup_status_counts;
+                    const confirmed  = c.CONFIRMED || 0;
+                    const highConf   = c.PROJECTED_HIGH_CONF || 0;
+                    const lowConf    = c.PROJECTED_LOW_CONF || 0;
+                    const fallback   = c['ROSTER FALLBACK'] || 0;
+                    const total      = confirmed + highConf + lowConf + fallback;
+                    const lowPct     = total > 0 ? Math.round((lowConf + fallback) / total * 100) : 0;
+                    lineupBreakdownEl.innerHTML = [
+                        `<span style="color:var(--accent-green);font-weight:700">${confirmed} CONF</span>`,
+                        `<span style="color:var(--accent-blue, #5b9cf6);font-weight:600">${highConf} HIGH</span>`,
+                        `<span style="color:var(--accent-orange);font-weight:600">${lowConf} LOW</span>`,
+                        `<span style="color:var(--accent-red);font-weight:600">${fallback} FALLBACK</span>`,
+                    ].join(' · ');
+                    lineupBreakdownEl.style.color = lowPct > 30 ? 'var(--accent-orange)' : 'var(--text-secondary)';
+                }
+
+                // ── Scraper Timestamps ──
+                const tsContainer = document.getElementById('health-scraper-timestamps');
+                if (tsContainer && h.last_scraper_timestamps) {
+                    const ts = h.last_scraper_timestamps;
+                    const now = Date.now();
+                    const rows = [
+                        ['RotoWire',  ts.rotowire],
+                        ['StatsAPI',  ts.statsapi],
+                        ['Market Lines', ts.market_lines],
+                        ['Prop Board', ts.prop_board],
+                    ];
+                    tsContainer.innerHTML = rows.map(([label, iso]) => {
+                        if (!iso) return `<div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">${label}</span><span style="color:var(--accent-red);font-size:0.78rem">Never</span></div>`;
+                        const ago = Math.round((now - new Date(iso).getTime()) / 60000);
+                        const color = ago <= 60 ? 'var(--accent-green)' : ago <= 180 ? 'var(--accent-orange)' : 'var(--accent-red)';
+                        const label2 = ago < 60 ? `${ago}m ago` : ago < 1440 ? `${Math.round(ago/60)}h ago` : 'Stale';
+                        return `<div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">${label}</span><span style="color:${color};font-size:0.78rem;font-weight:600">${label2}</span></div>`;
+                    }).join('');
+                }
+
             } catch (e) {
                 console.error('Data health poll failed:', e);
+            }
+        }
+
+        // ── Rolling Betting ROI Widget ──
+        async function loadBettingROI() {
+            const container = document.getElementById('betting-roi-widget');
+            if (!container) return;
+            try {
+                const res = await fetch('/api/betting-roi');
+                if (res.status === 401) return;
+                const d = await res.json();
+                if (!d || d.error) {
+                    container.innerHTML = '<div style="color:var(--text-secondary);font-size:0.8rem;padding:8px 0">No betting history yet.</div>';
+                    return;
+                }
+
+                const summary = d.roi_summary || {};
+                const overall = summary.overall || {};
+                const brier   = (d.brier_score || 0).toFixed(4);
+                const roiPct  = (overall.roi_pct || 0).toFixed(1);
+                const roiColor = overall.roi_pct >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+                const roiSign  = overall.roi_pct >= 0 ? '+' : '';
+
+                const tiers = ['LOCK', 'LEAN', 'PASS'].map(tier => {
+                    const t = summary[tier] || {};
+                    const win = t.wins || 0;
+                    const tot = t.total_bets || 0;
+                    const winPct = tot > 0 ? Math.round(win / tot * 100) : 0;
+                    const roi   = (t.roi_pct || 0).toFixed(1);
+                    const rColor = (t.roi_pct || 0) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+                    const emoji = tier === 'LOCK' ? '🔒' : tier === 'LEAN' ? '📐' : '⏭️';
+                    return `
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);">
+                            <span style="font-size:0.78rem;font-weight:700;letter-spacing:.04em">${emoji} ${tier}</span>
+                            <span style="font-size:0.78rem;color:var(--text-secondary)">${win}/${tot} (${winPct}%)</span>
+                            <span style="font-size:0.78rem;font-weight:700;color:${rColor}">${(t.roi_pct||0)>=0?'+':''}${roi}%</span>
+                        </div>`;
+                }).join('');
+
+                // Recent picks table (last 8)
+                const picks = (d.picks || []).slice(0, 8);
+                const pickRows = picks.map(p => {
+                    const isWin = p.result === 'WIN';
+                    const winIcon = isWin ? '✅' : '❌';
+                    const evStr = p.ev != null ? `${(p.ev*100).toFixed(1)}% EV` : '';
+                    return `<tr style="font-size:0.74rem;">
+                        <td style="padding:3px 4px;color:var(--text-secondary)">${p.date || ''}</td>
+                        <td style="padding:3px 4px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(p.away_team||'')} @ ${(p.home_team||'')}">${(p.away_team||'').split(' ').pop()} @ ${(p.home_team||'').split(' ').pop()}</td>
+                        <td style="padding:3px 4px;font-weight:700">${p.bet_type||''} ${p.conviction||''}</td>
+                        <td style="padding:3px 4px;color:var(--text-secondary)">${evStr}</td>
+                        <td style="padding:3px 4px;text-align:right">${winIcon}</td>
+                    </tr>`;
+                }).join('');
+
+                container.innerHTML = `
+                    <!-- Summary Row -->
+                    <div style="display:flex;gap:12px;margin-bottom:12px;">
+                        <div style="flex:1;background:var(--card-bg, var(--surface));border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:1.3rem;font-weight:800;color:${roiColor}">${roiSign}${roiPct}%</div>
+                            <div style="font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Overall ROI</div>
+                        </div>
+                        <div style="flex:1;background:var(--card-bg, var(--surface));border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:1.3rem;font-weight:800;color:var(--text-primary)">${overall.wins||0}/${overall.total_bets||0}</div>
+                            <div style="font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">W / L</div>
+                        </div>
+                        <div style="flex:1;background:var(--card-bg, var(--surface));border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:1.3rem;font-weight:800;color:var(--accent-blue, #5b9cf6)">${brier}</div>
+                            <div style="font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Brier Score</div>
+                        </div>
+                    </div>
+                    <!-- Tier Breakdown -->
+                    <div style="margin-bottom:12px">
+                        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:4px">Conviction Tier Breakdown</div>
+                        ${tiers}
+                    </div>
+                    <!-- Recent Picks -->
+                    ${picks.length > 0 ? `
+                    <div>
+                        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:4px">Recent Picks</div>
+                        <div style="overflow-x:auto">
+                        <table style="width:100%;border-collapse:collapse">
+                            <thead><tr style="font-size:0.7rem;color:var(--text-secondary);border-bottom:1px solid var(--border);">
+                                <th style="padding:3px 4px;text-align:left;font-weight:600">Date</th>
+                                <th style="padding:3px 4px;text-align:left;font-weight:600">Game</th>
+                                <th style="padding:3px 4px;text-align:left;font-weight:600">Bet</th>
+                                <th style="padding:3px 4px;text-align:left;font-weight:600">EV</th>
+                                <th style="padding:3px 4px;text-align:right;font-weight:600">Result</th>
+                            </tr></thead>
+                            <tbody>${pickRows}</tbody>
+                        </table>
+                        </div>
+                    </div>` : ''}
+                `;
+            } catch (e) {
+                console.error('Betting ROI load failed:', e);
+                if (container) container.innerHTML = '<div style="color:var(--accent-orange);font-size:0.8rem">ROI data unavailable.</div>';
             }
         }
 
@@ -4303,8 +4439,10 @@
             loadData();
             pollRefreshStatus();
             pollDataHealth();
+            loadBettingROI();
             setInterval(pollRefreshStatus, 2000);
             setInterval(pollDataHealth, 15000);
+            setInterval(loadBettingROI, 600000); // refresh ROI every 10 min
         });
 
         function saveApiKey() {
@@ -8373,6 +8511,18 @@
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 20px; flex: 1; overflow-y: auto; padding-right: 5px;">
+
+            <!-- Rolling Betting ROI Widget -->
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                    <span style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary)">📊 Rolling Betting ROI</span>
+                    <span style="font-size:0.68rem;color:var(--text-secondary);opacity:.6;margin-left:auto">auto-refreshes</span>
+                </div>
+                <div id="betting-roi-widget">
+                    <div style="color:var(--text-secondary);font-size:0.8rem;padding:8px 0;text-align:center">Loading ROI data…</div>
+                </div>
+            </div>
+
             <!-- Server Status / Refresh Control -->
             <div class="system-widget">
                 <div class="widget-row">
@@ -8389,9 +8539,25 @@
                     <span class="widget-label">Snapshot</span>
                     <span class="widget-val" id="health-snapshot-age">—</span>
                 </div>
+                <!-- Lineup Confidence Tier Breakdown -->
+                <div class="widget-row" style="flex-wrap:wrap;gap:4px;">
+                    <span class="widget-label" style="width:100%;margin-bottom:2px">Lineup Confidence</span>
+                    <div id="health-lineup-breakdown" style="font-size:0.75rem;line-height:1.5;display:flex;flex-wrap:wrap;gap:6px;">—</div>
+                </div>
+                <!-- Scraper Last-Sync Timestamps -->
+                <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;">
+                    <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-secondary);margin-bottom:4px">Scraper Sync</div>
+                    <div id="health-scraper-timestamps">
+                        <div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">RotoWire</span><span style="font-size:0.78rem;color:var(--text-secondary)">—</span></div>
+                        <div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">StatsAPI</span><span style="font-size:0.78rem;color:var(--text-secondary)">—</span></div>
+                        <div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">Market Lines</span><span style="font-size:0.78rem;color:var(--text-secondary)">—</span></div>
+                        <div class="widget-row"><span class="widget-label" style="font-size:0.78rem;opacity:.7">Prop Board</span><span style="font-size:0.78rem;color:var(--text-secondary)">—</span></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Theme Toggle Switch -->
+
             <div style="display: flex; justify-content: center; margin-top: 5px;">
                 <button id="theme-toggle-btn" class="matrix-compact-toggle" style="margin-left: 0; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: var(--radius-sm); padding: 12px 14px;" onclick="toggleTheme()" title="Switch Theme">
                     <svg id="theme-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.3s ease;">

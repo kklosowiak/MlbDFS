@@ -819,6 +819,38 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             except:
                 pass
             
+            # Public Steam Trap & Velocity Flags
+            is_public_steam_trap = False
+            sharp_velocity_direction = 0
+            
+            try:
+                pin_tot = open_data.get('pinnacle_total', curr_total)
+                circa_tot = open_data.get('circa_total', curr_total)
+                dk_tot = open_data.get('draftkings_total', curr_total)
+                fd_tot = open_data.get('fanduel_total', curr_total)
+                base_open_tot = open_total if open_total is not None else curr_total
+                
+                if pin_tot is not None and circa_tot is not None and dk_tot is not None and fd_tot is not None and base_open_tot is not None:
+                    # 1. Public Steam Trap
+                    retail_move = (abs(dk_tot - base_open_tot) >= 0.5) or (abs(fd_tot - base_open_tot) >= 0.5)
+                    sharp_steady = (abs(pin_tot - base_open_tot) < 0.5) and (abs(circa_tot - base_open_tot) < 0.5)
+                    if retail_move and sharp_steady:
+                        is_public_steam_trap = True
+                    
+                    # 2. Implied Total Velocity (within 30 mins of game lock)
+                    commence_str = game.get('commence_time')
+                    if commence_str:
+                        commence_dt = datetime.datetime.strptime(commence_str.replace('Z', ''), "%Y-%m-%dT%H:%M:%S")
+                        now_utc = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
+                        time_to_lock = (commence_dt - now_utc).total_seconds() / 60.0
+                        if 0 <= time_to_lock <= 30:
+                            if pin_tot - base_open_tot >= 0.5 or circa_tot - base_open_tot >= 0.5:
+                                sharp_velocity_direction = 1
+                            elif pin_tot - base_open_tot <= -0.5 or circa_tot - base_open_tot <= -0.5:
+                                sharp_velocity_direction = -1
+            except:
+                pass
+            
             # OMEGA v6.9.2: Location-Aware Park Factors
             # Both teams inherit the environment of the home_team's stadium.
             home_team_for_game = game.get('home_team')
@@ -903,20 +935,15 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             # OMEGA v7.0: Power Concentration Discovery
             team_h = [h for h in (raw_hitters or []) if h['team'] == team]
             confirmed = None
-            is_official = False
-            for lineup_team, players in (confirmed_lineups or {}).items():
+            lineup_status = "PROJECTED_HIGH_CONF" # Default fallback
+            
+            from data.lineup_fetcher import LineupFetcher
+            all_lineups_data = LineupFetcher().fetch_all_lineups()
+            for lineup_team, info in (all_lineups_data or {}).items():
                 if team.lower() in lineup_team.lower() or lineup_team.lower() in team.lower():
-                    confirmed = players
-                    is_official = True
+                    confirmed = info['lineup']
+                    lineup_status = info['status']
                     break
-            
-            if not confirmed and projected_lineups:
-                for lineup_team, players in projected_lineups.items():
-                    if team.lower() in lineup_team.lower() or lineup_team.lower() in team.lower():
-                        confirmed = players
-                        break
-            
-            lineup_status = "CONFIRMED" if is_official else "PROJECTED"
 
             team_xwoba = 0.330
             power_concentration = 0.330
@@ -1331,7 +1358,15 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_fade_risk': res.get('is_fade_risk', False),
                 'is_sneaky': is_sneaky,
                 'is_pinnacle_offense_boost': is_pinnacle_offense_boost,
-                'is_velocity_boost': is_velocity_boost
+                'is_velocity_boost': is_velocity_boost,
+                'is_public_steam_trap': is_public_steam_trap,
+                'sharp_velocity_direction': sharp_velocity_direction,
+                'pinnacle_total': open_data.get('pinnacle_total', curr_total if curr_total is not None else 9.0),
+                'draftkings_total': open_data.get('draftkings_total', curr_total if curr_total is not None else 9.0),
+                'fanduel_total': open_data.get('fanduel_total', curr_total if curr_total is not None else 9.0),
+                'circa_total': open_data.get('circa_total', curr_total if curr_total is not None else 9.0),
+                'opening_total': open_total if open_total is not None else (curr_total if curr_total is not None else 9.0),
+                'current_total': curr_total if curr_total is not None else 9.0
             }
             apply_team_blind_spot(team_row)
             apply_signal_exclusions(team_row)
@@ -1465,6 +1500,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
 
         # L7 hitter form boost calculation
         form_boost = 0.0
+        recent_ops = 0.0
+        recent_k = 0.0
         h_form = hitter_form_cache.get(hitter_norm)
         if h_form:
             recent_ops = float(h_form.get('recent_ops', 0.0) or 0.0)
@@ -1473,6 +1510,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
                 form_boost = 3.0
             elif recent_ops <= 0.500 and recent_k >= 30.0:
                 form_boost = -3.0
+
+        season_ops = float(h_profile.get('ops', 0.0) or 0.0) if h_profile else 0.0
 
         # Individual Multi-Factor Slate Momentum Index (MSMI)
         h_rolling_k_delta = 0.0
@@ -1616,7 +1655,10 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'is_hot_run_msmi': h_is_hot_run_msmi,
             'barrel_pct': barrel_pct,
             'hard_hit_pct': hard_hit_pct,
-            'batting_order': batting_order
+            'batting_order': batting_order,
+            'recent_ops': recent_ops,
+            'recent_k_pct': recent_k,
+            'season_ops': season_ops
         })
 
     # Calibrate dynamic splits (platoon_label) slate-wide (OMEGA v12.1: Tightened, highly selective GPP criteria)
