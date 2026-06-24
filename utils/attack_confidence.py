@@ -322,16 +322,19 @@ def score_stack_confidence(t, p_reports):
             if phys >= 55.0:
                 base_penalty = 24.0   # True ace — full penalty
                 tier_label = "ace-tier"
+                bp_dampening_mult = 0.85  # Retain 85% of penalty vs. gassed pen
             elif phys >= 35.0:
                 base_penalty = 16.0   # Solid arm — moderate penalty
                 tier_label = "solid-tier"
+                bp_dampening_mult = 0.65  # Retain 65% of penalty vs. gassed pen
             else:
                 base_penalty = 8.0    # Vulnerable arm (20–35) — light penalty
                 tier_label = "vulnerable-tier"
+                bp_dampening_mult = 0.40  # Retain 40% of penalty vs. gassed pen
 
             bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
             if bp_fatigue >= 90 or t.get("is_gassed"):
-                penalty = base_penalty * 0.40  # Gassed pen cuts penalty by 60%
+                penalty = base_penalty * bp_dampening_mult
                 if is_volatile:
                     penalty *= damp_factor
                     reasons.append(f"Tough but volatile ({volatility_reason}) {tier_label} SP ({opp_p_name}), opponent pen exhausted.")
@@ -366,8 +369,34 @@ def score_stack_confidence(t, p_reports):
     bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
     
     if bp_fatigue >= 85 or t.get("is_gassed"):
-        bp_boost += 14.0
-        bp_reasons.append("Opposing pen exhausted — late-inning ceiling.")
+        # Load opposing bullpen quality
+        opp_team = t.get("opponent")
+        opp_bp_era = 3.90
+        try:
+            import os
+            import json
+            cache_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "bullpen_season_cache.json")
+            if os.path.exists(cache_path):
+                with open(cache_path, "r", encoding="utf-8") as f:
+                    bullpen_season = json.load(f)
+                from utils.normalization import normalize_player_name
+                norm_opp = normalize_player_name(opp_team)
+                for team_key, data in bullpen_season.items():
+                    if normalize_player_name(team_key) == norm_opp:
+                        opp_bp_era = float(data.get("era", 3.90) or 3.90)
+                        break
+        except Exception:
+            pass
+            
+        if opp_bp_era < 3.50:
+            bp_boost += 8.0
+            bp_reasons.append(f"Opposing elite pen fatigued (ERA: {opp_bp_era:.2f}) — moderate ceiling.")
+        elif opp_bp_era > 4.20:
+            bp_boost += 19.0
+            bp_reasons.append(f"Opposing poor pen fatigued (ERA: {opp_bp_era:.2f}) — massive ceiling (+19).")
+        else:
+            bp_boost += 14.0
+            bp_reasons.append("Opposing pen exhausted — late-inning ceiling.")
         
     opp_outs = float(t.get("opp_pitcher_outs", 18.0) or 18.0)
     if t.get("is_gassed") and opp_outs <= 15.5:
@@ -375,10 +404,10 @@ def score_stack_confidence(t, p_reports):
         bp_reasons.append("GASSED BULLPEN ATTACK: Attacking fatigued bullpen behind short-leash starter (+12).")
 
     if bp_boost > 0:
-        capped_bp_boost = min(15.0, bp_boost)
+        capped_bp_boost = min(20.0, bp_boost)
         conf += capped_bp_boost
         if capped_bp_boost < bp_boost:
-            reasons.append(f"Bullpen Attack Boost capped at +15: {', '.join(bp_reasons)}.")
+            reasons.append(f"Bullpen Attack Boost capped at +20: {', '.join(bp_reasons)}.")
         else:
             reasons.extend(bp_reasons)
 
@@ -395,8 +424,8 @@ def score_stack_confidence(t, p_reports):
         conf += 4.0
         reasons.append(f"Moderate prop interest ({pscore}, WARM) — secondary board signal.")
     elif plabel == LABEL_COLD and xwoba >= 0.335:
-        conf -= 10.0
-        reasons.append("Elite xwOBA but cold prop board — market not agreeing.")
+        # COLD prop pressure penalty removed (statistically proven to be noise in 3-season audit)
+        reasons.append("Elite xwOBA noted vs cold prop board.")
 
     if not reasons:
         reasons.append("Neutral stack profile on this slate.")
@@ -412,9 +441,9 @@ def score_stack_confidence(t, p_reports):
     if conf >= 75:
         ok, _ = _has_high_conviction_stack(t)
         if not ok:
-            # Apply 0.30 soft-cap above 70 instead of a hard cap at 75
-            conf = 70.0 + (conf - 70.0) * 0.30
-            reasons.append("Soft-capped above 70 — need 2+ conviction signals (DQI/div/pen/props).")
+            # Apply 0.50 soft-cap above 75 instead of a non-monotonic cap from 70
+            conf = 75.0 + (conf - 75.0) * 0.50
+            reasons.append("Soft-capped above 75 — need 2+ conviction signals (DQI/div/pen/props).")
 
     return _clamp(conf), reasons
 
@@ -527,7 +556,7 @@ def score_pitcher_confidence(p, t_reports):
                 reasons.append("WEATHER WARNING: Yellow status.")
             
             if w_temp >= 80 and "Indoor" not in w_label:
-                conf -= 5
+                conf -= 7
                 reasons.append(f"Weather temperature drag ({w_temp}°F).")
                 
             if w_wind_dir == "Out" and w_wind_speed >= 10:

@@ -285,7 +285,7 @@ def run_full_analysis():
     # 5. Analyze Hitters
     h_reports = _get_hitter_alpha(
         h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar,
-        raw_hitters=raw_hitters, pitcher_reports=p_reports,
+        raw_hitters=raw_hitters, pitcher_reports=p_reports, active_lineups=active_lineups
     )
     print(f"[STEP 3 DONE]: {len(h_reports)} hitter rows, {len(team_reports)} team rows.")
 
@@ -1379,7 +1379,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
     return team_reports
 
-def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=None, pitcher_reports=None):
+def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weighting, matchup_radar, raw_hitters=None, pitcher_reports=None, active_lineups=None):
     """STEP 3: Ranking Hitter Alpha"""
     print("\n[STEP 3]: Ranking Hitter Alpha...")
     if raw_hitters is None:
@@ -1564,6 +1564,26 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             form_boost=form_boost
         )
 
+        # Determine starting lineup position from confirmed/projected active lineups
+        batting_order = None
+        if active_lineups:
+            h_team = h['team'].lower()
+            confirmed = None
+            for lineup_team, players in active_lineups.items():
+                if h_team in lineup_team.lower() or lineup_team.lower() in h_team:
+                    confirmed = players
+                    break
+            if confirmed:
+                from utils.normalization import normalize_player_name
+                norm_name = normalize_player_name(h['name'])
+                try:
+                    batting_order = confirmed.index(norm_name) + 1
+                except ValueError:
+                    for idx, p_name in enumerate(confirmed):
+                        if norm_name in p_name or p_name in norm_name:
+                            batting_order = idx + 1
+                            break
+
         h_reports.append({
             'name': h['name'].title(), 'team': h['team'], 
             'opponent': team_data['opponent'] if team_data else "TBD",
@@ -1595,7 +1615,8 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             'is_cold_streak_msmi': h_is_cold_streak_msmi,
             'is_hot_run_msmi': h_is_hot_run_msmi,
             'barrel_pct': barrel_pct,
-            'hard_hit_pct': hard_hit_pct
+            'hard_hit_pct': hard_hit_pct,
+            'batting_order': batting_order
         })
 
     # Calibrate dynamic splits (platoon_label) slate-wide (OMEGA v12.1: Tightened, highly selective GPP criteria)

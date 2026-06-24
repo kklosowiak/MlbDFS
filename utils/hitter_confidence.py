@@ -5,6 +5,25 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
     conf = 50
     reasons = []
 
+    # Batting Order Volume Calibration
+    batting_order = h.get("batting_order")
+    if batting_order:
+        if batting_order == 1 or batting_order == 2:
+            conf += 5
+            reasons.append("Batting Order Spot 1-2 boost (+5)")
+        elif batting_order in (3, 4, 5):
+            conf += 2
+            reasons.append("Batting Order Spot 3-5 boost (+2)")
+        elif batting_order == 7:
+            conf -= 4
+            reasons.append("Batting Order Spot 7 penalty (-4)")
+        elif batting_order == 8:
+            conf -= 8
+            reasons.append("Batting Order Spot 8 penalty (-8)")
+        elif batting_order == 9:
+            conf -= 12
+            reasons.append("Batting Order Spot 9 penalty (-12)")
+
     # 1. Individual Matchup xwOBA (Physics Component)
     xwoba = float(h.get("matchup_xwoba", 0.330) or 0.330)
     if xwoba >= 0.370:

@@ -173,8 +173,8 @@ def test_bullpen_exhausted_dampens_tough_sp_penalty():
         "market_score": 10.0,
     }
     conf, reasons = score_stack_confidence(t_gassed, [opp_p])
-    # Base 50 + 12 (xwOBA) + 14 (gassed BP) - 9.6 (tough SP penalty cut by 60%) = 66.4 -> 66
-    assert conf == 66
+    # Base 50 + 12 (xwOBA) + 14 (gassed BP) - 20.4 (tough SP penalty cut by 15%) = 55.6 -> 56
+    assert conf == 56
     assert any("opposing pen exhausted" in r.lower() or "opponent bullpen is exhausted" in r.lower() for r in reasons)
     assert any("but opponent bullpen is exhausted" in r for r in reasons)
 
@@ -205,6 +205,7 @@ def test_asymptotic_compression_retains_hierarchy():
         "opp_pitcher_outs": 14.0,  # 2 signals: gassed + outs -> Gassed Bullpen Attack
         "dqi_status": "TRUST",
         "lineup_status": "CONFIRMED",
+        "is_sharp": True,
     }
     # Reds: slightly weaker but still elite
     t_110 = {
@@ -315,7 +316,7 @@ def test_matchup_boost_caps():
 
 
 def test_unanchored_chalk_stack_capping():
-    # High raw confidence stack but 0 conviction signals -> should soft-cap at 77
+    # High raw confidence stack but 0 conviction signals -> should soft-cap at 84
     t_unanchored = {
         "team": "A",
         "team_xwoba": 0.345,
@@ -332,8 +333,8 @@ def test_unanchored_chalk_stack_capping():
         "is_gassed": False,
     }
     conf, reasons = score_stack_confidence(t_unanchored, [])
-    assert conf == 77
-    assert any("Soft-capped above 70" in r for r in reasons)
+    assert conf == 84
+    assert any("Soft-capped above 75" in r for r in reasons)
 
     # Adding 2 conviction signals -> should remain uncapped (94)
     t_anchored = {
@@ -345,7 +346,7 @@ def test_unanchored_chalk_stack_capping():
     }
     conf_anchored, reasons_anchored = score_stack_confidence(t_anchored, [])
     assert conf_anchored == 94
-    assert not any("Soft-capped above 70" in r for r in reasons_anchored)
+    assert not any("Soft-capped above 75" in r for r in reasons_anchored)
 
 
 def test_tiered_volatile_sp_modifier():
@@ -483,6 +484,135 @@ def test_divergence_calibrations_v16_1():
     assert conf_trust - conf_base == 10
     assert any("DQI TRUST" in r for r in reasons_trust)
     assert not any("Public/ML steam trap" in r for r in reasons_trust)
+
+
+def test_bullpen_fatigue_scaled_by_quality():
+    # Base control team stack (no divergence, no DQI)
+    # Using team_xwoba=0.280 to keep scores in the linear range (below 75) to test exact deltas
+    t_base = {
+        "team": "Tigers",
+        "team_xwoba": 0.280,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+        "divergence": 0,
+        "dqi_status": "CAUTION"
+    }
+
+    # 1. Opponent with Elite Pen: Atlanta Braves (ERA 2.87 < 3.50) -> +8.0 CONF
+    t_elite = {
+        **t_base,
+        "opponent": "Atlanta Braves",
+        "bullpen_fatigue": 90
+    }
+    # 2. Opponent with Poor Pen: Colorado Rockies (ERA 5.80 > 4.20) -> +19.0 CONF
+    t_poor = {
+        **t_base,
+        "opponent": "Colorado Rockies",
+        "bullpen_fatigue": 90
+    }
+    # 3. Opponent with Average Pen: Cleveland Guardians (ERA 3.76) -> +14.0 CONF
+    t_avg = {
+        **t_base,
+        "opponent": "Cleveland Guardians",
+        "bullpen_fatigue": 90
+    }
+
+    c_base, _ = score_stack_confidence(t_base, [])
+    c_elite, r_elite = score_stack_confidence(t_elite, [])
+    c_poor, r_poor = score_stack_confidence(t_poor, [])
+    c_avg, r_avg = score_stack_confidence(t_avg, [])
+
+    assert c_elite - c_base == 8
+    assert any("Opposing elite pen fatigued" in r for r in r_elite)
+
+    assert c_poor - c_base == 19
+    assert any("Opposing poor pen fatigued" in r for r in r_poor)
+
+    assert c_avg - c_base == 14
+    assert any("Opposing pen exhausted" in r for r in r_avg)
+
+
+def test_pitcher_weather_temperature_penalty():
+    # Pitcher with warm weather (80F) outdoor
+    p_warm = {
+        "pitcher": "Test SP",
+        "opponent": "COL",
+        "physics_score": 15,
+        "form_status": None,
+        "is_trap": False,
+        "sharp_fade": False,
+        "is_juiced_target": False,
+        "divergence": 0,
+    }
+    opp_t = {
+        "team": "COL",
+        "weather_label": "🟢 82° / Out 10mph",
+    }
+    
+    # Control pitcher with normal weather (70F)
+    p_normal = {
+        **p_warm,
+        "opponent": "LAD"
+    }
+    opp_normal = {
+        "team": "LAD",
+        "weather_label": "🟢 70° / Neutral 5mph",
+    }
+
+    c_normal, _ = score_pitcher_confidence(p_normal, [opp_normal])
+    c_warm, r_warm = score_pitcher_confidence(p_warm, [opp_t])
+    
+    # Warm weather penalty of -7.0 instead of -5.0. 
+    # Also wind blowing out 10mph subtracts 6.0 in both versions, so the difference is exactly 7.0.
+    # Control has no weather penalty or wind penalty.
+    # Normal score: base 50 - 14 (physics < 10) = 36
+    # Warm score: base 50 - 14 (physics < 10) - 7 (weather temp) - 6 (wind out) = 23
+    assert c_normal - c_warm == 13 # 7.0 temp penalty + 6.0 wind penalty
+    assert any("Weather temperature drag (82°F)" in r for r in r_warm)
+
+
+def test_hitter_batting_order_confidence_adjustments():
+    from utils.hitter_confidence import score_hitter_confidence
+    
+    # Neutral base hitter
+    h_base = {
+        "name": "Base Hitter",
+        "matchup_xwoba": 0.330,
+    }
+
+    # Leadoff hitter (+5)
+    h_1 = {**h_base, "batting_order": 1}
+    # Clean-up hitter (+2)
+    h_4 = {**h_base, "batting_order": 4}
+    # 7-hole hitter (-4)
+    h_7 = {**h_base, "batting_order": 7}
+    # 8-hole hitter (-8)
+    h_8 = {**h_base, "batting_order": 8}
+    # 9-hole hitter (-12)
+    h_9 = {**h_base, "batting_order": 9}
+
+    c_base, _ = score_hitter_confidence(h_base)
+    c_1, r_1 = score_hitter_confidence(h_1)
+    c_4, r_4 = score_hitter_confidence(h_4)
+    c_7, r_7 = score_hitter_confidence(h_7)
+    c_8, r_8 = score_hitter_confidence(h_8)
+    c_9, r_9 = score_hitter_confidence(h_9)
+
+    assert c_1 - c_base == 5
+    assert any("Order Spot 1-2 boost" in r for r in r_1)
+
+    assert c_4 - c_base == 2
+    assert any("Order Spot 3-5 boost" in r for r in r_4)
+
+    assert c_base - c_7 == 4
+    assert any("Order Spot 7 penalty" in r for r in r_7)
+
+    assert c_base - c_8 == 8
+    assert any("Order Spot 8 penalty" in r for r in r_8)
+
+    assert c_base - c_9 == 12
+    assert any("Order Spot 9 penalty" in r for r in r_9)
+
 
 
 
