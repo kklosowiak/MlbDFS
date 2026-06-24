@@ -64,6 +64,12 @@ def _has_high_conviction_stack(t):
         signals += 1
     if t.get("is_pitch_alignment"):
         signals += 1
+
+    # Matchup conviction signals
+    if float(t.get("implied_total", 4.5) or 4.5) >= 5.0:
+        signals += 1
+    if t.get("is_true_talent_penalty") or t.get("is_trap"):
+        signals += 1
         
     opp_trap = False
     return signals >= 2, opp_trap
