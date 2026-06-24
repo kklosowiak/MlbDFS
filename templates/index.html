@@ -3992,7 +3992,8 @@
             const tip = reasons
                 ? `${omegaTip('col_conf')} ${reasons}`
                 : omegaTip('col_conf');
-            return `<td class="metric ${cls}"${tipAttrs(tip)}>${conf}</td>`;
+            const confDisplay = typeof conf === 'number' ? conf.toFixed(1) : conf;
+            return `<td class="metric ${cls}"${tipAttrs(tip)}>${confDisplay}</td>`;
         }
 
         function confDeltaHtml(entity) {
@@ -4004,13 +4005,14 @@
             const prefix = d > 0 ? '+' : '';
             const vol = entity.is_volatile ? ' ⚡' : '';
             const tip = `${omegaTip('col_conf_delta')} Change since first run today: ${prefix}${d} pts.${entity.is_volatile ? ' VOLATILE (swing ≥15).' : ''}`;
-            return `<td class="metric ${cls}"${tipAttrs(tip)}>${prefix}${d}${vol}</td>`;
+            const dDisplay = typeof d === 'number' ? d.toFixed(1) : d;
+            return `<td class="metric ${cls}"${tipAttrs(tip)}>${prefix}${dDisplay}${vol}</td>`;
         }
 
         function trustStackHtml(entity) {
             const raw = entity.attack_conf;
             const conf = raw != null && raw !== undefined ? raw : '—';
-            const confDisplay = typeof conf === 'number' ? `${conf}%` : conf;
+            const confDisplay = typeof conf === 'number' ? `${conf.toFixed(1)}%` : conf;
             const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
             const confCls = typeof conf === 'number' && conf >= 70 ? 'val-up'
                 : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
@@ -4020,7 +4022,8 @@
                 const dCls = d > 0 ? 'val-up' : (d < 0 ? 'val-down' : 'val-even');
                 const prefix = d > 0 ? '+' : '';
                 const vol = entity.is_volatile ? ' ⚡' : '';
-                deltaHtml = `<div class="ts-delta ${dCls}">Δ ${prefix}${d}${vol}</div>`;
+                const dDisplay = typeof d === 'number' ? d.toFixed(1) : d;
+                deltaHtml = `<div class="ts-delta ${dCls}">Δ ${prefix}${dDisplay}${vol}</div>`;
             }
             const tip = reasons
                 ? `${omegaTip('col_trust_stack')} ${reasons}`
@@ -5109,7 +5112,8 @@
                   const confStack = [...data.teams].filter(t => t.attack_conf != null).sort((a, b) => (b.attack_conf || 0) - (a.attack_conf || 0))[0];
                   if (confStack) {
                       document.getElementById('hub-top-conf-stack').innerText = confStack.team || '---';
-                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confStack.attack_conf + '% · Ω ' + (numScore(confStack.stack_score) ? numScore(confStack.stack_score).toFixed(1) : '--');
+                      const confDisp = confStack.attack_conf != null ? confStack.attack_conf.toFixed(1) : '--';
+                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confDisp + '% · Ω ' + (numScore(confStack.stack_score) ? numScore(confStack.stack_score).toFixed(1) : '--');
                   }
                   const sneaky = [...data.teams].filter(t =>
                       t.stack_score >= 95 && t.stack_score <= 125 &&
@@ -7877,7 +7881,7 @@
                 const stackAdj = h.stack_adjusted_score != null && h.stack_adjusted_score !== h.player_score
                     ? ` (stack context ${Number(h.stack_adjusted_score).toFixed(1)})` : '';
                 document.getElementById('hm-score').innerText = solo + stackAdj;
-                document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf + '%' : '—';
+                document.getElementById('hm-conf').innerText = h.attack_conf != null ? h.attack_conf.toFixed(1) + '%' : '—';
                 document.getElementById('hm-phys').innerText = h.physics_score || '—';
                 document.getElementById('hm-mkt').innerText = h.market_score || '—';
                 
