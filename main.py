@@ -1613,7 +1613,6 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
                     confirmed = players
                     break
             if confirmed:
-                from utils.normalization import normalize_player_name
                 norm_name = normalize_player_name(h['name'])
                 try:
                     batting_order = confirmed.index(norm_name) + 1
