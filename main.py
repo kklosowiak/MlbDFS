@@ -146,7 +146,28 @@ def run_full_analysis():
 
 
     print(f"[INIT]: Analysis targeting {len(snapshot.get('odds', []))} Night Slate matchups.")
-    
+
+    # OMEGA v7.1: Auto-purge games that have already started (commence_time > 90 min ago)
+    # This prevents day games from bleeding into night slate when same teams play a doubleheader.
+    import datetime as _dt
+    _now_utc = _dt.datetime.now(_dt.timezone.utc)
+    _before_purge = len(snapshot.get('odds', []))
+    def _game_has_started(g):
+        ct = g.get('commence_time') or g.get('game_time') or ''
+        if not ct:
+            return False
+        try:
+            # Parse ISO8601 UTC time
+            game_dt = _dt.datetime.fromisoformat(ct.replace('Z', '+00:00'))
+            # Drop if game started more than 90 minutes ago
+            return (_now_utc - game_dt).total_seconds() > 5400
+        except Exception:
+            return False
+    snapshot['odds'] = [g for g in snapshot.get('odds', []) if not _game_has_started(g)]
+    _purged = _before_purge - len(snapshot.get('odds', []))
+    if _purged:
+        print(f"[SLATE]: PURGED {_purged} already-started game(s) from snapshot.")
+
     # OMEGA v6.9: Applied Date-Aware Slate Filter
     allowed_teams = config.get_slate_filter()
     if allowed_teams:
