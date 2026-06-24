@@ -4856,7 +4856,7 @@
             }
         }
 
-        function populateMatchupFilter(data) {
+        function populateMatchupFilter(data, allowedTeams = null, filterEnabled = false) {
             const container = document.getElementById('matchups-checkbox-container');
             const panel = document.getElementById('matchup-filter-panel');
             if (!container || !panel || !data) return;
@@ -4889,31 +4889,37 @@
                 return;
             }
 
-            let uncheckedMatchupKeys = new Set();
-            try {
-                const stored = localStorage.getItem('omega_unchecked_matchups');
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed)) {
-                        uncheckedMatchupKeys = new Set(parsed);
-                    }
-                } else {
-                    container.querySelectorAll('.matchup-checkbox').forEach(cb => {
-                        if (!cb.checked) {
-                            uncheckedMatchupKeys.add(cb.getAttribute('data-game-key'));
-                        }
-                    });
-                }
-            } catch (e) {
-                console.error("Failed to load unchecked matchups from localStorage:", e);
-            }
+            const getFullTeamName = (abbr) => {
+                const candidates = Object.keys(abbrevMap).filter(k => abbrevMap[k] === abbr);
+                if (candidates.length === 0) return abbr;
+                candidates.sort((a, b) => b.length - a.length);
+                return candidates[0];
+            };
 
             container.innerHTML = '';
             panel.style.display = 'block';
 
             matchups.forEach(m => {
-                const gameKey = matchupGameKey(m.teamA, m.teamB) || [m.teamA, m.teamB].sort().join('_');
-                const isChecked = !uncheckedMatchupKeys.has(gameKey);
+                const gameKey = [m.teamA, m.teamB].sort().join('_');
+                
+                // Decide if checked based on server-side allowedTeams
+                let isChecked = true;
+                if (filterEnabled && allowedTeams) {
+                    const fullA = getFullTeamName(m.teamA);
+                    const fullB = getFullTeamName(m.teamB);
+                    isChecked = allowedTeams.includes(fullA) && allowedTeams.includes(fullB);
+                } else {
+                    // Fallback to local storage
+                    try {
+                        const stored = localStorage.getItem('omega_unchecked_matchups');
+                        if (stored) {
+                            const parsed = JSON.parse(stored);
+                            if (Array.isArray(parsed)) {
+                                isChecked = !parsed.includes(gameKey);
+                            }
+                        }
+                    } catch (e) {}
+                }
 
                 const div = document.createElement('div');
                 div.className = "matchup-chip";
@@ -4934,28 +4940,45 @@
                 input.setAttribute('data-team-b', m.teamB);
                 input.style.cssText = "cursor: pointer; margin: 0; accent-color: var(--accent-blue);";
                 
-                input.onchange = () => {
+                input.onchange = async () => {
                     syncMatchupChipStyle(input);
                     saveUncheckedMatchups(container);
                     filterData();
+                    
+                    // Sync to server-side slate filter!
+                    try {
+                        const allowed = [];
+                        document.querySelectorAll('.matchup-checkbox').forEach(cb => {
+                            if (cb.checked) {
+                                const teamA = cb.getAttribute('data-team-a');
+                                const teamB = cb.getAttribute('data-team-b');
+                                const fullA = getFullTeamName(teamA);
+                                const fullB = getFullTeamName(teamB);
+                                if (fullA && !allowed.includes(fullA)) allowed.push(fullA);
+                                if (fullB && !allowed.includes(fullB)) allowed.push(fullB);
+                            }
+                        });
+                        
+                        await fetch('/api/slate-filter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ allowed_teams: allowed, enabled: true })
+                        });
+                    } catch (err) {
+                        console.error("Failed to sync slate filter to server:", err);
+                    }
                 };
                 syncMatchupChipStyle(input);
 
                 const span = document.createElement('span');
                 span.innerText = `${m.teamA} @ ${m.teamB}`;
+                span.style.fontSize = "0.85rem";
+                span.style.fontWeight = "700";
 
                 div.appendChild(input);
                 div.appendChild(span);
                 container.appendChild(div);
             });
-
-            if (container.querySelectorAll('.matchup-checkbox:checked').length === 0) {
-                container.querySelectorAll('.matchup-checkbox').forEach(cb => { 
-                    cb.checked = true; 
-                    syncMatchupChipStyle(cb);
-                });
-                saveUncheckedMatchups(container);
-            }
         }
 
         function slateHasData(data) {
@@ -5090,6 +5113,21 @@
         // Load all data from API
         async function loadData() {
             try {
+                let allowedTeams = null;
+                let filterEnabled = false;
+                try {
+                    const infoRes = await fetch('/api/slate-info');
+                    if (infoRes.ok) {
+                        const info = await infoRes.json();
+                        if (info) {
+                            allowedTeams = info.allowed_teams;
+                            filterEnabled = info.filter_enabled;
+                        }
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch slate info:", e);
+                }
+
                 const res = await fetch('/api/results');
                 if (res.status === 401) {
                     window.location.href = '/login';
@@ -5118,7 +5156,7 @@
 
                 const searchBar = document.getElementById('search-bar');
                 if (searchBar) searchBar.value = '';
-                populateMatchupFilter(latestData);
+                populateMatchupFilter(latestData, allowedTeams, filterEnabled);
                 updateWelcomeHub(latestData);
                 renderTables();
                 try {
@@ -8495,6 +8533,7 @@
                 });
                 
                 loadOptimizerInfo();
+                loadData();
             } catch (e) {
                 console.error("Failed to toggle game selection:", e);
             }

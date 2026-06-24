@@ -159,7 +159,17 @@ def main():
     write_filter(filter_path, sorted(list(active_teams)), args.dry_run)
 
 def write_filter(filter_path, allowed_teams, dry_run):
-    today = datetime.now().strftime("%Y-%m-%d")
+    dt_utc = datetime.now(timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+    except Exception:
+        dt_et = dt_utc - timedelta(hours=4)
+        
+    if dt_et.hour < 4:
+        today = (dt_et - timedelta(days=1)).strftime("%Y-%m-%d")
+    else:
+        today = dt_et.strftime("%Y-%m-%d")
     filter_data = {
         "enabled": True,
         "active_date": today,

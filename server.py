@@ -1420,7 +1420,16 @@ def post_slate_filter_api(payload: dict):
         data_dir = os.path.join(base_dir, "data")
         filter_path = os.path.join(data_dir, "slate_filter.json")
         
-        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        dt_utc = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            from zoneinfo import ZoneInfo
+            dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            dt_et = dt_utc - datetime.timedelta(hours=4)
+        if dt_et.hour < 4:
+            today = (dt_et - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            today = dt_et.strftime("%Y-%m-%d")
         filter_data = {
             "enabled": enabled,
             "active_date": today,
@@ -1479,7 +1488,16 @@ def post_slate_auto_sync_api(payload: dict):
             active_teams.add(away)
             
         filter_path = os.path.join(data_dir, "slate_filter.json")
-        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        dt_utc = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            from zoneinfo import ZoneInfo
+            dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            dt_et = dt_utc - datetime.timedelta(hours=4)
+        if dt_et.hour < 4:
+            today = (dt_et - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            today = dt_et.strftime("%Y-%m-%d")
         
         filter_data = {
             "enabled": True,

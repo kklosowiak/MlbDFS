@@ -47,14 +47,26 @@ class Config:
     def get_slate_filter(cls):
         """OMEGA v6.9: Load Date-Aware Slate Filter."""
         import json
-        from datetime import datetime
+        from datetime import datetime, timezone, timedelta
         filter_path = os.path.join(cls.DATA_DIR, "slate_filter.json")
         if os.path.exists(filter_path):
             try:
                 with open(filter_path, 'r') as f:
                     data = json.load(f)
                 
-                today = datetime.now().strftime("%Y-%m-%d")
+                # OMEGA v9.4: Timezone-aware US/Eastern slate rollover (4:00 AM)
+                dt_utc = datetime.now(timezone.utc)
+                try:
+                    from zoneinfo import ZoneInfo
+                    dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+                except Exception:
+                    dt_et = dt_utc - timedelta(hours=4)
+                
+                if dt_et.hour < 4:
+                    today = (dt_et - timedelta(days=1)).strftime("%Y-%m-%d")
+                else:
+                    today = dt_et.strftime("%Y-%m-%d")
+                    
                 if data.get('enabled') and data.get('active_date') == today:
                     return data.get('allowed_teams', [])
             except: pass

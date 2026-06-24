@@ -85,6 +85,11 @@ def load_projections(file_path):
         return json.load(f)
 
 def run_optimization(salaries_path, results_path, args):
+    from config import config
+    allowed_teams = config.get_slate_filter()
+    if allowed_teams is not None:
+        print(f"Applying slate filter: {len(allowed_teams)} teams allowed.")
+        
     print(f"Loading DK Salaries: {os.path.basename(salaries_path)}")
     dk_players = load_salaries(salaries_path)
     
@@ -106,12 +111,16 @@ def run_optimization(salaries_path, results_path, args):
     
     unmatched_count = 0
     for dk in dk_players:
+        team_abbr = dk['TeamAbbrev']
+        full_team = TEAM_MAP.get(team_abbr, team_abbr)
+        if allowed_teams is not None and full_team not in allowed_teams:
+            continue
+            
         name = dk['Name']
         cn = clean_name(name)
         sal = int(dk['Salary'])
         pos = dk['Position']
         roster_pos = dk['Roster Position']
-        team_abbr = dk['TeamAbbrev']
         
         is_p = (roster_pos == 'P' or 'SP' in pos or 'RP' in pos)
         
