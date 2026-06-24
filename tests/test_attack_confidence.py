@@ -333,7 +333,7 @@ def test_unanchored_chalk_stack_capping():
         "is_gassed": False,
     }
     conf, reasons = score_stack_confidence(t_unanchored, [])
-    assert conf == 84
+    assert conf == 81
     assert any("Soft-capped above 75" in r for r in reasons)
 
     # Adding 2 conviction signals -> should remain uncapped (94)

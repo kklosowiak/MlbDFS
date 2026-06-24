@@ -50,19 +50,19 @@ def _has_high_conviction_stack(t):
         signals += 1
     if float(t.get("divergence", 0) or 0) >= 10:
         signals += 1
-    if t.get("bullpen_fatigue", 0) >= 85 or t.get("is_gassed"):
+    # Bullpen/leash status counts as at most 1 signal to avoid double-counting
+    opp_outs = float(t.get("opp_pitcher_outs", 18.0) or 18.0)
+    if t.get("is_gassed") and opp_outs <= 15.5:
         signals += 1
+    elif t.get("bullpen_fatigue", 0) >= 85 or t.get("is_gassed"):
+        signals += 1
+
     if t.get("prop_pressure_elite") or t.get("prop_pressure_label") == LABEL_HOT:
         signals += 1
     # New tactical GPP signals count as high conviction anchors!
     if t.get("is_anti_chalk_smash"):
         signals += 1
     if t.get("is_pitch_alignment"):
-        signals += 1
-    
-    # Gassed Bullpen Attack counts as high conviction anchor
-    opp_outs = float(t.get("opp_pitcher_outs", 18.0) or 18.0)
-    if t.get("is_gassed") and opp_outs <= 15.5:
         signals += 1
         
     opp_trap = False
@@ -494,8 +494,8 @@ def score_stack_confidence(t, p_reports):
     if conf >= 75:
         ok, _ = _has_high_conviction_stack(t)
         if not ok:
-            # Apply 0.50 soft-cap above 75 instead of a non-monotonic cap from 70
-            conf = 75.0 + (conf - 75.0) * 0.50
+            # Apply 0.35 soft-cap above 75 instead of a non-monotonic cap from 70
+            conf = 75.0 + (conf - 75.0) * 0.35
             reasons.append("Soft-capped above 75 — need 2+ conviction signals (DQI/div/pen/props).")
 
     return _clamp(conf), reasons

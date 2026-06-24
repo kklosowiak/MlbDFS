@@ -4247,8 +4247,8 @@
             const raw = entity.attack_conf;
             const conf = raw != null && raw !== undefined ? raw : '—';
             const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
-            const cls = typeof conf === 'number' && conf >= 70 ? 'val-up'
-                : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
+            const cls = typeof conf === 'number' && conf >= 85 ? 'val-up'
+                : (typeof conf === 'number' && conf >= 60 ? 'val-even' : 'val-down');
             const tip = reasons
                 ? `${omegaTip('col_conf')} ${reasons}`
                 : omegaTip('col_conf');
@@ -4274,8 +4274,8 @@
             const conf = raw != null && raw !== undefined ? raw : '—';
             const confDisplay = typeof conf === 'number' ? `${conf.toFixed(1)}%` : conf;
             const reasons = (entity.attack_reasons || []).slice(0, 3).join(' · ');
-            const confCls = typeof conf === 'number' && conf >= 70 ? 'val-up'
-                : (typeof conf === 'number' && conf >= 40 ? 'val-even' : 'val-down');
+            const confCls = typeof conf === 'number' && conf >= 85 ? 'val-up'
+                : (typeof conf === 'number' && conf >= 60 ? 'val-even' : 'val-down');
             const d = entity.conf_delta;
             let deltaHtml = '<div class="ts-delta" style="color:var(--text-secondary);">Δ —</div>';
             if (d != null && d !== undefined) {
