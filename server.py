@@ -314,6 +314,14 @@ def auto_audit_capture_loop():
                 from run_feedback_loop import run_feedback_loop
                 run_feedback_loop(7)
                 print("[7AM-AUDIT]: ✅ Auto-audit feedback loop completed successfully!")
+                
+                # Rebuild betting history database with new daily outcomes
+                try:
+                    from utils.audit_engine import AuditEngine
+                    engine = AuditEngine()
+                    engine.backfill_betting_history()
+                except Exception as bet_err:
+                    print(f"[7AM-AUDIT ERROR]: Betting ROI backfill failed: {bet_err}")
             except Exception as aud_err:
                 import traceback
                 print(f"[7AM-AUDIT ERROR]: {aud_err}")
@@ -2758,6 +2766,15 @@ if __name__ == "__main__":
                         try:
                             from utils.nightly_validator import run_daily_validation
                             run_daily_validation()
+                            
+                            # Rebuild betting history database with new daily outcomes
+                            try:
+                                from utils.audit_engine import AuditEngine
+                                engine = AuditEngine()
+                                engine.backfill_betting_history()
+                            except Exception as bet_err:
+                                print(f"[NIGHTLY VALIDATOR]: Betting ROI backfill failed: {bet_err}")
+                                
                             last_run_date = today_key
                             print(f"[NIGHTLY VALIDATOR]: Completed for {today_key}")
                         except Exception as ve:
