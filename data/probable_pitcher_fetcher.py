@@ -75,21 +75,45 @@ class ProbablePitcherFetcher:
                                 'number': game_num
                             })
 
+            # OMEGA: Load pitcher overrides if they exist
+            overrides_path = os.path.join(config.DATA_DIR, "pitcher_overrides.json")
+            overrides = {}
+            if os.path.exists(overrides_path):
+                try:
+                    with open(overrides_path, 'r', encoding='utf-8') as f:
+                        overrides = json.load(f)
+                    print(f"  - LOADED overrides: {list(overrides.keys())}")
+                except Exception as ov_err:
+                    print(f"  - WARNING: Failed to load pitcher overrides: {ov_err}")
+
             for team_name, games in team_games.items():
                 # Sort games by game number
                 games.sort(key=lambda x: x['number'])
-                # Default is Game 1 for backward compatibility
-                probables[team_name] = games[0]['pitcher']
                 # Suffixes
                 for i, g in enumerate(games):
                     suffix = f"_{i+1}"
-                    probables[f"{team_name}{suffix}"] = g['pitcher']
+                    pitcher = g['pitcher']
+                    
+                    # Try to match override by Team_GameNumber (e.g. "Chicago Cubs_1")
+                    override_key = f"{team_name}{suffix}"
+                    if override_key in overrides:
+                        pitcher = overrides[override_key]
+                        print(f"  - OVERRIDE: {override_key} -> {pitcher} (was {g['pitcher']})")
+                    # Try to match override by general team name for Game 1
+                    elif i == 0 and team_name in overrides:
+                        pitcher = overrides[team_name]
+                        print(f"  - OVERRIDE: {team_name} -> {pitcher} (was {g['pitcher']})")
+                        
+                    probables[f"{team_name}{suffix}"] = pitcher
                     probables[f"{team_name}{suffix}_time"] = g['date']
+                    
+                # Default is Game 1 for backward compatibility
+                probables[team_name] = probables.get(f"{team_name}_1", games[0]['pitcher'])
             
             if probables:
                 with open(self.output_path, 'w') as f:
                     json.dump(probables, f, indent=4)
-                print(f"  - SUCCESS: Synchronized {len(probables)} starters via StatsAPI.")
+                print(f"  - SUCCESS: Synchronized {len(probables)} starters via StatsAPI (applied overrides).")
                 return True
             else:
                 print("  - WARNING: No probable pitchers found in the API response.")
