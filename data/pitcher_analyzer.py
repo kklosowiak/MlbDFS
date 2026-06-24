@@ -86,6 +86,35 @@ class PitcherAnalyzer:
         _load_market(outs_path, 'pitcher_outs', 'outs', 15.5)
         return external_props
 
+    def resolve_pitcher_from_probables(self, team_name, commence_time, probables):
+        """
+        OMEGA Doubleheader Time Matcher: Matches starting pitcher to Odds API event by commence time.
+        """
+        if not probables:
+            return "TBD"
+        if f"{team_name}_2" in probables:
+            from datetime import datetime
+            try:
+                commence_dt = datetime.fromisoformat(commence_time.replace('Z', '+00:00'))
+                best_pitcher = None
+                min_diff = None
+                for i in range(1, 4):
+                    p_key = f"{team_name}_{i}"
+                    t_key = f"{team_name}_{i}_time"
+                    if p_key in probables and t_key in probables:
+                        game_time = probables[t_key]
+                        game_dt = datetime.fromisoformat(game_time.replace('Z', '+00:00'))
+                        diff = abs((commence_dt - game_dt).total_seconds())
+                        if min_diff is None or diff < min_diff:
+                            min_diff = diff
+                            best_pitcher = probables[p_key]
+                if best_pitcher:
+                    return best_pitcher
+            except Exception as e:
+                print(f"  - [WARNING]: Doubleheader time match failed for {team_name}: {e}")
+                
+        return probables.get(team_name, "TBD")
+
     def analyze_slate(self, snapshot_path, opening_path, splits_data=None, props_data=None, rosters=None, weather_fetcher=None, umpire_fetcher=None, confirmed_list=[], movement_data=None, previous_results=None):
         if props_data is None: props_data = {}
         if rosters is None: rosters = {}
@@ -174,7 +203,7 @@ class PitcherAnalyzer:
             for side in ['home', 'away']:
                 team_name = game[f'{side}_team']
                 vi_name = self.team_map.get(team_name)
-                pitcher_name = probables.get(team_name, rosters.get(team_name, "TBD"))
+                pitcher_name = self.resolve_pitcher_from_probables(team_name, commence_str, probables) or rosters.get(team_name, "TBD")
                 
                 # Market Discovery
                 key_prefix = 'home' if side == 'home' else 'away'

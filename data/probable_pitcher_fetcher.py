@@ -57,15 +57,34 @@ class ProbablePitcherFetcher:
                 return False
                 
             probables = {}
+            team_games = {}
             for date_entry in data['dates']:
                 for game in date_entry.get('games', []):
+                    game_date = game.get('gameDate')
+                    game_num = game.get('gameNumber', 1)
                     for side in ['away', 'home']:
                         team_data = game.get('teams', {}).get(side, {})
                         team_name = team_data.get('team', {}).get('name')
                         pitcher_name = team_data.get('probablePitcher', {}).get('fullName', 'TBD')
-                        
                         if team_name:
-                            probables[team_name] = pitcher_name
+                            if team_name not in team_games:
+                                team_games[team_name] = []
+                            team_games[team_name].append({
+                                'pitcher': pitcher_name,
+                                'date': game_date,
+                                'number': game_num
+                            })
+
+            for team_name, games in team_games.items():
+                # Sort games by game number
+                games.sort(key=lambda x: x['number'])
+                # Default is Game 1 for backward compatibility
+                probables[team_name] = games[0]['pitcher']
+                # Suffixes
+                for i, g in enumerate(games):
+                    suffix = f"_{i+1}"
+                    probables[f"{team_name}{suffix}"] = g['pitcher']
+                    probables[f"{team_name}{suffix}_time"] = g['date']
             
             if probables:
                 with open(self.output_path, 'w') as f:

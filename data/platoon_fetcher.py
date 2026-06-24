@@ -71,8 +71,13 @@ class PlatoonFetcher:
             probables = {}
 
         print(f"  - Fetching Pitcher Splits vs LHH / RHH for {len(probables)} probables...")
+        seen_pitchers = set()
         for team, pitcher_name in probables.items():
-            if pitcher_name == "TBD": continue
+            if team.endswith("_time") or pitcher_name in ["TBD", "Tbd", "tbd"]:
+                continue
+            if pitcher_name in seen_pitchers:
+                continue
+            seen_pitchers.add(pitcher_name)
             try:
                 search_url = f"{self.api_url}/people/search?names={pitcher_name}&sportId=1"
                 resp = requests.get(search_url, timeout=10)

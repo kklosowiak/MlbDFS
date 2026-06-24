@@ -12,6 +12,7 @@ class Config:
     # Engine Settings
     SHARP_WEIGHT_THRESHOLD = 0.05  # 5% movement threshold
     DEFAULT_SLATE_SIZE = 10
+    DOUBLEHEADER_PREFERENCE = int(os.getenv("DOUBLEHEADER_PREFERENCE", 1))
     
     # Sharp Delta & Line Velocity Boosts
     PINNACLE_OFFENSE_BOOST = 2.0

@@ -417,7 +417,13 @@ class StatcastBridge:
             return cache
         
         missing = []
+        seen_pitchers = set()
         for team, pitcher_name in probables.items():
+            if team.endswith("_time") or pitcher_name in ["TBD", "Tbd", "tbd"]:
+                continue
+            if pitcher_name in seen_pitchers:
+                continue
+            seen_pitchers.add(pitcher_name)
             norm = normalize_player_name(pitcher_name)
             existing = cache.get(norm)
             if not existing or existing.get('type') != 'pitcher':
@@ -490,7 +496,13 @@ class StatcastBridge:
             return {}
             
         form_cache = {}
+        seen_pitchers = set()
         for team, pitcher_name in probables.items():
+            if team.endswith("_time") or pitcher_name in ["TBD", "Tbd", "tbd"]:
+                continue
+            if pitcher_name in seen_pitchers:
+                continue
+            seen_pitchers.add(pitcher_name)
             norm = normalize_player_name(pitcher_name)
             try:
                 search_url = f"https://statsapi.mlb.com/api/v1/people/search?names={pitcher_name}&sportId=1"

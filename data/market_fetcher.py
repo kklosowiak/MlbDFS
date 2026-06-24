@@ -114,8 +114,34 @@ class MarketFetcher:
             print(f"  - [DISCOVERED SP]: {discovered} ({team_name})")
             return discovered
             
-        return None
-
+    def resolve_pitcher_from_probables(self, team_name, commence_time, probables):
+        """
+        OMEGA Doubleheader Time Matcher: Matches starting pitcher to Odds API event by commence time.
+        """
+        if not probables:
+            return "TBD"
+        if f"{team_name}_2" in probables:
+            from datetime import datetime
+            try:
+                commence_dt = datetime.fromisoformat(commence_time.replace('Z', '+00:00'))
+                best_pitcher = None
+                min_diff = None
+                for i in range(1, 4):
+                    p_key = f"{team_name}_{i}"
+                    t_key = f"{team_name}_{i}_time"
+                    if p_key in probables and t_key in probables:
+                        game_time = probables[t_key]
+                        game_dt = datetime.fromisoformat(game_time.replace('Z', '+00:00'))
+                        diff = abs((commence_dt - game_dt).total_seconds())
+                        if min_diff is None or diff < min_diff:
+                            min_diff = diff
+                            best_pitcher = probables[p_key]
+                if best_pitcher:
+                    return best_pitcher
+            except Exception as e:
+                print(f"  - [WARNING]: Doubleheader time match failed for {team_name}: {e}")
+                
+        return probables.get(team_name, "TBD")
 
     def fetch_event_ids(self, date_from=None, date_to=None):
 
@@ -239,8 +265,8 @@ class MarketFetcher:
                     except:
                         probables = {}
 
-                    h_sp = game_data.get('home_pitcher') or probables.get(home_team)
-                    a_sp = game_data.get('away_pitcher') or probables.get(away_team)
+                    h_sp = game_data.get('home_pitcher') or self.resolve_pitcher_from_probables(home_team, commence_time, probables)
+                    a_sp = game_data.get('away_pitcher') or self.resolve_pitcher_from_probables(away_team, commence_time, probables)
 
                     structured_odds[event_id] = {
                         "id": event_id,
