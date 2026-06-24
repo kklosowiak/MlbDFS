@@ -614,6 +614,29 @@ def test_hitter_batting_order_confidence_adjustments():
     assert any("Order Spot 9 penalty" in r for r in r_9)
 
 
+def test_early_innings_volatility_pitcher_penalty():
+    from utils.attack_confidence import score_pitcher_confidence
+    p_normal = {
+        "pitcher": "Normal SP",
+        "team": "Braves",
+        "opponent": "Brewers",
+        "physics_score": 10.0,
+    }
+    p_short = {
+        **p_normal,
+        "early_innings_volatility": True
+    }
+    opp_t = {
+        "team": "Brewers",
+        "implied_total": 4.5,
+    }
+    c_normal, _ = score_pitcher_confidence(p_normal, [opp_t])
+    c_short, r_short = score_pitcher_confidence(p_short, [opp_t])
+    assert c_normal - c_short == 10
+    assert any("Early-innings volatility (IP/start < 4.5) — low QS ceiling." in r for r in r_short)
+
+
+
 
 
 

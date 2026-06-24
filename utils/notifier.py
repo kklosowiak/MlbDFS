@@ -56,15 +56,33 @@ class Notifier:
     def push_god_tier_alert(self, team_data):
         """Sends a high-impact alert for Alpha scores > 80."""
         text = (
-            f"🚀 *GOD-TIER OMEGA ALERT* 🚀\n\n"
-            f"🔥 *Team*: {team_data['team']}\n"
-            f"📈 *Alpha Score*: `{team_data['stack_score']}`\n"
-            f"👤 *Opponent*: {team_data['opp_pitcher']}\n"
-            f"🎯 *ITT Move*: `{team_data['tt_move']}`\n"
-            f"💨 *Weather*: {team_data['weather']}\n"
-            f"📊 *Public Ticket*: {team_data['public_bets']}%\n"
-            f"💰 *Game Total*: {team_data['game_total']}\n\n"
+            f"\U0001f680 *GOD-TIER OMEGA ALERT* \U0001f680\n\n"
+            f"\U0001f525 *Team*: {team_data['team']}\n"
+            f"\U0001f4c8 *Alpha Score*: `{team_data['stack_score']}`\n"
+            f"\U0001f464 *Opponent*: {team_data['opp_pitcher']}\n"
+            f"\U0001f3af *ITT Move*: `{team_data['tt_move']}`\n"
+            f"\U0001f4a8 *Weather*: {team_data['weather']}\n"
+            f"\U0001f4ca *Public Ticket*: {team_data['public_bets']}%\n"
+            f"\U0001f4b0 *Game Total*: {team_data['game_total']}\n\n"
             f"_[The OMEGA Engine - High Alpha Detection]_"
+        )
+        return self.send_message(text)
+
+    def alert_scraper_failure(self, scraper_name: str, reason: str):
+        """
+        Fires a Telegram alert when a critical scraper fails silently
+        (returns 0 results or raises an exception).
+        Called automatically by run_fetch.py when zero-result detection fires.
+        """
+        from datetime import datetime, timezone
+        ts = datetime.now(timezone.utc).strftime("%H:%M UTC")
+        text = (
+            f"\u26a0\ufe0f *OMEGA SCRAPER ALERT* \u26a0\ufe0f\n\n"
+            f"*Scraper*: `{scraper_name}`\n"
+            f"*Status*: FAILED / 0 results\n"
+            f"*Reason*: {reason[:200]}\n"
+            f"*Time*: {ts}\n\n"
+            f"_Model is serving cached data. Check logs._"
         )
         return self.send_message(text)
 

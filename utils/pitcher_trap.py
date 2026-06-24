@@ -16,30 +16,41 @@ def _norm_odds(val):
         return None
 
 
-def compute_fresh_trap(*, ml_move, k_move, k_line, k_odds, outs_line, outs_odds):
-    """Pure TRAP rules from current lines/odds (no memory)."""
+def compute_fresh_trap(*, ml_move, k_move, k_line, k_odds, outs_line, outs_odds, divergence=None):
+    """
+    Pure TRAP rules from current lines/odds (no memory).
+
+    Divergence gate (v2): A TRAP requires that the public is leaning toward
+    this pitcher. If sharp money is clearly backing them (divergence < -10),
+    it contradicts the TRAP thesis -- a consensus sharp play is NOT a trap.
+    """
     is_trap = False
     trap_is_short_leash = False
     trap_is_vulnerable = False
     is_death_sentence = False
     k_odds_f = _norm_odds(k_odds)
 
-    if ml_move > TRAP_ML_MOVE_MIN and k_move < 0:
-        is_trap = True
-        trap_is_vulnerable = True
-    if k_odds_f is not None and k_odds_f > TRAP_K_ODDS_MIN:
-        is_trap = True
-        trap_is_vulnerable = True
+    # Divergence gate: skip TRAP if sharps are clearly backing this pitcher
+    div_f = float(divergence) if divergence is not None else 0.0
+    sharp_backing = div_f >= 10.0
 
-    # Books steamed the team but K price is off the board or still juiced (Myers-style)
-    if k_line is not None and ml_move > TRAP_ML_MOVE_MIN:
-        try:
-            inflated_k = float(k_line) >= TRAP_INFLATED_K_LINE_MIN
-        except (TypeError, ValueError):
-            inflated_k = False
-        if inflated_k and (k_odds_f is None or k_odds_f > TRAP_K_ODDS_MIN):
+    if not sharp_backing:
+        if ml_move > TRAP_ML_MOVE_MIN and k_move < 0:
             is_trap = True
             trap_is_vulnerable = True
+        if k_odds_f is not None and k_odds_f > TRAP_K_ODDS_MIN:
+            is_trap = True
+            trap_is_vulnerable = True
+
+        # Books steamed the team but K price is off the board or still juiced (Myers-style)
+        if k_line is not None and ml_move > TRAP_ML_MOVE_MIN:
+            try:
+                inflated_k = float(k_line) >= TRAP_INFLATED_K_LINE_MIN
+            except (TypeError, ValueError):
+                inflated_k = False
+            if inflated_k and (k_odds_f is None or k_odds_f > TRAP_K_ODDS_MIN):
+                is_trap = True
+                trap_is_vulnerable = True
 
     if outs_line is not None and outs_odds is not None:
         try:
@@ -60,10 +71,12 @@ def compute_fresh_trap(*, ml_move, k_move, k_line, k_odds, outs_line, outs_odds)
         trap_type = None
 
     return {
-        "is_trap": is_trap,
-        "trap_type": trap_type,
+        "is_trap":           is_trap,
+        "trap_type":         trap_type,
         "is_death_sentence": is_death_sentence,
+        "sharp_backing":     sharp_backing,
     }
+
 
 
 def props_feed_partial(*, k_odds, outs_odds, prev_pitcher):
@@ -107,6 +120,7 @@ def resolve_pitcher_trap(
     k_odds,
     outs_line,
     outs_odds,
+    divergence=None,
 ):
     """
     Sticky TRAP: never clear solely because K/outs odds vanished between refreshes.
@@ -139,6 +153,7 @@ def resolve_pitcher_trap(
         k_odds=eval_k_odds,
         outs_line=eval_outs_line,
         outs_odds=eval_outs_odds,
+        divergence=divergence,
     )
 
     partial = props_feed_partial(

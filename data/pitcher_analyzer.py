@@ -342,6 +342,7 @@ class PitcherAnalyzer:
                         k_odds=k_odds,
                         outs_line=outs_line,
                         outs_odds=outs_odds,
+                        divergence=divergence,
                     )
                     is_trap = trap_res["is_trap"]
                     trap_type = trap_res["trap_type"]
@@ -410,7 +411,14 @@ class PitcherAnalyzer:
                 recent_era = None
                 form_boost = 0.0
                 form_status = None
-                
+                early_innings_volatility = False
+
+                if p_form:
+                    recent_ip = float(p_form.get('recent_ip', 0.0))
+                    games_sampled = max(1, int(p_form.get('games_sampled', 1)))
+                    if recent_ip > 0 and (recent_ip / games_sampled) < 4.5:
+                        early_innings_volatility = True
+
                 if p_form and p_form.get('recent_ip', 0) >= 8.0:
                     recent_k9 = p_form.get('recent_k9', 0)
                     recent_era = p_form.get('recent_era', 0)
@@ -512,7 +520,8 @@ class PitcherAnalyzer:
                     'recent_era': recent_era,
                     'is_home': side == 'home',
                     'side': side,
-                    'pinnacle_boost_active': pinnacle_boost_active
+                    'pinnacle_boost_active': pinnacle_boost_active,
+                    'early_innings_volatility': early_innings_volatility
                 })
         
         return pitcher_reports

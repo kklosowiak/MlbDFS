@@ -52,6 +52,42 @@ class LineupFetcher:
         self.cache_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "projected_lineups_cache.json")
         self.cache_expiry = 300  # 5 minutes cache
 
+    def _load_state(self):
+        state_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lineup_fetcher_state.json")
+        if os.path.exists(state_file):
+            try:
+                with open(state_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {"consecutive_failures": 0}
+
+    def _save_state(self, state):
+        state_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lineup_fetcher_state.json")
+        try:
+            with open(state_file, 'w', encoding='utf-8') as f:
+                json.dump(state, f)
+        except Exception:
+            pass
+
+    def _set_degraded_health(self):
+        health_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data_health.json")
+        try:
+            health = {}
+            if os.path.exists(health_file):
+                with open(health_file, 'r', encoding='utf-8') as f:
+                    health = json.load(f)
+            health["status"] = "degraded"
+            msg = "RotoWire scraper failed 3 consecutive times — circuit breaker serving cached data."
+            if "warnings" not in health:
+                health["warnings"] = []
+            if msg not in health["warnings"]:
+                health["warnings"].append(msg)
+            with open(health_file, 'w', encoding='utf-8') as f:
+                json.dump(health, f, indent=2)
+        except Exception as e:
+            print(f"[LINEUPS]: Error updating health file to degraded: {e}")
+
     def fetch_rotowire_lineups(self):
         """
         Scrapes daily starting lineups from RotoWire's daily lineups page.
@@ -125,6 +161,14 @@ class LineupFetcher:
                             'is_confirmed': is_confirmed
                         }
             
+            if not rotowire_lineups:
+                raise Exception("Scraper returned 0 lineups.")
+
+            # Reset failure count on success
+            state = self._load_state()
+            state["consecutive_failures"] = 0
+            self._save_state(state)
+
             # Cache the results
             try:
                 with open(self.cache_file, 'w', encoding='utf-8') as f:
@@ -138,12 +182,25 @@ class LineupFetcher:
             return rotowire_lineups
         except Exception as e:
             print(f"[LINEUPS]: Error fetching RotoWire lineups: {e}")
+            
+            # Increment failure count
+            state = self._load_state()
+            state["consecutive_failures"] = state.get("consecutive_failures", 0) + 1
+            self._save_state(state)
+            
+            if state["consecutive_failures"] >= 3:
+                print(f"[LINEUPS]: RotoWire has failed {state['consecutive_failures']} consecutive times. Circuit breaker active. Serving stale cache.")
+                self._set_degraded_health()
+
             # Try to return expired cache as fallback
             if os.path.exists(self.cache_file):
                 try:
                     with open(self.cache_file, 'r', encoding='utf-8') as f:
                         cache_data = json.load(f)
                     print("[LINEUPS]: Returning expired RotoWire cache as fallback.")
+                    return cache_data.get('lineups', {})
+                except Exception as ce:
+                    print(f"[LINEUPS]: Failed to read RotoWire cache fallback: {ce}")
             return {}
 
     def fetch_mlbdotcom_lineups(self):

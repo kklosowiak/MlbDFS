@@ -1,0 +1,17 @@
+{
+  "stacks": {
+    "is_sharp": 12.0,
+    "is_trap": -24.0,
+    "is_burst": 12.0,
+    "is_gassed": 14.0,
+    "is_hot_run_msmi": 12.0,
+    "is_cold_streak_msmi": -24.0
+  },
+  "pitchers": {
+    "is_trap": -24.0,
+    "true_talent_penalty": -12.0,
+    "is_sharp": 10.0,
+    "is_shark": 10.0,
+    "early_innings_volatility": -10.0
+  }
+}

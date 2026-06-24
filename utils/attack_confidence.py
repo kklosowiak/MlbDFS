@@ -2,8 +2,41 @@
 
 from __future__ import annotations
 
+import json
+import os
 import re
+
+from config import config
 from utils.team_prop_pressure import LABEL_COLD, LABEL_HOT, LABEL_WARM
+
+
+def load_weights() -> dict:
+    """Load model signal weights from data/weights.json (falls back to hardcoded defaults)."""
+    weights_path = os.path.join(config.DATA_DIR, "weights.json")
+    if os.path.exists(weights_path):
+        try:
+            with open(weights_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    # Fallback to defaults
+    return {
+        "stacks": {
+            "is_sharp": 12.0,
+            "is_trap": -24.0,
+            "is_burst": 12.0,
+            "is_gassed": 14.0,
+            "is_hot_run_msmi": 12.0,
+            "is_cold_streak_msmi": -24.0
+        },
+        "pitchers": {
+            "is_trap": -24.0,
+            "true_talent_penalty": -12.0,
+            "is_sharp": 10.0,
+            "is_shark": 10.0,
+            "early_innings_volatility": -10.0
+        }
+    }
 
 
 def _clamp(conf):
@@ -635,6 +668,11 @@ def score_pitcher_confidence(p, t_reports):
             boost_val = 10.0 if ml_move <= -20 else 6.0
             conf += boost_val
             reasons.append(f"Underdog Pitcher Steam Boost ({ml_move:+.0f} move) — backtested edge.")
+
+    # Early-innings volatility (stamina risk)
+    if p.get("early_innings_volatility"):
+        conf -= 10
+        reasons.append("Early-innings volatility (IP/start < 4.5) — low QS ceiling.")
 
     # 10. Intraday Volatility
     if p.get("is_volatile"):

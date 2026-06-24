@@ -42,19 +42,30 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         "status": "ok",
         "warnings": [],
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "last_successful_weather": existing_health.get("last_successful_weather"),
-        "last_successful_odds": existing_health.get("last_successful_odds"),
-        "last_successful_lineups": existing_health.get("last_successful_lineups"),
+        "last_successful_weather":  existing_health.get("last_successful_weather"),
+        "last_successful_odds":     existing_health.get("last_successful_odds"),
+        "last_successful_lineups":  existing_health.get("last_successful_lineups"),
+        # Independent scraper timestamps (new)
+        "last_successful_rotowire": existing_health.get("last_successful_rotowire"),
+        "last_successful_statsapi": existing_health.get("last_successful_statsapi"),
+        "last_successful_props":    existing_health.get("last_successful_props"),
     }
 
     # OMEGA v6.6.5: Live Weather Overlay Sync
     try:
         PropfinderScraper().refresh()
         health["last_successful_weather"] = datetime.now(timezone.utc).isoformat()
+        health["last_successful_props"]   = datetime.now(timezone.utc).isoformat()
     except Exception as e:
-        print(f"  - WARNING: Weather refresh failed: {e}")
-        health["warnings"].append(f"Weather sync failed: {e}")
+        print(f"  - WARNING: Weather/props refresh failed: {e}")
+        health["warnings"].append(f"Props/weather sync failed: {e}")
         health["status"] = "warning"
+        # Alert via Telegram if configured
+        try:
+            from utils.notifier import Notifier
+            Notifier().alert_scraper_failure("PropBoard", str(e))
+        except Exception:
+            pass
     
     # OMEGA v6.5: Dynamic Probable Sync
     ProbablePitcherFetcher().refresh()
@@ -145,13 +156,37 @@ def perform_fetch(custom_date_from=None, capture_opening=False):
         # v10.2: Refresh Pitcher Recent Form Cache
         bridge.refresh_pitcher_form_cache()
 
-        # v11.0: Refresh Hitter Recent Form Cache
+        # v11.0: Refresh Hitter Recent Form Cache (RotoWire + StatsAPI lineup fetch)
         try:
             from data.lineup_fetcher import LineupFetcher
             lineup_fetcher = LineupFetcher()
             active_lineups = lineup_fetcher.fetch_all_lineups()
+
+            # Track RotoWire and StatsAPI independently
+            rw_teams = {k: v for k, v in active_lineups.items()
+                        if isinstance(v, dict) and v.get("status") in
+                        ("CONFIRMED", "PROJECTED_HIGH_CONF", "PROJECTED_LOW_CONF")}
+            if rw_teams:
+                health["last_successful_rotowire"] = datetime.now(timezone.utc).isoformat()
+                health["last_successful_lineups"]  = datetime.now(timezone.utc).isoformat()
+            else:
+                msg = "RotoWire returned 0 teams — possible scraper failure"
+                print(f"  - WARNING: {msg}")
+                health["warnings"].append(msg)
+                health["status"] = "warning"
+                try:
+                    from utils.notifier import Notifier
+                    Notifier().alert_scraper_failure("RotoWire", msg)
+                except Exception:
+                    pass
+
+            # Check StatsAPI confirmed lineups
+            statsapi_teams = {k: v for k, v in active_lineups.items()
+                              if isinstance(v, dict) and v.get("status") == "CONFIRMED"}
+            if statsapi_teams:
+                health["last_successful_statsapi"] = datetime.now(timezone.utc).isoformat()
+
             bridge.refresh_hitter_form_cache(active_lineups)
-            health["last_successful_lineups"] = datetime.now(timezone.utc).isoformat()
         except Exception as eh:
             print(f"  - WARNING: Hitter form refresh failed: {eh}")
 

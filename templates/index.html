@@ -4421,6 +4421,92 @@
             }
         }
 
+        async function loadWeightProposals() {
+            const panel = document.getElementById('weight-proposals-panel');
+            const badge = document.getElementById('weight-proposals-badge');
+            if (!panel) return;
+            panel.innerHTML = '<div style="color:var(--text-secondary);font-size:0.8rem;padding:8px 0;text-align:center;opacity:.7">Loading proposals…</div>';
+            try {
+                const res = await fetch('/api/proposed-weights');
+                if (res.status === 401) return;
+                const d = await res.json();
+
+                if (d.status === 'no_history' || d.status === 'insufficient_data') {
+                    panel.innerHTML = `<div style="font-size:0.78rem;color:var(--accent-orange);background:rgba(255,165,0,.1);border-radius:8px;padding:10px;line-height:1.5">${d.message}</div>`;
+                    if (badge) badge.style.display = 'none';
+                    return;
+                }
+                if (d.status === 'error') {
+                    panel.innerHTML = `<div style="font-size:0.78rem;color:var(--accent-red);padding:8px 0">${d.message}</div>`;
+                    return;
+                }
+
+                const meta = d.meta || {};
+                const proposals = d.proposals || [];
+                const changes = proposals.filter(p => p.has_change);
+                const stable = proposals.filter(p => !p.has_change);
+
+                // Badge
+                if (badge) {
+                    if (changes.length > 0) {
+                        badge.textContent = `${changes.length} proposal${changes.length > 1 ? 's' : ''}`;
+                        badge.style.display = '';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+
+                const confColor = { HIGH: 'var(--accent-green)', MEDIUM: 'var(--accent-orange)', LOW: 'var(--text-secondary)' };
+                const dirColor = p => {
+                    if (!p.has_change) return 'var(--text-secondary)';
+                    if (p.delta > 0) return 'var(--accent-green)';
+                    return 'var(--accent-red)';
+                };
+
+                const renderRow = p => {
+                    const deltaStr = p.delta > 0 ? `+${p.delta.toFixed(1)}` : p.delta.toFixed(1);
+                    const hitBar = Math.round(p.observed_hit_rate);
+                    const baseBar = Math.round(p.baseline_hit_rate);
+                    return `
+                        <div style="padding:8px 0;border-bottom:1px solid var(--border);">
+                            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                                <span style="font-size:0.75rem;font-weight:700;font-family:monospace;color:var(--text-primary)">${p.signal}</span>
+                                <span style="font-size:0.64rem;padding:1px 5px;border-radius:99px;background:rgba(255,255,255,.07);color:${confColor[p.confidence] || 'var(--text-secondary)'}">${p.confidence}</span>
+                                <span style="margin-left:auto;font-size:0.75rem;font-weight:800;color:${dirColor(p)}">${p.has_change ? deltaStr : '→ no change'}</span>
+                            </div>
+                            <div style="display:flex;gap:12px;font-size:0.7rem;color:var(--text-secondary);margin-bottom:3px;">
+                                <span>Current: <strong style="color:var(--text-primary)">${p.current_weight}</strong></span>
+                                ${p.has_change ? `<span>→ Proposed: <strong style="color:${dirColor(p)}">${p.proposed_weight}</strong></span>` : ''}
+                                <span>Hit: <strong style="color:var(--text-primary)">${hitBar}%</strong> vs ${baseBar}% base</span>
+                                <span style="opacity:.6">${p.total_samples} samples</span>
+                            </div>
+                            <div style="font-size:0.68rem;color:var(--text-secondary);opacity:.8;line-height:1.4">${p.reason}</div>
+                        </div>`;
+                };
+
+                const changesHtml = changes.length > 0
+                    ? `<div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-orange);margin-bottom:4px">⚠ Proposals (${changes.length})</div>
+                       ${changes.map(renderRow).join('')}`
+                    : `<div style="font-size:0.78rem;color:var(--accent-green);padding:6px 0">✅ All signals are within expected ranges. No adjustments proposed.</div>`;
+
+                const stableHtml = stable.length > 0 && changes.length > 0
+                    ? `<details style="margin-top:8px"><summary style="font-size:0.7rem;cursor:pointer;color:var(--text-secondary);opacity:.7">Show ${stable.length} stable signals</summary>
+                        ${stable.map(renderRow).join('')}
+                       </details>`
+                    : '';
+
+                const metaHtml = `<div style="font-size:0.68rem;color:var(--text-secondary);opacity:.6;margin-top:8px;text-align:right">
+                    ${meta.days_analyzed}d analyzed · ${meta.total_samples} total samples · ${new Date(meta.generated_at).toLocaleTimeString()}
+                </div>`;
+
+                panel.innerHTML = changesHtml + stableHtml + metaHtml;
+
+            } catch (e) {
+                console.error('Weight proposals load failed:', e);
+                if (panel) panel.innerHTML = '<div style="color:var(--accent-orange);font-size:0.8rem">Could not load proposals.</div>';
+            }
+        }
+
         // Initialize API key and theme from local storage
         document.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
@@ -4428,6 +4514,7 @@
                 document.getElementById('api-key-input').value = savedKey;
             }
             // Sync theme configuration from documentElement
+
             if (document.documentElement.classList.contains('light-theme')) {
                 document.body.classList.add('light-theme');
             }
@@ -8556,6 +8643,21 @@
                 </div>
             </div>
             
+            <!-- ⚖️ Signal Weight Proposals (READ-ONLY) -->
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <span style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary)">⚖️ Signal Weight Proposals</span>
+                    <span id="weight-proposals-badge" style="font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--accent-blue);color:#fff;display:none"></span>
+                    <button onclick="loadWeightProposals()" style="margin-left:auto;font-size:0.68rem;background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:2px 8px;cursor:pointer;" title="Refresh proposals">↻</button>
+                </div>
+                <div style="font-size:0.68rem;color:var(--text-secondary);opacity:.7;margin-bottom:10px;">
+                    📖 <strong>READ-ONLY</strong> — Based on nightly validation history. No weights are changed automatically.
+                </div>
+                <div id="weight-proposals-panel">
+                    <div style="color:var(--text-secondary);font-size:0.8rem;padding:8px 0;text-align:center;opacity:.7">Click ↻ to load proposals…</div>
+                </div>
+            </div>
+
             <!-- Theme Toggle Switch -->
 
             <div style="display: flex; justify-content: center; margin-top: 5px;">

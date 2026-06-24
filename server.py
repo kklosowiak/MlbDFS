@@ -975,6 +975,47 @@ def get_refresh_status_api():
             "last_refresh_time": last_refresh_time or "Never"
         }
 
+
+@app.get("/api/validation-history", dependencies=[Depends(get_current_user)])
+def get_validation_history_api():
+    """
+    Returns the last 30 days of nightly signal validation results.
+    READ-ONLY: this endpoint never changes the model. It is a pure scorecard.
+    Source: data/signal_validation_history.json (written by utils/nightly_validator.py)
+    """
+    from config import config
+    history_path = os.path.join(config.DATA_DIR, "signal_validation_history.json")
+    if not os.path.exists(history_path):
+        return JSONResponse(
+            content={"dates": [], "records": {}, "message": "No validation history yet. Runs nightly at 4:05am ET."},
+            headers={"Cache-Control": "no-cache"}
+        )
+    try:
+        with open(history_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return JSONResponse(content=data, headers={"Cache-Control": "no-cache"})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/proposed-weights", dependencies=[Depends(get_current_user)])
+def get_proposed_weights_api():
+    """
+    READ-ONLY: Returns weight adjustment proposals based on signal validation history.
+    This endpoint NEVER changes any model file — it is purely advisory.
+    Source: utils/weight_proposer.py -> data/signal_validation_history.json
+    """
+    try:
+        from utils.weight_proposer import propose_weight_adjustments
+        result = propose_weight_adjustments()
+        return JSONResponse(content=result, headers={"Cache-Control": "no-cache"})
+    except Exception as e:
+        return JSONResponse(
+            content={"status": "error", "message": str(e), "proposals": []},
+            status_code=500,
+        )
+
+
 @app.get("/api/debug-env", dependencies=[Depends(get_current_user)])
 def get_debug_env_api():
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -2696,6 +2737,39 @@ if __name__ == "__main__":
         t.start()
         
     start_local_sync()
+
+    # Nightly validation report: runs at 4:05am ET each morning after games are final
+    def start_nightly_validator():
+        def validator_worker():
+            import datetime as _dt
+            print("[NIGHTLY VALIDATOR]: Background validator thread started.")
+            last_run_date = None
+            while True:
+                try:
+                    try:
+                        from zoneinfo import ZoneInfo
+                        now_et = _dt.datetime.now(ZoneInfo("America/New_York"))
+                    except Exception:
+                        now_et = _dt.datetime.utcnow() - _dt.timedelta(hours=4)
+
+                    today_key = now_et.strftime("%Y-%m-%d")
+                    # Fire at 4:05am ET, once per day
+                    if now_et.hour == 4 and now_et.minute >= 5 and last_run_date != today_key:
+                        try:
+                            from utils.nightly_validator import run_daily_validation
+                            run_daily_validation()
+                            last_run_date = today_key
+                            print(f"[NIGHTLY VALIDATOR]: Completed for {today_key}")
+                        except Exception as ve:
+                            print(f"[NIGHTLY VALIDATOR]: Error: {ve}")
+                except Exception as e:
+                    print(f"[NIGHTLY VALIDATOR WORKER]: Unexpected error: {e}")
+                time.sleep(60)  # check every minute
+
+        vt = threading.Thread(target=validator_worker, daemon=True)
+        vt.start()
+
+    start_nightly_validator()
 
     # Run locally on all interfaces, port 8000
     uvicorn.run(app, host="0.0.0.0", port=8000)
