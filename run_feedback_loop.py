@@ -397,14 +397,18 @@ def run_feedback_loop(days=7):
                     if runs < 4:
                         signal_stats['DQI_FADE']['hit'] += 1
             
-            # 💸 STEAM Support Metric
+            # STEAM Support Metric (v4 — data-driven: retired standalone ml_steam)
+            # Diagnostics showed pure ML-shorten (ml <= -10 alone) hits only 32% on 5+ runs.
+            # The predictive signal is when BOTH total rises (tt >= 0.5) AND ML shortens toward
+            # this team (ml_move < 0) — that combo hit 50% over 45 slates.
+            # Standalone ML steam predicts win probability, not run scoring — wrong success metric.
             ml_move = float(t.get('ml_move', 0) or 0)
             tt_move = float(t.get('tt_move', 0) or 0)
-            if abs(ml_move) >= 10 or abs(tt_move) >= 0.1:
-                if ml_move < 0 or tt_move > 0:
-                    signal_stats['STEAM_SUPPORT']['fired'] += 1
-                    if is_hit_5:
-                        signal_stats['STEAM_SUPPORT']['hit'] += 1
+            steam_fire = tt_move >= 0.5 and ml_move < 0
+            if steam_fire:
+                signal_stats['STEAM_SUPPORT']['fired'] += 1
+                if is_hit_5:
+                    signal_stats['STEAM_SUPPORT']['hit'] += 1
 
             # EV Signal Tracking — uses OMEGA-stored probability vs market
             omega_win_prob = float(t.get('omega_win_prob', 0) or 0)   # stored if available

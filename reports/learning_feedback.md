@@ -1,5 +1,5 @@
 # 📊 OMEGA Learning Loop & Performance Audit
-**Generated:** 2026-06-24 08:02 PM ET
+**Generated:** 2026-06-24 08:16 PM ET
 **Slates Analyzed:** 2026-05-10, 2026-05-11, 2026-05-12, 2026-05-13, 2026-05-14, 2026-05-15, 2026-05-16, 2026-05-17, 2026-05-18, 2026-05-19, 2026-05-20, 2026-05-21, 2026-05-22, 2026-05-23, 2026-05-24, 2026-05-25, 2026-05-26, 2026-05-27, 2026-05-29, 2026-05-30, 2026-05-31, 2026-06-01, 2026-06-03, 2026-06-04, 2026-06-05, 2026-06-07, 2026-06-08, 2026-06-09, 2026-06-10, 2026-06-11, 2026-06-12, 2026-06-13, 2026-06-15, 2026-06-19, 2026-06-22, 2026-06-24
 
 ---
@@ -36,7 +36,7 @@ Tracks OMEGA's specific market indicators against empirical MLB boxscore results
 | **EV SPREAD COVER** | 0 | 0 | 0% | ⚪ No Data |
 | **EV TOTAL OVER** | 0 | 0 | 0% | ⚪ No Data |
 | **EV TOTAL UNDER** | 0 | 0 | 0% | ⚪ No Data |
-| **STEAM SUPPORT** | 267 | 106 | 40% | 🔴 Cold |
+| **STEAM SUPPORT** | 33 | 16 | 48% | 🟡 Neutral |
 
 ### 🏏 Hitter Signals
 | Signal | Fired | Hit | Hit Rate | Grade |

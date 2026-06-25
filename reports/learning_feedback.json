@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-06-24 08:02 PM ET",
+    "generated_at": "2026-06-24 08:16 PM ET",
     "dates_analyzed": [
         "2026-05-10",
         "2026-05-11",
@@ -92,8 +92,8 @@
             "hit": 15
         },
         "STEAM_SUPPORT": {
-            "fired": 267,
-            "hit": 106
+            "fired": 33,
+            "hit": 16
         },
         "EV_ML_POSITIVE": {
             "fired": 0,
