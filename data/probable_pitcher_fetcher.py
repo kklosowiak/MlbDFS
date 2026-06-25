@@ -80,11 +80,30 @@ class ProbablePitcherFetcher:
             overrides = {}
             if os.path.exists(overrides_path):
                 try:
-                    with open(overrides_path, 'r', encoding='utf-8') as f:
-                        overrides = json.load(f)
-                    print(f"  - LOADED overrides: {list(overrides.keys())}")
+                    import time
+                    mtime = os.path.getmtime(overrides_path)
+                    mtime_dt = datetime.fromtimestamp(mtime, timezone.utc)
+                    try:
+                        from zoneinfo import ZoneInfo
+                        mtime_et = mtime_dt.astimezone(ZoneInfo("America/New_York"))
+                    except Exception:
+                        mtime_et = mtime_dt - timedelta(hours=4)
+                    
+                    if mtime_et.hour < 4:
+                        file_slate_date = (mtime_et - timedelta(days=1)).date()
+                    else:
+                        file_slate_date = mtime_et.date()
+                    
+                    if file_slate_date != slate_date:
+                        print(f"  - [CLEANUP]: Stale pitcher overrides found from {file_slate_date}. Clearing file.")
+                        with open(overrides_path, 'w', encoding='utf-8') as f:
+                            json.dump({}, f, indent=4)
+                    else:
+                        with open(overrides_path, 'r', encoding='utf-8') as f:
+                            overrides = json.load(f)
+                        print(f"  - LOADED overrides: {list(overrides.keys())}")
                 except Exception as ov_err:
-                    print(f"  - WARNING: Failed to load pitcher overrides: {ov_err}")
+                    print(f"  - WARNING: Failed to load/clear pitcher overrides: {ov_err}")
 
             for team_name, games in team_games.items():
                 # Sort games by game number
@@ -94,12 +113,21 @@ class ProbablePitcherFetcher:
                     suffix = f"_{i+1}"
                     pitcher = g['pitcher']
                     
-                    # Try to match override by Team_GameNumber (e.g. "Chicago Cubs_1")
+                    # Try to match override by Date_Team_GameNumber or legacy Team_GameNumber
+                    date_override_key = f"{fetch_date}_{team_name}{suffix}"
                     override_key = f"{team_name}{suffix}"
-                    if override_key in overrides:
+                    date_team_key = f"{fetch_date}_{team_name}"
+                    
+                    if date_override_key in overrides:
+                        pitcher = overrides[date_override_key]
+                        print(f"  - OVERRIDE: {date_override_key} -> {pitcher} (was {g['pitcher']})")
+                    elif override_key in overrides:
                         pitcher = overrides[override_key]
                         print(f"  - OVERRIDE: {override_key} -> {pitcher} (was {g['pitcher']})")
                     # Try to match override by general team name for Game 1
+                    elif i == 0 and date_team_key in overrides:
+                        pitcher = overrides[date_team_key]
+                        print(f"  - OVERRIDE: {date_team_key} -> {pitcher} (was {g['pitcher']})")
                     elif i == 0 and team_name in overrides:
                         pitcher = overrides[team_name]
                         print(f"  - OVERRIDE: {team_name} -> {pitcher} (was {g['pitcher']})")
