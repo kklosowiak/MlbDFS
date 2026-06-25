@@ -30,7 +30,7 @@ from utils.market_utils import get_market_prices, calculate_ml_move, calibrate_v
 from utils.xwoba_estimates import xwoba_to_phy_score, cap_matchup_xwoba
 from utils.matchup_physics import pitcher_physics_0_100
 from utils.platoon_math import compute_platoon_multiplier
-from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_sneaky_stack, evaluate_sneaky_stack, apply_signal_exclusions
+from utils.team_signals import apply_team_blind_spot, evaluate_burst_signal, apply_signal_exclusions
 
 def _get_resilient_snapshot():
     """OMEGA v5: Soft-Gate Snapshot Recovery."""
@@ -647,7 +647,6 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
         report['is_hazard'] = False
         report['is_low_ceiling'] = False
         report['is_sharp'] = report.get('is_sharp', False)
-        report['is_whale'] = report.get('is_whale', False)
         report['is_shark'] = report.get('is_shark', False)
         report['is_home'] = report.get('is_home', False)
         report['side'] = report.get('side', 'away')
@@ -909,9 +908,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                     if prev_team_data.get('money_pct') is not None:
                         money_pct = prev_team_data.get('money_pct')
                     is_shark = prev_team_data.get('is_shark', False)
-                    is_whale = prev_team_data.get('is_whale', False)
                     is_sharp = prev_team_data.get('is_sharp', False)
-                    is_storm = prev_team_data.get('is_storm', False)
                     is_steam = prev_team_data.get('is_steam', False)
                     # OMEGA v10.5: Protect from in-play live betting odds shifts
                     ml_move = float(prev_team_data.get('ml_move', ml_move))
@@ -922,18 +919,14 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 else:
                     divergence = 0
                     is_shark = False
-                    is_whale = False
                     is_sharp = False
-                    is_storm = False
                     is_steam = False
                     is_velocity_boost = False
                     is_pinnacle_offense_boost = False
             else:
                 divergence = consensus_fetcher.get_divergence(team, splits_data)
                 is_shark = consensus_fetcher.detect_shark(team, splits_data, ml_move)
-                is_whale = consensus_fetcher.detect_whale(team, splits_data)
                 is_sharp = consensus_fetcher.is_sharp_consensus(team, splits_data)
-                is_storm = (divergence >= 10 and tt_move >= 0.3)
                 is_steam = consensus_fetcher.detect_steam(team, splits_data, ml_move)
 
             # Opponent Physics discovery
@@ -1217,22 +1210,13 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                             total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
                         break
 
-            is_sneaky = evaluate_sneaky_stack(
-                curr_itt,
-                team_xwoba,
-                float(opp_outs),
-                is_opp_debut,
-                opp_bullpen['score'],
-                opp_bullpen['is_gassed'],
-                opp_bullpen.get('is_fatigued', False)
-            )
 
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
                 power_concentration=power_concentration,
                 park_factor=park_factor, bullpen_fatigue=opp_bullpen['score'],
-                divergence=divergence, is_whale=is_whale, is_sharp=is_sharp,
-                is_storm=is_storm, is_shark=is_shark, is_steam=is_steam,
+                divergence=divergence, is_sharp=is_sharp,
+                is_shark=is_shark, is_steam=is_steam,
                 opp_pitcher_physics=opp_pitcher_physics,
                 confidence=opp_confidence, pitcher_outs=float(opp_outs),
                 implied_total=curr_itt, is_burst=is_burst, opponent=opponent,
@@ -1249,7 +1233,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 is_opp_debut=is_opp_debut,
                 over_divergence=over_divergence,
                 under_divergence=under_divergence,
-                is_sneaky=is_sneaky,
                 is_pinnacle_offense_boost=is_pinnacle_offense_boost,
                 is_velocity_boost=is_velocity_boost,
                 num_games=num_games
@@ -1261,7 +1244,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 trend = prev_team_data.get('trend', 'STABLE')
                 total_signal = prev_team_data.get('total_signal', '')
                 is_opp_debut = prev_team_data.get('is_opp_debut', False)
-                is_sneaky = prev_team_data.get('is_sneaky', False)
                 is_pinnacle_offense_boost = prev_team_data.get('is_pinnacle_offense_boost', False)
                 is_velocity_boost = prev_team_data.get('is_velocity_boost', False)
             else:
@@ -1368,7 +1350,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'bullpen_fatigue': opp_bullpen['score'], 'is_gassed': opp_bullpen['is_gassed'],
                 'is_fatigued': opp_bullpen.get('is_fatigued', False), 'is_shark': is_shark,
                 'is_true_talent_penalty': opp_pitcher_rep.get('true_talent_penalty', False) if opp_pitcher_rep else False,
-                'is_whale': is_whale, 'is_sharp': is_sharp, 'is_storm': is_storm,
+                'is_sharp': is_sharp,
                 'is_steam': is_steam, 'divergence': divergence, 'trend': trend,
                 'ticket_pct': ticket_pct, 'money_pct': money_pct,
                 'confidence': res.get('confidence', 'low'),
@@ -1389,7 +1371,6 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 'is_anti_chalk_smash': is_anti_chalk_smash,
                 'is_pitch_alignment': is_pitch_alignment,
                 'is_fade_risk': res.get('is_fade_risk', False),
-                'is_sneaky': is_sneaky,
                 'is_pinnacle_offense_boost': is_pinnacle_offense_boost,
                 'is_velocity_boost': is_velocity_boost,
                 'is_public_steam_trap': is_public_steam_trap,

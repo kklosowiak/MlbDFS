@@ -35,7 +35,6 @@ def calculate_dqi(team, pitchers=None):
     bullpen = team.get('bullpen_fatigue', 0) or 0
     tt_move = team.get('tt_move', 0.0) or 0.0
     ml_move = team.get('ml_move', 0.0) or 0.0
-    is_storm = team.get('is_storm', False)
     team_xwoba = team.get('team_xwoba', 0.0) or 0.0
     power_conc = team.get('power_concentration', 0.0) or 0.0
     total_signal = team.get('total_signal', '') or ''
@@ -127,9 +126,8 @@ def calculate_dqi(team, pitchers=None):
         pos_pts += run_pts
         pos_factors.append(f"Implied Run Env (+{round(run_pts, 1)} pts)")
 
-    if is_storm:
-        pos_pts += 8.0
-        pos_factors.append("Storm Physics (+8 pts)")
+    # OMEGA v19.3: is_storm removed from DQI scoring (storm = divergence>=10 AND tt_move>=0.3;
+    # divergence already earns +10-20 pts above and market steam captures tt_move>=0.3)
     if is_opp_debut:
         pos_pts += 10.0
         pos_factors.append("Debut Trap SP (+10 pts)")

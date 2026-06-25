@@ -52,7 +52,7 @@ class SharpsWeighting:
         }
 
         
-    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=100, divergence=0, is_shark=False, is_whale=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None, is_death_sentence=False, form_boost=0.0, pinnacle_boost_active=False):
+    def calculate_pitcher_score(self, name, ml_move, tt_move, money_gap, k_prop, siera=4.10, csw=0.25, is_target=False, park_factor=100, divergence=0, is_shark=False, opponent_k_boost=0, is_low_ceiling=False, projected_outs=18.0, is_trap=False, is_sharp=False, curr_ml=-110, walks_line=None, walks_odds=None, is_death_sentence=False, form_boost=0.0, pinnacle_boost_active=False):
         """
         OMEGA v10.0 SE: Tiered Alpha/Beta Pitcher Scoring (Win Prob Base Market).
         """
@@ -220,7 +220,7 @@ class SharpsWeighting:
             "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_whale=False, is_sharp=False, is_storm=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_sneaky=False, is_pinnacle_offense_boost=False, is_velocity_boost=False, num_games=15):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_sharp=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_pinnacle_offense_boost=False, is_velocity_boost=False, num_games=15):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # Defensive Input Normalization
         team_xwoba = float(team_xwoba) if team_xwoba is not None else 0.330
@@ -366,7 +366,8 @@ class SharpsWeighting:
         if bullpen_fatigue >= 65 and not burst_from_pen_script:
             beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
-        if is_storm and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
+        # OMEGA v17.0/v19.3: is_storm conditional beta REMOVED (storm was only active with is_sharp/is_steam;
+        # those signals already claim their own beta slots — storm was soft double-counting)
         # OMEGA v17.2: is_whale REMOVED from beta_signals count (r=-0.0930 in 2026; public money != edge)
         
         # OMEGA v8.9: Strategy 2 - The 'Statcast Anchor Curve' (Market Dampening)
@@ -387,8 +388,9 @@ class SharpsWeighting:
         multiplier = 1.0 + dampened_market_premium
         
         # OMEGA v6.7: The 'Detmers Patch' (Stopper Penalty Refined)
-        if opp_pitcher_physics > 85 or (is_storm and opp_pitcher_physics > 70):
-            multiplier -= 0.10 
+        # OMEGA v19.3: is_storm branch removed; penalty now fires only on elite SP physics (>85)
+        if opp_pitcher_physics > 85:
+            multiplier -= 0.10
         
         # Dynamic Divergence Multiplier: Capped at 10%
         div_premium = min(0.10, (max(0, divergence) / 150.0))

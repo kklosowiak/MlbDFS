@@ -293,7 +293,6 @@ class PitcherAnalyzer:
                     divergence = int(prev_pitcher_data.get('divergence', 0))
                     is_sharp = bool(prev_pitcher_data.get('is_sharp', False))
                     is_shark = bool(prev_pitcher_data.get('is_shark', False))
-                    is_whale = bool(prev_pitcher_data.get('is_whale', False))
                     k_line = prev_pitcher_data.get('k_line')
                     outs_line = prev_pitcher_data.get('outs_line')
                     k_odds = prev_pitcher_data.get('k_odds')
@@ -406,7 +405,6 @@ class PitcherAnalyzer:
                         k_odds = prev_pitcher_data.get("k_odds")
 
                     is_shark = fetcher.detect_shark(team_name, splits_data, ml_move)
-                    is_whale = (divergence >= 25)
                     is_sharp = fetcher.is_sharp_consensus(team_name, splits_data)
 
                 physics = self.fetch_pitcher_physics(pitcher_name)
@@ -511,7 +509,6 @@ class PitcherAnalyzer:
                     park_factor=park_factor,
                     divergence=divergence,
                     is_shark=is_shark,
-                    is_whale=is_whale,
                     opponent_k_boost=opponent_k_boost,
                     is_low_ceiling=is_low_ceiling,
                     projected_outs=float(outs_line),
@@ -554,7 +551,6 @@ class PitcherAnalyzer:
                     'k_move': k_move,
                     'sharp_fade': int(divergence) <= -15 and not is_trap,
                     'is_shark': is_shark,
-                    'is_whale': is_whale,
                     'is_sharp': is_sharp,
                     'ml_move': ml_move,
                     'tt_move': tt_move,

@@ -2908,12 +2908,10 @@ def post_chat_api(body: dict):
             for t in teams[:10]:
                 signals = []
                 if t.get('is_shark'): signals.append('SHARK')
-                if t.get('is_whale'): signals.append('WHALE')
                 if t.get('is_sharp'): signals.append('SHARP')
                 if t.get('is_steam'): signals.append('STEAM')
                 if t.get('is_trap'): signals.append('TRAP')
                 if t.get('is_fade_risk'): signals.append('FADE RISK')
-                if t.get('is_sneaky'): signals.append('SNEAKY STACK')
                 sig_str = ", ".join(signals) if signals else "None"
                 
                 from utils.dqi import calculate_dqi as _calc_dqi
@@ -2933,7 +2931,6 @@ def post_chat_api(body: dict):
             for p in pitchers[:8]:
                 signals = []
                 if p.get('is_shark'): signals.append('SHARK')
-                if p.get('is_whale'): signals.append('WHALE')
                 if p.get('is_sharp'): signals.append('SHARP')
                 if p.get('is_steam'): signals.append('STEAM')
                 if p.get('is_trap'): signals.append('TRAP')

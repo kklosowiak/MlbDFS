@@ -25,7 +25,7 @@ def test_dqi_fires_with_divergence():
         "power_concentration": 0.360,
         "implied_total": 5.0,
         "trend": "SURGING",
-        "is_storm": True,
+        # OMEGA v19.3: is_storm removed from DQI scoring
     }
     score, status, pos, warn = calculate_dqi(team)
     assert score is not None

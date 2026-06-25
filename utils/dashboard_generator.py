@@ -376,8 +376,6 @@ class DashboardGenerator:
 <td class="score-market">{t.get('market_score', 0)}</td>
 <td><div class="signals-container">
 { '<span class="signal-pill pill-shark">🦈 SHARK</span>' if t.get('is_shark') else '' }
-{ '<span class="signal-pill pill-storm">🌪️ STORM</span>' if t.get('is_storm') else '' }
-{ '<span class="signal-pill pill-whale">🐋 WHALE</span>' if t.get('is_whale') else '' }
 { '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>' if t.get('is_sharp') and not t.get('is_shark') else '' }
 { '<span class="signal-pill pill-steam">💨 STEAM</span>' if t.get('is_steam') else '' }
 { '<span class="signal-pill pill-burst">⚡ BURST</span>' if t.get('is_burst') else '' }

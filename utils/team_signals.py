@@ -101,75 +101,10 @@ def apply_team_burst(team, opp_pitcher_outs=18.0):
     return team
 
 
-def evaluate_sneaky_stack(
-    implied_total,
-    team_xwoba,
-    opp_pitcher_outs,
-    is_opp_debut,
-    opp_bullpen_score,
-    opp_bullpen_is_gassed=False,
-    opp_bullpen_is_fatigued=False,
-):
-    """
-    Evaluates whether a team represents a high-leverage contrarian stack (Sneaky Stack).
-    Vegas implied total must be <= 4.1.
-    Requires meeting a baseline floor (xwOBA >= 0.310) and one structural trigger,
-    OR having elite xwOBA >= 0.350 as an exception.
-    """
-    itt = float(implied_total or 4.5)
-    if itt > 4.1:
-        return False
-
-    xw = float(team_xwoba or 0.320)
-    
-    # Elite Exception
-    if xw >= 0.350:
-        return True
-
-    # Baseline Floor
-    if xw < 0.310:
-        return False
-
-    outs = float(opp_pitcher_outs or 18.0)
-    debut = bool(is_opp_debut)
-    pen_score = float(opp_bullpen_score or 0)
-    gassed = bool(opp_bullpen_is_gassed)
-    fatigued = bool(opp_bullpen_is_fatigued)
-
-    # Trigger 1: Opener / Bullpen Game (outs <= 13.5)
-    if outs <= 13.5:
-        return True
-
-    # Trigger 2: Debut Starting Pitcher
-    if debut:
-        return True
-
-    # Trigger 3: Short SP Leash + Gassed Bullpen (outs <= 14.5, pen_score >= 55)
-    is_bp_fatigued = pen_score >= 55 or gassed or fatigued
-    if outs <= 14.5 and is_bp_fatigued:
-        return True
-
-    return False
-
-
-def apply_sneaky_stack(team, opp_pitcher_outs=18.0, is_opp_debut=False):
-    """Computes is_sneaky on a team dict (mutates in place)."""
-    team["is_sneaky"] = evaluate_sneaky_stack(
-        team.get("implied_total"),
-        team.get("team_xwoba"),
-        opp_pitcher_outs,
-        is_opp_debut,
-        team.get("bullpen_fatigue", 0),
-        team.get("is_gassed", False),
-        team.get("is_fatigued", False),
-    )
-    return team
-
-
 def apply_signal_exclusions(team_data):
     """Resolves logical GPP signal contradiction overlaps on a team dict (mutates in place)."""
     if team_data.get("is_trap", False):
-        team_data["is_sneaky"] = False
+        # OMEGA v19.3: is_sneaky removed; is_trap exclusion now only clears active signals
         team_data["is_physics_override"] = False
         team_data["is_anti_chalk_smash"] = False
     if team_data.get("is_fade_risk", False):
