@@ -287,9 +287,11 @@ def score_stack_confidence(t, p_reports):
         reasons.append("Team Hot Run (MSMI): Surging rolling OPS & reduced K%.")
 
     # 9. Tactical GPP Injections
-    if t.get("is_anti_chalk_smash"):
+    # OMEGA v19.3: ANTI_CHALK_SMASH suppressed when team is in a cold streak.
+    # A team with elevated rolling K% / OPS drop is not a contrarian leverage spot.
+    if t.get("is_anti_chalk_smash") and not (t.get("is_cold_streak_msmi") or t.get("is_cold_streak")):
         conf += 8.0
-        reasons.append("⚓ ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.")
+        reasons.append("ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage.")
 
     if t.get("is_pitch_alignment"):
         conf += 8.0

@@ -1210,6 +1210,33 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                             total_signal = f"↑ OVER {gv.get('over_money', '')}%$"
                         break
 
+            # OMEGA v19.3: Pre-compute is_cold_streak_msmi before engine call
+            # so the anti_chalk_smash gate in calculate_stack_score can use it.
+            # (The full MSMI block below computes the same values for the output dict.)
+            _pre_is_cold_streak_msmi = False
+            try:
+                _cache_path = os.path.join(config.DATA_DIR, 'statcast_cache.json')
+                if os.path.exists(_cache_path):
+                    import json as _json
+                    with open(_cache_path, 'r', encoding='utf-8') as _fc:
+                        _hcache = _json.load(_fc)
+                    _s_k, _r_k, _s_ops, _r_ops = [], [], [], []
+                    for _hd in _hcache.values():
+                        if _hd.get('type') == 'hitter' and _hd.get('team') == team:
+                            _pa, _k = _hd.get('pa', 0), _hd.get('k', 0)
+                            _rpa, _rk = _hd.get('rolling_pa', 0), _hd.get('rolling_k', 0)
+                            if _pa >= 20: _s_k.append(_k / _pa); _s_ops.append(_hd.get('ops', 0.0))
+                            if _rpa >= 5: _r_k.append(_rk / _rpa); _r_ops.append(_hd.get('rolling_ops', 0.0))
+                    if _s_k and _r_k and _s_ops and _r_ops:
+                        _avg_sk = sum(_s_k) / len(_s_k)
+                        _avg_rk = sum(_r_k) / len(_r_k)
+                        _avg_so = sum(_s_ops) / len(_s_ops)
+                        _avg_ro = sum(_r_ops) / len(_r_ops)
+                        _kd = round((_avg_rk - _avg_sk) / _avg_sk * 100, 1) if _avg_sk > 0 else 0.0
+                        _od = round((_avg_ro - _avg_so) / _avg_so * 100, 1) if _avg_so > 0 else 0.0
+                        _pre_is_cold_streak_msmi = _kd >= 12.0 and _od <= -12.0
+            except Exception:
+                pass
 
             res = sharps_weighting.calculate_stack_score(
                 team, ml_move, tt_move, curr_itt=curr_itt, team_xwoba=team_xwoba,
@@ -1235,7 +1262,8 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
                 under_divergence=under_divergence,
                 is_pinnacle_offense_boost=is_pinnacle_offense_boost,
                 is_velocity_boost=is_velocity_boost,
-                num_games=num_games
+                num_games=num_games,
+                is_cold_streak_msmi=_pre_is_cold_streak_msmi
             )
             
             if game_started and has_prev:

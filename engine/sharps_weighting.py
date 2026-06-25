@@ -1,6 +1,7 @@
 from datetime import datetime
 from config import config
 from engine.constants import *
+from utils.attack_confidence import load_weights as _load_weights
 
 class SharpsWeighting:
     def __init__(self):
@@ -191,7 +192,8 @@ class SharpsWeighting:
                     hr_9 = (hr / ip * 9) if ip > 5.0 else 1.0
                     
                     if ip >= 50.0 and k_bb_pct < 0.14 and hr_9 > 1.6:
-                        true_talent_penalty = -15.0
+                        _pw = _load_weights().get("pitchers", {})
+                        true_talent_penalty = float(_pw.get("true_talent_penalty", -15.0))
         except:
             pass
 
@@ -220,7 +222,7 @@ class SharpsWeighting:
             "true_talent_penalty": true_talent_penalty < 0
         }
 
-    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_sharp=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_pinnacle_offense_boost=False, is_velocity_boost=False, num_games=15):
+    def calculate_stack_score(self, team, ml_move, tt_move, curr_itt=4.5, team_xwoba=0.330, power_concentration=0.330, park_factor=1.0, bullpen_fatigue=0, divergence=0, is_sharp=False, is_shark=False, is_steam=False, opp_pitcher_physics=0, confidence='high', pitcher_outs=18.0, implied_total=None, is_burst=False, opponent=None, is_anti_chalk_smash=False, is_pitch_alignment=False, opp_pitcher_trap=False, opp_pitcher_name=None, opp_walks_line=None, opp_walks_odds=None, opp_er_line=None, opp_er_odds=None, umpire_factor=1.0, weather_boost=0.0, opp_pitcher_alpha=0.0, is_opp_debut=False, over_divergence=0, under_divergence=0, is_pinnacle_offense_boost=False, is_velocity_boost=False, num_games=15, is_cold_streak_msmi=False):
         """OMEGA v9.8: Tiered Alpha/Beta Stack Scoring (Physics 2.0 Hardened)."""
         # Defensive Input Normalization
         team_xwoba = float(team_xwoba) if team_xwoba is not None else 0.330
@@ -334,21 +336,8 @@ class SharpsWeighting:
         alpha_signals = 0
         beta_signals = 0
         
-        # Alpha (Market Convergence Grouping to prevent exponential stacking)
-        market_alphas = 0
-        # OMEGA v17.2: is_steam REMOVED from alpha market signals (r=-0.0760 in 2026; informational only)
-        # OMEGA v15.0: is_shark MOVED to beta_signals (r=-0.0879 in 2026; dampened to +5% instead of +15%)
-        pass
-        
-        # Flatten: Group all market alphas into a max of 1 signal (+15%), 
-        # but keep the convergence bonus if 3+ agree
-        if market_alphas > 0:
-            alpha_signals += 1
-            
-        convergence_boost = 1.0
-        if market_alphas >= 3:
-            convergence_boost = 1.10
-        
+        # Market signal convergence retired — see git history for original logic
+        # (is_whale/is_storm/is_steam removed v13.6-v19.3; is_shark demoted to beta v15.0)
 
         # Beta
         if is_sharp: beta_signals += 1
@@ -416,7 +405,7 @@ class SharpsWeighting:
         bullpen_skill_mult = dyn_mult
 
         pre_trap_combined = (
-            multiplier * div_multiplier * convergence_boost * magnetism_boost * bullpen_skill_mult
+            multiplier * div_multiplier * magnetism_boost * bullpen_skill_mult
         )
         pre_trap_combined = min(pre_trap_combined, 1.35)
         pre_trap_score = score * pre_trap_combined
@@ -457,7 +446,9 @@ class SharpsWeighting:
                 final_omega += 6.0
 
         # Inject GPP Decision Intelligence bonuses directly to OMEGA master score
-        if is_anti_chalk_smash:
+        # OMEGA v19.3: ANTI_CHALK_SMASH is suppressed when team is on a cold streak (is_cold_streak_msmi).
+        # A team with elevated rolling K% and OPS drop is NOT a contrarian leverage spot.
+        if is_anti_chalk_smash and not is_cold_streak_msmi:
             final_omega += 10.0  # OMEGA v15.0: Increased from +5.0 to +10.0 (highest regression weight binary: +3.139 expected runs)
         if is_pitch_alignment:
             final_omega += 4.0
@@ -598,7 +589,6 @@ class SharpsWeighting:
             "vulnerability": round(vulnerability_mod, 1),
             "bullpen_boost": round(bullpen_boost, 1),
             "volatility_hit": False,
-            "convergence_boost": convergence_boost > 1.0,
             "confidence": confidence,
             "is_trap": chalk_trap,
             "is_stack_chalk": chalk_trap,
