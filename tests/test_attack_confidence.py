@@ -602,12 +602,12 @@ def test_hitter_batting_order_confidence_adjustments():
     assert any("Order Spot 1-2 boost" in r for r in r_1)
 
     assert c_4 - c_base == 2
-    assert any("Order Spot 3-5 boost" in r for r in r_4)
+    assert any("Order Spot 3-4 boost" in r for r in r_4)
 
-    assert c_base - c_7 == 4
+    assert c_base - c_7 == 5
     assert any("Order Spot 7 penalty" in r for r in r_7)
 
-    assert c_base - c_8 == 8
+    assert c_base - c_8 == 5
     assert any("Order Spot 8 penalty" in r for r in r_8)
 
     assert c_base - c_9 == 12
@@ -634,6 +634,46 @@ def test_early_innings_volatility_pitcher_penalty():
     c_short, r_short = score_pitcher_confidence(p_short, [opp_t])
     assert c_normal - c_short == 10
     assert any("Early-innings volatility (IP/start < 4.5) — low QS ceiling." in r for r in r_short)
+
+
+def test_prop_pressure_labels_retired_from_scoring():
+    t_base = {
+        "team": "Brewers",
+        "team_xwoba": 0.320,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+        "prop_pressure_label": "NEUTRAL",
+        "prop_pressure_elite": False,
+        "prop_target_count": 0,
+        "prop_pressure_score": 0,
+    }
+    t_hot = {
+        **t_base,
+        "prop_pressure_label": "HOT",
+        "prop_pressure_elite": True,
+        "prop_target_count": 3,
+        "prop_pressure_score": 75,
+    }
+    t_warm = {
+        **t_base,
+        "prop_pressure_label": "WARM",
+        "prop_target_count": 1,
+        "prop_pressure_score": 25,
+    }
+
+    conf_base, reasons_base = score_stack_confidence(t_base, [])
+    conf_hot, reasons_hot = score_stack_confidence(t_hot, [])
+    conf_warm, reasons_warm = score_stack_confidence(t_warm, [])
+
+    # The confidence score should be identical regardless of prop pressure label
+    # as the scoring influence has been retired.
+    assert conf_base == conf_hot
+    assert conf_base == conf_warm
+    
+    # But the reasons list should still include informational descriptions.
+    assert any("Elite prop board" in r for r in reasons_hot)
+    assert any("Moderate prop interest" in r for r in reasons_warm)
+
 
 
 

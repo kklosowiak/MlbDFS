@@ -340,10 +340,12 @@ def score_stack_confidence(t, p_reports):
         # TTP = pitcher with K-BB% < 14% AND HR/9 > 1.6 AND IP >= 50 — can't miss bats, gets hit for power
         # Only boost legitimate offenses (xwOBA gate) to avoid inflating weak-lineup stacks
         if opp_p.get("true_talent_penalty") and xwoba >= 0.305:
-            sp_boost += 18.0
+            _pw = load_weights().get("pitchers", {})
+            ttp_val = abs(float(_pw.get("true_talent_penalty", -15.0))) * 1.2
+            sp_boost += ttp_val
             sp_reasons.append(
                 f"🎯 TRUE TALENT PENALTY: {opp_p_name} can't miss bats (K-BB%<14%), "
-                f"gives up power (HR/9>1.6), and has IP>=50 — elite stack spot."
+                f"gives up power (HR/9>1.6), and has IP>=50 — elite stack spot (+{ttp_val:.1f})."
             )
         elif opp_p.get("true_talent_penalty") and xwoba < 0.305:
             sp_reasons.append(
@@ -451,15 +453,18 @@ def score_stack_confidence(t, p_reports):
         except Exception:
             pass
             
+        gassed_base = float(_sw.get("is_gassed", 14.0))
         if opp_bp_era < 3.50:
-            bp_boost += 8.0
-            bp_reasons.append(f"Opposing elite pen fatigued (ERA: {opp_bp_era:.2f}) — moderate ceiling.")
+            val = round(gassed_base * (8.0 / 14.0), 1)
+            bp_boost += val
+            bp_reasons.append(f"Opposing elite pen fatigued (ERA: {opp_bp_era:.2f}) — moderate ceiling (+{val:.1f}).")
         elif opp_bp_era > 4.20:
-            bp_boost += 19.0
-            bp_reasons.append(f"Opposing poor pen fatigued (ERA: {opp_bp_era:.2f}) — massive ceiling (+19).")
+            val = round(gassed_base * (19.0 / 14.0), 1)
+            bp_boost += val
+            bp_reasons.append(f"Opposing poor pen fatigued (ERA: {opp_bp_era:.2f}) — massive ceiling (+{val:.1f}).")
         else:
-            bp_boost += 14.0
-            bp_reasons.append("Opposing pen exhausted — late-inning ceiling.")
+            bp_boost += gassed_base
+            bp_reasons.append(f"Opposing pen exhausted — late-inning ceiling (+{gassed_base:.1f}).")
         
     opp_outs = float(t.get("opp_pitcher_outs", 18.0) or 18.0)
     if t.get("is_gassed") and opp_outs <= 15.5:
