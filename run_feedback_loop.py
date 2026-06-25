@@ -225,19 +225,33 @@ def run_feedback_loop(days=7):
                     actuals_cache = json.load(cf)
             except Exception:
                 pass
-                
-        if date_str in actuals_cache:
-            actuals = actuals_cache[date_str]
-        else:
-            actuals = audit.fetch_results(date=date_str)
-            if actuals:
-                actuals_cache[date_str] = actuals
-                os.makedirs("scratch", exist_ok=True)
-                try:
-                    with open(cache_path, "w", encoding="utf-8") as cf:
-                        json.dump(actuals_cache, cf, indent=4)
-                except Exception:
-                    pass
+
+        def is_slate_complete(act):
+            if not act:
+                return False
+            for team_name, team_data in act.items():
+                status = team_data.get("status", "")
+                if status not in ["Final", "Completed", "Game Over", "Postponed", "Cancelled", "Suspended"]:
+                    return False
+            return True
+
+        actuals = actuals_cache.get(date_str)
+        # If cache is missing OR contains incomplete "In Progress" data, fetch from API
+        if not actuals or not is_slate_complete(actuals):
+            fresh_actuals = audit.fetch_results(date=date_str)
+            if fresh_actuals:
+                actuals = fresh_actuals
+                # Only write to persistent cache if all games on the slate are complete
+                if is_slate_complete(fresh_actuals):
+                    actuals_cache[date_str] = fresh_actuals
+                    os.makedirs("scratch", exist_ok=True)
+                    try:
+                        with open(cache_path, "w", encoding="utf-8") as cf:
+                            json.dump(actuals_cache, cf, indent=4)
+                    except Exception:
+                        pass
+                else:
+                    print(f"  - [INFO]: Slate {date_str} has active/in-progress games. Fetching fresh but not caching permanently yet.")
 
         if not actuals:
             print(f"  - [WARNING]: No MLB stats returned for {date_str}. Game may be active or postponed.")
