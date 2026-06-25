@@ -103,3 +103,24 @@ Consider migrating all legacy overrides in user workflows to be strictly date-ke
 ---
 
 *End June 25 (afternoon) entry*
+
+---
+
+## June 25, 2026 (afternoon) — Rolling Betting ROI Auto-Resolution & In-Progress Caching
+
+### Bug
+The Rolling Betting ROI panel showed 0/0 W/L and 0.0% ROI across all tiers, despite the feedback loop having graded slates (like June 24).
+- **Root Cause**: The frontend panel reads from `data/betting_history.json`, which is rebuilt by `AuditEngine.backfill_betting_history()`. The backfiller matches each daily results file with its corresponding `reports/archive/actuals_cache_{date}.json`. However, no production process was writing these per-date cache files. The feedback loop was only writing to a unified `scratch/actuals_cache.json` file.
+- **In-Progress Caching**: Because the feedback loop ran at 10:56 PM ET on June 24, it cached the slate while some games were still `"In Progress"`. This partial data was then permanently cached with `0` runs, causing incorrect ratings and grading downstream.
+
+### Fix
+1. **Backfill Auto-Resolution (Fix A)**: Updated `backfill_betting_history()` in `utils/audit_engine.py` to auto-resolve missing cache files by checking the unified scratch cache, falling back to querying the MLB API directly, and saving the resolved file to `reports/archive/actuals_cache_{date}.json`.
+2. **Nightly Validator Fallback (Fix B)**: Implemented the same auto-resolution fallback in `utils/nightly_validator.py` (`run_daily_validation()`) so that the 4:05 AM nightly validation loop writes the file instead of skipping validation.
+3. **Prevent Caching In-Progress Slates (Fix C)**: Modified `run_feedback_loop.py` to check if all games in a slate are completed (`Final`, `Game Over`, etc.) before persisting them to the unified scratch cache. If games are still active, they are fetched for the current run but not written to the persistent cache.
+
+### Verification
+* Deleted `data/betting_history.json` and triggered a complete rebuild.
+* Verified that the backfiller successfully processed all 45 archived slates from April 15 to June 25, resolving missing caches and building 479 total bets.
+* Confirmed the overall ROI (-2.1%) and LOCK/LEAN breakdown is correctly reflected in `data/betting_history.json` and rendered in the dashboard.
+
+*End June 25 (afternoon) entry*

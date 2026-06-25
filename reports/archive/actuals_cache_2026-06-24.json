@@ -1,0 +1,2017 @@
+{
+    "Texas Rangers": {
+        "runs": 2,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Jacob deGrom",
+            "k": 8,
+            "er": 2,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "wyatt langford": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "jake burger": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alejandro osuna": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "joc pederson": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "nicky lopez": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "josh jung": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "justin foscue": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ezequiel duran": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brandon nimmo": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "elias diaz": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Miami Marlins": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Eury P\u00e9rez",
+            "k": 1,
+            "er": 1,
+            "ip": "4.2"
+        },
+        "hitters": {
+            "griffin conine": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "heriberto hernandez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "esteury ruiz": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jakob marsee": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "javier sanoja": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "xavier edwards": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "kyle stowers": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "owen caissie": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "leo jimenez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brian navarreto": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "otto lopez": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            }
+        }
+    },
+    "Chicago Cubs": {
+        "runs": 10,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Shota Imanaga",
+            "k": 4,
+            "er": 4,
+            "ip": "5.1"
+        },
+        "hitters": {
+            "ian happ": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alex bregman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "pedro ramirez": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 2
+            },
+            "michael busch": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "carson kelly": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "pete crowarmstrong": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "seiya suzuki": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "dansby swanson": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 4
+            },
+            "nico hoerner": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 0
+            },
+            "matt shaw": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            }
+        }
+    },
+    "New York Mets": {
+        "runs": 5,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Sean Manaea",
+            "k": 4,
+            "er": 3,
+            "ip": "3.0"
+        },
+        "hitters": {
+            "luis torrens": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "bo bichette": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "francisco alvarez": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "mark vientos": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "brett baty": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "carson benge": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "eric wagaman": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "marcus semien": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "mj melendez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "francisco lindor": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jared young": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "aj ewing": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            }
+        }
+    },
+    "Cleveland Guardians": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Tanner Bibee",
+            "k": 3,
+            "er": 0,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "kahlil watson": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 3
+            },
+            "travis bazzana": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "daniel schneemann": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "patrick bailey": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            },
+            "brayan rocchio": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "petey halpin": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "david fry": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "steven kwan": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kyle manzardo": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "stuart fairchild": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "rhys hoskins": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Chicago White Sox": {
+        "runs": 3,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Chris Murphy",
+            "k": 2,
+            "er": 0,
+            "ip": "1.1"
+        },
+        "hitters": {
+            "jacob gonzalez": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tristan peters": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "luisangel acuna": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "randal grichuk": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "kyle teel": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "chase meidroth": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "junior perez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "colson montgomery": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "braden montgomery": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "andrew benintendi": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "sam antonacci": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "miguel vargas": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Boston Red Sox": {
+        "runs": 6,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Ranger Suarez",
+            "k": 9,
+            "er": 1,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "willson contreras": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "anthony seigler": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "connor wong": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            },
+            "wilyer abreu": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "andruw monasterio": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "mickey gasper": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "caleb durbin": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "carlos narvaez": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nate eaton": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ceddanne rafaela": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 1
+            },
+            "marcelo mayer": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Colorado Rockies": {
+        "runs": 8,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Kyle Freeland",
+            "k": 4,
+            "er": 6,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "mickey moniak": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jake mccarthy": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "troy johnston": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "braxton fulford": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "willi castro": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler freeman": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 2
+            },
+            "cole carrigg": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 3
+            },
+            "hunter goodman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brett sullivan": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ezequiel tovar": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tj rumfield": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "kyle karros": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Baltimore Orioles": {
+        "runs": 6,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Trey Gibson",
+            "k": 5,
+            "er": 2,
+            "ip": "4.0"
+        },
+        "hitters": {
+            "jeremiah jackson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "samuel basallo": {
+                "hits": 2,
+                "hr": 2,
+                "rbi": 4
+            },
+            "gunnar henderson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "leody taveras": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "taylor ward": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "blaze alexander": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "pete alonso": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 2
+            },
+            "jackson holliday": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "colton cowser": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "coby mayo": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Los Angeles Angels": {
+        "runs": 7,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Jos\u00e9 Soriano",
+            "k": 4,
+            "er": 5,
+            "ip": "3.0"
+        },
+        "hitters": {
+            "donovan walton": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "oswald peraza": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "christian moore": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "zach neto": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jorge soler": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "denzer guzman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "vaughn grissom": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "nolan schanuel": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "wade meckler": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 2
+            },
+            "josh lowe": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler heineman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "logan ohoppe": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            }
+        }
+    },
+    "Seattle Mariners": {
+        "runs": 1,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Bryan Woo",
+            "k": 4,
+            "er": 5,
+            "ip": "4.0"
+        },
+        "hitters": {
+            "josh naylor": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "cole young": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "weston wilson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jp crawford": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "randy arozarena": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "dominic canzone": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "cal raleigh": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "colt emerson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "julio rodriguez": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "luke raley": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Pittsburgh Pirates": {
+        "runs": 11,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Braxton Ashcraft",
+            "k": 10,
+            "er": 1,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "spencer horwitz": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brandon lowe": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "endy rodriguez": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 3
+            },
+            "bryan reynolds": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "esmerlyn valdez": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "jared triolo": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jake mangum": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "billy cook": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler callihan": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 2
+            },
+            "ryan ohearn": {
+                "hits": 4,
+                "hr": 0,
+                "rbi": 3
+            },
+            "nick gonzales": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Kansas City Royals": {
+        "runs": 3,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Noah Cameron",
+            "k": 5,
+            "er": 5,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "carter jensen": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kameron misner": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler tolbert": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "josh rojas": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "isaac collins": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "salvador perez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nick loftin": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "john rave": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "michael massey": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "lane thomas": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jac caglianone": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Tampa Bay Rays": {
+        "runs": 5,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Griffin Jax",
+            "k": 7,
+            "er": 0,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "taylor walls": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ryan vilade": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            },
+            "chandler simpson": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonny deluca": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "jonathan aranda": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "nick fortes": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "yandy diaz": {
+                "hits": 4,
+                "hr": 0,
+                "rbi": 1
+            },
+            "ben williamson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "junior caminero": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "New York Yankees": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Ryan Weathers",
+            "k": 6,
+            "er": 1,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "jose caballero": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "spencer jones": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "max schuemann": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "paul goldschmidt": {
+                "hits": 2,
+                "hr": 2,
+                "rbi": 2
+            },
+            "jasson dominguez": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "austin wells": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ben rice": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "anthony volpe": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "cody bellinger": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jazz chisholm": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Detroit Tigers": {
+        "runs": 2,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Tarik Skubal",
+            "k": 9,
+            "er": 4,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "zach mckinstry": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "haoyu lee": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "riley greene": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kevin mcgonigle": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kerry carpenter": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "spencer torkelson": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ben malgeri": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            },
+            "jake rogers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "james outman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "matt vierling": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "dillon dingler": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "colt keith": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Philadelphia Phillies": {
+        "runs": 5,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Aaron Nola",
+            "k": 5,
+            "er": 2,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "gabriel rincones": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "brandon marsh": {
+                "hits": 3,
+                "hr": 0,
+                "rbi": 0
+            },
+            "justin crawford": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "bryce harper": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jt realmuto": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            },
+            "edmundo sosa": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alec bohm": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "bryson stott": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "kyle schwarber": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "garrett stubbs": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "trea turner": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "derek hill": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            }
+        }
+    },
+    "Washington Nationals": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Carson Palmquist",
+            "k": 3,
+            "er": 1,
+            "ip": "3.1"
+        },
+        "hitters": {
+            "cj abrams": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nasim nunez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "drew millas": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jorbit vivas": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "dylan crews": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "curtis mead": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "jose tena": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "daylen lile": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "james wood": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "luis garcia": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            }
+        }
+    },
+    "Houston Astros": {
+        "runs": 3,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Mike Burrows",
+            "k": 3,
+            "er": 1,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "isaac paredes": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "cam smith": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jake meyers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brice matthews": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jose altuve": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "joey loperfido": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jeremy pena": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "raynel delgado": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "yainer diaz": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "yordan alvarez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Toronto Blue Jays": {
+        "runs": 1,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Trey Yesavage",
+            "k": 5,
+            "er": 1,
+            "ip": "5.2"
+        },
+        "hitters": {
+            "luis urias": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ernie clement": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "daulton varsho": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "andres gimenez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "davis schneider": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nathan lukes": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "george springer": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "vladimir guerrero": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "myles straw": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alejandro kirk": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kazuma okamoto": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Milwaukee Brewers": {
+        "runs": 6,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Shane Drohan",
+            "k": 5,
+            "er": 0,
+            "ip": "4.1"
+        },
+        "hitters": {
+            "cooper pratt": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jackson chourio": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "christian yelich": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jake bauers": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "sal frelick": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "andrew vaughn": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 3
+            },
+            "garrett mitchell": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "david hamilton": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "blake perkins": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "william contreras": {
+                "hits": 3,
+                "hr": 1,
+                "rbi": 2
+            },
+            "brice turang": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Cincinnati Reds": {
+        "runs": 5,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Rhett Lowder",
+            "k": 6,
+            "er": 3,
+            "ip": "5.2"
+        },
+        "hitters": {
+            "elly de la cruz": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "dane myers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "sal stewart": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "noelvi marte": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nathaniel lowe": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "matt mclain": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "blake dunn": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "spencer steer": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            },
+            "jose trevino": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "eugenio suarez": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "tyler stephenson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "edwin arroyo": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jj bleday": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Los Angeles Dodgers": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Shohei Ohtani",
+            "k": 8,
+            "er": 2,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "dalton rushing": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ryan ward": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "max muncy": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "freddie freeman": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tommy edman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "shohei ohtani": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "andy pages": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "mookie betts": {
+                "hits": 3,
+                "hr": 1,
+                "rbi": 1
+            },
+            "alex call": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 1
+            },
+            "alex freeland": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Minnesota Twins": {
+        "runs": 3,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Joe Ryan",
+            "k": 9,
+            "er": 4,
+            "ip": "6.0"
+        },
+        "hitters": {
+            "victor caratini": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kody clemens": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "brooks lee": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "austin martin": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tristan gray": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "josh bell": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "kyler fedko": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ryan kreidler": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 2
+            },
+            "royce lewis": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "trevor larnach": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "byron buxton": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alex jackson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "luke keaschall": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Arizona Diamondbacks": {
+        "runs": 9,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Mitch Bratt",
+            "k": 3,
+            "er": 1,
+            "ip": "3.0"
+        },
+        "hitters": {
+            "lujames groover": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "tim tawa": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nolan arenado": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tommy troy": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 2
+            },
+            "ketel marte": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "ildemaro vargas": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 2
+            },
+            "geraldo perdomo": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "gabriel moreno": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "corbin carroll": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "lourdes gurriel": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "jorge barrosa": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "St. Louis Cardinals": {
+        "runs": 4,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Matthew Liberatore",
+            "k": 3,
+            "er": 6,
+            "ip": "5.1"
+        },
+        "hitters": {
+            "bryan torres": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jordan walker": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nathan church": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "lars nootbaar": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jose fermin": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "jj wetherholt": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "blaze jordan": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 3
+            },
+            "alec burleson": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "pedro pages": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "masyn winn": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ivan herrera": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nelson velazquez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jimmy crooks": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Atlanta Braves": {
+        "runs": 2,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Mart\u00edn P\u00e9rez",
+            "k": 4,
+            "er": 3,
+            "ip": "4.0"
+        },
+        "hitters": {
+            "michael harris": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "joey bart": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            },
+            "jorge mateo": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "mauricio dubon": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "drake baldwin": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "matt olson": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "dominic smith": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "eli white": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ozzie albies": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "austin riley": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "haseong kim": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "San Diego Padres": {
+        "runs": 5,
+        "status": "Final",
+        "sp_stats": {
+            "name": "JP Sears",
+            "k": 5,
+            "er": 2,
+            "ip": "5.2"
+        },
+        "hitters": {
+            "freddy fermin": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jackson merrill": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "sungmun song": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "samad taylor": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 2
+            },
+            "gavin sheets": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "manny machado": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "miguel andujar": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "fernando tatis": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ty france": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 2
+            },
+            "xander bogaerts": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 1
+            },
+            "jase bowen": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Athletics": {
+        "runs": 1,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Gage Jump",
+            "k": 9,
+            "er": 0,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "lawrence butler": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonah heim": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jeff mcneil": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "joey meneses": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "max muncy": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "tyler soderstrom": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nick kurtz": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "henry bolte": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "shea langeliers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jacob wilson": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "San Francisco Giants": {
+        "runs": 2,
+        "status": "Final",
+        "sp_stats": {
+            "name": "Tyler Mahle",
+            "k": 4,
+            "er": 0,
+            "ip": "5.2"
+        },
+        "hitters": {
+            "casey schmitt": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonah cox": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "victor bericoto": {
+                "hits": 2,
+                "hr": 1,
+                "rbi": 1
+            },
+            "matt chapman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jung hoo lee": {
+                "hits": 2,
+                "hr": 0,
+                "rbi": 0
+            },
+            "drew gilbert": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "rafael devers": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "eric haase": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "willy adames": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "bryce eldridge": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "daniel susac": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    }
+}

@@ -1,0 +1,486 @@
+{
+    "Kansas City Royals": {
+        "runs": 0,
+        "status": "In Progress",
+        "sp_stats": {
+            "name": "Seth Lugo",
+            "k": 3,
+            "er": 7,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "carter jensen": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler tolbert": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "josh rojas": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "isaac collins": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "salvador perez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nick loftin": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "starling marte": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "lane thomas": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jac caglianone": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Tampa Bay Rays": {
+        "runs": 7,
+        "status": "In Progress",
+        "sp_stats": {
+            "name": "Casey Legumina",
+            "k": 0,
+            "er": 0,
+            "ip": "1.1"
+        },
+        "hitters": {
+            "taylor walls": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "richie palacios": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "chandler simpson": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "hunter feduccia": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonathan aranda": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "yandy diaz": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "victor mesa": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 3
+            },
+            "junior caminero": {
+                "hits": 2,
+                "hr": 2,
+                "rbi": 3
+            },
+            "cedric mullins": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Seattle Mariners": {
+        "runs": 1,
+        "status": "In Progress",
+        "sp_stats": {
+            "name": "Bryce Miller",
+            "k": 9,
+            "er": 3,
+            "ip": "4.0"
+        },
+        "hitters": {
+            "josh naylor": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "cole young": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jp crawford": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 1
+            },
+            "randy arozarena": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "cal raleigh": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "colt emerson": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "mitch garver": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "julio rodriguez": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "luke raley": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Pittsburgh Pirates": {
+        "runs": 3,
+        "status": "In Progress",
+        "sp_stats": {
+            "name": "Bubba Chandler",
+            "k": 4,
+            "er": 1,
+            "ip": "5.0"
+        },
+        "hitters": {
+            "brandon lowe": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 1
+            },
+            "bryan reynolds": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "esmerlyn valdez": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jared triolo": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jake mangum": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "henry davis": {
+                "hits": 1,
+                "hr": 1,
+                "rbi": 2
+            },
+            "tyler callihan": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "ryan ohearn": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nick gonzales": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Athletics": {
+        "runs": 0,
+        "status": "Pre-Game",
+        "sp_stats": {
+            "name": "Jeffrey Springs",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {
+            "lawrence butler": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonah heim": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jeff mcneil": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "alika williams": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "max muncy": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "tyler soderstrom": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "nick kurtz": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "henry bolte": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "shea langeliers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jeffrey springs": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "San Francisco Giants": {
+        "runs": 0,
+        "status": "Pre-Game",
+        "sp_stats": {
+            "name": "Landen Roupp",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {
+            "casey schmitt": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jonah cox": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "victor bericoto": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "matt chapman": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "jung hoo lee": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "rafael devers": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "willy adames": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "landen roupp": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "bryce eldridge": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            },
+            "daniel susac": {
+                "hits": 0,
+                "hr": 0,
+                "rbi": 0
+            }
+        }
+    },
+    "Houston Astros": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Detroit Tigers": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Philadelphia Phillies": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Washington Nationals": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Texas Rangers": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Toronto Blue Jays": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Chicago Cubs": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "New York Mets": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "New York Yankees": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Boston Red Sox": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "Arizona Diamondbacks": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    },
+    "St. Louis Cardinals": {
+        "runs": 0,
+        "status": "Scheduled",
+        "sp_stats": {
+            "name": "TBD",
+            "k": 0,
+            "er": 0,
+            "ip": "0.0"
+        },
+        "hitters": {}
+    }
+}
