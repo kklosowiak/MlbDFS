@@ -1602,8 +1602,13 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         except Exception:
             pass
 
-        # Adjust hitter's matchup_xwoba by platoon_multiplier
+        # OMEGA v19.0: Platoon adjustment consolidated inside calculate_individual_hitter_score.
+        # main.py computes NPAS_xwOBA for label/diagnostic purposes only — the raw baseline_xwoba
+        # is passed into the engine so the bb_k_split_multiplier is the single platoon adjustment
+        # point for the physics pillar. Passing the pre-multiplied value AND letting the engine
+        # re-apply splits via bb_k_split_multiplier was a double-application bug.
         baseline_xwoba = float(h.get('matchup_xwoba', 0.330) or 0.330)
+        # platoon-adjusted value kept only for NPAS labelling and smash_factor gate threshold checks
         matchup_xwoba_npas = cap_matchup_xwoba(baseline_xwoba * platoon_multiplier)
         NPAS_xwOBA = matchup_xwoba_npas - baseline_xwoba
 
@@ -1621,6 +1626,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         
         smash_factor = False
         if s_ops >= 0.740 and r_ops >= s_ops * 0.95:
+            # Use platoon-adjusted xwoba only for this threshold gate (intent check, not physics input)
             if (matchup_xwoba_npas >= 0.355 or matchup_radar_boost >= 1.05 or is_vuln_pitcher):
                 smash_factor = True
 
@@ -1634,7 +1640,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
                     is_hitter_pitch_alignment = True
 
         res = sharps_weighting.calculate_individual_hitter_score(
-            h['name'], team_score, matchup_xwoba_npas, h.get('ahr_price', 400),
+            h['name'], team_score, baseline_xwoba, h.get('ahr_price', 400),
             park_factor=park_factor, is_target=h.get('is_juiced_target', False),
             is_speed_target=h.get('is_speed_target', False), is_hot=is_hot,
             vision_boost=vision_boost, protection_boost=protection_boost,
