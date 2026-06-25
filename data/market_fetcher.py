@@ -47,17 +47,17 @@ class MarketFetcher:
         opp_type = 'away' if team_type == 'home' else 'home'
         opp_pitcher = game.get(f"{opp_type}_pitcher")
         
-        # 1. Check API Metadata (Highest Confidence)
-        if game.get(sp_key):
-             return game[sp_key]
-             
-        # 2. Check Local Probables (User-Verified Truth)
+        # 1. Check Local Probables (Official MLB StatsAPI / User-Verified Truth)
         if team_name in probables:
             resolved = probables[team_name]
             # Mutual Exclusion Gate
             if resolved != opp_pitcher:
                 print(f"  - [RECOVERED SP]: {resolved} ({team_name})")
                 return resolved
+
+        # 2. Check API Metadata (Odds API probable_pitcher fallback)
+        if game.get(sp_key):
+             return game[sp_key]
             
         # 3. Market Discovery (Pitcher Props) with Team Validation
         from data.hitter_prop_analyzer import HitterPropAnalyzer
@@ -265,8 +265,21 @@ class MarketFetcher:
                     except:
                         probables = {}
 
-                    h_sp = game_data.get('home_pitcher') or self.resolve_pitcher_from_probables(home_team, commence_time, probables)
-                    a_sp = game_data.get('away_pitcher') or self.resolve_pitcher_from_probables(away_team, commence_time, probables)
+                    h_sp = self.resolve_pitcher_from_probables(home_team, commence_time, probables)
+                    if h_sp and h_sp != "TBD":
+                        print(f"  - [PITCHER]: Using Stats API for {home_team}: {h_sp} (Stats API)")
+                    else:
+                        fallback_sp = game_data.get('home_pitcher') or "TBD"
+                        print(f"  - [PITCHER]: Stats API unavailable for {home_team}, falling back to Odds API: {fallback_sp} (Odds API)")
+                        h_sp = fallback_sp
+
+                    a_sp = self.resolve_pitcher_from_probables(away_team, commence_time, probables)
+                    if a_sp and a_sp != "TBD":
+                        print(f"  - [PITCHER]: Using Stats API for {away_team}: {a_sp} (Stats API)")
+                    else:
+                        fallback_sp = game_data.get('away_pitcher') or "TBD"
+                        print(f"  - [PITCHER]: Stats API unavailable for {away_team}, falling back to Odds API: {fallback_sp} (Odds API)")
+                        a_sp = fallback_sp
 
                     structured_odds[event_id] = {
                         "id": event_id,
