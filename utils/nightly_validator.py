@@ -94,6 +94,36 @@ def run_daily_validation(date_str=None):
     actuals_path = os.path.join(ARCHIVE_DIR, f"actuals_cache_{date_str}.json")
     actuals = _load_json(actuals_path)
 
+    if not actuals:
+        # 1. Fallback to unified scratch/actuals_cache.json
+        scratch_path = os.path.join(ROOT, "scratch", "actuals_cache.json")
+        if os.path.exists(scratch_path):
+            try:
+                with open(scratch_path, "r", encoding="utf-8") as f:
+                    scratch_cache = json.load(f)
+                    actuals = scratch_cache.get(date_str)
+            except:
+                pass
+        
+        # 2. Fallback to MLB API
+        if not actuals:
+            try:
+                from utils.audit_engine import AuditEngine
+                audit = AuditEngine()
+                print(f"[VALIDATOR]: Cache missing for {date_str}. Fetching from MLB API...")
+                actuals = audit.fetch_results(date=date_str)
+            except Exception as e:
+                print(f"[VALIDATOR]: Error fetching from API: {e}")
+        
+        # 3. Save resolved actuals locally so it exists in archive next time
+        if actuals:
+            try:
+                with open(actuals_path, "w", encoding="utf-8") as f:
+                    json.dump(actuals, f, indent=4)
+                print(f"[VALIDATOR]: Saved fetched actuals to {actuals_path}")
+            except Exception as e:
+                print(f"[VALIDATOR]: Error writing local actuals cache: {e}")
+
     if not results or not actuals:
         print(f"[VALIDATOR]: Missing results or actuals for {date_str} — skipping.")
         return None
