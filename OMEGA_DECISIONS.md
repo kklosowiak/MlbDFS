@@ -67,3 +67,22 @@ Decided on monthly comprehensive audit cadence with dashboard reminders. Reasoni
 ---
 
 *End June 24 entry*
+
+---
+
+## June 25, 2026 (early hours) — Scratch Directory Cleanup Deferred
+
+End-of-session check on Python file count flagged 913 total Python files which seemed high. Investigation revealed 734 of those files (80%) live in the scratch/ directory — throwaway diagnostic scripts AG creates during sessions and never deletes. Examples: platoon_diag.py, gassed_diag.py, blended_diag.py, various scratch_inventory.py variants from tonight alone.
+
+Production code is appropriately sized at 179 files (utils 28, research 71, archive 23, tests 21, data 16, root 11, engine 7, scripts 2). The 84K Python line count is inflated by approximately 30-70K lines of scratch noise.
+
+Decision: defer cleanup to next housekeeping session. Bulk delete the entire scratch/ directory — AG creates new scratch scripts as needed and does not depend on old ones. The research/ folder at 71 files may also benefit from cleanup but is lower priority.
+
+Reasoning for deferral: doing a 700+ file bulk delete at midnight after a 7-hour session is the classic "one more thing" mistake. Cleanup is housekeeping, not correctness. Risk of accidentally deleting a needed file is low but nonzero, and zero benefit from doing it tonight vs next session.
+
+Action item for next session: `Remove-Item -Recurse -Force scratch/` then verify 84/84 tests still pass.
+
+---
+
+*End June 25 entry*
+
