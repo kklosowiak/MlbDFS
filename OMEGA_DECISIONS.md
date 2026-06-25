@@ -82,7 +82,24 @@ Reasoning for deferral: doing a 700+ file bulk delete at midnight after a 7-hour
 
 Action item for next session: `Remove-Item -Recurse -Force scratch/` then verify 84/84 tests still pass.
 
+*End June 25 (early hours) entry*
+
 ---
 
-*End June 25 entry*
+## June 25, 2026 (afternoon) — Pitcher Override Staleness & Ingestion Prioritization
 
+### Bug
+The daily slate was showing stale pitchers from yesterday's doubleheader (Javier Assad for Cubs, Nolan McLean for Mets) instead of today's actual starters (Matthew Boyd and Freddy Peralta). 
+- **Root Cause**: `pitcher_overrides.json` overrides were configured for yesterday's games using legacy keys like `"Chicago Cubs_1"`. Since the overrides had no date markers and were never cleared, they persisted and overrode today's correct starters.
+- **Ingestion Order Issue**: In `market_fetcher.py`, the Odds API probable pitcher metadata took priority over the `probable_pitchers.json` (Stats API) data.
+
+### Fix
+1. **Auto-Invalidation & Date-Keyed Overrides**: Updated `ProbablePitcherFetcher.refresh()` to check the overrides file modification date relative to the active slate date (4 AM ET timezone-aware rollover) and automatically clear the file (`{}`) if it's stale. Added support for date-keyed overrides (e.g. `"2026-06-25_Chicago Cubs_1"`) alongside the legacy format.
+2. **Prioritize Stats API**: Modified `data/market_fetcher.py` (structural ingestion + resolution loop) to query `probable_pitchers.json` (Stats API) first and fallback to Odds API metadata only as a secondary check. Added descriptive log messages pointing to the resolving source.
+
+### Architectural Follow-Up
+Consider migrating all legacy overrides in user workflows to be strictly date-keyed (e.g. `"YYYY-MM-DD_Team_GameNumber"`) to permanently design out override leakage without relying solely on mtime checks.
+
+---
+
+*End June 25 (afternoon) entry*
