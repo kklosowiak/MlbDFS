@@ -41,8 +41,14 @@ def test_burst_star_power_and_targetable_sp():
 
 
 def test_burst_star_power_and_pen_script():
-    is_burst, _ = evaluate_burst_signal(0.372, 0.348, 88, 14.5, 75.0)
-    assert is_burst is True
+    # OMEGA v19.1: pen_script conc floor raised 0.365 -> 0.390 to prevent triple-stack
+    # from gassed pen alone. Old threshold (0.372) no longer triggers pen_script BURST.
+    is_burst_old_threshold, _ = evaluate_burst_signal(0.372, 0.348, 88, 14.5, 75.0)
+    assert is_burst_old_threshold is False, "conc=0.372 should NOT trigger pen_script BURST at new threshold"
+
+    # conc=0.395 (elite star power) with elite pen + short leash still fires pen_script BURST
+    is_burst_elite_conc, _ = evaluate_burst_signal(0.395, 0.348, 88, 14.5, 75.0)
+    assert is_burst_elite_conc is True, "conc=0.395 with gassed pen + short leash should still trigger BURST"
 
 
 def test_apply_team_burst_on_api_shape():

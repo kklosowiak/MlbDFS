@@ -77,7 +77,11 @@ def evaluate_burst_signal(
     pen_script = (
         pen >= BURST_PEN_FATIGUE
         and outs < BURST_SHORT_LEASH_OUTS
-        and conc >= 0.365
+        # OMEGA v19.1: Raised from 0.365 to 0.390. pen_script requires genuine elite star-power
+        # concentration so that gassed pen alone doesn't drive BURST for average lineups.
+        # At 0.390 only the top ~20% of power concentrations qualify, preventing triple-counting
+        # with bullpen_boost (path 1) and is_gassed_attack premium (path 3) in the engine.
+        and conc >= 0.390
     )
     is_burst = star_power and (targetable_sp or pen_script)
     return is_burst, gap

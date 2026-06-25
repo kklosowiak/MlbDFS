@@ -354,7 +354,17 @@ class SharpsWeighting:
         if is_sharp: beta_signals += 1
         if is_burst: beta_signals += 1
         if tt_move > 0.5: beta_signals += 1
-        if bullpen_fatigue >= 65: beta_signals += 1
+        # OMEGA v19.1: Mutual exclusion — if is_burst already fired via pen_script (pen-driven BURST),
+        # the standalone bullpen_fatigue beta would double-count the same gassed pen signal.
+        # Only add the standalone pen beta if BURST didn't originate from the pen path.
+        # pen_script = (fatigue >= 85 AND outs < 15.0 AND conc >= 0.365) — same pen that drives is_burst.
+        burst_from_pen_script = (
+            is_burst
+            and bullpen_fatigue >= 65.0
+            and pitcher_outs < 15.0
+        )
+        if bullpen_fatigue >= 65 and not burst_from_pen_script:
+            beta_signals += 1
         if is_shark: beta_signals += 1  # OMEGA v15.0: Demoted from alpha (+15%) to beta (+5%)
         if is_storm and (is_sharp or is_steam): beta_signals += 1  # OMEGA v17.0: Conditional convergence (requires sharp/steam backing)
         # OMEGA v17.2: is_whale REMOVED from beta_signals count (r=-0.0930 in 2026; public money != edge)
@@ -428,12 +438,21 @@ class SharpsWeighting:
         combined = min(pre_trap_combined * trap_multiplier, 1.35)
         final_omega = score * combined
 
-        # OMEGA v15.2: Gassed Bullpen Attack Premium (Optimized)
-        # If opponent bullpen is tired (>= 75), starter is on a short leash (<= 15.5 outs),
+        # OMEGA v15.2 / v19.1: Gassed Bullpen Attack Premium (Recalibrated)
+        # Fires when: opp bullpen tired (>= 75), starter on short leash (<= 15.5 outs),
         # and attacking team has solid offensive baseline (xwOBA >= 0.315).
+        # OMEGA v19.1: Premium halved from (+4/+8/+12) to (+2/+4/+6).
+        # Rationale: bullpen_boost (path 1) is already the primary pen contribution;
+        # is_gassed_attack was triple-counting via boost + burst_beta + this premium.
+        # The convergence case is still rewarded — just at a calibrated, non-additive level.
         is_gassed_attack = (bullpen_fatigue >= 75) and (pitcher_outs <= 15.5) and (team_xwoba >= 0.315)
         if is_gassed_attack:
-            final_omega += 8.0  # OMEGA v15.0: Increased from +5.0 to +8.0 (r=+0.1270 strongest positive predictor)
+            if dyn_grade == "Elite":
+                final_omega += 2.0
+            elif dyn_grade in ("Strong", "Average"):
+                final_omega += 4.0
+            else: # "Below Average", "Weak"
+                final_omega += 6.0
 
         # Inject GPP Decision Intelligence bonuses directly to OMEGA master score
         if is_anti_chalk_smash:
