@@ -5188,7 +5188,7 @@
                 let allowedTeams = null;
                 let filterEnabled = false;
                 try {
-                    const infoRes = await fetch('/api/slate-info');
+                    const infoRes = await fetch('/api/slate-info?t=' + Date.now());
                     if (infoRes.ok) {
                         const info = await infoRes.json();
                         if (info) {
@@ -5200,7 +5200,7 @@
                     console.error("Failed to fetch slate info:", e);
                 }
 
-                const res = await fetch('/api/results');
+                const res = await fetch('/api/results?t=' + Date.now());
                 if (res.status === 401) {
                     window.location.href = '/login';
                     return;
@@ -7050,7 +7050,7 @@
 
         async function loadAuditStatus() {
             try {
-                const res = await fetch('/api/audit_status');
+                const res = await fetch('/api/audit_status?t=' + Date.now());
                 if (!res.ok) return;
                 const json = await res.json();
                 if (json.status !== 'success') return;
@@ -8750,7 +8750,7 @@
                 document.getElementById('page-subtitle').innerText = 'OMEGA PuLP Linear Solver Center';
 
                 // 1. Fetch Slate Info
-                const res = await fetch('/api/slate-info');
+                const res = await fetch('/api/slate-info?t=' + Date.now());
                 if (res.status === 401) { window.location.href = '/login'; return; }
                 const info = await res.json();
                 
@@ -8772,7 +8772,7 @@
                 renderSlateGames(info.games);
 
                 // 2. Fetch Results for Locks list
-                const resultsRes = await fetch('/api/results');
+                const resultsRes = await fetch('/api/results?t=' + Date.now());
                 if (resultsRes.status === 401) return;
                 const results = await resultsRes.json();
 
@@ -8888,7 +8888,7 @@
         async function handleGameToggle(home, away, checked) {
             try {
                 // Get current slate info to see allowed teams
-                const res = await fetch('/api/slate-info');
+                const res = await fetch('/api/slate-info?t=' + Date.now());
                 const info = await res.json();
                 
                 let allowed = info.allowed_teams || [];

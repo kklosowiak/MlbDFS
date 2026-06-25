@@ -3114,13 +3114,20 @@ def get_audit_status():
 
     unresolved_alerts = [a for a in alerts if not a.get("resolved", False)]
 
-    return JSONResponse(content={
-        "status": "success",
-        "schedule": schedule,
-        "alerts": unresolved_alerts,
-        "unresolved_count": len(unresolved_alerts),
-        "last_drift_check": last_check
-    })
+    return JSONResponse(
+        content={
+            "status": "success",
+            "schedule": schedule,
+            "alerts": unresolved_alerts,
+            "unresolved_count": len(unresolved_alerts),
+            "last_drift_check": last_check
+        },
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        }
+    )
 
 
 @app.post("/api/audit_mark_complete", dependencies=[Depends(get_current_user)])
