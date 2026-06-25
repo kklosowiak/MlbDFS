@@ -277,17 +277,10 @@ def run_feedback_loop(days=7):
                 opp_norm = normalize_player_name(opp_pitcher_name)
                 opp_p = next((p for p in pitchers if normalize_player_name(p.get('pitcher', '')) == opp_norm), None)
 
-            if True:
-                is_sneaky = evaluate_sneaky_stack(
-                    t.get('implied_total'),
-                    t.get('team_xwoba'),
-                    t.get('opp_pitcher_outs'),
-                    t.get('is_opp_debut', False),
-                    t.get('bullpen_fatigue', 0),
-                    t.get('is_gassed', False),
-                    t.get('is_fatigued', False)
-                )
-                t['is_sneaky'] = is_sneaky
+            # is_sneaky: retired from scoring v19.3 (evaluate_sneaky_stack deleted).
+            # Read from archived snapshot value for historical hit-rate tracking.
+            is_sneaky = t.get('is_sneaky', False)
+            t['is_sneaky'] = is_sneaky
 
             # Recalculate is_anti_chalk_smash dynamically with optimized thresholds
             if True:
