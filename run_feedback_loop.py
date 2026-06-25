@@ -161,6 +161,9 @@ def run_feedback_loop(days=7):
         'top3_pitchers': {'total': 0, 'hit': 0},  # Top 3 OMEGA score quality starts
         'top3_stacks': {'total': 0, 'hit': 0},    # Top 3 OMEGA stack score scoring 5+ runs
         'top5_hitters': {'total': 0, 'hit': 0},   # Top 5 hitters getting 2+ hits or 1+ HR
+        'stack_rank_1': {'total': 0, 'hit': 0},   # #1 ranked stack scoring 5+ runs
+        'stack_rank_2': {'total': 0, 'hit': 0},   # #2 ranked stack scoring 5+ runs
+        'stack_rank_3': {'total': 0, 'hit': 0},   # #3 ranked stack scoring 5+ runs
     }
 
     bet_stats = {
@@ -253,11 +256,16 @@ def run_feedback_loop(days=7):
         # 1. Audit Team Signals & Projections
         t_audit = audit.score_performance(teams, actuals)
         
-        # Top 3 Stacks Accuracy (5+ runs scored)
-        for t in t_audit[:3]:
+        # Top 3 Stacks Accuracy — combined and per-rank (5+ runs scored)
+        rank_keys = ['stack_rank_1', 'stack_rank_2', 'stack_rank_3']
+        for rank_idx, t in enumerate(t_audit[:3]):
             projection_stats['top3_stacks']['total'] += 1
             if t.get('actual_runs', 0) >= 5:
                 projection_stats['top3_stacks']['hit'] += 1
+            rank_key = rank_keys[rank_idx]
+            projection_stats[rank_key]['total'] += 1
+            if t.get('actual_runs', 0) >= 5:
+                projection_stats[rank_key]['hit'] += 1
                 
         # Signal Metrics
         for t in t_audit:
@@ -767,6 +775,11 @@ def run_feedback_loop(days=7):
         'dates_analyzed': analyzed_dates,
         'signal_stats': signal_stats,
         'projection_stats': projection_stats,
+        'stack_rank_accuracy': {
+            'rank_1': projection_stats['stack_rank_1'],
+            'rank_2': projection_stats['stack_rank_2'],
+            'rank_3': projection_stats['stack_rank_3'],
+        },
         'what_we_missed': what_we_missed[:5],  # Limit to top 5 misses
         'recommendations': recommendations,
         'bet_stats': bet_stats,
@@ -855,11 +868,28 @@ def run_feedback_loop(days=7):
     ])
 
     for cat, d in projection_stats.items():
+        # Skip per-rank keys here — rendered separately in the Stack Rank table below
+        if cat.startswith('stack_rank_'):
+            continue
         total = d['total']
         hit = d['hit']
         rate_str = f"{(hit/total)*100:.0f}%" if total > 0 else "0%"
         label = "Top 3 Pitchers (QS)" if cat == 'top3_pitchers' else ("Top 3 Stacks (5+ Runs)" if cat == 'top3_stacks' else "Top 5 Hitters (2+ H / HR)")
         md_lines.append(f"| {label} | {total} | {hit} | {rate_str} |")
+
+    # Stack Rank Accuracy sub-table
+    md_lines.extend([
+        "",
+        "### Stack Rank Accuracy",
+        "| Rank | Fired | Hit (5+ Runs) | Hit Rate |",
+        "| :--- | :---: | :---: | :---: |"
+    ])
+    for rank_label, rank_key in [('#1 Stack', 'stack_rank_1'), ('#2 Stack', 'stack_rank_2'), ('#3 Stack', 'stack_rank_3')]:
+        d = projection_stats[rank_key]
+        total = d['total']
+        hit = d['hit']
+        rate_str = f"{(hit/total)*100:.0f}%" if total > 0 else "0%"
+        md_lines.append(f"| {rank_label} | {total} | {hit} | {rate_str} |")
 
     # EV Betting ROI Tracker Table
     md_lines.extend([

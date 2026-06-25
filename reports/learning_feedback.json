@@ -1,5 +1,5 @@
 {
-    "generated_at": "2026-06-24 08:16 PM ET",
+    "generated_at": "2026-06-24 08:18 PM ET",
     "dates_analyzed": [
         "2026-05-10",
         "2026-05-11",
@@ -132,6 +132,32 @@
         "top5_hitters": {
             "total": 180,
             "hit": 135
+        },
+        "stack_rank_1": {
+            "total": 36,
+            "hit": 16
+        },
+        "stack_rank_2": {
+            "total": 36,
+            "hit": 18
+        },
+        "stack_rank_3": {
+            "total": 34,
+            "hit": 14
+        }
+    },
+    "stack_rank_accuracy": {
+        "rank_1": {
+            "total": 36,
+            "hit": 16
+        },
+        "rank_2": {
+            "total": 36,
+            "hit": 18
+        },
+        "rank_3": {
+            "total": 34,
+            "hit": 14
         }
     },
     "what_we_missed": [

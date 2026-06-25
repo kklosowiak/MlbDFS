@@ -1,5 +1,5 @@
 # 📊 OMEGA Learning Loop & Performance Audit
-**Generated:** 2026-06-24 08:16 PM ET
+**Generated:** 2026-06-24 08:18 PM ET
 **Slates Analyzed:** 2026-05-10, 2026-05-11, 2026-05-12, 2026-05-13, 2026-05-14, 2026-05-15, 2026-05-16, 2026-05-17, 2026-05-18, 2026-05-19, 2026-05-20, 2026-05-21, 2026-05-22, 2026-05-23, 2026-05-24, 2026-05-25, 2026-05-26, 2026-05-27, 2026-05-29, 2026-05-30, 2026-05-31, 2026-06-01, 2026-06-03, 2026-06-04, 2026-06-05, 2026-06-07, 2026-06-08, 2026-06-09, 2026-06-10, 2026-06-11, 2026-06-12, 2026-06-13, 2026-06-15, 2026-06-19, 2026-06-22, 2026-06-24
 
 ---
@@ -51,6 +51,13 @@ Grades the raw projections of top targeted options.
 | Top 3 Pitchers (QS) | 106 | 70 | 66% |
 | Top 3 Stacks (5+ Runs) | 106 | 48 | 45% |
 | Top 5 Hitters (2+ H / HR) | 180 | 135 | 75% |
+
+### Stack Rank Accuracy
+| Rank | Fired | Hit (5+ Runs) | Hit Rate |
+| :--- | :---: | :---: | :---: |
+| #1 Stack | 36 | 16 | 44% |
+| #2 Stack | 36 | 18 | 50% |
+| #3 Stack | 34 | 14 | 41% |
 
 ## 💰 Suggested Bets EV ROI Tracker
 Grades OMEGA's LOCK and LEAN game conviction recommendations against boxscore outcomes (assumes flat 1-unit bet size on LOCK and LEAN plays; PASS plays are excluded).
