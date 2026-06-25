@@ -8237,95 +8237,23 @@
                 const reasons = (h.attack_reasons || []).map(r => `<div style="font-size:0.85rem; margin-bottom:6px; color:var(--text-secondary);">• ${r}</div>`).join('');
                 document.getElementById('hm-reasons').innerHTML = reasons || '<span style="color:var(--text-secondary);">No attack reasons logged.</span>';
 
-                // Matchup Radar DNA Integration
-                const radarCard = document.getElementById('hm-radar-card');
-                const radarBody = document.getElementById('hm-radar-body');
-                const radarSummary = document.getElementById('hm-radar-summary');
-                
-                if (window.radarData && window.radarData.hitters && window.radarData.pitchers) {
-                    const formatName = (name) => {
-                        if (!name) return '';
-                        const parts = name.trim().split(' ');
-                        if (parts.length >= 2) {
-                            return `${parts[parts.length - 1]}, ${parts.slice(0, parts.length - 1).join(' ')}`;
-                        }
-                        return name;
-                    };
-                    
-                    const rHitter = formatName(h.name);
-                    const rPitcher = formatName(h.opp_pitcher);
-                    
-                    const hDNA = window.radarData.hitters[rHitter];
-                    const pDNA = window.radarData.pitchers[rPitcher];
-                    const lAvg = window.radarData.league_avg || {};
-                    
-                    if (hDNA && pDNA) {
-                        radarCard.style.display = 'block';
-                        radarBody.innerHTML = '';
-                        
-                        const pitchNames = {
-                            'FF': 'Four-seam Fastball',
-                            'SI': 'Sinker',
-                            'SL': 'Slider',
-                            'CU': 'Curveball',
-                            'CH': 'Changeup'
-                        };
-                        
-                        let primaryMatchups = 0;
-                        let eliteMatchups = 0;
-                        
-                        Object.keys(pitchNames).forEach(ptype => {
-                            const usage = pDNA[ptype] !== undefined ? pDNA[ptype] : 0.0;
-                            const hxw = hDNA[ptype] !== undefined ? hDNA[ptype] : 0.000;
-                            const l_avg = lAvg[ptype] !== undefined ? lAvg[ptype] : 0.300;
-                            const isPrimary = usage >= 25.0;
-                            
-                            let edgeText = '—';
-                            let edgeColor = 'var(--text-secondary)';
-                            if (hxw > 0 && l_avg > 0) {
-                                const diff = ((hxw - l_avg) / l_avg * 100).toFixed(1);
-                                const sign = hxw >= l_avg ? '+' : '';
-                                edgeText = `${sign}${diff}% vs Avg`;
-                                edgeColor = hxw >= l_avg ? '#32d74b' : '#ff453a';
-                                
-                                if (isPrimary) {
-                                    primaryMatchups++;
-                                    if (hxw > l_avg) eliteMatchups++;
-                                }
-                            }
-                            
-                            const row = document.createElement('tr');
-                            row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-                            row.style.opacity = usage > 0 ? '1' : '0.4';
-                            
-                            row.innerHTML = `
-                                <td style="padding:10px 8px; font-weight:700;">
-                                    ${pitchNames[ptype]} ${isPrimary ? '<span class="badge-mini" style="background:rgba(255,214,10,0.15); color:#ffd60a; border:1px solid rgba(255,214,10,0.3); border-radius:3px; padding:1px 4px; font-size:0.68em; margin-left:4px;">PRIMARY</span>' : ''}
-                                </td>
-                                <td style="padding:10px 8px; font-weight:800; color:${isPrimary ? '#ffd60a' : 'var(--text-primary)'};">${usage.toFixed(1)}%</td>
-                                <td style="padding:10px 8px; font-weight:700;">.${hxw.toFixed(3).toString().substring(2)}</td>
-                                <td style="padding:10px 8px; color:var(--text-secondary);">.${l_avg.toFixed(3).toString().substring(2)}</td>
-                                <td style="padding:10px 8px; text-align:right; font-weight:800; color:${edgeColor};">${edgeText}</td>
-                            `;
-                            radarBody.appendChild(row);
-                        });
-                        
-                        const matchPercent = primaryMatchups > 0 ? (eliteMatchups / primaryMatchups * 100).toFixed(0) : 0;
-                        let summaryHTML = '';
-                        if (matchPercent >= 60) {
-                            summaryHTML = `🔥 <strong style="color:#32d74b;">ELITE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter has a positive xwOBA edge vs ${eliteMatchups}/${primaryMatchups} of ${h.opp_pitcher || 'SP'}'s primary pitch weapons.`;
-                        } else if (matchPercent > 0) {
-                            summaryHTML = `⚖️ <strong>MODERATE MATCHUP DNA (${matchPercent}% alignment):</strong> Hitter matches up reasonably vs ${h.opp_pitcher || 'SP'}'s primary pitch arsenal.`;
-                        } else {
-                            summaryHTML = `⚠️ <strong style="color:#ff453a;">FADE MATCHUP DNA:</strong> Hitter is below average vs the primary pitch types thrown by ${h.opp_pitcher || 'SP'}.`;
-                        }
-                        radarSummary.innerHTML = summaryHTML;
-                    } else {
-                        radarCard.style.display = 'none';
-                    }
-                } else {
-                    radarCard.style.display = 'none';
+                // Store hitter + pitcher names on the modal element for lazy DNA fetch when tab opens
+                const radarModal = document.getElementById('hitter-modal');
+                radarModal.dataset.hmHitter  = h.name        || '';
+                radarModal.dataset.hmPitcher = h.opp_pitcher || '';
+
+                // Reset radar tab to loading state ready for when user clicks it
+                document.getElementById('hm-radar-loading').style.display   = 'block';
+                document.getElementById('hm-radar-chart-wrap').style.display = 'none';
+                document.getElementById('hm-radar-nodata').style.display     = 'none';
+                document.getElementById('hm-radar-summary').innerHTML        = '';
+                document.getElementById('hm-radar-coverage').innerText       = '';
+                // Destroy any previous Chart instance
+                if (window._hmRadarChart) {
+                    window._hmRadarChart.destroy();
+                    window._hmRadarChart = null;
                 }
+
 
                 document.getElementById('hitter-modal').classList.add('open');
                 document.getElementById('hitter-modal-overlay').classList.add('open');
@@ -8355,6 +8283,188 @@
             document.getElementById('hitter-modal').classList.remove('open');
             document.getElementById('hitter-modal-overlay').classList.remove('open');
         }
+
+        // ----- Pitch DNA Radar Chart (Chart.js) -----
+        const PITCH_FULL_NAMES = {
+            FF: 'Four-Seam', SI: 'Sinker', SL: 'Slider',
+            CU: 'Curveball', CH: 'Changeup', FC: 'Cutter', FS: 'Splitter'
+        };
+
+        async function renderHitterDnaRadar() {
+            const modal = document.getElementById('hitter-modal');
+            const hitterName  = modal.dataset.hmHitter  || '';
+            const pitcherName = modal.dataset.hmPitcher || '';
+            if (!hitterName || !pitcherName) return;
+
+            // Show loading, hide chart
+            document.getElementById('hm-radar-loading').style.display   = 'block';
+            document.getElementById('hm-radar-chart-wrap').style.display = 'none';
+            document.getElementById('hm-radar-nodata').style.display     = 'none';
+            document.getElementById('hm-radar-summary').innerHTML        = '';
+
+            let dna;
+            try {
+                const res = await fetch(
+                    `/api/dna/${encodeURIComponent(pitcherName)}/${encodeURIComponent(hitterName)}`
+                );
+                dna = await res.json();
+            } catch (e) {
+                document.getElementById('hm-radar-loading').style.display = 'none';
+                document.getElementById('hm-radar-nodata').style.display  = 'block';
+                return;
+            }
+
+            document.getElementById('hm-radar-loading').style.display = 'none';
+
+            if (!dna.has_data || !dna.pitch_types || dna.pitch_types.length === 0) {
+                document.getElementById('hm-radar-nodata').style.display = 'block';
+                return;
+            }
+
+            // Coverage badge
+            document.getElementById('hm-radar-coverage').innerText =
+                `${dna.coverage_pct}% coverage`;
+
+            // Build per-point edge values and colors for the hitter dataset
+            // Edge value = (hitter_xwoba / league_avg) * 50  → 50 = league average
+            const edgeValues = dna.pitch_types.map((_, i) => {
+                const la = dna.league_avg[i] || 0.320;
+                return la > 0 ? +((dna.hitter_xwoba[i] / la) * 50).toFixed(1) : 50;
+            });
+
+            const pointBgColors = dna.pitch_types.map((_, i) => {
+                const hx = dna.hitter_xwoba[i];
+                const la = dna.league_avg[i] || 0.320;
+                if (hx > la * 1.10) return 'rgba(50,215,75,0.85)';   // edge
+                if (hx < la * 0.90) return 'rgba(255,69,58,0.85)';   // weakness
+                return 'rgba(148,163,184,0.75)';                       // neutral
+            });
+
+            // Pitch labels (full names)
+            const labels = dna.pitch_types.map(pt => PITCH_FULL_NAMES[pt] || pt);
+
+            // Destroy previous chart
+            if (window._hmRadarChart) {
+                window._hmRadarChart.destroy();
+                window._hmRadarChart = null;
+            }
+
+            const canvas = document.getElementById('hm-radar-canvas');
+            const ctx    = canvas.getContext('2d');
+
+            const isLight = document.documentElement.classList.contains('light-theme');
+            const gridColor  = isLight ? 'rgba(0,0,0,0.08)'  : 'rgba(255,255,255,0.08)';
+            const labelColor = isLight ? '#475569' : '#94a3b8';
+
+            window._hmRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Pitcher Usage %',
+                            data: dna.pitcher_usage,
+                            borderColor: 'rgba(10,132,255,0.85)',
+                            backgroundColor: 'rgba(10,132,255,0.12)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(10,132,255,0.9)',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Hitter Edge (50=Avg)',
+                            data: edgeValues,
+                            borderColor: 'rgba(50,215,75,0.85)',
+                            backgroundColor: 'rgba(50,215,75,0.10)',
+                            borderWidth: 2,
+                            pointBackgroundColor: pointBgColors,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 500, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: {
+                            labels: { color: labelColor, font: { size: 11, weight: '600' }, boxWidth: 12 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    if (ctx.datasetIndex === 0) {
+                                        return ` Usage: ${ctx.raw}%`;
+                                    }
+                                    const i = ctx.dataIndex;
+                                    const hx = dna.hitter_xwoba[i];
+                                    const la = dna.league_avg[i] || 0.320;
+                                    const sign = hx >= la ? '+' : '';
+                                    const pct  = (((hx - la) / la) * 100).toFixed(1);
+                                    return ` xwOBA: .${hx.toFixed(3).slice(2)}  (${sign}${pct}% vs Avg)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                stepSize: 25,
+                                color: labelColor,
+                                font: { size: 9 },
+                                backdropColor: 'transparent'
+                            },
+                            grid:      { color: gridColor },
+                            angleLines:{ color: gridColor },
+                            pointLabels:{ color: labelColor, font: { size: 11, weight: '700' } }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('hm-radar-chart-wrap').style.display = 'block';
+
+            // Text summary: edge pitches / weakness pitches
+            const edges     = [];
+            const weaknesses = [];
+            dna.pitch_types.forEach((pt, i) => {
+                const hx = dna.hitter_xwoba[i];
+                const la = dna.league_avg[i] || 0.320;
+                if (hx > la * 1.10) edges.push(pt);
+                if (hx < la * 0.90) weaknesses.push(pt);
+            });
+
+            const edgeStr = edges.length     ? edges.join(', ')      : 'none';
+            const weakStr = weaknesses.length ? weaknesses.join(', ') : 'none';
+
+            let summaryColor = '#94a3b8';
+            let summaryIcon  = '⚖️';
+            if (edges.length > weaknesses.length) { summaryColor = '#32d74b'; summaryIcon = '🔥'; }
+            else if (weaknesses.length > edges.length) { summaryColor = '#ff453a'; summaryIcon = '⚠️'; }
+
+            document.getElementById('hm-radar-summary').innerHTML = `
+                <div style="margin-bottom:4px;">${summaryIcon} <strong>Edge pitches:</strong>
+                    <span style="color:#32d74b;">${edgeStr}</span>
+                    &nbsp;·&nbsp;<strong>Weaknesses:</strong>
+                    <span style="color:#ff453a;">${weakStr}</span>
+                </div>
+                <div style="font-size:0.78rem; opacity:0.7;">
+                    DNA Coverage: ${dna.coverage_pct}% of ${pitcherName}'s active arsenal matched
+                </div>
+            `;
+        }
+
+        // Intercept switchModalTab to lazy-load the radar when the hitter DNA tab is opened
+        const _origSwitchModalTab = switchModalTab;
+        switchModalTab = function(modalType, tabName) {
+            _origSwitchModalTab(modalType, tabName);
+            if (modalType === 'hitter' && tabName === 'radar') {
+                renderHitterDnaRadar();
+            }
+        };
 
         function toggleSettingsPanel() {
             const drawer = document.getElementById('settings-drawer');
@@ -8868,26 +8978,29 @@
             </div>
         </div>
 
-        <!-- Tab 2: Matchup DNA Radar -->
+        <!-- Tab 2: Matchup DNA Radar Chart -->
         <div class="modal-tab-content" id="hm-tab-radar">
             <div class="card" id="hm-radar-card" style="padding:20px; margin:0;">
-                <h4 style="margin:0 0 15px 0; color:#00f2fe;">🎯 Pitch DNA Radar Matchup</h4>
-                <div style="overflow-x:auto;">
-                    <table style="width:100%; border-collapse:collapse; margin-top:10px;" id="hm-radar-table">
-                        <thead>
-                            <tr style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; text-align:left; font-size:0.85rem; color:var(--text-secondary);">
-                                <th style="padding:8px;">PITCH TYPE</th>
-                                <th style="padding:8px;">SP MIX %</th>
-                                <th style="padding:8px;">HITTER xwOBA</th>
-                                <th style="padding:8px;">LEAGUE AVG</th>
-                                <th style="padding:8px; text-align:right;">MATCHUP EDGE</th>
-                            </tr>
-                        </thead>
-                        <tbody id="hm-radar-body" style="font-size:0.9rem;">
-                        </tbody>
-                    </table>
+                <h4 style="margin:0 0 15px 0; color:#00f2fe; display:flex; align-items:center; gap:8px;">
+                    🎯 Pitch DNA Radar
+                    <span id="hm-radar-coverage" style="font-size:0.7rem; font-weight:700; color:var(--text-secondary); font-family:monospace; margin-left:4px;"></span>
+                </h4>
+                <!-- Loading spinner -->
+                <div id="hm-radar-loading" style="text-align:center; padding:40px 0; color:var(--text-secondary); font-size:0.9rem;">
+                    Loading DNA data...
                 </div>
-                <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:12px; font-weight: 600;" id="hm-radar-summary"></div>
+                <!-- Chart canvas — hidden until data arrives -->
+                <div id="hm-radar-chart-wrap" style="display:none; position:relative; height:280px;">
+                    <canvas id="hm-radar-canvas"></canvas>
+                </div>
+                <!-- Text summary -->
+                <div id="hm-radar-summary" style="font-size:0.85rem; color:var(--text-secondary); margin-top:14px; font-weight:600; line-height:1.6;"></div>
+                <!-- No data fallback -->
+                <div id="hm-radar-nodata" style="display:none; text-align:center; padding:32px 0; color:var(--text-secondary);">
+                    <div style="font-size:2rem; margin-bottom:8px;">🔍</div>
+                    <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">DNA data unavailable for this matchup</div>
+                    <div style="font-size:0.82rem;">Using OPS-based platoon estimate instead.</div>
+                </div>
             </div>
         </div>
 

@@ -1880,6 +1880,84 @@ def get_radar_api():
             return JSONResponse(content={"error": str(e)}, status_code=500)
     return JSONResponse(content={"pitchers": {}, "hitters": {}, "league_avg": {}})
 
+
+@app.get("/api/dna/{pitcher_name}/{hitter_name}", dependencies=[Depends(get_current_user)])
+def get_dna_matchup(pitcher_name: str, hitter_name: str):
+    """Pitch DNA radar: Returns pitch-type arsenal vs hitter xwOBA breakdown for radar chart."""
+    from utils.normalization import normalize_player_name
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    radar_path = os.path.join(base_dir, "data", "matchup_data.json")
+
+    empty = {
+        "pitcher": pitcher_name, "hitter": hitter_name,
+        "pitch_types": [], "pitcher_usage": [], "hitter_xwoba": [],
+        "league_avg": [], "has_data": False, "coverage_pct": 0
+    }
+
+    if not os.path.exists(radar_path):
+        return JSONResponse(content=empty)
+
+    try:
+        with open(radar_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+    norm_pitcher = normalize_player_name(pitcher_name)
+    norm_hitter  = normalize_player_name(hitter_name)
+
+    pitchers_db  = data.get("pitchers", {})
+    hitters_db   = data.get("hitters", {})
+    league_avg   = data.get("league_avg", {})
+
+    pitcher_data = pitchers_db.get(norm_pitcher)
+    hitter_data  = hitters_db.get(norm_hitter, {})
+
+    if not pitcher_data:
+        return JSONResponse(content=empty)
+
+    # Filter to pitch types the pitcher throws >= 5%
+    active_pitches = sorted(
+        [(pt, float(pct)) for pt, pct in pitcher_data.items() if float(pct or 0) >= 5.0],
+        key=lambda x: -x[1]
+    )
+
+    if not active_pitches:
+        return JSONResponse(content=empty)
+
+    pitch_types   = [pt for pt, _ in active_pitches]
+    pitcher_usage = [round(pct, 1) for _, pct in active_pitches]
+
+    # Build hitter xwOBA per pitch (fall back to league avg if missing)
+    hitter_xwoba = []
+    hitter_covered = 0
+    for pt in pitch_types:
+        hval = hitter_data.get(pt)
+        if hval is not None:
+            hitter_xwoba.append(round(float(hval), 3))
+            hitter_covered += 1
+        else:
+            # Fall back to league average
+            hitter_xwoba.append(round(float(league_avg.get(pt, 0.320)), 3))
+
+    league_avgs = [round(float(league_avg.get(pt, 0.320)), 3) for pt in pitch_types]
+
+    coverage_pct = round(hitter_covered / len(pitch_types) * 100) if pitch_types else 0
+    has_data = pitcher_data is not None  # pitcher must exist; hitter can be partial
+
+    return JSONResponse(content={
+        "pitcher":       norm_pitcher,
+        "hitter":        norm_hitter,
+        "pitch_types":   pitch_types,
+        "pitcher_usage": pitcher_usage,
+        "hitter_xwoba":  hitter_xwoba,
+        "league_avg":    league_avgs,
+        "has_data":      has_data,
+        "coverage_pct":  coverage_pct
+    })
+
+
 @app.get("/api/weather", dependencies=[Depends(get_current_user)])
 def get_weather_api():
     """Weather Matrix: Merge expert weather cache with live game totals and starters."""
