@@ -29,3 +29,4 @@ scratch/
 reports/latest_results.json
 reports/dashboard.html
 reports/learning_feedback.*
+reports/archive/
