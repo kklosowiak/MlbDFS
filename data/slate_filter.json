@@ -1,20 +1,10 @@
 {
     "enabled": true,
-    "active_date": "2026-06-24",
+    "active_date": "2026-06-25",
     "allowed_teams": [
-        "Houston Astros",
-        "Toronto Blue Jays",
-        "Milwaukee Brewers",
-        "Cincinnati Reds",
-        "Los Angeles Dodgers",
-        "Minnesota Twins",
-        "Arizona Diamondbacks",
-        "St. Louis Cardinals",
-        "Atlanta Braves",
-        "San Diego Padres",
-        "Athletics",
-        "San Francisco Giants",
-        "Chicago Cubs",
-        "New York Mets"
+        "Kansas City Royals",
+        "Pittsburgh Pirates",
+        "Seattle Mariners",
+        "Tampa Bay Rays"
     ]
 }
