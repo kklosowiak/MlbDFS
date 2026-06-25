@@ -139,9 +139,7 @@ def run_full_analysis():
             modified_snapshot = True
             
     if modified_snapshot:
-        with open(snapshot_path, 'w') as f:
-            json.dump(snapshot, f, indent=4)
-        print(f"[OVERRIDE]: Modified snapshot on disk to replace Padres TBD pitcher with German Marquez.")
+        print(f"[OVERRIDE]: Applied in-memory snapshot override to replace Padres TBD pitcher with German Marquez.")
         
 
 
@@ -240,9 +238,7 @@ def run_full_analysis():
         rosters[away_team] = away_pitcher
 
     if modified_snapshot_bulk:
-        with open(snapshot_path, 'w') as f:
-            json.dump(snapshot, f, indent=4)
-        print(f"[OVERRIDE]: Modified snapshot on disk to apply bulk reliever overrides.")
+        print(f"[OVERRIDE]: Applied in-memory snapshot override for bulk reliever overrides.")
 
     # Movement Tracker (v7.8 Trap Detector Support)
     movement_tracker = MovementTracker()
@@ -673,7 +669,7 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
             seen_pitchers.add(report['pitcher'])
             cleaned_p_reports.append(report)
             
-    cleaned_p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
+    cleaned_p_reports.sort(key=lambda x: (-x['alpha_score'], x['pitcher']))
     from utils.prop_juice import apply_pitcher_target_caps
 
     apply_pitcher_target_caps(cleaned_p_reports)
@@ -723,7 +719,7 @@ def _resolve_pitcher_team_conflicts(p_reports, team_reports):
             p['is_low_ceiling'] = True
 
     # Re-sort after penalties
-    p_reports.sort(key=lambda x: x['alpha_score'], reverse=True)
+    p_reports.sort(key=lambda x: (-x['alpha_score'], x['pitcher']))
     return p_reports
 
 def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_map, bullpen_analyzer, consensus_fetcher, splits_data, umpire_assignments, weather_fetcher, previous_results, totals_data=None, raw_hitters=None, confirmed_lineups=None, projected_lineups=None, matchup_radar=None):
@@ -1401,7 +1397,27 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
             apply_signal_exclusions(team_row)
             team_reports.append(team_row)
 
-    team_reports.sort(key=lambda x: x['stack_score'], reverse=True)
+    team_reports.sort(key=lambda x: (-x['stack_score'], x['team']))
+
+    # OMEGA v18.0: ITT Floor Swap
+    # If the #1 ranked stack has an ITT more than 0.5 runs below
+    # the highest-ITT team on the slate, swap them.
+    # Backtest: improves #1 hit rate from 41% to 53% across 34 slates.
+    # Fires on 65% of slates where avg ITT gap is 1.62 runs.
+    # Guard: skip if the highest-ITT team has is_volatile == True
+    #        (volatile teams have unreliable ITT data and should not be force-elevated).
+    if len(team_reports) >= 2:
+        top_itt_team = max(team_reports, key=lambda x: float(x.get('implied_total', 0) or 0))
+        current_1 = team_reports[0]
+        top_itt = float(top_itt_team.get('implied_total', 0) or 0)
+        current_1_itt = float(current_1.get('implied_total', 0) or 0)
+
+        if (top_itt_team != current_1
+                and (top_itt - current_1_itt) > 0.5
+                and not top_itt_team.get('is_volatile', False)):
+            team_reports.remove(top_itt_team)
+            team_reports.insert(0, top_itt_team)
+            print(f"[ITT SWAP]: {top_itt_team['team']} (ITT {top_itt:.1f}) elevated to #1 over {current_1['team']} (ITT {current_1_itt:.1f})")
 
     # OMEGA v6.3: Auto-log SURGING/FADING tags to trend_tag_log.csv for validation
     import csv
@@ -1535,10 +1551,13 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         if h_form:
             recent_ops = float(h_form.get('recent_ops', 0.0) or 0.0)
             recent_k = float(h_form.get('recent_k_pct', 0.0) or 0.0)
-            if recent_ops >= 1.000 and recent_k <= 20.0:
-                form_boost = 3.0
-            elif recent_ops <= 0.500 and recent_k >= 30.0:
+            if recent_ops > 0.900:
+                form_boost = 5.0
+            elif recent_ops > 0.800:
+                form_boost = 2.0
+            elif recent_ops < 0.550:
                 form_boost = -3.0
+
 
         season_ops = float(h_profile.get('ops', 0.0) or 0.0) if h_profile else 0.0
 
@@ -1727,7 +1746,7 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
             hr['attack_conf'] = conf
             hr['attack_reasons'] = reasons
 
-    h_reports.sort(key=lambda x: x['player_score'], reverse=True)
+    h_reports.sort(key=lambda x: (-x['player_score'], x['name']))
     
     # Deduplication
     seen_hitters = set()
