@@ -58,7 +58,7 @@ def apply_onrender_overrides(data):
             t['opp_pitcher'] = 'German Marquez'
             t['confidence'] = 'high'
             t['stack_score'] = 150.0
-            t['blended_rating'] = round((150.0 + t.get('attack_conf', 94)) / 2, 1)
+            t['blended_rating'] = round((t.get('stack_score', 150.0) + t.get('attack_conf', 94)) / 2, 1)
             
     # 3. Hitters
     hitters = data.get("hitters", [])

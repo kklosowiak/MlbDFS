@@ -29,7 +29,7 @@ class SlateReportGenerator:
             conf, reasons = score_pitcher_confidence(p, t_reports)
             p['attack_conf'] = conf
             p['attack_reasons'] = reasons
-            p['blended_rating'] = round((p.get('alpha_score', 0) + conf) / 2, 1)
+            # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
             scored_pitchers.append(p)
             
         scored_pitchers.sort(key=lambda x: x['attack_conf'], reverse=True)
@@ -39,7 +39,7 @@ class SlateReportGenerator:
             conf, reasons = score_stack_confidence(t, p_reports)
             t['attack_conf'] = conf
             t['attack_reasons'] = reasons
-            t['blended_rating'] = round((t.get('stack_score', 0) + conf) / 2, 1)
+            # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
             scored_stacks.append(t)
             
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
@@ -52,7 +52,7 @@ class SlateReportGenerator:
             conf, reasons = self._score_hitter_confidence(h, team_data, opp_p)
             h['attack_conf'] = conf
             h['attack_reasons'] = reasons
-            h['blended_rating'] = round((h.get('player_score', 0) + conf) / 2, 1)
+            # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
 
         # OMEGA ELITE ALERTS (Highest Probability Backtested Combinations)
         alert_lines = []

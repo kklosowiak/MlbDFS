@@ -350,19 +350,27 @@ def run_full_analysis():
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
     SlateReportGenerator().generate(p_reports, team_reports, h_reports)
 
-    # OMEGA: Calculate Blended Stack Rating for all teams
+    # CANONICAL: Single source of truth for blended_rating (OMEGA v19.2).
+    # SlateReportGenerator above has already populated attack_conf on all entities.
+    # Do NOT compute blended_rating anywhere else — dashboard and server must read
+    # the value set here rather than recomputing it.
+
+    # Teams: blended = (stack_score + attack_conf) / 2
     for t in team_reports:
         stack_score = float(t.get('stack_score', 0) or 0)
         attack_conf = float(t.get('attack_conf', 0) or 0)
         t['blended_rating'] = round((stack_score + attack_conf) / 2, 1)
 
-    # OMEGA: Calculate Blended Pitcher Rating
+    # Pitchers: blended = (alpha_score_final + attack_conf) / 2
     for p in p_reports:
-        alpha_score = float(p.get('alpha_score', 0) or 0)
+        alpha = p.get('alpha_score', 0)
+        if isinstance(alpha, dict):
+            alpha = alpha.get('final', 0)
+        alpha_score = float(alpha or 0)
         attack_conf = float(p.get('attack_conf', 0) or 0)
         p['blended_rating'] = round((alpha_score + attack_conf) / 2, 1)
 
-    # OMEGA: Calculate Blended Hitter Rating
+    # Hitters: blended = (player_score + attack_conf) / 2
     for h in h_reports:
         player_score = float(h.get('player_score', 0) or 0)
         attack_conf = float(h.get('attack_conf', 0) or 0)
