@@ -3075,7 +3075,7 @@
                             <ul style="margin: 6px 0 0 0; padding-left: 18px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
                                 <li><strong>OMEGA Master Scores</strong>: Raw OMEGA Pitcher Score (Alpha Score) and OMEGA Stack Score.</li>
                                 <li><strong>Team Matrix</strong>: Vegas odds, ML & TT movements, Implied Totals, and physics/market scores.</li>
-                                <li><strong>Pitcher Matrix</strong>: Baseline projections, physics metrics, and Sharp/Whale signals.</li>
+                                <li><strong>Pitcher Matrix</strong>: Baseline projections, physics metrics, and Sharp signals.</li>
                                 <li><strong>Hitter Props</strong>: Total Bases lines, prices, matchup wOBAs, and blind spot projections.</li>
                                 <li><strong>Stadium Physics & Weather</strong>: Wind velocities, temp overlays, and delays.</li>
                             </ul>
@@ -3348,7 +3348,7 @@
                             <span>💵 Machine Learning Moneyline Betting EV Panel</span>
                         </h2>
                         <p style="margin:5px 0 0 0; font-size:0.8rem; color:var(--text-secondary);">
-                            Decoupled from DFS run projections. Highlighting sharp money shifts, institutional whales, and Pinnacle SP consensus.
+                            Decoupled from DFS run projections. Highlighting sharp money shifts and Pinnacle SP consensus.
                         </p>
                     </div>
                 </div>
@@ -3761,17 +3761,11 @@
         function teamMarketIntelHtml(t) {
             let pills = [];
 
-            if (t.is_whale) {
-                pills.push(signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' }));
-            }
             if (t.is_shark) {
                 pills.push(signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' }));
             }
             if (t.is_sharp) {
                 pills.push(signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' }));
-            }
-            if (t.is_storm) {
-                pills.push(signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' }));
             }
             if (t.is_steam) {
                 pills.push(signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' }));
@@ -4517,12 +4511,8 @@
         function buildMarketSignalPills(entity, isTeamRow) {
             let html = '';
             if (entity.is_shark) html += signalPillHtml('🦈 SHARK', { className: 'pill-shark', tipKey: 'shark' });
-            if (entity.is_whale) html += signalPillHtml('🐳 WHALE', { className: 'pill-whale', tipKey: 'whale' });
             if (isTeamRow) {
                 if (entity.is_steam) html += signalPillHtml('💨 STEAM', { className: 'pill-steam', tipKey: 'steam' });
-                else if (entity.is_storm) html += signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' });
-            } else if (entity.is_storm) {
-                html += signalPillHtml('🌪️ STORM', { className: 'pill-storm', tipKey: 'storm' });
             }
             if (entity.is_sharp && !entity.is_shark) {
                 html += signalPillHtml('💵 SHARP', { className: 'pill-sharp', tipKey: 'sharp' });
@@ -5535,14 +5525,11 @@
               let tickerItems = [];
               if (data.pitchers) {
                   data.pitchers.forEach(p => {
-                      if (p.is_whale) tickerItems.push(`🐳 WHALE MONEY on ${p.pitcher}`);
                       if (p.is_shark) tickerItems.push(`🦈 SHARK ACTION on ${p.pitcher}`);
                   });
               }
               if (data.teams) {
                   data.teams.forEach(t => {
-                      if (t.is_whale) tickerItems.push(`🐳 WHALE SIGHTING: ${t.team} Stack`);
-                      if (t.is_storm) tickerItems.push(`⚡ STORM WARNING: ${t.team} Offense`);
                       
                       if (t.weather_label && (t.weather_label.includes('🔴') || t.weather_label.includes('🟠') || t.weather_label.includes('RAIN') || t.weather_label.includes('DELAY'))) {
                           tickerItems.push(`☔ WEATHER ALERT: ${t.team} (${t.weather_label})`);
@@ -6218,28 +6205,7 @@
             // 2. ML Public Fades (Whale Fades)
             const fadesBody = document.getElementById('ml-fades-body');
             if (fadesBody) {
-                const whaleTeams = (data.teams || []).filter(t => t.is_whale);
-                whaleTeams.sort((a, b) => (a.divergence || 0) - (b.divergence || 0));
-
-                if (whaleTeams.length === 0) {
-                    fadesBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-secondary); font-size:0.8rem;">No whale fades active on this slate.</td></tr>`;
-                } else {
-                    fadesBody.innerHTML = whaleTeams.map(t => {
-                        const divSign = (t.divergence || 0) >= 0 ? '+' : '';
-                        const mlSign = (t.ml_move || 0) >= 0 ? '+' : '';
-                        const edgeType = '<span class="badge whale" style="font-size:0.6rem; padding:2px 5px; font-weight:800; border-radius:4px; background:rgba(245, 158, 11, 0.15); color:#f59e0b; border:1px solid rgba(245, 158, 11, 0.3);">🐋 PUBLIC FADE</span>';
-                        
-                        return `
-                            <tr class="betting-row-hover" style="border-bottom:1px solid var(--border);">
-                                <td style="padding:10px 4px; font-weight:700; font-size:0.8rem; color:var(--text-primary);">${t.team}</td>
-                                <td style="padding:10px 4px; font-size:0.75rem; color:var(--text-secondary);">${t.opponent || 'TBD'}</td>
-                                <td style="padding:10px 4px; text-align:right; font-weight:700; color:#ff9f0a; font-size:0.8rem;">${divSign}${t.divergence || 0}%</td>
-                                <td style="padding:10px 4px; text-align:right; font-family:monospace; font-size:0.75rem; color:${(t.ml_move || 0) < 0 ? '#32d74b' : '#ff453a'};">${mlSign}${t.ml_move || 0}</td>
-                                <td style="padding:10px 4px; text-align:left; font-size:0.75rem;">${edgeType}</td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
+                fadesBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-secondary); font-size:0.8rem;">No whale fades active on this slate.</td></tr>`;
             }
 
             // 3. SP Win Leans
@@ -6343,7 +6309,7 @@
                     if (p.is_paradox) {
                         const eliteTip = `${omegaTip('elite_stack_opp')} Stack Ω ${numScore(oppT.stack_score).toFixed(0)}.`;
                         oppStackBadge = `<span class="badge-mini"${tipAttrs(eliteTip)} style="background: rgba(255, 69, 58, 0.12); border: 1px solid rgba(255, 69, 58, 0.3); color: #ff453a; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap; box-shadow: 0 0 6px rgba(255, 69, 58, 0.2);">🔥 ELITE STACK (${numScore(oppT.stack_score).toFixed(0)})</span>`;
-                    } else if (oppT.is_whale || oppT.is_shark) {
+                    } else if (oppT.is_shark) {
                         oppStackBadge = `<span class="badge-mini"${tipAttrs(omegaTip('sharp_target_opp'))} style="background: rgba(10, 132, 255, 0.12); border: 1px solid rgba(10, 132, 255, 0.3); color: #0a84ff; border-radius: 4px; padding: 1px 5px; font-size: 0.72em; font-weight: bold; margin-left: 6px; white-space: nowrap;">🐳 SHARP TARGET</span>`;
                     }
                 }
@@ -7602,7 +7568,6 @@
                     if (oppP.is_juiced_target) pBadgesHTML += '<span class="signal-pill pill-target" style="font-size: 0.65rem; padding: 2px 6px;">🎯 TARGET</span>';
                     if (oppP.is_shark) pBadgesHTML += '<span class="signal-pill pill-shark" style="font-size: 0.65rem; padding: 2px 6px;">🦈 SHARK</span>';
                     if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 HEAVY $</span>';
-                    if (oppP.is_whale) pBadgesHTML += '<span class="signal-pill pill-whale" style="font-size: 0.65rem; padding: 2px 6px;">🐳 WHALE</span>';
                     if (oppP.is_debut) pBadgesHTML += '<span class="signal-pill pill-storm" style="font-size: 0.65rem; padding: 2px 6px;">✨ DEBUT</span>';
                     if (oppP.is_paradox) pBadgesHTML += '<span class="signal-pill pill-paradox" style="font-size: 0.65rem; padding: 2px 6px;">⚠️ PARADOX</span>';
                     if (oppP.is_hazard) pBadgesHTML += '<span class="signal-pill pill-exhausted" style="font-size: 0.65rem; padding: 2px 6px;">🌋 HAZARD</span>';
@@ -7691,8 +7656,6 @@
                 const isTrap = t.is_trap || false;
                 const isParadox = t.is_paradox || false;
                 const isShark = t.is_shark || false;
-                const isWhale = t.is_whale || false;
-                const isStorm = t.is_storm || false;
                 const isSteam = t.is_steam || false;
                 const isSharp = t.is_sharp || false;
                 const isBurst = t.is_burst || false;
@@ -7712,7 +7675,7 @@
                     verdictBg = 'rgba(50, 215, 75, 0.15)';
                     verdictIcon = '⚡';
                     verdictDesc = 'Elite physical metrics combined with massive market backing. High-conviction core stack choice.';
-                } else if (stackScore >= 95 && !isTrap && (isShark || isWhale || t.is_sneaky || isBurst)) {
+                } else if (stackScore >= 95 && !isTrap && (isShark || t.is_sneaky || isBurst)) {
                     verdictLabel = 'A-TIER GPP PIVOT';
                     verdictColor = '#5ac8fa';
                     verdictBg = 'rgba(90, 200, 250, 0.12)';
@@ -7740,7 +7703,7 @@
                     ownBg = 'rgba(255, 69, 58, 0.12)';
                     ownIcon = '🚨';
                     ownDesc = 'AI Analyst: Heavily stacked by the public today but carries high physical floor risk. Fading or playing significantly underweight is highly recommended.';
-                } else if ((isShark || isWhale || (t.divergence || 0) > 10) && stackScore >= 85 && !isTrap) {
+                } else if ((isShark || (t.divergence || 0) > 10) && stackScore >= 85 && !isTrap) {
                     ownLabel = 'SHARP CONTRARIAN';
                     ownColor = '#32d74b';
                     ownBg = 'rgba(50, 215, 75, 0.12)';
@@ -7824,7 +7787,7 @@
 
                 // Check for ITT (Implied Team Total) Sanity Gate Bypass Warning
                 let warningHTML = '';
-                const isSharpBacked = isWhale || isStorm || ((t.divergence || 0) > 15);
+                const isSharpBacked = ((t.divergence || 0) > 15);
                 const impliedTotalVal = parseFloat(t.implied_total || 0);
                 if (impliedTotalVal > 0 && impliedTotalVal < 4.0 && isSharpBacked) {
                     warningHTML = `
@@ -8135,8 +8098,6 @@
 
                     let tBadgesHTML = '';
                     if (oppT.is_shark) tBadgesHTML += '<span class="signal-pill pill-shark">🦈 SHARK</span>';
-                    if (oppT.is_storm) tBadgesHTML += '<span class="signal-pill pill-storm">🌪️ STORM</span>';
-                    if (oppT.is_whale) tBadgesHTML += '<span class="signal-pill pill-whale">🐳 WHALE</span>';
                     if (oppT.is_sharp) tBadgesHTML += '<span class="signal-pill pill-sharp">🎰 HEAVY $</span>';
                     if (oppT.is_steam) tBadgesHTML += '<span class="signal-pill pill-steam">💨 STEAM</span>';
                     if (oppT.is_burst) tBadgesHTML += '<span class="signal-pill pill-burst">⚡ BURST</span>';
@@ -8220,7 +8181,6 @@
                 const isTrap = p.is_trap || false;
                 const isParadox = p.is_paradox || false;
                 const isShark = p.is_shark || false;
-                const isWhale = p.is_whale || false;
                 const isDebut = p.is_debut || false;
 
                 // --- Card 1: DFS Verdict ---
@@ -8237,7 +8197,7 @@
                     verdictBg = 'rgba(50, 215, 75, 0.15)';
                     verdictIcon = '⚡';
                     verdictDesc = 'Elite raw physics combined with dominant strikeout projections. Safe cash and GPP core play.';
-                } else if (alphaScore >= 80 && !isTrap && (isShark || isWhale || isDebut)) {
+                } else if (alphaScore >= 80 && !isTrap && (isShark || isDebut)) {
                     verdictLabel = 'A-TIER GPP PLAY';
                     verdictColor = '#5ac8fa';
                     verdictBg = 'rgba(90, 200, 250, 0.12)';
@@ -8265,7 +8225,7 @@
                     ownBg = 'rgba(255, 69, 58, 0.12)';
                     ownIcon = '🚨';
                     ownDesc = 'AI Analyst: Highly owned by the public today but carries significant underlying floor risk. Fading or playing underweight is advised.';
-                } else if ((isShark || isWhale) && alphaScore >= 70 && !isTrap) {
+                } else if (isShark && alphaScore >= 70 && !isTrap) {
                     ownLabel = 'SHARP CONTRARIAN';
                     ownColor = '#32d74b';
                     ownBg = 'rgba(50, 215, 75, 0.12)';
@@ -8299,7 +8259,7 @@
                     buildBg = 'rgba(50, 215, 75, 0.15)';
                     buildIcon = '🧩';
                     buildDesc = 'AI Builder: High stability. Use as your primary cash game anchor or baseline GPP core lineup foundation.';
-                } else if (verdictLabel === 'A-TIER GPP PLAY' || isShark || isWhale) {
+                } else if (verdictLabel === 'A-TIER GPP PLAY' || isShark) {
                     buildLabel = 'GPP LEVERAGE PLAY';
                     buildColor = '#0a84ff';
                     buildBg = 'rgba(10, 132, 255, 0.12)';
@@ -9475,16 +9435,7 @@
                             <td>Sharp, professional bettors are aggressively moving the lines on this play.</td>
                             <td>Highly reliable core plays. Lock these into your lineups.</td>
                         </tr>
-                        <tr>
-                            <td><span class="badge pill-whale">🐳 WHALE</span></td>
-                            <td>High-rolling betting syndicates are placing massive financial volume on this team.</td>
-                            <td>Indicates significant smart-money backing. Great correlation indicator.</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge pill-storm">⚡ STORM</span></td>
-                            <td>Ideal warm/humid weather or high wind-out speeds.</td>
-                            <td>Strong hitter boost. The ball carries significantly further in this environment.</td>
-                        </tr>
+
                         <tr>
                             <td><span class="badge pill-steam">💨 STEAM</span></td>
                             <td>Late-breaking money is pouring in on this line just hours before lock.</td>

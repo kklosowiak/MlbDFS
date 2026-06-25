@@ -296,7 +296,7 @@ class SlateReportGenerator:
                 conf += 15
                 reasons.append(f"Elite Matchup: Facing a bottom-tier opposing lineup ({opp}).")
                 
-        if p.get('is_sharp') or p.get('is_shark') or p.get('is_whale'):
+        if p.get('is_sharp') or p.get('is_shark'):
             conf += 10
             reasons.append("Institutional/Sharp money is backing this pitcher today.")
             
@@ -321,7 +321,7 @@ class SlateReportGenerator:
             conf += 15
             reasons.append("⚡ PHY OVERRIDE: Market is undervaluing this team's true hitting ceiling.")
             
-        if t.get('is_shark') or t.get('is_whale') or t.get('is_sharp'):
+        if t.get('is_shark') or t.get('is_sharp'):
             conf += 15
             reasons.append("Institutional/Sharp money is heavily backing this stack.")
             

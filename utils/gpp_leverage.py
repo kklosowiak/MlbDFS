@@ -31,9 +31,7 @@ def compute_gpp_leverage(team_reports: list[dict], p_reports: list[dict]) -> Non
         proj_own = implied_total ** 3.5
         
         # Apply public chasing multipliers
-        if t.get('is_whale'):
-            proj_own *= 1.40
-        if t.get('is_sharp') and not t.get('is_whale'):
+        if t.get('is_sharp'):
             proj_own *= 0.80
             
         # Stacking against trap SPs
