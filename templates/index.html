@@ -2407,17 +2407,17 @@
                     <div id="hub-top-div" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
                     <div id="hub-top-div-score" style="font-size: 1.1rem; color: #ff9f0a; font-weight: 700;">Gap: --%</div>
                 </div>
-                <!-- CONF Stack Card -->
+                <!-- ITT Environment Card -->
                 <div class="card" style="margin: 0; padding: 20px; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 3px solid #00f2fe;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Top CONF Stack</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Top ITT Environment</div>
                     <div id="hub-top-conf-stack" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
-                    <div id="hub-top-conf-stack-score" style="font-size: 1.1rem; color: #00f2fe; font-weight: 700;">CONF: --</div>
+                    <div id="hub-top-conf-stack-score" style="font-size: 1.1rem; color: #00f2fe; font-weight: 700;">ITT: --</div>
                 </div>
-                <!-- Sneaky Lean Card -->
+                <!-- Slate Overlay Card -->
                 <div class="card" style="margin: 0; padding: 20px; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-top: 3px solid #bf5af2;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Sneaky GPP Lean</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 10px;">Slate Overlay</div>
                     <div id="hub-sneaky-stack" style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px;">---</div>
-                    <div id="hub-sneaky-stack-score" style="font-size: 1.1rem; color: #bf5af2; font-weight: 700;">Omega: --</div>
+                    <div id="hub-sneaky-stack-score" style="font-size: 1.1rem; color: #bf5af2; font-weight: 700;">--</div>
                 </div>
             </div>
 
@@ -5429,23 +5429,55 @@
               }
 
               if (data.teams && data.teams.length > 0) {
-                  const confStack = [...data.teams].filter(t => t.attack_conf != null).sort((a, b) => (b.attack_conf || 0) - (a.attack_conf || 0))[0];
-                  if (confStack) {
-                      document.getElementById('hub-top-conf-stack').innerText = confStack.team || '---';
-                      const confDisp = confStack.attack_conf != null ? confStack.attack_conf.toFixed(1) : '--';
-                      document.getElementById('hub-top-conf-stack-score').innerText = 'CONF: ' + confDisp + '% · Ω ' + (numScore(confStack.stack_score) ? numScore(confStack.stack_score).toFixed(1) : '--');
+                  // --- Card 5: TOP ITT ENVIRONMENT ---
+                  // Show the team with the highest implied total, their ITT, and blended_rating
+                  const ittTeam = [...data.teams].sort((a, b) =>
+                      parseFloat(b.implied_total || 0) - parseFloat(a.implied_total || 0)
+                  )[0];
+                  if (ittTeam) {
+                      document.getElementById('hub-top-conf-stack').innerText = ittTeam.team || '---';
+                      const ittVal   = ittTeam.implied_total != null ? parseFloat(ittTeam.implied_total).toFixed(1) : '--';
+                      const blended  = ittTeam.blended_rating != null ? parseFloat(ittTeam.blended_rating).toFixed(1) : (ittTeam.stack_score != null ? parseFloat(ittTeam.stack_score).toFixed(1) : '--');
+                      document.getElementById('hub-top-conf-stack-score').innerText = 'ITT: ' + ittVal + ' · Blend: ' + blended;
                   }
-                  const sneaky = [...data.teams].filter(t =>
-                      t.stack_score >= 95 && t.stack_score <= 125 &&
-                      (t.is_shark || t.is_steam) &&
-                      (t.dqi_score >= 75 || t.dqi_status === 'TRUST')
-                  ).sort((a, b) => numScore(b.stack_score) - numScore(a.stack_score))[0];
-                  if (sneaky) {
-                      document.getElementById('hub-sneaky-stack').innerText = sneaky.team || '---';
-                      document.getElementById('hub-sneaky-stack-score').innerText = 'Ω ' + numScore(sneaky.stack_score).toFixed(1) + (sneaky.is_steam ? ' · STEAM' : ' · SHARK');
+
+                  // --- Card 6: SLATE OVERLAY — priority ladder ---
+                  // Priority 1: ITT Swap fired (OMEGA v18 — top stack_score team has ITT > 0.5 below highest-ITT team)
+                  const sortedByScore = [...data.teams].sort((a, b) => numScore(b.stack_score) - numScore(a.stack_score));
+                  const scoreLeader   = sortedByScore[0];
+                  const topIttOnSlate = [...data.teams].sort((a, b) => parseFloat(b.implied_total || 0) - parseFloat(a.implied_total || 0))[0];
+                  const scoreLeaderItt   = parseFloat(scoreLeader?.implied_total  || 0);
+                  const topIttSlateVal   = parseFloat(topIttOnSlate?.implied_total || 0);
+                  const ittSwapFired = scoreLeader && topIttOnSlate &&
+                      scoreLeader.team !== topIttOnSlate.team &&
+                      (topIttSlateVal - scoreLeaderItt) > 0.5;
+
+                  if (ittSwapFired) {
+                      // ITT swap is live — show which team was promoted
+                      const promotedTeam = topIttOnSlate.team || '---';
+                      const promotedItt  = topIttSlateVal.toFixed(1);
+                      document.getElementById('hub-sneaky-stack').innerText = promotedTeam;
+                      document.getElementById('hub-sneaky-stack-score').innerText = 'ITT SWAP ACTIVE · ITT ' + promotedItt;
+                      document.getElementById('hub-sneaky-stack-score').style.color = '#ffd60a';
                   } else {
-                      document.getElementById('hub-sneaky-stack').innerText = '—';
-                      document.getElementById('hub-sneaky-stack-score').innerText = 'No sneaky lean match';
+                      // Priority 2: genuine sneaky lean (STEAM or SHARK signal, mid-tier score, trusted DQI)
+                      const sneaky = [...data.teams].filter(t =>
+                          t.stack_score >= 95 && t.stack_score <= 125 &&
+                          (t.is_shark || t.is_steam) &&
+                          (t.dqi_score >= 75 || t.dqi_status === 'TRUST')
+                      ).sort((a, b) => numScore(b.stack_score) - numScore(a.stack_score))[0];
+
+                      if (sneaky) {
+                          document.getElementById('hub-sneaky-stack').innerText = sneaky.team || '---';
+                          document.getElementById('hub-sneaky-stack-score').innerText = 'Omega: ' + numScore(sneaky.stack_score).toFixed(1) + (sneaky.is_steam ? ' · STEAM' : ' · SHARK');
+                          document.getElementById('hub-sneaky-stack-score').style.color = '#bf5af2';
+                      } else {
+                          // Priority 3: nothing — clean empty state
+                          document.getElementById('hub-sneaky-stack').innerText = 'NO OVERLAY';
+                          document.getElementById('hub-sneaky-stack').style.color = 'var(--text-secondary)';
+                          document.getElementById('hub-sneaky-stack-score').innerText = 'No overlay signal today';
+                          document.getElementById('hub-sneaky-stack-score').style.color = 'var(--text-secondary)';
+                      }
                   }
               }
 
