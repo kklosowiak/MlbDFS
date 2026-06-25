@@ -1,0 +1,22 @@
+{
+  "audits": {
+    "comprehensive": {
+      "last_run": "2026-06-24",
+      "target_interval_days": 30,
+      "next_due": "2026-07-24",
+      "description": "Full 8-phase comprehensive model audit"
+    },
+    "weekly_drift_check": {
+      "last_run": "2026-06-25",
+      "target_interval_days": 7,
+      "next_due": "2026-07-02",
+      "description": "Automated signal drift check (auto-runs Sundays)"
+    },
+    "focused_post_feature": {
+      "last_run": null,
+      "target_interval_days": null,
+      "next_due": null,
+      "description": "Focused audit after major feature ship -- triggered manually"
+    }
+  }
+}

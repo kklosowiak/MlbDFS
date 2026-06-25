@@ -13,7 +13,7 @@ import math
 from utils.audit_engine import AuditEngine
 from utils.dqi import calculate_dqi
 from config import config
-from utils.team_signals import evaluate_sneaky_stack, apply_signal_exclusions
+from utils.team_signals import apply_signal_exclusions
 
 def ml_to_prob(ml):
     if ml is None: return 0.5

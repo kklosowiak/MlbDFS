@@ -1,0 +1,65 @@
+{
+  "alerts": [
+    {
+      "id": "drift_2026-06-25_HITTER_SMASH",
+      "severity": "WARNING",
+      "signal": "HITTER_SMASH",
+      "category": "signal",
+      "current_rate": 0.6573,
+      "four_week_avg": 0.4465,
+      "drift_pp": 21.1,
+      "detected_at": "2026-06-25T02:50:13Z",
+      "resolved": false,
+      "message": "HITTER_SMASH rose from 44.7% to 65.7% (+21.1pp) -- investigate"
+    },
+    {
+      "id": "drift_2026-06-25_TEAM_BURST",
+      "severity": "WARNING",
+      "signal": "TEAM_BURST",
+      "category": "signal",
+      "current_rate": 0.4911,
+      "four_week_avg": 0.4228,
+      "drift_pp": 6.8,
+      "detected_at": "2026-06-25T02:50:13Z",
+      "resolved": false,
+      "message": "TEAM_BURST rose from 42.3% to 49.1% (+6.8pp) -- investigate"
+    },
+    {
+      "id": "drift_2026-06-25_STEAM_SUPPORT",
+      "severity": "WARNING",
+      "signal": "STEAM_SUPPORT",
+      "category": "signal",
+      "current_rate": 0.4848,
+      "four_week_avg": 0.4242,
+      "drift_pp": 6.1,
+      "detected_at": "2026-06-25T02:50:13Z",
+      "resolved": false,
+      "message": "STEAM_SUPPORT rose from 42.4% to 48.5% (+6.1pp) -- investigate"
+    },
+    {
+      "id": "drift_2026-06-25_TEAM_COLD_STREAK_MSMI",
+      "severity": "WARNING",
+      "signal": "TEAM_COLD_STREAK_MSMI",
+      "category": "signal",
+      "current_rate": 0.6875,
+      "four_week_avg": 0.3625,
+      "drift_pp": 32.5,
+      "detected_at": "2026-06-25T02:50:13Z",
+      "resolved": false,
+      "message": "TEAM_COLD_STREAK_MSMI rose from 36.2% to 68.8% (+32.5pp) -- investigate"
+    },
+    {
+      "id": "drift_2026-06-25_top3_pitchers",
+      "severity": "WARNING",
+      "signal": "top3_pitchers",
+      "category": "projection",
+      "current_rate": 0.6604,
+      "four_week_avg": 0.4813,
+      "drift_pp": 17.9,
+      "detected_at": "2026-06-25T02:50:13Z",
+      "resolved": false,
+      "message": "top3_pitchers rose from 48.1% to 66.0% (+17.9pp) -- investigate"
+    }
+  ],
+  "last_check": "2026-06-25T02:50:39Z"
+}

@@ -2262,9 +2262,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
                     DFS Optimizer
                 </li>
-                <li class="nav-item" onclick="switchTab(this, 'trends')">
+                <li class="nav-item" onclick="switchTab(this, 'trends')" style="position: relative;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                     Learning & Audits
+                    <span id="audit-badge" style="display:none; position:absolute; top:6px; right:10px; width:8px; height:8px; background:#ff453a; border-radius:50%; box-shadow:0 0 4px rgba(255,69,58,0.6);"></span>
                 </li>
                 <li class="nav-item" onclick="openHandbook()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
@@ -2908,6 +2909,35 @@
 
         <!-- TRENDS AUDIT PANEL -->
         <div id="trends-panel" class="tab-panel">
+
+            <!-- ===== AUDIT STATUS CARD ===== -->
+            <div class="card" id="audit-status-card" style="margin-bottom:24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <h2 style="margin:0; display:flex; align-items:center; gap:8px;">
+                            <span>Audit Status</span>
+                            <span id="audit-unresolved-badge" style="display:none; font-size:0.72rem; background:rgba(255,69,58,0.2); color:#ff453a; padding:3px 8px; border-radius:10px; font-weight:800; text-transform:uppercase;">ALERTS</span>
+                        </h2>
+                        <p style="margin:4px 0 0 0; font-size:0.82rem; color:var(--text-secondary);">Three-layer model health tracking. Red badge = action needed.</p>
+                    </div>
+                </div>
+
+                <!-- Audit rows -->
+                <div id="audit-rows-container" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+                    <div style="color:var(--text-secondary); font-size:0.82rem;">Loading audit status...</div>
+                </div>
+
+                <!-- Active Alerts -->
+                <div id="audit-alerts-section" style="display:none;">
+                    <h3 style="margin:0 0 12px 0; font-size:0.95rem; color:#ff453a; display:flex; align-items:center; gap:6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Active Alerts
+                    </h3>
+                    <div id="audit-alerts-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+            </div>
+            <!-- END AUDIT STATUS CARD -->
+
             <!-- OMEGA SYSTEMATIC FEEDBACK & LEARNING SECTION -->
             <div class="card" style="margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
@@ -5148,6 +5178,7 @@
 
             if (tabId === 'trends') {
                 loadLearningFeedback();
+                loadAuditStatus();
             }
             if (tabId === 'platoons') {
                 loadPlatoons();
@@ -5410,6 +5441,13 @@
                     await loadLearningFeedback();
                 } catch (lfErr) {
                     console.warn("Learning feedback pre-load skipped:", lfErr);
+                }
+
+                // Pre-load audit status so red dot badge is visible from any page
+                try {
+                    await loadAuditStatus();
+                } catch (auditErr) {
+                    console.warn("Audit status pre-load skipped:", auditErr);
                 }
             } catch (err) {
                 console.error("Failed to load data:", err);
@@ -7016,6 +7054,148 @@
                 setTimeout(() => toast.remove(), 400);
             }, 4000);
         }
+
+        // =====================================================================
+        // OMEGA v19.4: AUDIT STATUS & CADENCE FUNCTIONS
+        // =====================================================================
+
+        async function loadAuditStatus() {
+            try {
+                const res = await fetch('/api/audit_status');
+                if (!res.ok) return;
+                const json = await res.json();
+                if (json.status !== 'success') return;
+
+                const schedule = json.schedule || {};
+                const audits = schedule.audits || {};
+                const alerts = json.alerts || [];
+                const unresolvedCount = json.unresolved_count || 0;
+                const today = new Date().toISOString().slice(0, 10);
+
+                // Show/hide badge
+                const badge = document.getElementById('audit-badge');
+                const unresBadge = document.getElementById('audit-unresolved-badge');
+                if (unresolvedCount > 0) {
+                    if (badge) badge.style.display = 'block';
+                    if (unresBadge) { unresBadge.style.display = ''; unresBadge.textContent = unresolvedCount + ' ALERT' + (unresolvedCount > 1 ? 'S' : ''); }
+                } else {
+                    if (badge) badge.style.display = 'none';
+                    if (unresBadge) unresBadge.style.display = 'none';
+                }
+
+                // Render audit rows
+                const LABELS = {
+                    'comprehensive': { icon: '📋', label: 'Comprehensive Audit', manual: true },
+                    'weekly_drift_check': { icon: '📡', label: 'Weekly Drift Check', manual: false },
+                    'focused_post_feature': { icon: '🔬', label: 'Focused Audit (Post-Feature)', manual: true },
+                };
+
+                const container = document.getElementById('audit-rows-container');
+                if (!container) return;
+                container.innerHTML = '';
+
+                const ORDER = ['comprehensive', 'weekly_drift_check', 'focused_post_feature'];
+                for (const key of ORDER) {
+                    const info = LABELS[key] || { icon: '?', label: key, manual: true };
+                    const entry = audits[key] || {};
+                    const lastRun = entry.last_run || null;
+                    const nextDue = entry.next_due || null;
+                    const isOverdue = nextDue && nextDue < today;
+                    const isAuto = !info.manual;
+
+                    const rowStyle = isOverdue
+                        ? 'background:rgba(255,214,10,0.08); border:1px solid rgba(255,214,10,0.3); border-radius:8px; padding:12px 16px;'
+                        : 'background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:12px 16px;';
+
+                    let dueText = nextDue
+                        ? (isOverdue ? '<span style="color:#ffd60a; font-weight:700;">OVERDUE since ' + nextDue + '</span>' : 'Next due: ' + nextDue)
+                        : (key === 'focused_post_feature' ? 'Not currently due' : '—');
+
+                    let lastRunText = lastRun ? 'Last run: ' + lastRun + (isAuto ? ' <span style="color:var(--text-secondary);font-size:0.75rem;">(auto)</span>' : '') : 'Never run';
+
+                    let btnHtml = '';
+                    if (info.manual) {
+                        btnHtml = `<button onclick="markAuditComplete('${key}')" style="margin:0; padding:5px 12px; font-size:0.75rem; height:auto; background:rgba(10,132,255,0.12); border:1px solid rgba(10,132,255,0.3); border-radius:6px; color:var(--accent-blue); cursor:pointer; font-weight:600;">Mark Complete</button>`;
+                    }
+
+                    container.innerHTML += `
+                        <div style="${rowStyle} display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div style="display:flex; flex-direction:column; gap:3px;">
+                                <span style="font-weight:600; font-size:0.88rem;">${info.icon} ${info.label}</span>
+                                <span style="font-size:0.78rem; color:var(--text-secondary);">${lastRunText} &middot; ${dueText}</span>
+                            </div>
+                            ${btnHtml}
+                        </div>`;
+                }
+
+                // Render alerts
+                const alertsSection = document.getElementById('audit-alerts-section');
+                const alertsList = document.getElementById('audit-alerts-list');
+                if (alerts.length > 0 && alertsSection && alertsList) {
+                    alertsSection.style.display = 'block';
+                    alertsList.innerHTML = '';
+                    for (const alert of alerts) {
+                        const sev = alert.severity || 'WARNING';
+                        const sevColor = sev === 'CRITICAL' ? '#ff453a' : '#ffd60a';
+                        const detectedAt = alert.detected_at ? alert.detected_at.replace('T', ' ').replace('Z', ' UTC') : '';
+                        alertsList.innerHTML += `
+                            <div style="background:rgba(255,255,255,0.03); border:1px solid ${sevColor}40; border-left:3px solid ${sevColor}; border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                                <div style="display:flex; flex-direction:column; gap:3px;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; background:${sevColor}22; color:${sevColor}; padding:2px 7px; border-radius:6px;">${sev}</span>
+                                        <span style="font-weight:600; font-size:0.85rem;">${alert.signal || ''}</span>
+                                    </div>
+                                    <span style="font-size:0.78rem; color:var(--text-secondary);">${alert.message || ''}</span>
+                                    <span style="font-size:0.72rem; color:var(--text-secondary);">Detected: ${detectedAt}</span>
+                                </div>
+                                <button onclick="resolveAuditAlert('${alert.id}')" style="margin:0; padding:5px 12px; font-size:0.75rem; height:auto; background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:6px; color:var(--text-secondary); cursor:pointer; font-weight:600;">Resolve</button>
+                            </div>`;
+                    }
+                } else if (alertsSection) {
+                    alertsSection.style.display = 'none';
+                }
+            } catch (err) {
+                console.warn('Failed to load audit status:', err);
+            }
+        }
+
+        async function markAuditComplete(auditType) {
+            try {
+                const res = await fetch('/api/audit_mark_complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ audit_type: auditType })
+                });
+                const json = await res.json();
+                if (json.status === 'success') {
+                    await loadAuditStatus();
+                } else {
+                    alert('Error: ' + (json.error || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error('markAuditComplete error:', err);
+            }
+        }
+
+        async function resolveAuditAlert(alertId) {
+            try {
+                const res = await fetch('/api/audit_resolve_alert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ alert_id: alertId })
+                });
+                const json = await res.json();
+                if (json.status === 'success') {
+                    await loadAuditStatus();
+                } else {
+                    alert('Error: ' + (json.error || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error('resolveAuditAlert error:', err);
+            }
+        }
+
+        // =====================================================================
 
         async function loadLearningFeedback() {
             try {

@@ -342,6 +342,10 @@ nightly_maintenance_lock = threading.Lock()
 matchup_dna_last_date_triggered = None
 matchup_dna_lock = threading.Lock()
 
+# Signal Drift Check Scheduler (Sunday 3:00 AM ET)
+drift_check_last_date_triggered = None
+drift_check_lock = threading.Lock()
+
 def prune_statcast_cache():
     """
     Prunes statcast_cache.json by dropping players inactive for >= 30 days.
@@ -437,9 +441,174 @@ def prune_statcast_cache():
     except Exception as e:
         print(f"[CACHE PRUNE ERROR]: {e}")
 
+def run_weekly_signal_drift_check():
+    """
+    OMEGA v19.4 Audit Cadence: Automated signal drift detection.
+    Runs every Sunday at 3am ET (after nightly maintenance).
+    Reads current learning_feedback.json and compares each signal's hit rate
+    against the 4-week rolling average from archived feedback files.
+    Writes audit_alerts.json for any signal drifting more than 5 percentage points.
+    Also updates audit_schedule.json weekly_drift_check.last_run.
+    """
+    global drift_check_last_date_triggered
+    print("[DRIFT-CHECK]: Running weekly signal drift detection...")
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    reports_dir = os.path.join(base_dir, "reports")
+    archive_dir = os.path.join(reports_dir, "archive")
+    alerts_path = os.path.join(reports_dir, "audit_alerts.json")
+    schedule_path = os.path.join(base_dir, "data", "audit_schedule.json")
+    current_fb_path = os.path.join(reports_dir, "learning_feedback.json")
+
+    SIGNALS_TO_TRACK = [
+        "HITTER_SMASH",
+        "GASSED_BULLPEN_ATTACK",
+        "TEAM_BURST",
+        "STEAM_SUPPORT",
+        "TEAM_COLD_STREAK_MSMI",
+        "ANTI_CHALK_SMASH",
+    ]
+    PROJECTION_CATS = ["top3_pitchers", "top3_stacks", "top3_hitters"]
+    DRIFT_THRESHOLD_PP = 5.0  # flag if >5 percentage points drift
+
+    def _safe_hit_rate(d, fired_key="fired", hit_key="hit"):
+        """Returns hit rate 0.0-1.0 or None if no data."""
+        fired = d.get(fired_key, 0) if d else 0
+        hit = d.get(hit_key, 0) if d else 0
+        return (hit / fired) if fired > 0 else None
+
+    def _proj_hit_rate(d):
+        total = d.get("total", 0) if d else 0
+        hit = d.get("hit", 0) if d else 0
+        return (hit / total) if total > 0 else None
+
+    # 1. Load current feedback
+    if not os.path.exists(current_fb_path):
+        print("[DRIFT-CHECK]: No learning_feedback.json found — skipping drift check.")
+        return
+    try:
+        with open(current_fb_path, "r", encoding="utf-8") as f:
+            current_fb = json.load(f)
+    except Exception as e:
+        print(f"[DRIFT-CHECK ERROR]: Failed to read learning_feedback.json: {e}")
+        return
+
+    current_signal_stats = current_fb.get("signal_stats", {})
+    current_proj_stats = current_fb.get("projection_stats", {})
+
+    # 2. Load last 4 Sunday archives (look for most recent 4 feedback_YYYY-MM-DD.json files)
+    archive_files = []
+    if os.path.exists(archive_dir):
+        for fname in sorted(os.listdir(archive_dir), reverse=True):
+            if fname.startswith("feedback_") and fname.endswith(".json"):
+                archive_files.append(os.path.join(archive_dir, fname))
+            if len(archive_files) >= 4:
+                break
+
+    # Build 4-week averages per signal
+    hist_signal_rates = {sig: [] for sig in SIGNALS_TO_TRACK}
+    hist_proj_rates = {cat: [] for cat in PROJECTION_CATS}
+
+    for arch_path in archive_files:
+        try:
+            with open(arch_path, "r", encoding="utf-8") as f:
+                arch = json.load(f)
+            for sig in SIGNALS_TO_TRACK:
+                r = _safe_hit_rate(arch.get("signal_stats", {}).get(sig))
+                if r is not None:
+                    hist_signal_rates[sig].append(r)
+            for cat in PROJECTION_CATS:
+                r = _proj_hit_rate(arch.get("projection_stats", {}).get(cat))
+                if r is not None:
+                    hist_proj_rates[cat].append(r)
+        except Exception:
+            continue
+
+    # 3. Compare current to 4-week average and generate alerts
+    now_iso = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    today_str = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    new_alerts = []
+
+    def _check_drift(key, current_rate, hist_rates, category="signal"):
+        if current_rate is None or len(hist_rates) < 1:
+            return
+        four_week_avg = sum(hist_rates) / len(hist_rates)
+        drift_pp = round((current_rate - four_week_avg) * 100.0, 1)
+        if abs(drift_pp) >= DRIFT_THRESHOLD_PP:
+            direction = "dropped" if drift_pp < 0 else "rose"
+            new_alerts.append({
+                "id": f"drift_{today_str}_{key}",
+                "severity": "WARNING",
+                "signal": key,
+                "category": category,
+                "current_rate": round(current_rate, 4),
+                "four_week_avg": round(four_week_avg, 4),
+                "drift_pp": drift_pp,
+                "detected_at": now_iso,
+                "resolved": False,
+                "message": (
+                    f"{key} {direction} from {four_week_avg*100:.1f}% to "
+                    f"{current_rate*100:.1f}% ({drift_pp:+.1f}pp) -- investigate"
+                )
+            })
+
+    for sig in SIGNALS_TO_TRACK:
+        r = _safe_hit_rate(current_signal_stats.get(sig))
+        _check_drift(sig, r, hist_signal_rates[sig], category="signal")
+
+    for cat in PROJECTION_CATS:
+        r = _proj_hit_rate(current_proj_stats.get(cat))
+        _check_drift(cat, r, hist_proj_rates[cat], category="projection")
+
+    # 4. Merge new alerts with existing (keep resolved alerts, deduplicate by id)
+    existing_alerts = []
+    if os.path.exists(alerts_path):
+        try:
+            with open(alerts_path, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            existing_alerts = existing.get("alerts", [])
+        except Exception:
+            existing_alerts = []
+
+    existing_ids = {a["id"] for a in existing_alerts}
+    for alert in new_alerts:
+        if alert["id"] not in existing_ids:
+            existing_alerts.append(alert)
+
+    alerts_payload = {"alerts": existing_alerts, "last_check": now_iso}
+    try:
+        with open(alerts_path, "w", encoding="utf-8") as f:
+            json.dump(alerts_payload, f, indent=2)
+        print(f"[DRIFT-CHECK]: audit_alerts.json updated. {len(new_alerts)} new alert(s) generated.")
+    except Exception as e:
+        print(f"[DRIFT-CHECK ERROR]: Failed to write audit_alerts.json: {e}")
+
+    # 5. Update audit_schedule.json weekly_drift_check.last_run
+    try:
+        if os.path.exists(schedule_path):
+            with open(schedule_path, "r", encoding="utf-8") as f:
+                schedule = json.load(f)
+        else:
+            schedule = {"audits": {}}
+
+        wdc = schedule.setdefault("audits", {}).setdefault("weekly_drift_check", {})
+        wdc["last_run"] = today_str
+        # Compute next_due = today + 7 days
+        next_due_dt = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        wdc["next_due"] = next_due_dt.strftime("%Y-%m-%d")
+        wdc.setdefault("target_interval_days", 7)
+        wdc.setdefault("description", "Automated signal drift check (auto-runs Sundays)")
+
+        with open(schedule_path, "w", encoding="utf-8") as f:
+            json.dump(schedule, f, indent=2)
+        print(f"[DRIFT-CHECK]: audit_schedule.json updated. Next due: {wdc['next_due']}")
+    except Exception as e:
+        print(f"[DRIFT-CHECK ERROR]: Failed to update audit_schedule.json: {e}")
+
+
 def nightly_maintenance_loop():
     """Background thread: runs cache pruning and feedback loop nightly at 3:00 AM ET."""
-    global nightly_maintenance_last_date_triggered
+    global nightly_maintenance_last_date_triggered, matchup_dna_last_date_triggered, drift_check_last_date_triggered
     print("[SERVER]: 3:00 AM ET Nightly Maintenance thread started.")
     
     while True:
@@ -495,6 +664,22 @@ def nightly_maintenance_loop():
                 radar.refresh_data()
             except Exception as e:
                 print(f"[NIGHTLY-MAINTENANCE ERROR]: Matchup Radar sync failed: {e}")
+
+        # 3. Sunday 3:00 AM ET Signal Drift Check (runs after nightly maintenance)
+        is_sunday_3am = (is_sunday and et_hour == 3 and et_minute == 0)
+
+        with drift_check_lock:
+            drift_already_triggered_today = (drift_check_last_date_triggered == today_date_str)
+
+        if is_sunday_3am and not drift_already_triggered_today:
+            print(f"[NIGHTLY-MAINTENANCE]: Triggering Sunday Signal Drift Check at {et_now.strftime('%Y-%m-%d %I:%M %p ET')}.")
+            with drift_check_lock:
+                drift_check_last_date_triggered = today_date_str
+            try:
+                run_weekly_signal_drift_check()
+                print("[NIGHTLY-MAINTENANCE]: Weekly signal drift check completed.")
+            except Exception as drift_err:
+                print(f"[NIGHTLY-MAINTENANCE ERROR]: Signal drift check failed: {drift_err}")
         
         time.sleep(45)
 
@@ -2849,6 +3034,131 @@ def get_learning_feedback_api():
         return JSONResponse(content={"status": "success", "data": data})
     except Exception as e:
         return JSONResponse(content={"error": f"Failed to read learning loop data: {str(e)}"}, status_code=500)
+
+
+# OMEGA v19.4: Audit Cadence API Endpoints
+
+@app.get("/api/audit_status", dependencies=[Depends(get_current_user)])
+def get_audit_status():
+    """Returns current audit_schedule.json plus unresolved alert count from audit_alerts.json."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    schedule_path = os.path.join(base_dir, "data", "audit_schedule.json")
+    alerts_path = os.path.join(base_dir, "reports", "audit_alerts.json")
+
+    schedule = {"audits": {}}
+    if os.path.exists(schedule_path):
+        try:
+            with open(schedule_path, "r", encoding="utf-8") as f:
+                schedule = json.load(f)
+        except Exception:
+            pass
+
+    alerts = []
+    last_check = None
+    if os.path.exists(alerts_path):
+        try:
+            with open(alerts_path, "r", encoding="utf-8") as f:
+                alerts_data = json.load(f)
+            alerts = alerts_data.get("alerts", [])
+            last_check = alerts_data.get("last_check")
+        except Exception:
+            pass
+
+    unresolved_alerts = [a for a in alerts if not a.get("resolved", False)]
+
+    return JSONResponse(content={
+        "status": "success",
+        "schedule": schedule,
+        "alerts": unresolved_alerts,
+        "unresolved_count": len(unresolved_alerts),
+        "last_drift_check": last_check
+    })
+
+
+@app.post("/api/audit_mark_complete", dependencies=[Depends(get_current_user)])
+async def post_audit_mark_complete(request: Request):
+    """Marks a manual audit type complete: updates last_run to today and recalculates next_due."""
+    body = await request.json()
+    audit_type = body.get("audit_type", "")
+
+    VALID_MANUAL_TYPES = {"comprehensive", "focused_post_feature"}
+    if audit_type not in VALID_MANUAL_TYPES:
+        return JSONResponse(
+            content={"error": f"Invalid audit_type '{audit_type}'. Must be one of: {sorted(VALID_MANUAL_TYPES)}"},
+            status_code=400
+        )
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    schedule_path = os.path.join(base_dir, "data", "audit_schedule.json")
+
+    try:
+        if os.path.exists(schedule_path):
+            with open(schedule_path, "r", encoding="utf-8") as f:
+                schedule = json.load(f)
+        else:
+            schedule = {"audits": {}}
+
+        today_str = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+        entry = schedule.setdefault("audits", {}).setdefault(audit_type, {})
+        entry["last_run"] = today_str
+
+        interval = entry.get("target_interval_days")
+        if interval:
+            next_due_dt = datetime.datetime.utcnow() + datetime.timedelta(days=int(interval))
+            entry["next_due"] = next_due_dt.strftime("%Y-%m-%d")
+        else:
+            entry["next_due"] = None
+
+        with open(schedule_path, "w", encoding="utf-8") as f:
+            json.dump(schedule, f, indent=2)
+
+        return JSONResponse(content={
+            "status": "success",
+            "audit_type": audit_type,
+            "last_run": today_str,
+            "next_due": entry.get("next_due")
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to update audit schedule: {str(e)}"}, status_code=500)
+
+
+@app.post("/api/audit_resolve_alert", dependencies=[Depends(get_current_user)])
+async def post_audit_resolve_alert(request: Request):
+    """Marks a drift alert as resolved by alert_id."""
+    body = await request.json()
+    alert_id = body.get("alert_id", "")
+
+    if not alert_id:
+        return JSONResponse(content={"error": "alert_id is required"}, status_code=400)
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    alerts_path = os.path.join(base_dir, "reports", "audit_alerts.json")
+
+    if not os.path.exists(alerts_path):
+        return JSONResponse(content={"error": "No audit_alerts.json found"}, status_code=404)
+
+    try:
+        with open(alerts_path, "r", encoding="utf-8") as f:
+            alerts_data = json.load(f)
+
+        found = False
+        for alert in alerts_data.get("alerts", []):
+            if alert.get("id") == alert_id:
+                alert["resolved"] = True
+                alert["resolved_at"] = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+                found = True
+                break
+
+        if not found:
+            return JSONResponse(content={"error": f"Alert '{alert_id}' not found"}, status_code=404)
+
+        with open(alerts_path, "w", encoding="utf-8") as f:
+            json.dump(alerts_data, f, indent=2)
+
+        return JSONResponse(content={"status": "success", "alert_id": alert_id, "resolved": True})
+    except Exception as e:
+        return JSONResponse(content={"error": f"Failed to resolve alert: {str(e)}"}, status_code=500)
+
 
 # OMEGA Feedback Loop: Run feedback loop scraping & compilation
 @app.post("/api/learning/run", dependencies=[Depends(get_current_user)])
