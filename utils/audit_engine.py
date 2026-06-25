@@ -314,7 +314,43 @@ def backfill_betting_history(self):
         date_str = date_match.group(1)
         
         actuals_path = os.path.join(archive_dir, f"actuals_cache_{date_str}.json")
-        if not os.path.exists(actuals_path):
+        actuals_data = None
+        if os.path.exists(actuals_path):
+            try:
+                with open(actuals_path, "r", encoding="utf-8") as f:
+                    actuals_data = json.load(f)
+            except:
+                pass
+
+        if not actuals_data:
+            # 1. Fallback to unified scratch/actuals_cache.json
+            scratch_path = os.path.join(base_dir, "scratch", "actuals_cache.json")
+            if os.path.exists(scratch_path):
+                try:
+                    with open(scratch_path, "r", encoding="utf-8") as f:
+                        scratch_cache = json.load(f)
+                        actuals_data = scratch_cache.get(date_str)
+                except:
+                    pass
+
+            # 2. Fallback to MLB API
+            if not actuals_data:
+                try:
+                    print(f"[AUDIT ENGINE]: Cache missing for {date_str}. Fetching from MLB API...")
+                    actuals_data = self.fetch_results(date=date_str)
+                except Exception as e:
+                    print(f"[AUDIT ENGINE]: Error fetching from API: {e}")
+
+            # 3. Save resolved actuals locally so it exists in archive next time
+            if actuals_data:
+                try:
+                    with open(actuals_path, "w", encoding="utf-8") as f:
+                        json.dump(actuals_data, f, indent=4)
+                    print(f"[AUDIT ENGINE]: Saved fetched actuals to {actuals_path}")
+                except Exception as e:
+                    print(f"[AUDIT ENGINE]: Error writing local actuals cache: {e}")
+
+        if not actuals_data:
             continue
             
         opening_lines = []
@@ -329,8 +365,6 @@ def backfill_betting_history(self):
         try:
             with open(os.path.join(archive_dir, filename), "r", encoding="utf-8") as f:
                 results_data = json.load(f)
-            with open(actuals_path, "r", encoding="utf-8") as f:
-                actuals_data = json.load(f)
         except:
             continue
             
