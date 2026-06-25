@@ -23,7 +23,7 @@ class DashboardGenerator:
                 t['opp_pitcher'] = 'German Marquez'
                 t['confidence'] = 'high'
                 t['stack_score'] = 150.0
-                t['blended_rating'] = round((t.get('stack_score', 150.0) + t.get('attack_conf', 94)) / 2, 1)
+                # blended_rating is written by main.py canonical block after generate() returns
         for h in h_reports:
             if h.get('opp_pitcher') in ['Tbd', 'TBD'] and (h.get('opponent') in ['San Diego Padres', 'SD'] or h.get('team') == 'Atlanta Braves'):
                 h['opp_pitcher'] = 'German Marquez'

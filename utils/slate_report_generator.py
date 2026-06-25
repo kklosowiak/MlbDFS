@@ -16,6 +16,26 @@ class SlateReportGenerator:
         self.output_path = os.path.join(config.REPORTS_DIR, "slate_analysis.md")
         self.park_factors = config.PARK_FACTORS
 
+    @staticmethod
+    def _compute_blended(entity, score_field='stack_score'):
+        """Compute blended_rating inline without relying on the key being pre-set.
+
+        Used inside generate() which runs BEFORE main.py's canonical blended_rating
+        write block. The canonical formula is (score + attack_conf) / 2 -- identical
+        to what main.py writes, so display values in the report are always consistent.
+
+        Args:
+            entity: team, pitcher, or hitter dict
+            score_field: 'stack_score' for teams, 'alpha_score' for pitchers,
+                         'player_score' for hitters
+        """
+        raw_score = entity.get(score_field, 0)
+        if isinstance(raw_score, dict):
+            raw_score = raw_score.get('final', 0)
+        score = float(raw_score or 0)
+        conf = float(entity.get('attack_conf', 0) or 0)
+        return round((score + conf) / 2, 1)
+
     def generate(self, p_reports, t_reports, h_reports):
         print("[REPORT]: Generating OMEGA Daily Attack Plan...")
 
@@ -134,7 +154,8 @@ class SlateReportGenerator:
         best_t = lock_stacks[0] if lock_stacks else (scored_stacks[0] if scored_stacks else None)
         
         if best_t:
-            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {best_t['blended_rating']} | CONF: {best_t['attack_conf']}% | Ω: {best_t.get('stack_score', 0)})")
+            blended_display = best_t.get('blended_rating') or self._compute_blended(best_t, 'stack_score')
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | CONF: {best_t['attack_conf']}% | Ω: {best_t.get('stack_score', 0)})")
             for r in best_t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
@@ -157,7 +178,8 @@ class SlateReportGenerator:
         lines.append("## 🏟️ Core Stacks (Top 5)")
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
-            lines.append(f"### {i}. {t['team']} (Blended: {t['blended_rating']} | CONF: {t['attack_conf']}% | Ω: {t.get('stack_score', 0)})")
+            blended_display = t.get('blended_rating') or self._compute_blended(t, 'stack_score')
+            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | CONF: {t['attack_conf']}% | Omega: {t.get('stack_score', 0)})")
             for r in t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
