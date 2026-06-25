@@ -1,0 +1,210 @@
+{
+    "generated_at": "2026-06-24 08:02 PM ET",
+    "dates_analyzed": [
+        "2026-05-10",
+        "2026-05-11",
+        "2026-05-12",
+        "2026-05-13",
+        "2026-05-14",
+        "2026-05-15",
+        "2026-05-16",
+        "2026-05-17",
+        "2026-05-18",
+        "2026-05-19",
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-23",
+        "2026-05-24",
+        "2026-05-25",
+        "2026-05-26",
+        "2026-05-27",
+        "2026-05-29",
+        "2026-05-30",
+        "2026-05-31",
+        "2026-06-01",
+        "2026-06-03",
+        "2026-06-04",
+        "2026-06-05",
+        "2026-06-07",
+        "2026-06-08",
+        "2026-06-09",
+        "2026-06-10",
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13",
+        "2026-06-15",
+        "2026-06-19",
+        "2026-06-22",
+        "2026-06-24"
+    ],
+    "signal_stats": {
+        "PITCHER_TRAP_FADE": {
+            "fired": 159,
+            "hit": 68
+        },
+        "PITCHER_LOW_CEILING": {
+            "fired": 134,
+            "hit": 72
+        },
+        "PITCHER_HAZARD": {
+            "fired": 41,
+            "hit": 24
+        },
+        "PITCHER_LC_HAZARD_COMBO": {
+            "fired": 10,
+            "hit": 7
+        },
+        "TEAM_WHALE": {
+            "fired": 54,
+            "hit": 15
+        },
+        "GASSED_BULLPEN_ATTACK": {
+            "fired": 106,
+            "hit": 51
+        },
+        "TEAM_SNEAKY_STACK": {
+            "fired": 36,
+            "hit": 13
+        },
+        "TEAM_BURST": {
+            "fired": 112,
+            "hit": 55
+        },
+        "ANTI_CHALK_SMASH": {
+            "fired": 111,
+            "hit": 50
+        },
+        "GPP_FADE_RISK": {
+            "fired": 29,
+            "hit": 13
+        },
+        "TEAM_COLD_STREAK_MSMI": {
+            "fired": 16,
+            "hit": 11
+        },
+        "DQI_TRUST": {
+            "fired": 12,
+            "hit": 5
+        },
+        "DQI_FADE": {
+            "fired": 28,
+            "hit": 15
+        },
+        "STEAM_SUPPORT": {
+            "fired": 267,
+            "hit": 106
+        },
+        "EV_ML_POSITIVE": {
+            "fired": 0,
+            "hit": 0
+        },
+        "EV_ML_HIGH_CONV": {
+            "fired": 0,
+            "hit": 0
+        },
+        "EV_SPREAD_COVER": {
+            "fired": 0,
+            "hit": 0
+        },
+        "EV_TOTAL_OVER": {
+            "fired": 0,
+            "hit": 0
+        },
+        "EV_TOTAL_UNDER": {
+            "fired": 0,
+            "hit": 0
+        },
+        "HITTER_SMASH": {
+            "fired": 715,
+            "hit": 470
+        }
+    },
+    "projection_stats": {
+        "top3_pitchers": {
+            "total": 106,
+            "hit": 70
+        },
+        "top3_stacks": {
+            "total": 106,
+            "hit": 48
+        },
+        "top5_hitters": {
+            "total": 180,
+            "hit": 135
+        }
+    },
+    "what_we_missed": [
+        {
+            "date": "2026-05-11",
+            "type": "Team Divergence Fail",
+            "name": "Los Angeles Angels",
+            "detail": "OMEGA showed +15.0% divergence vs market, but they scored only 2 runs vs Joey Cantillo."
+        },
+        {
+            "date": "2026-05-11",
+            "type": "Team Divergence Fail",
+            "name": "Texas Rangers",
+            "detail": "OMEGA showed +16.0% divergence vs market, but they scored only 0 runs vs Michael Soroka."
+        },
+        {
+            "date": "2026-05-12",
+            "type": "Team Divergence Fail",
+            "name": "Detroit Tigers",
+            "detail": "OMEGA showed +20.0% divergence vs market, but they scored only 2 runs vs Freddy Peralta."
+        },
+        {
+            "date": "2026-05-13",
+            "type": "Team Divergence Fail",
+            "name": "St. Louis Cardinals",
+            "detail": "OMEGA showed +29.0% divergence vs market, but they scored only 2 runs vs J.T. Ginn."
+        },
+        {
+            "date": "2026-05-14",
+            "type": "Team Divergence Fail",
+            "name": "Kansas City Royals",
+            "detail": "OMEGA showed +16.0% divergence vs market, but they scored only 2 runs vs Michael Mcgreevy."
+        }
+    ],
+    "recommendations": [
+        "\u2705 **PITCHER_LC_HAZARD_COMBO** is highly profitable at **70%** hit rate. Increase projection weight and trust indicators.",
+        "\u26a0\ufe0f **TEAM_WHALE** has been cold at **28%** hit rate. Downweight exposure and recommend faded caution.",
+        "\ud83d\udea8 **RETIRE CANDIDATE**: **TEAM_WHALE** has a poor hit rate of **28%** over **54** fires. Highly recommend disabling this signal's multiplier boosts in config.",
+        "\u26a0\ufe0f **TEAM_SNEAKY_STACK** has been cold at **36%** hit rate. Downweight exposure and recommend faded caution.",
+        "\u2705 **TEAM_COLD_STREAK_MSMI** is highly profitable at **69%** hit rate. Increase projection weight and trust indicators.",
+        "\u2705 **HITTER_SMASH** is highly profitable at **66%** hit rate. Increase projection weight and trust indicators.",
+        "\u26a0\ufe0f **DQI TRUST Grade** is showing convergence volatility at **42%** success rate. Recommend widening margins."
+    ],
+    "bet_stats": {
+        "LOCK": {
+            "total": 106,
+            "won": 42,
+            "lost": 62,
+            "push": 2,
+            "profit": -15.038190459220896
+        },
+        "LEAN": {
+            "total": 75,
+            "won": 26,
+            "lost": 48,
+            "push": 1,
+            "profit": -22.023971460638126
+        },
+        "PASS": {
+            "total": 0,
+            "won": 0,
+            "lost": 0,
+            "push": 0,
+            "profit": 0.0
+        }
+    },
+    "overall_roi_metrics": {
+        "total_bets": 181,
+        "total_wins": 68,
+        "total_losses": 110,
+        "total_pushes": 3,
+        "total_profit": -37.06,
+        "hit_rate": 38.2,
+        "roi_pct": -20.5
+    }
+}

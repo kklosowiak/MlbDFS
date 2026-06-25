@@ -139,14 +139,14 @@ def run_multi_day_postmortem(start_date_str, end_date_str):
         # Top 3 pitchers accuracy
         for p in p_audit[:3]:
             top3_pitcher_tracker['total'] += 1
-            if p.get('success_flag') == '[WIN]':
+            if p.get('success_flag') is True:
                 top3_pitcher_tracker['hit'] += 1
 
         # Score Hitters
         h_audit = audit.score_performance(hitters, actuals)
         for h in h_audit[:5]:
             top5_hitter_tracker['total'] += 1
-            if h.get('success_flag') == '[WIN]':
+            if h.get('success_flag') is True:
                 top5_hitter_tracker['hit'] += 1
 
         daily_summaries.append(day_summary)

@@ -466,11 +466,11 @@ def run_feedback_loop(days=7):
         # Top 3 Pitchers Accuracy (QS is WIN in AuditEngine)
         for p in p_audit[:3]:
             projection_stats['top3_pitchers']['total'] += 1
-            if p.get('success_flag') == '[WIN]':
+            if p.get('success_flag') is True:
                 projection_stats['top3_pitchers']['hit'] += 1
                 
         for p in p_audit:
-            is_qs = p.get('success_flag') == '[WIN]'
+            is_qs = p.get('success_flag') is True
             
             # Recalculate low ceiling and hazard dynamically
             k_line = p.get('k_line')
@@ -518,7 +518,7 @@ def run_feedback_loop(days=7):
         h_audit = audit.score_performance(hitters, actuals)
         for h in h_audit[:5]:
             projection_stats['top5_hitters']['total'] += 1
-            if h.get('success_flag') == '[WIN]':
+            if h.get('success_flag') is True:
                 projection_stats['top5_hitters']['hit'] += 1
 
         pitcher_map = {normalize_player_name(x.get('pitcher', '')): x for x in pitchers}
@@ -545,7 +545,7 @@ def run_feedback_loop(days=7):
             
             if is_smash:
                 signal_stats['HITTER_SMASH']['fired'] += 1
-                if h.get('success_flag') == '[WIN]':
+                if h.get('success_flag') is True:
                     signal_stats['HITTER_SMASH']['hit'] += 1
 
         # 4. Audit Suggested Bets
