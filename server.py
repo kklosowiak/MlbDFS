@@ -122,6 +122,31 @@ def perform_refresh_sync():
         from main import run_full_analysis
         run_full_analysis()
 
+        # Reset slate filter on model refresh so checkboxes default to all checked
+        try:
+            filter_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "slate_filter.json")
+            dt_utc = datetime.datetime.now(datetime.timezone.utc)
+            try:
+                from zoneinfo import ZoneInfo
+                dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+            except Exception:
+                dt_et = dt_utc - datetime.timedelta(hours=4)
+            if dt_et.hour < 4:
+                today = (dt_et - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+            else:
+                today = dt_et.strftime("%Y-%m-%d")
+            
+            filter_data = {
+                "enabled": False,
+                "active_date": today,
+                "allowed_teams": None
+            }
+            with open(filter_path, 'w', encoding='utf-8') as f:
+                json.dump(filter_data, f, indent=4)
+            print("[SERVER BG-THREAD]: Reset slate filter to disabled/all checked on refresh.")
+        except Exception as fe:
+            print(f"[SERVER BG-THREAD WARNING]: Failed to reset slate filter on refresh: {fe}")
+
         results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports", "latest_results.json")
         if not os.path.exists(results_path):
             raise RuntimeError("Analysis finished but latest_results.json was not written.")
@@ -1557,6 +1582,18 @@ def get_slate_info_api():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         data_dir = os.path.join(base_dir, "data")
         
+        # Determine "today" based on 4 AM ET boundary
+        dt_utc = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            from zoneinfo import ZoneInfo
+            dt_et = dt_utc.astimezone(ZoneInfo("America/New_York"))
+        except Exception:
+            dt_et = dt_utc - datetime.timedelta(hours=4)
+        if dt_et.hour < 4:
+            today = (dt_et - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            today = dt_et.strftime("%Y-%m-%d")
+
         # Load filter
         allowed_teams = None
         filter_enabled = False
@@ -1565,6 +1602,17 @@ def get_slate_info_api():
             try:
                 with open(filter_path, 'r', encoding='utf-8') as f:
                     filter_data = json.load(f)
+                
+                # Day rollover check: reset filter if it belongs to a past date
+                if filter_data.get("active_date") != today:
+                    filter_data = {
+                        "enabled": False,
+                        "active_date": today,
+                        "allowed_teams": None
+                    }
+                    with open(filter_path, 'w', encoding='utf-8') as f:
+                        json.dump(filter_data, f, indent=4)
+                
                 filter_enabled = filter_data.get("enabled", False)
                 allowed_teams = filter_data.get("allowed_teams")
             except:

@@ -4961,17 +4961,6 @@
                     const fullA = getFullTeamName(m.teamA);
                     const fullB = getFullTeamName(m.teamB);
                     isChecked = allowedTeams.includes(fullA) && allowedTeams.includes(fullB);
-                } else {
-                    // Fallback to local storage
-                    try {
-                        const stored = localStorage.getItem('omega_unchecked_matchups');
-                        if (stored) {
-                            const parsed = JSON.parse(stored);
-                            if (Array.isArray(parsed)) {
-                                isChecked = !parsed.includes(gameKey);
-                            }
-                        }
-                    } catch (e) {}
                 }
 
                 const div = document.createElement('div');
