@@ -166,15 +166,10 @@ def run_full_analysis():
     if _purged:
         print(f"[SLATE]: PURGED {_purged} already-started game(s) from snapshot.")
 
-    # OMEGA v6.9: Applied Date-Aware Slate Filter
+    # OMEGA v6.9: Applied Date-Aware Slate Filter (Bypassed for core calculations to keep all games available in UI)
     allowed_teams = config.get_slate_filter()
     if allowed_teams:
-        original_count = len(snapshot.get('odds', []))
-        snapshot['odds'] = [
-            g for g in snapshot.get('odds', []) 
-            if g['home_team'] in allowed_teams or g['away_team'] in allowed_teams
-        ]
-        print(f"[SLATE]: FILTER ACTIVE ({datetime.date.today()}). Isolated {len(snapshot['odds'])} of {original_count} matchups.")
+        print(f"[SLATE]: FILTER INFO ONLY ({datetime.date.today()}). {len(allowed_teams)} teams in slate filter.")
 
     from utils.opening_lines import load_opening_lines_for_slate
     from utils.slate_date import get_slate_date_iso

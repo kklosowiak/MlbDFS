@@ -182,10 +182,8 @@ class PitcherAnalyzer:
 
         pitcher_reports = []
         
-        allowed_teams = self.config.get_slate_filter()
+        # Slate filter bypassed for core data inclusion
         for game in snapshot.get('odds', []):
-            if allowed_teams and game['home_team'] not in allowed_teams and game['away_team'] not in allowed_teams:
-                continue
             gid = game['id']
             open_data = self.opening_lookup.get(gid)
             
