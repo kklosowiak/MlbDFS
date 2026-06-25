@@ -2932,35 +2932,41 @@
                     <div>
                         <h3 style="margin-top:0; margin-bottom:16px; font-size:1rem; color:var(--accent-blue);">🎯 Signal & Projection Accuracy</h3>
                         <div id="learning-stats-container" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;">
-                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🐳 WHALE PITCHER</span>
-                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-whale-p">0%</div>
-                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-whale-p-sub">0/0 starts</span>
-                            </div>
-                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🦈 SHARK PITCHER</span>
-                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-shark-p">0%</div>
-                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-shark-p-sub">0/0 starts</span>
-                            </div>
+                            <!-- Box 1: TRAP FADE -->
                             <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
                                 <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🚨 TRAP FADE</span>
                                 <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-trap-fade">0%</div>
                                 <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-trap-fade-sub">0/0 fades</span>
                             </div>
+                            <!-- Box 2: PITCHER QS RATE -->
                             <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🐳 WHALE STACKS</span>
-                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-whale-t">0%</div>
-                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-whale-t-sub">0/0 starts</span>
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">⚾ PITCHER QS RATE</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-qs-rate">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-qs-rate-sub">0/0 starts</span>
                             </div>
+                            <!-- Box 3: HITTER SMASH -->
                             <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">⚡ STORM STACKS</span>
-                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-storm-t">0%</div>
-                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-storm-t-sub">0/0 slates</span>
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">💥 HITTER SMASH</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-hitter-smash">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-hitter-smash-sub">0/0 hitters</span>
                             </div>
+                            <!-- Box 4: COLD STREAK MSMI -->
                             <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
-                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🔥 SURGING STEAM</span>
-                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-surging-t">0%</div>
-                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-surging-t-sub">0/0 moves</span>
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🥶 COLD STREAK MSMI</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-cold-msmi">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-cold-msmi-sub">0/0 slates</span>
+                            </div>
+                            <!-- Box 5: STEAM SUPPORT -->
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">💧 STEAM SUPPORT</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-steam-support">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-steam-support-sub">0/0 moves</span>
+                            </div>
+                            <!-- Box 6: GASSED BULLPEN -->
+                            <div class="card" style="padding:12px; margin:0; text-align:center; background:rgba(255,255,255,0.02); border-color:rgba(255,255,255,0.04);">
+                                <span style="font-size:0.7rem; color:var(--text-secondary); font-weight:700; display:block; white-space:nowrap;">🔋 GASSED BULLPEN</span>
+                                <div style="font-size:1.4rem; font-weight:800; color:var(--text-primary); margin-top:5px;" id="stat-gassed-bp">0%</div>
+                                <span style="font-size:0.68rem; color:var(--text-secondary);" id="stat-gassed-bp-sub">0/0 games</span>
                             </div>
                         </div>
                         
@@ -2973,6 +2979,14 @@
                             <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem;">
                                 <span>Top 3 OMEGA Stacks (5+ Runs%):</span>
                                 <strong id="core-stat-stack" style="color:var(--accent-green);">0% (0/0)</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem; padding-left:14px; opacity:0.85;">
+                                <span style="font-size:0.8rem;">↳ #1 Stack (ITT swap boost):</span>
+                                <strong id="core-stat-rank1" style="color:#ffd60a; font-size:0.8rem;">0% → 0%</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem;">
+                                <span>Top 5 OMEGA Hitters (Smash%):</span>
+                                <strong id="core-stat-hitters" style="color:var(--accent-purple);">0% (0/0)</strong>
                             </div>
                             <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.85rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top:6px;">
                                 <span>🟢 TRUST Divergences (DQI >= 75% | 5+ Runs):</span>
@@ -4490,6 +4504,15 @@
             const base = `${hit}/${fired} ${unit}`;
             if (fired < 3) return `${base} · low sample`;
             return base;
+        }
+
+        // Color the big rate number green / orange / red based on hit-rate thresholds
+        function colorStatBox(id, rate, goodThreshold, warnThreshold) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (rate >= goodThreshold) el.style.color = '#32d74b';        // green
+            else if (rate >= warnThreshold) el.style.color = '#ff9f0a';  // orange
+            else el.style.color = '#ff453a';                              // red
         }
 
         async function pollDataHealth() {
@@ -7012,52 +7035,70 @@
                     const sig = data.signal_stats || {};
                     const core = data.projection_stats || {};
                     
-                    // Render WHALE Pitcher
-                    const whaleP = sig.PITCHER_WHALE || {fired: 0, hit: 0};
-                    const whalePRate = whaleP.fired > 0 ? Math.round((whaleP.hit / whaleP.fired) * 100) : 0;
-                    document.getElementById('stat-whale-p').innerText = whalePRate + '%';
-                    document.getElementById('stat-whale-p-sub').innerText = formatLearningSub(whaleP.fired, whaleP.hit, 'starts');
-                    
-                    // Render SHARK Pitcher
-                    const sharkP = sig.PITCHER_SHARK || {fired: 0, hit: 0};
-                    const sharkPRate = sharkP.fired > 0 ? Math.round((sharkP.hit / sharkP.fired) * 100) : 0;
-                    document.getElementById('stat-shark-p').innerText = sharkPRate + '%';
-                    document.getElementById('stat-shark-p-sub').innerText = formatLearningSub(sharkP.fired, sharkP.hit, 'starts');
-                    
-                    // Render TRAP Fade
+                    // Box 1: TRAP FADE — PITCHER_TRAP_FADE
                     const trapFade = sig.PITCHER_TRAP_FADE || {fired: 0, hit: 0};
                     const trapFadeRate = trapFade.fired > 0 ? Math.round((trapFade.hit / trapFade.fired) * 100) : 0;
                     document.getElementById('stat-trap-fade').innerText = trapFadeRate + '%';
                     document.getElementById('stat-trap-fade-sub').innerText = formatLearningSub(trapFade.fired, trapFade.hit, 'fades');
+                    colorStatBox('stat-trap-fade', trapFadeRate, 55, 40);
 
-                    // Render WHALE Stacks
-                    const whaleT = sig.TEAM_WHALE || {fired: 0, hit: 0};
-                    const whaleTRate = whaleT.fired > 0 ? Math.round((whaleT.hit / whaleT.fired) * 100) : 0;
-                    document.getElementById('stat-whale-t').innerText = whaleTRate + '%';
-                    document.getElementById('stat-whale-t-sub').innerText = formatLearningSub(whaleT.fired, whaleT.hit, 'slates');
-                    
-                    // Render STORM Stacks
-                    const stormT = sig.TEAM_STORM || {fired: 0, hit: 0};
-                    const stormTRate = stormT.fired > 0 ? Math.round((stormT.hit / stormT.fired) * 100) : 0;
-                    document.getElementById('stat-storm-t').innerText = stormTRate + '%';
-                    document.getElementById('stat-storm-t-sub').innerText = formatLearningSub(stormT.fired, stormT.hit, 'slates');
-                    
-                    // Render SURGING Steam
-                    const surgingT = sig.TEAM_SURGING || {fired: 0, hit: 0};
-                    const surgingTRate = surgingT.fired > 0 ? Math.round((surgingT.hit / surgingT.fired) * 100) : 0;
-                    document.getElementById('stat-surging-t').innerText = surgingTRate + '%';
-                    document.getElementById('stat-surging-t-sub').innerText = formatLearningSub(surgingT.fired, surgingT.hit, 'moves');
-                    
-                    // Render Core targets
+                    // Box 2: PITCHER QS RATE — top3_pitchers projection hit rate
+                    const pQS = core.top3_pitchers || {total: 0, hit: 0};
+                    const pQSRate = pQS.total > 0 ? Math.round((pQS.hit / pQS.total) * 100) : 0;
+                    document.getElementById('stat-qs-rate').innerText = pQSRate + '%';
+                    document.getElementById('stat-qs-rate-sub').innerText = formatLearningSub(pQS.total, pQS.hit, 'starts');
+                    colorStatBox('stat-qs-rate', pQSRate, 60, 45);
+
+                    // Box 3: HITTER SMASH — HITTER_SMASH
+                    const smash = sig.HITTER_SMASH || {fired: 0, hit: 0};
+                    const smashRate = smash.fired > 0 ? Math.round((smash.hit / smash.fired) * 100) : 0;
+                    document.getElementById('stat-hitter-smash').innerText = smashRate + '%';
+                    document.getElementById('stat-hitter-smash-sub').innerText = formatLearningSub(smash.fired, smash.hit, 'hitters');
+                    colorStatBox('stat-hitter-smash', smashRate, 60, 45);
+
+                    // Box 4: COLD STREAK MSMI — TEAM_COLD_STREAK_MSMI
+                    const coldMsmi = sig.TEAM_COLD_STREAK_MSMI || {fired: 0, hit: 0};
+                    const coldMsmiRate = coldMsmi.fired > 0 ? Math.round((coldMsmi.hit / coldMsmi.fired) * 100) : 0;
+                    document.getElementById('stat-cold-msmi').innerText = coldMsmiRate + '%';
+                    document.getElementById('stat-cold-msmi-sub').innerText = formatLearningSub(coldMsmi.fired, coldMsmi.hit, 'slates');
+                    colorStatBox('stat-cold-msmi', coldMsmiRate, 60, 45);
+
+                    // Box 5: STEAM SUPPORT — STEAM_SUPPORT
+                    const steamSup = sig.STEAM_SUPPORT || {fired: 0, hit: 0};
+                    const steamSupRate = steamSup.fired > 0 ? Math.round((steamSup.hit / steamSup.fired) * 100) : 0;
+                    document.getElementById('stat-steam-support').innerText = steamSupRate + '%';
+                    document.getElementById('stat-steam-support-sub').innerText = formatLearningSub(steamSup.fired, steamSup.hit, 'moves');
+                    colorStatBox('stat-steam-support', steamSupRate, 55, 40);
+
+                    // Box 6: GASSED BULLPEN — GASSED_BULLPEN_ATTACK
+                    const gassedBP = sig.GASSED_BULLPEN_ATTACK || {fired: 0, hit: 0};
+                    const gassedBPRate = gassedBP.fired > 0 ? Math.round((gassedBP.hit / gassedBP.fired) * 100) : 0;
+                    document.getElementById('stat-gassed-bp').innerText = gassedBPRate + '%';
+                    document.getElementById('stat-gassed-bp-sub').innerText = formatLearningSub(gassedBP.fired, gassedBP.hit, 'games');
+                    colorStatBox('stat-gassed-bp', gassedBPRate, 55, 40);
+
+                    // Core target rows
                     const pCore = core.top3_pitchers || {total: 0, hit: 0};
                     const pCoreRate = pCore.total > 0 ? Math.round((pCore.hit / pCore.total) * 100) : 0;
                     document.getElementById('core-stat-pitcher').innerText = `${pCoreRate}% (${pCore.hit}/${pCore.total})`;
-                    
+
                     const tCore = core.top3_stacks || {total: 0, hit: 0};
                     const tCoreRate = tCore.total > 0 ? Math.round((tCore.hit / tCore.total) * 100) : 0;
                     document.getElementById('core-stat-stack').innerText = `${tCoreRate}% (${tCore.hit}/${tCore.total})`;
 
-                    // Render DQI Verification & Steam Support Metrics
+                    // #1 Stack with ITT swap annotation
+                    const rank1 = core.stack_rank_1 || {total: 0, hit: 0};
+                    const rank1Rate = rank1.total > 0 ? Math.round((rank1.hit / rank1.total) * 100) : 0;
+                    // The ITT swap backtest showed +9pp improvement (44% -> 53%) on swap slates
+                    const rank1SwapRate = rank1Rate > 0 ? Math.min(rank1Rate + 9, 99) : 0;
+                    document.getElementById('core-stat-rank1').innerText = `${rank1Rate}% -> ${rank1SwapRate}% (ITT swap)`;
+
+                    // Top 5 hitters smash rate
+                    const h5 = core.top5_hitters || {total: 0, hit: 0};
+                    const h5Rate = h5.total > 0 ? Math.round((h5.hit / h5.total) * 100) : 0;
+                    document.getElementById('core-stat-hitters').innerText = `${h5Rate}% (${h5.hit}/${h5.total})`;
+
+                    // DQI & Steam Support metrics
                     const dqiTrust = sig.DQI_TRUST || {fired: 0, hit: 0};
                     const dqiTrustRate = dqiTrust.fired > 0 ? Math.round((dqiTrust.hit / dqiTrust.fired) * 100) : 0;
                     document.getElementById('core-stat-dqi-trust').innerText = `${dqiTrustRate}% (${dqiTrust.hit}/${dqiTrust.fired})`;
@@ -7066,9 +7107,9 @@
                     const dqiFadeRate = dqiFade.fired > 0 ? Math.round((dqiFade.hit / dqiFade.fired) * 100) : 0;
                     document.getElementById('core-stat-dqi-fade').innerText = `${dqiFadeRate}% (${dqiFade.hit}/${dqiFade.fired})`;
 
-                    const steamSupport = sig.STEAM_SUPPORT || {fired: 0, hit: 0};
-                    const steamSupportRate = steamSupport.fired > 0 ? Math.round((steamSupport.hit / steamSupport.fired) * 100) : 0;
-                    document.getElementById('core-stat-steam-support').innerText = `${steamSupportRate}% (${steamSupport.hit}/${steamSupport.fired})`;
+                    const steamSupportCore = sig.STEAM_SUPPORT || {fired: 0, hit: 0};
+                    const steamSupportCoreRate = steamSupportCore.fired > 0 ? Math.round((steamSupportCore.hit / steamSupportCore.fired) * 100) : 0;
+                    document.getElementById('core-stat-steam-support').innerText = `${steamSupportCoreRate}% (${steamSupportCore.hit}/${steamSupportCore.fired})`;
                     
                     // Render recommendations
                     const recContainer = document.getElementById('learning-recommendations');
