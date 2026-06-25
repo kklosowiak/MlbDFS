@@ -57,8 +57,7 @@ def _has_high_conviction_stack(t):
     elif t.get("bullpen_fatigue", 0) >= 85 or t.get("is_gassed"):
         signals += 1
 
-    if t.get("prop_pressure_elite") or t.get("prop_pressure_label") == LABEL_HOT:
-        signals += 1
+    # Prop pressure label no longer influences high conviction stack triggers (retired)
     # New tactical GPP signals count as high conviction anchors!
     if t.get("is_anti_chalk_smash"):
         signals += 1
@@ -113,6 +112,8 @@ def parse_weather(label):
 def score_stack_confidence(t, p_reports):
     conf = 50.0
     reasons = []
+    # Load signal weights from config so future tuning of weights.json takes effect
+    _sw = load_weights().get("stacks", {})
 
     # 1. xwOBA (Physics)
     xwoba = float(t.get("team_xwoba", 0) or 0)
@@ -127,14 +128,14 @@ def score_stack_confidence(t, p_reports):
         reasons.append(f"Weak team physics (.{str(xwoba)[2:5]} xwOBA).")
 
     if t.get("is_burst"):
-        conf += 12.0
+        conf += float(_sw.get("is_burst", 12.0))
         reasons.append("BURST: star-heavy lineup with exploitable SP or pen.")
 
     # OMEGA v17.2: is_shark REMOVED from stack confidence (+12 CONF)
     # Backtest shows -25pp below baseline when applied to team run scoring.
     # is_sharp retains the boost (institutionally validated).
     if t.get("is_sharp"):
-        conf += 12.0
+        conf += float(_sw.get("is_sharp", 12.0))
         reasons.append("Sharp / institutional interest on this side.")
 
     # 2. Divergence (Sharp money vs Public tickets - GPP calibrated v16.1)
@@ -218,7 +219,8 @@ def score_stack_confidence(t, p_reports):
         if num_games <= 0:
             num_games = 15
         dampener = min(1.0, num_games / 15.0)
-        scaled_penalty = max(8.0, 24.0 * dampener)
+        base_trap_penalty = abs(float(_sw.get("is_trap", -24.0)))
+        scaled_penalty = max(8.0, base_trap_penalty * dampener)
         conf -= scaled_penalty
         reasons.append("CHALK TRAP: market loves this stack more than model.")
 
@@ -277,11 +279,11 @@ def score_stack_confidence(t, p_reports):
     # 8. Slate Momentum Index (MSMI)
     if t.get("is_cold_streak_msmi") or t.get("is_cold_streak"):
         # OMEGA v13.6.1: Optimized Team Slate Slump penalty
-        conf -= 24.0
+        conf -= abs(float(_sw.get("is_cold_streak_msmi", -24.0)))
         reasons.append("Team Slate Slump (MSMI): Elevated rolling K% surge & OPS drop.")
     elif t.get("is_hot_run_msmi") or t.get("is_hot_run"):
         # OMEGA v13.6.1: Optimized Team Hot Run boost
-        conf += 12.0
+        conf += float(_sw.get("is_hot_run_msmi", 12.0))
         reasons.append("Team Hot Run (MSMI): Surging rolling OPS & reduced K%.")
 
     # 9. Tactical GPP Injections
@@ -473,17 +475,15 @@ def score_stack_confidence(t, p_reports):
     # 12. Props Board Pressure
     plabel = t.get("prop_pressure_label")
     pscore = int(t.get("prop_pressure_score", 0) or 0)
-    if t.get("prop_pressure_elite") and plabel == LABEL_HOT:
-        conf += 8.0
+    # Informational only — prop pressure labels no longer influence stack confidence (retired)
+    if plabel == LABEL_HOT:
         names = ", ".join((t.get("prop_pressure_hitters") or [])[:3])
         reasons.append(
             f"Elite prop board ({pscore}, {t.get('prop_target_count', 0)} TARGET) — {names or 'lineup'}."
         )
     elif plabel == LABEL_WARM:
-        conf += 4.0
         reasons.append(f"Moderate prop interest ({pscore}, WARM) — secondary board signal.")
     elif plabel == LABEL_COLD and xwoba >= 0.335:
-        # COLD prop pressure penalty removed (statistically proven to be noise in 3-season audit)
         reasons.append("Elite xwOBA noted vs cold prop board.")
 
     if not reasons:
@@ -510,6 +510,8 @@ def score_stack_confidence(t, p_reports):
 def score_pitcher_confidence(p, t_reports):
     conf = 50.0
     reasons = []
+    # Load signal weights from config so future tuning of weights.json takes effect
+    _w = load_weights().get("pitchers", {})
 
     # 1. Form Status
     if p.get("form_status") == "SURGING":
@@ -534,7 +536,8 @@ def score_pitcher_confidence(p, t_reports):
 
     # 3. Market Traps and Fades
     if p.get("is_trap"):
-        conf -= 30
+        trap_penalty = abs(float(_w.get("is_trap", -30.0)))
+        conf -= trap_penalty
         reasons.append(f"TRAP SP ({p.get('trap_type') or 'Vegas fade'}).")
     elif p.get("sharp_fade"):
         div = int(p.get("divergence", 0) or 0)
@@ -591,10 +594,10 @@ def score_pitcher_confidence(p, t_reports):
             
         n_tgt = int(opp_t.get("prop_target_count", 0) or 0)
         n_st = int(opp_t.get("prop_stack_target_count", 0) or 0)
-        if opp_t.get("prop_pressure_elite") and (n_tgt >= 3 or (n_tgt >= 2 and n_st >= 2)):
-            conf -= 6
+        # Elite prop board no longer penalizes pitcher confidence (retired)
+        if opp_t.get("prop_pressure_label") == LABEL_HOT and (n_tgt >= 3 or (n_tgt >= 2 and n_st >= 2)):
             reasons.append(
-                f"{opp} elite prop board ({n_tgt} TARGET, {n_st} runs/RBI TARGET) — run risk."
+                f"{opp} elite prop board ({n_tgt} TARGET, {n_st} runs/RBI TARGET) noted."
             )
         if opp_t.get("is_pitch_alignment"):
             conf -= 10
@@ -654,10 +657,11 @@ def score_pitcher_confidence(p, t_reports):
         reasons.append(f"Above-average game total ({game_total_proxy:.1f}) — hitter-friendly environment.")
 
     # 8. Sharp Money Backing
-    # OMEGA v15.0: is_whale REMOVED from +10 pitcher CONF boost (r=-0.0330; public money ≠ edge)
+    # OMEGA v15.0: is_whale REMOVED from +10 pitcher CONF boost (r=-0.0330; public money != edge)
     # is_sharp and is_shark retain the boost
     if p.get("is_sharp") or p.get("is_shark"):
-        conf += 10
+        sharp_boost = float(_w.get("is_sharp", 10.0))
+        conf += sharp_boost
         reasons.append("Sharp money backing this pitcher.")
 
     # 9. Pinnacle SP Boost (implied probability delta >= 4% in totals < 8.5) (OMEGA v16.0)
@@ -677,7 +681,8 @@ def score_pitcher_confidence(p, t_reports):
 
     # Early-innings volatility (stamina risk)
     if p.get("early_innings_volatility"):
-        conf -= 10
+        eiv_penalty = abs(float(_w.get("early_innings_volatility", -10.0)))
+        conf -= eiv_penalty
         reasons.append("Early-innings volatility (IP/start < 4.5) — low QS ceiling.")
 
     # 10. Intraday Volatility
