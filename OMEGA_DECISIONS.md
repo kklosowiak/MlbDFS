@@ -219,3 +219,14 @@ The Rolling Betting ROI panel showed 0/0 W/L and 0.0% ROI across all tiers, desp
   4. **Lowered Salary Gap:** Lowered same-team salary gap threshold from `$1,500` to `$1,000` to catch Cruz/Spence-type situations.
   5. **Inline Matrix Warnings:** Render `⚠️ Cruz (OPENER) -> ? (BULK UNRESOLVED)` in the opposing pitcher column of the Teams Matrix if the bulk arm cannot be resolved.
 
+### June 26, 2026 — Slate Post-Mortem & Strategic Lessons
+
+#### Entry 1 — TRAP Arm Pattern (June 26 2026)
+June 26 2026 — TRAP arm over-delivery pattern identified across three consecutive nights. Imai (TRAP+PARADOX) June 25: gem, DET 0 runs. Thornton (conf=0, TRAP+STK+EIV) June 26: 6 IP, 7K, 1 ER, 21.90 DK pts, PHI 2 runs. Eovaldi (TRAP+STICKY) June 26: 7 IP, 9K, 0 ER, 34.15 DK pts (best SP on slate). Three consecutive nights of TRAP-flagged arms delivering strong outings. The model is systematically overconfident in fading TRAP arms short-term. Differentiate between "genuinely bad arm" (13.50 ERA bulk arm) and "arm in a difficult spot who can still execute" (second career start, decent stuff). TRAP+EIV combination may be too aggressive in confidence suppression. Flag for July audit: review full TRAP arm historical outcomes and recalibrate confidence penalties accordingly.
+
+#### Entry 2 — COL Morning Signal Compression (June 26 2026)
+June 26 2026 — COL had DQI=87 TRUST at morning refreshes before signal compressed mid-afternoon. COL scored 8 runs tonight against Bradley. Original morning signal was correct. When a DQI TRUST signal fires early and then gets suppressed by later model movements, the original signal may deserve more weight than the degraded version. Research question for July audit: when high-DQI teams experience mid-day signal compression, does the compressed signal or the original signal better predict actual run outcomes historically? Pull all archived slates where DQI TRUST appeared in morning refresh but dropped by afternoon and cross-reference actual runs scored.
+
+#### Entry 3 — ARI Multi-Signal Failure (June 26 2026)
+June 26 2026 — ARI fired HOT MSMI + BURST + GASSED + PITCH ALIGN simultaneously (4 signals) with conf=95 and blended=121. Scored 1 run. This is the second instance this week of a team with 4+ signals firing massively underperforming. The June 26 AG backtest showed the 4-5 signal bucket had only 6 historical cases and a 16.7% hit rate for 5+ runs — the smallest and weakest bucket in the analysis. The warning was in the data and should have been weighted more heavily. Decision rule going forward: when a team fires 4+ signals simultaneously, treat the small sample size as a caution flag rather than a conviction amplifier. Do not chase signal count as a proxy for confidence.
+
