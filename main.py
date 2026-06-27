@@ -203,37 +203,13 @@ def run_full_analysis():
 
     # Roster Mapping
     rosters = {}
-    modified_snapshot_bulk = False
     for entry in snapshot.get('odds', []):
         home_team = entry['home_team']
         away_team = entry['away_team']
-        
         home_pitcher = entry.get('home_pitcher') or "TBD"
         away_pitcher = entry.get('away_pitcher') or "TBD"
-        
-        # Override home pitcher
-        if home_team in bulk_map:
-            bulk_info = bulk_map[home_team]
-            if bulk_info.get("opener") == home_pitcher or not bulk_info.get("opener"):
-                print(f"  [BULK OVERRIDE]: Replacing home opener {home_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {home_team}")
-                home_pitcher = bulk_info["bulk_pitcher"]
-                entry["home_pitcher"] = home_pitcher
-                modified_snapshot_bulk = True
-                
-        # Override away pitcher
-        if away_team in bulk_map:
-            bulk_info = bulk_map[away_team]
-            if bulk_info.get("opener") == away_pitcher or not bulk_info.get("opener"):
-                print(f"  [BULK OVERRIDE]: Replacing away opener {away_pitcher} with bulk reliever {bulk_info['bulk_pitcher']} for {away_team}")
-                away_pitcher = bulk_info["bulk_pitcher"]
-                entry["away_pitcher"] = away_pitcher
-                modified_snapshot_bulk = True
-                
         rosters[home_team] = home_pitcher
         rosters[away_team] = away_pitcher
-
-    if modified_snapshot_bulk:
-        print(f"[OVERRIDE]: Applied in-memory snapshot override for bulk reliever overrides.")
 
     # Movement Tracker (v7.8 Trap Detector Support)
     movement_tracker = MovementTracker()
@@ -262,8 +238,195 @@ def run_full_analysis():
     )
     print(f"[STEP 1 DONE]: {len(p_reports)} pitcher rows.")
     
-    # OMEGA v6.21: The Integrity Gate
-    p_integrity_map = {(r['event_id'], r['team']): r for r in p_reports}
+    # ==================== OMEGA OPENER AUTO-DETECTION & PITCHER SUBSTITUTION ====================
+    print("[INIT]: Running Opener/Bulk Pitcher Auto-Detection...")
+    from utils.opener_detector import detect_opener_for_team, parse_dk_salaries, create_pending_props_pitcher
+    from utils.normalization import normalize_player_name
+    from utils.slate_date import get_slate_date_iso
+    import datetime
+    
+    # 1. Load DK salaries
+    dk_csv_path = os.path.join(config.DATA_DIR, "DKSalaries.csv")
+    dk_players = parse_dk_salaries(dk_csv_path) if os.path.exists(dk_csv_path) else []
+    
+    try:
+        slate_date = datetime.date.fromisoformat(get_slate_date_iso())
+    except:
+        slate_date = datetime.date.today()
+    
+    # Run detection for all teams
+    opener_games = {} # maps (game_id, team_name) -> (opener, bulk, status, tier, method, sub_applied)
+    for entry in snapshot.get('odds', []):
+        gid = entry['id']
+        for team in [entry['home_team'], entry['away_team']]:
+            status, opener, bulk, tier, method, sub_applied, reason = detect_opener_for_team(
+                team, entry, dk_players, snapshot.get('props', {}), slate_date
+            )
+            if status in ["CONFIRMED", "PROBABLE"] and sub_applied and bulk:
+                opener_games[(gid, team)] = {
+                    "opener": opener,
+                    "bulk": bulk,
+                    "status": status,
+                    "tier": tier,
+                    "method": method
+                }
+            elif status == "PROPS_PENDING" and opener:
+                for r in p_reports:
+                    if r.get('event_id') == gid and r.get('team') == team and normalize_player_name(r.get('pitcher', '')) == normalize_player_name(opener):
+                        r['props_pending'] = True
+                
+    # 2. For each confirmed/probable opener game, ensure bulk arm is analyzed
+    if opener_games:
+        print(f"[OPENER DETECTION]: Detected {len(opener_games)} opener game(s). Resolving bulk arm reports...")
+        # Create a deep copy/in-memory update of rosters & probables mapping teams to bulk arm names
+        bulk_rosters = rosters.copy()
+        for (gid, team), info in opener_games.items():
+            bulk_rosters[team] = info['bulk']
+            
+        # Re-run p_analyzer to generate reports for the bulk arms
+        orig_resolve = p_analyzer.resolve_pitcher_from_probables
+        def mock_resolve(t_name, commence_time, probables):
+            for (g_id, t) in opener_games.keys():
+                if t == t_name:
+                    return "TBD"
+            return orig_resolve(t_name, commence_time, probables)
+            
+        p_analyzer.resolve_pitcher_from_probables = mock_resolve
+        
+        try:
+            p_reports_bulk_raw = p_analyzer.analyze_slate(
+                snapshot_path, 
+                opening_lines_path, 
+                splits_data=splits_data,
+                props_data=snapshot.get('props', {}),
+                rosters=bulk_rosters,
+                weather_fetcher=weather_fetcher,
+                umpire_fetcher=umpire_fetcher,
+                movement_data=movement_data,
+                previous_results=prev_pitcher_results
+            )
+        finally:
+            p_analyzer.resolve_pitcher_from_probables = orig_resolve
+            
+        # Process and merge bulk reports
+        cache_path = os.path.join(config.DATA_DIR, "statcast_cache.json")
+        cache = {}
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, 'r', encoding='utf-8') as f:
+                    cache = json.load(f)
+            except:
+                pass
+                
+        bulk_reports = []
+        for report in p_reports_bulk_raw:
+            res = report.get('alpha_score', {})
+            report['pitcher'] = (report.get('pitcher') or 'TBD').title()
+            pitcher_norm = normalize_player_name(report['pitcher'])
+            p_profile = cache.get(pitcher_norm, {})
+            report['pitch_hand'] = p_profile.get("pitch_hand", "R") if p_profile.get("type") == "pitcher" else "R"
+            if isinstance(res, dict):
+                report['alpha_score'] = res.get('final', 0)
+                report['physics_score'] = res.get('physics', 0)
+                report['physics_talent'] = res.get('physics_talent', 0)
+                report['market_score'] = res.get('market', 0)
+                report['is_trap'] = res.get('is_trap', False)
+                report['is_coors'] = res.get('is_coors', False)
+                report['walks_penalty'] = res.get('walks_penalty', False)
+                report['true_talent_penalty'] = res.get('true_talent_penalty', False)
+            else:
+                report['alpha_score'] = float(res or 0)
+                report['physics_score'] = report.get('physics_score', 0)
+                report['physics_talent'] = report.get('physics_talent', 0)
+                report['market_score'] = report.get('market_score', 0)
+                report['walks_penalty'] = report.get('walks_penalty', False)
+                report['true_talent_penalty'] = report.get('true_talent_penalty', False)
+            report['siera'] = report.get('siera', 4.10)
+            report['is_paradox'] = False
+            report['is_hazard'] = False
+            report['is_low_ceiling'] = False
+            report['is_sharp'] = report.get('is_sharp', False)
+            report['is_shark'] = report.get('is_shark', False)
+            report['is_home'] = report.get('is_home', False)
+            report['side'] = report.get('side', 'away')
+            report['is_debut'] = False
+            bulk_reports.append(report)
+            
+        merged_p_reports = []
+        seen_pitcher_keys = set()
+        
+        # Flag openers in the original reports and add them
+        for r in p_reports:
+            r_team = r['team']
+            r_gid = r['event_id']
+            key = (r_gid, r_team)
+            if key in opener_games:
+                info = opener_games[key]
+                if normalize_player_name(r['pitcher']) == normalize_player_name(info['opener']):
+                    r['is_opener'] = True
+                    r['bulk_name'] = info['bulk']
+            
+            p_key = (r['event_id'], r['team'], normalize_player_name(r['pitcher']))
+            if p_key not in seen_pitcher_keys:
+                seen_pitcher_keys.add(p_key)
+                merged_p_reports.append(r)
+                
+        # Add bulk relievers to p_reports
+        for (gid, team), info in opener_games.items():
+            opener_name = info['opener']
+            bulk_name = info['bulk']
+            status = info['status']
+            tier = info['tier']
+            method = info['method']
+            
+            # Find the bulk arm report from the bulk run
+            bulk_rep = next((br for br in bulk_reports if br['event_id'] == gid and br['team'] == team and normalize_player_name(br['pitcher']) == normalize_player_name(bulk_name)), None)
+            
+            if not bulk_rep:
+                print(f"  [BULK RESOLVE WARNING]: Bulk arm {bulk_name} has no prop data. Creating pending-props profile using cache.")
+                bulk_rep = create_pending_props_pitcher(bulk_name, team, cache)
+                bulk_rep['event_id'] = gid
+                bulk_rep['opponent'] = next((entry['home_team'] if team == entry['away_team'] else entry['away_team'] for entry in snapshot.get('odds', []) if entry['id'] == gid), 'TBD')
+                
+            bulk_rep['is_bulk_arm'] = True
+            bulk_rep['opener_name'] = opener_name
+            
+            emoji_indicator = "🔄" if status == "CONFIRMED" else "⚡"
+            prob_indicator = "" if status == "CONFIRMED" else "?"
+            bulk_rep['opp_pitcher_display'] = f"{emoji_indicator} {opener_name} -> {bulk_name}{prob_indicator} (BULK)"
+            
+            p_key = (bulk_rep['event_id'], bulk_rep['team'], normalize_player_name(bulk_rep['pitcher']))
+            if p_key not in seen_pitcher_keys:
+                seen_pitcher_keys.add(p_key)
+                merged_p_reports.append(bulk_rep)
+                
+        p_reports = merged_p_reports
+        
+        # Substitute opposing pitcher in rosters dictionary for team reports
+        for (gid, team), info in opener_games.items():
+            rosters[team] = info['bulk']
+            
+    # Process any Tier 3/unresolved opener games for visual warnings
+    unresolved_games = {}
+    for entry in snapshot.get('odds', []):
+        gid = entry['id']
+        for team in [entry['home_team'], entry['away_team']]:
+            key = (gid, team)
+            if key not in opener_games:
+                status, opener, bulk, tier, method, sub_applied, reason = detect_opener_for_team(
+                    team, entry, dk_players, snapshot.get('props', {}), slate_date
+                )
+                if status in ["CONFIRMED", "PROBABLE"] and not sub_applied:
+                    unresolved_games[key] = f"⚠️ {opener} (OPENER) -> ? (BULK UNRESOLVED)"
+                elif status == "POSSIBLE" and tier == 3:
+                    unresolved_games[key] = f"{opener} ℹ️"
+                    
+    # OMEGA v6.21: The Integrity Gate (Prioritizes Bulk Arms)
+    p_integrity_map = {}
+    for r in p_reports:
+        key = (r['event_id'], r['team'])
+        if key not in p_integrity_map or r.get('is_bulk_arm'):
+            p_integrity_map[key] = r
  
     # 3. Extract Hitters Early for Team Analysis (v6.8)
     raw_hitters = h_prop_analyzer.extract_top_hitters(snapshot_path, confirmed_lineups=active_lineups)
@@ -300,6 +463,39 @@ def run_full_analysis():
         raw_hitters=raw_hitters, confirmed_lineups=confirmed_lineups,
         projected_lineups=projected_lineups, matchup_radar=matchup_radar
     )
+
+    # Apply visual display overrides for opener games in team reports
+    for t in team_reports:
+        opp = t['opponent']
+        team = t['team']
+        # Find game id from snapshot
+        gid = None
+        for entry in snapshot.get('odds', []):
+            if (entry['home_team'] == team and entry['away_team'] == opp) or (entry['away_team'] == team and entry['home_team'] == opp):
+                gid = entry['id']
+                break
+                
+        if gid:
+            opp_key = (gid, opp)
+            if opp_key in opener_games:
+                info = opener_games[opp_key]
+                status = info['status']
+                opener = info['opener']
+                bulk = info['bulk']
+                emoji_indicator = "🔄" if status == "CONFIRMED" else "⚡"
+                prob_indicator = "" if status == "CONFIRMED" else "?"
+                t['opp_pitcher_display'] = f"{emoji_indicator} {opener} -> {bulk}{prob_indicator} (BULK)"
+                t['is_opener_game'] = True
+                t['opener_confirmed'] = (status == "CONFIRMED")
+                t['opener_name'] = opener
+                t['bulk_name'] = bulk
+            elif opp_key in unresolved_games:
+                t['opp_pitcher_display'] = unresolved_games[opp_key]
+                if "BULK UNRESOLVED" in unresolved_games[opp_key]:
+                    t['is_opener_game'] = True
+                    t['opener_confirmed'] = False
+                    t['opener_name'] = unresolved_games[opp_key].split(' (OPENER)')[0].replace('⚠️ ', '')
+                    t['bulk_name'] = None
 
 
     # 5. Analyze Hitters

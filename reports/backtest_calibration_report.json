@@ -1,0 +1,37 @@
+{
+    "baseline": {
+        "samples_stacks": 486,
+        "samples_pitchers": 457,
+        "orig_stack_corr": 0.07727683423531928,
+        "new_stack_corr": 0.07903722477195847,
+        "orig_pitcher_corr": 0.19832330897998635,
+        "new_pitcher_corr": 0.19832330897998635
+    },
+    "best_joint": {
+        "walk_stack_boost": 8.0,
+        "er_stack_boost": 8.0,
+        "pitcher_penalty": -10.0,
+        "true_talent_stack_boost": 2.0,
+        "stack_corr": 0.11121039595476317,
+        "pitcher_corr": 0.23911811095894148,
+        "joint_score": 0.35032850691370465
+    },
+    "best_stack": {
+        "walk_stack_boost": 8.0,
+        "er_stack_boost": 8.0,
+        "pitcher_penalty": -3.0,
+        "true_talent_stack_boost": 2.0,
+        "stack_corr": 0.11121039595476317,
+        "pitcher_corr": 0.21274353330272597,
+        "joint_score": 0.3239539292574891
+    },
+    "best_pitcher": {
+        "walk_stack_boost": 2.0,
+        "er_stack_boost": 2.0,
+        "pitcher_penalty": -10.0,
+        "true_talent_stack_boost": 2.0,
+        "stack_corr": 0.08779855802039586,
+        "pitcher_corr": 0.23911811095894148,
+        "joint_score": 0.32691666897933735
+    }
+}

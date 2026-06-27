@@ -1,0 +1,61 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.13, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\konra\OneDrive\Desktop\Antigravity\Projects\MlbDFS
+plugins: anyio-4.13.0
+collected 112 items / 6 errors
+
+=================================== ERRORS ====================================
+__________________ ERROR collecting archive/test_analyzer.py __________________
+archive\test_analyzer.py:17: in <module>
+    with open(snapshot_path, 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'data\\snapshot_20260410_154842.json'
+------------------------------- Captured stdout -------------------------------
+[OMEGA]: Dynamic K-Boosts Recalibrated. Target: Cincinnati Reds (+15.0%) | Avoid: Tampa Bay Rays (-10.0%)
+Loading snapshot...
+___________________ ERROR collecting archive/test_ashby.py ____________________
+archive\test_ashby.py:8: in <module>
+    with open(snapshot_path, 'r') as f: snap = json.load(f)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'c:\\Users\\konra\\.gemini\\antigravity\\scratch\\mlb_dfs_sharps_engine\\data\\snapshot_20260410_154842.json'
+____________________ ERROR collecting archive/test_chad.py ____________________
+archive\test_chad.py:8: in <module>
+    with open(snapshot_path, 'r') as f: snap = json.load(f)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'c:\\Users\\konra\\.gemini\\antigravity\\scratch\\mlb_dfs_sharps_engine\\data\\snapshot_20260410_154842.json'
+________________ ERROR collecting scratch/test_exact_diffs.py _________________
+scratch\test_exact_diffs.py:112: in <module>
+    new_omega_res = calibrator.calculate_stack_score(
+E   TypeError: SharpsWeighting.calculate_stack_score() got an unexpected keyword argument 'is_whale'. Did you mean 'is_sharp'?
+------------------------------- Captured stdout -------------------------------
+=== EXACT PRODUCTION VS CALIBRATED SCORES TEST ===
+Team                      | Old OMEGA | New OMEGA | Old DQI      | New DQI     
+---------------------------------------------------------------------------
+______________ ERROR collecting scratch/test_fair_comparison.py _______________
+scratch\test_fair_comparison.py:95: in <module>
+    orig_res = original_calibrator.calculate_stack_score(
+E   TypeError: SharpsWeighting.calculate_stack_score() got an unexpected keyword argument 'is_whale'. Did you mean 'is_sharp'?
+------------------------------- Captured stdout -------------------------------
+=== FAIR FORMULA-ONLY COMPARISON (UNPATCHED VS PATCHED) ===
+Team                      | Unpatched | Patched   | Net Diff
+---------------------------------------------------------
+_____________ ERROR collecting scratch/test_white_sox_starters.py _____________
+scratch\test_white_sox_starters.py:27: in <module>
+    reports = analyzer.analyze_slate(
+data\pitcher_analyzer.py:150: in analyze_slate
+    with open(snapshot_path, 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\data\\snapshot_20260609_182954.json'
+------------------------------- Captured stdout -------------------------------
+Probables cache entry for White Sox:
+Chicago White Sox -> David Sandlin
+[OMEGA]: Dynamic K-Boosts Recalibrated. Target: Cincinnati Reds (+15.0%) | Avoid: Tampa Bay Rays (-10.0%)
+=========================== short test summary info ===========================
+ERROR archive/test_analyzer.py - FileNotFoundError: [Errno 2] No such file or...
+ERROR archive/test_ashby.py - FileNotFoundError: [Errno 2] No such file or di...
+ERROR archive/test_chad.py - FileNotFoundError: [Errno 2] No such file or dir...
+ERROR scratch/test_exact_diffs.py - TypeError: SharpsWeighting.calculate_stac...
+ERROR scratch/test_fair_comparison.py - TypeError: SharpsWeighting.calculate_...
+ERROR scratch/test_white_sox_starters.py - FileNotFoundError: [Errno 2] No su...
+!!!!!!!!!!!!!!!!!!! Interrupted: 6 errors during collection !!!!!!!!!!!!!!!!!!!
+============================= 6 errors in 49.66s ==============================

@@ -67,7 +67,12 @@ class DashboardGenerator:
         h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
         
         pitcher_rows = []
-        for p in p_reports[:35]:
+        for p in p_reports:
+            if p.get('is_opener'):
+                continue
+            if len(pitcher_rows) >= 35:
+                break
+                
             p_conf = p.get('attack_conf')
             p_reasons = p.get('attack_reasons', [])
             p_reasons_li = "".join([f"<div style='background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:6px; margin-bottom:8px; font-size:0.92rem; color:rgba(255,255,255,0.85);'>• {r}</div>" for r in p_reasons])
@@ -145,12 +150,38 @@ class DashboardGenerator:
                     </div>
                 </div>
                 """
+                
+            bulk_warning_html = ""
+            if p.get('is_bulk_arm'):
+                bulk_warning_html = f"""
+                <div style="background:rgba(10,132,255,0.1); border:1px solid rgba(10,132,255,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">🔄</span>
+                    <div style="text-align:left;">
+                        <div style="color:#0a84ff; font-weight:700; font-size:0.9rem;">BULK ARM — Effective SP for Stack Scoring</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Opener: {p.get('opener_name')} precedes him (1-2 IP).</div>
+                    </div>
+                </div>
+                """
+            
+            props_pending_html = ""
+            if p.get('props_pending'):
+                props_pending_html = """
+                <div style="background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">⚠️</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff9500; font-weight:700; font-size:0.9rem;">PROPS PENDING — Odds not yet released</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">This pitcher's prop lines are missing or not fully populated. Openers/bulk check skipped until props arrive.</div>
+                    </div>
+                </div>
+                """
             
             p_reasons_html = f"""
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
                 <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">OMEGA Confidence Score</span>
                 <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{p_conf}%</span>
             </div>
+            {props_pending_html}
+            {bulk_warning_html}
             {talent_warning_html}
             {statcast_grid}
             {props_grid_html}
@@ -158,6 +189,40 @@ class DashboardGenerator:
             <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:10px;">{p_reasons_li}</div>
             """
             p_reasons_html = p_reasons_html.replace('"', '&quot;').replace('\n', ' ')
+
+            bulk_label = ' <span class="bulk-label" style="background:#0a84ff; color:#fff; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; margin-left:4px;">BULK</span>' if p.get('is_bulk_arm') else ''
+            
+            opener_nested = ''
+            if p.get('is_bulk_arm') and p.get('opener_name'):
+                opener_name = p['opener_name']
+                opener_p = next((op for op in p_reports if op['event_id'] == p['event_id'] and op['team'] == p['team'] and op.get('is_opener')), None)
+                if opener_p:
+                    op_reasons = opener_p.get('attack_reasons', [])
+                    op_reasons_li = "".join([f"<div style='background:rgba(255,255,255,0.02); border-left:3px solid var(--accent-blue); padding:10px 14px; border-radius:6px; margin-bottom:8px; font-size:0.92rem; color:rgba(255,255,255,0.85);'>• {r}</div>" for r in op_reasons])
+                    
+                    op_warning = f"""
+                    <div style="background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                        <span style="font-size:1.5rem;">⚠️</span>
+                        <div style="text-align:left;">
+                            <div style="color:#ff9500; font-weight:700; font-size:0.9rem;">OPENER ONLY — Scheduled for 1-2 IP</div>
+                            <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Stack scores for the opposing team reflect the bulk arm ({p['pitcher']}).</div>
+                        </div>
+                    </div>
+                    """
+                    
+                    op_reasons_html = f"""
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
+                        <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">OMEGA Confidence Score</span>
+                        <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{opener_p.get('attack_conf', 50)}%</span>
+                    </div>
+                    {op_warning}
+                    <div style="margin-bottom:10px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--accent-blue); letter-spacing:0.05em;">PITCHER ANALYTICS</div>
+                    <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:10px;">{op_reasons_li}</div>
+                    """
+                    op_reasons_html = op_reasons_html.replace('"', '&quot;').replace('\n', ' ')
+                    
+                    team_lbl = abbrev_map.get(p['team'], p['team'])
+                    opener_nested = f'<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); showDetails(\'{opener_name} ({team_lbl})\', \'{op_reasons_html}\')">{opener_name}</span> (opener, 1-2 IP)</div>'
 
             row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{p['pitcher']} ({abbrev_map.get(p['team'], p['team'])})', '{p_reasons_html}')">
 <td class="score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}">{p['alpha_score']}</td>
@@ -168,6 +233,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-shark">🦈 SHARK</span>' if p.get('is_shark') else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT</span>' if p.get('is_debut') else '' }
 { '<span class="signal-pill pill-lowconf">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }
+{ '<span class="signal-pill pill-lowconf">⚠️ PROPS PENDING</span>' if p.get('props_pending') else '' }
 </div></td>
 <td><div class="signals-container">
 { '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }
@@ -177,7 +243,7 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-neutral">📉 CEILING</span>' if p.get('is_low_ceiling') else '' }
 <span class="signal-pill pill-neutral">{p.get('weather_label', 'WEATHER: TBD')}</span>
 </div></td>
-<td><strong>{p['pitcher']}</strong> <span class="team-label">({abbrev_map.get(p['team'], p['team'])})</span></td>
+<td><strong>{p['pitcher']}</strong>{bulk_label} <span class="team-label">({abbrev_map.get(p['team'], p['team'])})</span>{opener_nested}</td>
 <td><span class="vs">vs</span>{p['opponent']}</td>
 <td class="metric"><b>{p.get('k_line') or '-'}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(p.get('k_odds'), (int, float)) and p['k_odds'] > 0 else ''}{p.get('k_odds') or '-'})</span></td>
 <td class="metric"><b>{p.get('outs_line') or '-'}</b><br><span style="font-size:0.8em; color: var(--text-secondary);">({'+' if isinstance(p.get('outs_odds'), (int, float)) and p['outs_odds'] > 0 else ''}{p.get('outs_odds') or '-'})</span></td>
@@ -355,7 +421,45 @@ class DashboardGenerator:
                 except:
                     pass
                 
+            opener_warning_html = ""
+            if t.get('is_opener_game') and t.get('opener_name'):
+                is_conf = t.get('opener_confirmed', False)
+                opener_name = t.get('opener_name')
+                bulk_name = t.get('bulk_name') or "UNKNOWN"
+                
+                banner_title = "🔄 OPENER MATCHUP" if is_conf else "⚡ PROBABLE OPENER MATCHUP"
+                banner_color = "#0a84ff" if is_conf else "#ff9500"
+                banner_bg = "rgba(10,132,255,0.1)" if is_conf else "rgba(255,149,0,0.1)"
+                banner_border = "rgba(10,132,255,0.3)" if is_conf else "rgba(255,149,0,0.3)"
+                indicator = "🔄" if is_conf else "⚡"
+                
+                opener_warning_html = f"""
+                <div style="background:{banner_bg}; border:1px solid {banner_border}; padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">{indicator}</span>
+                    <div style="text-align:left;">
+                        <div style="color:{banner_color}; font-weight:700; font-size:0.9rem;">{banner_title}</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">
+                            Opponent is using opener {opener_name} (1-2 IP) followed by bulk reliever {bulk_name}.<br>
+                            Stack scoring reflects {bulk_name}'s profile.
+                        </div>
+                    </div>
+                </div>
+                """
+            elif t.get('opp_pitcher_display') and "BULK UNRESOLVED" in t['opp_pitcher_display']:
+                opener_warning_html = f"""
+                <div style="background:rgba(255,69,58,0.1); border:1px solid rgba(255,69,58,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">⚠️</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff453a; font-weight:700; font-size:0.9rem;">⚠️ BULK ARM UNRESOLVED</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">
+                            Opponent is using opener {t.get('opener_name')}, but bulk arm is unresolved. Manual verification recommended.
+                        </div>
+                    </div>
+                </div>
+                """
+
             t_reasons_html = f"""
+            {opener_warning_html}
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; background:rgba(255,255,255,0.02); padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);">
                 <span style="font-size:1rem; color:var(--text-secondary); font-weight:600;">Stack Blended Score</span>
                 <span style="font-size:1.8rem; font-weight:800; color:var(--accent-blue); text-shadow:0 0 15px rgba(10,132,255,0.4);">{blended}</span>
@@ -367,6 +471,7 @@ class DashboardGenerator:
             """
             t_reasons_html = t_reasons_html.replace('"', '&quot;').replace('\n', ' ')
 
+            opp_pitcher_display = t.get('opp_pitcher_display') or t['opp_pitcher']
 
             row = f"""<tr class="{'god-tier' if blended >= 80 else ''}" style="cursor:pointer;" onclick="showDetails('{t['team']} vs {t['opponent']}', '{t_reasons_html}')">
 <td class="score {'score-elite' if blended >= 85 else ('score-high' if blended >= 75 else '')}">{blended}</td>
@@ -392,7 +497,7 @@ class DashboardGenerator:
 { trend_pill }
 </div></td>
 <td><span class="team-label" style="font-size:1rem; font-weight:700; margin-left:0;">{t['team']}</span></td>
-<td><span class="vs">vs</span>{t['opp_pitcher']} <span class="team-label">({abbrev_map.get(t['opponent'], 'TBD')})</span></td>
+<td><span class="vs">vs</span>{opp_pitcher_display} <span class="team-label">({abbrev_map.get(t['opponent'], 'TBD')})</span></td>
 <td class="metric" style="font-weight:600;"><span class="{ 'val-up' if t.get('implied_total', 0) >= 4.2 else '' }">{t.get('implied_total', '-')}</span></td>
 <td class="metric { 'val-up' if t['ml_move'] < 0 else ('val-down' if t['ml_move'] > 0 else 'val-even') }">{ '+' if t['ml_move'] > 0 else '' }{ t['ml_move'] if t['ml_move'] != 0 else 'EVEN' }</td>
 <td class="metric { 'val-up' if t['tt_move'] > 0 else ('val-down' if t['tt_move'] < 0 else 'val-even') }">{ '+' if t['tt_move'] > 0 else '' }{ t['tt_move'] if t['tt_move'] != 0 else 'EVEN' }</td>

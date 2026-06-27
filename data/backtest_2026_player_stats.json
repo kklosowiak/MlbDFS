@@ -1,0 +1,7128 @@
+{
+  "casey schmitt": {
+    "type": "hitter",
+    "name": "Casey Schmitt",
+    "pa": 209,
+    "xwoba": 0.385,
+    "ops": 1.556
+  },
+  "jt brubaker": {
+    "type": "pitcher",
+    "name": "JT Brubaker",
+    "era": 2.86,
+    "whip": 1.38,
+    "physics_score": 65.5,
+    "ip": 28.3,
+    "so": 21
+  },
+  "jerar encarnacion": {
+    "type": "hitter",
+    "name": "Jerar Encarnacion",
+    "pa": 35,
+    "xwoba": 0.183,
+    "ops": 1.206
+  },
+  "heliot ramos": {
+    "type": "hitter",
+    "name": "Heliot Ramos",
+    "pa": 180,
+    "xwoba": 0.317,
+    "ops": 1.418
+  },
+  "tyler mahle": {
+    "type": "pitcher",
+    "name": "Tyler Mahle",
+    "era": 6.04,
+    "whip": 1.54,
+    "physics_score": 22.6,
+    "ip": 56.7,
+    "so": 57
+  },
+  "logan webb": {
+    "type": "pitcher",
+    "name": "Logan Webb",
+    "era": 4.82,
+    "whip": 1.39,
+    "physics_score": 38.9,
+    "ip": 52.3,
+    "so": 47
+  },
+  "ryan walker": {
+    "type": "pitcher",
+    "name": "Ryan Walker",
+    "era": 6.46,
+    "whip": 1.89,
+    "physics_score": 14.6,
+    "ip": 15.3,
+    "so": 14
+  },
+  "keaton winn": {
+    "type": "pitcher",
+    "name": "Keaton Winn",
+    "era": 2.6,
+    "whip": 1.01,
+    "physics_score": 70.3,
+    "ip": 27.7,
+    "so": 22
+  },
+  "patrick bailey": {
+    "type": "hitter",
+    "name": "Patrick Bailey",
+    "pa": 119,
+    "xwoba": 0.204,
+    "ops": 1.22
+  },
+  "matt chapman": {
+    "type": "hitter",
+    "name": "Matt Chapman",
+    "pa": 245,
+    "xwoba": 0.288,
+    "ops": 1.317
+  },
+  "caleb kilian": {
+    "type": "pitcher",
+    "name": "Caleb Kilian",
+    "era": 3.67,
+    "whip": 1.11,
+    "physics_score": 59.3,
+    "ip": 27.0,
+    "so": 29
+  },
+  "ryan borucki": {
+    "type": "pitcher",
+    "name": "Ryan Borucki",
+    "era": 5.25,
+    "whip": 1.62,
+    "physics_score": 27.5,
+    "ip": 24.0,
+    "so": 15
+  },
+  "jung hoo lee": {
+    "type": "hitter",
+    "name": "Jung Hoo Lee",
+    "pa": 205,
+    "xwoba": 0.332,
+    "ops": 1.417
+  },
+  "rafael devers": {
+    "type": "hitter",
+    "name": "Rafael Devers",
+    "pa": 242,
+    "xwoba": 0.31,
+    "ops": 1.412
+  },
+  "harrison bader": {
+    "type": "hitter",
+    "name": "Harrison Bader",
+    "pa": 110,
+    "xwoba": 0.243,
+    "ops": 1.358
+  },
+  "adrian houser": {
+    "type": "pitcher",
+    "name": "Adrian Houser",
+    "era": 5.61,
+    "whip": 1.54,
+    "physics_score": 21.8,
+    "ip": 61.0,
+    "so": 37
+  },
+  "willy adames": {
+    "type": "hitter",
+    "name": "Willy Adames",
+    "pa": 247,
+    "xwoba": 0.295,
+    "ops": 1.404
+  },
+  "robbie ray": {
+    "type": "pitcher",
+    "name": "Robbie Ray",
+    "era": 4.6,
+    "whip": 1.38,
+    "physics_score": 42.2,
+    "ip": 58.7,
+    "so": 53
+  },
+  "erik miller": {
+    "type": "pitcher",
+    "name": "Erik Miller",
+    "era": 4.41,
+    "whip": 1.41,
+    "physics_score": 55.3,
+    "ip": 16.3,
+    "so": 24
+  },
+  "landen roupp": {
+    "type": "pitcher",
+    "name": "Landen Roupp",
+    "era": 3.3,
+    "whip": 1.18,
+    "physics_score": 65.9,
+    "ip": 60.0,
+    "so": 68
+  },
+  "luis arraez": {
+    "type": "hitter",
+    "name": "Luis Arraez",
+    "pa": 236,
+    "xwoba": 0.351,
+    "ops": 1.423
+  },
+  "daniel susac": {
+    "type": "hitter",
+    "name": "Daniel Susac",
+    "pa": 59,
+    "xwoba": 0.32,
+    "ops": 1.382
+  },
+  "matt gage": {
+    "type": "pitcher",
+    "name": "Matt Gage",
+    "era": 1.9,
+    "whip": 1.1,
+    "physics_score": 80.2,
+    "ip": 23.7,
+    "so": 18
+  },
+  "paul blackburn": {
+    "type": "pitcher",
+    "name": "Paul Blackburn",
+    "era": 3.33,
+    "whip": 1.44,
+    "physics_score": 56.9,
+    "ip": 24.3,
+    "so": 16
+  },
+  "jose caballero": {
+    "type": "hitter",
+    "name": "Jos\u00e9 Caballero",
+    "pa": 168,
+    "xwoba": 0.314,
+    "ops": 1.391
+  },
+  "ryan yarbrough": {
+    "type": "pitcher",
+    "name": "Ryan Yarbrough",
+    "era": 3.66,
+    "whip": 1.12,
+    "physics_score": 52.9,
+    "ip": 19.7,
+    "so": 14
+  },
+  "randal grichuk": {
+    "type": "hitter",
+    "name": "Randal Grichuk",
+    "pa": 74,
+    "xwoba": 0.336,
+    "ops": 1.493
+  },
+  "amed rosario": {
+    "type": "hitter",
+    "name": "Amed Rosario",
+    "pa": 94,
+    "xwoba": 0.368,
+    "ops": 1.534
+  },
+  "aaron judge": {
+    "type": "hitter",
+    "name": "Aaron Judge",
+    "pa": 254,
+    "xwoba": 0.398,
+    "ops": 1.538
+  },
+  "ryan mcmahon": {
+    "type": "hitter",
+    "name": "Ryan McMahon",
+    "pa": 161,
+    "xwoba": 0.277,
+    "ops": 1.356
+  },
+  "ryan weathers": {
+    "type": "pitcher",
+    "name": "Ryan Weathers",
+    "era": 3.52,
+    "whip": 1.14,
+    "physics_score": 63.4,
+    "ip": 64.0,
+    "so": 75
+  },
+  "tim hill": {
+    "type": "pitcher",
+    "name": "Tim Hill",
+    "era": 2.53,
+    "whip": 1.08,
+    "physics_score": 66.3,
+    "ip": 21.3,
+    "so": 11
+  },
+  "paul goldschmidt": {
+    "type": "hitter",
+    "name": "Paul Goldschmidt",
+    "pa": 122,
+    "xwoba": 0.38,
+    "ops": 1.509
+  },
+  "austin wells": {
+    "type": "hitter",
+    "name": "Austin Wells",
+    "pa": 154,
+    "xwoba": 0.267,
+    "ops": 1.278
+  },
+  "ben rice": {
+    "type": "hitter",
+    "name": "Ben Rice",
+    "pa": 222,
+    "xwoba": 0.447,
+    "ops": 1.649
+  },
+  "brent headrick": {
+    "type": "pitcher",
+    "name": "Brent Headrick",
+    "era": 2.0,
+    "whip": 1.37,
+    "physics_score": 84.3,
+    "ip": 27.0,
+    "so": 29
+  },
+  "will warren": {
+    "type": "pitcher",
+    "name": "Will Warren",
+    "era": 3.55,
+    "whip": 1.17,
+    "physics_score": 61.8,
+    "ip": 58.3,
+    "so": 65
+  },
+  "fernando cruz": {
+    "type": "pitcher",
+    "name": "Fernando Cruz",
+    "era": 1.9,
+    "whip": 1.27,
+    "physics_score": 89.3,
+    "ip": 23.7,
+    "so": 30
+  },
+  "jc escarra": {
+    "type": "hitter",
+    "name": "J.C. Escarra",
+    "pa": 64,
+    "xwoba": 0.236,
+    "ops": 1.271
+  },
+  "cody bellinger": {
+    "type": "hitter",
+    "name": "Cody Bellinger",
+    "pa": 243,
+    "xwoba": 0.376,
+    "ops": 1.476
+  },
+  "giancarlo stanton": {
+    "type": "hitter",
+    "name": "Giancarlo Stanton",
+    "pa": 96,
+    "xwoba": 0.318,
+    "ops": 1.422
+  },
+  "jazz chisholm": {
+    "type": "hitter",
+    "name": "Jazz Chisholm Jr.",
+    "pa": 228,
+    "xwoba": 0.313,
+    "ops": 1.385
+  },
+  "max fried": {
+    "type": "pitcher",
+    "name": "Max Fried",
+    "era": 3.21,
+    "whip": 1.01,
+    "physics_score": 61.4,
+    "ip": 61.7,
+    "so": 50
+  },
+  "jake bird": {
+    "type": "pitcher",
+    "name": "Jake Bird",
+    "era": 5.0,
+    "whip": 1.33,
+    "physics_score": 40.0,
+    "ip": 18.0,
+    "so": 20
+  },
+  "camilo doval": {
+    "type": "pitcher",
+    "name": "Camilo Doval",
+    "era": 5.06,
+    "whip": 1.03,
+    "physics_score": 33.4,
+    "ip": 21.3,
+    "so": 17
+  },
+  "trent grisham": {
+    "type": "hitter",
+    "name": "Trent Grisham",
+    "pa": 217,
+    "xwoba": 0.322,
+    "ops": 1.383
+  },
+  "david bednar": {
+    "type": "pitcher",
+    "name": "David Bednar",
+    "era": 4.7,
+    "whip": 1.57,
+    "physics_score": 46.5,
+    "ip": 23.0,
+    "so": 28
+  },
+  "cam schlittler": {
+    "type": "pitcher",
+    "name": "Cam Schlittler",
+    "era": 1.5,
+    "whip": 0.85,
+    "physics_score": 92.8,
+    "ip": 72.0,
+    "so": 81
+  },
+  "luis torrens": {
+    "type": "hitter",
+    "name": "Luis Torrens",
+    "pa": 97,
+    "xwoba": 0.243,
+    "ops": 1.278
+  },
+  "bo bichette": {
+    "type": "hitter",
+    "name": "Bo Bichette",
+    "pa": 260,
+    "xwoba": 0.26,
+    "ops": 1.303
+  },
+  "tyrone taylor": {
+    "type": "hitter",
+    "name": "Tyrone Taylor",
+    "pa": 105,
+    "xwoba": 0.23,
+    "ops": 1.314
+  },
+  "francisco alvarez": {
+    "type": "hitter",
+    "name": "Francisco Alvarez",
+    "pa": 133,
+    "xwoba": 0.311,
+    "ops": 1.378
+  },
+  "sean manaea": {
+    "type": "pitcher",
+    "name": "Sean Manaea",
+    "era": 5.56,
+    "whip": 1.62,
+    "physics_score": 31.7,
+    "ip": 34.0,
+    "so": 38
+  },
+  "mark vientos": {
+    "type": "hitter",
+    "name": "Mark Vientos",
+    "pa": 191,
+    "xwoba": 0.281,
+    "ops": 1.385
+  },
+  "tobias myers": {
+    "type": "pitcher",
+    "name": "Tobias Myers",
+    "era": 4.05,
+    "whip": 1.08,
+    "physics_score": 48.3,
+    "ip": 33.3,
+    "so": 26
+  },
+  "brett baty": {
+    "type": "hitter",
+    "name": "Brett Baty",
+    "pa": 193,
+    "xwoba": 0.29,
+    "ops": 1.335
+  },
+  "huascar brazoban": {
+    "type": "pitcher",
+    "name": "Huascar Brazob\u00e1n",
+    "era": 2.1,
+    "whip": 1.03,
+    "physics_score": 78.5,
+    "ip": 30.0,
+    "so": 25
+  },
+  "richard lovelady": {
+    "type": "pitcher",
+    "name": "Richard Lovelady",
+    "era": 2.7,
+    "whip": 1.71,
+    "physics_score": 70.7,
+    "ip": 23.3,
+    "so": 21
+  },
+  "luke weaver": {
+    "type": "pitcher",
+    "name": "Luke Weaver",
+    "era": 2.81,
+    "whip": 1.09,
+    "physics_score": 69.8,
+    "ip": 25.7,
+    "so": 24
+  },
+  "carson benge": {
+    "type": "hitter",
+    "name": "Carson Benge",
+    "pa": 218,
+    "xwoba": 0.302,
+    "ops": 1.35
+  },
+  "devin williams": {
+    "type": "pitcher",
+    "name": "Devin Williams",
+    "era": 5.4,
+    "whip": 1.55,
+    "physics_score": 41.9,
+    "ip": 20.0,
+    "so": 31
+  },
+  "kodai senga": {
+    "type": "pitcher",
+    "name": "Kodai Senga",
+    "era": 9.13,
+    "whip": 1.99,
+    "physics_score": 0.0,
+    "ip": 22.7,
+    "so": 24
+  },
+  "marcus semien": {
+    "type": "hitter",
+    "name": "Marcus Semien",
+    "pa": 233,
+    "xwoba": 0.264,
+    "ops": 1.31
+  },
+  "david peterson": {
+    "type": "pitcher",
+    "name": "David Peterson",
+    "era": 5.57,
+    "whip": 1.67,
+    "physics_score": 29.4,
+    "ip": 53.3,
+    "so": 53
+  },
+  "freddy peralta": {
+    "type": "pitcher",
+    "name": "Freddy Peralta",
+    "era": 3.55,
+    "whip": 1.3,
+    "physics_score": 60.4,
+    "ip": 66.0,
+    "so": 68
+  },
+  "clay holmes": {
+    "type": "pitcher",
+    "name": "Clay Holmes",
+    "era": 2.39,
+    "whip": 1.1,
+    "physics_score": 74.5,
+    "ip": 52.7,
+    "so": 45
+  },
+  "francisco lindor": {
+    "type": "hitter",
+    "name": "Francisco Lindor",
+    "pa": 105,
+    "xwoba": 0.301,
+    "ops": 1.355
+  },
+  "juan soto": {
+    "type": "hitter",
+    "name": "Juan Soto",
+    "pa": 182,
+    "xwoba": 0.425,
+    "ops": 1.583
+  },
+  "brooks raley": {
+    "type": "pitcher",
+    "name": "Brooks Raley",
+    "era": 1.19,
+    "whip": 1.15,
+    "physics_score": 97.8,
+    "ip": 22.7,
+    "so": 26
+  },
+  "jorge polanco": {
+    "type": "hitter",
+    "name": "Jorge Polanco",
+    "pa": 61,
+    "xwoba": 0.241,
+    "ops": 1.286
+  },
+  "nolan mclean": {
+    "type": "pitcher",
+    "name": "Nolan McLean",
+    "era": 4.4,
+    "whip": 1.09,
+    "physics_score": 51.0,
+    "ip": 61.3,
+    "so": 75
+  },
+  "luis garcia": {
+    "type": "pitcher",
+    "name": "Luis Garc\u00eda",
+    "era": 9.0,
+    "whip": 1.93,
+    "physics_score": 0.0,
+    "ip": 15.0,
+    "so": 6
+  },
+  "luis robert": {
+    "type": "hitter",
+    "name": "Luis Robert Jr.",
+    "pa": 98,
+    "xwoba": 0.3,
+    "ops": 1.329
+  },
+  "jared young": {
+    "type": "hitter",
+    "name": "Jared Young",
+    "pa": 33,
+    "xwoba": 0.413,
+    "ops": 1.517
+  },
+  "paul skenes": {
+    "type": "pitcher",
+    "name": "Paul Skenes",
+    "era": 2.89,
+    "whip": 0.86,
+    "physics_score": 72.3,
+    "ip": 65.3,
+    "so": 75
+  },
+  "nick yorke": {
+    "type": "hitter",
+    "name": "Nick Yorke",
+    "pa": 85,
+    "xwoba": 0.258,
+    "ops": 1.276
+  },
+  "spencer horwitz": {
+    "type": "hitter",
+    "name": "Spencer Horwitz",
+    "pa": 199,
+    "xwoba": 0.387,
+    "ops": 1.47
+  },
+  "brandon lowe": {
+    "type": "hitter",
+    "name": "Brandon Lowe",
+    "pa": 231,
+    "xwoba": 0.384,
+    "ops": 1.537
+  },
+  "bryan reynolds": {
+    "type": "hitter",
+    "name": "Bryan Reynolds",
+    "pa": 251,
+    "xwoba": 0.38,
+    "ops": 1.444
+  },
+  "joey bart": {
+    "type": "hitter",
+    "name": "Joey Bart",
+    "pa": 61,
+    "xwoba": 0.299,
+    "ops": 1.379
+  },
+  "oneil cruz": {
+    "type": "hitter",
+    "name": "Oneil Cruz",
+    "pa": 257,
+    "xwoba": 0.349,
+    "ops": 1.468
+  },
+  "gregory soto": {
+    "type": "pitcher",
+    "name": "Gregory Soto",
+    "era": 1.95,
+    "whip": 0.76,
+    "physics_score": 86.5,
+    "ip": 27.7,
+    "so": 32
+  },
+  "mason montgomery": {
+    "type": "pitcher",
+    "name": "Mason Montgomery",
+    "era": 3.91,
+    "whip": 1.26,
+    "physics_score": 59.8,
+    "ip": 23.0,
+    "so": 30
+  },
+  "jared triolo": {
+    "type": "hitter",
+    "name": "Jared Triolo",
+    "pa": 82,
+    "xwoba": 0.239,
+    "ops": 1.256
+  },
+  "jake mangum": {
+    "type": "hitter",
+    "name": "Jake Mangum",
+    "pa": 112,
+    "xwoba": 0.3,
+    "ops": 1.317
+  },
+  "mitch keller": {
+    "type": "pitcher",
+    "name": "Mitch Keller",
+    "era": 4.35,
+    "whip": 1.17,
+    "physics_score": 43.2,
+    "ip": 68.3,
+    "so": 51
+  },
+  "yohan ramirez": {
+    "type": "pitcher",
+    "name": "Yohan Ram\u00edrez",
+    "era": 4.73,
+    "whip": 1.42,
+    "physics_score": 44.6,
+    "ip": 32.3,
+    "so": 37
+  },
+  "isaac mattson": {
+    "type": "pitcher",
+    "name": "Isaac Mattson",
+    "era": 4.12,
+    "whip": 1.47,
+    "physics_score": 46.9,
+    "ip": 19.7,
+    "so": 15
+  },
+  "bubba chandler": {
+    "type": "pitcher",
+    "name": "Bubba Chandler",
+    "era": 4.85,
+    "whip": 1.52,
+    "physics_score": 40.3,
+    "ip": 52.0,
+    "so": 52
+  },
+  "billy cook": {
+    "type": "hitter",
+    "name": "Billy Cook",
+    "pa": 21,
+    "xwoba": 0.17,
+    "ops": 1.19
+  },
+  "carmen mlodzinski": {
+    "type": "pitcher",
+    "name": "Carmen Mlodzinski",
+    "era": 3.76,
+    "whip": 1.42,
+    "physics_score": 53.6,
+    "ip": 55.0,
+    "so": 46
+  },
+  "dennis santana": {
+    "type": "pitcher",
+    "name": "Dennis Santana",
+    "era": 4.81,
+    "whip": 1.48,
+    "physics_score": 36.9,
+    "ip": 24.3,
+    "so": 19
+  },
+  "henry davis": {
+    "type": "hitter",
+    "name": "Henry Davis",
+    "pa": 126,
+    "xwoba": 0.231,
+    "ops": 1.268
+  },
+  "justin lawrence": {
+    "type": "pitcher",
+    "name": "Justin Lawrence",
+    "era": 5.32,
+    "whip": 1.55,
+    "physics_score": 35.7,
+    "ip": 22.0,
+    "so": 25
+  },
+  "hunter barco": {
+    "type": "pitcher",
+    "name": "Hunter Barco",
+    "era": 7.71,
+    "whip": 1.97,
+    "physics_score": 0.0,
+    "ip": 11.7,
+    "so": 8
+  },
+  "ryan ohearn": {
+    "type": "hitter",
+    "name": "Ryan O'Hearn",
+    "pa": 180,
+    "xwoba": 0.368,
+    "ops": 1.459
+  },
+  "marcell ozuna": {
+    "type": "hitter",
+    "name": "Marcell Ozuna",
+    "pa": 192,
+    "xwoba": 0.262,
+    "ops": 1.302
+  },
+  "nick gonzales": {
+    "type": "hitter",
+    "name": "Nick Gonzales",
+    "pa": 211,
+    "xwoba": 0.318,
+    "ops": 1.349
+  },
+  "braxton ashcraft": {
+    "type": "pitcher",
+    "name": "Braxton Ashcraft",
+    "era": 2.75,
+    "whip": 1.05,
+    "physics_score": 72.1,
+    "ip": 68.7,
+    "so": 70
+  },
+  "chad patrick": {
+    "type": "pitcher",
+    "name": "Chad Patrick",
+    "era": 2.6,
+    "whip": 1.22,
+    "physics_score": 69.2,
+    "ip": 45.0,
+    "so": 33
+  },
+  "luis rengifo": {
+    "type": "hitter",
+    "name": "Luis Rengifo",
+    "pa": 168,
+    "xwoba": 0.24,
+    "ops": 1.253
+  },
+  "joey ortiz": {
+    "type": "hitter",
+    "name": "Joey Ortiz",
+    "pa": 136,
+    "xwoba": 0.246,
+    "ops": 1.233
+  },
+  "christian yelich": {
+    "type": "hitter",
+    "name": "Christian Yelich",
+    "pa": 113,
+    "xwoba": 0.34,
+    "ops": 1.447
+  },
+  "jake bauers": {
+    "type": "hitter",
+    "name": "Jake Bauers",
+    "pa": 194,
+    "xwoba": 0.358,
+    "ops": 1.469
+  },
+  "sal frelick": {
+    "type": "hitter",
+    "name": "Sal Frelick",
+    "pa": 190,
+    "xwoba": 0.273,
+    "ops": 1.302
+  },
+  "abner uribe": {
+    "type": "pitcher",
+    "name": "Abner Uribe",
+    "era": 3.98,
+    "whip": 1.23,
+    "physics_score": 54.7,
+    "ip": 20.3,
+    "so": 22
+  },
+  "grant anderson": {
+    "type": "pitcher",
+    "name": "Grant Anderson",
+    "era": 2.7,
+    "whip": 1.03,
+    "physics_score": 68.4,
+    "ip": 23.3,
+    "so": 18
+  },
+  "andrew vaughn": {
+    "type": "hitter",
+    "name": "Andrew Vaughn",
+    "pa": 65,
+    "xwoba": 0.4,
+    "ops": 1.491
+  },
+  "brandon lockridge": {
+    "type": "hitter",
+    "name": "Brandon Lockridge",
+    "pa": 97,
+    "xwoba": 0.316,
+    "ops": 1.333
+  },
+  "kyle harrison": {
+    "type": "pitcher",
+    "name": "Kyle Harrison",
+    "era": 1.57,
+    "whip": 1.03,
+    "physics_score": 92.7,
+    "ip": 51.7,
+    "so": 61
+  },
+  "garrett mitchell": {
+    "type": "hitter",
+    "name": "Garrett Mitchell",
+    "pa": 176,
+    "xwoba": 0.333,
+    "ops": 1.378
+  },
+  "aaron ashby": {
+    "type": "pitcher",
+    "name": "Aaron Ashby",
+    "era": 2.0,
+    "whip": 1.28,
+    "physics_score": 90.5,
+    "ip": 36.0,
+    "so": 51
+  },
+  "david hamilton": {
+    "type": "hitter",
+    "name": "David Hamilton",
+    "pa": 147,
+    "xwoba": 0.274,
+    "ops": 1.277
+  },
+  "brandon sproat": {
+    "type": "pitcher",
+    "name": "Brandon Sproat",
+    "era": 6.49,
+    "whip": 1.56,
+    "physics_score": 16.7,
+    "ip": 52.7,
+    "so": 56
+  },
+  "blake perkins": {
+    "type": "hitter",
+    "name": "Blake Perkins",
+    "pa": 74,
+    "xwoba": 0.163,
+    "ops": 1.136
+  },
+  "jake woodford": {
+    "type": "pitcher",
+    "name": "Jake Woodford",
+    "era": 6.52,
+    "whip": 1.76,
+    "physics_score": 13.1,
+    "ip": 19.3,
+    "so": 17
+  },
+  "william contreras": {
+    "type": "hitter",
+    "name": "William Contreras",
+    "pa": 229,
+    "xwoba": 0.341,
+    "ops": 1.401
+  },
+  "brice turang": {
+    "type": "hitter",
+    "name": "Brice Turang",
+    "pa": 236,
+    "xwoba": 0.379,
+    "ops": 1.454
+  },
+  "brandon woodruff": {
+    "type": "pitcher",
+    "name": "Brandon Woodruff",
+    "era": 3.6,
+    "whip": 1.03,
+    "physics_score": 56.0,
+    "ip": 30.0,
+    "so": 25
+  },
+  "gary sanchez": {
+    "type": "hitter",
+    "name": "Gary S\u00e1nchez",
+    "pa": 118,
+    "xwoba": 0.338,
+    "ops": 1.4
+  },
+  "jacob misiorowski": {
+    "type": "pitcher",
+    "name": "Jacob Misiorowski",
+    "era": 1.83,
+    "whip": 0.83,
+    "physics_score": 95.7,
+    "ip": 64.0,
+    "so": 100
+  },
+  "dl hall": {
+    "type": "pitcher",
+    "name": "DL Hall",
+    "era": 2.2,
+    "whip": 1.22,
+    "physics_score": 81.5,
+    "ip": 28.7,
+    "so": 31
+  },
+  "angel zerpa": {
+    "type": "pitcher",
+    "name": "Angel Zerpa",
+    "era": 6.39,
+    "whip": 1.74,
+    "physics_score": 10.4,
+    "ip": 12.7,
+    "so": 8
+  },
+  "trevor megill": {
+    "type": "pitcher",
+    "name": "Trevor Megill",
+    "era": 4.5,
+    "whip": 1.1,
+    "physics_score": 50.0,
+    "ip": 20.0,
+    "so": 25
+  },
+  "lenyn sosa": {
+    "type": "hitter",
+    "name": "Lenyn Sosa",
+    "pa": 115,
+    "xwoba": 0.216,
+    "ops": 1.283
+  },
+  "tristan peters": {
+    "type": "hitter",
+    "name": "Tristan Peters",
+    "pa": 158,
+    "xwoba": 0.332,
+    "ops": 1.396
+  },
+  "anthony kay": {
+    "type": "pitcher",
+    "name": "Anthony Kay",
+    "era": 3.77,
+    "whip": 1.4,
+    "physics_score": 51.7,
+    "ip": 57.3,
+    "so": 42
+  },
+  "davis martin": {
+    "type": "pitcher",
+    "name": "Davis Martin",
+    "era": 2.0,
+    "whip": 0.99,
+    "physics_score": 84.0,
+    "ip": 67.7,
+    "so": 71
+  },
+  "luisangel acuna": {
+    "type": "hitter",
+    "name": "Luisangel Acu\u00f1a",
+    "pa": 113,
+    "xwoba": 0.188,
+    "ops": 1.179
+  },
+  "munetaka murakami": {
+    "type": "hitter",
+    "name": "Munetaka Murakami",
+    "pa": 250,
+    "xwoba": 0.404,
+    "ops": 1.554
+  },
+  "chase meidroth": {
+    "type": "hitter",
+    "name": "Chase Meidroth",
+    "pa": 238,
+    "xwoba": 0.329,
+    "ops": 1.39
+  },
+  "grant taylor": {
+    "type": "pitcher",
+    "name": "Grant Taylor",
+    "era": 2.05,
+    "whip": 1.08,
+    "physics_score": 90.6,
+    "ip": 30.7,
+    "so": 45
+  },
+  "colson montgomery": {
+    "type": "hitter",
+    "name": "Colson Montgomery",
+    "pa": 245,
+    "xwoba": 0.356,
+    "ops": 1.481
+  },
+  "austin hays": {
+    "type": "hitter",
+    "name": "Austin Hays",
+    "pa": 49,
+    "xwoba": 0.246,
+    "ops": 1.312
+  },
+  "seranthony dominguez": {
+    "type": "pitcher",
+    "name": "Seranthony Dom\u00ednguez",
+    "era": 3.75,
+    "whip": 1.08,
+    "physics_score": 61.2,
+    "ip": 24.0,
+    "so": 30
+  },
+  "edgar quero": {
+    "type": "hitter",
+    "name": "Edgar Quero",
+    "pa": 131,
+    "xwoba": 0.264,
+    "ops": 1.267
+  },
+  "andrew benintendi": {
+    "type": "hitter",
+    "name": "Andrew Benintendi",
+    "pa": 181,
+    "xwoba": 0.296,
+    "ops": 1.385
+  },
+  "jordan leasure": {
+    "type": "pitcher",
+    "name": "Jordan Leasure",
+    "era": 6.86,
+    "whip": 1.32,
+    "physics_score": 9.4,
+    "ip": 19.7,
+    "so": 19
+  },
+  "sean burke": {
+    "type": "pitcher",
+    "name": "Sean Burke",
+    "era": 3.68,
+    "whip": 1.11,
+    "physics_score": 56.4,
+    "ip": 66.0,
+    "so": 61
+  },
+  "erick fedde": {
+    "type": "pitcher",
+    "name": "Erick Fedde",
+    "era": 5.4,
+    "whip": 1.48,
+    "physics_score": 25.5,
+    "ip": 53.3,
+    "so": 34
+  },
+  "sean newcomb": {
+    "type": "pitcher",
+    "name": "Sean Newcomb",
+    "era": 2.57,
+    "whip": 1.09,
+    "physics_score": 72.4,
+    "ip": 35.0,
+    "so": 31
+  },
+  "jordan hicks": {
+    "type": "pitcher",
+    "name": "Jordan Hicks",
+    "era": 5.6,
+    "whip": 2.09,
+    "physics_score": 26.2,
+    "ip": 17.7,
+    "so": 15
+  },
+  "everson pereira": {
+    "type": "hitter",
+    "name": "Everson Pereira",
+    "pa": 70,
+    "xwoba": 0.337,
+    "ops": 1.453
+  },
+  "derek hill": {
+    "type": "hitter",
+    "name": "Derek Hill",
+    "pa": 72,
+    "xwoba": 0.321,
+    "ops": 1.4
+  },
+  "miguel vargas": {
+    "type": "hitter",
+    "name": "Miguel Vargas",
+    "pa": 251,
+    "xwoba": 0.371,
+    "ops": 1.473
+  },
+  "daniel palencia": {
+    "type": "pitcher",
+    "name": "Daniel Palencia",
+    "era": 2.31,
+    "whip": 1.46,
+    "physics_score": 78.8,
+    "ip": 11.7,
+    "so": 12
+  },
+  "michael conforto": {
+    "type": "hitter",
+    "name": "Michael Conforto",
+    "pa": 90,
+    "xwoba": 0.393,
+    "ops": 1.526
+  },
+  "hoby milner": {
+    "type": "pitcher",
+    "name": "Hoby Milner",
+    "era": 2.49,
+    "whip": 1.03,
+    "physics_score": 66.2,
+    "ip": 25.3,
+    "so": 12
+  },
+  "edward cabrera": {
+    "type": "pitcher",
+    "name": "Edward Cabrera",
+    "era": 4.0,
+    "whip": 1.35,
+    "physics_score": 50.7,
+    "ip": 54.0,
+    "so": 47
+  },
+  "ian happ": {
+    "type": "hitter",
+    "name": "Ian Happ",
+    "pa": 253,
+    "xwoba": 0.371,
+    "ops": 1.491
+  },
+  "caleb thielbar": {
+    "type": "pitcher",
+    "name": "Caleb Thielbar",
+    "era": 2.84,
+    "whip": 1.34,
+    "physics_score": 73.7,
+    "ip": 12.7,
+    "so": 15
+  },
+  "shota imanaga": {
+    "type": "pitcher",
+    "name": "Shota Imanaga",
+    "era": 4.2,
+    "whip": 1.05,
+    "physics_score": 49.5,
+    "ip": 75.0,
+    "so": 73
+  },
+  "alex bregman": {
+    "type": "hitter",
+    "name": "Alex Bregman",
+    "pa": 270,
+    "xwoba": 0.313,
+    "ops": 1.347
+  },
+  "michael busch": {
+    "type": "hitter",
+    "name": "Michael Busch",
+    "pa": 259,
+    "xwoba": 0.342,
+    "ops": 1.38
+  },
+  "carson kelly": {
+    "type": "hitter",
+    "name": "Carson Kelly",
+    "pa": 161,
+    "xwoba": 0.343,
+    "ops": 1.38
+  },
+  "jameson taillon": {
+    "type": "pitcher",
+    "name": "Jameson Taillon",
+    "era": 5.37,
+    "whip": 1.28,
+    "physics_score": 29.7,
+    "ip": 60.3,
+    "so": 51
+  },
+  "pete crowarmstrong": {
+    "type": "hitter",
+    "name": "Pete Crow-Armstrong",
+    "pa": 248,
+    "xwoba": 0.32,
+    "ops": 1.388
+  },
+  "jacob webb": {
+    "type": "pitcher",
+    "name": "Jacob Webb",
+    "era": 3.6,
+    "whip": 1.48,
+    "physics_score": 63.3,
+    "ip": 25.0,
+    "so": 31
+  },
+  "miguel amaya": {
+    "type": "hitter",
+    "name": "Miguel Amaya",
+    "pa": 99,
+    "xwoba": 0.319,
+    "ops": 1.349
+  },
+  "moises ballesteros": {
+    "type": "hitter",
+    "name": "Mois\u00e9s Ballesteros",
+    "pa": 146,
+    "xwoba": 0.317,
+    "ops": 1.405
+  },
+  "matthew boyd": {
+    "type": "pitcher",
+    "name": "Matthew Boyd",
+    "era": 6.0,
+    "whip": 1.29,
+    "physics_score": 28.2,
+    "ip": 24.0,
+    "so": 31
+  },
+  "colin rea": {
+    "type": "pitcher",
+    "name": "Colin Rea",
+    "era": 4.7,
+    "whip": 1.37,
+    "physics_score": 39.3,
+    "ip": 59.3,
+    "so": 49
+  },
+  "dansby swanson": {
+    "type": "hitter",
+    "name": "Dansby Swanson",
+    "pa": 223,
+    "xwoba": 0.292,
+    "ops": 1.347
+  },
+  "phil maton": {
+    "type": "pitcher",
+    "name": "Phil Maton",
+    "era": 7.64,
+    "whip": 1.81,
+    "physics_score": 1.8,
+    "ip": 17.7,
+    "so": 21
+  },
+  "nico hoerner": {
+    "type": "hitter",
+    "name": "Nico Hoerner",
+    "pa": 270,
+    "xwoba": 0.32,
+    "ops": 1.363
+  },
+  "ben brown": {
+    "type": "pitcher",
+    "name": "Ben Brown",
+    "era": 2.18,
+    "whip": 0.97,
+    "physics_score": 80.1,
+    "ip": 53.7,
+    "so": 53
+  },
+  "matt shaw": {
+    "type": "hitter",
+    "name": "Matt Shaw",
+    "pa": 106,
+    "xwoba": 0.321,
+    "ops": 1.429
+  },
+  "brady house": {
+    "type": "hitter",
+    "name": "Brady House",
+    "pa": 176,
+    "xwoba": 0.301,
+    "ops": 1.399
+  },
+  "cj abrams": {
+    "type": "hitter",
+    "name": "CJ Abrams",
+    "pa": 246,
+    "xwoba": 0.406,
+    "ops": 1.538
+  },
+  "nasim nunez": {
+    "type": "hitter",
+    "name": "Nasim Nu\u00f1ez",
+    "pa": 192,
+    "xwoba": 0.239,
+    "ops": 1.213
+  },
+  "andres chaparro": {
+    "type": "hitter",
+    "name": "Andr\u00e9s Chaparro",
+    "pa": 26,
+    "xwoba": 0.277,
+    "ops": 1.2
+  },
+  "drew millas": {
+    "type": "hitter",
+    "name": "Drew Millas",
+    "pa": 101,
+    "xwoba": 0.238,
+    "ops": 1.272
+  },
+  "miles mikolas": {
+    "type": "pitcher",
+    "name": "Miles Mikolas",
+    "era": 5.72,
+    "whip": 1.39,
+    "physics_score": 20.6,
+    "ip": 50.3,
+    "so": 32
+  },
+  "pj poulin": {
+    "type": "pitcher",
+    "name": "PJ Poulin",
+    "era": 3.28,
+    "whip": 1.46,
+    "physics_score": 58.1,
+    "ip": 24.7,
+    "so": 17
+  },
+  "clayton beeter": {
+    "type": "pitcher",
+    "name": "Clayton Beeter",
+    "era": 2.45,
+    "whip": 1.23,
+    "physics_score": 75.4,
+    "ip": 14.7,
+    "so": 14
+  },
+  "brad lord": {
+    "type": "pitcher",
+    "name": "Brad Lord",
+    "era": 2.68,
+    "whip": 1.0,
+    "physics_score": 69.9,
+    "ip": 37.0,
+    "so": 31
+  },
+  "daylen lile": {
+    "type": "hitter",
+    "name": "Daylen Lile",
+    "pa": 253,
+    "xwoba": 0.321,
+    "ops": 1.416
+  },
+  "cionel perez": {
+    "type": "pitcher",
+    "name": "Cionel P\u00e9rez",
+    "era": 5.82,
+    "whip": 1.59,
+    "physics_score": 18.2,
+    "ip": 17.0,
+    "so": 10
+  },
+  "jose tena": {
+    "type": "hitter",
+    "name": "Jos\u00e9 Tena",
+    "pa": 116,
+    "xwoba": 0.293,
+    "ops": 1.389
+  },
+  "james wood": {
+    "type": "hitter",
+    "name": "James Wood",
+    "pa": 278,
+    "xwoba": 0.413,
+    "ops": 1.538
+  },
+  "cade cavalli": {
+    "type": "pitcher",
+    "name": "Cade Cavalli",
+    "era": 3.62,
+    "whip": 1.41,
+    "physics_score": 61.2,
+    "ip": 59.7,
+    "so": 68
+  },
+  "jacob young": {
+    "type": "hitter",
+    "name": "Jacob Young",
+    "pa": 196,
+    "xwoba": 0.3,
+    "ops": 1.385
+  },
+  "jake irvin": {
+    "type": "pitcher",
+    "name": "Jake Irvin",
+    "era": 5.23,
+    "whip": 1.35,
+    "physics_score": 36.8,
+    "ip": 51.7,
+    "so": 58
+  },
+  "gus varland": {
+    "type": "pitcher",
+    "name": "Gus Varland",
+    "era": 4.09,
+    "whip": 1.55,
+    "physics_score": 50.0,
+    "ip": 22.0,
+    "so": 20
+  },
+  "zack littell": {
+    "type": "pitcher",
+    "name": "Zack Littell",
+    "era": 5.23,
+    "whip": 1.39,
+    "physics_score": 26.7,
+    "ip": 53.3,
+    "so": 30
+  },
+  "keibert ruiz": {
+    "type": "hitter",
+    "name": "Keibert Ruiz",
+    "pa": 114,
+    "xwoba": 0.346,
+    "ops": 1.514
+  },
+  "foster griffin": {
+    "type": "pitcher",
+    "name": "Foster Griffin",
+    "era": 3.76,
+    "whip": 1.15,
+    "physics_score": 56.0,
+    "ip": 67.0,
+    "so": 65
+  },
+  "jeremiah jackson": {
+    "type": "hitter",
+    "name": "Jeremiah Jackson",
+    "pa": 176,
+    "xwoba": 0.283,
+    "ops": 1.386
+  },
+  "samuel basallo": {
+    "type": "hitter",
+    "name": "Samuel Basallo",
+    "pa": 179,
+    "xwoba": 0.36,
+    "ops": 1.491
+  },
+  "trevor rogers": {
+    "type": "pitcher",
+    "name": "Trevor Rogers",
+    "era": 6.92,
+    "whip": 1.54,
+    "physics_score": 4.7,
+    "ip": 53.3,
+    "so": 40
+  },
+  "tyler wells": {
+    "type": "pitcher",
+    "name": "Tyler Wells",
+    "era": 2.96,
+    "whip": 1.1,
+    "physics_score": 67.7,
+    "ip": 27.3,
+    "so": 26
+  },
+  "rico garcia": {
+    "type": "pitcher",
+    "name": "Rico Garcia",
+    "era": 0.74,
+    "whip": 0.66,
+    "physics_score": 100.0,
+    "ip": 24.3,
+    "so": 28
+  },
+  "gunnar henderson": {
+    "type": "hitter",
+    "name": "Gunnar Henderson",
+    "pa": 273,
+    "xwoba": 0.3,
+    "ops": 1.417
+  },
+  "leody taveras": {
+    "type": "hitter",
+    "name": "Leody Taveras",
+    "pa": 173,
+    "xwoba": 0.347,
+    "ops": 1.407
+  },
+  "taylor ward": {
+    "type": "hitter",
+    "name": "Taylor Ward",
+    "pa": 271,
+    "xwoba": 0.353,
+    "ops": 1.35
+  },
+  "shane baz": {
+    "type": "pitcher",
+    "name": "Shane Baz",
+    "era": 4.48,
+    "whip": 1.43,
+    "physics_score": 43.8,
+    "ip": 64.3,
+    "so": 57
+  },
+  "kyle bradish": {
+    "type": "pitcher",
+    "name": "Kyle Bradish",
+    "era": 3.86,
+    "whip": 1.47,
+    "physics_score": 56.0,
+    "ip": 58.3,
+    "so": 61
+  },
+  "dylan beavers": {
+    "type": "hitter",
+    "name": "Dylan Beavers",
+    "pa": 122,
+    "xwoba": 0.31,
+    "ops": 1.361
+  },
+  "chris bassitt": {
+    "type": "pitcher",
+    "name": "Chris Bassitt",
+    "era": 5.06,
+    "whip": 1.57,
+    "physics_score": 31.2,
+    "ip": 53.3,
+    "so": 36
+  },
+  "adley rutschman": {
+    "type": "hitter",
+    "name": "Adley Rutschman",
+    "pa": 176,
+    "xwoba": 0.354,
+    "ops": 1.465
+  },
+  "tyler oneill": {
+    "type": "hitter",
+    "name": "Tyler O'Neill",
+    "pa": 115,
+    "xwoba": 0.245,
+    "ops": 1.232
+  },
+  "blaze alexander": {
+    "type": "hitter",
+    "name": "Blaze Alexander",
+    "pa": 136,
+    "xwoba": 0.286,
+    "ops": 1.339
+  },
+  "anthony nunez": {
+    "type": "pitcher",
+    "name": "Anthony Nunez",
+    "era": 5.67,
+    "whip": 1.33,
+    "physics_score": 30.7,
+    "ip": 27.0,
+    "so": 31
+  },
+  "pete alonso": {
+    "type": "hitter",
+    "name": "Pete Alonso",
+    "pa": 259,
+    "xwoba": 0.333,
+    "ops": 1.435
+  },
+  "ryan helsley": {
+    "type": "pitcher",
+    "name": "Ryan Helsley",
+    "era": 2.53,
+    "whip": 1.31,
+    "physics_score": 82.3,
+    "ip": 10.7,
+    "so": 15
+  },
+  "grant wolfram": {
+    "type": "pitcher",
+    "name": "Grant Wolfram",
+    "era": 4.02,
+    "whip": 1.53,
+    "physics_score": 58.8,
+    "ip": 15.7,
+    "so": 21
+  },
+  "yennier cano": {
+    "type": "pitcher",
+    "name": "Yennier Cano",
+    "era": 2.61,
+    "whip": 0.82,
+    "physics_score": 71.5,
+    "ip": 20.7,
+    "so": 18
+  },
+  "dietrich enns": {
+    "type": "pitcher",
+    "name": "Dietrich Enns",
+    "era": 3.94,
+    "whip": 1.5,
+    "physics_score": 50.6,
+    "ip": 16.0,
+    "so": 13
+  },
+  "colton cowser": {
+    "type": "hitter",
+    "name": "Colton Cowser",
+    "pa": 123,
+    "xwoba": 0.289,
+    "ops": 1.324
+  },
+  "coby mayo": {
+    "type": "hitter",
+    "name": "Coby Mayo",
+    "pa": 157,
+    "xwoba": 0.283,
+    "ops": 1.359
+  },
+  "taj bradley": {
+    "type": "pitcher",
+    "name": "Taj Bradley",
+    "era": 3.21,
+    "whip": 1.21,
+    "physics_score": 67.7,
+    "ip": 56.0,
+    "so": 65
+  },
+  "justin topa": {
+    "type": "pitcher",
+    "name": "Justin Topa",
+    "era": 8.05,
+    "whip": 2.0,
+    "physics_score": 0.0,
+    "ip": 19.0,
+    "so": 12
+  },
+  "victor caratini": {
+    "type": "hitter",
+    "name": "Victor Caratini",
+    "pa": 155,
+    "xwoba": 0.263,
+    "ops": 1.248
+  },
+  "kody clemens": {
+    "type": "hitter",
+    "name": "Kody Clemens",
+    "pa": 177,
+    "xwoba": 0.335,
+    "ops": 1.447
+  },
+  "brooks lee": {
+    "type": "hitter",
+    "name": "Brooks Lee",
+    "pa": 212,
+    "xwoba": 0.312,
+    "ops": 1.398
+  },
+  "austin martin": {
+    "type": "hitter",
+    "name": "Austin Martin",
+    "pa": 183,
+    "xwoba": 0.338,
+    "ops": 1.365
+  },
+  "simeon woods richardson": {
+    "type": "pitcher",
+    "name": "Simeon Woods Richardson",
+    "era": 7.74,
+    "whip": 1.89,
+    "physics_score": 0.0,
+    "ip": 47.7,
+    "so": 26
+  },
+  "anthony banda": {
+    "type": "pitcher",
+    "name": "Anthony Banda",
+    "era": 5.4,
+    "whip": 1.24,
+    "physics_score": 29.1,
+    "ip": 25.0,
+    "so": 21
+  },
+  "tristan gray": {
+    "type": "hitter",
+    "name": "Tristan Gray",
+    "pa": 99,
+    "xwoba": 0.302,
+    "ops": 1.374
+  },
+  "josh bell": {
+    "type": "hitter",
+    "name": "Josh Bell",
+    "pa": 224,
+    "xwoba": 0.274,
+    "ops": 1.335
+  },
+  "ryan jeffers": {
+    "type": "hitter",
+    "name": "Ryan Jeffers",
+    "pa": 146,
+    "xwoba": 0.414,
+    "ops": 1.541
+  },
+  "james outman": {
+    "type": "hitter",
+    "name": "James Outman",
+    "pa": 67,
+    "xwoba": 0.229,
+    "ops": 1.262
+  },
+  "cole sands": {
+    "type": "pitcher",
+    "name": "Cole Sands",
+    "era": 4.63,
+    "whip": 1.37,
+    "physics_score": 42.5,
+    "ip": 11.7,
+    "so": 11
+  },
+  "taylor rogers": {
+    "type": "pitcher",
+    "name": "Taylor Rogers",
+    "era": 4.15,
+    "whip": 1.57,
+    "physics_score": 46.8,
+    "ip": 21.7,
+    "so": 17
+  },
+  "bailey ober": {
+    "type": "pitcher",
+    "name": "Bailey Ober",
+    "era": 4.59,
+    "whip": 1.21,
+    "physics_score": 38.6,
+    "ip": 66.7,
+    "so": 46
+  },
+  "kody funderburk": {
+    "type": "pitcher",
+    "name": "Kody Funderburk",
+    "era": 3.63,
+    "whip": 1.5,
+    "physics_score": 50.9,
+    "ip": 17.3,
+    "so": 10
+  },
+  "royce lewis": {
+    "type": "hitter",
+    "name": "Royce Lewis",
+    "pa": 118,
+    "xwoba": 0.251,
+    "ops": 1.279
+  },
+  "trevor larnach": {
+    "type": "hitter",
+    "name": "Trevor Larnach",
+    "pa": 167,
+    "xwoba": 0.345,
+    "ops": 1.394
+  },
+  "mick abel": {
+    "type": "pitcher",
+    "name": "Mick Abel",
+    "era": 3.98,
+    "whip": 1.57,
+    "physics_score": 55.6,
+    "ip": 20.3,
+    "so": 23
+  },
+  "byron buxton": {
+    "type": "hitter",
+    "name": "Byron Buxton",
+    "pa": 228,
+    "xwoba": 0.382,
+    "ops": 1.562
+  },
+  "joe ryan": {
+    "type": "pitcher",
+    "name": "Joe Ryan",
+    "era": 2.94,
+    "whip": 0.93,
+    "physics_score": 70.5,
+    "ip": 64.3,
+    "so": 70
+  },
+  "matt wallner": {
+    "type": "hitter",
+    "name": "Matt Wallner",
+    "pa": 135,
+    "xwoba": 0.254,
+    "ops": 1.292
+  },
+  "eric orze": {
+    "type": "pitcher",
+    "name": "Eric Orze",
+    "era": 3.95,
+    "whip": 1.39,
+    "physics_score": 52.2,
+    "ip": 27.3,
+    "so": 25
+  },
+  "luke keaschall": {
+    "type": "hitter",
+    "name": "Luke Keaschall",
+    "pa": 219,
+    "xwoba": 0.294,
+    "ops": 1.321
+  },
+  "elly de la cruz": {
+    "type": "hitter",
+    "name": "Elly De La Cruz",
+    "pa": 257,
+    "xwoba": 0.362,
+    "ops": 1.496
+  },
+  "sal stewart": {
+    "type": "hitter",
+    "name": "Sal Stewart",
+    "pa": 251,
+    "xwoba": 0.361,
+    "ops": 1.47
+  },
+  "dane myers": {
+    "type": "hitter",
+    "name": "Dane Myers",
+    "pa": 97,
+    "xwoba": 0.333,
+    "ops": 1.386
+  },
+  "pierce johnson": {
+    "type": "pitcher",
+    "name": "Pierce Johnson",
+    "era": 3.27,
+    "whip": 1.23,
+    "physics_score": 62.3,
+    "ip": 22.0,
+    "so": 20
+  },
+  "emilio pagan": {
+    "type": "pitcher",
+    "name": "Emilio Pag\u00e1n",
+    "era": 6.43,
+    "whip": 1.43,
+    "physics_score": 12.7,
+    "ip": 14.0,
+    "so": 11
+  },
+  "brandon williamson": {
+    "type": "pitcher",
+    "name": "Brandon Williamson",
+    "era": 6.11,
+    "whip": 1.64,
+    "physics_score": 15.6,
+    "ip": 28.0,
+    "so": 19
+  },
+  "noelvi marte": {
+    "type": "hitter",
+    "name": "Noelvi Marte",
+    "pa": 31,
+    "xwoba": 0.159,
+    "ops": 1.138
+  },
+  "tony santillan": {
+    "type": "pitcher",
+    "name": "Tony Santillan",
+    "era": 5.32,
+    "whip": 1.41,
+    "physics_score": 33.2,
+    "ip": 22.0,
+    "so": 22
+  },
+  "jose franco": {
+    "type": "pitcher",
+    "name": "Jose Franco",
+    "era": 6.27,
+    "whip": 2.04,
+    "physics_score": 14.5,
+    "ip": 18.7,
+    "so": 14
+  },
+  "nathaniel lowe": {
+    "type": "hitter",
+    "name": "Nathaniel Lowe",
+    "pa": 140,
+    "xwoba": 0.401,
+    "ops": 1.584
+  },
+  "brady singer": {
+    "type": "pitcher",
+    "name": "Brady Singer",
+    "era": 6.18,
+    "whip": 1.69,
+    "physics_score": 15.1,
+    "ip": 51.0,
+    "so": 36
+  },
+  "matt mclain": {
+    "type": "hitter",
+    "name": "Matt McLain",
+    "pa": 220,
+    "xwoba": 0.282,
+    "ops": 1.321
+  },
+  "kebryan hayes": {
+    "type": "hitter",
+    "name": "Ke'Bryan Hayes",
+    "pa": 128,
+    "xwoba": 0.192,
+    "ops": 1.225
+  },
+  "will benson": {
+    "type": "hitter",
+    "name": "Will Benson",
+    "pa": 95,
+    "xwoba": 0.289,
+    "ops": 1.304
+  },
+  "tj friedl": {
+    "type": "hitter",
+    "name": "TJ Friedl",
+    "pa": 173,
+    "xwoba": 0.24,
+    "ops": 1.256
+  },
+  "rhett lowder": {
+    "type": "pitcher",
+    "name": "Rhett Lowder",
+    "era": 5.4,
+    "whip": 1.41,
+    "physics_score": 26.7,
+    "ip": 38.3,
+    "so": 27
+  },
+  "spencer steer": {
+    "type": "hitter",
+    "name": "Spencer Steer",
+    "pa": 221,
+    "xwoba": 0.337,
+    "ops": 1.419
+  },
+  "connor phillips": {
+    "type": "pitcher",
+    "name": "Connor Phillips",
+    "era": 5.97,
+    "whip": 1.81,
+    "physics_score": 23.7,
+    "ip": 28.7,
+    "so": 29
+  },
+  "eugenio suarez": {
+    "type": "hitter",
+    "name": "Eugenio Su\u00e1rez",
+    "pa": 129,
+    "xwoba": 0.29,
+    "ops": 1.339
+  },
+  "tyler stephenson": {
+    "type": "hitter",
+    "name": "Tyler Stephenson",
+    "pa": 165,
+    "xwoba": 0.282,
+    "ops": 1.319
+  },
+  "graham ashcraft": {
+    "type": "pitcher",
+    "name": "Graham Ashcraft",
+    "era": 3.33,
+    "whip": 1.22,
+    "physics_score": 66.3,
+    "ip": 27.0,
+    "so": 32
+  },
+  "sam moll": {
+    "type": "pitcher",
+    "name": "Sam Moll",
+    "era": 2.42,
+    "whip": 1.04,
+    "physics_score": 76.7,
+    "ip": 26.0,
+    "so": 26
+  },
+  "brock burke": {
+    "type": "pitcher",
+    "name": "Brock Burke",
+    "era": 3.81,
+    "whip": 1.46,
+    "physics_score": 55.9,
+    "ip": 26.0,
+    "so": 26
+  },
+  "andrew abbott": {
+    "type": "pitcher",
+    "name": "Andrew Abbott",
+    "era": 3.88,
+    "whip": 1.42,
+    "physics_score": 48.9,
+    "ip": 62.7,
+    "so": 42
+  },
+  "chase burns": {
+    "type": "pitcher",
+    "name": "Chase Burns",
+    "era": 1.96,
+    "whip": 0.96,
+    "physics_score": 85.8,
+    "ip": 64.3,
+    "so": 72
+  },
+  "roman anthony": {
+    "type": "hitter",
+    "name": "Roman Anthony",
+    "pa": 130,
+    "xwoba": 0.312,
+    "ops": 1.321
+  },
+  "willson contreras": {
+    "type": "hitter",
+    "name": "Willson Contreras",
+    "pa": 229,
+    "xwoba": 0.393,
+    "ops": 1.505
+  },
+  "connelly early": {
+    "type": "pitcher",
+    "name": "Connelly Early",
+    "era": 2.95,
+    "whip": 1.16,
+    "physics_score": 67.6,
+    "ip": 61.0,
+    "so": 57
+  },
+  "greg weissert": {
+    "type": "pitcher",
+    "name": "Greg Weissert",
+    "era": 4.43,
+    "whip": 1.43,
+    "physics_score": 45.4,
+    "ip": 22.3,
+    "so": 21
+  },
+  "connor wong": {
+    "type": "hitter",
+    "name": "Connor Wong",
+    "pa": 70,
+    "xwoba": 0.311,
+    "ops": 1.365
+  },
+  "trevor story": {
+    "type": "hitter",
+    "name": "Trevor Story",
+    "pa": 174,
+    "xwoba": 0.246,
+    "ops": 1.303
+  },
+  "brayan bello": {
+    "type": "pitcher",
+    "name": "Brayan Bello",
+    "era": 5.62,
+    "whip": 1.64,
+    "physics_score": 23.5,
+    "ip": 56.0,
+    "so": 40
+  },
+  "wilyer abreu": {
+    "type": "hitter",
+    "name": "Wilyer Abreu",
+    "pa": 240,
+    "xwoba": 0.342,
+    "ops": 1.427
+  },
+  "garrett whitlock": {
+    "type": "pitcher",
+    "name": "Garrett Whitlock",
+    "era": 3.2,
+    "whip": 1.12,
+    "physics_score": 69.8,
+    "ip": 19.7,
+    "so": 25
+  },
+  "sonny gray": {
+    "type": "pitcher",
+    "name": "Sonny Gray",
+    "era": 3.06,
+    "whip": 1.2,
+    "physics_score": 63.9,
+    "ip": 50.0,
+    "so": 41
+  },
+  "andruw monasterio": {
+    "type": "hitter",
+    "name": "Andruw Monasterio",
+    "pa": 98,
+    "xwoba": 0.289,
+    "ops": 1.37
+  },
+  "isiah kinerfalefa": {
+    "type": "hitter",
+    "name": "Isiah Kiner-Falefa",
+    "pa": 77,
+    "xwoba": 0.352,
+    "ops": 1.391
+  },
+  "garrett crochet": {
+    "type": "pitcher",
+    "name": "Garrett Crochet",
+    "era": 6.3,
+    "whip": 1.47,
+    "physics_score": 22.7,
+    "ip": 30.0,
+    "so": 37
+  },
+  "justin slaten": {
+    "type": "pitcher",
+    "name": "Justin Slaten",
+    "era": 3.6,
+    "whip": 1.3,
+    "physics_score": 66.2,
+    "ip": 10.0,
+    "so": 14
+  },
+  "caleb durbin": {
+    "type": "hitter",
+    "name": "Caleb Durbin",
+    "pa": 174,
+    "xwoba": 0.239,
+    "ops": 1.27
+  },
+  "ranger suarez": {
+    "type": "pitcher",
+    "name": "Ranger Suarez",
+    "era": 3.02,
+    "whip": 1.08,
+    "physics_score": 65.5,
+    "ip": 53.7,
+    "so": 47
+  },
+  "carlos narvaez": {
+    "type": "hitter",
+    "name": "Carlos Narv\u00e1ez",
+    "pa": 117,
+    "xwoba": 0.276,
+    "ops": 1.314
+  },
+  "jarren duran": {
+    "type": "hitter",
+    "name": "Jarren Duran",
+    "pa": 231,
+    "xwoba": 0.299,
+    "ops": 1.396
+  },
+  "ceddanne rafaela": {
+    "type": "hitter",
+    "name": "Ceddanne Rafaela",
+    "pa": 212,
+    "xwoba": 0.34,
+    "ops": 1.43
+  },
+  "jovani moran": {
+    "type": "pitcher",
+    "name": "Jovani Mor\u00e1n",
+    "era": 3.34,
+    "whip": 1.11,
+    "physics_score": 65.6,
+    "ip": 29.7,
+    "so": 34
+  },
+  "masataka yoshida": {
+    "type": "hitter",
+    "name": "Masataka Yoshida",
+    "pa": 123,
+    "xwoba": 0.32,
+    "ops": 1.355
+  },
+  "danny coulombe": {
+    "type": "pitcher",
+    "name": "Danny Coulombe",
+    "era": 6.55,
+    "whip": 1.45,
+    "physics_score": 9.9,
+    "ip": 11.0,
+    "so": 8
+  },
+  "marcelo mayer": {
+    "type": "hitter",
+    "name": "Marcelo Mayer",
+    "pa": 167,
+    "xwoba": 0.272,
+    "ops": 1.303
+  },
+  "aroldis chapman": {
+    "type": "pitcher",
+    "name": "Aroldis Chapman",
+    "era": 0.51,
+    "whip": 0.85,
+    "physics_score": 100.0,
+    "ip": 17.7,
+    "so": 23
+  },
+  "ryan watson": {
+    "type": "pitcher",
+    "name": "Ryan Watson",
+    "era": 5.35,
+    "whip": 1.46,
+    "physics_score": 30.3,
+    "ip": 33.7,
+    "so": 29
+  },
+  "isaac paredes": {
+    "type": "hitter",
+    "name": "Isaac Paredes",
+    "pa": 227,
+    "xwoba": 0.318,
+    "ops": 1.375
+  },
+  "bryan abreu": {
+    "type": "pitcher",
+    "name": "Bryan Abreu",
+    "era": 6.98,
+    "whip": 2.12,
+    "physics_score": 14.5,
+    "ip": 19.3,
+    "so": 26
+  },
+  "nick allen": {
+    "type": "hitter",
+    "name": "Nick Allen",
+    "pa": 52,
+    "xwoba": 0.307,
+    "ops": 1.354
+  },
+  "kaiwei teng": {
+    "type": "pitcher",
+    "name": "Kai-Wei Teng",
+    "era": 2.57,
+    "whip": 1.1,
+    "physics_score": 74.9,
+    "ip": 42.0,
+    "so": 43
+  },
+  "ryan weiss": {
+    "type": "pitcher",
+    "name": "Ryan Weiss",
+    "era": 7.62,
+    "whip": 2.12,
+    "physics_score": 1.5,
+    "ip": 26.0,
+    "so": 30
+  },
+  "cam smith": {
+    "type": "hitter",
+    "name": "Cam Smith",
+    "pa": 225,
+    "xwoba": 0.309,
+    "ops": 1.369
+  },
+  "hunter brown": {
+    "type": "pitcher",
+    "name": "Hunter Brown",
+    "era": 0.84,
+    "whip": 1.03,
+    "physics_score": 100.0,
+    "ip": 10.7,
+    "so": 17
+  },
+  "jake meyers": {
+    "type": "hitter",
+    "name": "Jake Meyers",
+    "pa": 75,
+    "xwoba": 0.293,
+    "ops": 1.362
+  },
+  "steven okert": {
+    "type": "pitcher",
+    "name": "Steven Okert",
+    "era": 3.46,
+    "whip": 0.96,
+    "physics_score": 58.3,
+    "ip": 26.0,
+    "so": 22
+  },
+  "brice matthews": {
+    "type": "hitter",
+    "name": "Brice Matthews",
+    "pa": 159,
+    "xwoba": 0.26,
+    "ops": 1.324
+  },
+  "aj blubaugh": {
+    "type": "pitcher",
+    "name": "AJ Blubaugh",
+    "era": 4.42,
+    "whip": 1.31,
+    "physics_score": 42.5,
+    "ip": 36.7,
+    "so": 28
+  },
+  "jose altuve": {
+    "type": "hitter",
+    "name": "Jose Altuve",
+    "pa": 183,
+    "xwoba": 0.317,
+    "ops": 1.38
+  },
+  "tatsuya imai": {
+    "type": "pitcher",
+    "name": "Tatsuya Imai",
+    "era": 6.17,
+    "whip": 1.5,
+    "physics_score": 20.2,
+    "ip": 23.3,
+    "so": 23
+  },
+  "joey loperfido": {
+    "type": "hitter",
+    "name": "Joey Loperfido",
+    "pa": 65,
+    "xwoba": 0.323,
+    "ops": 1.362
+  },
+  "jeremy pena": {
+    "type": "hitter",
+    "name": "Jeremy Pe\u00f1a",
+    "pa": 95,
+    "xwoba": 0.331,
+    "ops": 1.42
+  },
+  "lance mccullers": {
+    "type": "pitcher",
+    "name": "Lance McCullers Jr.",
+    "era": 6.55,
+    "whip": 1.46,
+    "physics_score": 17.4,
+    "ip": 45.3,
+    "so": 52
+  },
+  "mike burrows": {
+    "type": "pitcher",
+    "name": "Mike Burrows",
+    "era": 5.4,
+    "whip": 1.45,
+    "physics_score": 29.3,
+    "ip": 63.3,
+    "so": 54
+  },
+  "bryan king": {
+    "type": "pitcher",
+    "name": "Bryan King",
+    "era": 2.84,
+    "whip": 1.3,
+    "physics_score": 65.9,
+    "ip": 25.3,
+    "so": 19
+  },
+  "carlos correa": {
+    "type": "hitter",
+    "name": "Carlos Correa",
+    "pa": 140,
+    "xwoba": 0.352,
+    "ops": 1.418
+  },
+  "christian walker": {
+    "type": "hitter",
+    "name": "Christian Walker",
+    "pa": 247,
+    "xwoba": 0.369,
+    "ops": 1.518
+  },
+  "christian vazquez": {
+    "type": "hitter",
+    "name": "Christian V\u00e1zquez",
+    "pa": 122,
+    "xwoba": 0.313,
+    "ops": 1.393
+  },
+  "yainer diaz": {
+    "type": "hitter",
+    "name": "Yainer Diaz",
+    "pa": 109,
+    "xwoba": 0.271,
+    "ops": 1.349
+  },
+  "yordan alvarez": {
+    "type": "hitter",
+    "name": "Yordan Alvarez",
+    "pa": 261,
+    "xwoba": 0.463,
+    "ops": 1.659
+  },
+  "oswald peraza": {
+    "type": "hitter",
+    "name": "Oswald Peraza",
+    "pa": 170,
+    "xwoba": 0.355,
+    "ops": 1.465
+  },
+  "zach neto": {
+    "type": "hitter",
+    "name": "Zach Neto",
+    "pa": 269,
+    "xwoba": 0.347,
+    "ops": 1.435
+  },
+  "jorge soler": {
+    "type": "hitter",
+    "name": "Jorge Soler",
+    "pa": 224,
+    "xwoba": 0.308,
+    "ops": 1.392
+  },
+  "yoan moncada": {
+    "type": "hitter",
+    "name": "Yo\u00e1n Moncada",
+    "pa": 130,
+    "xwoba": 0.282,
+    "ops": 1.297
+  },
+  "travis darnaud": {
+    "type": "hitter",
+    "name": "Travis d'Arnaud",
+    "pa": 40,
+    "xwoba": 0.283,
+    "ops": 1.314
+  },
+  "chase silseth": {
+    "type": "pitcher",
+    "name": "Chase Silseth",
+    "era": 1.86,
+    "whip": 1.45,
+    "physics_score": 84.8,
+    "ip": 19.3,
+    "so": 19
+  },
+  "jose soriano": {
+    "type": "pitcher",
+    "name": "Jos\u00e9 Soriano",
+    "era": 2.65,
+    "whip": 1.15,
+    "physics_score": 74.9,
+    "ip": 71.3,
+    "so": 78
+  },
+  "jack kochanowicz": {
+    "type": "pitcher",
+    "name": "Jack Kochanowicz",
+    "era": 4.99,
+    "whip": 1.39,
+    "physics_score": 33.4,
+    "ip": 61.3,
+    "so": 45
+  },
+  "drew pomeranz": {
+    "type": "pitcher",
+    "name": "Drew Pomeranz",
+    "era": 6.35,
+    "whip": 1.65,
+    "physics_score": 14.5,
+    "ip": 17.0,
+    "so": 14
+  },
+  "mike trout": {
+    "type": "hitter",
+    "name": "Mike Trout",
+    "pa": 262,
+    "xwoba": 0.401,
+    "ops": 1.498
+  },
+  "jo adell": {
+    "type": "hitter",
+    "name": "Jo Adell",
+    "pa": 243,
+    "xwoba": 0.299,
+    "ops": 1.39
+  },
+  "sam bachman": {
+    "type": "pitcher",
+    "name": "Sam Bachman",
+    "era": 2.22,
+    "whip": 1.09,
+    "physics_score": 80.1,
+    "ip": 28.3,
+    "so": 29
+  },
+  "ryan zeferjahn": {
+    "type": "pitcher",
+    "name": "Ryan Zeferjahn",
+    "era": 5.96,
+    "whip": 1.4,
+    "physics_score": 27.3,
+    "ip": 25.7,
+    "so": 31
+  },
+  "nolan schanuel": {
+    "type": "hitter",
+    "name": "Nolan Schanuel",
+    "pa": 206,
+    "xwoba": 0.312,
+    "ops": 1.387
+  },
+  "josh lowe": {
+    "type": "hitter",
+    "name": "Josh Lowe",
+    "pa": 132,
+    "xwoba": 0.243,
+    "ops": 1.32
+  },
+  "yusei kikuchi": {
+    "type": "pitcher",
+    "name": "Yusei Kikuchi",
+    "era": 5.81,
+    "whip": 1.58,
+    "physics_score": 27.1,
+    "ip": 31.0,
+    "so": 33
+  },
+  "bryce teodosio": {
+    "type": "hitter",
+    "name": "Bryce Teodosio",
+    "pa": 50,
+    "xwoba": 0.235,
+    "ops": 1.255
+  },
+  "walbert urena": {
+    "type": "pitcher",
+    "name": "Walbert Ure\u00f1a",
+    "era": 2.44,
+    "whip": 1.38,
+    "physics_score": 75.1,
+    "ip": 44.3,
+    "so": 41
+  },
+  "logan ohoppe": {
+    "type": "hitter",
+    "name": "Logan O'Hoppe",
+    "pa": 128,
+    "xwoba": 0.258,
+    "ops": 1.25
+  },
+  "reid detmers": {
+    "type": "pitcher",
+    "name": "Reid Detmers",
+    "era": 4.63,
+    "whip": 1.18,
+    "physics_score": 47.2,
+    "ip": 68.0,
+    "so": 82
+  },
+  "brent suter": {
+    "type": "pitcher",
+    "name": "Brent Suter",
+    "era": 4.26,
+    "whip": 1.33,
+    "physics_score": 47.0,
+    "ip": 31.7,
+    "so": 28
+  },
+  "luis campusano": {
+    "type": "hitter",
+    "name": "Luis Campusano",
+    "pa": 58,
+    "xwoba": 0.411,
+    "ops": 1.596
+  },
+  "freddy fermin": {
+    "type": "hitter",
+    "name": "Freddy Fermin",
+    "pa": 110,
+    "xwoba": 0.201,
+    "ops": 1.175
+  },
+  "michael king": {
+    "type": "pitcher",
+    "name": "Michael King",
+    "era": 3.18,
+    "whip": 1.13,
+    "physics_score": 64.6,
+    "ip": 68.0,
+    "so": 65
+  },
+  "mason miller": {
+    "type": "pitcher",
+    "name": "Mason Miller",
+    "era": 0.72,
+    "whip": 0.84,
+    "physics_score": 100.0,
+    "ip": 25.0,
+    "so": 49
+  },
+  "david morgan": {
+    "type": "pitcher",
+    "name": "David Morgan",
+    "era": 6.08,
+    "whip": 2.1,
+    "physics_score": 24.1,
+    "ip": 13.3,
+    "so": 15
+  },
+  "wandy peralta": {
+    "type": "pitcher",
+    "name": "Wandy Peralta",
+    "era": 2.73,
+    "whip": 1.44,
+    "physics_score": 67.0,
+    "ip": 26.3,
+    "so": 19
+  },
+  "nick castellanos": {
+    "type": "hitter",
+    "name": "Nick Castellanos",
+    "pa": 118,
+    "xwoba": 0.245,
+    "ops": 1.336
+  },
+  "walker buehler": {
+    "type": "pitcher",
+    "name": "Walker Buehler",
+    "era": 4.88,
+    "whip": 1.32,
+    "physics_score": 36.8,
+    "ip": 51.7,
+    "so": 43
+  },
+  "jackson merrill": {
+    "type": "hitter",
+    "name": "Jackson Merrill",
+    "pa": 223,
+    "xwoba": 0.271,
+    "ops": 1.327
+  },
+  "german marquez": {
+    "type": "pitcher",
+    "name": "Germ\u00e1n M\u00e1rquez",
+    "era": 5.76,
+    "whip": 1.45,
+    "physics_score": 20.1,
+    "ip": 29.7,
+    "so": 19
+  },
+  "bradgley rodriguez": {
+    "type": "pitcher",
+    "name": "Bradgley Rodriguez",
+    "era": 1.63,
+    "whip": 1.05,
+    "physics_score": 87.5,
+    "ip": 27.7,
+    "so": 26
+  },
+  "jeremiah estrada": {
+    "type": "pitcher",
+    "name": "Jeremiah Estrada",
+    "era": 2.79,
+    "whip": 0.98,
+    "physics_score": 73.6,
+    "ip": 19.3,
+    "so": 22
+  },
+  "gavin sheets": {
+    "type": "hitter",
+    "name": "Gavin Sheets",
+    "pa": 181,
+    "xwoba": 0.362,
+    "ops": 1.484
+  },
+  "ramon laureano": {
+    "type": "hitter",
+    "name": "Ram\u00f3n Laureano",
+    "pa": 204,
+    "xwoba": 0.296,
+    "ops": 1.374
+  },
+  "adrian morejon": {
+    "type": "pitcher",
+    "name": "Adrian Morejon",
+    "era": 3.99,
+    "whip": 1.06,
+    "physics_score": 56.6,
+    "ip": 29.3,
+    "so": 35
+  },
+  "manny machado": {
+    "type": "hitter",
+    "name": "Manny Machado",
+    "pa": 224,
+    "xwoba": 0.286,
+    "ops": 1.36
+  },
+  "nick pivetta": {
+    "type": "pitcher",
+    "name": "Nick Pivetta",
+    "era": 4.5,
+    "whip": 1.12,
+    "physics_score": 54.5,
+    "ip": 16.0,
+    "so": 24
+  },
+  "miguel andujar": {
+    "type": "hitter",
+    "name": "Miguel Andujar",
+    "pa": 177,
+    "xwoba": 0.321,
+    "ops": 1.444
+  },
+  "ty france": {
+    "type": "hitter",
+    "name": "Ty France",
+    "pa": 106,
+    "xwoba": 0.369,
+    "ops": 1.535
+  },
+  "fernando tatis": {
+    "type": "hitter",
+    "name": "Fernando Tatis Jr.",
+    "pa": 236,
+    "xwoba": 0.309,
+    "ops": 1.324
+  },
+  "bryce johnson": {
+    "type": "hitter",
+    "name": "Bryce Johnson",
+    "pa": 35,
+    "xwoba": 0.233,
+    "ops": 1.25
+  },
+  "xander bogaerts": {
+    "type": "hitter",
+    "name": "Xander Bogaerts",
+    "pa": 219,
+    "xwoba": 0.307,
+    "ops": 1.377
+  },
+  "kyle hart": {
+    "type": "pitcher",
+    "name": "Kyle Hart",
+    "era": 5.4,
+    "whip": 1.08,
+    "physics_score": 24.8,
+    "ip": 16.7,
+    "so": 10
+  },
+  "ron marinaccio": {
+    "type": "pitcher",
+    "name": "Ron Marinaccio",
+    "era": 4.06,
+    "whip": 1.26,
+    "physics_score": 48.5,
+    "ip": 31.0,
+    "so": 25
+  },
+  "jake cronenworth": {
+    "type": "hitter",
+    "name": "Jake Cronenworth",
+    "pa": 114,
+    "xwoba": 0.23,
+    "ops": 1.196
+  },
+  "randy vasquez": {
+    "type": "pitcher",
+    "name": "Randy V\u00e1squez",
+    "era": 3.28,
+    "whip": 1.23,
+    "physics_score": 59.8,
+    "ip": 60.3,
+    "so": 47
+  },
+  "framber valdez": {
+    "type": "pitcher",
+    "name": "Framber Valdez",
+    "era": 4.39,
+    "whip": 1.32,
+    "physics_score": 43.5,
+    "ip": 67.7,
+    "so": 54
+  },
+  "brant hurter": {
+    "type": "pitcher",
+    "name": "Brant Hurter",
+    "era": 2.84,
+    "whip": 1.07,
+    "physics_score": 65.2,
+    "ip": 25.3,
+    "so": 18
+  },
+  "zach mckinstry": {
+    "type": "hitter",
+    "name": "Zach McKinstry",
+    "pa": 119,
+    "xwoba": 0.216,
+    "ops": 1.215
+  },
+  "tarik skubal": {
+    "type": "pitcher",
+    "name": "Tarik Skubal",
+    "era": 2.7,
+    "whip": 0.95,
+    "physics_score": 73.2,
+    "ip": 43.3,
+    "so": 45
+  },
+  "casey mize": {
+    "type": "pitcher",
+    "name": "Casey Mize",
+    "era": 2.27,
+    "whip": 0.97,
+    "physics_score": 79.5,
+    "ip": 47.7,
+    "so": 49
+  },
+  "drew anderson": {
+    "type": "pitcher",
+    "name": "Drew Anderson",
+    "era": 3.43,
+    "whip": 1.19,
+    "physics_score": 66.4,
+    "ip": 39.3,
+    "so": 50
+  },
+  "jahmai jones": {
+    "type": "hitter",
+    "name": "Jahmai Jones",
+    "pa": 78,
+    "xwoba": 0.219,
+    "ops": 1.264
+  },
+  "javier baez": {
+    "type": "hitter",
+    "name": "Javier B\u00e1ez",
+    "pa": 81,
+    "xwoba": 0.299,
+    "ops": 1.397
+  },
+  "riley greene": {
+    "type": "hitter",
+    "name": "Riley Greene",
+    "pa": 248,
+    "xwoba": 0.365,
+    "ops": 1.426
+  },
+  "tyler holton": {
+    "type": "pitcher",
+    "name": "Tyler Holton",
+    "era": 4.33,
+    "whip": 1.37,
+    "physics_score": 46.7,
+    "ip": 27.0,
+    "so": 25
+  },
+  "kevin mcgonigle": {
+    "type": "hitter",
+    "name": "Kevin McGonigle",
+    "pa": 254,
+    "xwoba": 0.353,
+    "ops": 1.406
+  },
+  "kerry carpenter": {
+    "type": "hitter",
+    "name": "Kerry Carpenter",
+    "pa": 115,
+    "xwoba": 0.331,
+    "ops": 1.451
+  },
+  "kyle finnegan": {
+    "type": "pitcher",
+    "name": "Kyle Finnegan",
+    "era": 2.03,
+    "whip": 1.58,
+    "physics_score": 74.8,
+    "ip": 26.7,
+    "so": 15
+  },
+  "kenley jansen": {
+    "type": "pitcher",
+    "name": "Kenley Jansen",
+    "era": 4.8,
+    "whip": 1.2,
+    "physics_score": 45.8,
+    "ip": 15.0,
+    "so": 19
+  },
+  "jack flaherty": {
+    "type": "pitcher",
+    "name": "Jack Flaherty",
+    "era": 5.81,
+    "whip": 1.61,
+    "physics_score": 29.7,
+    "ip": 52.7,
+    "so": 64
+  },
+  "spencer torkelson": {
+    "type": "hitter",
+    "name": "Spencer Torkelson",
+    "pa": 226,
+    "xwoba": 0.32,
+    "ops": 1.395
+  },
+  "connor seabold": {
+    "type": "pitcher",
+    "name": "Connor Seabold",
+    "era": 3.12,
+    "whip": 1.38,
+    "physics_score": 63.8,
+    "ip": 17.3,
+    "so": 15
+  },
+  "gleyber torres": {
+    "type": "hitter",
+    "name": "Gleyber Torres",
+    "pa": 142,
+    "xwoba": 0.337,
+    "ops": 1.328
+  },
+  "enmanuel de jesus": {
+    "type": "pitcher",
+    "name": "Enmanuel De Jesus",
+    "era": 5.91,
+    "whip": 1.69,
+    "physics_score": 24.1,
+    "ip": 21.3,
+    "so": 21
+  },
+  "matt vierling": {
+    "type": "hitter",
+    "name": "Matt Vierling",
+    "pa": 169,
+    "xwoba": 0.284,
+    "ops": 1.351
+  },
+  "parker meadows": {
+    "type": "hitter",
+    "name": "Parker Meadows",
+    "pa": 39,
+    "xwoba": 0.288,
+    "ops": 1.333
+  },
+  "dillon dingler": {
+    "type": "hitter",
+    "name": "Dillon Dingler",
+    "pa": 218,
+    "xwoba": 0.345,
+    "ops": 1.472
+  },
+  "will vest": {
+    "type": "pitcher",
+    "name": "Will Vest",
+    "era": 7.41,
+    "whip": 1.47,
+    "physics_score": 2.9,
+    "ip": 17.0,
+    "so": 18
+  },
+  "colt keith": {
+    "type": "hitter",
+    "name": "Colt Keith",
+    "pa": 171,
+    "xwoba": 0.306,
+    "ops": 1.35
+  },
+  "michael mcgreevy": {
+    "type": "pitcher",
+    "name": "Michael McGreevy",
+    "era": 2.98,
+    "whip": 1.09,
+    "physics_score": 63.1,
+    "ip": 60.3,
+    "so": 43
+  },
+  "nolan gorman": {
+    "type": "hitter",
+    "name": "Nolan Gorman",
+    "pa": 207,
+    "xwoba": 0.282,
+    "ops": 1.326
+  },
+  "matt svanson": {
+    "type": "pitcher",
+    "name": "Matt Svanson",
+    "era": 8.44,
+    "whip": 1.91,
+    "physics_score": 0.0,
+    "ip": 26.7,
+    "so": 28
+  },
+  "jordan walker": {
+    "type": "hitter",
+    "name": "Jordan Walker",
+    "pa": 238,
+    "xwoba": 0.398,
+    "ops": 1.563
+  },
+  "nathan church": {
+    "type": "hitter",
+    "name": "Nathan Church",
+    "pa": 154,
+    "xwoba": 0.298,
+    "ops": 1.39
+  },
+  "victor scott": {
+    "type": "hitter",
+    "name": "Victor Scott II",
+    "pa": 157,
+    "xwoba": 0.249,
+    "ops": 1.266
+  },
+  "kyle leahy": {
+    "type": "pitcher",
+    "name": "Kyle Leahy",
+    "era": 4.25,
+    "whip": 1.56,
+    "physics_score": 46.2,
+    "ip": 55.0,
+    "so": 46
+  },
+  "jose fermin": {
+    "type": "pitcher",
+    "name": "Jos\u00e9 Ferm\u00edn",
+    "era": 2.51,
+    "whip": 1.33,
+    "physics_score": 77.4,
+    "ip": 14.3,
+    "so": 16
+  },
+  "jojo romero": {
+    "type": "pitcher",
+    "name": "JoJo Romero",
+    "era": 2.7,
+    "whip": 1.16,
+    "physics_score": 71.4,
+    "ip": 26.7,
+    "so": 25
+  },
+  "jj wetherholt": {
+    "type": "hitter",
+    "name": "JJ Wetherholt",
+    "pa": 257,
+    "xwoba": 0.342,
+    "ops": 1.399
+  },
+  "justin bruihl": {
+    "type": "pitcher",
+    "name": "Justin Bruihl",
+    "era": 4.85,
+    "whip": 1.5,
+    "physics_score": 34.1,
+    "ip": 26.0,
+    "so": 17
+  },
+  "alec burleson": {
+    "type": "hitter",
+    "name": "Alec Burleson",
+    "pa": 242,
+    "xwoba": 0.352,
+    "ops": 1.44
+  },
+  "thomas saggese": {
+    "type": "hitter",
+    "name": "Thomas Saggese",
+    "pa": 76,
+    "xwoba": 0.212,
+    "ops": 1.239
+  },
+  "riley obrien": {
+    "type": "pitcher",
+    "name": "Riley O'Brien",
+    "era": 3.2,
+    "whip": 0.99,
+    "physics_score": 66.2,
+    "ip": 25.3,
+    "so": 27
+  },
+  "andre pallante": {
+    "type": "pitcher",
+    "name": "Andre Pallante",
+    "era": 3.94,
+    "whip": 1.27,
+    "physics_score": 49.7,
+    "ip": 64.0,
+    "so": 49
+  },
+  "yohel pozo": {
+    "type": "hitter",
+    "name": "Yohel Pozo",
+    "pa": 33,
+    "xwoba": 0.227,
+    "ops": 1.273
+  },
+  "george soriano": {
+    "type": "pitcher",
+    "name": "George Soriano",
+    "era": 3.04,
+    "whip": 1.06,
+    "physics_score": 63.1,
+    "ip": 23.7,
+    "so": 18
+  },
+  "ramon urias": {
+    "type": "hitter",
+    "name": "Ram\u00f3n Ur\u00edas",
+    "pa": 67,
+    "xwoba": 0.277,
+    "ops": 1.316
+  },
+  "pedro pages": {
+    "type": "hitter",
+    "name": "Pedro Pag\u00e9s",
+    "pa": 121,
+    "xwoba": 0.277,
+    "ops": 1.36
+  },
+  "matthew liberatore": {
+    "type": "pitcher",
+    "name": "Matthew Liberatore",
+    "era": 4.76,
+    "whip": 1.57,
+    "physics_score": 40.4,
+    "ip": 56.7,
+    "so": 53
+  },
+  "ryne stanek": {
+    "type": "pitcher",
+    "name": "Ryne Stanek",
+    "era": 5.48,
+    "whip": 1.78,
+    "physics_score": 36.3,
+    "ip": 23.0,
+    "so": 30
+  },
+  "dustin may": {
+    "type": "pitcher",
+    "name": "Dustin May",
+    "era": 4.57,
+    "whip": 1.3,
+    "physics_score": 41.4,
+    "ip": 61.0,
+    "so": 51
+  },
+  "masyn winn": {
+    "type": "hitter",
+    "name": "Masyn Winn",
+    "pa": 212,
+    "xwoba": 0.29,
+    "ops": 1.314
+  },
+  "ivan herrera": {
+    "type": "hitter",
+    "name": "Iv\u00e1n Herrera",
+    "pa": 257,
+    "xwoba": 0.375,
+    "ops": 1.441
+  },
+  "steven matz": {
+    "type": "pitcher",
+    "name": "Steven Matz",
+    "era": 4.67,
+    "whip": 1.24,
+    "physics_score": 39.2,
+    "ip": 44.3,
+    "so": 35
+  },
+  "shane mcclanahan": {
+    "type": "pitcher",
+    "name": "Shane McClanahan",
+    "era": 2.52,
+    "whip": 1.04,
+    "physics_score": 75.2,
+    "ip": 50.0,
+    "so": 50
+  },
+  "richie palacios": {
+    "type": "hitter",
+    "name": "Richie Palacios",
+    "pa": 121,
+    "xwoba": 0.327,
+    "ops": 1.34
+  },
+  "carson williams": {
+    "type": "hitter",
+    "name": "Carson Williams",
+    "pa": 32,
+    "xwoba": 0.138,
+    "ops": 1.133
+  },
+  "ryan vilade": {
+    "type": "hitter",
+    "name": "Ryan Vilade",
+    "pa": 86,
+    "xwoba": 0.347,
+    "ops": 1.421
+  },
+  "mason englert": {
+    "type": "pitcher",
+    "name": "Mason Englert",
+    "era": 5.62,
+    "whip": 1.62,
+    "physics_score": 25.2,
+    "ip": 16.0,
+    "so": 13
+  },
+  "jake fraley": {
+    "type": "hitter",
+    "name": "Jake Fraley",
+    "pa": 90,
+    "xwoba": 0.306,
+    "ops": 1.39
+  },
+  "chandler simpson": {
+    "type": "hitter",
+    "name": "Chandler Simpson",
+    "pa": 227,
+    "xwoba": 0.299,
+    "ops": 1.344
+  },
+  "nick martinez": {
+    "type": "pitcher",
+    "name": "Nick Martinez",
+    "era": 1.62,
+    "whip": 1.11,
+    "physics_score": 81.8,
+    "ip": 66.7,
+    "so": 41
+  },
+  "jonny deluca": {
+    "type": "hitter",
+    "name": "Jonny DeLuca",
+    "pa": 124,
+    "xwoba": 0.311,
+    "ops": 1.412
+  },
+  "ian seymour": {
+    "type": "pitcher",
+    "name": "Ian Seymour",
+    "era": 4.66,
+    "whip": 1.28,
+    "physics_score": 45.0,
+    "ip": 29.0,
+    "so": 32
+  },
+  "cole sulser": {
+    "type": "pitcher",
+    "name": "Cole Sulser",
+    "era": 4.43,
+    "whip": 1.48,
+    "physics_score": 42.2,
+    "ip": 22.3,
+    "so": 17
+  },
+  "garrett cleavinger": {
+    "type": "pitcher",
+    "name": "Garrett Cleavinger",
+    "era": 3.97,
+    "whip": 1.5,
+    "physics_score": 60.9,
+    "ip": 11.3,
+    "so": 16
+  },
+  "hunter feduccia": {
+    "type": "hitter",
+    "name": "Hunter Feduccia",
+    "pa": 72,
+    "xwoba": 0.327,
+    "ops": 1.359
+  },
+  "kevin kelly": {
+    "type": "pitcher",
+    "name": "Kevin Kelly",
+    "era": 2.81,
+    "whip": 0.78,
+    "physics_score": 65.5,
+    "ip": 25.7,
+    "so": 18
+  },
+  "jonathan aranda": {
+    "type": "hitter",
+    "name": "Jonathan Aranda",
+    "pa": 233,
+    "xwoba": 0.394,
+    "ops": 1.49
+  },
+  "nick fortes": {
+    "type": "hitter",
+    "name": "Nick Fortes",
+    "pa": 140,
+    "xwoba": 0.27,
+    "ops": 1.316
+  },
+  "griffin jax": {
+    "type": "pitcher",
+    "name": "Griffin Jax",
+    "era": 3.6,
+    "whip": 1.4,
+    "physics_score": 57.2,
+    "ip": 30.0,
+    "so": 27
+  },
+  "yandy diaz": {
+    "type": "hitter",
+    "name": "Yandy D\u00edaz",
+    "pa": 226,
+    "xwoba": 0.409,
+    "ops": 1.538
+  },
+  "bryan baker": {
+    "type": "pitcher",
+    "name": "Bryan Baker",
+    "era": 2.31,
+    "whip": 1.07,
+    "physics_score": 81.9,
+    "ip": 23.3,
+    "so": 28
+  },
+  "junior caminero": {
+    "type": "hitter",
+    "name": "Junior Caminero",
+    "pa": 241,
+    "xwoba": 0.38,
+    "ops": 1.498
+  },
+  "yoendrys gomez": {
+    "type": "pitcher",
+    "name": "Yoendrys G\u00f3mez",
+    "era": 4.23,
+    "whip": 1.37,
+    "physics_score": 48.5,
+    "ip": 27.7,
+    "so": 26
+  },
+  "drew rasmussen": {
+    "type": "pitcher",
+    "name": "Drew Rasmussen",
+    "era": 3.36,
+    "whip": 1.02,
+    "physics_score": 61.4,
+    "ip": 59.0,
+    "so": 55
+  },
+  "cedric mullins": {
+    "type": "hitter",
+    "name": "Cedric Mullins",
+    "pa": 186,
+    "xwoba": 0.248,
+    "ops": 1.278
+  },
+  "joe boyle": {
+    "type": "pitcher",
+    "name": "Joe Boyle",
+    "era": 5.17,
+    "whip": 1.09,
+    "physics_score": 35.8,
+    "ip": 15.7,
+    "so": 16
+  },
+  "brandon marsh": {
+    "type": "hitter",
+    "name": "Brandon Marsh",
+    "pa": 197,
+    "xwoba": 0.37,
+    "ops": 1.487
+  },
+  "jesus luzardo": {
+    "type": "pitcher",
+    "name": "Jes\u00fas Luzardo",
+    "era": 4.3,
+    "whip": 1.31,
+    "physics_score": 51.5,
+    "ip": 67.0,
+    "so": 78
+  },
+  "jose alvarado": {
+    "type": "pitcher",
+    "name": "Jos\u00e9 Alvarado",
+    "era": 5.4,
+    "whip": 1.9,
+    "physics_score": 38.3,
+    "ip": 20.0,
+    "so": 27
+  },
+  "justin crawford": {
+    "type": "hitter",
+    "name": "Justin Crawford",
+    "pa": 182,
+    "xwoba": 0.288,
+    "ops": 1.347
+  },
+  "cristopher sanchez": {
+    "type": "pitcher",
+    "name": "Cristopher S\u00e1nchez",
+    "era": 1.47,
+    "whip": 1.12,
+    "physics_score": 94.4,
+    "ip": 79.3,
+    "so": 95
+  },
+  "bryce harper": {
+    "type": "hitter",
+    "name": "Bryce Harper",
+    "pa": 243,
+    "xwoba": 0.383,
+    "ops": 1.507
+  },
+  "jt realmuto": {
+    "type": "hitter",
+    "name": "J.T. Realmuto",
+    "pa": 140,
+    "xwoba": 0.271,
+    "ops": 1.299
+  },
+  "jhoan duran": {
+    "type": "pitcher",
+    "name": "Jhoan Duran",
+    "era": 1.53,
+    "whip": 0.96,
+    "physics_score": 98.6,
+    "ip": 17.7,
+    "so": 26
+  },
+  "edmundo sosa": {
+    "type": "hitter",
+    "name": "Edmundo Sosa",
+    "pa": 94,
+    "xwoba": 0.268,
+    "ops": 1.348
+  },
+  "alec bohm": {
+    "type": "hitter",
+    "name": "Alec Bohm",
+    "pa": 218,
+    "xwoba": 0.267,
+    "ops": 1.328
+  },
+  "jonathan bowlan": {
+    "type": "pitcher",
+    "name": "Jonathan Bowlan",
+    "era": 5.4,
+    "whip": 1.2,
+    "physics_score": 30.7,
+    "ip": 18.3,
+    "so": 17
+  },
+  "tim mayza": {
+    "type": "pitcher",
+    "name": "Tim Mayza",
+    "era": 3.38,
+    "whip": 1.02,
+    "physics_score": 61.6,
+    "ip": 29.3,
+    "so": 28
+  },
+  "bryson stott": {
+    "type": "hitter",
+    "name": "Bryson Stott",
+    "pa": 195,
+    "xwoba": 0.275,
+    "ops": 1.361
+  },
+  "kyle schwarber": {
+    "type": "hitter",
+    "name": "Kyle Schwarber",
+    "pa": 251,
+    "xwoba": 0.424,
+    "ops": 1.636
+  },
+  "otto kemp": {
+    "type": "hitter",
+    "name": "Otto Kemp",
+    "pa": 27,
+    "xwoba": 0.118,
+    "ops": 1.08
+  },
+  "taijuan walker": {
+    "type": "pitcher",
+    "name": "Taijuan Walker",
+    "era": 9.13,
+    "whip": 2.07,
+    "physics_score": 0.0,
+    "ip": 22.7,
+    "so": 17
+  },
+  "rafael marchan": {
+    "type": "hitter",
+    "name": "Rafael March\u00e1n",
+    "pa": 64,
+    "xwoba": 0.122,
+    "ops": 1.131
+  },
+  "tanner banks": {
+    "type": "pitcher",
+    "name": "Tanner Banks",
+    "era": 6.41,
+    "whip": 2.03,
+    "physics_score": 19.9,
+    "ip": 19.7,
+    "so": 23
+  },
+  "adolis garcia": {
+    "type": "hitter",
+    "name": "Adolis Garc\u00eda",
+    "pa": 225,
+    "xwoba": 0.268,
+    "ops": 1.3
+  },
+  "aaron nola": {
+    "type": "pitcher",
+    "name": "Aaron Nola",
+    "era": 5.72,
+    "whip": 1.45,
+    "physics_score": 27.0,
+    "ip": 56.7,
+    "so": 56
+  },
+  "brad keller": {
+    "type": "pitcher",
+    "name": "Brad Keller",
+    "era": 3.86,
+    "whip": 1.09,
+    "physics_score": 58.9,
+    "ip": 25.7,
+    "so": 31
+  },
+  "trea turner": {
+    "type": "hitter",
+    "name": "Trea Turner",
+    "pa": 256,
+    "xwoba": 0.285,
+    "ops": 1.364
+  },
+  "andrew painter": {
+    "type": "pitcher",
+    "name": "Andrew Painter",
+    "era": 5.4,
+    "whip": 1.46,
+    "physics_score": 28.4,
+    "ip": 50.0,
+    "so": 40
+  },
+  "evan carter": {
+    "type": "hitter",
+    "name": "Evan Carter",
+    "pa": 195,
+    "xwoba": 0.292,
+    "ops": 1.343
+  },
+  "wyatt langford": {
+    "type": "hitter",
+    "name": "Wyatt Langford",
+    "pa": 84,
+    "xwoba": 0.28,
+    "ops": 1.363
+  },
+  "kumar rocker": {
+    "type": "pitcher",
+    "name": "Kumar Rocker",
+    "era": 3.54,
+    "whip": 1.32,
+    "physics_score": 56.1,
+    "ip": 56.0,
+    "so": 44
+  },
+  "jake burger": {
+    "type": "hitter",
+    "name": "Jake Burger",
+    "pa": 227,
+    "xwoba": 0.317,
+    "ops": 1.432
+  },
+  "tyler alexander": {
+    "type": "pitcher",
+    "name": "Tyler Alexander",
+    "era": 3.24,
+    "whip": 1.44,
+    "physics_score": 60.8,
+    "ip": 25.0,
+    "so": 20
+  },
+  "joc pederson": {
+    "type": "hitter",
+    "name": "Joc Pederson",
+    "pa": 165,
+    "xwoba": 0.358,
+    "ops": 1.45
+  },
+  "jack leiter": {
+    "type": "pitcher",
+    "name": "Jack Leiter",
+    "era": 4.75,
+    "whip": 1.37,
+    "physics_score": 42.8,
+    "ip": 60.7,
+    "so": 64
+  },
+  "jacob latz": {
+    "type": "pitcher",
+    "name": "Jacob Latz",
+    "era": 2.16,
+    "whip": 0.6,
+    "physics_score": 79.2,
+    "ip": 25.0,
+    "so": 23
+  },
+  "jalen beeks": {
+    "type": "pitcher",
+    "name": "Jalen Beeks",
+    "era": 3.57,
+    "whip": 1.28,
+    "physics_score": 55.7,
+    "ip": 22.7,
+    "so": 18
+  },
+  "corey seager": {
+    "type": "hitter",
+    "name": "Corey Seager",
+    "pa": 180,
+    "xwoba": 0.29,
+    "ops": 1.353
+  },
+  "josh jung": {
+    "type": "hitter",
+    "name": "Josh Jung",
+    "pa": 220,
+    "xwoba": 0.376,
+    "ops": 1.49
+  },
+  "andrew mccutchen": {
+    "type": "hitter",
+    "name": "Andrew McCutchen",
+    "pa": 82,
+    "xwoba": 0.252,
+    "ops": 1.26
+  },
+  "kyle higashioka": {
+    "type": "hitter",
+    "name": "Kyle Higashioka",
+    "pa": 95,
+    "xwoba": 0.267,
+    "ops": 1.314
+  },
+  "ezequiel duran": {
+    "type": "hitter",
+    "name": "Ezequiel Duran",
+    "pa": 173,
+    "xwoba": 0.351,
+    "ops": 1.453
+  },
+  "mackenzie gore": {
+    "type": "pitcher",
+    "name": "MacKenzie Gore",
+    "era": 3.96,
+    "whip": 1.19,
+    "physics_score": 54.6,
+    "ip": 61.3,
+    "so": 65
+  },
+  "jacob degrom": {
+    "type": "pitcher",
+    "name": "Jacob deGrom",
+    "era": 3.77,
+    "whip": 1.01,
+    "physics_score": 59.6,
+    "ip": 59.7,
+    "so": 70
+  },
+  "brandon nimmo": {
+    "type": "hitter",
+    "name": "Brandon Nimmo",
+    "pa": 245,
+    "xwoba": 0.34,
+    "ops": 1.422
+  },
+  "josh smith": {
+    "type": "hitter",
+    "name": "Josh Smith",
+    "pa": 107,
+    "xwoba": 0.27,
+    "ops": 1.239
+  },
+  "danny jansen": {
+    "type": "hitter",
+    "name": "Danny Jansen",
+    "pa": 137,
+    "xwoba": 0.272,
+    "ops": 1.317
+  },
+  "jakob junis": {
+    "type": "pitcher",
+    "name": "Jakob Junis",
+    "era": 1.82,
+    "whip": 0.81,
+    "physics_score": 78.6,
+    "ip": 24.7,
+    "so": 15
+  },
+  "nathan eovaldi": {
+    "type": "pitcher",
+    "name": "Nathan Eovaldi",
+    "era": 3.93,
+    "whip": 1.11,
+    "physics_score": 53.6,
+    "ip": 68.7,
+    "so": 67
+  },
+  "cole winn": {
+    "type": "pitcher",
+    "name": "Cole Winn",
+    "era": 5.59,
+    "whip": 1.5,
+    "physics_score": 32.6,
+    "ip": 19.3,
+    "so": 23
+  },
+  "chris martin": {
+    "type": "pitcher",
+    "name": "Chris Martin",
+    "era": 7.84,
+    "whip": 1.94,
+    "physics_score": 0.0,
+    "ip": 10.3,
+    "so": 7
+  },
+  "will smith": {
+    "type": "hitter",
+    "name": "Will Smith",
+    "pa": 182,
+    "xwoba": 0.332,
+    "ops": 1.394
+  },
+  "dalton rushing": {
+    "type": "hitter",
+    "name": "Dalton Rushing",
+    "pa": 94,
+    "xwoba": 0.379,
+    "ops": 1.53
+  },
+  "tyler glasnow": {
+    "type": "pitcher",
+    "name": "Tyler Glasnow",
+    "era": 2.72,
+    "whip": 0.83,
+    "physics_score": 76.4,
+    "ip": 39.7,
+    "so": 49
+  },
+  "alex vesia": {
+    "type": "pitcher",
+    "name": "Alex Vesia",
+    "era": 2.29,
+    "whip": 0.97,
+    "physics_score": 85.4,
+    "ip": 19.7,
+    "so": 27
+  },
+  "kyle tucker": {
+    "type": "hitter",
+    "name": "Kyle Tucker",
+    "pa": 234,
+    "xwoba": 0.324,
+    "ops": 1.384
+  },
+  "max muncy": {
+    "type": "hitter",
+    "name": "Max Muncy",
+    "pa": 300,
+    "xwoba": 0.358,
+    "ops": 1.475
+  },
+  "freddie freeman": {
+    "type": "hitter",
+    "name": "Freddie Freeman",
+    "pa": 238,
+    "xwoba": 0.367,
+    "ops": 1.469
+  },
+  "edgardo henriquez": {
+    "type": "pitcher",
+    "name": "Edgardo Henriquez",
+    "era": 3.6,
+    "whip": 1.1,
+    "physics_score": 57.2,
+    "ip": 20.0,
+    "so": 18
+  },
+  "tanner scott": {
+    "type": "pitcher",
+    "name": "Tanner Scott",
+    "era": 2.19,
+    "whip": 0.69,
+    "physics_score": 82.6,
+    "ip": 24.7,
+    "so": 28
+  },
+  "santiago espinal": {
+    "type": "hitter",
+    "name": "Santiago Espinal",
+    "pa": 44,
+    "xwoba": 0.251,
+    "ops": 1.349
+  },
+  "shohei ohtani": {
+    "type": "pitcher",
+    "name": "Shohei Ohtani",
+    "era": 0.82,
+    "whip": 0.82,
+    "physics_score": 100.0,
+    "ip": 55.0,
+    "so": 61
+  },
+  "will klein": {
+    "type": "pitcher",
+    "name": "Will Klein",
+    "era": 1.93,
+    "whip": 1.03,
+    "physics_score": 85.4,
+    "ip": 23.3,
+    "so": 25
+  },
+  "justin wrobleski": {
+    "type": "pitcher",
+    "name": "Justin Wrobleski",
+    "era": 2.87,
+    "whip": 1.01,
+    "physics_score": 63.4,
+    "ip": 62.7,
+    "so": 40
+  },
+  "teoscar hernandez": {
+    "type": "hitter",
+    "name": "Teoscar Hern\u00e1ndez",
+    "pa": 202,
+    "xwoba": 0.349,
+    "ops": 1.436
+  },
+  "andy pages": {
+    "type": "hitter",
+    "name": "Andy Pages",
+    "pa": 234,
+    "xwoba": 0.382,
+    "ops": 1.535
+  },
+  "mookie betts": {
+    "type": "hitter",
+    "name": "Mookie Betts",
+    "pa": 102,
+    "xwoba": 0.296,
+    "ops": 1.421
+  },
+  "alex call": {
+    "type": "hitter",
+    "name": "Alex Call",
+    "pa": 69,
+    "xwoba": 0.367,
+    "ops": 1.386
+  },
+  "emmet sheehan": {
+    "type": "pitcher",
+    "name": "Emmet Sheehan",
+    "era": 4.7,
+    "whip": 1.24,
+    "physics_score": 45.0,
+    "ip": 51.7,
+    "so": 59
+  },
+  "jack dreyer": {
+    "type": "pitcher",
+    "name": "Jack Dreyer",
+    "era": 2.08,
+    "whip": 0.97,
+    "physics_score": 83.8,
+    "ip": 21.7,
+    "so": 24
+  },
+  "blake treinen": {
+    "type": "pitcher",
+    "name": "Blake Treinen",
+    "era": 3.06,
+    "whip": 1.25,
+    "physics_score": 67.5,
+    "ip": 17.7,
+    "so": 18
+  },
+  "roki sasaki": {
+    "type": "pitcher",
+    "name": "Roki Sasaki",
+    "era": 4.59,
+    "whip": 1.35,
+    "physics_score": 43.8,
+    "ip": 51.0,
+    "so": 50
+  },
+  "alex freeland": {
+    "type": "hitter",
+    "name": "Alex Freeland",
+    "pa": 114,
+    "xwoba": 0.281,
+    "ops": 1.32
+  },
+  "yoshinobu yamamoto": {
+    "type": "pitcher",
+    "name": "Yoshinobu Yamamoto",
+    "era": 3.09,
+    "whip": 0.98,
+    "physics_score": 65.2,
+    "ip": 64.0,
+    "so": 59
+  },
+  "andrew hoffmann": {
+    "type": "pitcher",
+    "name": "Andrew Hoffmann",
+    "era": 7.71,
+    "whip": 2.06,
+    "physics_score": 0.0,
+    "ip": 11.7,
+    "so": 12
+  },
+  "eduardo rodriguez": {
+    "type": "pitcher",
+    "name": "Eduardo Rodriguez",
+    "era": 2.31,
+    "whip": 1.21,
+    "physics_score": 73.7,
+    "ip": 66.3,
+    "so": 49
+  },
+  "juan morillo": {
+    "type": "pitcher",
+    "name": "Juan Morillo",
+    "era": 2.86,
+    "whip": 1.09,
+    "physics_score": 72.5,
+    "ip": 22.0,
+    "so": 25
+  },
+  "tim tawa": {
+    "type": "hitter",
+    "name": "Tim Tawa",
+    "pa": 65,
+    "xwoba": 0.252,
+    "ops": 1.263
+  },
+  "brandon pfaadt": {
+    "type": "pitcher",
+    "name": "Brandon Pfaadt",
+    "era": 5.59,
+    "whip": 1.41,
+    "physics_score": 25.7,
+    "ip": 37.0,
+    "so": 30
+  },
+  "nolan arenado": {
+    "type": "hitter",
+    "name": "Nolan Arenado",
+    "pa": 194,
+    "xwoba": 0.363,
+    "ops": 1.462
+  },
+  "kevin ginkel": {
+    "type": "pitcher",
+    "name": "Kevin Ginkel",
+    "era": 3.18,
+    "whip": 1.1,
+    "physics_score": 68.0,
+    "ip": 22.7,
+    "so": 26
+  },
+  "ketel marte": {
+    "type": "hitter",
+    "name": "Ketel Marte",
+    "pa": 236,
+    "xwoba": 0.341,
+    "ops": 1.459
+  },
+  "jonathan loaisiga": {
+    "type": "pitcher",
+    "name": "Jonathan Lo\u00e1isiga",
+    "era": 2.53,
+    "whip": 0.98,
+    "physics_score": 68.0,
+    "ip": 21.3,
+    "so": 13
+  },
+  "ildemaro vargas": {
+    "type": "hitter",
+    "name": "Ildemaro Vargas",
+    "pa": 204,
+    "xwoba": 0.346,
+    "ops": 1.469
+  },
+  "ryne nelson": {
+    "type": "pitcher",
+    "name": "Ryne Nelson",
+    "era": 4.82,
+    "whip": 1.19,
+    "physics_score": 37.0,
+    "ip": 65.3,
+    "so": 52
+  },
+  "geraldo perdomo": {
+    "type": "hitter",
+    "name": "Geraldo Perdomo",
+    "pa": 222,
+    "xwoba": 0.32,
+    "ops": 1.356
+  },
+  "paul sewald": {
+    "type": "pitcher",
+    "name": "Paul Sewald",
+    "era": 3.8,
+    "whip": 0.75,
+    "physics_score": 58.3,
+    "ip": 21.3,
+    "so": 24
+  },
+  "michael soroka": {
+    "type": "pitcher",
+    "name": "Michael Soroka",
+    "era": 3.25,
+    "whip": 1.2,
+    "physics_score": 64.0,
+    "ip": 61.0,
+    "so": 60
+  },
+  "gabriel moreno": {
+    "type": "hitter",
+    "name": "Gabriel Moreno",
+    "pa": 127,
+    "xwoba": 0.323,
+    "ops": 1.405
+  },
+  "corbin carroll": {
+    "type": "hitter",
+    "name": "Corbin Carroll",
+    "pa": 230,
+    "xwoba": 0.399,
+    "ops": 1.535
+  },
+  "taylor clarke": {
+    "type": "pitcher",
+    "name": "Taylor Clarke",
+    "era": 1.88,
+    "whip": 0.71,
+    "physics_score": 74.4,
+    "ip": 24.0,
+    "so": 10
+  },
+  "zac gallen": {
+    "type": "pitcher",
+    "name": "Zac Gallen",
+    "era": 5.16,
+    "whip": 1.47,
+    "physics_score": 30.4,
+    "ip": 59.3,
+    "so": 42
+  },
+  "ryan thompson": {
+    "type": "pitcher",
+    "name": "Ryan Thompson",
+    "era": 2.75,
+    "whip": 1.17,
+    "physics_score": 64.8,
+    "ip": 19.7,
+    "so": 12
+  },
+  "carlos santana": {
+    "type": "hitter",
+    "name": "Carlos Santana",
+    "pa": 26,
+    "xwoba": 0.136,
+    "ops": 1.125
+  },
+  "alek thomas": {
+    "type": "hitter",
+    "name": "Alek Thomas",
+    "pa": 99,
+    "xwoba": 0.247,
+    "ops": 1.34
+  },
+  "jorge barrosa": {
+    "type": "hitter",
+    "name": "Jorge Barrosa",
+    "pa": 94,
+    "xwoba": 0.265,
+    "ops": 1.341
+  },
+  "josh naylor": {
+    "type": "hitter",
+    "name": "Josh Naylor",
+    "pa": 238,
+    "xwoba": 0.3,
+    "ops": 1.346
+  },
+  "victor robles": {
+    "type": "hitter",
+    "name": "Victor Robles",
+    "pa": 24,
+    "xwoba": 0.291,
+    "ops": 1.375
+  },
+  "cole young": {
+    "type": "hitter",
+    "name": "Cole Young",
+    "pa": 229,
+    "xwoba": 0.303,
+    "ops": 1.346
+  },
+  "jose a ferrer": {
+    "type": "pitcher",
+    "name": "Jos\u00e9 A. Ferrer",
+    "era": 1.75,
+    "whip": 1.25,
+    "physics_score": 84.1,
+    "ip": 25.7,
+    "so": 22
+  },
+  "randy arozarena": {
+    "type": "hitter",
+    "name": "Randy Arozarena",
+    "pa": 247,
+    "xwoba": 0.372,
+    "ops": 1.458
+  },
+  "casey legumina": {
+    "type": "pitcher",
+    "name": "Casey Legumina",
+    "era": 3.57,
+    "whip": 1.46,
+    "physics_score": 53.3,
+    "ip": 22.7,
+    "so": 15
+  },
+  "dominic canzone": {
+    "type": "hitter",
+    "name": "Dominic Canzone",
+    "pa": 135,
+    "xwoba": 0.345,
+    "ops": 1.471
+  },
+  "cal raleigh": {
+    "type": "hitter",
+    "name": "Cal Raleigh",
+    "pa": 179,
+    "xwoba": 0.254,
+    "ops": 1.317
+  },
+  "rob refsnyder": {
+    "type": "hitter",
+    "name": "Rob Refsnyder",
+    "pa": 83,
+    "xwoba": 0.207,
+    "ops": 1.24
+  },
+  "matt brash": {
+    "type": "pitcher",
+    "name": "Matt Brash",
+    "era": 0.64,
+    "whip": 0.86,
+    "physics_score": 100.0,
+    "ip": 14.0,
+    "so": 12
+  },
+  "logan gilbert": {
+    "type": "pitcher",
+    "name": "Logan Gilbert",
+    "era": 3.69,
+    "whip": 1.11,
+    "physics_score": 57.9,
+    "ip": 68.3,
+    "so": 69
+  },
+  "bryan woo": {
+    "type": "pitcher",
+    "name": "Bryan Woo",
+    "era": 3.44,
+    "whip": 0.96,
+    "physics_score": 60.7,
+    "ip": 70.7,
+    "so": 68
+  },
+  "brendan donovan": {
+    "type": "hitter",
+    "name": "Brendan Donovan",
+    "pa": 100,
+    "xwoba": 0.375,
+    "ops": 1.452
+  },
+  "luis castillo": {
+    "type": "pitcher",
+    "name": "Luis Castillo",
+    "era": 5.9,
+    "whip": 1.51,
+    "physics_score": 25.4,
+    "ip": 50.3,
+    "so": 53
+  },
+  "cooper criswell": {
+    "type": "pitcher",
+    "name": "Cooper Criswell",
+    "era": 3.08,
+    "whip": 1.1,
+    "physics_score": 61.8,
+    "ip": 26.3,
+    "so": 19
+  },
+  "george kirby": {
+    "type": "pitcher",
+    "name": "George Kirby",
+    "era": 3.77,
+    "whip": 1.22,
+    "physics_score": 52.8,
+    "ip": 74.0,
+    "so": 59
+  },
+  "andres munoz": {
+    "type": "pitcher",
+    "name": "Andr\u00e9s Mu\u00f1oz",
+    "era": 4.98,
+    "whip": 1.34,
+    "physics_score": 48.5,
+    "ip": 21.7,
+    "so": 34
+  },
+  "mitch garver": {
+    "type": "hitter",
+    "name": "Mitch Garver",
+    "pa": 88,
+    "xwoba": 0.303,
+    "ops": 1.306
+  },
+  "gabe speier": {
+    "type": "pitcher",
+    "name": "Gabe Speier",
+    "era": 2.63,
+    "whip": 1.39,
+    "physics_score": 73.9,
+    "ip": 13.7,
+    "so": 14
+  },
+  "leo rivas": {
+    "type": "hitter",
+    "name": "Leo Rivas",
+    "pa": 117,
+    "xwoba": 0.219,
+    "ops": 1.172
+  },
+  "julio rodriguez": {
+    "type": "hitter",
+    "name": "Julio Rodr\u00edguez",
+    "pa": 258,
+    "xwoba": 0.35,
+    "ops": 1.475
+  },
+  "eduard bazardo": {
+    "type": "pitcher",
+    "name": "Eduard Bazardo",
+    "era": 2.13,
+    "whip": 1.38,
+    "physics_score": 79.4,
+    "ip": 25.3,
+    "so": 23
+  },
+  "luke raley": {
+    "type": "hitter",
+    "name": "Luke Raley",
+    "pa": 160,
+    "xwoba": 0.4,
+    "ops": 1.592
+  },
+  "emerson hancock": {
+    "type": "pitcher",
+    "name": "Emerson Hancock",
+    "era": 2.78,
+    "whip": 1.01,
+    "physics_score": 70.8,
+    "ip": 64.7,
+    "so": 63
+  },
+  "shawn armstrong": {
+    "type": "pitcher",
+    "name": "Shawn Armstrong",
+    "era": 3.86,
+    "whip": 1.35,
+    "physics_score": 60.3,
+    "ip": 16.3,
+    "so": 21
+  },
+  "chase delauter": {
+    "type": "hitter",
+    "name": "Chase DeLauter",
+    "pa": 228,
+    "xwoba": 0.341,
+    "ops": 1.429
+  },
+  "connor brogdon": {
+    "type": "pitcher",
+    "name": "Connor Brogdon",
+    "era": 5.28,
+    "whip": 1.11,
+    "physics_score": 32.2,
+    "ip": 15.3,
+    "so": 14
+  },
+  "daniel schneemann": {
+    "type": "hitter",
+    "name": "Daniel Schneemann",
+    "pa": 170,
+    "xwoba": 0.31,
+    "ops": 1.375
+  },
+  "slade cecconi": {
+    "type": "pitcher",
+    "name": "Slade Cecconi",
+    "era": 5.25,
+    "whip": 1.49,
+    "physics_score": 30.8,
+    "ip": 61.7,
+    "so": 50
+  },
+  "brayan rocchio": {
+    "type": "hitter",
+    "name": "Brayan Rocchio",
+    "pa": 213,
+    "xwoba": 0.344,
+    "ops": 1.399
+  },
+  "gabriel arias": {
+    "type": "hitter",
+    "name": "Gabriel Arias",
+    "pa": 36,
+    "xwoba": 0.314,
+    "ops": 1.441
+  },
+  "matt festa": {
+    "type": "pitcher",
+    "name": "Matt Festa",
+    "era": 5.19,
+    "whip": 1.27,
+    "physics_score": 36.5,
+    "ip": 26.0,
+    "so": 28
+  },
+  "colin holderman": {
+    "type": "pitcher",
+    "name": "Colin Holderman",
+    "era": 1.31,
+    "whip": 0.73,
+    "physics_score": 95.4,
+    "ip": 20.7,
+    "so": 23
+  },
+  "bo naylor": {
+    "type": "hitter",
+    "name": "Bo Naylor",
+    "pa": 90,
+    "xwoba": 0.2,
+    "ops": 1.238
+  },
+  "david fry": {
+    "type": "hitter",
+    "name": "David Fry",
+    "pa": 92,
+    "xwoba": 0.337,
+    "ops": 1.385
+  },
+  "cade smith": {
+    "type": "pitcher",
+    "name": "Cade Smith",
+    "era": 2.83,
+    "whip": 1.15,
+    "physics_score": 80.2,
+    "ip": 28.7,
+    "so": 44
+  },
+  "jose ramirez": {
+    "type": "hitter",
+    "name": "Jos\u00e9 Ram\u00edrez",
+    "pa": 263,
+    "xwoba": 0.33,
+    "ops": 1.39
+  },
+  "steven kwan": {
+    "type": "hitter",
+    "name": "Steven Kwan",
+    "pa": 234,
+    "xwoba": 0.281,
+    "ops": 1.263
+  },
+  "peyton pallette": {
+    "type": "pitcher",
+    "name": "Peyton Pallette",
+    "era": 5.23,
+    "whip": 1.6,
+    "physics_score": 35.8,
+    "ip": 20.7,
+    "so": 22
+  },
+  "angel martinez": {
+    "type": "hitter",
+    "name": "Angel Mart\u00ednez",
+    "pa": 199,
+    "xwoba": 0.316,
+    "ops": 1.441
+  },
+  "kyle manzardo": {
+    "type": "hitter",
+    "name": "Kyle Manzardo",
+    "pa": 175,
+    "xwoba": 0.301,
+    "ops": 1.359
+  },
+  "parker messick": {
+    "type": "pitcher",
+    "name": "Parker Messick",
+    "era": 2.18,
+    "whip": 1.06,
+    "physics_score": 81.7,
+    "ip": 74.3,
+    "so": 80
+  },
+  "joey cantillo": {
+    "type": "pitcher",
+    "name": "Joey Cantillo",
+    "era": 3.57,
+    "whip": 1.4,
+    "physics_score": 57.6,
+    "ip": 58.0,
+    "so": 52
+  },
+  "erik sabrowski": {
+    "type": "pitcher",
+    "name": "Erik Sabrowski",
+    "era": 1.66,
+    "whip": 0.97,
+    "physics_score": 100.0,
+    "ip": 21.7,
+    "so": 40
+  },
+  "gavin williams": {
+    "type": "pitcher",
+    "name": "Gavin Williams",
+    "era": 3.07,
+    "whip": 1.09,
+    "physics_score": 69.8,
+    "ip": 76.3,
+    "so": 88
+  },
+  "tanner bibee": {
+    "type": "pitcher",
+    "name": "Tanner Bibee",
+    "era": 4.57,
+    "whip": 1.32,
+    "physics_score": 42.1,
+    "ip": 63.0,
+    "so": 55
+  },
+  "tim herrin": {
+    "type": "pitcher",
+    "name": "Tim Herrin",
+    "era": 1.93,
+    "whip": 1.5,
+    "physics_score": 80.5,
+    "ip": 18.7,
+    "so": 15
+  },
+  "rhys hoskins": {
+    "type": "hitter",
+    "name": "Rhys Hoskins",
+    "pa": 160,
+    "xwoba": 0.331,
+    "ops": 1.375
+  },
+  "cj kayfus": {
+    "type": "hitter",
+    "name": "CJ Kayfus",
+    "pa": 27,
+    "xwoba": 0.379,
+    "ops": 1.542
+  },
+  "spencer miles": {
+    "type": "pitcher",
+    "name": "Spencer Miles",
+    "era": 2.16,
+    "whip": 1.02,
+    "physics_score": 79.9,
+    "ip": 33.3,
+    "so": 32
+  },
+  "tommy nance": {
+    "type": "pitcher",
+    "name": "Tommy Nance",
+    "era": 3.86,
+    "whip": 1.14,
+    "physics_score": 58.6,
+    "ip": 21.0,
+    "so": 25
+  },
+  "louis varland": {
+    "type": "pitcher",
+    "name": "Louis Varland",
+    "era": 0.28,
+    "whip": 1.03,
+    "physics_score": 100.0,
+    "ip": 32.0,
+    "so": 43
+  },
+  "ernie clement": {
+    "type": "hitter",
+    "name": "Ernie Clement",
+    "pa": 235,
+    "xwoba": 0.332,
+    "ops": 1.441
+  },
+  "daulton varsho": {
+    "type": "hitter",
+    "name": "Daulton Varsho",
+    "pa": 227,
+    "xwoba": 0.335,
+    "ops": 1.424
+  },
+  "kevin gausman": {
+    "type": "pitcher",
+    "name": "Kevin Gausman",
+    "era": 3.13,
+    "whip": 1.09,
+    "physics_score": 65.3,
+    "ip": 69.0,
+    "so": 66
+  },
+  "andres gimenez": {
+    "type": "hitter",
+    "name": "Andr\u00e9s Gim\u00e9nez",
+    "pa": 202,
+    "xwoba": 0.279,
+    "ops": 1.375
+  },
+  "eric lauer": {
+    "type": "pitcher",
+    "name": "Eric Lauer",
+    "era": 5.95,
+    "whip": 1.39,
+    "physics_score": 18.5,
+    "ip": 42.3,
+    "so": 30
+  },
+  "jeff hoffman": {
+    "type": "pitcher",
+    "name": "Jeff Hoffman",
+    "era": 6.15,
+    "whip": 1.78,
+    "physics_score": 34.2,
+    "ip": 26.3,
+    "so": 46
+  },
+  "dylan cease": {
+    "type": "pitcher",
+    "name": "Dylan Cease",
+    "era": 3.12,
+    "whip": 1.25,
+    "physics_score": 74.8,
+    "ip": 66.3,
+    "so": 98
+  },
+  "davis schneider": {
+    "type": "hitter",
+    "name": "Davis Schneider",
+    "pa": 88,
+    "xwoba": 0.251,
+    "ops": 1.211
+  },
+  "nathan lukes": {
+    "type": "hitter",
+    "name": "Nathan Lukes",
+    "pa": 74,
+    "xwoba": 0.329,
+    "ops": 1.382
+  },
+  "addison barger": {
+    "type": "hitter",
+    "name": "Addison Barger",
+    "pa": 30,
+    "xwoba": 0.2,
+    "ops": 1.16
+  },
+  "max scherzer": {
+    "type": "pitcher",
+    "name": "Max Scherzer",
+    "era": 9.64,
+    "whip": 1.61,
+    "physics_score": 0.0,
+    "ip": 18.7,
+    "so": 10
+  },
+  "george springer": {
+    "type": "hitter",
+    "name": "George Springer",
+    "pa": 178,
+    "xwoba": 0.291,
+    "ops": 1.356
+  },
+  "mason fluharty": {
+    "type": "pitcher",
+    "name": "Mason Fluharty",
+    "era": 4.29,
+    "whip": 1.43,
+    "physics_score": 53.9,
+    "ip": 21.0,
+    "so": 27
+  },
+  "braydon fisher": {
+    "type": "pitcher",
+    "name": "Braydon Fisher",
+    "era": 2.36,
+    "whip": 0.96,
+    "physics_score": 78.5,
+    "ip": 34.3,
+    "so": 36
+  },
+  "tyler rogers": {
+    "type": "pitcher",
+    "name": "Tyler Rogers",
+    "era": 2.28,
+    "whip": 1.16,
+    "physics_score": 71.3,
+    "ip": 27.7,
+    "so": 16
+  },
+  "vladimir guerrero": {
+    "type": "hitter",
+    "name": "Vladimir Guerrero Jr.",
+    "pa": 241,
+    "xwoba": 0.36,
+    "ops": 1.391
+  },
+  "jesus sanchez": {
+    "type": "hitter",
+    "name": "Jes\u00fas S\u00e1nchez",
+    "pa": 181,
+    "xwoba": 0.337,
+    "ops": 1.447
+  },
+  "myles straw": {
+    "type": "hitter",
+    "name": "Myles Straw",
+    "pa": 97,
+    "xwoba": 0.301,
+    "ops": 1.345
+  },
+  "alejandro kirk": {
+    "type": "hitter",
+    "name": "Alejandro Kirk",
+    "pa": 26,
+    "xwoba": 0.266,
+    "ops": 1.375
+  },
+  "kazuma okamoto": {
+    "type": "hitter",
+    "name": "Kazuma Okamoto",
+    "pa": 237,
+    "xwoba": 0.315,
+    "ops": 1.415
+  },
+  "lawrence butler": {
+    "type": "hitter",
+    "name": "Lawrence Butler",
+    "pa": 160,
+    "xwoba": 0.235,
+    "ops": 1.246
+  },
+  "luis severino": {
+    "type": "pitcher",
+    "name": "Luis Severino",
+    "era": 4.16,
+    "whip": 1.47,
+    "physics_score": 51.2,
+    "ip": 62.7,
+    "so": 65
+  },
+  "brent rooker": {
+    "type": "hitter",
+    "name": "Brent Rooker",
+    "pa": 169,
+    "xwoba": 0.28,
+    "ops": 1.34
+  },
+  "jt ginn": {
+    "type": "pitcher",
+    "name": "J.T. Ginn",
+    "era": 2.87,
+    "whip": 1.14,
+    "physics_score": 67.7,
+    "ip": 59.7,
+    "so": 52
+  },
+  "jeff mcneil": {
+    "type": "hitter",
+    "name": "Jeff McNeil",
+    "pa": 194,
+    "xwoba": 0.304,
+    "ops": 1.339
+  },
+  "justin sterner": {
+    "type": "pitcher",
+    "name": "Justin Sterner",
+    "era": 3.54,
+    "whip": 1.11,
+    "physics_score": 58.7,
+    "ip": 28.0,
+    "so": 26
+  },
+  "austin wynns": {
+    "type": "hitter",
+    "name": "Austin Wynns",
+    "pa": 42,
+    "xwoba": 0.113,
+    "ops": 1.077
+  },
+  "scott barlow": {
+    "type": "pitcher",
+    "name": "Scott Barlow",
+    "era": 3.08,
+    "whip": 0.99,
+    "physics_score": 63.9,
+    "ip": 26.3,
+    "so": 22
+  },
+  "jacob lopez": {
+    "type": "pitcher",
+    "name": "Jacob Lopez",
+    "era": 5.73,
+    "whip": 1.77,
+    "physics_score": 22.0,
+    "ip": 48.7,
+    "so": 35
+  },
+  "denzel clarke": {
+    "type": "hitter",
+    "name": "Denzel Clarke",
+    "pa": 57,
+    "xwoba": 0.196,
+    "ops": 1.189
+  },
+  "tyler soderstrom": {
+    "type": "hitter",
+    "name": "Tyler Soderstrom",
+    "pa": 233,
+    "xwoba": 0.326,
+    "ops": 1.427
+  },
+  "aaron civale": {
+    "type": "pitcher",
+    "name": "Aaron Civale",
+    "era": 4.2,
+    "whip": 1.47,
+    "physics_score": 44.6,
+    "ip": 55.7,
+    "so": 39
+  },
+  "darell hernaiz": {
+    "type": "hitter",
+    "name": "Darell Hernaiz",
+    "pa": 117,
+    "xwoba": 0.299,
+    "ops": 1.308
+  },
+  "nick kurtz": {
+    "type": "hitter",
+    "name": "Nick Kurtz",
+    "pa": 259,
+    "xwoba": 0.409,
+    "ops": 1.493
+  },
+  "hogan harris": {
+    "type": "pitcher",
+    "name": "Hogan Harris",
+    "era": 2.6,
+    "whip": 1.59,
+    "physics_score": 76.1,
+    "ip": 27.7,
+    "so": 31
+  },
+  "luis medina": {
+    "type": "pitcher",
+    "name": "Luis Medina",
+    "era": 3.13,
+    "whip": 1.3,
+    "physics_score": 66.0,
+    "ip": 23.0,
+    "so": 23
+  },
+  "shea langeliers": {
+    "type": "hitter",
+    "name": "Shea Langeliers",
+    "pa": 240,
+    "xwoba": 0.396,
+    "ops": 1.544
+  },
+  "mark leiter": {
+    "type": "pitcher",
+    "name": "Mark Leiter Jr.",
+    "era": 5.7,
+    "whip": 1.48,
+    "physics_score": 28.5,
+    "ip": 23.7,
+    "so": 25
+  },
+  "andy ibanez": {
+    "type": "hitter",
+    "name": "Andy Ib\u00e1\u00f1ez",
+    "pa": 25,
+    "xwoba": 0.099,
+    "ops": 1.083
+  },
+  "jeffrey springs": {
+    "type": "pitcher",
+    "name": "Jeffrey Springs",
+    "era": 4.07,
+    "whip": 1.19,
+    "physics_score": 49.4,
+    "ip": 66.3,
+    "so": 57
+  },
+  "jacob wilson": {
+    "type": "hitter",
+    "name": "Jacob Wilson",
+    "pa": 166,
+    "xwoba": 0.313,
+    "ops": 1.398
+  },
+  "lake bachar": {
+    "type": "pitcher",
+    "name": "Lake Bachar",
+    "era": 3.77,
+    "whip": 1.01,
+    "physics_score": 58.6,
+    "ip": 28.7,
+    "so": 32
+  },
+  "griffin conine": {
+    "type": "hitter",
+    "name": "Griffin Conine",
+    "pa": 25,
+    "xwoba": 0.41,
+    "ops": 1.591
+  },
+  "heriberto hernandez": {
+    "type": "hitter",
+    "name": "Heriberto Hern\u00e1ndez",
+    "pa": 105,
+    "xwoba": 0.27,
+    "ops": 1.29
+  },
+  "pete fairbanks": {
+    "type": "pitcher",
+    "name": "Pete Fairbanks",
+    "era": 7.53,
+    "whip": 1.4,
+    "physics_score": 8.3,
+    "ip": 14.3,
+    "so": 21
+  },
+  "sandy alcantara": {
+    "type": "pitcher",
+    "name": "Sandy Alcantara",
+    "era": 4.66,
+    "whip": 1.33,
+    "physics_score": 37.5,
+    "ip": 75.3,
+    "so": 52
+  },
+  "tyler phillips": {
+    "type": "pitcher",
+    "name": "Tyler Phillips",
+    "era": 1.63,
+    "whip": 1.27,
+    "physics_score": 85.9,
+    "ip": 38.7,
+    "so": 33
+  },
+  "jakob marsee": {
+    "type": "hitter",
+    "name": "Jakob Marsee",
+    "pa": 242,
+    "xwoba": 0.292,
+    "ops": 1.307
+  },
+  "calvin faucher": {
+    "type": "pitcher",
+    "name": "Calvin Faucher",
+    "era": 3.8,
+    "whip": 1.59,
+    "physics_score": 56.6,
+    "ip": 21.3,
+    "so": 22
+  },
+  "max meyer": {
+    "type": "pitcher",
+    "name": "Max Meyer",
+    "era": 2.97,
+    "whip": 1.1,
+    "physics_score": 70.4,
+    "ip": 66.7,
+    "so": 74
+  },
+  "john king": {
+    "type": "pitcher",
+    "name": "John King",
+    "era": 1.93,
+    "whip": 0.69,
+    "physics_score": 80.0,
+    "ip": 23.3,
+    "so": 18
+  },
+  "xavier edwards": {
+    "type": "hitter",
+    "name": "Xavier Edwards",
+    "pa": 249,
+    "xwoba": 0.391,
+    "ops": 1.489
+  },
+  "graham pauley": {
+    "type": "hitter",
+    "name": "Graham Pauley",
+    "pa": 90,
+    "xwoba": 0.216,
+    "ops": 1.271
+  },
+  "michael petersen": {
+    "type": "pitcher",
+    "name": "Michael Petersen",
+    "era": 3.8,
+    "whip": 1.12,
+    "physics_score": 56.6,
+    "ip": 21.3,
+    "so": 22
+  },
+  "liam hicks": {
+    "type": "hitter",
+    "name": "Liam Hicks",
+    "pa": 209,
+    "xwoba": 0.366,
+    "ops": 1.478
+  },
+  "anthony bender": {
+    "type": "pitcher",
+    "name": "Anthony Bender",
+    "era": 3.22,
+    "whip": 0.94,
+    "physics_score": 66.0,
+    "ip": 22.3,
+    "so": 24
+  },
+  "owen caissie": {
+    "type": "hitter",
+    "name": "Owen Caissie",
+    "pa": 154,
+    "xwoba": 0.298,
+    "ops": 1.387
+  },
+  "agustin ramirez": {
+    "type": "hitter",
+    "name": "Agust\u00edn Ram\u00edrez",
+    "pa": 128,
+    "xwoba": 0.302,
+    "ops": 1.345
+  },
+  "janson junk": {
+    "type": "pitcher",
+    "name": "Janson Junk",
+    "era": 4.8,
+    "whip": 1.3,
+    "physics_score": 35.9,
+    "ip": 60.0,
+    "so": 43
+  },
+  "connor norby": {
+    "type": "hitter",
+    "name": "Connor Norby",
+    "pa": 192,
+    "xwoba": 0.303,
+    "ops": 1.339
+  },
+  "chris paddack": {
+    "type": "pitcher",
+    "name": "Chris Paddack",
+    "era": 6.75,
+    "whip": 1.74,
+    "physics_score": 8.0,
+    "ip": 50.7,
+    "so": 40
+  },
+  "austin slater": {
+    "type": "hitter",
+    "name": "Austin Slater",
+    "pa": 51,
+    "xwoba": 0.267,
+    "ops": 1.261
+  },
+  "andrew nardi": {
+    "type": "pitcher",
+    "name": "Andrew Nardi",
+    "era": 5.16,
+    "whip": 1.41,
+    "physics_score": 39.0,
+    "ip": 22.7,
+    "so": 27
+  },
+  "eury perez": {
+    "type": "pitcher",
+    "name": "Eury P\u00e9rez",
+    "era": 4.6,
+    "whip": 1.26,
+    "physics_score": 46.7,
+    "ip": 62.7,
+    "so": 72
+  },
+  "otto lopez": {
+    "type": "hitter",
+    "name": "Otto Lopez",
+    "pa": 239,
+    "xwoba": 0.363,
+    "ops": 1.463
+  },
+  "ryan feltner": {
+    "type": "pitcher",
+    "name": "Ryan Feltner",
+    "era": 4.85,
+    "whip": 1.31,
+    "physics_score": 35.5,
+    "ip": 26.0,
+    "so": 19
+  },
+  "victor vodnik": {
+    "type": "pitcher",
+    "name": "Victor Vodnik",
+    "era": 8.0,
+    "whip": 2.11,
+    "physics_score": 0.0,
+    "ip": 18.0,
+    "so": 16
+  },
+  "jimmy herget": {
+    "type": "pitcher",
+    "name": "Jimmy Herget",
+    "era": 5.06,
+    "whip": 1.38,
+    "physics_score": 38.2,
+    "ip": 16.0,
+    "so": 17
+  },
+  "jake mccarthy": {
+    "type": "hitter",
+    "name": "Jake McCarthy",
+    "pa": 153,
+    "xwoba": 0.358,
+    "ops": 1.483
+  },
+  "troy johnston": {
+    "type": "hitter",
+    "name": "Troy Johnston",
+    "pa": 204,
+    "xwoba": 0.351,
+    "ops": 1.416
+  },
+  "chase dollander": {
+    "type": "pitcher",
+    "name": "Chase Dollander",
+    "era": 3.35,
+    "whip": 1.25,
+    "physics_score": 63.8,
+    "ip": 51.0,
+    "so": 54
+  },
+  "jose quintana": {
+    "type": "pitcher",
+    "name": "Jose Quintana",
+    "era": 5.01,
+    "whip": 1.48,
+    "physics_score": 28.3,
+    "ip": 46.7,
+    "so": 22
+  },
+  "kyle freeland": {
+    "type": "pitcher",
+    "name": "Kyle Freeland",
+    "era": 8.08,
+    "whip": 1.75,
+    "physics_score": 0.0,
+    "ip": 42.3,
+    "so": 39
+  },
+  "willi castro": {
+    "type": "hitter",
+    "name": "Willi Castro",
+    "pa": 180,
+    "xwoba": 0.311,
+    "ops": 1.36
+  },
+  "brennan bernardino": {
+    "type": "pitcher",
+    "name": "Brennan Bernardino",
+    "era": 3.8,
+    "whip": 1.18,
+    "physics_score": 50.9,
+    "ip": 23.7,
+    "so": 17
+  },
+  "juan mejia": {
+    "type": "pitcher",
+    "name": "Juan Mejia",
+    "era": 4.94,
+    "whip": 1.65,
+    "physics_score": 41.3,
+    "ip": 27.3,
+    "so": 31
+  },
+  "edouard julien": {
+    "type": "hitter",
+    "name": "Edouard Julien",
+    "pa": 168,
+    "xwoba": 0.271,
+    "ops": 1.279
+  },
+  "hunter goodman": {
+    "type": "hitter",
+    "name": "Hunter Goodman",
+    "pa": 224,
+    "xwoba": 0.349,
+    "ops": 1.493
+  },
+  "tomoyuki sugano": {
+    "type": "pitcher",
+    "name": "Tomoyuki Sugano",
+    "era": 4.01,
+    "whip": 1.25,
+    "physics_score": 44.4,
+    "ip": 58.3,
+    "so": 31
+  },
+  "jordan beck": {
+    "type": "hitter",
+    "name": "Jordan Beck",
+    "pa": 87,
+    "xwoba": 0.237,
+    "ops": 1.305
+  },
+  "zach agnos": {
+    "type": "pitcher",
+    "name": "Zach Agnos",
+    "era": 6.08,
+    "whip": 1.38,
+    "physics_score": 15.9,
+    "ip": 37.0,
+    "so": 25
+  },
+  "brenton doyle": {
+    "type": "hitter",
+    "name": "Brenton Doyle",
+    "pa": 126,
+    "xwoba": 0.244,
+    "ops": 1.261
+  },
+  "ezequiel tovar": {
+    "type": "hitter",
+    "name": "Ezequiel Tovar",
+    "pa": 215,
+    "xwoba": 0.268,
+    "ops": 1.33
+  },
+  "michael lorenzen": {
+    "type": "pitcher",
+    "name": "Michael Lorenzen",
+    "era": 7.22,
+    "whip": 1.9,
+    "physics_score": 0.2,
+    "ip": 57.3,
+    "so": 43
+  },
+  "tj rumfield": {
+    "type": "hitter",
+    "name": "TJ Rumfield",
+    "pa": 234,
+    "xwoba": 0.355,
+    "ops": 1.435
+  },
+  "antonio senzatela": {
+    "type": "pitcher",
+    "name": "Antonio Senzatela",
+    "era": 1.29,
+    "whip": 0.86,
+    "physics_score": 90.1,
+    "ip": 35.0,
+    "so": 28
+  },
+  "jaden hill": {
+    "type": "pitcher",
+    "name": "Jaden Hill",
+    "era": 2.61,
+    "whip": 1.35,
+    "physics_score": 75.8,
+    "ip": 20.7,
+    "so": 23
+  },
+  "kyle karros": {
+    "type": "hitter",
+    "name": "Kyle Karros",
+    "pa": 191,
+    "xwoba": 0.291,
+    "ops": 1.311
+  },
+  "jonah heim": {
+    "type": "hitter",
+    "name": "Jonah Heim",
+    "pa": 73,
+    "xwoba": 0.272,
+    "ops": 1.333
+  },
+  "dylan lee": {
+    "type": "pitcher",
+    "name": "Dylan Lee",
+    "era": 1.3,
+    "whip": 0.61,
+    "physics_score": 97.6,
+    "ip": 27.7,
+    "so": 34
+  },
+  "robert suarez": {
+    "type": "pitcher",
+    "name": "Robert Suarez",
+    "era": 0.71,
+    "whip": 0.83,
+    "physics_score": 100.0,
+    "ip": 25.3,
+    "so": 22
+  },
+  "michael harris": {
+    "type": "hitter",
+    "name": "Michael Harris II",
+    "pa": 211,
+    "xwoba": 0.372,
+    "ops": 1.525
+  },
+  "mauricio dubon": {
+    "type": "hitter",
+    "name": "Mauricio Dub\u00f3n",
+    "pa": 221,
+    "xwoba": 0.303,
+    "ops": 1.376
+  },
+  "jose suarez": {
+    "type": "pitcher",
+    "name": "Jos\u00e9 Suarez",
+    "era": 5.67,
+    "whip": 1.96,
+    "physics_score": 31.3,
+    "ip": 27.0,
+    "so": 32
+  },
+  "didier fuentes": {
+    "type": "pitcher",
+    "name": "Didier Fuentes",
+    "era": 2.49,
+    "whip": 1.06,
+    "physics_score": 78.4,
+    "ip": 21.7,
+    "so": 25
+  },
+  "drake baldwin": {
+    "type": "hitter",
+    "name": "Drake Baldwin",
+    "pa": 215,
+    "xwoba": 0.407,
+    "ops": 1.543
+  },
+  "chris sale": {
+    "type": "pitcher",
+    "name": "Chris Sale",
+    "era": 2.01,
+    "whip": 0.94,
+    "physics_score": 86.3,
+    "ip": 67.0,
+    "so": 80
+  },
+  "osvaldo bido": {
+    "type": "pitcher",
+    "name": "Osvaldo Bido",
+    "era": 6.27,
+    "whip": 1.34,
+    "physics_score": 11.6,
+    "ip": 18.7,
+    "so": 11
+  },
+  "matt olson": {
+    "type": "hitter",
+    "name": "Matt Olson",
+    "pa": 258,
+    "xwoba": 0.39,
+    "ops": 1.555
+  },
+  "dominic smith": {
+    "type": "hitter",
+    "name": "Dominic Smith",
+    "pa": 129,
+    "xwoba": 0.373,
+    "ops": 1.496
+  },
+  "ronald acuna": {
+    "type": "hitter",
+    "name": "Ronald Acu\u00f1a Jr.",
+    "pa": 201,
+    "xwoba": 0.355,
+    "ops": 1.419
+  },
+  "tyler kinley": {
+    "type": "pitcher",
+    "name": "Tyler Kinley",
+    "era": 3.16,
+    "whip": 1.17,
+    "physics_score": 67.3,
+    "ip": 25.7,
+    "so": 28
+  },
+  "aaron bummer": {
+    "type": "pitcher",
+    "name": "Aaron Bummer",
+    "era": 7.63,
+    "whip": 1.83,
+    "physics_score": 0.0,
+    "ip": 15.3,
+    "so": 13
+  },
+  "reynaldo lopez": {
+    "type": "pitcher",
+    "name": "Reynaldo L\u00f3pez",
+    "era": 3.41,
+    "whip": 1.34,
+    "physics_score": 59.1,
+    "ip": 34.3,
+    "so": 29
+  },
+  "eli white": {
+    "type": "hitter",
+    "name": "Eli White",
+    "pa": 72,
+    "xwoba": 0.278,
+    "ops": 1.368
+  },
+  "ozzie albies": {
+    "type": "hitter",
+    "name": "Ozzie Albies",
+    "pa": 251,
+    "xwoba": 0.34,
+    "ops": 1.435
+  },
+  "raisel iglesias": {
+    "type": "pitcher",
+    "name": "Raisel Iglesias",
+    "era": 1.02,
+    "whip": 0.85,
+    "physics_score": 100.0,
+    "ip": 17.7,
+    "so": 21
+  },
+  "austin riley": {
+    "type": "hitter",
+    "name": "Austin Riley",
+    "pa": 241,
+    "xwoba": 0.295,
+    "ops": 1.369
+  },
+  "grant holmes": {
+    "type": "pitcher",
+    "name": "Grant Holmes",
+    "era": 3.95,
+    "whip": 1.33,
+    "physics_score": 52.5,
+    "ip": 57.0,
+    "so": 53
+  },
+  "mike yastrzemski": {
+    "type": "hitter",
+    "name": "Mike Yastrzemski",
+    "pa": 165,
+    "xwoba": 0.315,
+    "ops": 1.374
+  },
+  "bryce elder": {
+    "type": "pitcher",
+    "name": "Bryce Elder",
+    "era": 2.5,
+    "whip": 1.08,
+    "physics_score": 72.8,
+    "ip": 72.0,
+    "so": 61
+  },
+  "carter jensen": {
+    "type": "hitter",
+    "name": "Carter Jensen",
+    "pa": 192,
+    "xwoba": 0.327,
+    "ops": 1.412
+  },
+  "cole ragans": {
+    "type": "pitcher",
+    "name": "Cole Ragans",
+    "era": 4.84,
+    "whip": 1.42,
+    "physics_score": 45.3,
+    "ip": 35.3,
+    "so": 45
+  },
+  "jonathan india": {
+    "type": "hitter",
+    "name": "Jonathan India",
+    "pa": 62,
+    "xwoba": 0.301,
+    "ops": 1.327
+  },
+  "isaac collins": {
+    "type": "hitter",
+    "name": "Isaac Collins",
+    "pa": 186,
+    "xwoba": 0.31,
+    "ops": 1.325
+  },
+  "salvador perez": {
+    "type": "hitter",
+    "name": "Salvador Perez",
+    "pa": 233,
+    "xwoba": 0.288,
+    "ops": 1.38
+  },
+  "nick loftin": {
+    "type": "hitter",
+    "name": "Nick Loftin",
+    "pa": 76,
+    "xwoba": 0.3,
+    "ops": 1.323
+  },
+  "lucas erceg": {
+    "type": "pitcher",
+    "name": "Lucas Erceg",
+    "era": 6.33,
+    "whip": 1.92,
+    "physics_score": 15.3,
+    "ip": 21.3,
+    "so": 18
+  },
+  "kris bubic": {
+    "type": "pitcher",
+    "name": "Kris Bubic",
+    "era": 4.11,
+    "whip": 1.23,
+    "physics_score": 51.5,
+    "ip": 50.3,
+    "so": 51
+  },
+  "starling marte": {
+    "type": "hitter",
+    "name": "Starling Marte",
+    "pa": 62,
+    "xwoba": 0.301,
+    "ops": 1.321
+  },
+  "matt strahm": {
+    "type": "pitcher",
+    "name": "Matt Strahm",
+    "era": 3.86,
+    "whip": 1.29,
+    "physics_score": 55.9,
+    "ip": 16.3,
+    "so": 17
+  },
+  "nick mears": {
+    "type": "pitcher",
+    "name": "Nick Mears",
+    "era": 4.87,
+    "whip": 1.43,
+    "physics_score": 35.2,
+    "ip": 20.3,
+    "so": 15
+  },
+  "vinnie pasquantino": {
+    "type": "hitter",
+    "name": "Vinnie Pasquantino",
+    "pa": 235,
+    "xwoba": 0.291,
+    "ops": 1.335
+  },
+  "kyle isbel": {
+    "type": "hitter",
+    "name": "Kyle Isbel",
+    "pa": 155,
+    "xwoba": 0.299,
+    "ops": 1.368
+  },
+  "daniel lynch": {
+    "type": "pitcher",
+    "name": "Daniel Lynch IV",
+    "era": 1.93,
+    "whip": 0.99,
+    "physics_score": 86.9,
+    "ip": 23.3,
+    "so": 27
+  },
+  "michael wacha": {
+    "type": "pitcher",
+    "name": "Michael Wacha",
+    "era": 2.69,
+    "whip": 1.02,
+    "physics_score": 70.0,
+    "ip": 70.3,
+    "so": 60
+  },
+  "maikel garcia": {
+    "type": "hitter",
+    "name": "Maikel Garcia",
+    "pa": 249,
+    "xwoba": 0.323,
+    "ops": 1.393
+  },
+  "seth lugo": {
+    "type": "pitcher",
+    "name": "Seth Lugo",
+    "era": 3.55,
+    "whip": 1.34,
+    "physics_score": 57.6,
+    "ip": 76.0,
+    "so": 67
+  },
+  "lane thomas": {
+    "type": "hitter",
+    "name": "Lane Thomas",
+    "pa": 121,
+    "xwoba": 0.292,
+    "ops": 1.263
+  },
+  "noah cameron": {
+    "type": "pitcher",
+    "name": "Noah Cameron",
+    "era": 4.61,
+    "whip": 1.41,
+    "physics_score": 42.2,
+    "ip": 52.7,
+    "so": 48
+  },
+  "alex lange": {
+    "type": "pitcher",
+    "name": "Alex Lange",
+    "era": 4.68,
+    "whip": 1.4,
+    "physics_score": 42.1,
+    "ip": 25.0,
+    "so": 24
+  },
+  "jac caglianone": {
+    "type": "hitter",
+    "name": "Jac Caglianone",
+    "pa": 195,
+    "xwoba": 0.3,
+    "ops": 1.376
+  },
+  "john schreiber": {
+    "type": "pitcher",
+    "name": "John Schreiber",
+    "era": 2.86,
+    "whip": 1.32,
+    "physics_score": 61.9,
+    "ip": 22.0,
+    "so": 12
+  },
+  "bobby witt": {
+    "type": "hitter",
+    "name": "Bobby Witt Jr.",
+    "pa": 258,
+    "xwoba": 0.357,
+    "ops": 1.464
+  },
+  "cole wilcox": {
+    "type": "pitcher",
+    "name": "Cole Wilcox",
+    "era": 5.4,
+    "whip": 2.17,
+    "physics_score": 34.3,
+    "ip": 13.3,
+    "so": 15
+  },
+  "bryan hudson": {
+    "type": "pitcher",
+    "name": "Bryan Hudson",
+    "era": 1.32,
+    "whip": 1.17,
+    "physics_score": 93.0,
+    "ip": 27.3,
+    "so": 27
+  },
+  "shaun anderson": {
+    "type": "pitcher",
+    "name": "Shaun Anderson",
+    "era": 5.94,
+    "whip": 1.5,
+    "physics_score": 18.9,
+    "ip": 16.7,
+    "so": 12
+  },
+  "curtis mead": {
+    "type": "hitter",
+    "name": "Curtis Mead",
+    "pa": 152,
+    "xwoba": 0.383,
+    "ops": 1.508
+  },
+  "leo jimenez": {
+    "type": "hitter",
+    "name": "Leo Jim\u00e9nez",
+    "pa": 55,
+    "xwoba": 0.286,
+    "ops": 1.255
+  },
+  "martin perez": {
+    "type": "pitcher",
+    "name": "Mart\u00edn P\u00e9rez",
+    "era": 2.79,
+    "whip": 1.06,
+    "physics_score": 67.8,
+    "ip": 51.7,
+    "so": 42
+  },
+  "cody bolton": {
+    "type": "pitcher",
+    "name": "Cody Bolton",
+    "era": 5.57,
+    "whip": 1.76,
+    "physics_score": 30.3,
+    "ip": 21.0,
+    "so": 22
+  },
+  "jose fernandez": {
+    "type": "hitter",
+    "name": "Jose Fernandez",
+    "pa": 159,
+    "xwoba": 0.294,
+    "ops": 1.368
+  },
+  "luis matos": {
+    "type": "hitter",
+    "name": "Luis Matos",
+    "pa": 22,
+    "xwoba": 0.225,
+    "ops": 1.2
+  },
+  "gordon graceffo": {
+    "type": "pitcher",
+    "name": "Gordon Graceffo",
+    "era": 1.8,
+    "whip": 0.9,
+    "physics_score": 76.4,
+    "ip": 30.0,
+    "so": 14
+  },
+  "albert suarez": {
+    "type": "pitcher",
+    "name": "Albert Su\u00e1rez",
+    "era": 2.19,
+    "whip": 1.14,
+    "physics_score": 70.2,
+    "ip": 24.7,
+    "so": 11
+  },
+  "tyler freeman": {
+    "type": "hitter",
+    "name": "Tyler Freeman",
+    "pa": 147,
+    "xwoba": 0.305,
+    "ops": 1.333
+  },
+  "lucas sims": {
+    "type": "pitcher",
+    "name": "Lucas Sims",
+    "era": 4.5,
+    "whip": 1.6,
+    "physics_score": 45.5,
+    "ip": 10.0,
+    "so": 10
+  },
+  "steven cruz": {
+    "type": "pitcher",
+    "name": "Steven Cruz",
+    "era": 9.0,
+    "whip": 1.85,
+    "physics_score": 0.0,
+    "ip": 13.0,
+    "so": 19
+  },
+  "blade tidwell": {
+    "type": "pitcher",
+    "name": "Blade Tidwell",
+    "era": 3.0,
+    "whip": 1.08,
+    "physics_score": 65.0,
+    "ip": 12.0,
+    "so": 10
+  },
+  "zack kelly": {
+    "type": "pitcher",
+    "name": "Zack Kelly",
+    "era": 3.31,
+    "whip": 1.29,
+    "physics_score": 60.8,
+    "ip": 16.3,
+    "so": 14
+  },
+  "hunter bigge": {
+    "type": "pitcher",
+    "name": "Hunter Bigge",
+    "era": 6.98,
+    "whip": 1.45,
+    "physics_score": 3.3,
+    "ip": 19.3,
+    "so": 14
+  },
+  "mickey moniak": {
+    "type": "hitter",
+    "name": "Mickey Moniak",
+    "pa": 171,
+    "xwoba": 0.398,
+    "ops": 1.59
+  },
+  "valente bellozo": {
+    "type": "pitcher",
+    "name": "Valente Bellozo",
+    "era": 7.59,
+    "whip": 1.59,
+    "physics_score": 0.0,
+    "ip": 10.7,
+    "so": 8
+  },
+  "konnor griffin": {
+    "type": "hitter",
+    "name": "Konnor Griffin",
+    "pa": 206,
+    "xwoba": 0.325,
+    "ops": 1.402
+  },
+  "jp crawford": {
+    "type": "hitter",
+    "name": "J.P. Crawford",
+    "pa": 212,
+    "xwoba": 0.333,
+    "ops": 1.393
+  },
+  "adrian del castillo": {
+    "type": "hitter",
+    "name": "Adrian Del Castillo",
+    "pa": 129,
+    "xwoba": 0.261,
+    "ops": 1.328
+  },
+  "eli morgan": {
+    "type": "pitcher",
+    "name": "Eli Morgan",
+    "era": 4.67,
+    "whip": 1.67,
+    "physics_score": 41.5,
+    "ip": 17.3,
+    "so": 16
+  },
+  "luinder avila": {
+    "type": "pitcher",
+    "name": "Luinder Avila",
+    "era": 5.06,
+    "whip": 1.83,
+    "physics_score": 35.9,
+    "ip": 21.3,
+    "so": 20
+  },
+  "logan henderson": {
+    "type": "pitcher",
+    "name": "Logan Henderson",
+    "era": 3.24,
+    "whip": 1.12,
+    "physics_score": 70.2,
+    "ip": 25.0,
+    "so": 33
+  },
+  "keider montero": {
+    "type": "pitcher",
+    "name": "Keider Montero",
+    "era": 4.09,
+    "whip": 1.07,
+    "physics_score": 46.4,
+    "ip": 55.0,
+    "so": 39
+  },
+  "brandon valenzuela": {
+    "type": "hitter",
+    "name": "Brandon Valenzuela",
+    "pa": 112,
+    "xwoba": 0.33,
+    "ops": 1.398
+  },
+  "ethan roberts": {
+    "type": "pitcher",
+    "name": "Ethan Roberts",
+    "era": 0.57,
+    "whip": 0.89,
+    "physics_score": 97.9,
+    "ip": 15.7,
+    "so": 10
+  },
+  "hyeseong kim": {
+    "type": "hitter",
+    "name": "Hyeseong Kim",
+    "pa": 128,
+    "xwoba": 0.297,
+    "ops": 1.328
+  },
+  "cade povich": {
+    "type": "pitcher",
+    "name": "Cade Povich",
+    "era": 5.12,
+    "whip": 1.34,
+    "physics_score": 29.4,
+    "ip": 19.3,
+    "so": 12
+  },
+  "tanner murray": {
+    "type": "hitter",
+    "name": "Tanner Murray",
+    "pa": 31,
+    "xwoba": 0.279,
+    "ops": 1.321
+  },
+  "joe mantiply": {
+    "type": "pitcher",
+    "name": "Joe Mantiply",
+    "era": 2.04,
+    "whip": 1.13,
+    "physics_score": 80.7,
+    "ip": 17.7,
+    "so": 16
+  },
+  "taylor walls": {
+    "type": "hitter",
+    "name": "Taylor Walls",
+    "pa": 146,
+    "xwoba": 0.268,
+    "ops": 1.276
+  },
+  "javier assad": {
+    "type": "pitcher",
+    "name": "Javier Assad",
+    "era": 5.88,
+    "whip": 1.27,
+    "physics_score": 16.4,
+    "ip": 26.0,
+    "so": 14
+  },
+  "michael massey": {
+    "type": "hitter",
+    "name": "Michael Massey",
+    "pa": 112,
+    "xwoba": 0.278,
+    "ops": 1.389
+  },
+  "shane drohan": {
+    "type": "pitcher",
+    "name": "Shane Drohan",
+    "era": 2.63,
+    "whip": 1.1,
+    "physics_score": 73.9,
+    "ip": 27.3,
+    "so": 28
+  },
+  "brandon young": {
+    "type": "pitcher",
+    "name": "Brandon Young",
+    "era": 3.83,
+    "whip": 1.49,
+    "physics_score": 51.0,
+    "ip": 47.0,
+    "so": 35
+  },
+  "enyel de los santos": {
+    "type": "pitcher",
+    "name": "Enyel De Los Santos",
+    "era": 3.33,
+    "whip": 1.07,
+    "physics_score": 62.8,
+    "ip": 24.3,
+    "so": 24
+  },
+  "mitch farris": {
+    "type": "pitcher",
+    "name": "Mitch Farris",
+    "era": 3.66,
+    "whip": 1.63,
+    "physics_score": 56.6,
+    "ip": 19.7,
+    "so": 18
+  },
+  "juan brito": {
+    "type": "hitter",
+    "name": "Juan Brito",
+    "pa": 56,
+    "xwoba": 0.232,
+    "ops": 1.255
+  },
+  "dustin harris": {
+    "type": "hitter",
+    "name": "Dustin Harris",
+    "pa": 54,
+    "xwoba": 0.292,
+    "ops": 1.298
+  },
+  "ronny mauricio": {
+    "type": "hitter",
+    "name": "Ronny Mauricio",
+    "pa": 35,
+    "xwoba": 0.238,
+    "ops": 1.314
+  },
+  "paxton schultz": {
+    "type": "pitcher",
+    "name": "Paxton Schultz",
+    "era": 5.49,
+    "whip": 1.53,
+    "physics_score": 32.8,
+    "ip": 19.7,
+    "so": 22
+  },
+  "joel kuhnel": {
+    "type": "pitcher",
+    "name": "Joel Kuhnel",
+    "era": 3.04,
+    "whip": 1.18,
+    "physics_score": 59.3,
+    "ip": 23.7,
+    "so": 13
+  },
+  "patrick corbin": {
+    "type": "pitcher",
+    "name": "Patrick Corbin",
+    "era": 3.65,
+    "whip": 1.36,
+    "physics_score": 53.4,
+    "ip": 49.3,
+    "so": 36
+  },
+  "orion kerkering": {
+    "type": "pitcher",
+    "name": "Orion Kerkering",
+    "era": 2.53,
+    "whip": 1.12,
+    "physics_score": 76.4,
+    "ip": 21.3,
+    "so": 23
+  },
+  "tyler samaniego": {
+    "type": "pitcher",
+    "name": "Tyler Samaniego",
+    "era": 2.95,
+    "whip": 1.42,
+    "physics_score": 65.5,
+    "ip": 18.3,
+    "so": 15
+  },
+  "connor joe": {
+    "type": "hitter",
+    "name": "Connor Joe",
+    "pa": 39,
+    "xwoba": 0.294,
+    "ops": 1.333
+  },
+  "jesse scholtens": {
+    "type": "pitcher",
+    "name": "Jesse Scholtens",
+    "era": 3.82,
+    "whip": 1.27,
+    "physics_score": 52.0,
+    "ip": 37.7,
+    "so": 30
+  },
+  "jack perkins": {
+    "type": "pitcher",
+    "name": "Jack Perkins",
+    "era": 5.96,
+    "whip": 1.32,
+    "physics_score": 28.7,
+    "ip": 25.7,
+    "so": 33
+  },
+  "brandon eisert": {
+    "type": "pitcher",
+    "name": "Brandon Eisert",
+    "era": 4.35,
+    "whip": 1.55,
+    "physics_score": 45.4,
+    "ip": 10.3,
+    "so": 9
+  },
+  "seiya suzuki": {
+    "type": "hitter",
+    "name": "Seiya Suzuki",
+    "pa": 191,
+    "xwoba": 0.334,
+    "ops": 1.405
+  },
+  "wenceel perez": {
+    "type": "hitter",
+    "name": "Wenceel P\u00e9rez",
+    "pa": 149,
+    "xwoba": 0.245,
+    "ops": 1.312
+  },
+  "zack gelof": {
+    "type": "hitter",
+    "name": "Zack Gelof",
+    "pa": 143,
+    "xwoba": 0.322,
+    "ops": 1.433
+  },
+  "luis gil": {
+    "type": "pitcher",
+    "name": "Luis Gil",
+    "era": 6.05,
+    "whip": 1.34,
+    "physics_score": 12.6,
+    "ip": 19.3,
+    "so": 9
+  },
+  "jason adam": {
+    "type": "pitcher",
+    "name": "Jason Adam",
+    "era": 0.95,
+    "whip": 1.0,
+    "physics_score": 90.3,
+    "ip": 19.0,
+    "so": 10
+  },
+  "taylor trammell": {
+    "type": "hitter",
+    "name": "Taylor Trammell",
+    "pa": 52,
+    "xwoba": 0.377,
+    "ops": 1.447
+  },
+  "ryan kreidler": {
+    "type": "hitter",
+    "name": "Ryan Kreidler",
+    "pa": 53,
+    "xwoba": 0.362,
+    "ops": 1.489
+  },
+  "andrew morris": {
+    "type": "pitcher",
+    "name": "Andrew Morris",
+    "era": 4.18,
+    "whip": 1.52,
+    "physics_score": 47.5,
+    "ip": 23.7,
+    "so": 20
+  },
+  "vaughn grissom": {
+    "type": "hitter",
+    "name": "Vaughn Grissom",
+    "pa": 133,
+    "xwoba": 0.316,
+    "ops": 1.381
+  },
+  "craig kimbrel": {
+    "type": "pitcher",
+    "name": "Craig Kimbrel",
+    "era": 7.41,
+    "whip": 1.59,
+    "physics_score": 3.9,
+    "ip": 17.0,
+    "so": 19
+  },
+  "jayden murray": {
+    "type": "pitcher",
+    "name": "Jayden Murray",
+    "era": 7.15,
+    "whip": 2.03,
+    "physics_score": 0.0,
+    "ip": 11.3,
+    "so": 5
+  },
+  "eloy jimenez": {
+    "type": "hitter",
+    "name": "Eloy Jim\u00e9nez",
+    "pa": 34,
+    "xwoba": 0.296,
+    "ops": 1.29
+  },
+  "dean kremer": {
+    "type": "pitcher",
+    "name": "Dean Kremer",
+    "era": 4.09,
+    "whip": 0.91,
+    "physics_score": 59.8,
+    "ip": 11.0,
+    "so": 16
+  },
+  "evan sisk": {
+    "type": "pitcher",
+    "name": "Evan Sisk",
+    "era": 1.44,
+    "whip": 1.04,
+    "physics_score": 95.0,
+    "ip": 25.0,
+    "so": 30
+  },
+  "orlando ribalta": {
+    "type": "pitcher",
+    "name": "Orlando Ribalta",
+    "era": 1.98,
+    "whip": 0.95,
+    "physics_score": 78.5,
+    "ip": 13.7,
+    "so": 10
+  },
+  "george valera": {
+    "type": "hitter",
+    "name": "George Valera",
+    "pa": 38,
+    "xwoba": 0.236,
+    "ops": 1.297
+  },
+  "hunter gaddis": {
+    "type": "pitcher",
+    "name": "Hunter Gaddis",
+    "era": 4.4,
+    "whip": 1.6,
+    "physics_score": 44.1,
+    "ip": 14.3,
+    "so": 12
+  },
+  "kyle hurt": {
+    "type": "pitcher",
+    "name": "Kyle Hurt",
+    "era": 1.0,
+    "whip": 0.78,
+    "physics_score": 100.0,
+    "ip": 18.0,
+    "so": 21
+  },
+  "merrill kelly": {
+    "type": "pitcher",
+    "name": "Merrill Kelly",
+    "era": 5.25,
+    "whip": 1.42,
+    "physics_score": 27.9,
+    "ip": 48.0,
+    "so": 31
+  },
+  "mitchell parker": {
+    "type": "pitcher",
+    "name": "Mitchell Parker",
+    "era": 5.28,
+    "whip": 1.17,
+    "physics_score": 32.0,
+    "ip": 29.0,
+    "so": 26
+  },
+  "rece hinds": {
+    "type": "hitter",
+    "name": "Rece Hinds",
+    "pa": 35,
+    "xwoba": 0.175,
+    "ops": 1.212
+  },
+  "chase shugart": {
+    "type": "pitcher",
+    "name": "Chase Shugart",
+    "era": 1.45,
+    "whip": 0.91,
+    "physics_score": 91.6,
+    "ip": 18.7,
+    "so": 19
+  },
+  "ryan rolison": {
+    "type": "pitcher",
+    "name": "Ryan Rolison",
+    "era": 3.24,
+    "whip": 1.32,
+    "physics_score": 63.7,
+    "ip": 16.7,
+    "so": 16
+  },
+  "noah schultz": {
+    "type": "pitcher",
+    "name": "Noah Schultz",
+    "era": 5.82,
+    "whip": 1.34,
+    "physics_score": 23.1,
+    "ip": 38.7,
+    "so": 33
+  },
+  "greg jones": {
+    "type": "hitter",
+    "name": "Greg Jones",
+    "pa": 21,
+    "xwoba": 0.085,
+    "ops": 1.095
+  },
+  "spencer arrighetti": {
+    "type": "pitcher",
+    "name": "Spencer Arrighetti",
+    "era": 1.34,
+    "whip": 1.13,
+    "physics_score": 91.4,
+    "ip": 47.0,
+    "so": 43
+  },
+  "tanner gordon": {
+    "type": "pitcher",
+    "name": "Tanner Gordon",
+    "era": 5.85,
+    "whip": 1.48,
+    "physics_score": 25.7,
+    "ip": 32.3,
+    "so": 33
+  },
+  "austin warren": {
+    "type": "pitcher",
+    "name": "Austin Warren",
+    "era": 1.31,
+    "whip": 1.21,
+    "physics_score": 95.4,
+    "ip": 20.7,
+    "so": 23
+  },
+  "will brennan": {
+    "type": "hitter",
+    "name": "Will Brennan",
+    "pa": 24,
+    "xwoba": 0.074,
+    "ops": 1.083
+  },
+  "drew gilbert": {
+    "type": "hitter",
+    "name": "Drew Gilbert",
+    "pa": 120,
+    "xwoba": 0.311,
+    "ops": 1.407
+  },
+  "sam antonacci": {
+    "type": "hitter",
+    "name": "Sam Antonacci",
+    "pa": 155,
+    "xwoba": 0.343,
+    "ops": 1.373
+  },
+  "cal quantrill": {
+    "type": "pitcher",
+    "name": "Cal Quantrill",
+    "era": 2.53,
+    "whip": 1.22,
+    "physics_score": 68.8,
+    "ip": 21.3,
+    "so": 14
+  },
+  "gavin collyer": {
+    "type": "pitcher",
+    "name": "Gavin Collyer",
+    "era": 2.81,
+    "whip": 1.31,
+    "physics_score": 69.7,
+    "ip": 16.0,
+    "so": 15
+  },
+  "mj melendez": {
+    "type": "hitter",
+    "name": "MJ Melendez",
+    "pa": 93,
+    "xwoba": 0.324,
+    "ops": 1.4
+  },
+  "cameron foster": {
+    "type": "pitcher",
+    "name": "Cameron Foster",
+    "era": 8.18,
+    "whip": 2.64,
+    "physics_score": 0.0,
+    "ip": 11.0,
+    "so": 11
+  },
+  "coleman crow": {
+    "type": "pitcher",
+    "name": "Coleman Crow",
+    "era": 3.14,
+    "whip": 0.98,
+    "physics_score": 58.0,
+    "ip": 14.3,
+    "so": 8
+  },
+  "haoyu lee": {
+    "type": "hitter",
+    "name": "Hao-Yu  Lee",
+    "pa": 84,
+    "xwoba": 0.228,
+    "ops": 1.288
+  },
+  "peter lambert": {
+    "type": "pitcher",
+    "name": "Peter Lambert",
+    "era": 3.77,
+    "whip": 1.21,
+    "physics_score": 55.5,
+    "ip": 45.3,
+    "so": 43
+  },
+  "matt waldron": {
+    "type": "pitcher",
+    "name": "Matt Waldron",
+    "era": 8.49,
+    "whip": 1.71,
+    "physics_score": 0.0,
+    "ip": 23.3,
+    "so": 22
+  },
+  "felix reyes": {
+    "type": "hitter",
+    "name": "Felix Reyes",
+    "pa": 41,
+    "xwoba": 0.169,
+    "ops": 1.244
+  },
+  "lourdes gurriel": {
+    "type": "hitter",
+    "name": "Lourdes Gurriel Jr.",
+    "pa": 100,
+    "xwoba": 0.269,
+    "ops": 1.304
+  },
+  "andrew alvarez": {
+    "type": "pitcher",
+    "name": "Andrew Alvarez",
+    "era": 4.02,
+    "whip": 1.28,
+    "physics_score": 54.2,
+    "ip": 15.7,
+    "so": 17
+  },
+  "wilber dotel": {
+    "type": "pitcher",
+    "name": "Wilber Dotel",
+    "era": 1.32,
+    "whip": 0.73,
+    "physics_score": 93.7,
+    "ip": 13.7,
+    "so": 14
+  },
+  "elias diaz": {
+    "type": "hitter",
+    "name": "Elias D\u00edaz",
+    "pa": 23,
+    "xwoba": 0.362,
+    "ops": 1.591
+  },
+  "kyle stowers": {
+    "type": "hitter",
+    "name": "Kyle Stowers",
+    "pa": 148,
+    "xwoba": 0.297,
+    "ops": 1.356
+  },
+  "braden shewmake": {
+    "type": "hitter",
+    "name": "Braden Shewmake",
+    "pa": 81,
+    "xwoba": 0.285,
+    "ops": 1.392
+  },
+  "daniel johnson": {
+    "type": "hitter",
+    "name": "Daniel Johnson",
+    "pa": 22,
+    "xwoba": 0.248,
+    "ops": 1.167
+  },
+  "kendry rojas": {
+    "type": "pitcher",
+    "name": "Kendry Rojas",
+    "era": 1.26,
+    "whip": 1.47,
+    "physics_score": 93.7,
+    "ip": 14.3,
+    "so": 14
+  },
+  "alex hoppe": {
+    "type": "pitcher",
+    "name": "Alex Hoppe",
+    "era": 5.84,
+    "whip": 1.54,
+    "physics_score": 24.9,
+    "ip": 12.3,
+    "so": 12
+  },
+  "eric haase": {
+    "type": "hitter",
+    "name": "Eric Haase",
+    "pa": 36,
+    "xwoba": 0.388,
+    "ops": 1.6
+  },
+  "colby thomas": {
+    "type": "hitter",
+    "name": "Colby Thomas",
+    "pa": 44,
+    "xwoba": 0.314,
+    "ops": 1.39
+  },
+  "burch smith": {
+    "type": "pitcher",
+    "name": "Burch Smith",
+    "era": 3.18,
+    "whip": 1.47,
+    "physics_score": 68.5,
+    "ip": 17.0,
+    "so": 20
+  },
+  "connor prielipp": {
+    "type": "pitcher",
+    "name": "Connor Prielipp",
+    "era": 5.13,
+    "whip": 1.35,
+    "physics_score": 37.0,
+    "ip": 33.3,
+    "so": 35
+  },
+  "alejandro osuna": {
+    "type": "hitter",
+    "name": "Alejandro Osuna",
+    "pa": 95,
+    "xwoba": 0.321,
+    "ops": 1.282
+  },
+  "jr ritchie": {
+    "type": "pitcher",
+    "name": "JR Ritchie",
+    "era": 4.56,
+    "whip": 1.44,
+    "physics_score": 41.4,
+    "ip": 25.7,
+    "so": 21
+  },
+  "seth halvorsen": {
+    "type": "pitcher",
+    "name": "Seth Halvorsen",
+    "era": 3.0,
+    "whip": 1.58,
+    "physics_score": 68.0,
+    "ip": 12.0,
+    "so": 12
+  },
+  "tyler davis": {
+    "type": "pitcher",
+    "name": "Tyler Davis",
+    "era": 3.24,
+    "whip": 0.96,
+    "physics_score": 63.7,
+    "ip": 16.7,
+    "so": 16
+  },
+  "payton tolle": {
+    "type": "pitcher",
+    "name": "Payton Tolle",
+    "era": 2.61,
+    "whip": 0.9,
+    "physics_score": 75.8,
+    "ip": 41.3,
+    "so": 46
+  },
+  "christian scott": {
+    "type": "pitcher",
+    "name": "Christian Scott",
+    "era": 2.83,
+    "whip": 1.34,
+    "physics_score": 75.2,
+    "ip": 35.0,
+    "so": 44
+  },
+  "peyton gray": {
+    "type": "pitcher",
+    "name": "Peyton Gray",
+    "era": 3.38,
+    "whip": 1.38,
+    "physics_score": 61.2,
+    "ip": 16.0,
+    "so": 15
+  },
+  "andrew kittredge": {
+    "type": "pitcher",
+    "name": "Andrew Kittredge",
+    "era": 7.36,
+    "whip": 1.73,
+    "physics_score": 4.2,
+    "ip": 11.0,
+    "so": 12
+  },
+  "tyler black": {
+    "type": "hitter",
+    "name": "Tyler Black",
+    "pa": 28,
+    "xwoba": 0.365,
+    "ops": 1.481
+  },
+  "esteury ruiz": {
+    "type": "hitter",
+    "name": "Esteury Ruiz",
+    "pa": 43,
+    "xwoba": 0.281,
+    "ops": 1.452
+  },
+  "keegan akin": {
+    "type": "pitcher",
+    "name": "Keegan Akin",
+    "era": 9.2,
+    "whip": 1.77,
+    "physics_score": 0.0,
+    "ip": 14.7,
+    "so": 13
+  },
+  "yohendrick pinango": {
+    "type": "hitter",
+    "name": "Yohendrick Pi\u00f1ango",
+    "pa": 88,
+    "xwoba": 0.317,
+    "ops": 1.398
+  },
+  "drew romo": {
+    "type": "hitter",
+    "name": "Drew Romo",
+    "pa": 69,
+    "xwoba": 0.347,
+    "ops": 1.492
+  },
+  "sungmun song": {
+    "type": "hitter",
+    "name": "Sung-Mun Song",
+    "pa": 25,
+    "xwoba": 0.268,
+    "ops": 1.238
+  },
+  "jj bleday": {
+    "type": "hitter",
+    "name": "JJ Bleday",
+    "pa": 127,
+    "xwoba": 0.43,
+    "ops": 1.611
+  },
+  "zack wheeler": {
+    "type": "pitcher",
+    "name": "Zack Wheeler",
+    "era": 2.27,
+    "whip": 0.85,
+    "physics_score": 77.5,
+    "ip": 43.7,
+    "so": 40
+  },
+  "blas castano": {
+    "type": "pitcher",
+    "name": "Blas Casta\u00f1o",
+    "era": 4.91,
+    "whip": 1.45,
+    "physics_score": 37.7,
+    "ip": 11.0,
+    "so": 10
+  },
+  "brenan hanifee": {
+    "type": "pitcher",
+    "name": "Brenan Hanifee",
+    "era": 1.59,
+    "whip": 1.24,
+    "physics_score": 80.7,
+    "ip": 11.3,
+    "so": 6
+  },
+  "sebastian rivero": {
+    "type": "hitter",
+    "name": "Sebasti\u00e1n Rivero",
+    "pa": 45,
+    "xwoba": 0.173,
+    "ops": 1.167
+  },
+  "jasson dominguez": {
+    "type": "hitter",
+    "name": "Jasson Dom\u00ednguez",
+    "pa": 32,
+    "xwoba": 0.273,
+    "ops": 1.367
+  },
+  "christopher morel": {
+    "type": "hitter",
+    "name": "Christopher Morel",
+    "pa": 67,
+    "xwoba": 0.202,
+    "ops": 1.21
+  },
+  "travis bazzana": {
+    "type": "hitter",
+    "name": "Travis Bazzana",
+    "pa": 121,
+    "xwoba": 0.388,
+    "ops": 1.471
+  },
+  "trey yesavage": {
+    "type": "pitcher",
+    "name": "Trey Yesavage",
+    "era": 2.19,
+    "whip": 1.16,
+    "physics_score": 81.1,
+    "ip": 37.0,
+    "so": 39
+  },
+  "jarred kelenic": {
+    "type": "hitter",
+    "name": "Jarred Kelenic",
+    "pa": 59,
+    "xwoba": 0.285,
+    "ops": 1.321
+  },
+  "elmer rodriguez": {
+    "type": "pitcher",
+    "name": "Elmer Rodr\u00edguez",
+    "era": 4.15,
+    "whip": 1.85,
+    "physics_score": 41.0,
+    "ip": 13.0,
+    "so": 6
+  },
+  "trevor richards": {
+    "type": "pitcher",
+    "name": "Trevor Richards",
+    "era": 6.06,
+    "whip": 1.41,
+    "physics_score": 22.8,
+    "ip": 16.3,
+    "so": 17
+  },
+  "trevor mcdonald": {
+    "type": "pitcher",
+    "name": "Trevor McDonald",
+    "era": 4.34,
+    "whip": 1.07,
+    "physics_score": 46.6,
+    "ip": 29.0,
+    "so": 27
+  },
+  "jason alexander": {
+    "type": "pitcher",
+    "name": "Jason Alexander",
+    "era": 9.33,
+    "whip": 1.58,
+    "physics_score": 0.0,
+    "ip": 18.3,
+    "so": 14
+  },
+  "brandyn garcia": {
+    "type": "pitcher",
+    "name": "Brandyn Garcia",
+    "era": 0.9,
+    "whip": 0.8,
+    "physics_score": 100.0,
+    "ip": 10.0,
+    "so": 11
+  },
+  "jake bennett": {
+    "type": "pitcher",
+    "name": "Jake Bennett",
+    "era": 4.35,
+    "whip": 1.45,
+    "physics_score": 36.6,
+    "ip": 10.3,
+    "so": 4
+  },
+  "petey halpin": {
+    "type": "hitter",
+    "name": "Petey Halpin",
+    "pa": 30,
+    "xwoba": 0.184,
+    "ops": 1.207
+  },
+  "jhonny pereda": {
+    "type": "hitter",
+    "name": "Jhonny Pereda",
+    "pa": 34,
+    "xwoba": 0.275,
+    "ops": 1.3
+  },
+  "blake dunn": {
+    "type": "hitter",
+    "name": "Blake Dunn",
+    "pa": 68,
+    "xwoba": 0.355,
+    "ops": 1.435
+  },
+  "trey gibson": {
+    "type": "pitcher",
+    "name": "Trey Gibson",
+    "era": 3.65,
+    "whip": 1.62,
+    "physics_score": 47.6,
+    "ip": 12.3,
+    "so": 5
+  },
+  "spencer strider": {
+    "type": "pitcher",
+    "name": "Spencer Strider",
+    "era": 3.46,
+    "whip": 1.15,
+    "physics_score": 65.2,
+    "ip": 26.0,
+    "so": 32
+  },
+  "griffin canning": {
+    "type": "pitcher",
+    "name": "Griffin Canning",
+    "era": 7.54,
+    "whip": 1.54,
+    "physics_score": 0.9,
+    "ip": 22.7,
+    "so": 24
+  },
+  "zack short": {
+    "type": "hitter",
+    "name": "Zack Short",
+    "pa": 37,
+    "xwoba": 0.275,
+    "ops": 1.179
+  },
+  "ty madden": {
+    "type": "pitcher",
+    "name": "Ty Madden",
+    "era": 2.38,
+    "whip": 0.79,
+    "physics_score": 78.3,
+    "ip": 11.3,
+    "so": 12
+  },
+  "joe mack": {
+    "type": "hitter",
+    "name": "Joe Mack",
+    "pa": 68,
+    "xwoba": 0.228,
+    "ops": 1.25
+  },
+  "chase petty": {
+    "type": "pitcher",
+    "name": "Chase Petty",
+    "era": 5.91,
+    "whip": 1.22,
+    "physics_score": 9.8,
+    "ip": 10.7,
+    "so": 2
+  },
+  "cesar prieto": {
+    "type": "hitter",
+    "name": "C\u00e9sar Prieto",
+    "pa": 22,
+    "xwoba": 0.0,
+    "ops": 1.0
+  },
+  "jackson chourio": {
+    "type": "hitter",
+    "name": "Jackson Chourio",
+    "pa": 101,
+    "xwoba": 0.318,
+    "ops": 1.404
+  },
+  "zach cole": {
+    "type": "hitter",
+    "name": "Zach Cole",
+    "pa": 53,
+    "xwoba": 0.237,
+    "ops": 1.353
+  },
+  "jesus rodriguez": {
+    "type": "hitter",
+    "name": "Jesus Rodriguez",
+    "pa": 42,
+    "xwoba": 0.265,
+    "ops": 1.289
+  },
+  "bryce eldridge": {
+    "type": "hitter",
+    "name": "Bryce Eldridge",
+    "pa": 60,
+    "xwoba": 0.286,
+    "ops": 1.327
+  },
+  "justin foscue": {
+    "type": "hitter",
+    "name": "Justin Foscue",
+    "pa": 59,
+    "xwoba": 0.319,
+    "ops": 1.418
+  },
+  "stephen kolek": {
+    "type": "pitcher",
+    "name": "Stephen Kolek",
+    "era": 3.48,
+    "whip": 0.94,
+    "physics_score": 53.8,
+    "ip": 31.0,
+    "so": 19
+  },
+  "zach dezenzo": {
+    "type": "hitter",
+    "name": "Zach Dezenzo",
+    "pa": 48,
+    "xwoba": 0.281,
+    "ops": 1.364
+  },
+  "joel peguero": {
+    "type": "pitcher",
+    "name": "Joel Peguero",
+    "era": 2.7,
+    "whip": 1.1,
+    "physics_score": 61.7,
+    "ip": 10.0,
+    "so": 4
+  },
+  "yuki matsui": {
+    "type": "pitcher",
+    "name": "Yuki Matsui",
+    "era": 0.64,
+    "whip": 0.93,
+    "physics_score": 100.0,
+    "ip": 14.0,
+    "so": 14
+  },
+  "bryan torres": {
+    "type": "hitter",
+    "name": "Bryan Torres",
+    "pa": 29,
+    "xwoba": 0.426,
+    "ops": 1.615
+  },
+  "trent thornton": {
+    "type": "pitcher",
+    "name": "Trent Thornton",
+    "era": 2.31,
+    "whip": 0.94,
+    "physics_score": 68.0,
+    "ip": 11.7,
+    "so": 5
+  },
+  "mickey gasper": {
+    "type": "hitter",
+    "name": "Mickey Gasper",
+    "pa": 50,
+    "xwoba": 0.35,
+    "ops": 1.404
+  },
+  "rodolfo duran": {
+    "type": "hitter",
+    "name": "Rodolfo Dur\u00e1n",
+    "pa": 28,
+    "xwoba": 0.231,
+    "ops": 1.217
+  },
+  "nick lodolo": {
+    "type": "pitcher",
+    "name": "Nick Lodolo",
+    "era": 5.57,
+    "whip": 1.38,
+    "physics_score": 26.9,
+    "ip": 21.0,
+    "so": 18
+  },
+  "spencer jones": {
+    "type": "hitter",
+    "name": "Spencer Jones",
+    "pa": 27,
+    "xwoba": 0.209,
+    "ops": 1.167
+  },
+  "ryan waldschmidt": {
+    "type": "hitter",
+    "name": "Ryan Waldschmidt",
+    "pa": 77,
+    "xwoba": 0.331,
+    "ops": 1.394
+  },
+  "travis adams": {
+    "type": "pitcher",
+    "name": "Travis Adams",
+    "era": 7.2,
+    "whip": 1.5,
+    "physics_score": 8.6,
+    "ip": 10.0,
+    "so": 12
+  },
+  "nick sogard": {
+    "type": "hitter",
+    "name": "Nick Sogard",
+    "pa": 40,
+    "xwoba": 0.324,
+    "ops": 1.371
+  },
+  "carlos rodon": {
+    "type": "pitcher",
+    "name": "Carlos Rod\u00f3n",
+    "era": 3.32,
+    "whip": 1.32,
+    "physics_score": 64.2,
+    "ip": 19.0,
+    "so": 20
+  },
+  "gage workman": {
+    "type": "hitter",
+    "name": "Gage Workman",
+    "pa": 38,
+    "xwoba": 0.234,
+    "ops": 1.395
+  },
+  "anthony volpe": {
+    "type": "hitter",
+    "name": "Anthony Volpe",
+    "pa": 48,
+    "xwoba": 0.345,
+    "ops": 1.385
+  },
+  "endy rodriguez": {
+    "type": "hitter",
+    "name": "Endy Rodr\u00edguez",
+    "pa": 37,
+    "xwoba": 0.384,
+    "ops": 1.308
+  },
+  "aj ewing": {
+    "type": "hitter",
+    "name": "A.J. Ewing",
+    "pa": 68,
+    "xwoba": 0.306,
+    "ops": 1.333
+  },
+  "sandy leon": {
+    "type": "hitter",
+    "name": "Sandy Le\u00f3n",
+    "pa": 24,
+    "xwoba": 0.074,
+    "ops": 1.083
+  },
+  "haseong kim": {
+    "type": "hitter",
+    "name": "Ha-Seong Kim",
+    "pa": 47,
+    "xwoba": 0.149,
+    "ops": 1.095
+  },
+  "henry bolte": {
+    "type": "hitter",
+    "name": "Henry Bolte",
+    "pa": 58,
+    "xwoba": 0.327,
+    "ops": 1.333
+  },
+  "bryce miller": {
+    "type": "pitcher",
+    "name": "Bryce Miller",
+    "era": 2.25,
+    "whip": 1.0,
+    "physics_score": 77.0,
+    "ip": 16.0,
+    "so": 14
+  },
+  "zebby matthews": {
+    "type": "pitcher",
+    "name": "Zebby Matthews",
+    "era": 2.37,
+    "whip": 0.84,
+    "physics_score": 75.6,
+    "ip": 19.0,
+    "so": 17
+  },
+  "sterlin thompson": {
+    "type": "hitter",
+    "name": "Sterlin Thompson",
+    "pa": 30,
+    "xwoba": 0.225,
+    "ops": 1.192
+  },
+  "grayson rodriguez": {
+    "type": "pitcher",
+    "name": "Grayson Rodriguez",
+    "era": 7.53,
+    "whip": 1.67,
+    "physics_score": 0.0,
+    "ip": 14.3,
+    "so": 14
+  },
+  "colt emerson": {
+    "type": "hitter",
+    "name": "Colt Emerson",
+    "pa": 43,
+    "xwoba": 0.367,
+    "ops": 1.526
+  },
+  "lucas giolito": {
+    "type": "pitcher",
+    "name": "Lucas Giolito",
+    "era": 4.97,
+    "whip": 1.74,
+    "physics_score": 28.9,
+    "ip": 12.7,
+    "so": 6
+  },
+  "jackson holliday": {
+    "type": "hitter",
+    "name": "Jackson Holliday",
+    "pa": 37,
+    "xwoba": 0.332,
+    "ops": 1.424
+  },
+  "chadwick tromp": {
+    "type": "hitter",
+    "name": "Chadwick Tromp",
+    "pa": 21,
+    "xwoba": 0.23,
+    "ops": 1.286
+  },
+  "dylan crews": {
+    "type": "hitter",
+    "name": "Dylan Crews",
+    "pa": 43,
+    "xwoba": 0.256,
+    "ops": 1.317
+  },
+  "jhostynxon garcia": {
+    "type": "hitter",
+    "name": "Jhostynxon Garcia",
+    "pa": 29,
+    "xwoba": 0.208,
+    "ops": 1.214
+  },
+  "gerrit cole": {
+    "type": "pitcher",
+    "name": "Gerrit Cole",
+    "era": 0.0,
+    "whip": 0.71,
+    "physics_score": 100.0,
+    "ip": 12.7,
+    "so": 12
+  },
+  "donovan walton": {
+    "type": "hitter",
+    "name": "Donovan Walton",
+    "pa": 25,
+    "xwoba": 0.307,
+    "ops": 1.375
+  },
+  "wade meckler": {
+    "type": "hitter",
+    "name": "Wade Meckler",
+    "pa": 27,
+    "xwoba": 0.379,
+    "ops": 1.538
+  },
+  "tommy troy": {
+    "type": "hitter",
+    "name": "Tommy Troy",
+    "pa": 22,
+    "xwoba": 0.331,
+    "ops": 1.368
+  },
+  "troy melton": {
+    "type": "pitcher",
+    "name": "Troy Melton",
+    "era": 1.47,
+    "whip": 0.93,
+    "physics_score": 79.8,
+    "ip": 18.3,
+    "so": 7
+  }
+}

@@ -155,10 +155,54 @@ class LineupFetcher:
                             name = a.get('title') or a.text.strip()
                             players.append(name)
                     
-                    if len(players) >= 7:
+                    # Graceful pitcher tag parsing (Additional Requirement 1)
+                    pitchers_data = []
+                    try:
+                        p_highlight = ul.select_one('.lineup__player-highlight')
+                        if p_highlight:
+                            p_name_el = p_highlight.select_one('.lineup__player-highlight-name')
+                            if p_name_el:
+                                a_tags = p_name_el.find_all('a')
+                                if not a_tags:
+                                    p_text = p_name_el.text.strip()
+                                    p_name = p_text.split('\n')[0].strip()
+                                    is_o = "(O)" in p_text or "opener" in p_text.lower()
+                                    is_b = "(B)" in p_text or "bulk" in p_text.lower() or "primary" in p_text.lower()
+                                    pitchers_data.append({
+                                        'name': p_name,
+                                        'rw_is_opener': is_o,
+                                        'rw_is_bulk': is_b
+                                    })
+                                else:
+                                    text_content = p_name_el.text
+                                    for a in a_tags:
+                                        p_name = a.get('title') or a.text.strip()
+                                        sibling_text = ""
+                                        next_sib = a.next_sibling
+                                        while next_sib and not next_sib.name:
+                                            sibling_text += str(next_sib)
+                                            next_sib = next_sib.next_sibling
+                                        is_o = "(O)" in sibling_text or "opener" in sibling_text.lower()
+                                        is_b = "(B)" in sibling_text or "bulk" in sibling_text.lower() or "primary" in sibling_text.lower()
+                                        if len(a_tags) == 1:
+                                            if not is_o:
+                                                is_o = "(O)" in text_content or "opener" in text_content.lower()
+                                            if not is_b:
+                                                is_b = "(B)" in text_content or "bulk" in text_content.lower() or "primary" in text_content.lower()
+                                        pitchers_data.append({
+                                            'name': p_name,
+                                            'rw_is_opener': is_o,
+                                            'rw_is_bulk': is_b
+                                        })
+                    except Exception as e:
+                        print(f"[LINEUPS WARNING]: RotoWire pitcher tag parsing failed: {e}")
+                        pitchers_data = []
+                    
+                    if len(players) >= 7 or pitchers_data:
                         rotowire_lineups[team_name] = {
                             'lineup': players,
-                            'is_confirmed': is_confirmed
+                            'is_confirmed': is_confirmed,
+                            'pitchers': pitchers_data
                         }
             
             if not rotowire_lineups:

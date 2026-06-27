@@ -15,14 +15,14 @@
     "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Pittsburgh Pirates": {
-    "score": 54,
-    "status": "CAUTION",
-    "recorded_at": "2026-06-24T12:15:32.027044"
+    "score": 5,
+    "status": "FADE",
+    "recorded_at": "2026-06-25T13:08:56.816518"
   },
   "Texas Rangers": {
-    "score": 64,
+    "score": 54,
     "status": "CAUTION",
-    "recorded_at": "2026-06-11T10:22:41.610405"
+    "recorded_at": "2026-06-25T13:08:56.816518"
   },
   "Chicago White Sox": {
     "score": 53,
@@ -40,9 +40,9 @@
     "recorded_at": "2026-06-12T12:07:47.910880"
   },
   "Athletics": {
-    "score": 64,
-    "status": "CAUTION",
-    "recorded_at": "2026-06-24T12:15:32.027044"
+    "score": 20,
+    "status": "FADE",
+    "recorded_at": "2026-06-25T13:08:56.816518"
   },
   "Philadelphia Phillies": {
     "score": 49,
@@ -50,9 +50,9 @@
     "recorded_at": "2026-05-29T23:44:20.844143"
   },
   "Arizona Diamondbacks": {
-    "score": 92,
+    "score": 98,
     "status": "TRUST",
-    "recorded_at": "2026-06-24T12:15:32.027044"
+    "recorded_at": "2026-06-24T19:02:58.922535"
   },
   "Kansas City Royals": {
     "score": 74,
@@ -80,9 +80,9 @@
     "recorded_at": "2026-06-09T18:50:42.575869"
   },
   "Tampa Bay Rays": {
-    "score": 27,
-    "status": "FADE",
-    "recorded_at": "2026-06-09T18:50:42.575869"
+    "score": 75,
+    "status": "CAUTION",
+    "recorded_at": "2026-06-24T19:02:58.922535"
   },
   "Colorado Rockies": {
     "score": 84,
@@ -110,9 +110,9 @@
     "recorded_at": "2026-06-22T12:03:24.791211"
   },
   "Chicago Cubs": {
-    "score": 58,
-    "status": "CAUTION",
-    "recorded_at": "2026-06-24T12:15:32.027044"
+    "score": 45,
+    "status": "FADE",
+    "recorded_at": "2026-06-24T19:02:58.922535"
   },
   "Boston Red Sox": {
     "score": 78,
@@ -123,5 +123,10 @@
     "score": 58,
     "status": "CAUTION",
     "recorded_at": "2026-06-24T12:15:32.027044"
+  },
+  "Detroit Tigers": {
+    "score": 87,
+    "status": "TRUST",
+    "recorded_at": "2026-06-25T13:08:56.816518"
   }
 }

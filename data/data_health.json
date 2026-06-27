@@ -1,0 +1,13 @@
+{
+  "status": "degraded",
+  "warnings": [
+    "RotoWire scraper failed 3 consecutive times \u2014 circuit breaker serving cached data."
+  ],
+  "timestamp": "2026-06-27T03:11:05.242028+00:00",
+  "last_successful_weather": "2026-06-27T03:11:06.312881+00:00",
+  "last_successful_odds": "2026-06-27T03:11:48.339478+00:00",
+  "last_successful_lineups": "2026-06-27T03:12:44.525224+00:00",
+  "last_successful_rotowire": "2026-06-27T03:12:44.525213+00:00",
+  "last_successful_statsapi": "2026-06-27T03:12:44.525230+00:00",
+  "last_successful_props": "2026-06-27T03:11:06.312891+00:00"
+}

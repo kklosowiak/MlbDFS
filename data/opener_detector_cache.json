@@ -1,0 +1,122 @@
+{
+    "drew smith": {
+        "career_starts": 1,
+        "relief_pct": 99.5,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:14:54.458409"
+    },
+    "john brebbia": {
+        "career_starts": 21,
+        "relief_pct": 94.4,
+        "avg_ip_l10": 1.5,
+        "timestamp": "2026-06-26T23:14:55.976640"
+    },
+    "cooper hjerpe": {
+        "career_starts": 0,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:14:57.898706"
+    },
+    "michael mcgreevy": {
+        "career_starts": 35,
+        "relief_pct": 5.4,
+        "avg_ip_l10": 5.63,
+        "timestamp": "2026-06-26T23:14:59.959496"
+    },
+    "josh ekness": {
+        "career_starts": 0,
+        "relief_pct": 100.0,
+        "avg_ip_l10": 0.89,
+        "timestamp": "2026-06-26T23:15:01.420699"
+    },
+    "samy natera": {
+        "career_starts": 0,
+        "relief_pct": 100.0,
+        "avg_ip_l10": 1.14,
+        "timestamp": "2026-06-26T23:15:03.529316"
+    },
+    "henry baez": {
+        "career_starts": 0,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:15:05.004754"
+    },
+    "jt ginn": {
+        "career_starts": 37,
+        "relief_pct": 24.5,
+        "avg_ip_l10": 4.33,
+        "timestamp": "2026-06-26T23:15:06.534862"
+    },
+    "miguel mendez": {
+        "career_starts": 0,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:15:08.022968"
+    },
+    "walker buehler": {
+        "career_starts": 162,
+        "relief_pct": 6.4,
+        "avg_ip_l10": 4.63,
+        "timestamp": "2026-06-26T23:15:10.098471"
+    },
+    "nick frasso": {
+        "career_starts": 0,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:15:11.641040"
+    },
+    "roki sasaki": {
+        "career_starts": 22,
+        "relief_pct": 8.3,
+        "avg_ip_l10": 5.1,
+        "timestamp": "2026-06-26T23:15:13.765705"
+    },
+    "spencer bivens": {
+        "career_starts": 2,
+        "relief_pct": 97.5,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:15:15.395682"
+    },
+    "joe jimenez": {
+        "career_starts": 0,
+        "relief_pct": 100.0,
+        "avg_ip_l10": 0.0,
+        "timestamp": "2026-06-26T23:15:16.954789"
+    },
+    "taj bradley": {
+        "career_starts": 88,
+        "relief_pct": 2.2,
+        "avg_ip_l10": 5.6,
+        "timestamp": "2026-06-26T23:19:33.665169"
+    },
+    "tomoyuki sugano": {
+        "career_starts": 46,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 5.37,
+        "timestamp": "2026-06-26T23:19:35.200443"
+    },
+    "max meyer": {
+        "career_starts": 42,
+        "relief_pct": 0.0,
+        "avg_ip_l10": 5.37,
+        "timestamp": "2026-06-26T23:19:36.838020"
+    },
+    "walbert urena": {
+        "career_starts": 13,
+        "relief_pct": 13.3,
+        "avg_ip_l10": 4.43,
+        "timestamp": "2026-06-26T23:19:38.398160"
+    },
+    "trevor mcdonald": {
+        "career_starts": 12,
+        "relief_pct": 14.3,
+        "avg_ip_l10": 4.93,
+        "timestamp": "2026-06-26T23:19:39.962607"
+    },
+    "reynaldo lopez": {
+        "career_starts": 129,
+        "relief_pct": 55.1,
+        "avg_ip_l10": 3.03,
+        "timestamp": "2026-06-26T23:19:41.550852"
+    }
+}

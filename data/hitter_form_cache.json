@@ -1,0 +1,4097 @@
+{
+    "josh jung": {
+        "player": "Josh Jung",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 11,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.544,
+        "timestamp": "2026-06-26T23:12:51.645187"
+    },
+    "owen caissie": {
+        "player": "Owen Caissie",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 5,
+        "recent_k_pct": 23.8,
+        "recent_ops": 1.31,
+        "timestamp": "2026-06-26T23:12:58.386507"
+    },
+    "jacob young": {
+        "player": "Jacob Young",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 4,
+        "recent_k_pct": 17.4,
+        "recent_ops": 0.391,
+        "timestamp": "2026-06-26T23:12:46.378396"
+    },
+    "yordan alvarez": {
+        "player": "Yordan Alvarez",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 5,
+        "recent_k_pct": 17.2,
+        "recent_ops": 0.795,
+        "timestamp": "2026-06-26T23:12:53.332685"
+    },
+    "ivan herrera": {
+        "player": "Iv\u00e1n Herrera",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 7,
+        "recent_k_pct": 22.6,
+        "recent_ops": 0.815,
+        "timestamp": "2026-06-26T23:12:48.114473"
+    },
+    "jonah cox": {
+        "player": "Jonah Cox",
+        "games_sampled": 7,
+        "recent_pa": 8,
+        "recent_k": 5,
+        "recent_k_pct": 62.5,
+        "recent_ops": 0.571,
+        "timestamp": "2026-06-25T11:22:06.814401"
+    },
+    "jac caglianone": {
+        "player": "Jac Caglianone",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 11,
+        "recent_k_pct": 36.7,
+        "recent_ops": 1.293,
+        "timestamp": "2026-06-26T23:13:22.404991"
+    },
+    "luis campusano": {
+        "player": "Luis Campusano",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 8,
+        "recent_k_pct": 32.0,
+        "recent_ops": 1.042,
+        "timestamp": "2026-06-25T11:22:07.709448"
+    },
+    "ty france": {
+        "player": "Ty France",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 5,
+        "recent_k_pct": 20.8,
+        "recent_ops": 1.375,
+        "timestamp": "2026-06-26T23:12:55.123740"
+    },
+    "ben rice": {
+        "player": "Ben Rice",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 9,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.715,
+        "timestamp": "2026-06-25T11:22:12.404643"
+    },
+    "jackson merrill": {
+        "player": "Jackson Merrill",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 8,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.457,
+        "timestamp": "2026-06-26T23:13:24.888587"
+    },
+    "alec bohm": {
+        "player": "Alec Bohm",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 4,
+        "recent_k_pct": 13.3,
+        "recent_ops": 0.311,
+        "timestamp": "2026-06-26T23:12:51.641174"
+    },
+    "tristan gray": {
+        "player": "Tristan Gray",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 5,
+        "recent_k_pct": 35.7,
+        "recent_ops": 0.643,
+        "timestamp": "2026-06-26T23:12:58.805197"
+    },
+    "jimmy crooks": {
+        "player": "Jimmy Crooks",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 5,
+        "recent_k_pct": 27.8,
+        "recent_ops": 0.347,
+        "timestamp": "2026-06-25T11:22:14.602762"
+    },
+    "nasim nunez": {
+        "player": "Nasim Nu\u00f1ez",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 9,
+        "recent_k_pct": 37.5,
+        "recent_ops": 0.826,
+        "timestamp": "2026-06-26T23:13:02.402912"
+    },
+    "riley greene": {
+        "player": "Riley Greene",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 4,
+        "recent_k_pct": 13.8,
+        "recent_ops": 0.754,
+        "timestamp": "2026-06-26T23:13:21.112431"
+    },
+    "moises ballesteros": {
+        "player": "Mois\u00e9s Ballesteros",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 3,
+        "recent_k_pct": 17.6,
+        "recent_ops": 0.665,
+        "timestamp": "2026-06-12T11:50:13.046440"
+    },
+    "garrett mitchell": {
+        "player": "Garrett Mitchell",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 7,
+        "recent_k_pct": 25.9,
+        "recent_ops": 0.63,
+        "timestamp": "2026-06-26T23:12:56.852445"
+    },
+    "chase delauter": {
+        "player": "Chase DeLauter",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.703,
+        "timestamp": "2026-06-25T11:22:14.166418"
+    },
+    "jackson chourio": {
+        "player": "Jackson Chourio",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 7,
+        "recent_k_pct": 21.9,
+        "recent_ops": 0.636,
+        "timestamp": "2026-06-26T23:12:48.978573"
+    },
+    "justin crawford": {
+        "player": "Justin Crawford",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 6,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.702,
+        "timestamp": "2026-06-25T11:22:01.406267"
+    },
+    "victor robles": {
+        "player": "Victor Robles",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 4,
+        "recent_k_pct": 17.4,
+        "recent_ops": 0.36,
+        "timestamp": "2026-06-24T00:19:27.887297"
+    },
+    "bryce harper": {
+        "player": "Bryce Harper",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 1.514,
+        "timestamp": "2026-06-26T23:13:02.104545"
+    },
+    "trent grisham": {
+        "player": "Trent Grisham",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 2,
+        "recent_k_pct": 6.2,
+        "recent_ops": 1.058,
+        "timestamp": "2026-06-12T11:50:03.173878"
+    },
+    "carson benge": {
+        "player": "Carson Benge",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 7,
+        "recent_k_pct": 21.9,
+        "recent_ops": 0.844,
+        "timestamp": "2026-06-26T23:13:25.852353"
+    },
+    "jose ramirez": {
+        "player": "Jos\u00e9 Ram\u00edrez",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 6,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.646,
+        "timestamp": "2026-06-25T11:22:03.719567"
+    },
+    "christian vazquez": {
+        "player": "Christian V\u00e1zquez",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 5,
+        "recent_k_pct": 20.8,
+        "recent_ops": 0.469,
+        "timestamp": "2026-06-12T11:49:52.063307"
+    },
+    "brett baty": {
+        "player": "Brett Baty",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 5,
+        "recent_k_pct": 26.3,
+        "recent_ops": 0.328,
+        "timestamp": "2026-06-26T23:13:08.758531"
+    },
+    "pedro ramirez": {
+        "player": "Pedro Ram\u00edrez",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 4,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.824,
+        "timestamp": "2026-06-24T15:25:03.485764"
+    },
+    "gabriel moreno": {
+        "player": "Gabriel Moreno",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 1,
+        "recent_k_pct": 3.3,
+        "recent_ops": 0.907,
+        "timestamp": "2026-06-26T23:13:00.469045"
+    },
+    "seiya suzuki": {
+        "player": "Seiya Suzuki",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 10,
+        "recent_k_pct": 29.4,
+        "recent_ops": 0.893,
+        "timestamp": "2026-06-26T23:12:58.394810"
+    },
+    "samuel basallo": {
+        "player": "Samuel Basallo",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 10,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.626,
+        "timestamp": "2026-06-26T23:12:51.627056"
+    },
+    "daniel schneemann": {
+        "player": "Daniel Schneemann",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 9,
+        "recent_k_pct": 37.5,
+        "recent_ops": 0.127,
+        "timestamp": "2026-06-26T23:12:49.890810"
+    },
+    "charles mcadoo": {
+        "player": "Charles McAdoo",
+        "games_sampled": 5,
+        "recent_pa": 16,
+        "recent_k": 5,
+        "recent_k_pct": 31.2,
+        "recent_ops": 0.562,
+        "timestamp": "2026-06-12T11:50:18.753579"
+    },
+    "andrew benintendi": {
+        "player": "Andrew Benintendi",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 2,
+        "recent_k_pct": 11.1,
+        "recent_ops": 0.833,
+        "timestamp": "2026-06-26T23:13:24.981877"
+    },
+    "jake bauers": {
+        "player": "Jake Bauers",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 10,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.966,
+        "timestamp": "2026-06-26T23:12:46.384617"
+    },
+    "daylen lile": {
+        "player": "Daylen Lile",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 5,
+        "recent_k_pct": 19.2,
+        "recent_ops": 0.392,
+        "timestamp": "2026-06-26T23:13:22.536230"
+    },
+    "santiago espinal": {
+        "player": "Santiago Espinal",
+        "games_sampled": 7,
+        "recent_pa": 9,
+        "recent_k": 2,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.889,
+        "timestamp": "2026-06-12T11:49:52.035894"
+    },
+    "jake mccarthy": {
+        "player": "Jake McCarthy",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 4,
+        "recent_k_pct": 12.5,
+        "recent_ops": 1.148,
+        "timestamp": "2026-06-26T23:12:55.042886"
+    },
+    "kazuma okamoto": {
+        "player": "Kazuma Okamoto",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 1.403,
+        "timestamp": "2026-06-26T23:13:07.266517"
+    },
+    "sam antonacci": {
+        "player": "Sam Antonacci",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 3,
+        "recent_k_pct": 9.7,
+        "recent_ops": 1.022,
+        "timestamp": "2026-06-26T23:12:48.111099"
+    },
+    "ramon laureano": {
+        "player": "Ram\u00f3n Laureano",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 9,
+        "recent_k_pct": 32.1,
+        "recent_ops": 0.667,
+        "timestamp": "2026-06-25T11:22:10.740385"
+    },
+    "kody clemens": {
+        "player": "Kody Clemens",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 7,
+        "recent_k_pct": 21.2,
+        "recent_ops": 0.542,
+        "timestamp": "2026-06-26T23:13:02.142027"
+    },
+    "vladimir guerrero": {
+        "player": "Vladimir Guerrero Jr.",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 4,
+        "recent_k_pct": 13.3,
+        "recent_ops": 0.517,
+        "timestamp": "2026-06-26T23:12:48.117844"
+    },
+    "alejandro osuna": {
+        "player": "Alejandro Osuna",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 4,
+        "recent_k_pct": 16.0,
+        "recent_ops": 0.751,
+        "timestamp": "2026-06-26T23:12:58.289217"
+    },
+    "cedric mullins": {
+        "player": "Cedric Mullins",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.656,
+        "timestamp": "2026-06-26T23:12:48.133889"
+    },
+    "matt vierling": {
+        "player": "Matt Vierling",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 5,
+        "recent_k_pct": 21.7,
+        "recent_ops": 0.67,
+        "timestamp": "2026-06-26T23:12:58.590400"
+    },
+    "jakob marsee": {
+        "player": "Jakob Marsee",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 5,
+        "recent_k_pct": 17.2,
+        "recent_ops": 0.389,
+        "timestamp": "2026-06-26T23:13:24.784390"
+    },
+    "drake baldwin": {
+        "player": "Drake Baldwin",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 14,
+        "recent_k_pct": 56.0,
+        "recent_ops": 0.08,
+        "timestamp": "2026-06-26T23:13:22.967060"
+    },
+    "tyler freeman": {
+        "player": "Tyler Freeman",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 3,
+        "recent_k_pct": 11.1,
+        "recent_ops": 0.825,
+        "timestamp": "2026-06-25T11:22:13.243167"
+    },
+    "will smith": {
+        "player": "Will Smith",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 6,
+        "recent_k_pct": 23.1,
+        "recent_ops": 0.923,
+        "timestamp": "2026-06-25T11:22:02.990761"
+    },
+    "dylan beavers": {
+        "player": "Dylan Beavers",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 1.008,
+        "timestamp": "2026-06-25T11:22:11.645283"
+    },
+    "ryan mountcastle": {
+        "player": "Ryan Mountcastle",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 2,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.593,
+        "timestamp": "2026-06-01T08:47:51.311183"
+    },
+    "ronald acuna": {
+        "player": "Ronald Acu\u00f1a Jr.",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.601,
+        "timestamp": "2026-06-25T11:21:50.358418"
+    },
+    "ian happ": {
+        "player": "Ian Happ",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.697,
+        "timestamp": "2026-06-26T23:12:56.919690"
+    },
+    "alex call": {
+        "player": "Alex Call",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 3,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.852,
+        "timestamp": "2026-06-25T11:22:01.608676"
+    },
+    "fernando tatis": {
+        "player": "Fernando Tatis Jr.",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 6,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.893,
+        "timestamp": "2026-06-26T23:13:21.066987"
+    },
+    "pete alonso": {
+        "player": "Pete Alonso",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 9,
+        "recent_k_pct": 29.0,
+        "recent_ops": 1.06,
+        "timestamp": "2026-06-26T23:12:56.719917"
+    },
+    "zach mckinstry": {
+        "player": "Zach McKinstry",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 4,
+        "recent_k_pct": 16.0,
+        "recent_ops": 0.741,
+        "timestamp": "2026-06-26T23:12:53.120710"
+    },
+    "vaughn grissom": {
+        "player": "Vaughn Grissom",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 6,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.646,
+        "timestamp": "2026-06-24T00:19:22.074751"
+    },
+    "chase meidroth": {
+        "player": "Chase Meidroth",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 11,
+        "recent_k_pct": 39.3,
+        "recent_ops": 0.545,
+        "timestamp": "2026-06-26T23:12:46.361347"
+    },
+    "kyle stowers": {
+        "player": "Kyle Stowers",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 12,
+        "recent_k_pct": 41.4,
+        "recent_ops": 0.845,
+        "timestamp": "2026-06-26T23:13:06.353462"
+    },
+    "brandon lowe": {
+        "player": "Brandon Lowe",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 7,
+        "recent_k_pct": 21.2,
+        "recent_ops": 0.833,
+        "timestamp": "2026-06-25T11:22:01.305092"
+    },
+    "chandler simpson": {
+        "player": "Chandler Simpson",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 1,
+        "recent_k_pct": 3.6,
+        "recent_ops": 0.704,
+        "timestamp": "2026-06-25T11:22:06.935784"
+    },
+    "trevor larnach": {
+        "player": "Trevor Larnach",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 2,
+        "recent_k_pct": 7.1,
+        "recent_ops": 1.084,
+        "timestamp": "2026-06-26T23:13:08.524097"
+    },
+    "travis bazzana": {
+        "player": "Travis Bazzana",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 10,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.869,
+        "timestamp": "2026-06-26T23:13:25.562311"
+    },
+    "christian yelich": {
+        "player": "Christian Yelich",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 8,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.661,
+        "timestamp": "2026-06-26T23:13:01.771942"
+    },
+    "manny machado": {
+        "player": "Manny Machado",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 7,
+        "recent_k_pct": 24.1,
+        "recent_ops": 1.08,
+        "timestamp": "2026-06-26T23:13:05.434761"
+    },
+    "keibert ruiz": {
+        "player": "Keibert Ruiz",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 5,
+        "recent_k_pct": 19.2,
+        "recent_ops": 0.599,
+        "timestamp": "2026-06-26T23:12:49.920259"
+    },
+    "rob refsnyder": {
+        "player": "Rob Refsnyder",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 3,
+        "recent_k_pct": 15.0,
+        "recent_ops": 0.217,
+        "timestamp": "2026-06-26T23:13:23.073637"
+    },
+    "mike trout": {
+        "player": "Mike Trout",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 9,
+        "recent_k_pct": 28.1,
+        "recent_ops": 1.178,
+        "timestamp": "2026-06-25T11:22:13.960151"
+    },
+    "colby thomas": {
+        "player": "Colby Thomas",
+        "games_sampled": 7,
+        "recent_pa": 11,
+        "recent_k": 5,
+        "recent_k_pct": 45.5,
+        "recent_ops": 0.0,
+        "timestamp": "2026-06-24T00:19:42.355137"
+    },
+    "kevin mcgonigle": {
+        "player": "Kevin McGonigle",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 4,
+        "recent_k_pct": 12.9,
+        "recent_ops": 0.804,
+        "timestamp": "2026-06-26T23:13:04.190335"
+    },
+    "jonathan aranda": {
+        "player": "Jonathan Aranda",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 0.97,
+        "timestamp": "2026-06-25T11:22:14.151509"
+    },
+    "jj bleday": {
+        "player": "JJ Bleday",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 11,
+        "recent_k_pct": 40.7,
+        "recent_ops": 0.283,
+        "timestamp": "2026-06-26T23:13:03.792467"
+    },
+    "sal stewart": {
+        "player": "Sal Stewart",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 10,
+        "recent_k_pct": 34.5,
+        "recent_ops": 0.612,
+        "timestamp": "2026-06-25T11:22:15.760691"
+    },
+    "nicky lopez": {
+        "player": "Nicky Lopez",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 1,
+        "recent_k_pct": 4.3,
+        "recent_ops": 0.79,
+        "timestamp": "2026-06-26T23:13:02.094542"
+    },
+    "nolan arenado": {
+        "player": "Nolan Arenado",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 3,
+        "recent_k_pct": 11.1,
+        "recent_ops": 0.693,
+        "timestamp": "2026-06-26T23:12:55.579147"
+    },
+    "henry bolte": {
+        "player": "Henry Bolte",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 0.874,
+        "timestamp": "2026-06-26T23:13:04.653185"
+    },
+    "max muncy": {
+        "player": "Max Muncy",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 8,
+        "recent_k_pct": 32.0,
+        "recent_ops": 0.668,
+        "timestamp": "2026-06-26T23:13:24.268615"
+    },
+    "jake burger": {
+        "player": "Jake Burger",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 6,
+        "recent_k_pct": 22.2,
+        "recent_ops": 1.081,
+        "timestamp": "2026-06-26T23:12:53.376316"
+    },
+    "mauricio dubon": {
+        "player": "Mauricio Dub\u00f3n",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 2,
+        "recent_k_pct": 7.4,
+        "recent_ops": 0.852,
+        "timestamp": "2026-06-26T23:13:24.171095"
+    },
+    "angel martinez": {
+        "player": "Angel Mart\u00ednez",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 7,
+        "recent_k_pct": 24.1,
+        "recent_ops": 0.829,
+        "timestamp": "2026-06-25T11:22:02.885771"
+    },
+    "jared young": {
+        "player": "Jared Young",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 5,
+        "recent_k_pct": 26.3,
+        "recent_ops": 0.904,
+        "timestamp": "2026-06-26T23:13:24.769995"
+    },
+    "ozzie albies": {
+        "player": "Ozzie Albies",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 1,
+        "recent_k_pct": 3.7,
+        "recent_ops": 0.995,
+        "timestamp": "2026-06-26T23:12:54.899568"
+    },
+    "jeremy pena": {
+        "player": "Jeremy Pe\u00f1a",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 5,
+        "recent_k_pct": 20.8,
+        "recent_ops": 0.708,
+        "timestamp": "2026-06-26T23:13:24.621673"
+    },
+    "blake dunn": {
+        "player": "Blake Dunn",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 6,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.823,
+        "timestamp": "2026-06-26T23:12:55.109263"
+    },
+    "max schuemann": {
+        "player": "Max Schuemann",
+        "games_sampled": 7,
+        "recent_pa": 10,
+        "recent_k": 2,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.833,
+        "timestamp": "2026-06-11T10:20:37.757133"
+    },
+    "victor mesa": {
+        "player": "Victor Mesa Jr.",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 3,
+        "recent_k_pct": 18.8,
+        "recent_ops": 0.697,
+        "timestamp": "2026-06-25T11:21:54.998956"
+    },
+    "joc pederson": {
+        "player": "Joc Pederson",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 9,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.695,
+        "timestamp": "2026-06-25T11:21:50.338748"
+    },
+    "mitch garver": {
+        "player": "Mitch Garver",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 9,
+        "recent_k_pct": 42.9,
+        "recent_ops": 0.588,
+        "timestamp": "2026-06-25T11:21:48.591026"
+    },
+    "nick loftin": {
+        "player": "Nick Loftin",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 4,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.747,
+        "timestamp": "2026-06-26T23:12:51.607268"
+    },
+    "brayan rocchio": {
+        "player": "Brayan Rocchio",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 5,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.6,
+        "timestamp": "2026-06-26T23:13:07.663664"
+    },
+    "rikuu nishida": {
+        "player": "Rikuu Nishida",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 3,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.471,
+        "timestamp": "2026-06-01T08:47:56.487429"
+    },
+    "colt keith": {
+        "player": "Colt Keith",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 2,
+        "recent_k_pct": 9.1,
+        "recent_ops": 0.468,
+        "timestamp": "2026-06-26T23:12:46.355560"
+    },
+    "rhys hoskins": {
+        "player": "Rhys Hoskins",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 10,
+        "recent_k_pct": 35.7,
+        "recent_ops": 0.5,
+        "timestamp": "2026-06-25T11:22:16.112421"
+    },
+    "liam hicks": {
+        "player": "Liam Hicks",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 5,
+        "recent_k_pct": 14.7,
+        "recent_ops": 0.972,
+        "timestamp": "2026-06-25T11:21:53.580930"
+    },
+    "mark vientos": {
+        "player": "Mark Vientos",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 7,
+        "recent_k_pct": 31.8,
+        "recent_ops": 1.141,
+        "timestamp": "2026-06-25T11:22:13.034841"
+    },
+    "joey loperfido": {
+        "player": "Joey Loperfido",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 4,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.655,
+        "timestamp": "2026-06-26T23:12:48.088530"
+    },
+    "leody taveras": {
+        "player": "Leody Taveras",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 9,
+        "recent_k_pct": 32.1,
+        "recent_ops": 0.632,
+        "timestamp": "2026-06-26T23:12:58.580230"
+    },
+    "ryan waldschmidt": {
+        "player": "Ryan Waldschmidt",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 10,
+        "recent_k_pct": 37.0,
+        "recent_ops": 0.53,
+        "timestamp": "2026-06-12T11:50:09.509262"
+    },
+    "junior caminero": {
+        "player": "Junior Caminero",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 6,
+        "recent_k_pct": 19.4,
+        "recent_ops": 1.413,
+        "timestamp": "2026-06-26T23:13:22.902715"
+    },
+    "nick kurtz": {
+        "player": "Nick Kurtz",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 15,
+        "recent_k_pct": 48.4,
+        "recent_ops": 0.598,
+        "timestamp": "2026-06-26T23:13:05.281864"
+    },
+    "carlos correa": {
+        "player": "Carlos Correa",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 8,
+        "recent_k_pct": 24.2,
+        "recent_ops": 0.756,
+        "timestamp": "2026-06-11T10:20:36.408004"
+    },
+    "joe mack": {
+        "player": "Joe Mack",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 3,
+        "recent_k_pct": 12.0,
+        "recent_ops": 0.905,
+        "timestamp": "2026-06-26T23:13:02.399335"
+    },
+    "luis arraez": {
+        "player": "Luis Arraez",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 1.029,
+        "timestamp": "2026-06-26T23:12:51.572933"
+    },
+    "matt olson": {
+        "player": "Matt Olson",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 7,
+        "recent_k_pct": 26.9,
+        "recent_ops": 0.443,
+        "timestamp": "2026-06-26T23:12:46.368257"
+    },
+    "kyle schwarber": {
+        "player": "Kyle Schwarber",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 1.339,
+        "timestamp": "2026-06-26T23:13:22.357413"
+    },
+    "curtis mead": {
+        "player": "Curtis Mead",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 8,
+        "recent_k_pct": 32.0,
+        "recent_ops": 0.591,
+        "timestamp": "2026-06-25T11:21:51.987713"
+    },
+    "oneil cruz": {
+        "player": "Oneil Cruz",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 8,
+        "recent_k_pct": 30.8,
+        "recent_ops": 1.106,
+        "timestamp": "2026-06-22T11:59:11.326503"
+    },
+    "nick madrigal": {
+        "player": "Nick Madrigal",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 1,
+        "recent_k_pct": 4.0,
+        "recent_ops": 0.909,
+        "timestamp": "2026-06-12T11:50:13.188602"
+    },
+    "dillon dingler": {
+        "player": "Dillon Dingler",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 8,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.989,
+        "timestamp": "2026-06-26T23:12:51.435370"
+    },
+    "otto lopez": {
+        "player": "Otto Lopez",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 2,
+        "recent_k_pct": 6.9,
+        "recent_ops": 0.898,
+        "timestamp": "2026-06-26T23:12:53.245609"
+    },
+    "isaac collins": {
+        "player": "Isaac Collins",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 4,
+        "recent_k_pct": 14.8,
+        "recent_ops": 0.719,
+        "timestamp": "2026-06-26T23:13:00.036494"
+    },
+    "jesus sanchez": {
+        "player": "Jes\u00fas S\u00e1nchez",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 7,
+        "recent_k_pct": 31.8,
+        "recent_ops": 0.427,
+        "timestamp": "2026-06-26T23:13:25.298496"
+    },
+    "troy johnston": {
+        "player": "Troy Johnston",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 2,
+        "recent_k_pct": 10.5,
+        "recent_ops": 0.754,
+        "timestamp": "2026-06-26T23:13:07.953071"
+    },
+    "william contreras": {
+        "player": "William Contreras",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 1.356,
+        "timestamp": "2026-06-26T23:13:02.413419"
+    },
+    "luis garcia": {
+        "player": "Luis Garc\u00eda Jr.",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 4,
+        "recent_k_pct": 19.0,
+        "recent_ops": 1.083,
+        "timestamp": "2026-06-24T10:10:42.149317"
+    },
+    "rafael devers": {
+        "player": "Rafael Devers",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 6,
+        "recent_k_pct": 24.0,
+        "recent_ops": 0.802,
+        "timestamp": "2026-06-26T23:13:24.775681"
+    },
+    "drew romo": {
+        "player": "Drew Romo",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 7,
+        "recent_k_pct": 28.0,
+        "recent_ops": 0.123,
+        "timestamp": "2026-06-24T00:19:25.556271"
+    },
+    "ildemaro vargas": {
+        "player": "Ildemaro Vargas",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 1,
+        "recent_k_pct": 5.3,
+        "recent_ops": 0.566,
+        "timestamp": "2026-06-24T10:10:44.631275"
+    },
+    "jordan walker": {
+        "player": "Jordan Walker",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.677,
+        "timestamp": "2026-06-26T23:13:00.268504"
+    },
+    "xavier edwards": {
+        "player": "Xavier Edwards",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 1,
+        "recent_k_pct": 4.2,
+        "recent_ops": 0.784,
+        "timestamp": "2026-06-26T23:13:07.259643"
+    },
+    "julio rodriguez": {
+        "player": "Julio Rodr\u00edguez",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 8,
+        "recent_k_pct": 27.6,
+        "recent_ops": 0.609,
+        "timestamp": "2026-06-26T23:12:48.125021"
+    },
+    "tommy troy": {
+        "player": "Tommy Troy",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.788,
+        "timestamp": "2026-06-26T23:12:48.121792"
+    },
+    "elly de la cruz": {
+        "player": "Elly De La Cruz",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 8,
+        "recent_k_pct": 27.6,
+        "recent_ops": 0.526,
+        "timestamp": "2026-06-26T23:13:21.203299"
+    },
+    "miguel rojas": {
+        "player": "Miguel Rojas",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 1,
+        "recent_k_pct": 8.3,
+        "recent_ops": 1.144,
+        "timestamp": "2026-06-24T10:10:38.523752"
+    },
+    "josh bell": {
+        "player": "Josh Bell",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 4,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.761,
+        "timestamp": "2026-06-26T23:12:46.373417"
+    },
+    "victor bericoto": {
+        "player": "Victor Bericoto",
+        "games_sampled": 7,
+        "recent_pa": 13,
+        "recent_k": 5,
+        "recent_k_pct": 38.5,
+        "recent_ops": 0.923,
+        "timestamp": "2026-06-26T23:12:48.068734"
+    },
+    "masyn winn": {
+        "player": "Masyn Winn",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 3,
+        "recent_k_pct": 10.3,
+        "recent_ops": 0.845,
+        "timestamp": "2026-06-26T23:13:00.385657"
+    },
+    "richie palacios": {
+        "player": "Richie Palacios",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 1,
+        "recent_k_pct": 4.0,
+        "recent_ops": 0.572,
+        "timestamp": "2026-06-26T23:13:06.760103"
+    },
+    "sal frelick": {
+        "player": "Sal Frelick",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 0.714,
+        "timestamp": "2026-06-24T10:10:44.067722"
+    },
+    "willi castro": {
+        "player": "Willi Castro",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 9,
+        "recent_k_pct": 29.0,
+        "recent_ops": 0.736,
+        "timestamp": "2026-06-26T23:12:49.746927"
+    },
+    "kyle tucker": {
+        "player": "Kyle Tucker",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 5,
+        "recent_k_pct": 21.7,
+        "recent_ops": 0.411,
+        "timestamp": "2026-06-26T23:13:07.872714"
+    },
+    "colson montgomery": {
+        "player": "Colson Montgomery",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 14,
+        "recent_k_pct": 50.0,
+        "recent_ops": 0.374,
+        "timestamp": "2026-06-26T23:12:52.475813"
+    },
+    "jackson holliday": {
+        "player": "Jackson Holliday",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 8,
+        "recent_k_pct": 38.1,
+        "recent_ops": 0.778,
+        "timestamp": "2026-06-26T23:13:21.920033"
+    },
+    "ezequiel duran": {
+        "player": "Ezequiel Duran",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 4,
+        "recent_k_pct": 14.8,
+        "recent_ops": 0.407,
+        "timestamp": "2026-06-26T23:13:08.528398"
+    },
+    "bryson stott": {
+        "player": "Bryson Stott",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 7,
+        "recent_k_pct": 23.3,
+        "recent_ops": 0.778,
+        "timestamp": "2026-06-26T23:13:25.611404"
+    },
+    "austin riley": {
+        "player": "Austin Riley",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 8,
+        "recent_k_pct": 32.0,
+        "recent_ops": 0.633,
+        "timestamp": "2026-06-26T23:13:20.768694"
+    },
+    "zach neto": {
+        "player": "Zach Neto",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 12,
+        "recent_k_pct": 42.9,
+        "recent_ops": 0.824,
+        "timestamp": "2026-06-25T11:22:10.702885"
+    },
+    "brandon marsh": {
+        "player": "Brandon Marsh",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 8,
+        "recent_k_pct": 25.8,
+        "recent_ops": 1.022,
+        "timestamp": "2026-06-26T23:12:55.186269"
+    },
+    "bryan reynolds": {
+        "player": "Bryan Reynolds",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 6,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.989,
+        "timestamp": "2026-06-26T23:13:04.124651"
+    },
+    "daniel susac": {
+        "player": "Daniel Susac",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 6,
+        "recent_k_pct": 31.6,
+        "recent_ops": 0.229,
+        "timestamp": "2026-06-25T11:21:51.976995"
+    },
+    "nathaniel lowe": {
+        "player": "Nathaniel Lowe",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 7,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.77,
+        "timestamp": "2026-06-26T23:13:08.946341"
+    },
+    "taylor walls": {
+        "player": "Taylor Walls",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 6,
+        "recent_k_pct": 23.1,
+        "recent_ops": 0.794,
+        "timestamp": "2026-06-26T23:13:00.317662"
+    },
+    "nick sogard": {
+        "player": "Nick Sogard",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 2,
+        "recent_k_pct": 9.5,
+        "recent_ops": 0.583,
+        "timestamp": "2026-06-11T10:20:29.559791"
+    },
+    "luis rengifo": {
+        "player": "Luis Rengifo",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 4,
+        "recent_k_pct": 15.4,
+        "recent_ops": 0.546,
+        "timestamp": "2026-06-12T11:50:13.049798"
+    },
+    "byron buxton": {
+        "player": "Byron Buxton",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 5,
+        "recent_k_pct": 15.6,
+        "recent_ops": 0.924,
+        "timestamp": "2026-06-26T23:13:02.017245"
+    },
+    "jose altuve": {
+        "player": "Jose Altuve",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 6,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.655,
+        "timestamp": "2026-06-26T23:12:49.929934"
+    },
+    "jarren duran": {
+        "player": "Jarren Duran",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 11,
+        "recent_k_pct": 37.9,
+        "recent_ops": 0.176,
+        "timestamp": "2026-06-25T11:22:08.666001"
+    },
+    "kyle isbel": {
+        "player": "Kyle Isbel",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 5,
+        "recent_k_pct": 21.7,
+        "recent_ops": 0.465,
+        "timestamp": "2026-06-09T18:31:18.512932"
+    },
+    "victor scott": {
+        "player": "Victor Scott II",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 5,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.259,
+        "timestamp": "2026-06-01T08:48:02.979244"
+    },
+    "josh naylor": {
+        "player": "Josh Naylor",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 4,
+        "recent_k_pct": 14.8,
+        "recent_ops": 0.756,
+        "timestamp": "2026-06-25T11:21:51.929855"
+    },
+    "marcus semien": {
+        "player": "Marcus Semien",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 0.501,
+        "timestamp": "2026-06-25T11:21:51.973880"
+    },
+    "corbin carroll": {
+        "player": "Corbin Carroll",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 0.9,
+        "timestamp": "2026-06-25T11:22:12.616092"
+    },
+    "michael conforto": {
+        "player": "Michael Conforto",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 7,
+        "recent_k_pct": 43.8,
+        "recent_ops": 0.258,
+        "timestamp": "2026-06-24T15:24:56.975657"
+    },
+    "michael massey": {
+        "player": "Michael Massey",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 3,
+        "recent_k_pct": 10.3,
+        "recent_ops": 0.644,
+        "timestamp": "2026-06-26T23:12:46.383783"
+    },
+    "paul goldschmidt": {
+        "player": "Paul Goldschmidt",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 8,
+        "recent_k_pct": 29.6,
+        "recent_ops": 1.026,
+        "timestamp": "2026-06-26T23:12:50.734970"
+    },
+    "miguel andujar": {
+        "player": "Miguel Andujar",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 1,
+        "recent_k_pct": 8.3,
+        "recent_ops": 0.35,
+        "timestamp": "2026-06-25T11:21:50.361277"
+    },
+    "jacob wilson": {
+        "player": "Jacob Wilson",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 3,
+        "recent_k_pct": 10.7,
+        "recent_ops": 0.721,
+        "timestamp": "2026-06-25T11:21:53.598820"
+    },
+    "vinnie pasquantino": {
+        "player": "Vinnie Pasquantino",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 4,
+        "recent_k_pct": 13.3,
+        "recent_ops": 0.774,
+        "timestamp": "2026-06-12T11:49:51.955195"
+    },
+    "endy rodriguez": {
+        "player": "Endy Rodr\u00edguez",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 6,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.864,
+        "timestamp": "2026-06-24T15:25:02.489763"
+    },
+    "trea turner": {
+        "player": "Trea Turner",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 7,
+        "recent_k_pct": 21.2,
+        "recent_ops": 0.77,
+        "timestamp": "2026-06-26T23:12:57.006881"
+    },
+    "bobby witt": {
+        "player": "Bobby Witt Jr.",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 1,
+        "recent_k_pct": 3.3,
+        "recent_ops": 1.187,
+        "timestamp": "2026-06-24T10:10:43.977777"
+    },
+    "yandy diaz": {
+        "player": "Yandy D\u00edaz",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 5,
+        "recent_k_pct": 16.7,
+        "recent_ops": 1.267,
+        "timestamp": "2026-06-26T23:13:06.785036"
+    },
+    "gabriel arias": {
+        "player": "Gabriel Arias",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 14,
+        "recent_k_pct": 58.3,
+        "recent_ops": 0.5,
+        "timestamp": "2026-06-24T10:10:40.291930"
+    },
+    "nolan gorman": {
+        "player": "Nolan Gorman",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 11,
+        "recent_k_pct": 47.8,
+        "recent_ops": 0.374,
+        "timestamp": "2026-06-12T11:49:48.289615"
+    },
+    "yohendrick pinango": {
+        "player": "Yohendrick Pi\u00f1ango",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 6,
+        "recent_k_pct": 24.0,
+        "recent_ops": 0.778,
+        "timestamp": "2026-06-12T11:50:14.119623"
+    },
+    "bo bichette": {
+        "player": "Bo Bichette",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 10,
+        "recent_k_pct": 34.5,
+        "recent_ops": 0.937,
+        "timestamp": "2026-06-26T23:12:53.380512"
+    },
+    "ezequiel tovar": {
+        "player": "Ezequiel Tovar",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 8,
+        "recent_k_pct": 30.8,
+        "recent_ops": 0.462,
+        "timestamp": "2026-06-26T23:12:57.779234"
+    },
+    "jose siri": {
+        "player": "Jose Siri",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 4,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.614,
+        "timestamp": "2026-06-25T11:22:09.544116"
+    },
+    "spencer horwitz": {
+        "player": "Spencer Horwitz",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 3,
+        "recent_k_pct": 8.8,
+        "recent_ops": 0.912,
+        "timestamp": "2026-06-24T15:24:49.682331"
+    },
+    "freddie freeman": {
+        "player": "Freddie Freeman",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.95,
+        "timestamp": "2026-06-26T23:13:22.867240"
+    },
+    "dylan crews": {
+        "player": "Dylan Crews",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 8,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.986,
+        "timestamp": "2026-06-26T23:13:05.553494"
+    },
+    "dominic smith": {
+        "player": "Dominic Smith",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 2,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.67,
+        "timestamp": "2026-06-26T23:12:48.136714"
+    },
+    "taylor ward": {
+        "player": "Taylor Ward",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 10,
+        "recent_k_pct": 30.3,
+        "recent_ops": 0.926,
+        "timestamp": "2026-06-26T23:13:07.192012"
+    },
+    "brandon valenzuela": {
+        "player": "Brandon Valenzuela",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 12,
+        "recent_k_pct": 44.4,
+        "recent_ops": 0.546,
+        "timestamp": "2026-06-26T23:13:21.070435"
+    },
+    "nathan lukes": {
+        "player": "Nathan Lukes",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 4,
+        "recent_k_pct": 18.2,
+        "recent_ops": 0.638,
+        "timestamp": "2026-06-26T23:13:23.194784"
+    },
+    "carter jensen": {
+        "player": "Carter Jensen",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 0.906,
+        "timestamp": "2026-06-26T23:13:02.084808"
+    },
+    "casey schmitt": {
+        "player": "Casey Schmitt",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 4,
+        "recent_k_pct": 15.4,
+        "recent_ops": 0.962,
+        "timestamp": "2026-06-26T23:13:02.419689"
+    },
+    "evan carter": {
+        "player": "Evan Carter",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 5,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.522,
+        "timestamp": "2026-06-12T11:50:04.097830"
+    },
+    "mookie betts": {
+        "player": "Mookie Betts",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 1.263,
+        "timestamp": "2026-06-26T23:13:00.468275"
+    },
+    "edmundo sosa": {
+        "player": "Edmundo Sosa",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.728,
+        "timestamp": "2026-06-26T23:12:48.159603"
+    },
+    "hunter goodman": {
+        "player": "Hunter Goodman",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 9,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.388,
+        "timestamp": "2026-06-26T23:13:05.906681"
+    },
+    "kyle karros": {
+        "player": "Kyle Karros",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 4,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.875,
+        "timestamp": "2026-06-25T11:22:05.826706"
+    },
+    "tyler callihan": {
+        "player": "Tyler Callihan",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 7,
+        "recent_k_pct": 36.8,
+        "recent_ops": 0.616,
+        "timestamp": "2026-06-25T11:22:02.968593"
+    },
+    "tyler stephenson": {
+        "player": "Tyler Stephenson",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 4,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.83,
+        "timestamp": "2026-06-26T23:12:54.748558"
+    },
+    "wilyer abreu": {
+        "player": "Wilyer Abreu",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 3,
+        "recent_k_pct": 10.0,
+        "recent_ops": 1.046,
+        "timestamp": "2026-06-26T23:13:05.206650"
+    },
+    "brice turang": {
+        "player": "Brice Turang",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 12,
+        "recent_k_pct": 37.5,
+        "recent_ops": 0.548,
+        "timestamp": "2026-06-26T23:12:56.844672"
+    },
+    "jose azocar": {
+        "player": "Jos\u00e9 Az\u00f3car",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 2,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.967,
+        "timestamp": "2026-06-25T11:22:15.081648"
+    },
+    "ernie clement": {
+        "player": "Ernie Clement",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 2,
+        "recent_k_pct": 8.7,
+        "recent_ops": 0.577,
+        "timestamp": "2026-06-26T23:12:56.899609"
+    },
+    "david fry": {
+        "player": "David Fry",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 4,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.443,
+        "timestamp": "2026-06-25T11:21:56.881129"
+    },
+    "esmerlyn valdez": {
+        "player": "Esmerlyn Valdez",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 9,
+        "recent_k_pct": 47.4,
+        "recent_ops": 0.789,
+        "timestamp": "2026-06-26T23:13:23.705248"
+    },
+    "alec burleson": {
+        "player": "Alec Burleson",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 2,
+        "recent_k_pct": 6.9,
+        "recent_ops": 0.892,
+        "timestamp": "2026-06-26T23:13:07.334828"
+    },
+    "tj friedl": {
+        "player": "TJ Friedl",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 4,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.33,
+        "timestamp": "2026-06-01T08:48:08.048592"
+    },
+    "luis torrens": {
+        "player": "Luis Torrens",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 6,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.325,
+        "timestamp": "2026-06-26T23:12:51.610610"
+    },
+    "darell hernaiz": {
+        "player": "Darell Hernaiz",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 3,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.61,
+        "timestamp": "2026-06-04T14:37:49.771569"
+    },
+    "spencer steer": {
+        "player": "Spencer Steer",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 13,
+        "recent_k_pct": 43.3,
+        "recent_ops": 0.533,
+        "timestamp": "2026-06-26T23:13:24.636941"
+    },
+    "mickey gasper": {
+        "player": "Mickey Gasper",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 1,
+        "recent_k_pct": 4.0,
+        "recent_ops": 0.422,
+        "timestamp": "2026-06-26T23:13:22.875197"
+    },
+    "tristan peters": {
+        "player": "Tristan Peters",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 3,
+        "recent_k_pct": 12.0,
+        "recent_ops": 0.796,
+        "timestamp": "2026-06-26T23:12:55.190033"
+    },
+    "jacob gonzalez": {
+        "player": "Jacob Gonzalez",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 2,
+        "recent_k_pct": 10.0,
+        "recent_ops": 0.85,
+        "timestamp": "2026-06-26T23:12:49.879396"
+    },
+    "willy adames": {
+        "player": "Willy Adames",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 7,
+        "recent_k_pct": 28.0,
+        "recent_ops": 0.615,
+        "timestamp": "2026-06-26T23:13:07.558668"
+    },
+    "juan soto": {
+        "player": "Juan Soto",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 2,
+        "recent_k_pct": 7.1,
+        "recent_ops": 1.054,
+        "timestamp": "2026-06-26T23:12:53.340854"
+    },
+    "gavin sheets": {
+        "player": "Gavin Sheets",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 5,
+        "recent_k_pct": 27.8,
+        "recent_ops": 0.653,
+        "timestamp": "2026-06-26T23:12:53.304289"
+    },
+    "jo adell": {
+        "player": "Jo Adell",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 7,
+        "recent_k_pct": 23.3,
+        "recent_ops": 0.613,
+        "timestamp": "2026-06-26T23:13:01.401234"
+    },
+    "shohei ohtani": {
+        "player": "Shohei Ohtani",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 6,
+        "recent_k_pct": 24.0,
+        "recent_ops": 0.931,
+        "timestamp": "2026-06-26T23:13:02.898359"
+    },
+    "victor caratini": {
+        "player": "Victor Caratini",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 1.081,
+        "timestamp": "2026-06-26T23:12:46.393802"
+    },
+    "hunter feduccia": {
+        "player": "Hunter Feduccia",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 5,
+        "recent_k_pct": 22.7,
+        "recent_ops": 0.477,
+        "timestamp": "2026-06-26T23:13:22.424781"
+    },
+    "michael busch": {
+        "player": "Michael Busch",
+        "games_sampled": 7,
+        "recent_pa": 35,
+        "recent_k": 6,
+        "recent_k_pct": 17.1,
+        "recent_ops": 0.527,
+        "timestamp": "2026-06-26T23:12:57.044812"
+    },
+    "christian walker": {
+        "player": "Christian Walker",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 9,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.241,
+        "timestamp": "2026-06-26T23:12:58.789210"
+    },
+    "matt chapman": {
+        "player": "Matt Chapman",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 10,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.38,
+        "timestamp": "2026-06-26T23:13:05.002309"
+    },
+    "connor norby": {
+        "player": "Connor Norby",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 9,
+        "recent_k_pct": 45.0,
+        "recent_ops": 0.358,
+        "timestamp": "2026-06-24T00:19:18.563826"
+    },
+    "anthony volpe": {
+        "player": "Anthony Volpe",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 9,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.625,
+        "timestamp": "2026-06-26T23:12:48.144218"
+    },
+    "andy pages": {
+        "player": "Andy Pages",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 7,
+        "recent_k_pct": 22.6,
+        "recent_ops": 0.55,
+        "timestamp": "2026-06-26T23:13:05.516910"
+    },
+    "javier sanoja": {
+        "player": "Javier Sanoja",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 2,
+        "recent_k_pct": 9.5,
+        "recent_ops": 0.588,
+        "timestamp": "2026-06-24T00:19:38.544092"
+    },
+    "tj rumfield": {
+        "player": "TJ Rumfield",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 6,
+        "recent_k_pct": 20.0,
+        "recent_ops": 1.231,
+        "timestamp": "2026-06-26T23:12:54.980900"
+    },
+    "colt emerson": {
+        "player": "Colt Emerson",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 9,
+        "recent_k_pct": 40.9,
+        "recent_ops": 0.49,
+        "timestamp": "2026-06-26T23:12:56.998340"
+    },
+    "adley rutschman": {
+        "player": "Adley Rutschman",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 6,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.414,
+        "timestamp": "2026-06-25T11:21:55.274331"
+    },
+    "jung hoo lee": {
+        "player": "Jung Hoo Lee",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 2,
+        "recent_k_pct": 8.0,
+        "recent_ops": 1.223,
+        "timestamp": "2026-06-26T23:12:46.364934"
+    },
+    "danny jansen": {
+        "player": "Danny Jansen",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 9,
+        "recent_k_pct": 37.5,
+        "recent_ops": 0.527,
+        "timestamp": "2026-06-01T08:48:11.371178"
+    },
+    "wenceel perez": {
+        "player": "Wenceel P\u00e9rez",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 2,
+        "recent_k_pct": 7.1,
+        "recent_ops": 0.886,
+        "timestamp": "2026-06-01T08:48:11.503114"
+    },
+    "miguel vargas": {
+        "player": "Miguel Vargas",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.877,
+        "timestamp": "2026-06-26T23:13:05.835262"
+    },
+    "willson contreras": {
+        "player": "Willson Contreras",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 7,
+        "recent_k_pct": 24.1,
+        "recent_ops": 0.71,
+        "timestamp": "2026-06-26T23:13:05.538957"
+    },
+    "james wood": {
+        "player": "James Wood",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 13,
+        "recent_k_pct": 39.4,
+        "recent_ops": 0.415,
+        "timestamp": "2026-06-26T23:13:05.531264"
+    },
+    "roman anthony": {
+        "player": "Roman Anthony",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 0.691,
+        "timestamp": "2026-06-11T10:20:21.831673"
+    },
+    "adrian del castillo": {
+        "player": "Adrian Del Castillo",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 3,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.421,
+        "timestamp": "2026-06-22T15:46:37.854428"
+    },
+    "cole young": {
+        "player": "Cole Young",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 3,
+        "recent_k_pct": 11.5,
+        "recent_ops": 0.617,
+        "timestamp": "2026-06-26T23:13:22.764039"
+    },
+    "ketel marte": {
+        "player": "Ketel Marte",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 2,
+        "recent_k_pct": 6.7,
+        "recent_ops": 0.959,
+        "timestamp": "2026-06-26T23:13:24.091988"
+    },
+    "michael harris": {
+        "player": "Michael Harris II",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 5,
+        "recent_k_pct": 21.7,
+        "recent_ops": 0.87,
+        "timestamp": "2026-06-26T23:13:03.696799"
+    },
+    "isaac paredes": {
+        "player": "Isaac Paredes",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 4,
+        "recent_k_pct": 13.3,
+        "recent_ops": 0.69,
+        "timestamp": "2026-06-26T23:13:21.003184"
+    },
+    "salvador perez": {
+        "player": "Salvador Perez",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 7,
+        "recent_k_pct": 25.9,
+        "recent_ops": 0.34,
+        "timestamp": "2026-06-26T23:12:58.801743"
+    },
+    "taylor trammell": {
+        "player": "Taylor Trammell",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 3,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.977,
+        "timestamp": "2026-06-26T23:13:05.563206"
+    },
+    "david hamilton": {
+        "player": "David Hamilton",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 7,
+        "recent_k_pct": 41.2,
+        "recent_ops": 0.812,
+        "timestamp": "2026-06-26T23:13:01.851045"
+    },
+    "xander bogaerts": {
+        "player": "Xander Bogaerts",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 5,
+        "recent_k_pct": 18.5,
+        "recent_ops": 0.694,
+        "timestamp": "2026-06-26T23:13:21.394367"
+    },
+    "randy arozarena": {
+        "player": "Randy Arozarena",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 9,
+        "recent_k_pct": 34.6,
+        "recent_ops": 0.405,
+        "timestamp": "2026-06-26T23:13:24.971375"
+    },
+    "oswald peraza": {
+        "player": "Oswald Peraza",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 10,
+        "recent_k_pct": 43.5,
+        "recent_ops": 0.609,
+        "timestamp": "2026-06-24T15:25:02.469815"
+    },
+    "geraldo perdomo": {
+        "player": "Geraldo Perdomo",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 4,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.582,
+        "timestamp": "2026-06-26T23:13:07.613965"
+    },
+    "sterlin thompson": {
+        "player": "Sterlin Thompson",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 4,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.421,
+        "timestamp": "2026-06-01T08:48:13.242072"
+    },
+    "giancarlo stanton": {
+        "player": "Giancarlo Stanton",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.75,
+        "timestamp": "2026-06-11T10:20:40.136407"
+    },
+    "eugenio suarez": {
+        "player": "Eugenio Su\u00e1rez",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 14,
+        "recent_k_pct": 53.8,
+        "recent_ops": 0.462,
+        "timestamp": "2026-06-24T15:25:06.219396"
+    },
+    "konnor griffin": {
+        "player": "Konnor Griffin",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 6,
+        "recent_k_pct": 19.4,
+        "recent_ops": 0.943,
+        "timestamp": "2026-06-26T23:13:21.215251"
+    },
+    "carson kelly": {
+        "player": "Carson Kelly",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 3,
+        "recent_k_pct": 12.5,
+        "recent_ops": 1.09,
+        "timestamp": "2026-06-26T23:13:03.475314"
+    },
+    "austin martin": {
+        "player": "Austin Martin",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 3,
+        "recent_k_pct": 18.8,
+        "recent_ops": 0.732,
+        "timestamp": "2026-06-25T11:22:13.875288"
+    },
+    "alex bregman": {
+        "player": "Alex Bregman",
+        "games_sampled": 7,
+        "recent_pa": 32,
+        "recent_k": 4,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.552,
+        "timestamp": "2026-06-26T23:12:51.546816"
+    },
+    "spencer torkelson": {
+        "player": "Spencer Torkelson",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.762,
+        "timestamp": "2026-06-26T23:13:05.067199"
+    },
+    "aaron judge": {
+        "player": "Aaron Judge",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 5,
+        "recent_k_pct": 16.1,
+        "recent_ops": 0.816,
+        "timestamp": "2026-06-11T10:20:20.150792"
+    },
+    "gunnar henderson": {
+        "player": "Gunnar Henderson",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 5,
+        "recent_k_pct": 14.7,
+        "recent_ops": 0.757,
+        "timestamp": "2026-06-26T23:12:56.535788"
+    },
+    "brooks lee": {
+        "player": "Brooks Lee",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 3,
+        "recent_k_pct": 10.0,
+        "recent_ops": 0.926,
+        "timestamp": "2026-06-26T23:13:03.533286"
+    },
+    "shea langeliers": {
+        "player": "Shea Langeliers",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 7,
+        "recent_k_pct": 24.1,
+        "recent_ops": 0.503,
+        "timestamp": "2026-06-26T23:13:08.106303"
+    },
+    "cody bellinger": {
+        "player": "Cody Bellinger",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.494,
+        "timestamp": "2026-06-26T23:12:49.876783"
+    },
+    "masataka yoshida": {
+        "player": "Masataka Yoshida",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 4,
+        "recent_k_pct": 17.4,
+        "recent_ops": 0.623,
+        "timestamp": "2026-06-25T11:22:13.097234"
+    },
+    "tyler soderstrom": {
+        "player": "Tyler Soderstrom",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 3,
+        "recent_k_pct": 10.3,
+        "recent_ops": 0.874,
+        "timestamp": "2026-06-26T23:12:46.395276"
+    },
+    "ceddanne rafaela": {
+        "player": "Ceddanne Rafaela",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 6,
+        "recent_k_pct": 19.4,
+        "recent_ops": 0.625,
+        "timestamp": "2026-06-26T23:13:01.660483"
+    },
+    "brandon nimmo": {
+        "player": "Brandon Nimmo",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 8,
+        "recent_k_pct": 25.8,
+        "recent_ops": 0.907,
+        "timestamp": "2026-06-26T23:12:59.442620"
+    },
+    "jj wetherholt": {
+        "player": "JJ Wetherholt",
+        "games_sampled": 7,
+        "recent_pa": 34,
+        "recent_k": 4,
+        "recent_k_pct": 11.8,
+        "recent_ops": 0.807,
+        "timestamp": "2026-06-26T23:13:24.557802"
+    },
+    "kerry carpenter": {
+        "player": "Kerry Carpenter",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 6,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.413,
+        "timestamp": "2026-06-26T23:12:46.394302"
+    },
+    "connor wong": {
+        "player": "Connor Wong",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 3,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.958,
+        "timestamp": "2026-06-26T23:12:55.238134"
+    },
+    "jorge soler": {
+        "player": "Jorge Soler",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 9,
+        "recent_k_pct": 33.3,
+        "recent_ops": 1.052,
+        "timestamp": "2026-06-26T23:13:00.475156"
+    },
+    "zack gelof": {
+        "player": "Zack Gelof",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 4,
+        "recent_k_pct": 14.3,
+        "recent_ops": 1.054,
+        "timestamp": "2026-06-25T11:22:12.564432"
+    },
+    "jazz chisholm": {
+        "player": "Jazz Chisholm Jr.",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 7,
+        "recent_k_pct": 25.9,
+        "recent_ops": 0.53,
+        "timestamp": "2026-06-26T23:13:03.260897"
+    },
+    "luke keaschall": {
+        "player": "Luke Keaschall",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 4,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.432,
+        "timestamp": "2026-06-26T23:12:56.970241"
+    },
+    "daulton varsho": {
+        "player": "Daulton Varsho",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 7,
+        "recent_k_pct": 30.4,
+        "recent_ops": 1.106,
+        "timestamp": "2026-06-26T23:13:05.822524"
+    },
+    "cj abrams": {
+        "player": "CJ Abrams",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 6,
+        "recent_k_pct": 24.0,
+        "recent_ops": 1.016,
+        "timestamp": "2026-06-26T23:12:56.643540"
+    },
+    "jeff mcneil": {
+        "player": "Jeff McNeil",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 1,
+        "recent_k_pct": 5.6,
+        "recent_ops": 0.686,
+        "timestamp": "2026-06-26T23:12:58.615938"
+    },
+    "alika williams": {
+        "player": "Alika Williams",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 5,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.933,
+        "timestamp": "2026-06-26T23:12:49.870006"
+    },
+    "eric haase": {
+        "player": "Eric Haase",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 6,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.17,
+        "timestamp": "2026-06-22T11:59:15.936471"
+    },
+    "everson pereira": {
+        "player": "Everson Pereira",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 8,
+        "recent_k_pct": 38.1,
+        "recent_ops": 0.243,
+        "timestamp": "2026-06-25T11:22:13.740504"
+    },
+    "munetaka murakami": {
+        "player": "Munetaka Murakami",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 9,
+        "recent_k_pct": 31.0,
+        "recent_ops": 0.91,
+        "timestamp": "2026-06-25T11:22:03.959671"
+    },
+    "freddy fermin": {
+        "player": "Freddy Fermin",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 3,
+        "recent_k_pct": 11.5,
+        "recent_ops": 0.973,
+        "timestamp": "2026-06-24T10:10:42.163719"
+    },
+    "dane myers": {
+        "player": "Dane Myers",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 4,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.584,
+        "timestamp": "2026-06-25T11:22:07.764543"
+    },
+    "nolan schanuel": {
+        "player": "Nolan Schanuel",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 3,
+        "recent_k_pct": 9.7,
+        "recent_ops": 0.996,
+        "timestamp": "2026-06-26T23:13:23.007863"
+    },
+    "austin hedges": {
+        "player": "Austin Hedges",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 2,
+        "recent_k_pct": 10.0,
+        "recent_ops": 0.868,
+        "timestamp": "2026-06-24T00:19:39.395952"
+    },
+    "coby mayo": {
+        "player": "Coby Mayo",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 10,
+        "recent_k_pct": 37.0,
+        "recent_ops": 0.659,
+        "timestamp": "2026-06-26T23:12:46.335387"
+    },
+    "cody freeman": {
+        "player": "Cody Freeman",
+        "games_sampled": 1,
+        "recent_pa": 2,
+        "recent_k": 1,
+        "recent_k_pct": 50.0,
+        "recent_ops": 1.0,
+        "timestamp": "2026-06-04T14:37:44.474733"
+    },
+    "carlos narvaez": {
+        "player": "Carlos Narv\u00e1ez",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 8,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.156,
+        "timestamp": "2026-06-24T10:10:44.584006"
+    },
+    "nelson velazquez": {
+        "player": "Nelson Vel\u00e1zquez",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 6,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.715,
+        "timestamp": "2026-06-24T15:24:57.639960"
+    },
+    "myles straw": {
+        "player": "Myles Straw",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 1,
+        "recent_k_pct": 5.9,
+        "recent_ops": 0.58,
+        "timestamp": "2026-06-25T11:21:51.984858"
+    },
+    "javier baez": {
+        "player": "Javier B\u00e1ez",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 4,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.45,
+        "timestamp": "2026-06-04T14:37:46.020903"
+    },
+    "george springer": {
+        "player": "George Springer",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 8,
+        "recent_k_pct": 24.2,
+        "recent_ops": 0.573,
+        "timestamp": "2026-06-26T23:12:51.630243"
+    },
+    "jonny deluca": {
+        "player": "Jonny DeLuca",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 4,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.852,
+        "timestamp": "2026-06-26T23:13:03.784918"
+    },
+    "dominic canzone": {
+        "player": "Dominic Canzone",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 8,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.742,
+        "timestamp": "2026-06-26T23:12:58.622323"
+    },
+    "jake fraley": {
+        "player": "Jake Fraley",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 9,
+        "recent_k_pct": 39.1,
+        "recent_ops": 0.445,
+        "timestamp": "2026-06-11T10:20:40.177978"
+    },
+    "mickey moniak": {
+        "player": "Mickey Moniak",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 5,
+        "recent_k_pct": 26.3,
+        "recent_ops": 0.269,
+        "timestamp": "2026-06-26T23:12:49.895168"
+    },
+    "heriberto hernandez": {
+        "player": "Heriberto Hern\u00e1ndez",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.75,
+        "timestamp": "2026-06-25T11:21:53.619353"
+    },
+    "steven kwan": {
+        "player": "Steven Kwan",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 3,
+        "recent_k_pct": 13.6,
+        "recent_ops": 0.581,
+        "timestamp": "2026-06-26T23:13:03.345514"
+    },
+    "brendan donovan": {
+        "player": "Brendan Donovan",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 3,
+        "recent_k_pct": 10.0,
+        "recent_ops": 0.588,
+        "timestamp": "2026-06-22T11:59:09.464233"
+    },
+    "luis robert": {
+        "player": "Luis Robert Jr.",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 1,
+        "recent_k_pct": 3.6,
+        "recent_ops": 0.511,
+        "timestamp": "2026-06-04T14:37:50.867052"
+    },
+    "nick gonzales": {
+        "player": "Nick Gonzales",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 7,
+        "recent_k_pct": 23.3,
+        "recent_ops": 0.816,
+        "timestamp": "2026-06-25T11:22:02.089623"
+    },
+    "jose fernandez": {
+        "player": "Jose Fernandez",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 4,
+        "recent_k_pct": 17.4,
+        "recent_ops": 0.573,
+        "timestamp": "2026-06-04T14:37:51.155338"
+    },
+    "justin foscue": {
+        "player": "Justin Foscue",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 3,
+        "recent_k_pct": 25.0,
+        "recent_ops": 1.317,
+        "timestamp": "2026-06-26T23:13:04.136702"
+    },
+    "esteury ruiz": {
+        "player": "Esteury Ruiz",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 1,
+        "recent_k_pct": 7.1,
+        "recent_ops": 0.872,
+        "timestamp": "2026-06-26T23:12:53.857439"
+    },
+    "adolis garcia": {
+        "player": "Adolis Garc\u00eda",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 12,
+        "recent_k_pct": 44.4,
+        "recent_ops": 0.761,
+        "timestamp": "2026-06-12T11:49:48.176986"
+    },
+    "francisco alvarez": {
+        "player": "Francisco Alvarez",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 8,
+        "recent_k_pct": 28.6,
+        "recent_ops": 1.097,
+        "timestamp": "2026-06-25T11:22:09.682798"
+    },
+    "luke raley": {
+        "player": "Luke Raley",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 7,
+        "recent_k_pct": 35.0,
+        "recent_ops": 0.308,
+        "timestamp": "2026-06-25T11:21:50.328700"
+    },
+    "jorge mateo": {
+        "player": "Jorge Mateo",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 5,
+        "recent_k_pct": 26.3,
+        "recent_ops": 0.874,
+        "timestamp": "2026-06-12T11:49:53.976623"
+    },
+    "cam smith": {
+        "player": "Cam Smith",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 4,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.686,
+        "timestamp": "2026-06-25T11:21:54.972745"
+    },
+    "ryan mcmahon": {
+        "player": "Ryan McMahon",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 5,
+        "recent_k_pct": 29.4,
+        "recent_ops": 0.853,
+        "timestamp": "2026-06-12T11:50:07.955358"
+    },
+    "brice matthews": {
+        "player": "Brice Matthews",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 7,
+        "recent_k_pct": 50.0,
+        "recent_ops": 0.154,
+        "timestamp": "2026-06-24T00:19:14.982335"
+    },
+    "corey seager": {
+        "player": "Corey Seager",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 7,
+        "recent_k_pct": 23.3,
+        "recent_ops": 0.579,
+        "timestamp": "2026-06-25T11:22:11.478510"
+    },
+    "bryce eldridge": {
+        "player": "Bryce Eldridge",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 8,
+        "recent_k_pct": 29.6,
+        "recent_ops": 0.396,
+        "timestamp": "2026-06-26T23:12:46.391262"
+    },
+    "andruw monasterio": {
+        "player": "Andruw Monasterio",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 3,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.22,
+        "timestamp": "2026-06-24T15:25:05.347794"
+    },
+    "drew gilbert": {
+        "player": "Drew Gilbert",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 2,
+        "recent_k_pct": 7.4,
+        "recent_ops": 0.825,
+        "timestamp": "2026-06-24T00:19:26.058419"
+    },
+    "wade meckler": {
+        "player": "Wade Meckler",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 7,
+        "recent_k_pct": 29.2,
+        "recent_ops": 0.817,
+        "timestamp": "2026-06-26T23:13:00.261229"
+    },
+    "colton cowser": {
+        "player": "Colton Cowser",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 7,
+        "recent_k_pct": 25.9,
+        "recent_ops": 0.787,
+        "timestamp": "2026-06-25T11:21:56.086130"
+    },
+    "braxton fulford": {
+        "player": "Braxton Fulford",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 6,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.906,
+        "timestamp": "2026-06-24T10:10:40.261296"
+    },
+    "jake mangum": {
+        "player": "Jake Mangum",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.75,
+        "timestamp": "2026-06-26T23:12:53.441203"
+    },
+    "nico hoerner": {
+        "player": "Nico Hoerner",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 3,
+        "recent_k_pct": 9.1,
+        "recent_ops": 0.8,
+        "timestamp": "2026-06-26T23:13:05.901679"
+    },
+    "donovan walton": {
+        "player": "Donovan Walton",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 4,
+        "recent_k_pct": 21.1,
+        "recent_ops": 1.0,
+        "timestamp": "2026-06-26T23:12:55.082990"
+    },
+    "dansby swanson": {
+        "player": "Dansby Swanson",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 6,
+        "recent_k_pct": 19.4,
+        "recent_ops": 1.271,
+        "timestamp": "2026-06-26T23:12:51.596314"
+    },
+    "mj melendez": {
+        "player": "MJ Melendez",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 8,
+        "recent_k_pct": 53.3,
+        "recent_ops": 0.277,
+        "timestamp": "2026-06-24T15:24:51.706753"
+    },
+    "gleyber torres": {
+        "player": "Gleyber Torres",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 9,
+        "recent_k_pct": 29.0,
+        "recent_ops": 1.006,
+        "timestamp": "2026-06-12T11:50:19.471464"
+    },
+    "brady house": {
+        "player": "Brady House",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 7,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.73,
+        "timestamp": "2026-06-11T10:20:15.030440"
+    },
+    "parker meadows": {
+        "player": "Parker Meadows",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 7,
+        "recent_k_pct": 30.4,
+        "recent_ops": 0.729,
+        "timestamp": "2026-06-04T14:38:01.559162"
+    },
+    "stuart fairchild": {
+        "player": "Stuart Fairchild",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 6,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.756,
+        "timestamp": "2026-06-22T11:59:00.888485"
+    },
+    "andres chaparro": {
+        "player": "Andr\u00e9s Chaparro",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 6,
+        "recent_k_pct": 31.6,
+        "recent_ops": 0.387,
+        "timestamp": "2026-06-26T23:13:08.657280"
+    },
+    "caleb durbin": {
+        "player": "Caleb Durbin",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 4,
+        "recent_k_pct": 15.4,
+        "recent_ops": 1.208,
+        "timestamp": "2026-06-26T23:13:00.324983"
+    },
+    "alex freeland": {
+        "player": "Alex Freeland",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 5,
+        "recent_k_pct": 23.8,
+        "recent_ops": 0.749,
+        "timestamp": "2026-06-26T23:13:25.700482"
+    },
+    "griffin conine": {
+        "player": "Griffin Conine",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 9,
+        "recent_k_pct": 39.1,
+        "recent_ops": 0.704,
+        "timestamp": "2026-06-26T23:12:57.010492"
+    },
+    "kyle higashioka": {
+        "player": "Kyle Higashioka",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 8,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.482,
+        "timestamp": "2026-06-26T23:12:51.623372"
+    },
+    "brent rooker": {
+        "player": "Brent Rooker",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 9,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.816,
+        "timestamp": "2026-06-12T11:50:16.772870"
+    },
+    "jared triolo": {
+        "player": "Jared Triolo",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 4,
+        "recent_k_pct": 17.4,
+        "recent_ops": 0.547,
+        "timestamp": "2026-06-26T23:12:59.900678"
+    },
+    "jose tena": {
+        "player": "Jos\u00e9 Tena",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 8,
+        "recent_k_pct": 38.1,
+        "recent_ops": 0.714,
+        "timestamp": "2026-06-24T00:19:18.551521"
+    },
+    "deyvison de los santos": {
+        "player": "Deyvison De Los Santos",
+        "games_sampled": 3,
+        "recent_pa": 7,
+        "recent_k": 3,
+        "recent_k_pct": 42.9,
+        "recent_ops": 0.714,
+        "timestamp": "2026-06-25T11:22:06.150621"
+    },
+    "mike yastrzemski": {
+        "player": "Mike Yastrzemski",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 7,
+        "recent_k_pct": 38.9,
+        "recent_ops": 0.575,
+        "timestamp": "2026-06-26T23:13:06.972199"
+    },
+    "bryan torres": {
+        "player": "Bryan Torres",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 6,
+        "recent_k_pct": 23.1,
+        "recent_ops": 0.561,
+        "timestamp": "2026-06-04T14:38:06.566189"
+    },
+    "edouard julien": {
+        "player": "Edouard Julien",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 6,
+        "recent_k_pct": 26.1,
+        "recent_ops": 0.554,
+        "timestamp": "2026-06-26T23:12:53.384154"
+    },
+    "eric wagaman": {
+        "player": "Eric Wagaman",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 3,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.516,
+        "timestamp": "2026-06-25T11:21:58.384978"
+    },
+    "francisco lindor": {
+        "player": "Francisco Lindor",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 3,
+        "recent_k_pct": 11.1,
+        "recent_ops": 0.795,
+        "timestamp": "2026-06-26T23:13:00.464401"
+    },
+    "sandy leon": {
+        "player": "Sandy Le\u00f3n",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 5,
+        "recent_k_pct": 41.7,
+        "recent_ops": 0.167,
+        "timestamp": "2026-06-11T10:20:32.965638"
+    },
+    "jake meyers": {
+        "player": "Jake Meyers",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 5,
+        "recent_k_pct": 35.7,
+        "recent_ops": 0.297,
+        "timestamp": "2026-06-25T11:21:53.405210"
+    },
+    "dalton rushing": {
+        "player": "Dalton Rushing",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 7,
+        "recent_k_pct": 35.0,
+        "recent_ops": 0.308,
+        "timestamp": "2026-06-26T23:12:48.148159"
+    },
+    "will benson": {
+        "player": "Will Benson",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 5,
+        "recent_k_pct": 35.7,
+        "recent_ops": 0.973,
+        "timestamp": "2026-06-04T14:38:08.441946"
+    },
+    "jonah heim": {
+        "player": "Jonah Heim",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 3,
+        "recent_k_pct": 13.6,
+        "recent_ops": 0.543,
+        "timestamp": "2026-06-26T23:12:53.316874"
+    },
+    "nathan church": {
+        "player": "Nathan Church",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 1,
+        "recent_k_pct": 6.7,
+        "recent_ops": 0.938,
+        "timestamp": "2026-06-26T23:12:49.873435"
+    },
+    "jose caballero": {
+        "player": "Jos\u00e9 Caballero",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 6,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.601,
+        "timestamp": "2026-06-26T23:12:50.740915"
+    },
+    "randal grichuk": {
+        "player": "Randal Grichuk",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 6,
+        "recent_k_pct": 31.6,
+        "recent_ops": 1.205,
+        "timestamp": "2026-06-25T11:22:05.272254"
+    },
+    "bryce johnson": {
+        "player": "Bryce Johnson",
+        "games_sampled": 7,
+        "recent_pa": 11,
+        "recent_k": 3,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.364,
+        "timestamp": "2026-06-09T18:31:26.799645"
+    },
+    "ryan vilade": {
+        "player": "Ryan Vilade",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 7,
+        "recent_k_pct": 29.2,
+        "recent_ops": 0.708,
+        "timestamp": "2026-06-24T10:10:44.764338"
+    },
+    "maikel garcia": {
+        "player": "Maikel Garcia",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 6,
+        "recent_k_pct": 20.7,
+        "recent_ops": 0.535,
+        "timestamp": "2026-06-22T11:59:06.551503"
+    },
+    "pavin smith": {
+        "player": "Pavin Smith",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 2,
+        "recent_k_pct": 9.1,
+        "recent_ops": 0.431,
+        "timestamp": "2026-06-26T23:13:00.055972"
+    },
+    "drew millas": {
+        "player": "Drew Millas",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 1,
+        "recent_k_pct": 4.3,
+        "recent_ops": 0.748,
+        "timestamp": "2026-06-09T18:31:07.271375"
+    },
+    "matt mclain": {
+        "player": "Matt McLain",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 10,
+        "recent_k_pct": 47.6,
+        "recent_ops": 0.348,
+        "timestamp": "2026-06-26T23:12:46.341848"
+    },
+    "lars nootbaar": {
+        "player": "Lars Nootbaar",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 5,
+        "recent_k_pct": 17.9,
+        "recent_ops": 0.929,
+        "timestamp": "2026-06-26T23:12:46.376774"
+    },
+    "patrick wisdom": {
+        "player": "Patrick Wisdom",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 10,
+        "recent_k_pct": 37.0,
+        "recent_ops": 0.472,
+        "timestamp": "2026-06-12T11:50:03.147721"
+    },
+    "jorbit vivas": {
+        "player": "Jorbit Vivas",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 1,
+        "recent_k_pct": 5.3,
+        "recent_ops": 1.173,
+        "timestamp": "2026-06-24T00:19:31.009942"
+    },
+    "andres gimenez": {
+        "player": "Andr\u00e9s Gim\u00e9nez",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 3,
+        "recent_k_pct": 14.3,
+        "recent_ops": 0.824,
+        "timestamp": "2026-06-26T23:13:24.682154"
+    },
+    "kyle manzardo": {
+        "player": "Kyle Manzardo",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 8,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.62,
+        "timestamp": "2026-06-26T23:13:23.206023"
+    },
+    "samad taylor": {
+        "player": "Samad Taylor",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 7,
+        "recent_k_pct": 24.1,
+        "recent_ops": 0.917,
+        "timestamp": "2026-06-26T23:13:20.602556"
+    },
+    "ben williamson": {
+        "player": "Ben Williamson",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 3,
+        "recent_k_pct": 13.6,
+        "recent_ops": 0.455,
+        "timestamp": "2026-06-24T10:10:40.296637"
+    },
+    "sam huff": {
+        "player": "Sam Huff",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 7,
+        "recent_k_pct": 46.7,
+        "recent_ops": 0.467,
+        "timestamp": "2026-06-22T11:59:21.354497"
+    },
+    "spencer jones": {
+        "player": "Spencer Jones",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 6,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.421,
+        "timestamp": "2026-06-26T23:12:58.719035"
+    },
+    "edwin arroyo": {
+        "player": "Edwin Arroyo",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 4,
+        "recent_k_pct": 14.8,
+        "recent_ops": 0.616,
+        "timestamp": "2026-06-24T00:19:44.478105"
+    },
+    "marcelo mayer": {
+        "player": "Marcelo Mayer",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.714,
+        "timestamp": "2026-06-25T11:22:04.432664"
+    },
+    "ryan bliss": {
+        "player": "Ryan Bliss",
+        "games_sampled": 2,
+        "recent_pa": 6,
+        "recent_k": 2,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.167,
+        "timestamp": "2026-06-09T18:31:19.827834"
+    },
+    "royce lewis": {
+        "player": "Royce Lewis",
+        "games_sampled": 7,
+        "recent_pa": 31,
+        "recent_k": 6,
+        "recent_k_pct": 19.4,
+        "recent_ops": 0.838,
+        "timestamp": "2026-06-26T23:12:53.212339"
+    },
+    "leo jimenez": {
+        "player": "Leo Jim\u00e9nez",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 8,
+        "recent_k_pct": 42.1,
+        "recent_ops": 0.396,
+        "timestamp": "2026-06-24T15:24:55.771397"
+    },
+    "lujames groover": {
+        "player": "LuJames Groover",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 3,
+        "recent_k_pct": 12.0,
+        "recent_ops": 0.518,
+        "timestamp": "2026-06-24T15:25:07.907689"
+    },
+    "wyatt langford": {
+        "player": "Wyatt Langford",
+        "games_sampled": 7,
+        "recent_pa": 33,
+        "recent_k": 6,
+        "recent_k_pct": 18.2,
+        "recent_ops": 1.158,
+        "timestamp": "2026-06-26T23:12:49.854798"
+    },
+    "henry davis": {
+        "player": "Henry Davis",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 2,
+        "recent_k_pct": 13.3,
+        "recent_ops": 0.838,
+        "timestamp": "2026-06-26T23:12:55.220584"
+    },
+    "denzer guzman": {
+        "player": "Denzer Guzman",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 8,
+        "recent_k_pct": 27.6,
+        "recent_ops": 0.988,
+        "timestamp": "2026-06-26T23:13:00.320552"
+    },
+    "sebastian rivero": {
+        "player": "Sebasti\u00e1n Rivero",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 4,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.784,
+        "timestamp": "2026-06-09T18:31:24.658231"
+    },
+    "austin slater": {
+        "player": "Austin Slater",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 7,
+        "recent_k_pct": 29.2,
+        "recent_ops": 0.511,
+        "timestamp": "2026-06-12T11:49:48.286445"
+    },
+    "austin wynns": {
+        "player": "Austin Wynns",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 5,
+        "recent_k_pct": 27.8,
+        "recent_ops": 0.17,
+        "timestamp": "2026-06-12T11:50:13.095904"
+    },
+    "marcell ozuna": {
+        "player": "Marcell Ozuna",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 9,
+        "recent_k_pct": 34.6,
+        "recent_ops": 0.888,
+        "timestamp": "2026-06-26T23:13:20.631875"
+    },
+    "luisangel acuna": {
+        "player": "Luisangel Acu\u00f1a",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 5,
+        "recent_k_pct": 27.8,
+        "recent_ops": 0.722,
+        "timestamp": "2026-06-24T00:19:37.578114"
+    },
+    "nick fortes": {
+        "player": "Nick Fortes",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 2,
+        "recent_k_pct": 8.0,
+        "recent_ops": 0.554,
+        "timestamp": "2026-06-24T10:10:45.391168"
+    },
+    "ryan ward": {
+        "player": "Ryan Ward",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 6,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.536,
+        "timestamp": "2026-06-25T11:22:06.024536"
+    },
+    "will wagner": {
+        "player": "Will Wagner",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 3,
+        "recent_k_pct": 15.8,
+        "recent_ops": 0.688,
+        "timestamp": "2026-06-26T23:12:55.170091"
+    },
+    "heliot ramos": {
+        "player": "Heliot Ramos",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 3,
+        "recent_k_pct": 10.0,
+        "recent_ops": 0.885,
+        "timestamp": "2026-06-22T11:59:18.397567"
+    },
+    "brandon lockridge": {
+        "player": "Brandon Lockridge",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 5,
+        "recent_k_pct": 21.7,
+        "recent_ops": 0.928,
+        "timestamp": "2026-06-25T11:22:04.616268"
+    },
+    "cole carrigg": {
+        "player": "Cole Carrigg",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 4,
+        "recent_k_pct": 13.8,
+        "recent_ops": 0.777,
+        "timestamp": "2026-06-26T23:12:52.461590"
+    },
+    "lane thomas": {
+        "player": "Lane Thomas",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 7,
+        "recent_k_pct": 26.9,
+        "recent_ops": 0.354,
+        "timestamp": "2026-06-26T23:12:49.894724"
+    },
+    "jake rogers": {
+        "player": "Jake Rogers",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 8,
+        "recent_k_pct": 38.1,
+        "recent_ops": 0.583,
+        "timestamp": "2026-06-24T15:25:02.501071"
+    },
+    "derek hill": {
+        "player": "Derek Hill",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 8,
+        "recent_k_pct": 42.1,
+        "recent_ops": 1.211,
+        "timestamp": "2026-06-26T23:13:21.408820"
+    },
+    "edgar quero": {
+        "player": "Edgar Quero",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 6,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.515,
+        "timestamp": "2026-06-11T10:20:29.413761"
+    },
+    "braden montgomery": {
+        "player": "Braden Montgomery",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 6,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.916,
+        "timestamp": "2026-06-26T23:12:57.410651"
+    },
+    "tyler black": {
+        "player": "Tyler Black",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 4,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.926,
+        "timestamp": "2026-06-25T11:22:12.610522"
+    },
+    "lamonte wade": {
+        "player": "LaMonte Wade Jr.",
+        "games_sampled": 4,
+        "recent_pa": 13,
+        "recent_k": 3,
+        "recent_k_pct": 23.1,
+        "recent_ops": 1.135,
+        "timestamp": "2026-06-11T10:20:36.902476"
+    },
+    "andrew vaughn": {
+        "player": "Andrew Vaughn",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 2,
+        "recent_k_pct": 9.5,
+        "recent_ops": 0.829,
+        "timestamp": "2026-06-26T23:13:03.824073"
+    },
+    "eli white": {
+        "player": "Eli White",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 8,
+        "recent_k_pct": 42.1,
+        "recent_ops": 0.377,
+        "timestamp": "2026-06-24T10:10:38.545648"
+    },
+    "billy cook": {
+        "player": "Billy Cook",
+        "games_sampled": 7,
+        "recent_pa": 1,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 0.0,
+        "timestamp": "2026-06-11T10:20:41.001034"
+    },
+    "jhonny pereda": {
+        "player": "Jhonny Pereda",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 4,
+        "recent_k_pct": 14.8,
+        "recent_ops": 0.907,
+        "timestamp": "2026-06-12T11:50:14.854260"
+    },
+    "chad stevens": {
+        "player": "Chad Stevens",
+        "games_sampled": 7,
+        "recent_pa": 11,
+        "recent_k": 6,
+        "recent_k_pct": 54.5,
+        "recent_ops": 0.091,
+        "timestamp": "2026-06-12T11:49:48.282480"
+    },
+    "noelvi marte": {
+        "player": "Noelvi Marte",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 8,
+        "recent_k_pct": 29.6,
+        "recent_ops": 0.645,
+        "timestamp": "2026-06-24T15:24:49.616997"
+    },
+    "patrick bailey": {
+        "player": "Patrick Bailey",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 6,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.628,
+        "timestamp": "2026-06-26T23:12:59.605399"
+    },
+    "carlos cortes": {
+        "player": "Carlos Cortes",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 6,
+        "recent_k_pct": 26.1,
+        "recent_ops": 0.132,
+        "timestamp": "2026-06-24T10:10:38.501402"
+    },
+    "jordan lawlar": {
+        "player": "Jordan Lawlar",
+        "games_sampled": 6,
+        "recent_pa": 20,
+        "recent_k": 6,
+        "recent_k_pct": 30.0,
+        "recent_ops": 0.956,
+        "timestamp": "2026-06-12T11:50:16.956248"
+    },
+    "lourdes gurriel": {
+        "player": "Lourdes Gurriel Jr.",
+        "games_sampled": 7,
+        "recent_pa": 30,
+        "recent_k": 6,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.441,
+        "timestamp": "2026-06-26T23:13:03.804241"
+    },
+    "jasson dominguez": {
+        "player": "Jasson Dom\u00ednguez",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 9,
+        "recent_k_pct": 32.1,
+        "recent_ops": 0.758,
+        "timestamp": "2026-06-26T23:13:24.904538"
+    },
+    "cooper pratt": {
+        "player": "Cooper Pratt",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 3,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.675,
+        "timestamp": "2026-06-26T23:12:58.649166"
+    },
+    "anthony seigler": {
+        "player": "Anthony Seigler",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 6,
+        "recent_k_pct": 27.3,
+        "recent_ops": 0.764,
+        "timestamp": "2026-06-25T11:21:53.614182"
+    },
+    "blaze jordan": {
+        "player": "Blaze Jordan",
+        "games_sampled": 7,
+        "recent_pa": 28,
+        "recent_k": 3,
+        "recent_k_pct": 10.7,
+        "recent_ops": 0.583,
+        "timestamp": "2026-06-26T23:12:51.613243"
+    },
+    "jeremiah jackson": {
+        "player": "Jeremiah Jackson",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 2,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.562,
+        "timestamp": "2026-06-24T15:24:47.609266"
+    },
+    "rafael flores": {
+        "player": "Rafael Flores Jr.",
+        "games_sampled": 2,
+        "recent_pa": 5,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 2.8,
+        "timestamp": "2026-06-22T11:59:15.953928"
+    },
+    "matt shaw": {
+        "player": "Matt Shaw",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 7,
+        "recent_k_pct": 26.9,
+        "recent_ops": 0.717,
+        "timestamp": "2026-06-26T23:13:03.820380"
+    },
+    "kyler fedko": {
+        "player": "Kyler Fedko",
+        "games_sampled": 7,
+        "recent_pa": 13,
+        "recent_k": 4,
+        "recent_k_pct": 30.8,
+        "recent_ops": 0.154,
+        "timestamp": "2026-06-24T00:19:18.723287"
+    },
+    "tommy edman": {
+        "player": "Tommy Edman",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 4,
+        "recent_k_pct": 18.2,
+        "recent_ops": 1.0,
+        "timestamp": "2026-06-26T23:12:49.888439"
+    },
+    "rodolfo duran": {
+        "player": "Rodolfo Dur\u00e1n",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 5,
+        "recent_k_pct": 23.8,
+        "recent_ops": 0.238,
+        "timestamp": "2026-06-26T23:12:49.929203"
+    },
+    "yainer diaz": {
+        "player": "Yainer Diaz",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 4,
+        "recent_k_pct": 15.4,
+        "recent_ops": 0.846,
+        "timestamp": "2026-06-26T23:13:21.087882"
+    },
+    "ryan kreidler": {
+        "player": "Ryan Kreidler",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 1.071,
+        "timestamp": "2026-06-25T11:22:16.185809"
+    },
+    "ali sanchez": {
+        "player": "Ali S\u00e1nchez",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 3,
+        "recent_k_pct": 20.0,
+        "recent_ops": 1.038,
+        "timestamp": "2026-06-26T23:13:01.153474"
+    },
+    "alejandro kirk": {
+        "player": "Alejandro Kirk",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 6,
+        "recent_k_pct": 23.1,
+        "recent_ops": 0.279,
+        "timestamp": "2026-06-25T11:21:50.309748"
+    },
+    "amed rosario": {
+        "player": "Amed Rosario",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 6,
+        "recent_k_pct": 25.0,
+        "recent_ops": 0.556,
+        "timestamp": "2026-06-26T23:12:55.173934"
+    },
+    "john rave": {
+        "player": "John Rave",
+        "games_sampled": 6,
+        "recent_pa": 13,
+        "recent_k": 3,
+        "recent_k_pct": 23.1,
+        "recent_ops": 1.362,
+        "timestamp": "2026-06-24T10:10:45.823661"
+    },
+    "kahlil watson": {
+        "player": "Kahlil Watson",
+        "games_sampled": 7,
+        "recent_pa": 22,
+        "recent_k": 8,
+        "recent_k_pct": 36.4,
+        "recent_ops": 0.794,
+        "timestamp": "2026-06-26T23:12:53.346216"
+    },
+    "zack short": {
+        "player": "Zack Short",
+        "games_sampled": 7,
+        "recent_pa": 13,
+        "recent_k": 7,
+        "recent_k_pct": 53.8,
+        "recent_ops": 0.167,
+        "timestamp": "2026-06-22T11:59:27.177738"
+    },
+    "alex jackson": {
+        "player": "Alex Jackson",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 3,
+        "recent_k_pct": 15.0,
+        "recent_ops": 0.95,
+        "timestamp": "2026-06-22T11:59:27.961875"
+    },
+    "jorge barrosa": {
+        "player": "Jorge Barrosa",
+        "games_sampled": 7,
+        "recent_pa": 9,
+        "recent_k": 1,
+        "recent_k_pct": 11.1,
+        "recent_ops": 1.429,
+        "timestamp": "2026-06-24T10:10:38.518336"
+    },
+    "blaze alexander": {
+        "player": "Blaze Alexander",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 4,
+        "recent_k_pct": 16.0,
+        "recent_ops": 1.031,
+        "timestamp": "2026-06-26T23:13:07.271050"
+    },
+    "james outman": {
+        "player": "James Outman",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 6,
+        "recent_k_pct": 42.9,
+        "recent_ops": 0.857,
+        "timestamp": "2026-06-26T23:12:48.141395"
+    },
+    "joey ortiz": {
+        "player": "Joey Ortiz",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 7,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.293,
+        "timestamp": "2026-06-24T00:19:35.799121"
+    },
+    "elias diaz": {
+        "player": "Elias D\u00edaz",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 3,
+        "recent_k_pct": 18.8,
+        "recent_ops": 0.583,
+        "timestamp": "2026-06-24T15:25:10.598015"
+    },
+    "rafael marchan": {
+        "player": "Rafael March\u00e1n",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 2,
+        "recent_k_pct": 11.8,
+        "recent_ops": 0.412,
+        "timestamp": "2026-06-22T15:46:39.360155"
+    },
+    "tim tawa": {
+        "player": "Tim Tawa",
+        "games_sampled": 7,
+        "recent_pa": 11,
+        "recent_k": 4,
+        "recent_k_pct": 36.4,
+        "recent_ops": 0.425,
+        "timestamp": "2026-06-22T15:46:39.382430"
+    },
+    "petey halpin": {
+        "player": "Petey Halpin",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 5,
+        "recent_k_pct": 27.8,
+        "recent_ops": 0.625,
+        "timestamp": "2026-06-26T23:12:56.902525"
+    },
+    "raynel delgado": {
+        "player": "Raynel Delgado",
+        "games_sampled": 7,
+        "recent_pa": 15,
+        "recent_k": 1,
+        "recent_k_pct": 6.7,
+        "recent_ops": 0.667,
+        "timestamp": "2026-06-24T00:19:16.878719"
+    },
+    "nate eaton": {
+        "player": "Nate Eaton",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 3,
+        "recent_k_pct": 18.8,
+        "recent_ops": 1.13,
+        "timestamp": "2026-06-24T15:25:10.862881"
+    },
+    "austin wells": {
+        "player": "Austin Wells",
+        "games_sampled": 7,
+        "recent_pa": 20,
+        "recent_k": 7,
+        "recent_k_pct": 35.0,
+        "recent_ops": 0.15,
+        "timestamp": "2026-06-25T11:21:52.004450"
+    },
+    "pedro pages": {
+        "player": "Pedro Pag\u00e9s",
+        "games_sampled": 7,
+        "recent_pa": 14,
+        "recent_k": 4,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.702,
+        "timestamp": "2026-06-24T15:25:07.668604"
+    },
+    "starling marte": {
+        "player": "Starling Marte",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 5,
+        "recent_k_pct": 18.5,
+        "recent_ops": 0.736,
+        "timestamp": "2026-06-25T11:22:06.860139"
+    },
+    "cal raleigh": {
+        "player": "Cal Raleigh",
+        "games_sampled": 7,
+        "recent_pa": 29,
+        "recent_k": 10,
+        "recent_k_pct": 34.5,
+        "recent_ops": 0.693,
+        "timestamp": "2026-06-26T23:13:04.179532"
+    },
+    "junior perez": {
+        "player": "Junior Perez",
+        "games_sampled": 6,
+        "recent_pa": 10,
+        "recent_k": 4,
+        "recent_k_pct": 40.0,
+        "recent_ops": 0.856,
+        "timestamp": "2026-06-25T11:22:06.328395"
+    },
+    "gary sanchez": {
+        "player": "Gary S\u00e1nchez",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 4,
+        "recent_k_pct": 21.1,
+        "recent_ops": 0.451,
+        "timestamp": "2026-06-24T00:19:26.173623"
+    },
+    "jarred kelenic": {
+        "player": "Jarred Kelenic",
+        "games_sampled": 7,
+        "recent_pa": 16,
+        "recent_k": 7,
+        "recent_k_pct": 43.8,
+        "recent_ops": 0.598,
+        "timestamp": "2026-06-24T00:19:27.542819"
+    },
+    "christian moore": {
+        "player": "Christian Moore",
+        "games_sampled": 4,
+        "recent_pa": 16,
+        "recent_k": 8,
+        "recent_k_pct": 50.0,
+        "recent_ops": 0.388,
+        "timestamp": "2026-06-24T15:25:06.221863"
+    },
+    "chuckie robinson": {
+        "player": "Chuckie Robinson",
+        "games_sampled": 5,
+        "recent_pa": 17,
+        "recent_k": 4,
+        "recent_k_pct": 23.5,
+        "recent_ops": 0.267,
+        "timestamp": "2026-06-24T00:19:30.730115"
+    },
+    "blake perkins": {
+        "player": "Blake Perkins",
+        "games_sampled": 7,
+        "recent_pa": 13,
+        "recent_k": 3,
+        "recent_k_pct": 23.1,
+        "recent_ops": 1.25,
+        "timestamp": "2026-06-24T00:19:31.446314"
+    },
+    "luis urias": {
+        "player": "Luis Ur\u00edas",
+        "games_sampled": 2,
+        "recent_pa": 8,
+        "recent_k": 1,
+        "recent_k_pct": 12.5,
+        "recent_ops": 1.357,
+        "timestamp": "2026-06-25T11:22:01.474676"
+    },
+    "jose fermin": {
+        "player": "Jos\u00e9 Ferm\u00edn",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 2,
+        "recent_k_pct": 9.5,
+        "recent_ops": 0.571,
+        "timestamp": "2026-06-24T00:19:31.780589"
+    },
+    "ben malgeri": {
+        "player": "Ben Malgeri",
+        "games_sampled": 1,
+        "recent_pa": 3,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 1.333,
+        "timestamp": "2026-06-24T15:25:04.695287"
+    },
+    "gabriel rincones": {
+        "player": "Gabriel Rincones Jr.",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 5,
+        "recent_k_pct": 20.0,
+        "recent_ops": 0.44,
+        "timestamp": "2026-06-25T11:21:53.645264"
+    },
+    "tyler tolbert": {
+        "player": "Tyler Tolbert",
+        "games_sampled": 7,
+        "recent_pa": 17,
+        "recent_k": 3,
+        "recent_k_pct": 17.6,
+        "recent_ops": 0.683,
+        "timestamp": "2026-06-25T11:22:07.562965"
+    },
+    "jahmai jones": {
+        "player": "Jahmai Jones",
+        "games_sampled": 7,
+        "recent_pa": 12,
+        "recent_k": 6,
+        "recent_k_pct": 50.0,
+        "recent_ops": 0.333,
+        "timestamp": "2026-06-24T00:19:35.693855"
+    },
+    "jose trevino": {
+        "player": "Jose Trevino",
+        "games_sampled": 7,
+        "recent_pa": 24,
+        "recent_k": 3,
+        "recent_k_pct": 12.5,
+        "recent_ops": 0.364,
+        "timestamp": "2026-06-24T00:19:38.443503"
+    },
+    "rowdy tellez": {
+        "player": "Rowdy Tellez",
+        "games_sampled": 6,
+        "recent_pa": 9,
+        "recent_k": 2,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.778,
+        "timestamp": "2026-06-24T00:19:42.080016"
+    },
+    "joey meneses": {
+        "player": "Joey Meneses",
+        "games_sampled": 2,
+        "recent_pa": 6,
+        "recent_k": 1,
+        "recent_k_pct": 16.7,
+        "recent_ops": 0.533,
+        "timestamp": "2026-06-24T00:19:42.193507"
+    },
+    "kameron misner": {
+        "player": "Kameron Misner",
+        "games_sampled": 7,
+        "recent_pa": 23,
+        "recent_k": 8,
+        "recent_k_pct": 34.8,
+        "recent_ops": 0.682,
+        "timestamp": "2026-06-24T15:25:01.815534"
+    },
+    "kyle teel": {
+        "player": "Kyle Teel",
+        "games_sampled": 3,
+        "recent_pa": 15,
+        "recent_k": 4,
+        "recent_k_pct": 26.7,
+        "recent_ops": 0.9,
+        "timestamp": "2026-06-26T23:13:06.912708"
+    },
+    "jase bowen": {
+        "player": "Jase Bowen",
+        "games_sampled": 7,
+        "recent_pa": 11,
+        "recent_k": 6,
+        "recent_k_pct": 54.5,
+        "recent_ops": 0.0,
+        "timestamp": "2026-06-24T10:10:42.963823"
+    },
+    "lawrence butler": {
+        "player": "Lawrence Butler",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 4,
+        "recent_k_pct": 21.1,
+        "recent_ops": 0.984,
+        "timestamp": "2026-06-26T23:12:55.113521"
+    },
+    "tyler heineman": {
+        "player": "Tyler Heineman",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 5,
+        "recent_k_pct": 23.8,
+        "recent_ops": 0.937,
+        "timestamp": "2026-06-24T15:24:49.712591"
+    },
+    "davis schneider": {
+        "player": "Davis Schneider",
+        "games_sampled": 7,
+        "recent_pa": 19,
+        "recent_k": 4,
+        "recent_k_pct": 21.1,
+        "recent_ops": 0.684,
+        "timestamp": "2026-06-25T11:22:12.978502"
+    },
+    "miguel amaya": {
+        "player": "Miguel Amaya",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 2,
+        "recent_k_pct": 11.1,
+        "recent_ops": 0.789,
+        "timestamp": "2026-06-24T15:25:01.417115"
+    },
+    "brian navarreto": {
+        "player": "Brian Navarreto",
+        "games_sampled": 1,
+        "recent_pa": 3,
+        "recent_k": 1,
+        "recent_k_pct": 33.3,
+        "recent_ops": 0.5,
+        "timestamp": "2026-06-24T15:25:07.139157"
+    },
+    "josh lowe": {
+        "player": "Josh Lowe",
+        "games_sampled": 7,
+        "recent_pa": 21,
+        "recent_k": 6,
+        "recent_k_pct": 28.6,
+        "recent_ops": 0.857,
+        "timestamp": "2026-06-26T23:13:20.645817"
+    },
+    "josh rojas": {
+        "player": "Josh Rojas",
+        "games_sampled": 4,
+        "recent_pa": 7,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 1.429,
+        "timestamp": "2026-06-25T11:21:55.071596"
+    },
+    "jair camargo": {
+        "player": "Jair Camargo",
+        "games_sampled": 1,
+        "recent_pa": 2,
+        "recent_k": 1,
+        "recent_k_pct": 50.0,
+        "recent_ops": 1.5,
+        "timestamp": "2026-06-25T11:22:05.158831"
+    },
+    "gabriel gonzalez": {
+        "player": "Gabriel Gonzalez",
+        "games_sampled": 1,
+        "recent_pa": 4,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 1.25,
+        "timestamp": "2026-06-25T11:22:05.828559"
+    },
+    "teoscar hernandez": {
+        "player": "Teoscar Hern\u00e1ndez",
+        "games_sampled": 7,
+        "recent_pa": 25,
+        "recent_k": 4,
+        "recent_k_pct": 16.0,
+        "recent_ops": 1.107,
+        "timestamp": "2026-06-25T11:22:07.119612"
+    },
+    "trey mancini": {
+        "player": "Trey Mancini",
+        "games_sampled": 5,
+        "recent_pa": 14,
+        "recent_k": 3,
+        "recent_k_pct": 21.4,
+        "recent_ops": 0.747,
+        "timestamp": "2026-06-25T11:22:08.442444"
+    },
+    "ryan jeffers": {
+        "player": "Ryan Jeffers",
+        "games_sampled": 7,
+        "recent_pa": 27,
+        "recent_k": 1,
+        "recent_k_pct": 3.7,
+        "recent_ops": 1.044,
+        "timestamp": "2026-06-25T11:22:11.406977"
+    },
+    "graham pauley": {
+        "player": "Graham Pauley",
+        "games_sampled": 7,
+        "recent_pa": 18,
+        "recent_k": 4,
+        "recent_k_pct": 22.2,
+        "recent_ops": 0.343,
+        "timestamp": "2026-06-26T23:12:48.125358"
+    },
+    "ronny mauricio": {
+        "player": "Ronny Mauricio",
+        "games_sampled": 7,
+        "recent_pa": 26,
+        "recent_k": 9,
+        "recent_k_pct": 34.6,
+        "recent_ops": 0.462,
+        "timestamp": "2026-06-26T23:12:51.552519"
+    },
+    "max kepler": {
+        "player": "Max Kepler",
+        "games_sampled": 1,
+        "recent_pa": 2,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 0.0,
+        "timestamp": "2026-06-26T23:13:02.120278"
+    },
+    "cooper ingle": {
+        "player": "Cooper Ingle",
+        "games_sampled": 1,
+        "recent_pa": 3,
+        "recent_k": 0,
+        "recent_k_pct": 0.0,
+        "recent_ops": 0.333,
+        "timestamp": "2026-06-26T23:13:21.270326"
+    }
+}

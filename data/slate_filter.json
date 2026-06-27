@@ -2,9 +2,15 @@
     "enabled": true,
     "active_date": "2026-06-25",
     "allowed_teams": [
-        "Kansas City Royals",
-        "Pittsburgh Pirates",
-        "Seattle Mariners",
-        "Tampa Bay Rays"
+        "Philadelphia Phillies",
+        "Washington Nationals",
+        "New York Yankees",
+        "Boston Red Sox",
+        "Texas Rangers",
+        "Toronto Blue Jays",
+        "Houston Astros",
+        "Detroit Tigers",
+        "Chicago Cubs",
+        "New York Mets"
     ]
 }

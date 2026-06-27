@@ -6285,6 +6285,8 @@
             if (!pBody) throw new Error('pitchers-body element missing');
             pBody.innerHTML = '';
             pitchers.forEach(p => {
+                if (p.is_opener) return;
+
                 let oppT = null;
                 if (latestData.teams && p.opponent) {
                     oppT = latestData.teams.find(t => getTeamAbbr(t.team) === getTeamAbbr(p.opponent));
@@ -6331,10 +6333,25 @@
 
                 const pRank = pRanks[p.pitcher];
                 const trapSpLabel = p.trap_type ? ` — ${p.trap_type}` : '';
+                
+                let bulkLabel = '';
+                let openerNested = '';
+                if (p.is_bulk_arm && p.opener_name) {
+                    bulkLabel = ` <span class="bulk-label" style="background:#0a84ff; color:#fff; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; margin-left:4px;">BULK</span>`;
+                    const openerP = pitchers.find(op => op.event_id === p.event_id && op.team === p.team && op.is_opener);
+                    if (openerP) {
+                        const openerJson = encodeURIComponent(JSON.stringify(openerP));
+                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); openPitcherModal('${openerJson}')">${p.opener_name}</span> (opener, 1-2 IP)</div>`;
+                    } else {
+                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ ${p.opener_name} (opener, 1-2 IP)</div>`;
+                    }
+                }
+
                 const pitcherNameCell = `
                     <td>
-                        <strong>${p.pitcher}</strong> <span class="team-label">${abbrevMap[p.team] || p.team}</span>
+                        <strong>${p.pitcher}</strong>${bulkLabel} <span class="team-label">${abbrevMap[p.team] || p.team}</span>
                         ${p.form_status === 'SURGING' ? `<div style="font-size:0.75em; color:#ff9f0a; margin-top:2px; font-weight:bold;">🔥 ${p.recent_k9} K/9 (L3)</div>` : (p.form_status === 'COLD' ? `<div style="font-size:0.75em; color:#00b4d8; margin-top:2px; font-weight:bold;">🧊 ${p.recent_era} ERA (L3)</div>` : '')}
+                        ${openerNested}
                     </td>`;
                 const pitcherSignals = `
                     <td><div class="signals-container">${pitcherMarketIntelHtml(p, ouDivBadge)}</div></td>
@@ -6476,7 +6493,7 @@
                     <td><div class="signals-container">${teamTacticalMatchupHtml(t)}</div></td>`;
                 const teamIdentity = `
                     <td><strong>${t.team}</strong></td>
-                    <td><span class="vs">vs</span><strong>${t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>`;
+                    <td><span class="vs">vs</span><strong>${t.opp_pitcher_display || t.opp_pitcher}</strong> <span class="team-label">${abbrevMap[t.opponent] || t.opponent}</span> ${oppPhysBadge} ${pitcherTrapBadge}</td>`;
                 const tBlended = t.blended_rating;
                 const blendedClass = tBlended >= 85 ? 'score elite' : (tBlended >= 75 ? 'score high' : 'score med');
                 
@@ -7497,7 +7514,49 @@
                 const t = JSON.parse(decodeURIComponent(tStr));
                 switchModalTab('team', 'verdict');
                 document.getElementById('tm-name').innerText = t.team || 'Unknown';
-                document.getElementById('tm-matchup').innerText = `vs ${t.opp_pitcher || 'TBD'} (${abbrevMap[t.opponent] || t.opponent || 'TBD'})`;
+                
+                const oppPDisplay = t.opp_pitcher_display || t.opp_pitcher;
+                document.getElementById('tm-matchup').innerHTML = `vs <strong>${oppPDisplay || 'TBD'}</strong> (${abbrevMap[t.opponent] || t.opponent || 'TBD'})`;
+                
+                const banner = document.getElementById('tm-opener-banner');
+                if (t.is_opener_game && t.opener_name) {
+                    const isConf = t.opener_confirmed;
+                    const openerName = t.opener_name;
+                    const bulkName = t.bulk_name || "UNKNOWN";
+                    
+                    const bannerTitle = isConf ? "🔄 OPENER MATCHUP" : "⚡ PROBABLE OPENER MATCHUP";
+                    const bannerColor = isConf ? "#0a84ff" : "#ff9500";
+                    const bannerBg = isConf ? "rgba(10,132,255,0.1)" : "rgba(255,149,0,0.1)";
+                    const bannerBorder = isConf ? "rgba(10,132,255,0.3)" : "rgba(255,149,0,0.3)";
+                    const indicator = isConf ? "🔄" : "⚡";
+                    
+                    banner.style.display = 'block';
+                    banner.innerHTML = `
+                        <div style="background:${bannerBg}; border:1px solid ${bannerBorder}; padding:12px 16px; border-radius:10px; display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                            <span style="font-size:1.5rem;">${indicator}</span>
+                            <div style="text-align:left;">
+                                <div style="color:${bannerColor}; font-weight:700; font-size:0.9rem;">${bannerTitle}</div>
+                                <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">
+                                    Opponent is using opener ${openerName} (1-2 IP) followed by bulk reliever ${bulkName}.<br>
+                                    Stack scoring reflects ${bulkName}'s profile.
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (t.opp_pitcher_display && t.opp_pitcher_display.includes("BULK UNRESOLVED")) {
+                    banner.style.display = 'block';
+                    banner.innerHTML = `
+                        <div style="background:rgba(255,69,58,0.1); border:1px solid rgba(255,69,58,0.3); padding:12px 16px; border-radius:10px; display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                            <span style="font-size:1.5rem;">⚠️</span>
+                            <div style="text-align:left;">
+                                <div style="color:#ff453a; font-weight:700; font-size:0.9rem;">⚠️ BULK ARM UNRESOLVED</div>
+                                <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">
+                                    Opponent is using opener ${t.opener_name || 'TBD'}, but bulk arm is unresolved. Manual verification recommended.
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    banner.style.display = 'none';
+                }
                 document.getElementById('tm-score').innerText = t.stack_score || '—';
                 document.getElementById('tm-phys').innerText = t.physics_score || 0;
                 let oppPModal = null;
@@ -7991,6 +8050,32 @@
                 switchModalTab('pitcher', 'verdict');
                 document.getElementById('pm-name').innerText = p.pitcher || '—';
                 document.getElementById('pm-matchup').innerText = `vs ${p.opponent || '—'} (${p.team || '—'})`;
+                
+                const banner = document.getElementById('pm-opener-banner');
+                if (p.is_opener && p.bulk_name) {
+                    banner.style.display = 'block';
+                    banner.innerHTML = `
+                        <div style="background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.3); padding:12px 16px; border-radius:10px; display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                            <span style="font-size:1.5rem;">⚠️</span>
+                            <div style="text-align:left;">
+                                <div style="color:#ff9500; font-weight:700; font-size:0.9rem;">OPENER ONLY — Scheduled for 1-2 IP</div>
+                                <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Stack scores for the opposing team reflect the bulk arm (${p.bulk_name}).</div>
+                            </div>
+                        </div>`;
+                } else if (p.is_bulk_arm && p.opener_name) {
+                    banner.style.display = 'block';
+                    banner.innerHTML = `
+                        <div style="background:rgba(10,132,255,0.1); border:1px solid rgba(10,132,255,0.3); padding:12px 16px; border-radius:10px; display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                            <span style="font-size:1.5rem;">🔄</span>
+                            <div style="text-align:left;">
+                                <div style="color:#0a84ff; font-weight:700; font-size:0.9rem;">BULK ARM — Effective SP for Stack Scoring</div>
+                                <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Opener: ${p.opener_name} precedes him (1-2 IP).</div>
+                            </div>
+                        </div>`;
+                } else {
+                    banner.style.display = 'none';
+                }
+                
                 document.getElementById('pm-score').innerText = p.alpha_score || '—';
                 document.getElementById('pm-phys').innerText = p.physics_score || 0;
                 document.getElementById('pm-mkt').innerText = p.market_score || 0;
@@ -9024,6 +9109,7 @@
                 <div id="tm-score" style="font-size:2.5rem; font-weight:800; color:var(--accent-blue); line-height:1;">100.0</div>
             </div>
         </div>
+        <div id="tm-opener-banner" style="display:none; margin-bottom:15px;"></div>
 
         <!-- Segmented Tab Bar -->
         <div class="modal-tabs">
@@ -9232,6 +9318,7 @@
                 <div id="pm-score" style="font-size:2.5rem; font-weight:800; color:var(--accent-blue); line-height:1;">100.0</div>
             </div>
         </div>
+        <div id="pm-opener-banner" style="display:none; margin-bottom:15px;"></div>
 
         <!-- Segmented Tab Bar -->
         <div class="modal-tabs">

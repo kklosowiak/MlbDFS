@@ -124,3 +124,98 @@ The Rolling Betting ROI panel showed 0/0 W/L and 0.0% ROI across all tiers, desp
 * Confirmed the overall ROI (-2.1%) and LOCK/LEAN breakdown is correctly reflected in `data/betting_history.json` and rendered in the dashboard.
 
 *End June 25 (afternoon) entry*
+
+---
+
+## Daily Build Log — June 25, 2026
+
+### Contest Summary
+| Field | Value |
+|-------|-------|
+| Type | Single Entry GPP |
+| Entry Fee | $121 |
+| Field Size | 275 |
+| Entries | 1 |
+| Final Score | 89.6 |
+| Cash Line (est.) | 90.0 |
+| Result | MISS |
+| Total Salary | $49,800 |
+| SP Points | 24.6 |
+| Hitter Points | 65.0 |
+| Best Player | Bryce Harper (27.0 pts) |
+| Worst Player | Colt Keith (0.0 pts) |
+
+### Lineup
+| POS | Player | Team | Salary | DK Pts |
+|-----|--------|------|--------|--------|
+| SP1  | Kevin Gausman          | TOR   | $8,500 | 2.3 |
+| SP2  | Troy Melton            | DET   | $7,000 | 22.3 |
+| C    | Dillon Dingler         | DET   | $5,600 | 16.0 |
+| 1B   | Bryce Harper           | PHI   | $5,900 | 27.0 |
+| 2B   | Ernie Clement          | TOR   | $3,100 | 8.0 |
+| 3B   | Colt Keith             | DET   | $2,900 | 0.0 |
+| SS   | Kevin McGonigle        | DET   | $4,800 | 3.0 |
+| OF1  | Riley Greene           | DET   | $4,300 | 6.0 |
+| OF2  | Kerry Carpenter        | DET   | $3,800 | 0.0 |
+| OF3  | Carson Benge           | NYM   | $3,900 | 5.0 |
+
+### Key Decisions
+| Decision | Rationale | Outcome | Verdict |
+|----------|-----------|---------|---------|
+| DET 5-man stack over PHI                 | Ownership/leverage, DET raw score #1          | DET scored 1 run — wrong call              | ❌ Wrong |
+| Harper as only PHI piece                 | Budget forced single PHI bat                  | 27 pts, HR — right player wrong depth      | ⚠️ Mixed |
+| Gausman as SP2                           | Budget constraints, no trap flags             | 2.3 pts, 6 ER, 3 HR — lineup killer        | ❌ Wrong |
+| Melton as SP1 (DET corr)                 | SURGING form, DET game correlation            | 22.3 pts, 6 IP 1 ER — vindicated           | ✅ Correct |
+| Fade Nootbaar → Benge (weather)          | Kevin Roth yellow + gut feeling               | STL postponed, saved 0-pt OF slot          | ✅ Correct |
+| Fade ARI/STL entirely                    | Kevin Roth + AccuWeather 49%+ precip          | STL postponed, ARI affected ✅              | ✅ Correct |
+| Drop Okamoto for Keith                   | 5-man DET 1-2-3-4-5 stack structure           | Keith 0pts, Okamoto HR missed              | ❌ Wrong |
+| Clement over Shaw at 2B                  | Shaw not in confirmed CHC lineup              | Clement 8 pts — acceptable                 | ✅ Correct |
+
+### Lessons Learned
+1. STEAM is the tiebreaker when conf is tied. PHI had STEAM, DET did not. PHI won 4/6 secondary tiebreakers (STEAM, individual scores, ITT, market score). When conf is tied run the full checklist: (1) STEAM? (2) Higher individual scores? (3) Higher ITT? (4) Higher market score? (5) Worse opp pitcher? Whoever wins is the primary stack.
+
+2. TRAP/PARADOX/STICKY on opposing SP = avoid rostering that pitcher. It does NOT guarantee the stack scores. Bad pitchers can still have good nights (Imai: 6 IP, 0 ER, 10 K at conf 0%). Build the stack on matchup quality but treat trap flags as a fade signal for SP selection only, not a scoring guarantee.
+
+3. STEAM + ANTI_CHALK firing together = undervalued GPP play, NOT chalk. Don't fade a team with high ticket share if STEAM + ANTI_CHALK are both firing. The model is explicitly saying ownership is suppressed relative to true probability. This is the ideal single-entry structure.
+
+4. SP red flags are real — don't rationalize for budget. ERA L3 7.71 + WALKS_PENALTY = genuine danger. If budget forces a SP with multiple negative indicators, rebuild the lineup structure rather than accepting it. A 2.3 pt SP kills the lineup regardless of hitter quality.
+
+5. Weather research process validated. Kevin Roth (ballparkpal.com) + AccuWeather hourly is the correct workflow. STL postponed on June 25 — the gut call to override Nootbaar for Benge saved the lineup from a 0-point OF slot. Always check Kevin Roth within 90 minutes of lock for weather games.
+
+6. Confirmed batting order matters. DET 1-2-3-4-5 was the build rationale. Even with perfect order alignment the stack can go cold (5 hits, 1 run). Order confirmation reduces variance on PA count but doesn't guarantee run production.
+
+
+### Signal Performance — Running Log
+| Signal | Entity | Date | Prediction | Result | Grade |
+|--------|--------|------|-----------|--------|-------|
+| STEAM + ANTI_CHALK                  | PHI          | 2026-06-25 | Stack goes off                      | 10 runs, 1.012 OPS ✅                   | A+ |
+| ANTI_CHALK (team stack)             | DET          | 2026-06-25 | Low ownership + scores              | Low ownership ✅ / 1 run scored ❌       | D |
+| TRAP/PARADOX/STICKY (SP)            | Imai         | 2026-06-25 | DET stack scores freely             | 1 run, Imai 6IP 0ER 10K ❌              | F |
+| TRAP/PARADOX/STICKY (SP)            | Cavalli      | 2026-06-25 | PHI stack scores                    | 10 runs, pen imploded ✅                | A+ |
+| Individual score 100.0              | Harper       | 2026-06-25 | Elite DK performance                | HR, 3 RBI, 27 pts ✅                    | A+ |
+| SURGING form                        | Melton       | 2026-06-25 | Quality start                       | 6 IP, 1 ER, 22.3 pts ✅                 | A |
+| ERA L3 7.71 + WALKS_PENALTY         | Gausman      | 2026-06-25 | Red flag SP                         | 6 ER, 3 HR, 2.3 pts ❌                  | F |
+| Weather fade STL/ARI                | STL          | 2026-06-25 | Delay or postponement               | STL postponed ✅                        | A+ |
+| 96% conf (team)                     | DET          | 2026-06-25 | High scoring game                   | 1 run scored ❌                         | F |
+| 96% conf (team)                     | PHI          | 2026-06-25 | High scoring game                   | 10 runs scored ✅                       | A+ |
+| HOT_MSMI + SMASH                    | Okamoto      | 2026-06-25 | High upside individual              | HR, 2 RBI — not rostered ❌             | N/A |
+
+### Architectural Updates (June 27, 2026)
+#### Opener/Bulk Pitcher Auto-Detection System
+- **Context:** Corrected the opponent stack scoring vulnerability where the model was evaluating against short-leash openers rather than bulk relief pitchers.
+- **Decision:** Implemented `utils/opener_detector.py` to auto-detect openers based on DraftKings CSV tags (`PO`/`PLR`), salary differentials, and historical/props usage heuristics.
+- **Rules Integrated:**
+  1. Disabled opener detection for the first 7 days of each MLB season to prevent false positives on unstable opening-week usage patterns.
+  2. Nested the opener visually under the bulk arm in the Pitchers Matrix, keeping the opener's details card accessible via click-delegation.
+  3. Propagated bulk-arm stats to the opponent's team report stack scoring while keeping the team report signals intact.
+  4. Preserved clean, emoji-free ASCII console prints in Python scripts to guarantee Windows Terminal compatibility.
+
+#### June 27, 2026 (Second Session) — Upgraded Opener Detection & Safety Shields
+- **Context:** Upgraded the opener detection system to use player props outs lines and RotoWire line-up tags to maximize detection accuracy.
+- **Decision:**
+  1. **Tier 1A - RotoWire SP Highlighters:** Scraped `.lineup__player-highlight` elements from RotoWire lineups inside `data/lineup_fetcher.py` to identify `(O)` and `(B)` tags. Gracefully falls back with warnings if the page layout changes.
+  2. **Tier 1C - Player Props Outs Line:** If the scheduled starter has an outs line $\le 8.0$, they are marked as an opener. We then scan for teammate props with an outs line $\ge 12.0$ to resolve the bulk arm. If no teammate qualifies, map to `BULK_UNRESOLVED`.
+  3. **Safety Gate - Props Pending Protection:** If the starter's outs line is missing/null, skip all detection, return `PROPS_PENDING` and render `⚠️ PROPS PENDING` on the pitcher's card. This protects starters whose props are not yet open from false-positive detection.
+  4. **Lowered Salary Gap:** Lowered same-team salary gap threshold from `$1,500` to `$1,000` to catch Cruz/Spence-type situations.
+  5. **Inline Matrix Warnings:** Render `⚠️ Cruz (OPENER) -> ? (BULK UNRESOLVED)` in the opposing pitcher column of the Teams Matrix if the bulk arm cannot be resolved.
+
