@@ -98,6 +98,25 @@ class LineupFetcher:
             }
         }
         """
+        # Circuit breaker bypass check
+        state = self._load_state()
+        consecutive_failures = state.get("consecutive_failures", 0)
+        last_failure_time = state.get("last_failure_time", 0)
+        if consecutive_failures >= 3:
+            # Check 15-minute cooldown (900 seconds)
+            if time.time() - last_failure_time < 900:
+                print(f"[LINEUPS]: Circuit breaker active (failures={consecutive_failures}). Bypassing live RotoWire fetch and serving cache.")
+                if os.path.exists(self.cache_file):
+                    try:
+                        with open(self.cache_file, 'r', encoding='utf-8') as f:
+                            cache_data = json.load(f)
+                        return cache_data.get('lineups', {})
+                    except Exception as ce:
+                        print(f"[LINEUPS]: Failed to read RotoWire cache fallback: {ce}")
+                return {}
+            else:
+                print("[LINEUPS]: Circuit breaker cool-down elapsed. Attempting live fetch (half-open).")
+
         # Check cache validity
         if os.path.exists(self.cache_file):
             try:
@@ -230,6 +249,7 @@ class LineupFetcher:
             # Increment failure count
             state = self._load_state()
             state["consecutive_failures"] = state.get("consecutive_failures", 0) + 1
+            state["last_failure_time"] = time.time()
             self._save_state(state)
             
             if state["consecutive_failures"] >= 3:
@@ -463,34 +483,37 @@ class LineupFetcher:
         all_lineups = {}
 
         # 1. Base on RotoWire projected or confirmed lineups
-        for team_name, info in rotowire_lineups.items():
-            lineup_players = info['lineup']
-            is_confirmed = info['is_confirmed']
-            
-            if is_confirmed:
-                status = 'CONFIRMED'
-            else:
-                # If RotoWire is projected, check consensus with MLB.com Starting Lineups
-                mlb_info = mlbdotcom_lineups.get(team_name)
-                if not mlb_info or not mlb_info.get('lineup'):
-                    # Default to high confidence if MLB.com is empty (pre-release window)
-                    status = 'PROJECTED_HIGH_CONF'
+        if isinstance(rotowire_lineups, dict):
+            for team_name, info in rotowire_lineups.items():
+                if not isinstance(info, dict):
+                    continue
+                lineup_players = info.get('lineup', [])
+                is_confirmed = info.get('is_confirmed', False)
+                
+                if is_confirmed:
+                    status = 'CONFIRMED'
                 else:
-                    mlb_players = set(mlb_info['lineup'])
-                    rw_players = set(lineup_players)
-                    if not rw_players:
-                        status = 'PROJECTED_LOW_CONF'
+                    # If RotoWire is projected, check consensus with MLB.com Starting Lineups
+                    mlb_info = mlbdotcom_lineups.get(team_name) if isinstance(mlbdotcom_lineups, dict) else None
+                    if not isinstance(mlb_info, dict) or not mlb_info.get('lineup'):
+                        # Default to high confidence if MLB.com is empty (pre-release window)
+                        status = 'PROJECTED_HIGH_CONF'
                     else:
-                        overlap = len(rw_players.intersection(mlb_players)) / len(rw_players)
-                        if overlap >= 0.80:
-                            status = 'PROJECTED_HIGH_CONF'
-                        else:
+                        mlb_players = set(mlb_info['lineup'])
+                        rw_players = set(lineup_players)
+                        if not rw_players:
                             status = 'PROJECTED_LOW_CONF'
-            
-            all_lineups[team_name] = {
-                'lineup': lineup_players,
-                'status': status
-            }
+                        else:
+                            overlap = len(rw_players.intersection(mlb_players)) / len(rw_players)
+                            if overlap >= 0.80:
+                                status = 'PROJECTED_HIGH_CONF'
+                            else:
+                                status = 'PROJECTED_LOW_CONF'
+                
+                all_lineups[team_name] = {
+                    'lineup': lineup_players,
+                    'status': status
+                }
 
         # 2. Overwrite with official StatsAPI confirmed lineups (highest authority)
         for team_name, players in statsapi_confirmed.items():
