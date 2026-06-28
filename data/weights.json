@@ -5,7 +5,8 @@
     "is_burst": 12.0,
     "is_gassed": 14.0,
     "is_hot_run_msmi": 12.0,
-    "is_cold_streak_msmi": -24.0
+    "is_cold_streak_msmi": -24.0,
+    "short_leash_soft_cap_enabled": true
   },
   "pitchers": {
     "is_trap": -30.0,

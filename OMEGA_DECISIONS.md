@@ -219,6 +219,11 @@ The Rolling Betting ROI panel showed 0/0 W/L and 0.0% ROI across all tiers, desp
   4. **Lowered Salary Gap:** Lowered same-team salary gap threshold from `$1,500` to `$1,000` to catch Cruz/Spence-type situations.
   5. **Inline Matrix Warnings:** Render `⚠️ Cruz (OPENER) -> ? (BULK UNRESOLVED)` in the opposing pitcher column of the Teams Matrix if the bulk arm cannot be resolved.
 
+#### June 27, 2026 (Third Session) — Short-Leash Volatility Hard-Cap Implementation
+- **Context:** Stacks opposing volatile short-leash starters were failing due to early exits handing games to rested bullpens.
+- **Decision:** When opposing SP fires EIV + k_line ≤ 4.0, team is capped at a hard-cap of 75.0 (not soft-cap compression) unless 2+ of STEAM, DQI TRUST, or GASSED pen are present. Implemented after June 27 short-leash bust pattern (Gusto/Imai/Thornton three-slate sequence). Toggle: `short_leash_soft_cap_enabled` in `weights.json`.
+- **Backtest Performance:** Showed +1.96% Top 1 hit rate on 51 slates / 31 trigger events (full clean history from May 22 to June 27). This should be revisited at the late-July audit when more trigger events have accumulated.
+
 ### June 26, 2026 — Slate Post-Mortem & Strategic Lessons
 
 #### Entry 1 — TRAP Arm Pattern (June 26 2026)

@@ -675,6 +675,43 @@ def test_prop_pressure_labels_retired_from_scoring():
     assert any("Moderate prop interest" in r for r in reasons_warm)
 
 
+def test_short_leash_soft_cap():
+    t = {
+        "team": "Team A",
+        "opp_pitcher": "Pitcher A",
+        "team_xwoba": 0.345,
+        "implied_total": 5.2,
+        "lineup_status": "CONFIRMED",
+        "dqi_status": "CAUTION",
+        "divergence": 0,
+        "bullpen_fatigue": 50,
+        "is_anti_chalk_smash": False,
+        "is_pitch_alignment": True,
+        "is_gassed": False,
+        "is_steam": False,
+    }
+    
+    opp_p = {
+        "pitcher": "Pitcher A",
+        "early_innings_volatility": True,
+        "k_line": 3.5,
+        "is_low_ceiling": True,
+    }
+    
+    conf, reasons = score_stack_confidence(t, [opp_p])
+    assert conf == 75
+    assert any("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/DQI-TRUST/GASSED-PEN." in r for r in reasons)
+    
+    t_conviction = {
+        **t,
+        "dqi_status": "TRUST",
+        "is_steam": True,
+    }
+    conf_conv, reasons_conv = score_stack_confidence(t_conviction, [opp_p])
+    assert not any("short-leash SP requires 2+" in r for r in reasons_conv)
+
+
+
 
 
 

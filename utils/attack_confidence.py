@@ -496,6 +496,27 @@ def score_stack_confidence(t, p_reports):
     if not reasons:
         reasons.append("Neutral stack profile on this slate.")
 
+    # Check for short-leash, low-K trigger (Fix B / Trigger Def 3)
+    three_flags_fire = False
+    short_leash_enabled = bool(_sw.get("short_leash_soft_cap_enabled", True))
+    if short_leash_enabled and opp_p:
+        eiv_present = opp_p.get("early_innings_volatility", False)
+        reasons_sp = opp_p.get("attack_reasons", []) or opp_p.get("reasons", []) or []
+        for r in reasons_sp:
+            if "Early-innings volatility" in r:
+                eiv_present = True
+        
+        k_line = None
+        k_line_raw = opp_p.get("k_line")
+        if k_line_raw is not None and k_line_raw != '-':
+            try:
+                k_line = float(k_line_raw)
+            except ValueError:
+                pass
+                
+        if eiv_present and (k_line is not None and k_line <= 4.0):
+            three_flags_fire = True
+
     # High Conviction Gate Check
     # (Require 2+ signals to exceed 75 CONF)
     raw_conf = conf
@@ -506,10 +527,29 @@ def score_stack_confidence(t, p_reports):
     conf = _clamp(conf)
     if conf >= 75:
         ok, _ = _has_high_conviction_stack(t)
+        
+        strict_soft_cap = False
+        if three_flags_fire:
+            spec_signals = 0
+            if t.get("is_steam") or t.get("is_steam_support"):
+                spec_signals += 1
+            if t.get("dqi_status") == "TRUST":
+                spec_signals += 1
+            if t.get("is_gassed") or float(t.get("bullpen_fatigue", 0) or 0) >= 85:
+                spec_signals += 1
+                
+            if spec_signals < 2:
+                ok = False
+                strict_soft_cap = True
+        
         if not ok:
-            # Apply 0.35 soft-cap above 75 instead of a non-monotonic cap from 70
-            conf = 75.0 + (conf - 75.0) * 0.35
-            reasons.append("Soft-capped above 75 — need 2+ conviction signals (DQI/div/pen/props).")
+            if strict_soft_cap:
+                conf = 75.0
+                reasons.append("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/DQI-TRUST/GASSED-PEN.")
+            else:
+                # Apply 0.35 soft-cap above 75 instead of a non-monotonic cap from 70
+                conf = 75.0 + (conf - 75.0) * 0.35
+                reasons.append("Soft-capped above 75 — need 2+ conviction signals (DQI/div/pen/props).")
 
     return _clamp(conf), reasons
 
