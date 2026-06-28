@@ -652,3 +652,31 @@ def test_rotowire_o_b_tags_tier1(mock_fetch_api):
     assert bulk == "Mitch Spence"
     assert tier == "1A"
     assert sub is True
+
+# 29. test_tier1_k_line_override
+def test_tier1_k_line_override():
+    # K line <= 1.5 triggers immediate opener detection and bulk arm resolution
+    game = get_mock_game(home_team="Chicago Cubs", away_team="Milwaukee Brewers", game_id="game_chc")
+    game["home_pitcher"] = "Ryan Rolison"
+    
+    props = {
+        "game_chc": {
+            "pitcher_strikeouts": [
+                {"player_name": "Ryan Rolison", "point": 0.5, "side": "home", "home_team": "Chicago Cubs"}
+            ],
+            "pitcher_outs": [
+                {"player_name": "Ryan Rolison", "point": 1.5, "side": "home", "home_team": "Chicago Cubs"},
+                {"player_name": "Jordan Wicks", "point": 15.5, "side": "home", "home_team": "Chicago Cubs"}
+            ]
+        }
+    }
+    
+    status, opener, bulk, tier, method, sub, reason = detect_opener_for_team(
+        "Chicago Cubs", game, [], props, datetime.date(2026, 6, 28)
+    )
+    
+    assert status == "CONFIRMED"
+    assert opener == "Ryan Rolison"
+    assert bulk == "Jordan Wicks"
+    assert tier == 1
+    assert sub is True

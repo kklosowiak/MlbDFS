@@ -365,6 +365,11 @@ def run_full_analysis():
                 if normalize_player_name(r['pitcher']) == normalize_player_name(info['opener']):
                     r['is_opener'] = True
                     r['bulk_name'] = info['bulk']
+                    r['opener_tier'] = info.get('tier')
+                    if info.get('tier') == 1 or info.get('tier') == "1":
+                        r['opener_reason'] = f"K line {r.get('k_line')} <= 1.5 — definitive opener signal"
+                    else:
+                        r['opener_reason'] = f"Detected via {info.get('method')} (Tier {info.get('tier')})"
             
             p_key = (r['event_id'], r['team'], normalize_player_name(r['pitcher']))
             if p_key not in seen_pitcher_keys:

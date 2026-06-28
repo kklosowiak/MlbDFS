@@ -6339,11 +6339,12 @@
                 if (p.is_bulk_arm && p.opener_name) {
                     bulkLabel = ` <span class="bulk-label" style="background:#0a84ff; color:#fff; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:700; margin-left:4px;">BULK</span>`;
                     const openerP = pitchers.find(op => op.event_id === p.event_id && op.team === p.team && op.is_opener);
+                    const openerBadge = ` <span style="background:#ff9500; color:#fff; font-size:0.65rem; padding:1px 4px; border-radius:3px; font-weight:700; margin-left:4px; vertical-align:middle; display:inline-block; line-height:1;">OPENER</span>`;
                     if (openerP) {
                         const openerJson = encodeURIComponent(JSON.stringify(openerP));
-                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); openPitcherModal('${openerJson}')">${p.opener_name}</span> (opener, 1-2 IP)</div>`;
+                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); openPitcherModal('${openerJson}')">${p.opener_name}</span>${openerBadge} (1-2 IP)</div>`;
                     } else {
-                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ ${p.opener_name} (opener, 1-2 IP)</div>`;
+                        openerNested = `<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ ${p.opener_name}${openerBadge} (1-2 IP)</div>`;
                     }
                 }
 
@@ -7624,6 +7625,8 @@
                     document.getElementById('tm-opp-p-outs').innerText = outsStr;
 
                     let pBadgesHTML = '';
+                    if (oppP.is_opener) pBadgesHTML += '<span class="signal-pill" style="font-size: 0.65rem; padding: 2px 6px; background: rgba(255, 149, 0, 0.15); border: 1px solid rgba(255, 149, 0, 0.45); color: #ff9500; border-radius: 4px; font-weight: bold;">OPENER</span>';
+                    if (oppP.is_bulk_arm) pBadgesHTML += '<span class="signal-pill" style="font-size: 0.65rem; padding: 2px 6px; background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.45); color: #0a84ff; border-radius: 4px; font-weight: bold;">BULK</span>';
                     if (oppP.is_juiced_target) pBadgesHTML += '<span class="signal-pill pill-target" style="font-size: 0.65rem; padding: 2px 6px;">🎯 TARGET</span>';
                     if (oppP.is_shark) pBadgesHTML += '<span class="signal-pill pill-shark" style="font-size: 0.65rem; padding: 2px 6px;">🦈 SHARK</span>';
                     if (oppP.is_sharp) pBadgesHTML += '<span class="signal-pill pill-sharp" style="font-size: 0.65rem; padding: 2px 6px;">🎰 HEAVY $</span>';
@@ -8120,6 +8123,8 @@
                 }
 
                 let badgesHTML = '';
+                if (p.is_opener) badgesHTML += '<span class="signal-pill" style="background: rgba(255, 149, 0, 0.15); border: 1px solid rgba(255, 149, 0, 0.45); color: #ff9500; font-weight: bold;">OPENER</span>';
+                if (p.is_bulk_arm) badgesHTML += '<span class="signal-pill" style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.45); color: #0a84ff; font-weight: bold;">BULK</span>';
                 if (p.is_juiced_target) badgesHTML += '<span class="signal-pill pill-target">🎯 TARGET</span>';
                 badgesHTML += buildMarketSignalPills(p, false);
                 if (p.is_debut) badgesHTML += '<span class="signal-pill pill-storm">✨ DEBUT</span>';

@@ -247,6 +247,125 @@ def detect_opener_for_team(team, game, dk_players, props_data, slate_date, previ
     if is_first_7_days_of_season(slate_date):
         return "REJECTED", None, None, 0, "NONE", False, "First 7 days of season exclusion"
 
+    # Resolve starter name from game
+    starter = game.get('home_pitcher' if team == game['home_team'] else 'away_pitcher')
+    gid_props = props_data.get(game_id, {}) if props_data else {}
+
+    # Extract k_line for starter from props_data
+    starter_k_line = None
+    if starter and starter not in ["TBD", "Tbd", None] and gid_props:
+        if 'pitcher_strikeouts' in gid_props:
+            ks = [o for o in gid_props['pitcher_strikeouts'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(starter)]
+            if ks:
+                points = [o.get('point', 0) for o in ks if o.get('point')]
+                if points:
+                    starter_k_line = statistics.median(points)
+
+    pitcher = {
+        'name': starter,
+        'k_line': starter_k_line
+    }
+
+    # TIER 1 HARD OVERRIDE: K line <= 1.5 = opener, no secondary signals needed
+    # No legitimate MLB starter carries a K line this low — unambiguous opener flag
+    if pitcher.get('k_line') is not None and pitcher.get('k_line') <= 1.5:
+        pitcher['is_opener'] = True
+        pitcher['opener_tier'] = 1
+        pitcher['opener_reason'] = f"K line {pitcher['k_line']} <= 1.5 — definitive opener signal"
+        
+        # trigger bulk arm lookup
+        # Group pitchers on the team in this game
+        game_info_match = None
+        team_dk_pitchers = []
+        if dk_players:
+            for p in dk_players:
+                p_team = p.get('TeamAbbrev')
+                pos = p.get('Position', '')
+                roster_pos = p.get('Roster Position', '')
+                is_p = (roster_pos == 'P' or 'SP' in pos or 'RP' in pos or 'PO' in pos or 'PLR' in pos)
+                if match_team(p_team, team) and is_p:
+                    team_dk_pitchers.append(p)
+                    if p.get('Game Info'):
+                        game_info_match = p.get('Game Info')
+            if game_info_match:
+                team_dk_pitchers = [p for p in team_dk_pitchers if p.get('Game Info') == game_info_match]
+
+        # Scan teammate props for highest outs line
+        teammate_outs = {}
+        for outcome in gid_props.get('pitcher_outs', []):
+            pn = outcome.get('player_name')
+            if not pn or normalize_player_name(pn) == normalize_player_name(starter):
+                continue
+            is_team_match = False
+            side = outcome.get('side', '').lower()
+            home_t = outcome.get('home_team')
+            away_t = outcome.get('away_team')
+            if side:
+                is_team_match = (side == 'home' and team == home_t) or (side == 'away' and team == away_t)
+            elif home_t or away_t:
+                is_team_match = (team in [home_t, away_t])
+            if not is_team_match and dk_players:
+                dk_match = next((p for p in dk_players if normalize_player_name(p.get('Name', '')) == normalize_player_name(pn)), None)
+                if dk_match:
+                    is_team_match = match_team(dk_match.get('TeamAbbrev'), team)
+            if not is_team_match:
+                try:
+                    from data.statcast_bridge import load_cache
+                    sc_cache = load_cache()
+                    if normalize_player_name(pn) in sc_cache:
+                        cache_team = sc_cache[normalize_player_name(pn)].get('team')
+                        if cache_team and (cache_team.lower() in team.lower() or team.lower() in cache_team.lower()):
+                            is_team_match = True
+                except:
+                    pass
+
+            if is_team_match:
+                points = [o.get('point', 0) for o in gid_props['pitcher_outs'] if normalize_player_name(o.get('player_name', '')) == normalize_player_name(pn) and o.get('point')]
+                if points:
+                    teammate_outs[pn] = statistics.median(points)
+        
+        # Load RotoWire cache to help resolve the bulk arm
+        rw_cache_path = os.path.join(config.DATA_DIR, "projected_lineups_cache.json")
+        rw_pitchers = []
+        if os.path.exists(rw_cache_path):
+            try:
+                with open(rw_cache_path, 'r', encoding='utf-8') as f:
+                    rw_data = json.load(f).get('lineups', {})
+                    for rw_t, info in rw_data.items():
+                        if rw_t.lower() in team.lower() or team.lower() in rw_t.lower():
+                            rw_pitchers = info.get('pitchers', [])
+                            break
+            except:
+                pass
+
+        bulk_name = None
+        method = "props feed"
+        if teammate_outs:
+            bulk_name = max(teammate_outs, key=teammate_outs.get)
+        else:
+            # Try to resolve bulk arm from RotoWire cache
+            if rw_pitchers:
+                rw_non_opener = [p for p in rw_pitchers if normalize_player_name(p['name']) != normalize_player_name(starter)]
+                if rw_non_opener:
+                    rw_bulk_p = next((p for p in rw_non_opener if p.get('rw_is_bulk')), rw_non_opener[0])
+                    bulk_name = rw_bulk_p['name']
+                    method = "RotoWire cache"
+            
+            if not bulk_name:
+                if dk_players and len(team_dk_pitchers) >= 2:
+                    non_opener_dk = [p for p in team_dk_pitchers if normalize_player_name(p['Name']) != normalize_player_name(starter)]
+                    if non_opener_dk:
+                        best_dk = max(non_opener_dk, key=lambda x: int(x.get('Salary', 0)))
+                        bulk_name = best_dk['Name']
+                        method = "CSV second pitcher"
+
+        if bulk_name:
+            log_detection(date_str, team, game_id, 1, bool(dk_players), False, None, [], [], "CONFIRMED", method, bulk_name, True, None)
+            return "CONFIRMED", starter, bulk_name, 1, method, True, None
+        else:
+            log_detection(date_str, team, game_id, 1, bool(dk_players), False, None, [], [], "CONFIRMED", method, None, False, "BULK_UNRESOLVED")
+            return "CONFIRMED", starter, None, 1, method, False, "BULK_UNRESOLVED"
+
     # Group pitchers on the team in this game
     game_info_match = None
     team_dk_pitchers = []

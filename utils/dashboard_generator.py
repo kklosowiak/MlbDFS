@@ -222,7 +222,8 @@ class DashboardGenerator:
                     op_reasons_html = op_reasons_html.replace('"', '&quot;').replace('\n', ' ')
                     
                     team_lbl = abbrev_map.get(p['team'], p['team'])
-                    opener_nested = f'<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); showDetails(\'{opener_name} ({team_lbl})\', \'{op_reasons_html}\')">{opener_name}</span> (opener, 1-2 IP)</div>'
+                    opener_badge = ' <span style="background:#ff9500; color:#fff; font-size:0.65rem; padding:1px 4px; border-radius:3px; font-weight:700; margin-left:4px; vertical-align:middle; display:inline-block; line-height:1;">OPENER</span>'
+                    opener_nested = f'<div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px; padding-left:12px;">└─ <span style="text-decoration:underline; cursor:pointer;" onclick="event.stopPropagation(); showDetails(\'{opener_name} ({team_lbl})\', \'{op_reasons_html}\')">{opener_name}</span>{opener_badge} (1-2 IP)</div>'
 
             row = f"""<tr class="{'god-tier' if p['alpha_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{p['pitcher']} ({abbrev_map.get(p['team'], p['team'])})', '{p_reasons_html}')">
 <td class="score {'score-elite' if p['alpha_score'] >= 100 else ('score-high' if p['alpha_score'] >= 85 else '')}">{p['alpha_score']}</td>
@@ -234,6 +235,8 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-storm">✨ DEBUT</span>' if p.get('is_debut') else '' }
 { '<span class="signal-pill pill-lowconf">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }
 { '<span class="signal-pill pill-lowconf">⚠️ PROPS PENDING</span>' if p.get('props_pending') else '' }
+{ '<span class="signal-pill" style="background:rgba(255,149,0,0.15); border:1px solid rgba(255,149,0,0.4); color:#ff9500; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">OPENER</span>' if p.get('is_opener') else '' }
+{ '<span class="signal-pill" style="background:rgba(10,132,255,0.15); border:1px solid rgba(10,132,255,0.4); color:#0a84ff; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">BULK</span>' if p.get('is_bulk_arm') else '' }
 </div></td>
 <td><div class="signals-container">
 { '<span class="signal-pill pill-paradox">⚠️ PARADOX</span>' if p.get('is_paradox') else '' }
