@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 archive_dir = os.path.join(base_dir, "reports", "archive")
+from utils.audit_engine import calculate_dk_score
 
 def load_slates():
     slates = []
@@ -151,10 +152,8 @@ def main():
             
             sig_count = sum([is_hot, is_strong, is_elite, is_smash])
             if sig_count >= 2:
-                hits = float(h_act.get("hits", 0) or 0)
-                hr_val = float(h_act.get("hr", 0) or 0)
-                rbi = float(h_act.get("rbi", 0) or 0)
-                actual_dk = 3.0 * hits + 9.0 * hr_val + 2.0 * rbi
+                # Calculate actual DK score using complete StatsAPI fields
+                actual_dk = calculate_dk_score(h_act)
                 
                 player_score = float(h.get("player_score", 0.0) or 0.0)
                 proj_dk = player_score / 10.0

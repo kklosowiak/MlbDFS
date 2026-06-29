@@ -2,6 +2,19 @@ import requests
 import json
 import os
 
+def calculate_dk_score(hitter: dict) -> float:
+    return float(
+        (hitter.get('singles', 0) or 0) * 3 +
+        (hitter.get('doubles', 0) or 0) * 5 +
+        (hitter.get('triples', 0) or 0) * 8 +
+        (hitter.get('hr', 0) or 0) * 10 +
+        (hitter.get('rbi', 0) or 0) * 2 +
+        (hitter.get('runs_scored', 0) or 0) * 2 +
+        (hitter.get('walks', 0) or 0) * 2 +
+        (hitter.get('stolen_bases', 0) or 0) * 5 +
+        (hitter.get('hbp', 0) or 0) * 2
+    )
+
 class AuditEngine:
     def __init__(self):
         self.api_base = "https://statsapi.mlb.com/api/v1"
@@ -69,11 +82,30 @@ class AuditEngine:
                             name = p_data.get('person', {}).get('fullName', 'Unknown')
                             from utils.normalization import normalize_player_name
                             norm_name = normalize_player_name(name)
+                            hits = b_stats.get('hits', 0) or 0
+                            hr_val = b_stats.get('homeRuns', 0) or 0
+                            rbi_val = b_stats.get('rbi', 0) or 0
+                            doubles = b_stats.get('doubles', 0) or 0
+                            triples = b_stats.get('triples', 0) or 0
+                            runs_scored = b_stats.get('runs', 0) or 0
+                            walks = b_stats.get('baseOnBalls', 0) or 0
+                            stolen_bases = b_stats.get('stolenBases', 0) or 0
+                            hbp = b_stats.get('hitByPitch', 0) or 0
+                            singles = hits - (doubles + triples + hr_val)
+                            
                             results[team_name]['hitters'][norm_name] = {
-                                'hits': b_stats.get('hits', 0),
-                                'hr': b_stats.get('homeRuns', 0),
-                                'rbi': b_stats.get('rbi', 0)
+                                'hits': hits,
+                                'hr': hr_val,
+                                'rbi': rbi_val,
+                                'doubles': doubles,
+                                'triples': triples,
+                                'runs_scored': runs_scored,
+                                'walks': walks,
+                                'stolen_bases': stolen_bases,
+                                'hbp': hbp,
+                                'singles': singles
                             }
+
             
             return results
         except Exception as e:

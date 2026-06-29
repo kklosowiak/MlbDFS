@@ -12,52 +12,122 @@
             "wyatt langford": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 1
             },
             "jake burger": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "alejandro osuna": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "joc pederson": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nicky lopez": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "josh jung": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "justin foscue": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ezequiel duran": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brandon nimmo": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "elias diaz": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -74,57 +144,134 @@
             "griffin conine": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "heriberto hernandez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "esteury ruiz": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jakob marsee": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "javier sanoja": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "xavier edwards": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "kyle stowers": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "owen caissie": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "leo jimenez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brian navarreto": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "otto lopez": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -141,52 +288,122 @@
             "ian happ": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "alex bregman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "pedro ramirez": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 4,
+                "walks": 0,
+                "stolen_bases": 2,
+                "hbp": 0,
+                "singles": 2
             },
             "michael busch": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "carson kelly": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "pete crowarmstrong": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "seiya suzuki": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "dansby swanson": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 4
+                "rbi": 4,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 2
             },
             "nico hoerner": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 3,
+                "triples": 0,
+                "runs_scored": 3,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "matt shaw": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -203,62 +420,146 @@
             "luis torrens": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "bo bichette": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "francisco alvarez": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "mark vientos": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brett baty": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "carson benge": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "eric wagaman": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "marcus semien": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "mj melendez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "francisco lindor": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jared young": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "aj ewing": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -275,57 +576,134 @@
             "kahlil watson": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "travis bazzana": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "daniel schneemann": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "patrick bailey": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brayan rocchio": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "petey halpin": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 3,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "david fry": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "steven kwan": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "kyle manzardo": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "stuart fairchild": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "rhys hoskins": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -342,62 +720,146 @@
             "jacob gonzalez": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "tristan peters": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "luisangel acuna": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "randal grichuk": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "kyle teel": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 1
             },
             "chase meidroth": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "junior perez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "colson montgomery": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "braden montgomery": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "andrew benintendi": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "sam antonacci": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "miguel vargas": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             }
         }
     },
@@ -414,57 +876,134 @@
             "willson contreras": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "anthony seigler": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "connor wong": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "wilyer abreu": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "andruw monasterio": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "mickey gasper": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "caleb durbin": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "carlos narvaez": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nate eaton": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ceddanne rafaela": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "marcelo mayer": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -481,62 +1020,146 @@
             "mickey moniak": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jake mccarthy": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "troy johnston": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "braxton fulford": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "willi castro": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 3
             },
             "tyler freeman": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 2
             },
             "cole carrigg": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "hunter goodman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brett sullivan": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ezequiel tovar": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "tj rumfield": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "kyle karros": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -553,52 +1176,122 @@
             "jeremiah jackson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "samuel basallo": {
                 "hits": 2,
                 "hr": 2,
-                "rbi": 4
+                "rbi": 4,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "gunnar henderson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "leody taveras": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "taylor ward": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "blaze alexander": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "pete alonso": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "jackson holliday": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "colton cowser": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "coby mayo": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -615,62 +1308,146 @@
             "donovan walton": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "oswald peraza": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "christian moore": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "zach neto": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jorge soler": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "denzer guzman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "vaughn grissom": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "nolan schanuel": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "wade meckler": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "josh lowe": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "tyler heineman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "logan ohoppe": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -687,52 +1464,122 @@
             "josh naylor": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "cole young": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "weston wilson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jp crawford": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "randy arozarena": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "dominic canzone": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "cal raleigh": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "colt emerson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "julio rodriguez": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "luke raley": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -749,57 +1596,134 @@
             "spencer horwitz": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brandon lowe": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "endy rodriguez": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "bryan reynolds": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "esmerlyn valdez": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jared triolo": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jake mangum": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 1
             },
             "billy cook": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "tyler callihan": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ryan ohearn": {
                 "hits": 4,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 3,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "nick gonzales": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             }
         }
     },
@@ -816,57 +1740,134 @@
             "carter jensen": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "kameron misner": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 0
             },
             "tyler tolbert": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "josh rojas": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "isaac collins": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "salvador perez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nick loftin": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "john rave": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "michael massey": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "lane thomas": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jac caglianone": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -883,47 +1884,110 @@
             "taylor walls": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ryan vilade": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "chandler simpson": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 2,
+                "hbp": 0,
+                "singles": 1
             },
             "jonny deluca": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jonathan aranda": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "nick fortes": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 1
             },
             "yandy diaz": {
                 "hits": 4,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 4
             },
             "ben williamson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "junior caminero": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -940,52 +2004,122 @@
             "jose caballero": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "spencer jones": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "max schuemann": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "paul goldschmidt": {
                 "hits": 2,
                 "hr": 2,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jasson dominguez": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "austin wells": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ben rice": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "anthony volpe": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "cody bellinger": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jazz chisholm": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1002,62 +2136,146 @@
             "zach mckinstry": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "haoyu lee": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "riley greene": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "kevin mcgonigle": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "kerry carpenter": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "spencer torkelson": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ben malgeri": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jake rogers": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "james outman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "matt vierling": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "dillon dingler": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "colt keith": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1074,62 +2292,146 @@
             "gabriel rincones": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "brandon marsh": {
                 "hits": 3,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 3
             },
             "justin crawford": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "bryce harper": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jt realmuto": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "edmundo sosa": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "alec bohm": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "bryson stott": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "kyle schwarber": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "garrett stubbs": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "trea turner": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "derek hill": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1146,52 +2448,122 @@
             "cj abrams": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 1,
+                "singles": 1
             },
             "nasim nunez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "drew millas": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "jorbit vivas": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "dylan crews": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "curtis mead": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
-            },
-            "jose tena": {
-                "hits": 1,
-                "hr": 0,
-                "rbi": 0
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "daylen lile": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
+            },
+            "jose tena": {
+                "hits": 1,
+                "hr": 0,
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "james wood": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "luis garcia": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1208,52 +2580,122 @@
             "isaac paredes": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "cam smith": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 0
             },
             "jake meyers": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brice matthews": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jose altuve": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "joey loperfido": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jeremy pena": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "raynel delgado": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "yainer diaz": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "yordan alvarez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1270,57 +2712,134 @@
             "luis urias": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "ernie clement": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "daulton varsho": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 2
             },
             "andres gimenez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "davis schneider": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nathan lukes": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "george springer": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "vladimir guerrero": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "myles straw": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "alejandro kirk": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "kazuma okamoto": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1337,57 +2856,134 @@
             "cooper pratt": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jackson chourio": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "christian yelich": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "jake bauers": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "sal frelick": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "andrew vaughn": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "garrett mitchell": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "david hamilton": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "blake perkins": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "william contreras": {
                 "hits": 3,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "brice turang": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1404,67 +3000,158 @@
             "elly de la cruz": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "dane myers": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "sal stewart": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "noelvi marte": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nathaniel lowe": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "matt mclain": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "blake dunn": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "spencer steer": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jose trevino": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "eugenio suarez": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 2,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 1,
+                "singles": 0
             },
             "tyler stephenson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "edwin arroyo": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jj bleday": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1481,52 +3168,122 @@
             "dalton rushing": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ryan ward": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "max muncy": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 2
             },
             "freddie freeman": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "tommy edman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "shohei ohtani": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "andy pages": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 1,
+                "singles": 0
             },
             "mookie betts": {
                 "hits": 3,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "alex call": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "alex freeland": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1543,67 +3300,158 @@
             "victor caratini": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "kody clemens": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "brooks lee": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 1
             },
             "austin martin": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "tristan gray": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "josh bell": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "kyler fedko": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ryan kreidler": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "royce lewis": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "trevor larnach": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "byron buxton": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "alex jackson": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "luke keaschall": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1620,57 +3468,134 @@
             "lujames groover": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "tim tawa": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nolan arenado": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "tommy troy": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "ketel marte": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "ildemaro vargas": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "geraldo perdomo": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "gabriel moreno": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "corbin carroll": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "lourdes gurriel": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jorge barrosa": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1687,67 +3612,158 @@
             "bryan torres": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jordan walker": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "nathan church": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "lars nootbaar": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 1,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jose fermin": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 3,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 1
             },
             "jj wetherholt": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "blaze jordan": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 3
+                "rbi": 3,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "alec burleson": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "pedro pages": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "masyn winn": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "ivan herrera": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nelson velazquez": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jimmy crooks": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1764,57 +3780,134 @@
             "michael harris": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "joey bart": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "jorge mateo": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "mauricio dubon": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "drake baldwin": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "matt olson": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 2
             },
             "dominic smith": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "eli white": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "ozzie albies": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "austin riley": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "haseong kim": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1831,57 +3924,134 @@
             "freddy fermin": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jackson merrill": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "sungmun song": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "samad taylor": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 2
             },
             "gavin sheets": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "manny machado": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 2,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "miguel andujar": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "fernando tatis": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 0
             },
             "ty france": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 2
+                "rbi": 2,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 2,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "xander bogaerts": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 2
             },
             "jase bowen": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 0,
+                "singles": 0
             }
         }
     },
@@ -1898,52 +4068,122 @@
             "lawrence butler": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jonah heim": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jeff mcneil": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "joey meneses": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "max muncy": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "tyler soderstrom": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "nick kurtz": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "henry bolte": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 1,
+                "hbp": 1,
+                "singles": 0
             },
             "shea langeliers": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jacob wilson": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             }
         }
     },
@@ -1960,57 +4200,134 @@
             "casey schmitt": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jonah cox": {
                 "hits": 1,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "victor bericoto": {
                 "hits": 2,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "matt chapman": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "jung hoo lee": {
                 "hits": 2,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 1,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 1
             },
             "drew gilbert": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "rafael devers": {
                 "hits": 1,
                 "hr": 1,
-                "rbi": 1
+                "rbi": 1,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 1,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "eric haase": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "willy adames": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "bryce eldridge": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 1,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             },
             "daniel susac": {
                 "hits": 0,
                 "hr": 0,
-                "rbi": 0
+                "rbi": 0,
+                "doubles": 0,
+                "triples": 0,
+                "runs_scored": 0,
+                "walks": 0,
+                "stolen_bases": 0,
+                "hbp": 0,
+                "singles": 0
             }
         }
     }

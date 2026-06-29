@@ -262,3 +262,7 @@ Fix B did not fire for STL on June 28 vs Phillips because his outs odds shifted 
 #### COLD_HIGH_BR_WARNING flag — IMPLEMENTED June 28, 2026
 New flag fires when is_cold_streak_msmi=True AND blended_rating >= 80. Backtest validation: 83.9% underperformance rate (26/31 instances), average DFS delta -4.03 points, across 53 historical slates. This is the highest-confidence hitter avoidance signal in the model. Fires as a prominent red COLD WARNING badge in dashboard and a warning in optimizer output. Do not roster hitters with this flag active regardless of raw blended_rating. Validated June 28 — add to July audit review with updated sample size.
 
+#### actuals_cache completeness fix — IMPLEMENTED June 28, 2026
+Extended actuals_cache hitter records to include complete DraftKings scoring fields: singles (derived), doubles, triples, runs_scored, walks, stolen_bases, hbp. Added calculate_dk_score helper function to utils/audit_engine.py. Backfilled all 53 historical slates via scripts/backfill_actuals.py. All three permanent backtest scripts (backtest_fade_risk.py, backtest_msmi_accuracy.py, backtest_lock_vs_lean.py) updated to use complete scoring formula. Prior hitter signal validation results (HOT_MSMI, COLD_MSMI, STRONG_EDGE, ELITE_PLATOON, PLATOON_TRAP, LEAN vs LOCK) should be considered superseded by post-backfill numbers. Clean baseline established June 28 for July audit.
+
+
