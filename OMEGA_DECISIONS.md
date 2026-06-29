@@ -265,4 +265,11 @@ New flag fires when is_cold_streak_msmi=True AND blended_rating >= 80. Backtest 
 #### actuals_cache completeness fix — IMPLEMENTED June 28, 2026
 Extended actuals_cache hitter records to include complete DraftKings scoring fields: singles (derived), doubles, triples, runs_scored, walks, stolen_bases, hbp. Added calculate_dk_score helper function to utils/audit_engine.py. Backfilled all 53 historical slates via scripts/backfill_actuals.py. All three permanent backtest scripts (backtest_fade_risk.py, backtest_msmi_accuracy.py, backtest_lock_vs_lean.py) updated to use complete scoring formula. Prior hitter signal validation results (HOT_MSMI, COLD_MSMI, STRONG_EDGE, ELITE_PLATOON, PLATOON_TRAP, LEAN vs LOCK) should be considered superseded by post-backfill numbers. Clean baseline established June 28 for July audit.
 
+#### HOT_MSMI signal reversal — June 28, 2026
+Earlier in tonight's backtest session, HOT_MSMI appeared neutral vs baseline (34.3% outperformance rate, -0.13 DFS delta) on incomplete actuals. After the actuals_cache completeness fix was implemented and all 53 slates were backfilled with complete DK scoring (runs, walks, stolen bases, HBP), HOT_MSMI rehabilitated entirely: 50.3% outperformance rate, +2.11 DFS points average delta on 780 instances. The earlier finding was an artifact of missing scoring categories in the actuals. HOT_MSMI is a validated positive buy signal worth approximately +2 DFS points above projection on average. Do NOT downgrade or recalibrate this signal in the July audit — the complete data confirms it is working correctly.
+
+#### STRONG_EDGE and ELITE_PLATOON projection inflation — flagged June 28, 2026
+With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% baseline) and ELITE_PLATOON shows 36.6% (well below baseline) on 422 and 224 instances respectively. Both signals may be overcorrecting projections upward — the matchup advantage is real but the model appears to raise the projection ceiling by more than the actual DFS benefit warrants. Add to July audit: investigate whether STRONG_EDGE and ELITE_PLATOON projection multipliers need downward calibration.
+
+
 

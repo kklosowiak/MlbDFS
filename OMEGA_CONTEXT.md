@@ -14,7 +14,24 @@ What sets OMEGA apart are its custom, highly specialized proprietary signals. Th
 
 The model has been validated against 48 historical slates of actual game data, yielding critical design insights. The backtest proved that gassed bullpens perform poorly, showing a 60.9% hit rate on 5+ runs against weak bullpens compared to 47.9% against elite pens, which led to a split tiered boost. It also identified a major batting order cliff at spot 5, prompting a steep penalty for hitters batting 7th, 8th, or 9th. Raising the DQI TRUST floor to 80 improved its hit rate from 31.6% to 47.1%, while the top-ranked stack hit its run projections 64.6% of the time. Conversely, several signals were retired after showing negative correlation with success, including the whale flag (r=-0.093), the shark alpha flag (r=-0.088), sneaky premium stacks (r=-0.126), storm alpha weather adjustments, and the qualitative prop pressure labels.
 
+### 4.1 Signal Validation Status (June 28, 2026)
+
+The following table summarizes the validation status and performance of OMEGA's primary signals based on backtesting across all 53 historical slates in the archive (using complete DraftKings scoring actuals):
+
+| Signal | Status | Sample Size | Key Finding |
+| :--- | :--- | :--- | :--- |
+| **HOT_MSMI** | Validated — buy signal | 780 instances | +2.11 DFS pts avg, 50.3% outperformance |
+| **COLD_MSMI** | Validated — mild drag | 650 instances | 47.1% underperformance rate |
+| **COLD_HIGH_BR_WARNING** | Validated — strong avoid | 31 instances | 54.8% underperformance, -0.58 DFS delta |
+| **PLATOON_TRAP** | Validated — underperformance | 973 instances | 40.9% outperformance (below 52% baseline) |
+| **STRONG_EDGE** | Flagged — possible projection inflation | 422 instances | 46.4% outperformance (below baseline) |
+| **ELITE_PLATOON** | Flagged — possible projection inflation | 224 instances | 36.6% outperformance (well below baseline) |
+| **FADE_RISK** | Promising — needs more data | 18 instances | 66.7% ITT underperformance, 76.9% with div < -15 |
+| **PARADOX resolution** | Validated — fixed June 28 | 127 instances | ITT-first hierarchy: 54.3% vs 46.5% baseline |
+| **LOCK stack accuracy** | Validated | 28 slates | 64.3% hit 5+ runs, model overconfidence at CONF 90+ |
+
 5. The data pipeline
+
 
 OMEGA ingests data from a variety of sources to compile daily snapshots. Market data is pulled from the Odds API on every refresh. Probable pitchers and starting lineups are fetched directly from the MLB StatsAPI. Baseball Savant CSV endpoints provide Statcast pitch arsenals and hitter xwOBA by pitch type, which automatically refresh every Sunday at 2:00 AM Eastern Time. Projected lineups are cross-referenced with RotoWire, while FantasyLabs consensus files supply additional split and divergence data. To lock in stable projections, opening betting lines are frozen daily at 4:30 AM Eastern Time.
 
