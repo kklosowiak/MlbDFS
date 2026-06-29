@@ -232,8 +232,12 @@ def main():
     confidence_level = "HIGH" if total_hitters >= 100 else "MEDIUM"
     print(f"Confidence level: {confidence_level}")
     
+    # Assert that COLD_MSMI + High Blended rating (>=80) underperformance rate is above 70%
+    assert cold_high_br_under_rate >= 0.70, f"Expected COLD_MSMI + High Blended underperformance rate >= 70%, but got {cold_high_br_under_rate*100:.1f}%"
+
     rec = "IMPLEMENT CHANGE" if abs(hot_avg_diff) >= 1.0 or abs(cold_avg_diff) >= 1.0 else "NO ACTION"
     print(f"Recommendation: {rec}")
+
 
 if __name__ == "__main__":
     main()

@@ -571,6 +571,8 @@ def run_full_analysis():
         player_score = float(h.get('player_score', 0) or 0)
         attack_conf = float(h.get('attack_conf', 0) or 0)
         h['blended_rating'] = round((player_score + attack_conf) / 2, 1)
+        h['is_cold_high_br_warning'] = bool(h.get('is_cold_streak_msmi')) and h['blended_rating'] >= 80
+
 
     try:
         from utils.slate_signal_history import persist_slate_signals, attach_signal_deltas

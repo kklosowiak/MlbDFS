@@ -3894,6 +3894,13 @@
         function hitterTacticalMatchupHtml(h) {
             let pills = [];
 
+            if (h.is_cold_high_br_warning === true) {
+                pills.push(signalPillHtml('🚨 COLD WARNING', {
+                    style: 'background:rgba(255,69,58,0.25); border:1px solid #ff453a; color:#fff; font-weight:900; box-shadow:0 0 10px rgba(255,69,58,0.5); text-shadow:0 0 4px #ff453a; letter-spacing:0.5px;',
+                    tip: 'CRITICAL COLD WARNING: Hitter is cold (COLD_MSMI) but carries a high blended rating (>=80). Historically, this profile underperforms projections 83.9% of the time with an average delta of -4.03 DFS points. Consider fading.'
+                }));
+            }
+
             if (h.is_pitch_alignment) {
                 pills.push(signalPillHtml('🎯 PITCH ALIGN', { className: 'pill-pitch-align', tip: 'Pitch Alignment Edge: Hitter matches the opposing SP\'s pitch mix above league average xwOBA.' }));
             }
@@ -7943,6 +7950,9 @@
                         const tbVal = h.tb_line && h.tb_line !== '-' ? `${h.tb_line} (${h.tb_price > 0 ? '+' : ''}${h.tb_price})` : '—';
 
                         let dnaBadges = '';
+                        if (h.is_cold_high_br_warning === true) {
+                            dnaBadges += '<span class="signal-pill" style="font-size:0.62rem; padding:2px 5px; margin:1px; background:rgba(255,69,58,0.25); border:1px solid #ff453a; color:#fff; font-weight:800; text-shadow:0 0 2px #ff453a;">🚨 COLD WARN</span>';
+                        }
                         if (h.platoon_label && h.platoon_label.includes('ELITE')) {
                             dnaBadges += '<span class="signal-pill pill-el-platoon" style="font-size:0.62rem; padding:2px 5px; margin:1px;">⚡ ELITE</span>';
                         } else if (h.platoon_label && h.platoon_label.includes('STRONG')) {

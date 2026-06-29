@@ -347,6 +347,15 @@ def run_optimization(salaries_path, results_path, args):
                 except (ValueError, TypeError):
                     pass
 
+        # OMEGA v20.1: Hitter Cold High BR warnings
+        for s in ['C', '1B', '2B', '3B', 'SS', 'OF1', 'OF2', 'OF3']:
+            p = roster_hitters[s]
+            raw_proj = p.get('raw_proj', {})
+            if isinstance(raw_proj, dict) and raw_proj.get('is_cold_high_br_warning'):
+                print(f"WARNING: [COLD WARNING] Hitter: {p['name']} has a HIGH blended rating but active COLD_MSMI streak.")
+                print(f"         Historical underperformance rate: 83.9% | Avg DFS delta: -4.03 pts. Consider replacing before lock.")
+
+
         
         # Add constraint to prevent this exact combination in subsequent loops
         # overlap limit (max players sharing this lineup in subsequent ones)

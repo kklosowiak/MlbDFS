@@ -255,5 +255,10 @@ Requires team-level recent game result ingestion from StatsAPI schedule endpoint
 #### Change E — Pitcher CONF Floor GPP Risk Badge — IMPLEMENTED
 Implemented a two-tier GPP risk badge system: pitchers with 55-70 confidence are flagged with `HIGH GPP RISK` (43.2% underperformance rate), and pitchers with 70-79 confidence are flagged with `MODERATE GPP RISK` (34.6% underperformance rate). Pitchers with >=80 confidence receive no badge (24.4% underperformance rate). Added visual warnings for recommended starting pitchers falling in these ranges.
 
+
 #### Phillips/STL Fix B Clarification
 Fix B did not fire for STL on June 28 vs Phillips because his outs odds shifted from +102 (trap territory) to -110 (not a trap) between the 3:36 PM and 4:09 PM runs due to a live market vig adjustment. This is expected model behavior, not a bug. Flag for July audit: evaluate whether OMEGA should use the most conservative odds reading within a lock window rather than the most recent reading, to prevent vig adjustments from clearing genuine trap status.
+
+#### COLD_HIGH_BR_WARNING flag — IMPLEMENTED June 28, 2026
+New flag fires when is_cold_streak_msmi=True AND blended_rating >= 80. Backtest validation: 83.9% underperformance rate (26/31 instances), average DFS delta -4.03 points, across 53 historical slates. This is the highest-confidence hitter avoidance signal in the model. Fires as a prominent red COLD WARNING badge in dashboard and a warning in optimizer output. Do not roster hitters with this flag active regardless of raw blended_rating. Validated June 28 — add to July audit review with updated sample size.
+
