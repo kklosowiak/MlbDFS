@@ -349,7 +349,7 @@ The model's strongest single use is telling you who NOT to play. Every TRAP pitc
 
 The second strongest use is identifying where the field is wrong about the highest-scoring team. When ITT SWAP ACTIVE fires, the public is typically underweighting that team because it's in a small-market game or the pitcher matchup doesn't look sexy. But run environment is run environment. ITT 5.4 is ITT 5.4 regardless of whether it's Yankees vs Red Sox or Royals vs Tigers.
 
-The third and most powerful use is the DNA_TRUST convergence play: DQI_TRUST plus low ticket_pct plus DNA green sectors on primary pitches. This is the millionaire tournament scenario — the play that wins the contest because you're the only one who saw it.
+The third and most powerful use is the DQI_TRUST convergence play: DQI_TRUST plus low ticket_pct plus DNA green sectors on primary pitches. This is the millionaire tournament scenario — the play that wins the contest because you're the only one who saw it.
 
 The math is correct. Trust the TRAP fades. Hammer the DQI_TRUST + low-ownership + DNA edge convergence.
 
@@ -357,4 +357,4 @@ Let's win this thing.
 
 ---
 
-*OMEGA v19.4 | Mathematically Audited June 24, 2026 | 84/84 tests passing*
+*OMEGA v19.4 | Mathematically Audited June 24, 2026 | 114/114 tests passing*
