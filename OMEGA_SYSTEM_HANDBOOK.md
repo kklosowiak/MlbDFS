@@ -13,15 +13,8 @@ The engine runs in Python on a Render-hosted Flask server and serves a real-time
 
 As of June 24, 2026 (v19.4), the model has been through a comprehensive mathematical audit and all known correctness issues have been resolved. Specifically: platoon adjustments are applied exactly once per hitter, bullpen fatigue is counted exactly once per team score, no retired signals influence any score, all signal weights are controlled through a single config file (data/weights.json), and the blended_rating metric has exactly one canonical computation point in the codebase. The math underneath now does what the dashboard claims it does.
 
-**Validated backtest accuracy (36 slates, May 10 – June 24, 2026):**
-- Top 5 hitters (smash spot): **75%** hit rate (2+ hits or HR)
-- Top 3 pitchers (quality start): **66%** hit rate
-- Top 3 stacks (5+ runs): **45%** hit rate
-- HITTER_SMASH signal: **66%** accuracy over 715 fires
-- TEAM_COLD_STREAK_MSMI fade: **69%** accuracy over 16 fires
-- PITCHER_TRAP_FADE: **43%** accuracy over 159 fires (5pp above the 38% baseline)
-
-Most paid DFS tools don't publish accuracy numbers because doing so would reveal how bad their projections are. These numbers are real and auditable from the reports/archive directory.
+**Signal Validation Status:**
+For the official, up-to-date signal validation accuracy figures and sample sizes backtested across all 53 historical slates (including MSMI momentum signals, platoon adjustments, and stack metrics), refer directly to the canonical signal validation table in Section 4.1 of [OMEGA_CONTEXT.md](file:///c:/Users/konra/OneDrive/Desktop/Antigravity/Projects/MlbDFS/OMEGA_CONTEXT.md#L16). These figures are audited from the `reports/archive` directory.
 
 Automated weekly drift detection runs every Sunday at 3am ET. If any signal degrades more than 5 percentage points from its 4-week average, the dashboard surfaces an alert on the Learning & Audits page. You will never need to wonder if the model is drifting — the system will tell you.
 
@@ -84,7 +77,7 @@ The core pitcher ranking table. Columns left to right:
 - **CONF** — attack confidence, 0–100
 - **PHY** — Physics score (SIERA + CSW%)
 - **MKT** — Market score (win probability + ML/TT movement)
-- **PROFILE** — signal pills: TARGET (strong anti-trap play), TRAP (sticky trap signal, -30 CONF, fade this pitcher), SHARP (heavy institutional ML money), SHARK (sharp market but independent of model score), SURGING (recent K rate trending up), CEILING (high K upside), LOW_CEILING (suppressed K/outs lines), JUICE (vig-juiced K props worth fading), HAZARD (severe environmental risk flag), PARADOX (elite SP vs elite offense — DNA edge negated), TRUE_TALENT_PENALTY (sabermetric underperformer, surface ERA doesn't reflect actual outcomes)
+- **PROFILE** — signal pills: TARGET (strong anti-trap play), TRAP (sticky trap signal, -30 CONF, fade this pitcher), SHARP (heavy institutional ML money), SHARK (sharp market but independent of model score), SURGING (recent K rate trending up), CEILING (high K upside), LOW_CEILING (suppressed K/outs lines), JUICE (vig-juiced K props worth fading), HAZARD (severe environmental risk flag), PARADOX (elite SP vs elite offense — DNA edge negated), TRUE_TALENT_PENALTY (sabermetric underperformer, surface ERA doesn't reflect actual outcomes), HIGH/MODERATE GPP RISK (two-tier confidence underperformance risk warning)
 - **MARKET INTEL** — ML movement direction and magnitude, total movement
 - **TACTICAL MATCHUP** — DNA-based assessment of pitch-type matchup quality
 - **PITCHER** — name and team
@@ -124,6 +117,7 @@ Hitter signal pills:
 - **HOT RUN** — recent form indicator over rolling window.
 - **PITCH ALIGN** — Matchup DNA is aligned (hitter has xwOBA edge on the pitcher's primary pitches).
 - **STRONG EDGE** — xwOBA advantage computed from platoon math.
+- **COLD WARNING** — COLD_HIGH_BR_WARNING badge; fires when a cold hitter has a high blended rating, indicating significant underperformance risk.
 
 Batting order matters enormously in the model. Spots 1–4 receive full score. Spot 5 gets a modest penalty. Spots 6+ receive escalating penalties based on the batting order cliff discovered in the backtest (steep value drop at spot 7+). This is why two hitters with identical Statcast profiles can have meaningfully different OMEGA scores if one bats 3rd and the other bats 7th.
 
@@ -187,7 +181,7 @@ This section documents every signal that is live in the v19.4 model. The followi
 
 **SHARP** — Heavy institutional ML money (is_sharp signal). Requires a directional ML move of meaningful magnitude. Stronger signal than SHARK because it reflects win-probability pricing, not just line movement.
 
-**PARADOX** — Elite SP facing elite opposing offense. The DNA-based matchup quality negates what would otherwise be a high Physics score. Model outputs this when both sides are performing above-average — the opposing stack may still be targetable but the SP has reduced upside. Useful for identifying game stacks (fading your own pitcher's K upside).
+**PARADOX** — Elite SP facing elite opposing offense. Resolves within-game team selection using an ITT-first hierarchy: (1) higher ITT wins, (2) momentum signals (`is_burst`, `is_hot_run_msmi`) as the first tiebreaker, (3) bullpen fatigue as the second tiebreaker, and (4) raw xwOBA only as the final tiebreaker. Useful for identifying game stacks (fading your own pitcher's K upside).
 
 **SURGING** — Recent K rate trending upward over rolling window. K prop may be underpriced. Good indicator the pitcher is in peak form.
 
@@ -197,7 +191,17 @@ This section documents every signal that is live in the v19.4 model. The followi
 
 **TRUE_TALENT_PENALTY** — Sabermetric underperformer flag. This pitcher's surface ERA is significantly better than what SIERA/FIP predict as sustainable. The model discounts their Physics score accordingly. Useful for identifying regression candidates.
 
+**GPP RISK TIERS** — A two-tier confidence warning system for pitchers. Pitchers with `attack_conf` 55–70 carry a **HIGH GPP RISK** flag (43.2% underperformance rate on 125 starts). Pitchers with `attack_conf` 70–79 carry a **MODERATE GPP RISK** flag (34.6% underperformance rate on 52 starts). Pitchers with `attack_conf >= 80` receive no risk badge (24.4% underperformance rate). These warnings are surfaced as badges in the dashboard and ASCII alerts in the optimizer output. In single-entry GPP contests, do not roster a HIGH GPP RISK pitcher unless no better option exists at that salary.
+
+### Opener Detection System
+OMEGA uses a multi-tier opener detection system to prevent starting pitcher projections from being applied to low-inning relief openers. The system features a **Tier 1 hard override**: any starting pitcher with a strikeout prop line `k_line <= 1.5` is automatically classified as an opener, with no secondary signals required. For pitchers above this threshold, secondary triggers (salary gaps, CSV tags, and outs lines) are evaluated. When an opener is detected, the model adjusts the projected outs and scales opponent stack projections accordingly.
+
+### The Short-Leash Pitcher Cap (Fix B)
+When facing a short-leash starting pitcher (a trap scenario), the model applies a strict confidence cap of 75 (Fix B) on the opposing team's stack. A proposed modifier to relax this cap when the opposing bullpen is gassed was **formally backtested and rejected on June 28** (0-for-4 teams scored 5+ runs in gassed-pen short-leash scenarios). The Fix B cap of 75 holds unconditionally, regardless of opposing bullpen fatigue, and will not be revisited until sample size exceeds 15 additional instances.
+
 ### Team / Stack Signals
+
+**FADE_RISK** — Implied total fade signal. Fires when the betting market indicates a team's ITT is artificially inflated. `FADE_RISK` alone shows a **66.7% ITT underperformance rate** (18 instances). When combined with negative divergence (`DIV < -15`), the underperformance rate rises to **76.9%** (13 instances). This combo is the strongest fade signal in the model and should be treated as a near-certain team avoidance in lineup construction. Note: sample size is currently 18 — flagged for July audit when sample reaches 40+.
 
 **ITT SWAP ACTIVE** — The highest-implied-total team has been elevated to #1 stack rank because the gap between it and the default #1 is more than 0.5 runs. Run environment is the most predictive single variable for team run scoring. When one team's ITT is meaningfully higher than everything else on the slate, that is the right #1 stack regardless of what CONF says. Trust the swap.
 
@@ -223,7 +227,9 @@ This section documents every signal that is live in the v19.4 model. The followi
 
 **ELITE_PLATOON** — Strong handedness advantage. The hitter has a significant OPS edge against this pitcher's handedness, validated by split data. When DNA data is available, this upgrades to a pitch-type xwOBA edge.
 
-**HOT_RUN** — Recent form indicator. The hitter is outperforming their rolling baseline over the last 7–14 days. Good tiebreaker between two equally-priced hitters.
+**HOT_MSMI (HOT_RUN)** — Formally validated buy signal. Fires when a hitter shows positive recent form over a rolling window. Worth approximately **+2.11 DFS points above projection on average** (based on 780 instances across 53 historical slates). Treat as a positive selector when choosing between similarly priced hitters.
+
+**COLD_HIGH_BR_WARNING** — Hitter avoidance flag. Activates when `is_cold_streak_msmi = True` AND `blended_rating >= 80` fire simultaneously. Backtests show a **54.8% underperformance rate** on 31 instances with a significant negative DFS delta compared to other hitters. Hitters with this flag active should not be rostered under any circumstances, regardless of raw blended rating. The warning appears as a red `COLD WARNING` badge in the dashboard and an ASCII warning in the optimizer terminal output.
 
 **PITCH_ALIGN** — Matchup DNA is aligned. The pitcher's primary pitch types are ones this hitter handles above average. This is the DNA system's most direct hitter-level output.
 
