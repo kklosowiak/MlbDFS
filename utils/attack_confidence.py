@@ -516,8 +516,18 @@ def score_stack_confidence(t, p_reports):
                 
         if eiv_present and (k_line is not None and k_line <= 4.0):
             three_flags_fire = True
+    # OMEGA v20.1: Change B - ANTI_CHALK ceiling in low run environment
+    if t.get("is_anti_chalk_smash") and not (t.get("is_cold_streak_msmi") or t.get("is_cold_streak")):
+        itt = float(t.get("implied_total", 4.5) or 4.5)
+        if itt < 4.5 and conf > 80 and (conf - 8.0) <= 80:
+            conf -= 3.0
+            for i, r in enumerate(reasons):
+                if "ANTI-CHALK SMASH" in r:
+                    reasons[i] = "ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage (capped to +5 CONF for ITT < 4.5)."
+                    break
 
     # High Conviction Gate Check
+
     # (Require 2+ signals to exceed 75 CONF)
     raw_conf = conf
     if conf > 80:

@@ -333,6 +333,21 @@ def run_optimization(salaries_path, results_path, args):
         stack_str = ", ".join([f"{t}({c})" for t, c in sorted(stacks.items(), key=lambda x: -x[1]) if c > 1])
         print(f"Stacks: {stack_str}")
         
+        # OMEGA v20.1: Change E - SP GPP Risk warnings
+        for sp in sel_pitchers:
+            raw_proj = sp.get('raw_proj', {})
+            conf_val = raw_proj.get('attack_conf') if isinstance(raw_proj, dict) else None
+            if conf_val is not None:
+                try:
+                    conf_val = float(conf_val)
+                    if 55.0 <= conf_val <= 70.0:
+                        print(f"WARNING: [HIGH GPP RISK] SP: {sp['name']} ({conf_val:.1f}% confidence) has a high underperformance rate (43.2%). Consider upgrading if salary allows.")
+                    elif 70.0 < conf_val <= 79.9:
+                        print(f"WARNING: [MODERATE GPP RISK] SP: {sp['name']} ({conf_val:.1f}% confidence) has a moderate underperformance rate (34.6%).")
+                except (ValueError, TypeError):
+                    pass
+
+        
         # Add constraint to prevent this exact combination in subsequent loops
         # overlap limit (max players sharing this lineup in subsequent ones)
         overlap_limit = 8 # forces at least 2 player difference

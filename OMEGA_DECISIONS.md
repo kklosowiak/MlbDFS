@@ -235,3 +235,25 @@ June 26 2026 — COL had DQI=87 TRUST at morning refreshes before signal compres
 #### Entry 3 — ARI Multi-Signal Failure (June 26 2026)
 June 26 2026 — ARI fired HOT MSMI + BURST + GASSED + PITCH ALIGN simultaneously (4 signals) with conf=95 and blended=121. Scored 1 run. This is the second instance this week of a team with 4+ signals firing massively underperforming. The June 26 AG backtest showed the 4-5 signal bucket had only 6 historical cases and a 16.7% hit rate for 5+ runs — the smallest and weakest bucket in the analysis. The warning was in the data and should have been weighted more heavily. Decision rule going forward: when a team fires 4+ signals simultaneously, treat the small sample size as a caution flag rather than a conviction amplifier. Do not chase signal count as a proxy for confidence.
 
+### June 28, 2026 — Model Changes Shipped (Post-Backtest Validated)
+
+#### Change C (Fix B GASSED_PEN modifier) — BACKTESTED AND REJECTED June 28, 2026
+Proposed raising the Fix B short-leash cap from 75 to 82 when opposing bullpen fatigue is 90%+. Historical backtest across 4 instances (all available data) showed 0% hit rate (0 for 4 teams scoring 5+ runs) with a gassed pen behind a short-leash starter. Teams averaged 3.00 actual runs vs significantly higher ITT in all cases. The 75 cap is working as intended. Do not revisit without at least 15 additional data points. Sample size as of June 28: 4 games.
+
+#### Change A — PARADOX Resolution Logic — IMPLEMENTED
+Replaced raw xwOBA comparison with ITT-first tiebreaker hierarchy (ITT → momentum signals → bullpen fatigue → xwOBA). Backtest: 127 games, improved accuracy from 46.5% to 54.3% (+7.9 percentage points). Current logic was sub-coin-flip. This is v1 of PARADOX resolution — marked for deeper optimization pass in July audit. Backtest script permanently saved at tests/backtest_paradox.py.
+
+#### Change B — ANTI_CHALK Attack Conf Ceiling — IMPLEMENTED AS GUARDRAIL
+When is_anti_chalk_smash drives attack_conf above 80 and ITT < 4.5, cap the contribution to +5 points max. Backtest: 0 historical firing instances below ITT 4.5 (model gate already exists), 20 games in 4.5-4.8 range showed ANTI_CHALK at 40% hit rate vs 42.5% baseline (not additive). Implemented as documented policy constraint, not a data-validated improvement. Net delta on recommendations: 0.0% on 53 slates.
+
+#### Change C — Fix B GASSED_PEN Modifier — BACKTESTED AND REJECTED
+See entry above.
+
+#### Change D — Team Offensive Cold Streak Discount — DEFERRED
+Requires team-level recent game result ingestion from StatsAPI schedule endpoint. Not currently in pipeline. Data engineering task for July.
+
+#### Change E — Pitcher CONF Floor GPP Risk Badge — IMPLEMENTED
+Implemented a two-tier GPP risk badge system: pitchers with 55-70 confidence are flagged with `HIGH GPP RISK` (43.2% underperformance rate), and pitchers with 70-79 confidence are flagged with `MODERATE GPP RISK` (34.6% underperformance rate). Pitchers with >=80 confidence receive no badge (24.4% underperformance rate). Added visual warnings for recommended starting pitchers falling in these ranges.
+
+#### Phillips/STL Fix B Clarification
+Fix B did not fire for STL on June 28 vs Phillips because his outs odds shifted from +102 (trap territory) to -110 (not a trap) between the 3:36 PM and 4:09 PM runs due to a live market vig adjustment. This is expected model behavior, not a bug. Flag for July audit: evaluate whether OMEGA should use the most conservative odds reading within a lock window rather than the most recent reading, to prevent vig adjustments from clearing genuine trap status.

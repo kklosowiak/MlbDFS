@@ -3727,7 +3727,21 @@
         function pitcherTacticalMatchupHtml(p, trapSpLabel) {
             let pills = [];
 
+            const conf = p.attack_conf != null ? parseFloat(p.attack_conf) : null;
+            if (conf !== null && conf >= 55.0 && conf <= 70.0) {
+                pills.push(signalPillHtml('⚠️ HIGH GPP RISK', {
+                    style: 'background:rgba(255,69,58,0.15); border:1px solid #ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 6px rgba(255,69,58,0.2);',
+                    tip: 'HIGH GPP RISK: Pitcher confidence in the 55-70% range has historically shown a 43.2% underperformance rate (5+ pts below projection).'
+                }));
+            } else if (conf !== null && conf >= 70.1 && conf <= 79.9) {
+                pills.push(signalPillHtml('⚠️ MOD GPP RISK', {
+                    style: 'background:rgba(255,159,10,0.15); border:1px solid #ff9f0a; color:#ff9f0a; font-weight:800; box-shadow:0 0 6px rgba(255,159,10,0.2);',
+                    tip: 'MODERATE GPP RISK: Pitcher confidence in the 70-79% range has historically shown a 34.6% underperformance rate (5+ pts below projection).'
+                }));
+            }
+
             if (p.is_juiced_target) {
+
                 pills.push(signalPillHtml('🎯 TARGET', { className: 'pill-target', tipKey: 'target' }));
             } else if (p.is_prop_juice) {
                 pills.push(signalPillHtml('💧 JUICE', { className: 'pill-neutral', tipKey: 'juice', style: 'background:rgba(10,132,255,0.12); border-color:#0a84ff; color:#0a84ff; font-weight:700;' }));

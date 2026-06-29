@@ -62,7 +62,70 @@ class SlateReportGenerator:
             # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
             scored_stacks.append(t)
             
+        # OMEGA v20.1: PARADOX Resolution Rule
+        processed_games = set()
+        for p in p_reports:
+            if p.get('is_paradox'):
+                game_key = tuple(sorted([p['team'], p['opponent']]))
+                if game_key in processed_games:
+                    continue
+                processed_games.add(game_key)
+                
+                # Find the two teams in scored_stacks
+                team_opp = next((t for t in scored_stacks if t['team'] == p['opponent']), None)
+                team_self = next((t for t in scored_stacks if t['team'] == p['team']), None)
+                
+                if team_opp and team_self:
+                    def get_momentum_signals(t_obj):
+                        sig = 0
+                        if t_obj.get("is_burst"): sig += 1
+                        if t_obj.get("is_hot_run_msmi") or t_obj.get("is_hot_run_msmi_support"): sig += 1
+                        return sig
+                        
+                    itt1 = float(team_opp.get("implied_total", 4.5) or 4.5)
+                    itt2 = float(team_self.get("implied_total", 4.5) or 4.5)
+                    
+                    winner = None
+                    if abs(itt1 - itt2) > 0.301:
+                        winner = team_opp if itt1 > itt2 else team_self
+                    else:
+                        m1 = get_momentum_signals(team_opp)
+                        m2 = get_momentum_signals(team_self)
+                        if m1 != m2:
+                            winner = team_opp if m1 > m2 else team_self
+                        else:
+                            f1 = float(team_opp.get("bullpen_fatigue", 0) or 0)
+                            f2 = float(team_self.get("bullpen_fatigue", 0) or 0)
+                            if f1 != f2:
+                                winner = team_opp if f1 > f2 else team_self
+                            else:
+                                xw1 = float(team_opp.get("team_xwoba", 0) or 0)
+                                xw2 = float(team_self.get("team_xwoba", 0) or 0)
+                                winner = team_opp if xw1 > xw2 else team_self
+                                
+                    loser = team_self if winner == team_opp else team_opp
+                    
+                    conf_winner = float(winner.get('attack_conf', 0) or 0)
+                    conf_loser = float(loser.get('attack_conf', 0) or 0)
+                    
+                    if conf_loser >= conf_winner:
+                        val_winner = conf_winner
+                        val_loser = conf_loser
+                        if val_winner == val_loser:
+                            winner['attack_conf'] = val_winner + 1.0
+                        else:
+                            winner['attack_conf'] = val_loser
+                            loser['attack_conf'] = val_winner
+                        
+                        winner.setdefault('attack_reasons', []).append(
+                            f"PARADOX: Won within-game recommendation vs {loser['team']} (higher ITT/momentum)."
+                        )
+                        loser.setdefault('attack_reasons', []).append(
+                            f"PARADOX: Lost within-game recommendation vs {winner['team']} (lower ITT/momentum)."
+                        )
+
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
+
 
         for h in h_reports:
             team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
