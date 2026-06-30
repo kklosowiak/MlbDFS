@@ -126,6 +126,15 @@ class SlateReportGenerator:
 
         scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
 
+        # OMEGA v20.3: Slate Compression Detection (Item 3)
+        self.is_low_diff = False
+        self.differentiation_std = 99.0
+        if len(scored_stacks) >= 6:
+            import statistics
+            top6_confs = [float(t.get('attack_conf', 0) or 0) for t in scored_stacks[:6]]
+            self.differentiation_std = round(statistics.stdev(top6_confs), 2)
+            if self.differentiation_std < 5.0:
+                self.is_low_diff = True
 
         for h in h_reports:
             team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
@@ -139,6 +148,8 @@ class SlateReportGenerator:
 
         # OMEGA ELITE ALERTS (Highest Probability Backtested Combinations)
         alert_lines = []
+        if self.is_low_diff:
+            alert_lines.append(f"- ⚠️ **LOW DIFFERENTIATION WARNING**: The top stack options have highly compressed confidence scores (Std Dev: {self.differentiation_std:.2f} < 5.0). Stack selection should lean heavily on ownership, game totals, and platoon/radar alignment.")
         
         # 1. Stacks: Elite Physics + Weak Arm (66.3% hit rate)
         for t in t_reports:

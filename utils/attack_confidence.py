@@ -756,4 +756,13 @@ def score_pitcher_confidence(p, t_reports):
         x = conf - 80
         conf = 80.0 + (20.0 * x) / (x + 12.0)
 
-    return _clamp(conf), reasons
+    final_conf = _clamp(conf)
+    
+    # OMEGA v20.3: Pitcher Variance Classifier Fade Label Reason (Item 1)
+    if final_conf <= 25.0:
+        if p.get("is_high_variance"):
+            reasons.append("LOW-CONFIDENCE FADE: Low model confidence but high performance variance (volatile ceiling).")
+        else:
+            reasons.append("HIGH-CONFIDENCE FADE: Consistent low variance and poor matchups.")
+
+    return final_conf, reasons

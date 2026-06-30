@@ -544,7 +544,12 @@ def run_full_analysis():
     #     print(f"[WARNING]: GPP Leverage Index calculation failed: {gli_e}")
 
     # 6. Generate Analysis Report (Must come BEFORE Dashboard)
-    SlateReportGenerator().generate(p_reports, team_reports, h_reports)
+    generator = SlateReportGenerator()
+    generator.generate(p_reports, team_reports, h_reports)
+    
+    # Retrieve differentiation metrics for summary
+    low_differentiation = getattr(generator, 'is_low_diff', False)
+    differentiation_std = getattr(generator, 'differentiation_std', 99.0)
 
     # CANONICAL: Single source of truth for blended_rating (OMEGA v19.2).
     # SlateReportGenerator above has already populated attack_conf on all entities.
@@ -755,12 +760,14 @@ def run_full_analysis():
         })
 
     # 7. Generate Dashboard
-    dash_gen.generate_report(p_reports, team_reports, h_reports, vegas_board=vegas_board)
+    dash_gen.generate_report(p_reports, team_reports, h_reports, vegas_board=vegas_board, low_differentiation=low_differentiation, differentiation_std=differentiation_std)
     
     # OMEGA v4.5: Export Summary for Bot/Sentry
 
     summary = {
         "timestamp": datetime.datetime.now().isoformat(),
+        "low_differentiation": low_differentiation,
+        "differentiation_std": differentiation_std,
         "pitchers": p_reports,
         "teams": team_reports,
         "hitters": h_reports,
@@ -841,6 +848,11 @@ def _get_pitcher_alpha(p_analyzer, snapshot_path, opening_lines_path, splits_dat
             report['walks_penalty'] = report.get('walks_penalty', False)
             report['true_talent_penalty'] = report.get('true_talent_penalty', False)
         report['siera'] = report.get('siera', 4.10)
+        report['dk_points_mean'] = report.get('dk_points_mean', 0.0)
+        report['dk_points_std'] = report.get('dk_points_std', 0.0)
+        report['starts_sampled'] = report.get('starts_sampled', 0)
+        report['is_high_variance'] = report.get('is_high_variance', False)
+        report['opposing_team'] = report.get('opponent')
         report['is_paradox'] = False
         report['is_hazard'] = False
         report['is_low_ceiling'] = False
@@ -1557,6 +1569,7 @@ def _get_team_reports(snapshot, opening_lines, rosters, p_analyzer, p_integrity_
 
             team_row = {
                 'team': team, 'opponent': opponent, 'opp_pitcher': opp_pitcher_name,
+                'opp_pitcher_team': opponent,
                 'lineup_status': lineup_status,
                 'ml_move': ml_move, 'tt_move': tt_move,
                 'stack_score': final_stack_score,
@@ -1732,13 +1745,33 @@ def _get_hitter_alpha(h_prop_analyzer, snapshot_path, team_reports, sharps_weigh
         raw_pf = config.PARK_FACTORS.get(venue_team, 1.0)
         park_factor = 1.0 + (raw_pf - 1.0) * 0.5
         
-        # Momentum & Vision
+        # Momentum & Vision (Item 7: Hitter MSMI Momentum Logic Fix)
         is_hot = False
         vision_boost = 1.0
         mom = h_prop_analyzer.statcast.get_player_momentum(h['name'])
         smash_factor = False
         if mom:
-            if mom.get('ops', 0) > 0.900: is_hot = True
+            season_ops = float(mom.get('ops', 0) or 0.0)
+            rolling_ops = float(mom.get('rolling_ops', 0) or 0.0)
+            
+            # Fetch recent form log if available
+            h_form_cache_item = hitter_form_cache.get(normalize_player_name(h['name']))
+            recent_ops = float(h_form_cache_item.get('recent_ops', 0.0) or 0.0) if h_form_cache_item else 0.0
+            
+            if season_ops > 0.900:
+                is_hot = True
+                
+            # Gating check: if underperforming by > 2% tolerance, kill is_hot
+            tolerance = 0.98
+            if rolling_ops > 0 and rolling_ops < season_ops * tolerance:
+                is_hot = False
+            # OMEGA v20.3 fix: recent_ops=0 means cache miss (no recent form data).
+            # Do NOT skip the gate — withhold is_hot when recent form is unavailable.
+            if recent_ops <= 0:
+                is_hot = False
+            elif recent_ops < season_ops * tolerance:
+                is_hot = False
+                
             if mom.get('s_k_rate', 0) > 0 and mom.get('r_k_rate', 0) < (mom.get('s_k_rate', 0) * 0.8):
                 vision_boost = 1.10
         

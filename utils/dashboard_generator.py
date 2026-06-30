@@ -8,7 +8,7 @@ class DashboardGenerator:
         self.output_path = os.path.join(config.BASE_DIR, "reports", "dashboard.html")
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
 
-    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5, vegas_board=None):
+    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5, vegas_board=None, low_differentiation=False, differentiation_std=99.0):
         """Generates a premium 4-Tab dashboard including the Vegas Board."""
         if skipped_events is None: skipped_events = []
 
@@ -233,7 +233,8 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-target">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }
 { '<span class="signal-pill pill-shark">🦈 SHARK</span>' if p.get('is_shark') else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT</span>' if p.get('is_debut') else '' }
-{ '<span class="signal-pill pill-lowconf">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }
+{ '<span class="signal-pill" style="background:rgba(255,214,10,0.15); border:1px solid #ffd60a; color:#ffd60a; font-weight:800; font-size:0.65rem; padding:2px 6px; border-radius:4px;">⚠️ VOLATILE FADE</span>' if (p.get('attack_conf') is not None and p['attack_conf'] <= 25.0 and p.get('is_high_variance')) else '' }
+{ '<span class="signal-pill" style="background:rgba(255,69,58,0.15); border:1px solid #ff453a; color:#ff453a; font-weight:800; font-size:0.65rem; padding:2px 6px; border-radius:4px;">🔒 SOLID FADE</span>' if (p.get('attack_conf') is not None and p['attack_conf'] <= 25.0 and not p.get('is_high_variance')) else '' }
 { '<span class="signal-pill pill-lowconf">⚠️ PROPS PENDING</span>' if p.get('props_pending') else '' }
 { '<span class="signal-pill" style="background:rgba(255,149,0,0.15); border:1px solid rgba(255,149,0,0.4); color:#ff9500; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">OPENER</span>' if p.get('is_opener') else '' }
 { '<span class="signal-pill" style="background:rgba(10,132,255,0.15); border:1px solid rgba(10,132,255,0.4); color:#0a84ff; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">BULK</span>' if p.get('is_bulk_arm') else '' }
@@ -1385,6 +1386,9 @@ class DashboardGenerator:
             <button class="tab-btn" onclick="openTab(event, 'vegas')">Vegas Board</button>
             <button class="tab-btn" onclick="openTab(event, 'analysis')">Model Analysis</button>
         </div>
+
+        <!-- LOW DIFF WARNING BANNER -->
+        {'<div style="background:rgba(255,214,10,0.10); border:1px solid rgba(255,214,10,0.4); border-radius:12px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:center; gap:14px;"><span style="font-size:1.5rem;">&#x26A0;&#xFE0F;</span><div><div style="color:#ffd60a; font-weight:800; font-size:0.95rem;">LOW DIFFERENTIATION WARNING</div><div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:3px;">Top stack options have compressed confidence scores (Std Dev: ' + str(round(differentiation_std, 2)) + ' &lt; 5.0). Lean on ownership leverage, game totals, and platoon alignment rather than raw CONF ranking.</div></div></div>' if low_differentiation else ''}
 
         <!-- PITCHERS TAB -->
         <div id="pitchers" class="tab-content active">

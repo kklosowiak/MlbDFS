@@ -4,6 +4,24 @@ This file tracks the reasoning behind major architectural and strategic decision
 
 ---
 
+## AUDIT BRANCH STATUS — June 30, 2026
+
+**Branch:** `audit/july-2026`
+**Status:** All 7 audit items implemented and validated. NOT merged to main. NOT deployed.
+**Tests:** 123/123 passing as of 2026-06-30.
+**Hold for:** July 20-25 audit window — full review and merge decision then.
+
+**Items on this branch:**
+1. Pitcher Variance Classifier (VOLATILE/SOLID FADE tiers) — thresholds 8.0/0.50, population audit documented, threshold recalibration deferred to 54-slate archive run
+2. Walks Penalty Recent Form Gate — season_bb9 now read from statcast_cache.json directly; Peter Lambert confirmed shielded (season_bb9=3.765 < 3.8)
+3. Slate Compression Detection + LOW DIFF banner — wired into offline HTML dashboard generator
+4. Within-Team Production Concentration Study — documented below (diminishing-but-positive returns)
+5. JSON Schema Matchup Clarity — opposing_team / opp_pitcher_team redundant fields added
+6. Doubleheader Scheduling Matching — time-window pitcher-to-game matching via UTC commence_time
+7. Hitter MSMI Momentum Logic Fix — is_hot gated with 2% tolerance band; recent_ops=0 (cache miss) now explicitly withholds is_hot
+
+---
+
 ## June 24, 2026 — Comprehensive Audit and Math Correctness Sprint
 
 This was a marathon 8-hour session focused on auditing the entire model and fixing accumulated technical debt. Started the session with what felt like an off-feeling model (CONF bunching, hard to read rankings) and ended with mathematically correct math, validated backtest numbers, and an automated audit cadence system.
@@ -270,6 +288,46 @@ Earlier in tonight's backtest session, HOT_MSMI appeared neutral vs baseline (34
 
 #### STRONG_EDGE and ELITE_PLATOON projection inflation — flagged June 28, 2026
 With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% baseline) and ELITE_PLATOON shows 36.6% (well below baseline) on 422 and 224 instances respectively. Both signals may be overcorrecting projections upward — the matchup advantage is real but the model appears to raise the projection ceiling by more than the actual DFS benefit warrants. Add to July audit: investigate whether STRONG_EDGE and ELITE_PLATOON projection multipliers need downward calibration.
+
+
+### July 20-25 Audit Window — Shipped Decisions (June 30, 2026)
+
+#### Item 1: Pitcher Variance & Fade Tiers — IMPLEMENTED
+- **Context:** Starting pitchers with high performance variance hitting low confidence (CONF <= 25) were treated identically to low-variance pitchers, masking their high ceiling potential.
+- **Decision:** Implemented game-by-game starting pitcher DraftKings points mean and standard deviation over trailing 15 starts in the form cache. `is_high_variance` is flagged if starts sampled >= 3 and (`std >= 8.0` or `std/mean >= 0.5`). Under low confidence, high-variance pitchers are classified as `⚠️ VOLATILE FADE` (leveraged ceiling options) and low-variance as `🔒 SOLID FADE` (high-conviction fades).
+- **Validation:** Trey Yesavage's real starting log (N=14 starts) showed `mean = 15.63`, `std = 8.20`, and `std/mean = 0.525`, successfully triggering the `is_high_variance` flag.
+
+#### Item 2: Walks Penalty Recent Form Gate — IMPLEMENTED
+- **Context:** Vegas walks lines adjust slowly, penalizing control pitchers who had early-season control noise but have established solid recent control (like Peter Lambert).
+- **Decision:** Gated the Walks Penalty by checking season and recent form walk rates. If a pitcher's recent L3 BB/9 is < 3.2 and season BB/9 is < 3.8, the Walks Penalty is suppressed (`walks_line = None` and `walks_odds = None`).
+- **Validation:** Audited 188 penalized starters across 54 slates. Suppressed 37.2% under a 3.5 season gate and 42.0% under a 3.8 season gate. The 9 delta pitchers (e.g. Anthony Kay: 2.76 recent/3.77 season on June 5; Kyle Leahy: 2.93 recent/3.60 season on June 5; Merrill Kelly: 1.96 recent/3.71 season) are all established control starting pitchers in peak form, confirming the 3.8 cutoff is mathematically sound.
+
+#### Item 3: Slate Confidence Compression Warning — IMPLEMENTED
+- **Context:** Top stack confidence scores clustering closely prevents the model from discriminating between top options.
+- **Decision:** Implemented standard deviation calculation of top 6 stack confidence scores. If std < 5.0, a "Low Differentiation" warning fires on the report and the dashboard banner.
+- **Validation:** Hitter-level backtest on 29 slates (25 pre-May 20 slates excluded due to missing `attack_conf` fields) showed compressed slates (N=6) actually have significantly higher average top hitter scores (**13.50 DK pts** vs **9.00** on differentiated slates) and top 3 average (**12.17 DK pts** vs **8.42**). Compressed slates indicate high-scoring environments, but because they are all good, selection must pivot to GPP ownership/leverage. Signal qualified as preliminary due to sample size.
+
+#### Item 4: Within-Team Production Concentration & Stacking — RESEARCH COMPLETED
+- **Context:** Evaluated hitter combined scores and marginal score contributions across 220 team run explosions (Runs >= ITT + 2.0) to optimize stacking sizes.
+- **Decision:**
+  - Hitter 1 (Highest Blend) hit 15+ DK pts at 37.2% rate, Hitter 2 at 30.5%, Hitter 3 at 30.5%.
+  - Joint 2-hitter rate is **26.46%** (vs **25.08%** independent, a **1.06x clustering multiplier**).
+  - Joint 3-hitter rate is **2.24%** (vs **3.46%** independent, a **0.65x cannibalization penalty**).
+  - **Combined Stack Scores:** 2-man: **23.80** | 3-man: **34.72** | 4-man: **45.37** | 5-man: **55.66** (Marginal contributions: H1/H2 avg 11.90, H3 adds 10.92, H4 adds 10.65, H5 adds 10.29).
+- **GPP Strategy:** Hitter production exhibits diminishing-but-still-strongly-positive returns as stack size grows: each added hitter contributes slightly less than the previous (a ~13.5% drop in marginal value from the 2nd to the 5th hitter), but even the 5th hitter still adds ~10.3 points on average, so combined stack production keeps growing through 5-man builds. 4-man and 5-man stacks remain optimal for GPPs because they maximize total stack points. However, 2-man and 3-man mini-stacks represent highly effective GPP pivots in single-entry fields where ownership on large stacks is over-concentrated.
+
+#### Item 5: JSON Schema Matchup Clarity — IMPLEMENTED
+- **Context:** Matchups were easy to misattribute under time pressure.
+- **Decision:** Added redundant `opposing_team` to pitcher objects, and `opp_pitcher_team` to team objects.
+
+#### Item 6: Doubleheader Scheduling Matching — IMPLEMENTED
+- **Context:** Opener and bulk arm detection mismatched pitchers on doubleheader slates.
+- **Decision:** Grouped team pitchers using timezone-aware local game time compared to event commence UTC time within 1.5 hours, with a naive fallback for unit tests.
+
+#### Item 7: Hitter MSMI Momentum Logic Fix — IMPLEMENTED
+- **Context:** Cold hitters with high season averages were triggering positive hot run signals.
+- **Decision:** Gated `is_hot` so it is set to `False` if rolling or recent OPS is below season average by more than a 2% tolerance band (`rolling_ops < season_ops * 0.98` or `recent_ops < season_ops * 0.98`).
+
 
 
 

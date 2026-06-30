@@ -488,6 +488,40 @@ class PitcherAnalyzer:
                         # No K-rate gate: a walk-prone, ERA-bloated arm is hittable regardless of strikeouts
                         form_boost = -3.0
                         form_status = "COLD"
+                # OMEGA v20.3: Walks Penalty Recent Form Gate (Item 2)
+                # fetch_pitcher_physics() returns only {siera, csw, bm_score, confidence} —
+                # it never carries raw counting stats (ip, bb). Read season ip/bb directly
+                # from statcast_cache so the gate uses real season data instead of 0/0.
+                recent_bb9 = p_form.get('recent_bb9', 99.0) if p_form else 99.0
+                starts_sampled = p_form.get('starts_sampled', 0) if p_form else 0
+                season_bb9 = 99.0  # conservative default: do NOT suppress when data unavailable
+                try:
+                    _sc_path = os.path.join(self.config.DATA_DIR, 'statcast_cache.json')
+                    if os.path.exists(_sc_path):
+                        _sc = json.load(open(_sc_path, 'r'))
+                        _pd = _sc.get(normalize_player_name(pitcher_name), {})
+                        if _pd.get('type') == 'pitcher':
+                            _ip26 = float(_pd.get('ip', 0.0))
+                            _bb26 = float(_pd.get('bb', 0.0))
+                            _ip25 = float(_pd.get('ip_25', 0.0) or 0.0)
+                            _bb25 = float(_pd.get('bb_25', 0.0) or 0.0)
+                            # Prefer blended if 2026 sample is thin
+                            _total_ip = _ip26 + _ip25
+                            _total_bb = _bb26 + _bb25
+                            if _total_ip > 5.0:
+                                season_bb9 = (_total_bb / _total_ip) * 9.0
+                except Exception:
+                    pass  # leave season_bb9=99.0 on any read failure
+                if p_form and starts_sampled >= 2 and recent_bb9 < 3.2 and season_bb9 < 3.8:
+                    walks_line = None
+                    walks_odds = None
+
+                # OMEGA v20.3: Pitcher Variance Classifier (Item 1)
+                dk_points_mean = float(p_form.get('dk_points_mean', 0.0)) if p_form else 0.0
+                dk_points_std = float(p_form.get('dk_points_std', 0.0)) if p_form else 0.0
+                is_high_variance = False
+                if starts_sampled >= 3:
+                    is_high_variance = (dk_points_std >= 8.0) or (dk_points_mean > 0 and (dk_points_std / dk_points_mean) >= 0.50)
 
                 # Pinnacle SP Boost check (OMEGA v16.0)
                 from utils.market_utils import get_pinnacle_and_dk_ml, ml_to_implied_prob
@@ -564,6 +598,11 @@ class PitcherAnalyzer:
                     'form_status': form_status,
                     'recent_k9': recent_k9,
                     'recent_era': recent_era,
+                    'recent_bb9': recent_bb9 if recent_bb9 != 99.0 else None,
+                    'dk_points_mean': dk_points_mean,
+                    'dk_points_std': dk_points_std,
+                    'starts_sampled': starts_sampled,
+                    'is_high_variance': is_high_variance,
                     'is_home': side == 'home',
                     'side': side,
                     'pinnacle_boost_active': pinnacle_boost_active,

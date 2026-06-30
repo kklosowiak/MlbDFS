@@ -193,6 +193,10 @@ This section documents every signal that is live in the v19.4 model. The followi
 
 **GPP RISK TIERS** — A two-tier confidence warning system for pitchers. Pitchers with `attack_conf` 55–70 carry a **HIGH GPP RISK** flag (43.2% underperformance rate on 125 starts). Pitchers with `attack_conf` 70–79 carry a **MODERATE GPP RISK** flag (34.6% underperformance rate on 52 starts). Pitchers with `attack_conf >= 80` receive no risk badge (24.4% underperformance rate). These warnings are surfaced as badges in the dashboard and ASCII alerts in the optimizer output. In single-entry GPP contests, do not roster a HIGH GPP RISK pitcher unless no better option exists at that salary.
 
+**is_high_variance** — Pitcher with high start-to-start fantasy scoring volatility (std >= 8.0 or std/mean >= 0.5 over season starts). Low confidence fades (CONF <= 25) on these pitchers are labeled **VOLATILE FADE** (potential tournament leverage due to high ceiling), whereas low-variance low confidence pitchers are labeled **SOLID FADE** (high conviction fades).
+
+**walks_suppression** — Control gate that suppresses the Walks Penalty for control starters who are in peak recent form (recent L3 BB/9 < 3.2 and season BB/9 < 3.8). Audited across all archived slates to shield control starters from slow-adjusting prop lines.
+
 ### Opener Detection System
 OMEGA uses a multi-tier opener detection system to prevent starting pitcher projections from being applied to low-inning relief openers. The system features a **Tier 1 hard override**: any starting pitcher with a strikeout prop line `k_line <= 1.5` is automatically classified as an opener, with no secondary signals required. For pitchers above this threshold, secondary triggers (salary gaps, CSV tags, and outs lines) are evaluated. When an opener is detected, the model adjusts the projected outs and scales opponent stack projections accordingly.
 
@@ -221,13 +225,15 @@ When facing a short-leash starting pitcher (a trap scenario), the model applies 
 
 **STEAM_SUPPORT** — Tightened convergent steam signal. Requires ML and total movement to be directionally consistent (both showing the same team as the play). Single-direction steam no longer qualifies after the v19.3 tightening. Validated at 48% accuracy over 33 fires. Good confirmation signal, not a primary trigger.
 
+**slate_compression** — Fires a **Low Differentiation Warning** banner when the standard deviation of the top 6 stack confidence scores is < 5.0. This indicates a high-scoring but highly compressed run environment where the model cannot discriminate between the top options. Selection must pivot heavily to GPP ownership, game totals, and platoon/radar alignment.
+
 ### Hitter Signals
 
 **SMASH (HITTER_SMASH)** — The hitter's rolling OPS is above their season baseline AND the matchup environment is favorable (good park, low pitcher ceiling, favorable platoon). Validated at 66% accuracy over 715 fires. Note: the 66% represents matchup quality rather than contrarian edge — this is the correct plays-in-good-spots signal, not a fade-the-field signal. Use it for identifying which hitters in your target stack deserve full exposure.
 
 **ELITE_PLATOON** — Strong handedness advantage. The hitter has a significant OPS edge against this pitcher's handedness, validated by split data. When DNA data is available, this upgrades to a pitch-type xwOBA edge.
 
-**HOT_MSMI (HOT_RUN)** — Formally validated buy signal. Fires when a hitter shows positive recent form over a rolling window. Worth approximately **+2.11 DFS points above projection on average** (based on 780 instances across 53 historical slates). Treat as a positive selector when choosing between similarly priced hitters.
+**HOT_MSMI (HOT_RUN)** — Formally validated buy signal. Fires when a hitter shows positive recent form over a rolling window. Worth approximately **+2.11 DFS points above projection on average** (based on 780 instances across 53 historical slates). Gated by a **2% tolerance band** check: if rolling or recent L7 OPS is below the season baseline by > 2% (`rolling_ops < season_ops * 0.98` or `recent_ops < season_ops * 0.98`), the signal is deactivated. Treat as a positive selector when choosing between similarly priced hitters.
 
 **COLD_HIGH_BR_WARNING** — Hitter avoidance flag. Activates when `is_cold_streak_msmi = True` AND `blended_rating >= 80` fire simultaneously. Backtests show a **54.8% underperformance rate** on 31 instances with a significant negative DFS delta compared to other hitters. Hitters with this flag active should not be rostered under any circumstances, regardless of raw blended rating. The warning appears as a red `COLD WARNING` badge in the dashboard and an ASCII warning in the optimizer terminal output.
 
@@ -322,6 +328,8 @@ The June 24, 2026 audit resolved all known mathematical correctness issues in th
 **Single blended_rating computation.** Before the audit, blended_rating was computed in four separate locations (slate_report_generator.py, main.py, dashboard_generator.py, and server.py) with slightly different formulas. The canonical source is now exclusively main.py's post-generate() block. One formula, one location, written once, read everywhere. A sequencing bug where the report generator read blended_rating before it was written was also fixed using an inline _compute_blended() helper.
 
 **ITT swap protects stack #1.** When the highest-ITT team is not the default #1 ranked stack and the ITT gap is more than 0.5 runs, the swap mechanism elevates that team to the top. Run environment is the most empirically predictive variable for team run scoring. The swap ensures the model's most actionable recommendation reflects that reality.
+
+**Stacking diminishing returns (Item 4).** Trailing 54-slate study of 220 team explosions (Runs >= ITT + 2.0) shows that combined stack score scales strongly from 2-man (23.80 avg) to 5-man (55.66 avg) configurations. However, the marginal contribution per added hitter exhibits a real ~13.5% decay: H1/H2 averages 11.90, H3 adds 10.92, H4 adds 10.65, H5 adds 10.29. Additionally, zero-sum cannibalization of runs and RBIs reduces the joint probability of all 3 top hitters simultaneously hitting 15+ ceilings to 2.24% (a 0.65x multiplier vs independence). Thus, while 4-man and 5-man builds are GPP optimal to capture total volume, 2-man and 3-man mini-stacks represent highly viable contrarian leverage pivots when large stacks carry excessive ownership.
 
 ---
 
