@@ -86,10 +86,18 @@ runs to fall below ITT, despite the model having suppressed that team's attack c
 
 ### Research Questions for July Audit
 
-**RQ-4 (TRAP Type Differentiation):** `Vulnerable` trap arms show materially stronger
-attack suppression (66.7% under ITT) vs `Short Leash` arms (53.3%). Should the
-attack confidence penalty be graduated by trap_type rather than flat? The current
-implementation applies the same -30 trap penalty regardless of type.
+**RQ-4 (TRAP/Vulnerable Suppression — Actionable):** The 30-day confirmed data splits
+clearly by trap_type. `Vulnerable` (66.7% under ITT, avg -0.70 runs) shows real and
+meaningful attack suppression. `Short Leash` (53.3% under ITT, avg +0.01) is noise —
+no suppression warranted and no action needed on that designation.
+
+The specific July research question for TRAP/Vulnerable is:
+
+> "Should TRAP/Vulnerable reduce team attack_conf at lock, and if so by how much?
+> The 30-day confirmed data suggests approximately -0.70 runs of inflation. Does a
+> threshold-based suppression (e.g. cap attack_conf at 85 when opposing pitcher is
+> TRAP/Vulnerable) produce better ITT alignment than the current behavior?
+> **Do not implement — analyze during July audit.**"
 
 **RQ-5 (Over-Delivery Clustering):** Do consecutive-night TRAP arm over-deliveries
 cluster in specific game contexts (e.g., high-xwOBA teams, high-variance pitchers,
@@ -149,8 +157,15 @@ Neither figure can be confirmed or refuted from the direct stored field. Both re
 the backtest script's recalculated view of what _would have_ fired given those hitter
 states — which is a valid research result, but must be labeled accordingly.
 
-**Do not update either doc.** Schedule re-run of `audit_cold_high_br.py` in mid-July
-when 20-30 post-June-28 slates have accumulated.
+> **UNVERIFIED AS OF JULY 1, 2026:**
+> COLD_HIGH_BR_WARNING performance figures (both CONTEXT.md 54.8% and DECISIONS.md
+> 83.9%) are unverified as of July 1. Both are derived from pre-implementation
+> retroactive backtest, not confirmed production data. Do not treat either figure as
+> validated until the mid-July re-run produces N >= 20 confirmed production instances.
+> The signal continues to be used as a qualitative exclusion rule — the conceptual
+> logic is sound — but performance statistics are not cited until the data is real.
+
+**Do not update either doc.** Hard re-run scheduled July 21 (see Action Items).
 
 ---
 
@@ -158,8 +173,8 @@ when 20-30 post-June-28 slates have accumulated.
 
 | Priority | Item | Type | Status |
 |----------|------|------|--------|
-| HIGH | Re-run `scripts/audit_cold_high_br.py` when 20-30 post-June-28 slates exist | Data review | Deferred to mid-July |
-| HIGH | Investigate RQ-4: Graduated trap penalty by trap_type | Architecture | Deferred to July |
+| **FIRST — July 21** | Re-run `audit_cold_high_br.py` against full post-June-28 actuals window. Target N >= 20 confirmed production instances before updating either governing doc. If N < 20, extend window and re-run July 25. **This runs before any other audit work begins.** | Data review | Hard calendar |
+| HIGH | Investigate RQ-4: TRAP/Vulnerable attack_conf suppression — threshold analysis (e.g. cap at 85). Do not implement, analyze only. | Architecture | Deferred to July |
 | HIGH | Investigate RQ-5: Recent form gate for TRAP classification | Architecture | Deferred to July |
 | MED  | Investigate RQ-1: FADE_RISK confidence propagation to opponent | Code audit | Deferred to July |
 | MED  | Investigate RQ-2: TRAP/PARADOX signal interaction with attack conf | Code audit | Deferred to July |
