@@ -1,2 +1,3 @@
 date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_against,run_diff,pitcher_actual_er,pitcher_actual_bb
 2026-06-27,Yoshinobu Yamamoto,Los Angeles Dodgers,84.0,0.0,Y,N,3,3.0,2,2
+2026-07-01,Shane Drohan,Milwaukee Brewers,77.0,0.0,Y,N,2,2.0,2,1
