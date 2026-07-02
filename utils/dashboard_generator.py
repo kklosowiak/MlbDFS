@@ -330,17 +330,24 @@ class DashboardGenerator:
             """
             h_reasons_html = h_reasons_html.replace('"', '&quot;').replace('\n', ' ')
 
+            target_pill = '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else ''
+            power_pill = '<span class="signal-pill pill-neutral">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else ''
+            thief_pill = '<span class="signal-pill pill-neutral">🏃\u200d♂️ THIEF</span>' if h.get('is_speed_target') else ''
+            hot_pill = '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else ''
+            radar_pill = '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else ''
+            pen_pill = '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else ''
+
             row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{h['name']} ({abbrev_map.get(h['team'], h['team'])})', '{h_reasons_html}')">
 <td class="score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}">{h['player_score']}</td>
 <td><div class="signals-container">
-{ '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }
+{target_pill}
 </div></td>
 <td><div class="signals-container">
-{ '<span class="signal-pill pill-neutral">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }
-{ '<span class="signal-pill pill-neutral">🏃\u200d♂️ THIEF</span>' if h.get('is_speed_target') else '' }
-{ '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else '' }
-{ '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }
-{ '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }
+{power_pill}
+{thief_pill}
+{hot_pill}
+{radar_pill}
+{pen_pill}
 </div></td>
 <td><strong>{h['name']}</strong> <span class="team-label" style="font-weight: 800; color: #ff9f0a;">({h.get('bat_side', 'R')}B)</span> <span class="team-label">({abbrev_map.get(h['team'], h['team'])})</span></td>
 <td><span class="vs">vs</span>{h.get('opp_pitcher', 'TBD')} <span class="team-label" style="font-weight: 800; color: #0a84ff;">({h.get('pitch_hand', 'R')}HP)</span> <span class="team-label">({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>

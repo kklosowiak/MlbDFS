@@ -34,11 +34,11 @@ jobs:
           git config user.email "omega-bot@noreply.github.com"
           git config user.name "OMEGA Bot"
           # Explicitly add the tracking outputs and dashboard per Correction 1
-          git add scratch/passive_tracker/signals/
-          git add scratch/passive_tracker/snapshots/rollup_week_*.csv
-          git add scratch/passive_tracker/digests/
-          git add docs/audit_dashboard.html
-          git add scratch/passive_tracker/actuals_log.txt
-          git add scratch/passive_tracker/error_log.txt
+          git add -f scratch/passive_tracker/signals/
+          git add -f scratch/passive_tracker/snapshots/rollup_week_*.csv || true
+          git add -f scratch/passive_tracker/digests/
+          git add -f docs/audit_dashboard.html
+          git add -f scratch/passive_tracker/actuals_log.txt || true
+          git add -f scratch/passive_tracker/error_log.txt || true
           git diff --staged --quiet || git commit -m "auto: nightly processing $(date -u +%Y-%m-%d)"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/kklosowiak/MlbDFS.git audit/july-2026
