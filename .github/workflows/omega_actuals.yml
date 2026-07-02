@@ -40,4 +40,4 @@ jobs:
           git add scratch/passive_tracker/actuals_log.txt
           git add scratch/passive_tracker/error_log.txt
           git diff --staged --quiet || git commit -m "auto: nightly processing $(date -u +%Y-%m-%d)"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/kklosowiak/MlbDFS.git audit/july-2026
