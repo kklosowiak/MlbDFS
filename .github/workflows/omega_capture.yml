@@ -52,8 +52,8 @@ jobs:
         run: |
           git config user.email "omega-bot@noreply.github.com"
           git config user.name "OMEGA Bot"
-          git add scratch/passive_tracker/slates/
-          git add scratch/passive_tracker/capture_log.txt
-          git add scratch/passive_tracker/error_log.txt || true
+          git add -f scratch/passive_tracker/slates/
+          git add -f scratch/passive_tracker/capture_log.txt || true
+          git add -f scratch/passive_tracker/error_log.txt || true
           git diff --staged --quiet || git commit -m "auto: capture ${{ steps.slot.outputs.slot }} $(date -u +%Y-%m-%d)"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/kklosowiak/MlbDFS.git audit/july-2026
