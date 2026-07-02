@@ -120,6 +120,34 @@ def append_to_csv(file_path, header, row_data, date_str):
             writer.writerow(header)
         writer.writerow(row_data)
 
+def initialize_all_csvs(signals_dir):
+    os.makedirs(signals_dir, exist_ok=True)
+    csv_configs = {
+        "trap_arm_log.csv": ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
+        "cold_high_br_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
+        "fade_risk_log.csv": ["date", "team", "attack_conf", "ITT", "divergence", "ticket_pct", "money_pct", "actual_runs", "run_diff", "fade_correct"],
+        "hot_msmi_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "attack_conf", "actual_dk_pts"],
+        "top_stack_log.csv": ["date", "team", "attack_conf", "ITT", "divergence", "actual_runs", "run_diff", "model_correct"],
+        "right_game_wrong_team_log.csv": ["date", "game", "teamA", "teamA_conf", "teamA_actual_runs", "teamB", "teamB_conf", "teamB_actual_runs", "fade_risk_team", "both_scored_6plus", "higher_conf_team_won_scoring", "pattern_flagged"],
+        "anti_chalk_smash_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
+        "steam_log.csv": ["date", "team", "attack_conf", "ITT", "divergence", "ticket_pct", "money_pct", "actual_runs", "run_diff", "steam_correct"],
+        "platoon_trap_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
+        "strong_edge_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
+        "elite_platoon_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
+        "sharp_fade_pitcher_log.csv": ["date", "pitcher", "pitcher_team", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
+        "dqi_log.csv": ["date", "team", "attack_conf", "ITT", "dqi_tier", "actual_runs", "run_diff"],
+        "pitcher_volatile_log.csv": ["date", "pitcher", "pitcher_team", "attack_conf", "conf_delta", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
+        "pitcher_walks_hazard_log.csv": ["date", "pitcher", "pitcher_team", "attack_conf", "ITT", "walks_penalty", "is_hazard", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_bb"],
+        "pen_fatigue_log.csv": ["date", "team", "attack_conf", "ITT", "is_gassed", "is_fatigued", "actual_runs", "run_diff"],
+        "burst_log.csv": ["date", "team", "attack_conf", "ITT", "actual_runs", "run_diff", "burst_correct"]
+    }
+    for fn, header in csv_configs.items():
+        fpath = os.path.join(signals_dir, fn)
+        if not os.path.exists(fpath):
+            with open(fpath, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(header)
+
 def main():
     parser = argparse.ArgumentParser(description="OMEGA Signal Tracker Script")
     parser.add_argument("--date", help="Target date (YYYY-MM-DD), defaults to yesterday")
@@ -211,6 +239,7 @@ def main():
     snapshots_dir = os.path.join("scratch", "passive_tracker", "snapshots")
     os.makedirs(signals_dir, exist_ok=True)
     os.makedirs(snapshots_dir, exist_ok=True)
+    initialize_all_csvs(signals_dir)
 
     # ==================== PROCESS SIGNALS ====================
 
