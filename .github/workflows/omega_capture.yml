@@ -1,0 +1,54 @@
+name: OMEGA Model Capture
+on:
+  schedule:
+    - cron: '30 15 * * *'   # 11:30am ET (15:30 UTC)
+    - cron: '20 22 * * *'   # 6:20pm ET (22:20 UTC)
+  workflow_dispatch:
+    inputs:
+      time_slot:
+        description: 'Capture time slot (1530 or 2220)'
+        required: false
+        default: '2220'
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: audit/july-2026
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Determine time slot
+        id: slot
+        run: |
+          # If manual dispatch, use the input time_slot
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "slot=${{ github.event.inputs.time_slot }}" >> $GITHUB_OUTPUT
+          else
+            HOUR=$(date -u +%H)
+            if [ "$HOUR" -lt "19" ]; then 
+              echo "slot=1530" >> $GITHUB_OUTPUT
+            else 
+              echo "slot=2220" >> $GITHUB_OUTPUT
+            fi
+          fi
+      - name: Run capture
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          USE_ODDS_API: 'True'
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/passive/nightly_capture.py --time ${{ steps.slot.outputs.slot }}
+      - name: Commit outputs
+        run: |
+          git config user.email "omega-bot@noreply.github.com"
+          git config user.name "OMEGA Bot"
+          git add scratch/passive_tracker/slates/
+          git add scratch/passive_tracker/capture_log.txt
+          git diff --staged --quiet || git commit -m "auto: capture ${{ steps.slot.outputs.slot }} $(date -u +%Y-%m-%d)"
+          git push
