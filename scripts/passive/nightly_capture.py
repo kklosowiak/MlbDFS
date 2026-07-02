@@ -34,6 +34,10 @@ def main():
     fetch_result = subprocess.run([sys.executable, "run_fetch.py"], capture_output=True, text=True)
     if fetch_result.returncode != 0:
         log_message(log_path, today_str, time_slot, "FAIL", "run_fetch.py failed")
+        error_file = os.path.join("scratch", "passive_tracker", "error_log.txt")
+        os.makedirs(os.path.dirname(error_file), exist_ok=True)
+        with open(error_file, "w", encoding="utf-8") as ef:
+            ef.write(f"=== run_fetch.py failed ===\nSTDOUT:\n{fetch_result.stdout}\nSTDERR:\n{fetch_result.stderr}\n")
         print(f"Error running run_fetch.py:\n{fetch_result.stderr}")
         sys.exit(1)
 
@@ -42,6 +46,10 @@ def main():
     analysis_result = subprocess.run([sys.executable, "main.py"], capture_output=True, text=True)
     if analysis_result.returncode != 0:
         log_message(log_path, today_str, time_slot, "FAIL", "main.py failed")
+        error_file = os.path.join("scratch", "passive_tracker", "error_log.txt")
+        os.makedirs(os.path.dirname(error_file), exist_ok=True)
+        with open(error_file, "w", encoding="utf-8") as ef:
+            ef.write(f"=== main.py failed ===\nSTDOUT:\n{analysis_result.stdout}\nSTDERR:\n{analysis_result.stderr}\n")
         print(f"Error running main.py:\n{analysis_result.stderr}")
         sys.exit(1)
 
