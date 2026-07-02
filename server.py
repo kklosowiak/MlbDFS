@@ -964,6 +964,30 @@ def get_dashboard(request: Request):
     else:
         return HTMLResponse(content="ERROR: templates/index.html not found. Place template in templates/ folder.", media_type="text/html; charset=utf-8")
 
+
+@app.get("/audit", response_class=HTMLResponse)
+def get_audit_page(request: Request):
+    if not check_page_auth(request):
+        return RedirectResponse(url="/login")
+        
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    audit_path = os.path.join(base_dir, "docs", "audit_dashboard.html")
+    
+    if os.path.exists(audit_path):
+        with open(audit_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(
+                content=f.read(),
+                media_type="text/html; charset=utf-8",
+                headers={
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache",
+                    "Expires": "0",
+                },
+            )
+    else:
+        return HTMLResponse(content="ERROR: docs/audit_dashboard.html not found. Re-run dashboard generator.", media_type="text/html; charset=utf-8")
+
+
 # API Endpoints
 @app.get("/api/results", dependencies=[Depends(get_current_user)])
 def get_results_api():

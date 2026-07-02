@@ -23,7 +23,22 @@ data/bullpen_fatigue_cache.json
 .idea/
 .gemini/
 logs/
-scratch/
+scratch/*
+!scratch/passive_tracker/
+
+# Ignore large daily files that regenerate each night
+scratch/passive_tracker/slates/*.json
+scratch/passive_tracker/actuals/*.json
+scratch/passive_tracker/snapshots/all_teams_*.csv
+scratch/passive_tracker/snapshots/all_pitchers_*.csv
+scratch/passive_tracker/snapshots/all_hitters_*.csv
+scratch/passive_tracker/snapshots/intraday_deltas_*.csv
+scratch/passive_tracker/**/*.txt
+scratch/passive_tracker/capture_log.txt
+scratch/passive_tracker/actuals_log.txt
+scratch/passive_tracker/error_log.txt
+!scratch/passive_tracker/digests/*.txt
+
 
 # Analysis Results
 reports/latest_results.json

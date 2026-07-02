@@ -1,0 +1,49 @@
+=== OMEGA SIGNAL DIGEST - 2026-06-27 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Baltimore Orioles | conf=97.0 | ITT=4.8 | actual=3.0 | diff=-1.8 | MISS
+TRAP ARMS (1 instances):
+  Foster Griffin (Vulnerable) vs Washington Nationals: attack_conf=0.0 ITT=0.0 actual=3.0 diff=+3.0 | 7.0IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Trevor Larnach (Minnesota Twins): 19.0 DK pts
+ANTI_CHALK_SMASH (1 fires):
+  Junior Caminero (Tampa Bay Rays): blended=105.2 | actual=13.5DKpts | +2.9 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Mickey Moniak (Colorado Rockies): actual=2.0DKpts | -7.2 vs baseline
+STRONG_EDGE (1 fires):
+  Cj Abrams (Washington Nationals): actual=0.5DKpts | -14.4 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Michael Wacha vs Kansas City Royals: ITT=0.0 actual=2.0R diff=+2.0
+VOLATILE PITCHERS (1):
+  Chase Burns: conf_delta=+42.0 | ITT=0.0 actual=7.0R
+WALKS/HAZARD PITCHERS (1):
+  Yoshinobu Yamamoto (WALKS=Y HAZ=N): ITT=0.0 actual=3.0R diff=+3.0
+GASSED/FATIGUED PEN (1 teams):
+  Baltimore Orioles: actual=3.0R vs ITT=4.8 -> MISS
+BURST (1 teams):
+  Milwaukee Brewers: actual=2.0R vs ITT=4.5 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (1 slates tracked):
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +3.00R
+  TRAP/Short Leash: 0.0% underscored ITT | avg diff +0.00R
+  FADE_RISK: 0.0% correct | avg diff +0.00R
+  Top Stack hit ITT: 0.0%
+  HOT_MSMI avg: 19.0 DK pts
+  STEAM: 0.0% correct | avg +0.00R
+  ANTI_CHALK_SMASH: avg +2.93 DK pts vs baseline
+  PLATOON_TRAP: 100.0% underperformed baseline
+  STRONG_EDGE: avg -14.36 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 100.0%
+  GASSED pen teams: 0.0% hit ITT
+  BURST teams: 0.0% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Foster Griffin (7.0 IP, 0 ER)
+
+=== END ===
