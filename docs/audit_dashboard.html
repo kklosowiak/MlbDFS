@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMEGA Passive Audit Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.15);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        header {
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timestamp {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badge/Trend Pill styles */
+        .trend-container {
+            display: flex;
+            gap: 4px;
+        }
+
+        .trend-pill {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .trend-pill.hit {
+            background-color: var(--success);
+            box-shadow: 0 0 6px var(--success);
+        }
+
+        .trend-pill.miss {
+            background-color: var(--danger);
+            box-shadow: 0 0 6px var(--danger);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.warning {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .status-badge.danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .status-badge.none {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: var(--text-muted);
+        }
+
+        .flag-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flag-item:last-child {
+            border-bottom: none;
+        }
+
+        .flag-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .flag-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .flag-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .flag-date {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        details {
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        details[open] {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        summary {
+            padding: 14px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+        }
+
+        pre {
+            margin: 0;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.3);
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            color: #38bdf8;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .link-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .link-card:hover {
+            background: var(--primary-glow);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .link-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .link-arrow {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 16px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚾ OMEGA Audit Dashboard</h1>
+            <div class="timestamp">Last updated: 2026-07-03 22:38:18 UTC (Eastern Time rollover tracking)</div>
+        </header>
+
+        <!-- Signal Accuracy Section -->
+        <div class="section">
+            <h2>Running Signal Accuracy</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Signal Type</th>
+                            <th>Instances (N)</th>
+                            <th>Hit Rate</th>
+                            <th>Avg Run Diff</th>
+                            <th>Trend (Last 7)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>TRAP / Vulnerable</strong></td>
+                            <td>1</td>
+                            <td>0.0%</td>
+                            <td>+0.10</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>TRAP / Short Leash</strong></td>
+                            <td>2</td>
+                            <td>50.0%</td>
+                            <td>+2.52</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill hit" title="HIT"></span><span class="trend-pill miss" title="MISS"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>FADE_RISK</strong></td>
+                            <td>0</td>
+                            <td>0.0%</td>
+                            <td>0.0</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span style="color:var(--text-muted); font-size:12px;">N/A</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Top Stack</strong></td>
+                            <td>3</td>
+                            <td>33.3%</td>
+                            <td>+0.47</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>HOT_MSMI</strong></td>
+                            <td>3</td>
+                            <td>N/A</td>
+                            <td>12.50 DK</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span style="color:var(--text-muted); font-size:12px;">N/A</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>COLD_HIGH_BR_WARNING</strong></td>
+                            <td>0</td>
+                            <td>0.0%</td>
+                            <td>0.0</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span style="color:var(--text-muted); font-size:12px;">N/A</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>STEAM Stacks</strong></td>
+                            <td>2</td>
+                            <td>50.0%</td>
+                            <td>+0.55</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ANTI_CHALK_SMASH</strong></td>
+                            <td>2</td>
+                            <td>N/A</td>
+                            <td>+0.09 vs BL</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span style="color:var(--text-muted); font-size:12px;">N/A</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>PLATOON_TRAP</strong></td>
+                            <td>3</td>
+                            <td>33.3% under</td>
+                            <td>+0.82</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill hit" title="HIT"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>STRONG_EDGE</strong></td>
+                            <td>3</td>
+                            <td>N/A</td>
+                            <td>-4.16 vs BL</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span style="color:var(--text-muted); font-size:12px;">N/A</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>SHARP_FADE Pitchers</strong></td>
+                            <td>1</td>
+                            <td>0.0%</td>
+                            <td>+2.00</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>VOLATILE Pitchers</strong></td>
+                            <td>2</td>
+                            <td>100.0%</td>
+                            <td>+7.50</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill hit" title="HIT"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>WALKS/HAZARD Pitchers</strong></td>
+                            <td>3</td>
+                            <td>100.0%</td>
+                            <td>+2.00</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill hit" title="HIT"></span><span class="trend-pill hit" title="HIT"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>GASSED Bullpen Teams</strong></td>
+                            <td>3</td>
+                            <td>33.3%</td>
+                            <td>-0.23</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>BURST Stacks</strong></td>
+                            <td>3</td>
+                            <td>33.3%</td>
+                            <td>+0.82</td>
+                            <td>
+                                <div class="trend-container">
+                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Slates Section -->
+        <div class="section">
+            <h2>Recent Slates</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Top Stack</th>
+                            <th>Conf</th>
+                            <th>ITT</th>
+                            <th>Actual Runs</th>
+                            <th>TRAP Count</th>
+                            <th>FADE Count</th>
+                            <th>Audit Flags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>2026-07-02</code></td>
+                            <td><strong>Los Angeles Dodgers</strong></td>
+                            <td>97.0</td>
+                            <td>5.95</td>
+                            <td>12</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td><span class="status-badge danger">Both 6+ Runs</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>2026-07-01</code></td>
+                            <td><strong>Miami Marlins</strong></td>
+                            <td>95.0</td>
+                            <td>5.85</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td><span class="status-badge none">None</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>2026-06-27</code></td>
+                            <td><strong>Baltimore Orioles</strong></td>
+                            <td>97.0</td>
+                            <td>4.8</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="status-badge none">None</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Audit Flags Section -->
+        <div class="section">
+            <h2>Audit Flags</h2>
+            <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+                <div class="flag-item">
+                    <div class="flag-meta">
+                        <div class="flag-title">Right-Game-Wrong-Team Match</div>
+                        <div class="flag-desc">In San Diego Padres @ Los Angeles Dodgers, both teams scored 6+ runs (Away: 7, Home: 12).</div>
+                    </div>
+                    <div class="flag-date">2026-07-02</div>
+                </div>
+                <div class="flag-item">
+                    <div class="flag-meta">
+                        <div class="flag-title">TRAP Over-delivered</div>
+                        <div class="flag-desc">Michael Mcgreevy (St. Louis Cardinals) pitched 6.0 IP and allowed 2 ER.</div>
+                    </div>
+                    <div class="flag-date">2026-07-01</div>
+                </div>
+                <div class="flag-item">
+                    <div class="flag-meta">
+                        <div class="flag-title">TRAP Over-delivered</div>
+                        <div class="flag-desc">Trevor Mcdonald (San Francisco Giants) pitched 6.0 IP and allowed 0 ER.</div>
+                    </div>
+                    <div class="flag-date">2026-07-01</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collapsible Digests -->
+        <div class="section">
+            <h2>Recent Digests</h2>
+            <details>
+                <summary>Digest - 2026-07-02</summary>
+                <pre>=== OMEGA SIGNAL DIGEST - 2026-07-02 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.95 | actual=12.0 | diff=+6.0 | HIT
+TRAP ARMS (1 instances):
+  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=5.95 actual=12.0 diff=+6.0 | 3.0IP 4ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Los Angeles Dodgers: conf=97.0 ITT=5.95 | actual=12.0R -> CORRECT
+HOT_MSMI TOP 3:
+  Mookie Betts (Los Angeles Dodgers): 14.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Drake Baldwin (Atlanta Braves): actual=6.5DKpts | +0.8 vs baseline
+STRONG_EDGE (1 fires):
+  Alec Burleson (St. Louis Cardinals): actual=15.5DKpts | +8.4 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Walbert Ureña (WALKS=N HAZ=Y): ITT=0.0 actual=1.0R diff=+1.0
+GASSED/FATIGUED PEN (1 teams):
+  Los Angeles Dodgers: actual=12.0R vs ITT=5.95 -> HIT
+BURST (1 teams):
+  Los Angeles Dodgers: actual=12.0R vs ITT=5.95 -> CORRECT
+RIGHT GAME WRONG TEAM:
+  San Diego Padres @ Los Angeles Dodgers: both scored 6+? Y | higher-conf team won scoring? Y
+
+RUNNING ACCURACY (3 slates tracked):
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +0.10R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +2.52R
+  FADE_RISK: 0.0% correct | avg diff +0.00R
+  Top Stack hit ITT: 33.3%
+  HOT_MSMI avg: 12.5 DK pts
+  STEAM: 50.0% correct | avg +0.55R
+  ANTI_CHALK_SMASH: avg +0.09 DK pts vs baseline
+  PLATOON_TRAP: 33.3% underperformed baseline
+  STRONG_EDGE: avg -4.16 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 100.0%
+  GASSED pen teams: 33.3% hit ITT
+  BURST teams: 33.3% hit ITT
+
+AUDIT FLAGS:
+  Right-Game-Wrong-Team Match: San Diego Padres @ Los Angeles Dodgers (Both scored 6+ runs)
+
+=== END ===
+</pre>
+            </details>
+            <details>
+                <summary>Digest - 2026-07-01</summary>
+                <pre>=== OMEGA SIGNAL DIGEST - 2026-07-01 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Miami Marlins | conf=95.0 | ITT=5.85 | actual=3.0 | diff=-2.9 | MISS
+TRAP ARMS (1 instances):
+  Michael Mcgreevy (Vulnerable) vs St. Louis Cardinals: attack_conf=9.0 ITT=0.0 actual=5.0 diff=+5.0 | 6.0IP 2ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Los Angeles Dodgers: conf=92.0 ITT=5.95 | actual=1.0R -> MISS
+HOT_MSMI TOP 3:
+  Esmerlyn Valdez (Pittsburgh Pirates): 4.5 DK pts
+ANTI_CHALK_SMASH (1 fires):
+  Bobby Witt (Kansas City Royals): blended=95.2 | actual=3.0DKpts | -2.8 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Shea Langeliers (Athletics): actual=16.5DKpts | +8.8 vs baseline
+STRONG_EDGE (1 fires):
+  Sal Stewart (Cincinnati Reds): actual=3.0DKpts | -6.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (1):
+  Tatsuya Imai: conf_delta=+35.0 | ITT=0.0 actual=8.0R
+WALKS/HAZARD PITCHERS (1):
+  Shane Drohan (WALKS=Y HAZ=N): ITT=0.0 actual=2.0R diff=+2.0
+GASSED/FATIGUED PEN (1 teams):
+  Los Angeles Dodgers: actual=1.0R vs ITT=5.95 -> MISS
+BURST (1 teams):
+  Milwaukee Brewers: actual=4.0R vs ITT=5.1 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (2 slates tracked):
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +4.00R
+  TRAP/Short Leash: 0.0% underscored ITT | avg diff +0.00R
+  FADE_RISK: 0.0% correct | avg diff +0.00R
+  Top Stack hit ITT: 0.0%
+  HOT_MSMI avg: 11.75 DK pts
+  STEAM: 0.0% correct | avg -4.95R
+  ANTI_CHALK_SMASH: avg +0.09 DK pts vs baseline
+  PLATOON_TRAP: 50.0% underperformed baseline
+  STRONG_EDGE: avg -10.43 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 100.0%
+  GASSED pen teams: 0.0% hit ITT
+  BURST teams: 0.0% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Michael Mcgreevy (6.0 IP, 2 ER)
+
+=== END ===
+</pre>
+            </details>
+            <details>
+                <summary>Digest - 2026-06-27</summary>
+                <pre>=== OMEGA SIGNAL DIGEST - 2026-06-27 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Baltimore Orioles | conf=97.0 | ITT=4.8 | actual=3.0 | diff=-1.8 | MISS
+TRAP ARMS (1 instances):
+  Foster Griffin (Vulnerable) vs Washington Nationals: attack_conf=0.0 ITT=0.0 actual=3.0 diff=+3.0 | 7.0IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Trevor Larnach (Minnesota Twins): 19.0 DK pts
+ANTI_CHALK_SMASH (1 fires):
+  Junior Caminero (Tampa Bay Rays): blended=105.2 | actual=13.5DKpts | +2.9 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Mickey Moniak (Colorado Rockies): actual=2.0DKpts | -7.2 vs baseline
+STRONG_EDGE (1 fires):
+  Cj Abrams (Washington Nationals): actual=0.5DKpts | -14.4 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Michael Wacha vs Kansas City Royals: ITT=0.0 actual=2.0R diff=+2.0
+VOLATILE PITCHERS (1):
+  Chase Burns: conf_delta=+42.0 | ITT=0.0 actual=7.0R
+WALKS/HAZARD PITCHERS (1):
+  Yoshinobu Yamamoto (WALKS=Y HAZ=N): ITT=0.0 actual=3.0R diff=+3.0
+GASSED/FATIGUED PEN (1 teams):
+  Baltimore Orioles: actual=3.0R vs ITT=4.8 -> MISS
+BURST (1 teams):
+  Milwaukee Brewers: actual=2.0R vs ITT=4.5 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (1 slates tracked):
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +3.00R
+  TRAP/Short Leash: 0.0% underscored ITT | avg diff +0.00R
+  FADE_RISK: 0.0% correct | avg diff +0.00R
+  Top Stack hit ITT: 0.0%
+  HOT_MSMI avg: 19.0 DK pts
+  STEAM: 0.0% correct | avg +0.00R
+  ANTI_CHALK_SMASH: avg +2.93 DK pts vs baseline
+  PLATOON_TRAP: 100.0% underperformed baseline
+  STRONG_EDGE: avg -14.36 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 100.0%
+  GASSED pen teams: 0.0% hit ITT
+  BURST teams: 0.0% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Foster Griffin (7.0 IP, 0 ER)
+
+=== END ===
+</pre>
+            </details>
+        </div>
+
+        <!-- CSV Downloads -->
+        <div class="section">
+            <h2>Running Data Downloads</h2>
+            <div class="links-grid">
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/trap_vulnerable_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Trap Vulnerable Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/trap_short_leash_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Trap Short Leash Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/cold_high_br_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Cold High blended rating Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/fade_risk_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Fade Risk Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/hot_msmi_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Hot MSMI Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/top_stack_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Top Stack Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/right_game_wrong_team_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">RGWT Audit Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/anti_chalk_smash_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Anti-Chalk Smash Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/steam_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Steam Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/platoon_trap_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Platoon Trap Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/strong_edge_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Strong Edge Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/elite_platoon_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Elite Platoon Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/sharp_fade_pitcher_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Sharp Fade Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/dqi_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">DQI Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/pitcher_volatile_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Volatile Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/pitcher_walks_hazard_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Walks/Hazard Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/pen_fatigue_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Bullpen Fatigue Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/burst_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Burst Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

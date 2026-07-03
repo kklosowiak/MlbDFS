@@ -1,0 +1,48 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-02 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.95 | actual=12.0 | diff=+6.0 | HIT
+TRAP ARMS (1 instances):
+  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=5.95 actual=12.0 diff=+6.0 | 3.0IP 4ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Los Angeles Dodgers: conf=97.0 ITT=5.95 | actual=12.0R -> CORRECT
+HOT_MSMI TOP 3:
+  Mookie Betts (Los Angeles Dodgers): 14.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Drake Baldwin (Atlanta Braves): actual=6.5DKpts | +0.8 vs baseline
+STRONG_EDGE (1 fires):
+  Alec Burleson (St. Louis Cardinals): actual=15.5DKpts | +8.4 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Walbert Ureña (WALKS=N HAZ=Y): ITT=0.0 actual=1.0R diff=+1.0
+GASSED/FATIGUED PEN (1 teams):
+  Los Angeles Dodgers: actual=12.0R vs ITT=5.95 -> HIT
+BURST (1 teams):
+  Los Angeles Dodgers: actual=12.0R vs ITT=5.95 -> CORRECT
+RIGHT GAME WRONG TEAM:
+  San Diego Padres @ Los Angeles Dodgers: both scored 6+? Y | higher-conf team won scoring? Y
+
+RUNNING ACCURACY (3 slates tracked):
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +0.10R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +2.52R
+  FADE_RISK: 0.0% correct | avg diff +0.00R
+  Top Stack hit ITT: 33.3%
+  HOT_MSMI avg: 12.5 DK pts
+  STEAM: 50.0% correct | avg +0.55R
+  ANTI_CHALK_SMASH: avg +0.09 DK pts vs baseline
+  PLATOON_TRAP: 33.3% underperformed baseline
+  STRONG_EDGE: avg -4.16 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 100.0%
+  GASSED pen teams: 33.3% hit ITT
+  BURST teams: 33.3% hit ITT
+
+AUDIT FLAGS:
+  Right-Game-Wrong-Team Match: San Diego Padres @ Los Angeles Dodgers (Both scored 6+ runs)
+
+=== END ===
