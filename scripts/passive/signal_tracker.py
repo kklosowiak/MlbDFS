@@ -54,6 +54,15 @@ def get_pitcher_actuals(actuals, team_name, pitcher_name):
             return sp, g['home_runs']
     return None, None
 
+def get_team_implied_total(lock_data, team_name):
+    if not team_name:
+        return 0.0
+    norm_t = normalize_player_name(team_name)
+    for t in lock_data.get('teams', []):
+        if normalize_player_name(t['team']) == norm_t:
+            return float(t.get('implied_total', 0.0) or 0.0)
+    return 0.0
+
 def get_hitter_actuals(detailed_actuals, team_name, hitter_name):
     norm_h = normalize_player_name(hitter_name)
     for t_name, t_data in detailed_actuals.items():
@@ -123,7 +132,8 @@ def append_to_csv(file_path, header, row_data, date_str):
 def initialize_all_csvs(signals_dir):
     os.makedirs(signals_dir, exist_ok=True)
     csv_configs = {
-        "trap_arm_log.csv": ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
+        "trap_vulnerable_log.csv": ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
+        "trap_short_leash_log.csv": ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"],
         "cold_high_br_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "actual_dk_pts", "baseline_dk_pts", "pts_diff"],
         "fade_risk_log.csv": ["date", "team", "attack_conf", "ITT", "divergence", "ticket_pct", "money_pct", "actual_runs", "run_diff", "fade_correct"],
         "hot_msmi_log.csv": ["date", "player", "team", "salary", "batting_order", "blended_rating", "attack_conf", "actual_dk_pts"],
@@ -243,16 +253,23 @@ def main():
 
     # ==================== PROCESS SIGNALS ====================
 
-    # CSV 1: signals/trap_arm_log.csv
+    # CSV 1: signals/trap_vulnerable_log.csv and signals/trap_short_leash_log.csv
     for p in lock_data.get('pitchers', []):
         if p.get('is_trap'):
             sp_actual, runs_against = get_pitcher_actuals(actuals_data, p['team'], p['pitcher'])
             if sp_actual and runs_against is not None:
                 ip = sp_actual.get('ip', 0.0)
                 er = sp_actual.get('er', 0)
-                run_diff = float(round(runs_against - float(p.get('implied_total', 0.0) or 0.0), 2))
-                row = [date_str, p['pitcher'], p['team'], p.get('trap_type', 'Neutral'), float(p.get('attack_conf', 50)), float(p.get('implied_total', 0.0) or 0.0), runs_against, run_diff, er, ip]
-                append_to_csv(os.path.join(signals_dir, "trap_arm_log.csv"), ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"], row, date_str)
+                opp_team = p.get('opponent') or p.get('opposing_team')
+                itt = get_team_implied_total(lock_data, opp_team)
+                run_diff = float(round(runs_against - itt, 2))
+                row = [date_str, p['pitcher'], p['team'], p.get('trap_type', 'Neutral'), float(p.get('attack_conf', 50)), itt, runs_against, run_diff, er, ip]
+                
+                t_type = p.get('trap_type', '').strip()
+                if t_type == 'Vulnerable':
+                    append_to_csv(os.path.join(signals_dir, "trap_vulnerable_log.csv"), ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"], row, date_str)
+                elif t_type == 'Short Leash':
+                    append_to_csv(os.path.join(signals_dir, "trap_short_leash_log.csv"), ["date", "pitcher", "pitcher_team", "trap_type", "attack_conf", "ITT", "actual_runs_against", "run_diff", "pitcher_actual_er", "pitcher_actual_ip"], row, date_str)
 
     # CSV 2: signals/cold_high_br_log.csv
     # CSV 4: signals/hot_msmi_log.csv
@@ -403,7 +420,8 @@ def main():
             ip = sp_actual.get('ip', 0.0)
             er = sp_actual.get('er', 0)
             bb = sp_actual.get('bb', 0)
-            itt = float(p.get('implied_total', 0.0) or 0.0)
+            opp_team = p.get('opponent') or p.get('opposing_team')
+            itt = get_team_implied_total(lock_data, opp_team)
             run_diff = float(round(runs_against - itt, 2))
             conf = float(p.get('attack_conf', 50))
             

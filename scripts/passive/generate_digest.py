@@ -90,7 +90,9 @@ def main():
         path = os.path.join(signals_dir, file_name)
         return [r for r in read_csv_rows(path) if r.get('date') == date_str]
 
-    trap_today = get_today_rows("trap_arm_log.csv")
+    trap_vuln_today = get_today_rows("trap_vulnerable_log.csv")
+    trap_short_today = get_today_rows("trap_short_leash_log.csv")
+    trap_today = trap_vuln_today + trap_short_today
     cold_br_today = get_today_rows("cold_high_br_log.csv")
     fade_today = get_today_rows("fade_risk_log.csv")
     hot_msmi_today = get_today_rows("hot_msmi_log.csv")
@@ -130,7 +132,7 @@ def main():
         team = tr.get('pitcher_team')
         type_lbl = tr.get('trap_type', 'Neutral')
         conf = tr.get('attack_conf')
-        itt = safe_float(tr.get('implied_total'))
+        itt = safe_float(tr.get('ITT'))
         act = safe_float(tr.get('actual_runs_against'))
         diff = safe_float(tr.get('run_diff'))
         ip = tr.get('pitcher_actual_ip')
@@ -267,7 +269,8 @@ def main():
 
     # ==================== RUNNING ACCURACY STATISTICS ====================
     # Read ALL history from CSVs to compute overall averages
-    all_trap = read_csv_rows(os.path.join(signals_dir, "trap_arm_log.csv"))
+    all_trap_vuln = read_csv_rows(os.path.join(signals_dir, "trap_vulnerable_log.csv"))
+    all_trap_short = read_csv_rows(os.path.join(signals_dir, "trap_short_leash_log.csv"))
     all_fade = read_csv_rows(os.path.join(signals_dir, "fade_risk_log.csv"))
     all_ts = read_csv_rows(os.path.join(signals_dir, "top_stack_log.csv"))
     all_msmi = read_csv_rows(os.path.join(signals_dir, "hot_msmi_log.csv"))
@@ -285,8 +288,8 @@ def main():
     n_slates = len(unique_dates)
 
     # Trap arm vulnerable vs short leash split
-    vul_arms = [x for x in all_trap if x.get('trap_type') == 'Vulnerable']
-    sh_arms = [x for x in all_trap if x.get('trap_type') == 'Short Leash']
+    vul_arms = all_trap_vuln
+    sh_arms = all_trap_short
     
     def pct_underscored_itt(rows):
         if not rows: return 0.0

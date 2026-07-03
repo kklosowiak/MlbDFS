@@ -3,7 +3,7 @@
 CAPTURE: 6:20pm snapshot confirmed
 TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.95 | actual=12.0 | diff=+6.0 | HIT
 TRAP ARMS (1 instances):
-  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=0.0 actual=12.0 diff=+12.0 | 3.0IP 4ER -> NORMAL
+  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=5.95 actual=12.0 diff=+6.0 | 3.0IP 4ER -> NORMAL
 FADE_RISK (0 instances):
 STEAM (1 team fires):
   Los Angeles Dodgers: conf=97.0 ITT=5.95 | actual=12.0R -> CORRECT
@@ -27,8 +27,8 @@ RIGHT GAME WRONG TEAM:
   San Diego Padres @ Los Angeles Dodgers: both scored 6+? Y | higher-conf team won scoring? Y
 
 RUNNING ACCURACY (3 slates tracked):
-  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +4.00R
-  TRAP/Short Leash: 0.0% underscored ITT | avg diff +12.00R
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +0.10R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +2.52R
   FADE_RISK: 0.0% correct | avg diff +0.00R
   Top Stack hit ITT: 33.3%
   HOT_MSMI avg: 12.5 DK pts

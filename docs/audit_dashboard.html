@@ -268,7 +268,7 @@
     <div class="container">
         <header>
             <h1>⚾ OMEGA Audit Dashboard</h1>
-            <div class="timestamp">Last updated: 2026-07-03 09:16:30 UTC (Eastern Time rollover tracking)</div>
+            <div class="timestamp">Last updated: 2026-07-03 22:38:18 UTC (Eastern Time rollover tracking)</div>
         </header>
 
         <!-- Signal Accuracy Section -->
@@ -288,23 +288,23 @@
                     <tbody>
                         <tr>
                             <td><strong>TRAP / Vulnerable</strong></td>
-                            <td>2</td>
+                            <td>1</td>
                             <td>0.0%</td>
-                            <td>+4.00</td>
+                            <td>+0.10</td>
                             <td>
                                 <div class="trend-container">
-                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span>
+                                    <span class="trend-pill miss" title="MISS"></span>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td><strong>TRAP / Short Leash</strong></td>
-                            <td>1</td>
-                            <td>0.0%</td>
-                            <td>+12.00</td>
+                            <td>2</td>
+                            <td>50.0%</td>
+                            <td>+2.52</td>
                             <td>
                                 <div class="trend-container">
-                                    <span class="trend-pill miss" title="MISS"></span>
+                                    <span class="trend-pill hit" title="HIT"></span><span class="trend-pill miss" title="MISS"></span>
                                 </div>
                             </td>
                         </tr>
@@ -490,7 +490,7 @@
                             <td>95.0</td>
                             <td>5.85</td>
                             <td>3</td>
-                            <td>1</td>
+                            <td>2</td>
                             <td>0</td>
                             <td><span class="status-badge none">None</span></td>
                         </tr>
@@ -500,7 +500,7 @@
                             <td>97.0</td>
                             <td>4.8</td>
                             <td>3</td>
-                            <td>1</td>
+                            <td>0</td>
                             <td>0</td>
                             <td><span class="status-badge none">None</span></td>
                         </tr>
@@ -530,9 +530,9 @@
                 <div class="flag-item">
                     <div class="flag-meta">
                         <div class="flag-title">TRAP Over-delivered</div>
-                        <div class="flag-desc">Foster Griffin (Washington Nationals) pitched 7.0 IP and allowed 0 ER.</div>
+                        <div class="flag-desc">Trevor Mcdonald (San Francisco Giants) pitched 6.0 IP and allowed 0 ER.</div>
                     </div>
-                    <div class="flag-date">2026-06-27</div>
+                    <div class="flag-date">2026-07-01</div>
                 </div>
             </div>
         </div>
@@ -547,7 +547,7 @@
 CAPTURE: 6:20pm snapshot confirmed
 TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.95 | actual=12.0 | diff=+6.0 | HIT
 TRAP ARMS (1 instances):
-  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=0.0 actual=12.0 diff=+12.0 | 3.0IP 4ER -> NORMAL
+  Randy Vásquez (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=5.95 actual=12.0 diff=+6.0 | 3.0IP 4ER -> NORMAL
 FADE_RISK (0 instances):
 STEAM (1 team fires):
   Los Angeles Dodgers: conf=97.0 ITT=5.95 | actual=12.0R -> CORRECT
@@ -571,8 +571,8 @@ RIGHT GAME WRONG TEAM:
   San Diego Padres @ Los Angeles Dodgers: both scored 6+? Y | higher-conf team won scoring? Y
 
 RUNNING ACCURACY (3 slates tracked):
-  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +4.00R
-  TRAP/Short Leash: 0.0% underscored ITT | avg diff +12.00R
+  TRAP/Vulnerable: 0.0% underscored ITT | avg diff +0.10R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +2.52R
   FADE_RISK: 0.0% correct | avg diff +0.00R
   Top Stack hit ITT: 33.3%
   HOT_MSMI avg: 12.5 DK pts
@@ -704,8 +704,12 @@ AUDIT FLAGS:
         <div class="section">
             <h2>Running Data Downloads</h2>
             <div class="links-grid">
-                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/trap_arm_log.csv" target="_blank" class="link-card">
-                    <span class="link-name">Trap Pitchers Log</span>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/trap_vulnerable_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Trap Vulnerable Pitchers Log</span>
+                    <span class="link-arrow">&rarr;</span>
+                </a>
+                <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/trap_short_leash_log.csv" target="_blank" class="link-card">
+                    <span class="link-name">Trap Short Leash Pitchers Log</span>
                     <span class="link-arrow">&rarr;</span>
                 </a>
                 <a href="https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/cold_high_br_log.csv" target="_blank" class="link-card">

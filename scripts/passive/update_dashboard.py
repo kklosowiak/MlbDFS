@@ -60,7 +60,9 @@ def main():
     dashboard_path = os.path.join(docs_dir, "audit_dashboard.html")
 
     # Load signals CSVs
-    trap_rows = read_csv_rows(os.path.join(signals_dir, "trap_arm_log.csv"))
+    vul_arms = read_csv_rows(os.path.join(signals_dir, "trap_vulnerable_log.csv"))
+    sh_arms = read_csv_rows(os.path.join(signals_dir, "trap_short_leash_log.csv"))
+    trap_rows = vul_arms + sh_arms
     fade_rows = read_csv_rows(os.path.join(signals_dir, "fade_risk_log.csv"))
     top_stack_rows = read_csv_rows(os.path.join(signals_dir, "top_stack_log.csv"))
     hot_msmi_rows = read_csv_rows(os.path.join(signals_dir, "hot_msmi_log.csv"))
@@ -75,10 +77,6 @@ def main():
     pen_fatigue_rows = read_csv_rows(os.path.join(signals_dir, "pen_fatigue_log.csv"))
     burst_rows = read_csv_rows(os.path.join(signals_dir, "burst_log.csv"))
     rgwt_rows = read_csv_rows(os.path.join(signals_dir, "right_game_wrong_team_log.csv"))
-
-    # Calculate signal stats
-    vul_arms = [r for r in trap_rows if r.get('trap_type') == 'Vulnerable']
-    sh_arms = [r for r in trap_rows if r.get('trap_type') == 'Short Leash']
     
     # Helper to calculate hit rate for vulnerable/short leash
     # Hits = opposing runs < ITT (run_diff < 0)
@@ -674,7 +672,8 @@ def main():
             <div class="links-grid">"""
             
     csv_links = [
-        ("trap_arm_log.csv", "Trap Pitchers Log"),
+        ("trap_vulnerable_log.csv", "Trap Vulnerable Pitchers Log"),
+        ("trap_short_leash_log.csv", "Trap Short Leash Pitchers Log"),
         ("cold_high_br_log.csv", "Cold High blended rating Log"),
         ("fade_risk_log.csv", "Fade Risk Log"),
         ("hot_msmi_log.csv", "Hot MSMI Log"),
