@@ -115,6 +115,18 @@ does the model correctly update that pitcher's form status for Night N+1? Specif
 if Imai throws a gem on June 25 (0 ER, 6 IP), does his form_status update to SURGING
 or NEUTRAL for June 26's run? If not, there is a persistence bug.
 
+### Finding — July 3, 2026: TRAP/Vulnerable vs TRAP/Short Leash confirmed as distinct patterns
+
+Randy Vásquez (SD, July 2 lock):
+trap_type=Short Leash, attack_conf=0, recent_era=8.31, ITT=5.95
+Result: LAD scored 12 runs — arm gave up runs as expected. No over-delivery. +6.05 vs ITT.
+
+Contrast: TRAP/Vulnerable pattern June 25-30 showed over-delivery 4 consecutive nights.
+
+Working hypothesis: TRAP/Vulnerable fires when recent ERA is BETTER than season numbers — arm has momentum and may continue pitching well. TRAP/Short Leash fires on early-exit risk regardless of performance — gives up runs before being pulled.
+
+Action for July audit: Compare trap_vulnerable_log vs trap_short_leash_log outcomes once N≥10 each. If hypothesis confirmed, consider suppressing team attack_conf specifically for TRAP/Vulnerable designation. Short Leash may require no change.
+
 ---
 
 ## Task 2: COLD_HIGH_BR_WARNING Reconciliation — Status and Findings
