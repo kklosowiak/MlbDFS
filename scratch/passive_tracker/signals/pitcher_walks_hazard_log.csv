@@ -2,3 +2,4 @@ date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_ag
 2026-06-27,Yoshinobu Yamamoto,Los Angeles Dodgers,84.0,0.0,Y,N,3,3.0,2,2
 2026-07-01,Shane Drohan,Milwaukee Brewers,77.0,0.0,Y,N,2,2.0,2,1
 2026-07-02,Walbert Ureña,Los Angeles Angels,0.0,0.0,N,Y,1,1.0,1,4
+2026-07-03,Dylan Cease,Toronto Blue Jays,62.0,3.5,Y,N,0,-3.5,0,1

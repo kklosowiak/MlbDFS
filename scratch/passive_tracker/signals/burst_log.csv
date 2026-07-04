@@ -2,3 +2,4 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-06-27,Milwaukee Brewers,82.0,4.5,2,-2.5,N
 2026-07-01,Milwaukee Brewers,95.0,5.1,4,-1.1,N
 2026-07-02,Los Angeles Dodgers,97.0,5.95,12,6.05,Y
+2026-07-03,Los Angeles Dodgers,97.0,5.0,4,-1.0,N
