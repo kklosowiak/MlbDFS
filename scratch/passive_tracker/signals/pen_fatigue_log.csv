@@ -3,3 +3,4 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-07-01,Los Angeles Dodgers,92.0,5.95,Y,Y,1,-4.95
 2026-07-02,Los Angeles Dodgers,97.0,5.95,Y,Y,12,6.05
 2026-07-03,Athletics,93.0,5.55,Y,Y,5,-0.55
+2026-07-04,Arizona Diamondbacks,95.0,4.4,Y,Y,4,-0.4
