@@ -1,0 +1,47 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-05 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.75 | actual=2.0 | diff=-3.8 | MISS
+TRAP ARMS (1 instances):
+  Eury Pérez (Short Leash) vs Miami Marlins: attack_conf=67.0 ITT=0.0 actual=8.0 diff=+8.0 | 7.0IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Freddie Freeman (Los Angeles Dodgers): 0.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (1 fires):
+  Teoscar Hernandez (Los Angeles Dodgers): blended=90.3 | actual=3.5DKpts | -2.5 vs baseline
+PLATOON_TRAP (1 fires):
+  Heriberto Hernandez (Miami Marlins): actual=36.5DKpts | +29.4 vs baseline
+STRONG_EDGE (1 fires):
+  Freddie Freeman (Los Angeles Dodgers): actual=0.0DKpts | -4.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Jp Sears (WALKS=Y HAZ=Y): ITT=5.75 actual=2.0R diff=-3.8
+GASSED/FATIGUED PEN (1 teams):
+  Los Angeles Dodgers: actual=2.0R vs ITT=5.75 -> MISS
+BURST (1 teams):
+  Los Angeles Dodgers: actual=2.0R vs ITT=5.75 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (6 slates tracked):
+  TRAP/Vulnerable: 50.0% underscored ITT | avg diff +0.00R
+  TRAP/Short Leash: 60.0% underscored ITT | avg diff +2.15R
+  FADE_RISK: 100.0% correct | avg diff -0.55R
+  Top Stack hit ITT: 16.7%
+  HOT_MSMI avg: 9.67 DK pts
+  STEAM: 50.0% correct | avg +2.60R
+  ANTI_CHALK_SMASH: avg +3.23 DK pts vs baseline
+  PLATOON_TRAP: 33.3% underperformed baseline
+  STRONG_EDGE: avg -1.54 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 50.0%
+  GASSED pen teams: 16.7% hit ITT
+  BURST teams: 33.3% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Eury Pérez (7.0 IP, 0 ER)
+
+=== END ===
