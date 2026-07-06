@@ -48,6 +48,12 @@ fired in the morning refresh and was suppressed by afternoon. Does the lock-time
 confidence weight incorporate any memory of the earlier signal state? If not, the
 model may be systematically discarding valid early signals that do not persist to lock.
 
+### Finding — July 5, 2026: Top Stack 80% ITT miss rate (N=5)
+
+Highest attack_conf team hit ITT only once in 5 slates (July 2 LAD, 12 runs). All other top stacks missed ITT. Raw CONF number alone is not a reliable primary stack selector at the 97+ level. Aligns with 90+ overconfidence zone concern from June sessions.
+
+Research question: Is there a signal combination (CONF + divergence + DQI + signal count) that predicts top stack success more reliably than CONF alone?
+
 ---
 
 ## Pattern: TRAP Arm Over-Delivery — Consecutive Night Sequence
@@ -178,6 +184,13 @@ states — which is a valid research result, but must be labeled accordingly.
 > logic is sound — but performance statistics are not cited until the data is real.
 
 **Do not update either doc.** Hard re-run scheduled July 21 (see Action Items).
+
+### Finding 1 — COLD_HIGH_BR_WARNING live production failures
+
+Yordan Alvarez fired the warning on both July 3 and July 4. Results: +6.7 DK pts vs baseline July 3, +31.0 DK pts vs baseline July 4. Combined: +37.7 pts above baseline across two consecutive nights.
+
+Signal is not working as described in production.
+Priority: URGENT. Re-examine before July 20 audit. Do not use as hard exclusion rule until verified.
 
 ---
 
