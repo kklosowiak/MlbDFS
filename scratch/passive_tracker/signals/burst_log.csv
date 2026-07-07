@@ -1,8 +1,30 @@
 date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-06-27,Milwaukee Brewers,82.0,4.5,2,-2.5,N
+2026-06-27,Seattle Mariners,49.0,4.2,3,-1.2,N
+2026-06-27,St. Louis Cardinals,82.0,4.7,1,-3.7,N
+2026-06-27,Washington Nationals,60.0,4.5,4,-0.5,N
+2026-06-27,Colorado Rockies,82.0,4.5,8,3.5,Y
+2026-06-27,Miami Marlins,77.0,4.0,5,1.0,Y
 2026-07-01,Milwaukee Brewers,95.0,5.1,4,-1.1,N
+2026-07-01,Arizona Diamondbacks,75.0,5.0,4,-1.0,N
+2026-07-01,Atlanta Braves,82.0,4.9,5,0.1,Y
+2026-07-01,St. Louis Cardinals,82.0,4.3,1,-3.3,N
 2026-07-02,Los Angeles Dodgers,97.0,5.95,12,6.05,Y
+2026-07-02,San Diego Padres,95.0,3.8,7,3.2,Y
 2026-07-03,Los Angeles Dodgers,97.0,5.0,4,-1.0,N
+2026-07-03,Miami Marlins,80.0,5.2,12,6.8,Y
+2026-07-03,New York Mets,96.0,4.5,3,-1.5,N
+2026-07-03,New York Yankees,75.0,5.65,5,-0.65,N
+2026-07-03,Baltimore Orioles,93.0,5.5,3,-2.5,N
+2026-07-03,Cincinnati Reds,92.0,5.2,0,-5.2,N
+2026-07-03,Milwaukee Brewers,76.0,5.1,7,1.9,Y
 2026-07-04,Atlanta Braves,96.0,4.6,14,9.4,Y
+2026-07-04,Baltimore Orioles,94.0,4.7,8,3.3,Y
+2026-07-04,Milwaukee Brewers,97.0,5.3,3,-2.3,N
+2026-07-04,Miami Marlins,75.0,5.5,7,1.5,Y
+2026-07-04,St. Louis Cardinals,67.0,3.7,3,-0.7,N
 2026-07-05,Los Angeles Dodgers,97.0,5.75,2,-3.75,N
 2026-07-06,Los Angeles Dodgers,95.0,5.4,8,2.6,Y
+2026-07-06,Arizona Diamondbacks,96.0,4.7,8,3.3,Y
+2026-07-06,Atlanta Braves,95.0,4.8,6,1.2,Y
+2026-07-06,New York Mets,82.0,4.4,7,2.6,Y

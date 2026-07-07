@@ -1,3 +1,15 @@
 date,pitcher,pitcher_team,attack_conf,conf_delta,ITT,actual_runs_against,run_diff,pitcher_actual_er,pitcher_actual_ip
 2026-06-27,Chase Burns,Cincinnati Reds,89.0,42.0,0.0,7,7.0,5,6.0
-2026-07-01,Tatsuya Imai,Houston Astros,67.0,35.0,0.0,8,8.0,5,1.1
+2026-06-27,Davis Martin,Chicago White Sox,74.0,12.0,0.0,1,1.0,0,5.1
+2026-06-27,Michael Wacha,Kansas City Royals,65.0,15.0,0.0,2,2.0,1,7.2
+2026-06-27,Reid Detmers,Los Angeles Angels,63.0,-24.0,4.2,2,-2.2,2,5.2
+2026-06-27,Brandon Young,Baltimore Orioles,42.0,-4.0,4.5,4,-0.5,2,5.0
+2026-06-27,Christian Scott,New York Mets,4.0,-41.0,4.3,2,-2.3,2,4.1
+2026-06-27,Foster Griffin,Washington Nationals,0.0,-10.0,4.8,3,-1.8,0,7.0
+2026-06-27,Jared Jones,Pittsburgh Pirates,46.0,42.0,0.0,9,9.0,3,4.2
+2026-06-27,Jose Cabrera,Arizona Diamondbacks,48.0,-16.0,4.9,4,-0.9,4,5.0
+2026-06-27,Cole Sulser,Tampa Bay Rays,0.0,-22.0,3.8,2,-1.8,1,2.0
+2026-06-27,David Peterson,Chicago Cubs,0.0,-44.0,4.5,2,-2.5,2,5.2
+2026-06-27,Jack Perkins,Athletics,34.0,-18.0,4.5,5,0.5,2,5.0
+2026-06-27,Michael Lorenzen,Colorado Rockies,0.0,-21.0,5.2,5,-0.2,2,5.2
+2026-07-01,Tatsuya Imai,Houston Astros,67.0,35.0,4.2,8,3.8,5,1.1

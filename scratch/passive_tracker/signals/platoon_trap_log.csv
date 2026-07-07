@@ -1,8 +1,229 @@
 date,player,team,salary,batting_order,blended_rating,actual_dk_pts,baseline_dk_pts,pts_diff
 2026-06-27,Mickey Moniak,Colorado Rockies,4400,2,63.5,2.0,9.15,-7.15
+2026-06-27,Bryan Reynolds,Pittsburgh Pirates,5300,3,74.5,6.0,11.38,-5.38
+2026-06-27,Royce Lewis,Minnesota Twins,3600,6,78.4,-0.5,4.64,-5.14
+2026-06-27,Bobby Witt,Kansas City Royals,6200,2,71.9,5.0,0.5,4.5
+2026-06-27,Colson Montgomery,Chicago White Sox,4600,4,51.7,7.5,5.82,1.68
+2026-06-27,Miguel Vargas,Chicago White Sox,4900,2,61.9,5.0,10.73,-5.73
+2026-06-27,Hunter Goodman,Colorado Rockies,5200,3,52.8,45.5,6.89,38.61
+2026-06-27,Dane Myers,Cincinnati Reds,2700,7,49.9,6.5,5.21,1.29
+2026-06-27,Sal Stewart,Cincinnati Reds,4700,2,48.0,18.5,5.61,12.89
+2026-06-27,Victor Caratini,Minnesota Twins,3300,5,72.8,4.5,6.2,-1.7
+2026-06-27,Willi Castro,Colorado Rockies,4200,5,54.2,-0.5,6.9,-7.4
+2026-06-27,Nathan Church,St. Louis Cardinals,2700,9,51.6,-1.0,3.85,-4.85
+2026-06-27,Tyler Freeman,Colorado Rockies,3800,6,53.4,8.0,5.53,2.47
+2026-06-27,Dylan Crews,Washington Nationals,3600,5,54.9,3.0,4.33,-1.33
+2026-06-27,Carson Benge,New York Mets,3900,1,59.3,7.5,12.5,-5.0
+2026-06-27,Bo Bichette,New York Mets,4400,3,54.1,6.5,9.29,-2.79
+2026-06-27,Owen Caissie,Miami Marlins,2800,5,59.2,-1.0,7.4,-8.4
+2026-06-27,Chase Meidroth,Chicago White Sox,3600,5,41.3,5.5,4.2,1.3
+2026-06-27,Luke Keaschall,Minnesota Twins,3200,9,47.0,7.0,4.03,2.97
+2026-06-27,Chandler Simpson,Tampa Bay Rays,3800,5,51.6,2.5,6.08,-3.58
+2026-06-27,Nasim Nunez,Washington Nationals,3400,8,50.8,6.5,3.7,2.8
+2026-06-27,Brooks Lee,Minnesota Twins,3500,7,66.0,10.0,4.29,5.71
+2026-06-27,Colt Emerson,Seattle Mariners,3800,9,28.3,1.0,0.5,0.5
+2026-06-27,Jeremiah Jackson,Baltimore Orioles,3100,8,47.7,5.0,4.03,0.97
+2026-06-27,Sal Frelick,Milwaukee Brewers,3000,7,49.5,5.0,4.94,0.06
+2026-06-27,Jakob Marsee,Miami Marlins,3700,6,41.2,6.0,4.68,1.32
+2026-06-27,Tommy Troy,Arizona Diamondbacks,2500,9,50.4,-1.0,3.63,-4.63
+2026-06-27,Ian Happ,Chicago Cubs,4300,7,42.6,16.5,5.12,11.38
+2026-06-27,Taylor Walls,Tampa Bay Rays,2900,7,46.6,2.5,5.12,-2.62
+2026-06-27,Mauricio Dubon,Atlanta Braves,3000,6,51.6,5.0,4.88,0.12
+2026-06-27,Cedric Mullins,Tampa Bay Rays,3200,6,41.8,4.5,5.62,-1.12
+2026-06-27,Elly De La Cruz,Cincinnati Reds,5100,1,44.7,1.5,7.93,-6.43
+2026-06-27,Aj Ewing,New York Mets,3300,7,45.1,9.5,5.62,3.88
+2026-06-27,Kyle Manzardo,Cleveland Guardians,2700,4,35.9,4.0,6.83,-2.83
+2026-06-27,Richie Palacios,Tampa Bay Rays,3500,8,36.6,2.0,4.31,-2.31
+2026-06-27,Luis Arraez,San Francisco Giants,3000,1,50.0,5.0,4.71,0.29
+2026-06-27,Ozzie Albies,Atlanta Braves,3000,2,53.5,0.0,5.04,-5.04
+2026-06-27,Freddy Fermin,San Diego Padres,3000,9,28.7,1.0,3.83,-2.83
+2026-06-27,Bryson Stott,Philadelphia Phillies,3900,5,42.0,2.0,6.42,-4.42
+2026-06-27,Rafael Devers,San Francisco Giants,3000,4,39.4,31.5,5.0,26.5
+2026-06-27,Austin Riley,Atlanta Braves,3000,7,37.4,-0.5,5.1,-5.6
+2026-06-27,Jorge Soler,Los Angeles Angels,3000,4,45.0,7.0,6.07,0.93
+2026-06-27,Salvador Perez,Kansas City Royals,3600,6,34.6,4.5,4.36,0.14
+2026-06-27,Joey Ortiz,Milwaukee Brewers,2400,9,24.1,3.0,3.0,0.0
+2026-06-27,Jimmy Crooks,St. Louis Cardinals,2100,8,32.8,-1.5,3.56,-5.06
+2026-06-27,Justin Crawford,Philadelphia Phillies,3200,8,39.4,2.5,4.55,-2.05
+2026-06-27,Marcell Ozuna,Pittsburgh Pirates,3300,6,40.1,-1.5,6.03,-7.53
+2026-06-27,Matt Chapman,San Francisco Giants,3000,7,17.4,1.5,5.04,-3.54
+2026-06-27,Willy Adames,San Francisco Giants,3000,5,30.4,2.5,6.63,-4.13
+2026-06-27,Patrick Bailey,Cleveland Guardians,2100,8,22.6,0.0,3.38,-3.38
+2026-06-27,Jonah Heim,Athletics,3000,1,28.4,15.5,4.16,11.34
+2026-06-27,Gabriel Arias,Cleveland Guardians,2000,7,13.1,7.5,1.6,5.9
 2026-07-01,Shea Langeliers,Athletics,3000,1,48.9,16.5,7.73,8.77
-2026-07-02,Drake Baldwin,Atlanta Braves,5100,1,51.3,6.5,5.67,0.83
-2026-07-03,Gunnar Henderson,Baltimore Orioles,5100,1,85.0,11.0,6.36,4.64
-2026-07-04,Gunnar Henderson,Baltimore Orioles,5100,1,84.9,4.0,6.19,-2.19
-2026-07-05,Heriberto Hernandez,Miami Marlins,3500,2,64.3,36.5,7.08,29.42
-2026-07-06,Mookie Betts,Los Angeles Dodgers,4600,4,86.1,0.0,2.0,-2.0
+2026-07-01,Christian Walker,Houston Astros,4000,4,57.2,-1.0,3.22,-4.22
+2026-07-01,Otto Lopez,Miami Marlins,4300,1,71.7,3.0,10.9,-7.9
+2026-07-01,Royce Lewis,Minnesota Twins,3600,5,56.9,6.0,6.0,0.0
+2026-07-01,Kyle Tucker,Los Angeles Dodgers,3000,5,52.8,8.0,9.06,-1.06
+2026-07-01,Mickey Moniak,Colorado Rockies,4400,2,36.4,33.0,4.06,28.94
+2026-07-01,Heliot Ramos,San Francisco Giants,3000,5,46.5,26.0,8.0,18.0
+2026-07-01,Ezequiel Tovar,Colorado Rockies,3900,9,37.9,2.0,0.0,2.0
+2026-07-01,Luis Arraez,San Francisco Giants,3000,1,59.2,0.0,8.83,-8.83
+2026-07-01,Jonah Heim,Athletics,3000,1,30.5,23.0,7.3,15.7
+2026-07-01,Tommy Troy,Arizona Diamondbacks,2500,9,34.1,4.5,4.44,0.06
+2026-07-01,Richie Palacios,Tampa Bay Rays,3500,8,38.6,-0.5,7.25,-7.75
+2026-07-01,Carter Jensen,Kansas City Royals,4400,6,41.9,-1.0,5.25,-6.25
+2026-07-01,Colby Thomas,Athletics,3000,1,36.6,8.5,8.27,0.23
+2026-07-01,Mauricio Dubon,Atlanta Braves,3000,5,50.2,6.0,9.18,-3.18
+2026-07-01,Ozzie Albies,Atlanta Braves,3000,2,42.8,22.5,7.36,15.14
+2026-07-01,Willi Castro,Colorado Rockies,4200,5,32.3,-1.0,3.36,-4.36
+2026-07-01,Nolan Arenado,Arizona Diamondbacks,3200,7,37.8,4.5,6.35,-1.85
+2026-07-01,Taylor Trammell,Houston Astros,2700,6,40.3,1.5,7.03,-5.53
+2026-07-01,Joey Ortiz,Milwaukee Brewers,2400,9,28.4,-0.5,3.39,-3.89
+2026-07-01,Alex Freeland,Los Angeles Dodgers,3000,7,34.5,-1.5,6.21,-7.71
+2026-07-01,Cedric Mullins,Tampa Bay Rays,3200,6,37.8,18.0,8.56,9.44
+2026-07-01,Brooks Lee,Minnesota Twins,3500,2,38.0,6.5,7.2,-0.7
+2026-07-01,Lourdes Gurriel,Arizona Diamondbacks,2800,5,45.1,-1.0,9.44,-10.44
+2026-07-01,Austin Riley,Atlanta Braves,3000,7,24.7,4.0,5.95,-1.95
+2026-07-01,Jimmy Crooks,St. Louis Cardinals,2100,9,22.8,-0.5,1.17,-1.67
+2026-07-01,Michael Massey,Kansas City Royals,3500,9,27.1,2.0,8.67,-6.67
+2026-07-01,Gabriel Rincones,Philadelphia Phillies,2800,8,20.9,11.5,4.21,7.29
+2026-07-01,Salvador Perez,Kansas City Royals,3600,5,17.8,2.5,6.32,-3.82
+2026-07-01,Nathan Church,St. Louis Cardinals,2700,7,24.4,0.0,6.08,-6.08
+2026-07-01,Tristan Gray,Minnesota Twins,2600,8,22.7,-1.0,4.96,-5.96
+2026-07-02,Drake Baldwin,Atlanta Braves,3000,1,51.3,6.5,8.43,-1.93
+2026-07-02,Justin Foscue,Texas Rangers,3100,1,59.6,1.5,8.88,-7.38
+2026-07-02,Jordan Walker,St. Louis Cardinals,5200,4,50.1,27.0,7.0,20.0
+2026-07-02,Cole Young,Seattle Mariners,3000,8,50.2,-1.0,9.31,-10.31
+2026-07-02,Jackson Merrill,San Diego Padres,3000,6,37.8,13.0,8.8,4.2
+2026-07-02,Masyn Winn,St. Louis Cardinals,3600,6,37.9,15.0,4.25,10.75
+2026-07-02,Jimmy Crooks,St. Louis Cardinals,2100,9,14.4,2.5,7.0,-4.5
+2026-07-02,Josh Lowe,Los Angeles Angels,3000,8,30.6,-0.5,9.27,-9.77
+2026-07-02,Haoyu Lee,Detroit Tigers,2600,9,25.3,14.5,15.0,-0.5
+2026-07-02,Jorge Soler,Los Angeles Angels,3000,4,21.0,1.5,7.83,-6.33
+2026-07-03,Gunnar Henderson,Baltimore Orioles,5000,1,85.0,11.0,9.39,1.61
+2026-07-03,Mookie Betts,Los Angeles Dodgers,3000,4,90.8,4.0,6.88,-2.88
+2026-07-03,Royce Lewis,Minnesota Twins,3600,5,59.1,4.0,5.73,-1.73
+2026-07-03,Heliot Ramos,San Francisco Giants,3000,3,70.5,2.5,6.27,-3.77
+2026-07-03,Kyle Tucker,Los Angeles Dodgers,3000,6,77.6,2.0,5.84,-3.84
+2026-07-03,Edouard Julien,Colorado Rockies,3200,7,64.0,7.5,4.97,2.53
+2026-07-03,Kyle Karros,Colorado Rockies,2500,8,61.1,27.0,4.7,22.3
+2026-07-03,Kyle Stowers,Miami Marlins,4000,2,51.2,38.0,7.09,30.91
+2026-07-03,Matt Mclain,Cincinnati Reds,3000,8,36.2,-0.5,4.37,-4.87
+2026-07-03,Mauricio Dubon,Atlanta Braves,3000,4,61.4,5.5,6.83,-1.33
+2026-07-03,Luis Arraez,San Francisco Giants,3000,1,65.1,6.5,6.87,-0.37
+2026-07-03,Willy Adames,San Francisco Giants,3000,6,46.6,-1.0,5.92,-6.92
+2026-07-03,Lawrence Butler,Athletics,3000,1,47.7,7.0,6.85,0.15
+2026-07-03,Ezequiel Tovar,Colorado Rockies,3900,9,34.1,26.0,6.0,20.0
+2026-07-03,Brooks Lee,Minnesota Twins,3500,2,36.8,-0.5,3.05,-3.55
+2026-07-03,Sal Frelick,Milwaukee Brewers,3000,1,45.2,0.0,7.15,-7.15
+2026-07-03,Jasson Dominguez,New York Yankees,3000,3,38.5,7.5,6.09,1.41
+2026-07-03,Austin Wells,New York Yankees,3000,9,20.4,0.0,3.19,-3.19
+2026-07-03,Nathan Lukes,Toronto Blue Jays,2500,1,35.8,-0.5,4.5,-5.0
+2026-07-03,Luke Keaschall,Minnesota Twins,3200,9,24.9,8.0,2.97,5.03
+2026-07-03,Tristan Peters,Chicago White Sox,2500,8,34.3,4.0,6.23,-2.23
+2026-07-03,David Fry,Cleveland Guardians,3100,2,50.7,-0.5,6.84,-7.34
+2026-07-03,Jorge Soler,Los Angeles Angels,3000,4,42.2,3.0,6.92,-3.92
+2026-07-03,Jeff Mcneil,Athletics,3000,1,39.4,11.0,6.67,4.33
+2026-07-03,Jonny Deluca,Tampa Bay Rays,3600,5,41.7,1.0,6.0,-5.0
+2026-07-03,Caleb Durbin,Boston Red Sox,3000,5,30.3,18.0,5.33,12.67
+2026-07-03,Jake Mangum,Pittsburgh Pirates,3600,7,34.4,16.0,4.92,11.08
+2026-07-03,Henry Bolte,Athletics,3000,1,37.7,7.0,6.85,0.15
+2026-07-03,Colson Montgomery,Chicago White Sox,4600,5,31.2,-1.0,1.6,-2.6
+2026-07-03,Rhys Hoskins,Cleveland Guardians,3300,4,38.3,6.0,6.51,-0.51
+2026-07-03,Cedric Mullins,Tampa Bay Rays,3200,4,45.7,0.0,7.28,-7.28
+2026-07-03,Taylor Walls,Tampa Bay Rays,2900,8,43.1,7.0,4.3,2.7
+2026-07-03,Gabriel Arias,Cleveland Guardians,2000,7,39.8,3.5,2.25,1.25
+2026-07-03,Keibert Ruiz,Washington Nationals,3800,7,23.8,0.0,11.36,-11.36
+2026-07-03,Austin Riley,Atlanta Braves,3000,7,27.5,1.5,4.8,-3.3
+2026-07-03,Ceddanne Rafaela,Boston Red Sox,3000,2,23.5,10.5,6.86,3.64
+2026-07-03,Yainer Diaz,Houston Astros,3200,7,21.6,0.0,5.21,-5.21
+2026-07-03,Cal Raleigh,Seattle Mariners,4500,4,23.0,-1.0,4.79,-5.79
+2026-07-03,Nasim Nunez,Washington Nationals,3400,9,26.7,7.5,8.5,-1.0
+2026-07-03,Nick Fortes,Tampa Bay Rays,2300,9,29.6,21.0,4.88,16.12
+2026-07-03,Ernie Clement,Toronto Blue Jays,2800,7,26.5,0.0,4.96,-4.96
+2026-07-03,Andruw Monasterio,Boston Red Sox,3000,8,19.0,3.0,4.26,-1.26
+2026-07-03,Andres Gimenez,Toronto Blue Jays,2600,9,16.5,11.0,7.83,3.17
+2026-07-03,Carlos Narvaez,Boston Red Sox,3000,9,8.2,2.0,3.06,-1.06
+2026-07-03,Jarren Duran,Boston Red Sox,3000,7,7.5,3.5,4.74,-1.24
+2026-07-03,Jose Altuve,Houston Astros,3800,1,14.8,-1.0,13.21,-14.21
+2026-07-04,Gunnar Henderson,Baltimore Orioles,5000,1,84.9,4.0,10.17,-6.17
+2026-07-04,Mookie Betts,Los Angeles Dodgers,3000,4,92.2,5.0,8.28,-3.28
+2026-07-04,Heliot Ramos,San Francisco Giants,3000,1,74.2,6.5,5.83,0.67
+2026-07-04,Rafael Devers,San Francisco Giants,3000,4,76.2,5.0,8.28,-3.28
+2026-07-04,Cole Carrigg,Colorado Rockies,3200,5,58.6,23.0,7.41,15.59
+2026-07-04,Willy Adames,San Francisco Giants,3000,6,53.1,20.5,7.92,12.58
+2026-07-04,Dansby Swanson,Chicago Cubs,3500,9,52.7,-1.0,4.0,-5.0
+2026-07-04,Owen Caissie,Miami Marlins,2800,6,53.0,-1.0,7.64,-8.64
+2026-07-04,Mauricio Dubon,Atlanta Braves,3000,1,61.1,20.0,5.08,14.92
+2026-07-04,Isaac Collins,Kansas City Royals,2500,7,55.3,-0.5,6.0,-6.5
+2026-07-04,Luis Arraez,San Francisco Giants,3000,2,62.8,12.5,6.42,6.08
+2026-07-04,Liam Hicks,Miami Marlins,5100,1,51.3,13.0,9.25,3.75
+2026-07-04,Ryan Vilade,Tampa Bay Rays,3300,4,43.4,-0.5,8.24,-8.74
+2026-07-04,Lamonte Wade,Houston Astros,2000,5,42.1,-0.5,-0.5,0.0
+2026-07-04,Alex Bregman,Chicago Cubs,3900,2,53.0,1.5,8.05,-6.55
+2026-07-04,Nick Loftin,Kansas City Royals,2800,5,38.8,4.5,7.25,-2.75
+2026-07-04,Carter Jensen,Kansas City Royals,4400,1,45.3,-1.5,7.07,-8.57
+2026-07-04,Starling Marte,Kansas City Royals,3100,6,46.3,4.0,8.2,-4.2
+2026-07-04,Sal Frelick,Milwaukee Brewers,3000,7,56.6,-0.5,8.18,-8.68
+2026-07-04,Masyn Winn,St. Louis Cardinals,3600,5,44.7,-1.0,8.73,-9.73
+2026-07-04,Zack Gelof,Athletics,3000,1,39.8,7.0,5.81,1.19
+2026-07-04,Henry Bolte,Athletics,3000,1,40.0,8.0,5.75,2.25
+2026-07-04,Jonah Heim,Athletics,3000,1,44.4,-0.5,6.22,-6.72
+2026-07-04,Willi Castro,Colorado Rockies,4200,1,35.1,-1.0,8.67,-9.67
+2026-07-04,Ezequiel Tovar,Colorado Rockies,3900,8,42.1,0.0,4.2,-4.2
+2026-07-04,Trea Turner,Philadelphia Phillies,5600,1,42.1,4.5,14.17,-9.67
+2026-07-04,Tommy Troy,Arizona Diamondbacks,2500,9,31.7,-1.0,8.62,-9.62
+2026-07-04,Caleb Durbin,Boston Red Sox,3000,5,30.8,0.0,7.74,-7.74
+2026-07-04,Jorge Soler,Los Angeles Angels,3000,4,28.4,2.0,8.39,-6.39
+2026-07-04,Alec Bohm,Philadelphia Phillies,3600,5,28.6,23.0,6.55,16.45
+2026-07-04,Jeff Mcneil,Athletics,3000,1,41.4,2.0,6.08,-4.08
+2026-07-04,Michael Massey,Kansas City Royals,3500,8,31.5,-1.5,6.8,-8.3
+2026-07-04,Daniel Schneemann,Cleveland Guardians,2400,7,36.0,-0.5,4.5,-5.0
+2026-07-04,Chase Meidroth,Chicago White Sox,3600,3,37.9,-1.0,5.33,-6.33
+2026-07-04,Cedric Mullins,Tampa Bay Rays,3200,3,37.0,13.0,6.23,6.77
+2026-07-04,Ceddanne Rafaela,Boston Red Sox,3000,2,25.2,10.5,6.5,4.0
+2026-07-04,Richie Palacios,Tampa Bay Rays,3500,7,21.9,26.0,5.92,20.08
+2026-07-04,Leody Taveras,Baltimore Orioles,3300,7,21.7,3.5,9.34,-5.84
+2026-07-04,Joey Ortiz,Milwaukee Brewers,2400,9,39.1,6.0,6.0,0.0
+2026-07-04,Justin Crawford,Philadelphia Phillies,3200,9,27.6,2.5,4.32,-1.82
+2026-07-04,Andruw Monasterio,Boston Red Sox,3000,8,21.0,4.5,7.42,-2.92
+2026-07-04,Jarren Duran,Boston Red Sox,3000,7,15.4,15.5,7.7,7.8
+2026-07-04,Taylor Walls,Tampa Bay Rays,2900,8,28.7,6.5,7.62,-1.12
+2026-07-04,Jose Altuve,Houston Astros,3800,1,19.9,23.0,8.1,14.9
+2026-07-04,Austin Riley,Atlanta Braves,3000,5,31.0,21.5,7.05,14.45
+2026-07-04,Jonny Deluca,Tampa Bay Rays,3600,6,22.9,29.0,6.94,22.06
+2026-07-04,Jakob Marsee,Miami Marlins,3700,7,38.3,4.5,6.81,-2.31
+2026-07-04,Taylor Trammell,Houston Astros,2700,8,14.4,4.0,6.46,-2.46
+2026-07-04,Eric Haase,San Francisco Giants,3000,9,14.7,3.0,6.45,-3.45
+2026-07-04,Brett Baty,New York Mets,2500,9,20.3,4.0,8.21,-4.21
+2026-07-05,Heriberto Hernandez,Miami Marlins,3500,2,64.3,36.5,1.5,35.0
+2026-07-05,Otto Lopez,Miami Marlins,4300,1,59.5,30.0,6.5,23.5
+2026-07-05,Max Muncy,Athletics,3000,1,38.1,7.0,8.5,-1.5
+2026-07-05,Jorge Soler,Los Angeles Angels,3000,4,34.9,1.5,6.85,-5.35
+2026-07-05,Josh Lowe,Los Angeles Angels,3000,9,33.8,5.5,5.64,-0.14
+2026-07-05,Mitch Garver,Seattle Mariners,3000,7,40.8,15.5,5.57,9.93
+2026-07-05,Jonah Heim,Athletics,3000,1,30.3,26.5,7.11,19.39
+2026-07-05,Jake Cronenworth,San Diego Padres,3000,2,47.0,-1.0,8.92,-9.92
+2026-07-05,Logan Ohoppe,Los Angeles Angels,3000,8,18.3,3.0,6.29,-3.29
+2026-07-05,Caleb Durbin,Boston Red Sox,3000,6,45.9,3.5,5.89,-2.39
+2026-07-06,Mookie Betts,Los Angeles Dodgers,3000,4,86.1,0.0,5.89,-5.89
+2026-07-06,Hunter Goodman,Colorado Rockies,5200,3,60.9,3.0,14.0,-11.0
+2026-07-06,Christian Walker,Houston Astros,4000,4,73.1,10.0,7.1,2.9
+2026-07-06,Cole Carrigg,Colorado Rockies,3200,5,49.6,23.0,4.78,18.22
+2026-07-06,Heliot Ramos,San Francisco Giants,3000,1,47.6,43.5,5.65,37.85
+2026-07-06,Mauricio Dubon,Atlanta Braves,3000,5,57.9,4.5,5.33,-0.83
+2026-07-06,Rafael Devers,San Francisco Giants,3000,4,49.6,8.0,5.44,2.56
+2026-07-06,Isaac Paredes,Houston Astros,3700,3,66.6,3.5,13.7,-10.2
+2026-07-06,Luis Arraez,San Francisco Giants,3000,2,39.5,10.0,8.27,1.73
+2026-07-06,Jake Cronenworth,San Diego Padres,3000,2,52.7,5.5,8.57,-3.07
+2026-07-06,Brett Baty,New York Mets,2500,8,39.0,1.5,7.33,-5.83
+2026-07-06,Tommy Troy,Arizona Diamondbacks,2500,9,28.9,2.5,9.0,-6.5
+2026-07-06,Jonny Deluca,Tampa Bay Rays,3600,5,30.8,3.0,9.31,-6.31
+2026-07-06,Sal Frelick,Milwaukee Brewers,3000,7,39.5,6.0,6.02,-0.02
+2026-07-06,Austin Riley,Atlanta Braves,3000,7,34.3,6.0,6.02,-0.02
+2026-07-06,Ezequiel Tovar,Colorado Rockies,3900,9,27.8,20.0,0.0,20.0
+2026-07-06,Nathan Lukes,Toronto Blue Jays,2500,2,25.1,3.0,6.75,-3.75
+2026-07-06,Lamonte Wade,Houston Astros,2000,5,44.2,3.5,0.0,3.5
+2026-07-06,Richie Palacios,Tampa Bay Rays,3500,8,29.1,8.0,17.33,-9.33
+2026-07-06,Andres Gimenez,Toronto Blue Jays,2600,9,18.9,-0.5,8.0,-8.5
+2026-07-06,Cedric Mullins,Tampa Bay Rays,3200,4,32.3,-1.0,6.47,-7.47
+2026-07-06,Willi Castro,Colorado Rockies,4200,1,22.0,6.0,6.38,-0.38
+2026-07-06,Nick Fortes,Tampa Bay Rays,2300,7,26.5,0.0,12.5,-12.5
+2026-07-06,Jasson Dominguez,New York Yankees,3000,5,19.9,3.0,5.42,-2.42
+2026-07-06,Willy Adames,San Francisco Giants,3000,6,25.0,6.0,6.87,-0.87
+2026-07-06,Nasim Nunez,Washington Nationals,3400,9,33.0,17.5,3.67,13.83
+2026-07-06,Ernie Clement,Toronto Blue Jays,2800,1,19.0,3.0,10.0,-7.0
+2026-07-06,Taylor Walls,Tampa Bay Rays,2900,9,23.5,-1.0,5.65,-6.65
+2026-07-06,Austin Wells,New York Yankees,3000,9,9.5,-0.5,5.41,-5.91

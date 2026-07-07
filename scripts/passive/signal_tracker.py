@@ -112,13 +112,13 @@ def append_to_csv(file_path, header, row_data, date_str):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     file_exists = os.path.exists(file_path)
     
-    # Idempotency Check: if date is already in the file, do not append
+    # Idempotency Check: if (date, entity) is already in the file, do not append
     if file_exists:
         try:
             with open(file_path, "r", newline="", encoding="utf-8") as f:
                 reader = csv.reader(f)
                 rows = list(reader)
-                if len(rows) > 1 and any(r[0] == date_str for r in rows[1:]):
+                if len(rows) > 1 and any(len(r) > 1 and len(row_data) > 1 and r[0] == row_data[0] and r[1] == row_data[1] for r in rows[1:]):
                     return
         except Exception:
             pass

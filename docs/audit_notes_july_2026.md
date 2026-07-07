@@ -133,6 +133,21 @@ Working hypothesis: TRAP/Vulnerable fires when recent ERA is BETTER than season 
 
 Action for July audit: Compare trap_vulnerable_log vs trap_short_leash_log outcomes once N≥10 each. If hypothesis confirmed, consider suppressing team attack_conf specifically for TRAP/Vulnerable designation. Short Leash may require no change.
 
+### Finding — July 6, 2026: TRAP/Vulnerable ERA split confirmed
+
+Mikolas (WSH, TRAP/Vulnerable, era_L3=6.06):
+HOU scored 7 runs off him. Arm was genuinely bad as expected — NOT an over-delivery. 
+
+Contrast with over-delivery pattern:
+- Liberatore (era_L3=10.34 TRAP/Vulnerable — pitched brilliantly)
+- Drohan (era_L3=1.80 TRAP/Both — faded, didn't play)
+
+Working hypothesis strengthened: TRAP/Vulnerable over-delivery risk is highest when era_L3 is LOW (arm has been pitching well recently). When era_L3 is genuinely bad (6+), the TRAP designation does not predict over-delivery — arm performs as badly as expected.
+
+Proposed July audit research question: Is there an era_L3 threshold below which TRAP/Vulnerable should suppress attack_conf, and above which it should not? Mikolas (6.06) = no suppression needed. Drohan (1.80) = high suppression needed.
+
+Also log: WSH had FADE_RISK and scored 12 runs. Third documented FADE_RISK offensive failure. Right game wrong team instance #7 (HOU+WSH, combined 19 runs).
+
 ---
 
 ## Task 2: COLD_HIGH_BR_WARNING Reconciliation — Status and Findings
