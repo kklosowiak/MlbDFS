@@ -329,5 +329,26 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Decision:** Gated `is_hot` so it is set to `False` if rolling or recent OPS is below season average by more than a 2% tolerance band (`rolling_ops < season_ops * 0.98` or `recent_ops < season_ops * 0.98`).
 
 
+### July 8, 2026 — Slate Post-Mortem Updates (July 7 Slate Audit)
+
+#### OLS-Calibrated Pitcher Volatility Penalty — IMPLEMENTED
+- **Decision:** Apply a standard `-4` confidence penalty to starting pitchers flagged with `is_volatile` at lock.
+- **Mathematical Validation:** OLS regression on $N = 1,012$ starts (April 15 to July 2, 2026) shows `is_volatile` has a statistically significant independent coefficient of **$-1.65$ DK points** ($p = 0.0373$). Applying a $2.5\times$ scaling factor (calibrated from the low-ceiling flag's $-3.20$ DK points drop being penalized $-8$ confidence points) maps to a `-4` confidence points penalty.
+- **Compound Volatility + Low Ceiling Additive Model:** When combined with `is_low_ceiling` (penalized `-8`), volatile pitchers naturally receive a combined additive `-12` penalty. Regression indicates **no compounding interaction** (interaction term $-0.0279$ DK points is completely insignificant, $p = 0.988$), making a simple additive model statistically superior. The success rate of this group drops from $42.9\%$ (clean) to **$16.1\%$** ($5/31$ starts), though the difference vs. low-ceiling-only ($32.4\%$) has a two-tailed p-value of **$0.0608$** and is not statistically significant at the 95% level due to small sample size ($N = 31$).
+
+#### Outlier-Driven Recent Form Warning & Penalty — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply a `-10` confidence penalty and display an outlier-driven form warning if a pitcher's rolling 3-start ERA is distorted by a single start (specifically, if `recent_era_ex_best - recent_era >= 1.50` and `recent_era_ex_best >= 4.0`).
+- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative slump proxy (derived from the Trevor McDonald post-mortem case) to prevent the model from endorsing pitchers whose rolling average is carried by a single outlier game. It has been **backlogged for a future regression check** once more slates with this flag accumulate.
+
+#### Same-Side Starter Stack Ceiling Cap — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply a `-5` stack confidence penalty to teams whose starting pitcher has `attack_conf >= 85` (soft ceiling fader).
+- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative risk buffer to account for game-shortening ceiling cap risk (Zack Wheeler effect). It has been **backlogged for a future regression check** once more slates with this situation accumulate.
+
+#### Backlog Items for Statistical Validation:
+1. **Outlier-Driven Recent Form Penalty Check:** Verify if `is_outlier_driven = True` corresponds to a statistically significant drop in actual DraftKings points and success rate compared to clean recent-form starting pitchers.
+2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline.
+
+
+
 
 

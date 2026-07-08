@@ -457,6 +457,10 @@ class PitcherAnalyzer:
                 p_form = form_cache.get(normalize_player_name(pitcher_name))
                 recent_k9 = None
                 recent_era = None
+                recent_era_5g = None
+                recent_k9_5g = None
+                recent_era_ex_best = None
+                is_outlier_driven = False
                 form_boost = 0.0
                 form_status = None
                 early_innings_volatility = False
@@ -470,6 +474,10 @@ class PitcherAnalyzer:
                 if p_form and p_form.get('recent_ip', 0) >= 8.0:
                     recent_k9 = p_form.get('recent_k9', 0)
                     recent_era = p_form.get('recent_era', 0)
+                    recent_era_5g = p_form.get('recent_era_5g')
+                    recent_k9_5g = p_form.get('recent_k9_5g')
+                    recent_era_ex_best = p_form.get('recent_era_ex_best')
+                    is_outlier_driven = bool(p_form.get('is_outlier_driven', False))
                     # Get baseline from our statcast physics dict (cached during ingest)
                     s_k = physics.get('k', 0)
                     s_ip = physics.get('ip', 1.0)
@@ -598,6 +606,10 @@ class PitcherAnalyzer:
                     'form_status': form_status,
                     'recent_k9': recent_k9,
                     'recent_era': recent_era,
+                    'recent_era_5g': recent_era_5g,
+                    'recent_k9_5g': recent_k9_5g,
+                    'recent_era_ex_best': recent_era_ex_best,
+                    'is_outlier_driven': is_outlier_driven,
                     'recent_bb9': recent_bb9 if recent_bb9 != 99.0 else None,
                     'dk_points_mean': dk_points_mean,
                     'dk_points_std': dk_points_std,

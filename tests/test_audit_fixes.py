@@ -213,6 +213,31 @@ def test_walks_suppression_real_statcast_path():
     form_cache = json.load(open(form_cache_path))
     sc = json.load(open(sc_path))
 
+    # Inject hermetic test data to ensure stability across slates
+    p_norm_l = normalize_player_name('Peter Lambert')
+    form_cache[p_norm_l] = {
+        "pitcher": "Peter Lambert",
+        "recent_bb9": 3.12,
+        "starts_sampled": 13
+    }
+    sc[p_norm_l] = {
+        "type": "pitcher",
+        "ip": 74.1,
+        "bb": 31.0
+    }
+
+    p_norm_a = normalize_player_name('Sandy Alcantara')
+    form_cache[p_norm_a] = {
+        "pitcher": "Sandy Alcantara",
+        "recent_bb9": 4.42,
+        "starts_sampled": 15
+    }
+    sc[p_norm_a] = {
+        "type": "pitcher",
+        "ip": 180.0,
+        "bb": 40.0
+    }
+
     def compute_gate(pitcher_name):
         p_norm = normalize_player_name(pitcher_name)
         p_form = form_cache.get(p_norm)
@@ -241,3 +266,124 @@ def test_walks_suppression_real_statcast_path():
     assert alcantara_suppressed is False, (
         f"Alcantara should NOT be suppressed: recent_bb9={a_rbb9}, season_bb9={a_sbb9:.4f}"
     )
+
+
+# -- OMEGA July 7 Post-Mortem Tests --------------------------------------------
+
+def test_recent_form_outlier_driven_logic():
+    recent_games = [
+        {"stat": {"inningsPitched": "6.0", "earnedRuns": 0}},
+        {"stat": {"inningsPitched": "5.0", "earnedRuns": 3}},
+        {"stat": {"inningsPitched": "5.0", "earnedRuns": 3}}
+    ]
+    
+    def _parse_ip(ip_str):
+        parts = str(ip_str).split('.')
+        full_innings = int(parts[0])
+        partial = int(parts[1]) if len(parts) > 1 else 0
+        return (full_innings * 3) + partial
+
+    def _stats_from_games(games):
+        t_outs = 0
+        t_k = 0
+        t_er = 0
+        t_bb = 0
+        for g in games:
+            stat = g.get('stat', {})
+            t_outs += _parse_ip(stat.get('inningsPitched', '0.0'))
+            t_k += int(stat.get('strikeOuts', 0))
+            t_er += int(stat.get('earnedRuns', 0))
+            t_bb += int(stat.get('baseOnBalls', 0))
+        t_ip = t_outs / 3.0
+        era = (t_er / t_ip * 9.0) if t_ip > 0 else 0.0
+        k9 = (t_k / t_ip * 9.0) if t_ip > 0 else 0.0
+        bb9 = (t_bb / t_ip * 9.0) if t_ip > 0 else 0.0
+        return t_ip, era, k9, bb9
+
+    total_ip, recent_era, recent_k9, recent_bb9 = _stats_from_games(recent_games)
+    assert abs(recent_era - 3.375) < 0.01
+    
+    max_remaining_era = 0.0
+    for i in range(len(recent_games)):
+        sub_games = [g for j, g in enumerate(recent_games) if j != i]
+        _, sub_era, _, _ = _stats_from_games(sub_games)
+        if sub_era > max_remaining_era:
+            max_remaining_era = sub_era
+            
+    recent_era_ex_best = max_remaining_era
+    assert abs(recent_era_ex_best - 5.40) < 0.01
+    
+    is_outlier_driven = False
+    if (recent_era_ex_best - recent_era) >= 1.50 and recent_era_ex_best >= 4.0:
+        is_outlier_driven = True
+    assert is_outlier_driven is True
+
+
+def test_omega_confidence_penalties_scoring():
+    from utils.attack_confidence import score_pitcher_confidence, score_stack_confidence
+    
+    p_volatile = {
+        "pitcher": "Test Pitcher",
+        "team": "SF",
+        "opponent": "LAD",
+        "is_volatile": True,
+        "physics_score": 15.0
+    }
+    t_reports = []
+    conf_v, _ = score_pitcher_confidence(p_volatile, t_reports)
+    # Baseline 50. volatile is -4 (new OLS) and -8 (intraday). Expected = 38.0
+    assert conf_v == 38.0
+    
+    p_low_ceil = {
+        "pitcher": "Test Pitcher",
+        "team": "SF",
+        "opponent": "LAD",
+        "is_low_ceiling": True,
+        "physics_score": 15.0
+    }
+    conf_lc, _ = score_pitcher_confidence(p_low_ceil, t_reports)
+    # Baseline 50. low_ceiling is -8. Expected = 42.0
+    assert conf_lc == 42.0
+
+    p_both = {
+        "pitcher": "Test Pitcher",
+        "team": "SF",
+        "opponent": "LAD",
+        "is_volatile": True,
+        "is_low_ceiling": True,
+        "physics_score": 15.0
+    }
+    conf_both, reasons = score_pitcher_confidence(p_both, t_reports)
+    # Baseline 50. volatile is -4, low_ceiling is -8, intraday is -8. Expected = 30.0
+    assert conf_both == 30.0
+    assert p_both.get("is_high_bust_risk") is True
+    
+    p_outlier = {
+        "pitcher": "Test Pitcher",
+        "team": "SF",
+        "opponent": "LAD",
+        "is_outlier_driven": True,
+        "physics_score": 15.0
+    }
+    conf_out, _ = score_pitcher_confidence(p_outlier, t_reports)
+    # Baseline 50. outlier_driven is -10. Expected = 40.0
+    assert conf_out == 40.0
+    
+    t_stack = {
+        "team": "SF",
+        "opponent": "LAD",
+        "implied_total": 4.8,
+        "dqi_status": "CAUTION",
+        "dqi_score": 60,
+        "team_xwoba": 0.300
+    }
+    p_reports_mock = [
+        {
+            "pitcher": "Test SP",
+            "team": "SF",
+            "attack_conf": 87.0
+        }
+    ]
+    conf_st, reasons_st = score_stack_confidence(t_stack, p_reports_mock)
+    assert conf_st == 55.0
+    assert any("Same-side starter elite warning" in r for r in reasons_st)

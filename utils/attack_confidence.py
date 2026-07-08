@@ -526,6 +526,12 @@ def score_stack_confidence(t, p_reports):
                     reasons[i] = "ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage (capped to +5 CONF for ITT < 4.5)."
                     break
 
+    # Same-side starter cap (Zack Wheeler effect)
+    own_pitcher = next((p for p in p_reports if p.get("team") == t.get("team")), None)
+    if own_pitcher and own_pitcher.get("attack_conf", 50.0) >= 85.0:
+        conf -= 5.0
+        reasons.append(f"Same-side starter elite warning ({own_pitcher['pitcher']} CONF {own_pitcher['attack_conf']}%): potential shortened game, capping stack ceiling.")
+
     # High Conviction Gate Check
 
     # (Require 2+ signals to exceed 75 CONF)
@@ -625,9 +631,22 @@ def score_pitcher_confidence(p, t_reports):
         conf -= 8
         reasons.append("Hits-allowed prop juiced Over — run risk priced in.")
 
+    if p.get("is_volatile"):
+        conf -= 4
+        reasons.append("Volatile pregame signal movement (-4).")
+
     if p.get("is_low_ceiling"):
         conf -= 8
         reasons.append("Low K ceiling on props.")
+
+    if p.get("is_volatile") and p.get("is_low_ceiling"):
+        p["is_high_bust_risk"] = True
+        reasons.append("Compound risk warning: volatile + low ceiling (is_high_bust_risk).")
+
+    if p.get("is_outlier_driven"):
+        conf -= 10
+        ex_best = p.get("recent_era_ex_best", "-")
+        reasons.append(f"Recent form driven by single outlier start (ex-best ERA: {ex_best}) (-10).")
 
     # 5. K Line Steam
     k_move = float(p.get("k_move", 0) or 0)

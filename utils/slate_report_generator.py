@@ -194,6 +194,16 @@ class SlateReportGenerator:
             if p.get('is_trap') and p.get('divergence', 0) < -10:
                 alert_lines.append(f"- 📉 **SHARP TRAP FADE**: Starter **{p['pitcher']}** is a public trap experiencing heavy sharp money fade (Divergence: {p['divergence']}%). Institutional Anchor penalty active.")
 
+        # OMEGA v21.1: Pitchers: High Bust Risk Alert (Volatile + Low Ceiling)
+        for p in p_reports:
+            if p.get('is_high_bust_risk'):
+                alert_lines.append(f"- 🔴 **HIGH BUST RISK WARNING**: **{p['pitcher']}** has both **is_volatile** and **is_low_ceiling** pregame signals. Backtesting shows a success rate of only **16.1%** (N=31). Proceed with extreme caution.")
+
+        # OMEGA v21.1: Pitchers: Outlier-Driven Form Warning
+        for p in p_reports:
+            if p.get('is_outlier_driven'):
+                alert_lines.append(f"- ⚠️ **OUTLIER-DRIVEN FORM WARNING**: **{p['pitcher']}** recent ERA ({p.get('recent_era')}) is driven by a single outlier start. Ex-best ERA is **{p.get('recent_era_ex_best')}**, indicating a hidden slump.")
+
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")
         lines.append(f"**Generated:** {datetime.datetime.now().strftime('%Y-%m-%d %I:%M %p ET')}")

@@ -497,6 +497,32 @@ class StatcastBridge:
             return {}
             
         form_cache = {}
+        def _parse_ip(ip_str):
+            try:
+                parts = str(ip_str).split('.')
+                full_innings = int(parts[0])
+                partial = int(parts[1]) if len(parts) > 1 else 0
+                return (full_innings * 3) + partial
+            except:
+                return 0
+
+        def _stats_from_games(games):
+            t_outs = 0
+            t_k = 0
+            t_er = 0
+            t_bb = 0
+            for g in games:
+                stat = g.get('stat', {})
+                t_outs += _parse_ip(stat.get('inningsPitched', '0.0'))
+                t_k += int(stat.get('strikeOuts', 0))
+                t_er += int(stat.get('earnedRuns', 0))
+                t_bb += int(stat.get('baseOnBalls', 0))
+            t_ip = t_outs / 3.0
+            era = (t_er / t_ip * 9.0) if t_ip > 0 else 0.0
+            k9 = (t_k / t_ip * 9.0) if t_ip > 0 else 0.0
+            bb9 = (t_bb / t_ip * 9.0) if t_ip > 0 else 0.0
+            return t_ip, era, k9, bb9
+
         seen_pitchers = set()
         for team, pitcher_name in probables.items():
             if team.endswith("_time") or pitcher_name in ["TBD", "Tbd", "tbd"]:
@@ -528,30 +554,30 @@ class StatcastBridge:
                 
                 # Get last 3 games for recent form
                 recent_games = target_splits[-3:]
+                total_ip, recent_era, recent_k9, recent_bb9 = _stats_from_games(recent_games)
                 
-                total_outs = 0
-                total_k = 0
-                total_er = 0
-                total_bb = 0
+                total_k = sum(int(g.get('stat', {}).get('strikeOuts', 0)) for g in recent_games)
+                total_er = sum(int(g.get('stat', {}).get('earnedRuns', 0)) for g in recent_games)
+                total_bb = sum(int(g.get('stat', {}).get('baseOnBalls', 0)) for g in recent_games)
+
+                # OMEGA v21.1: 5-game rolling window
+                recent_games_5g = target_splits[-5:]
+                _, recent_era_5g, recent_k9_5g, _ = _stats_from_games(recent_games_5g)
                 
-                for g in recent_games:
-                    stat = g.get('stat', {})
-                    ip_str = str(stat.get('inningsPitched', '0.0'))
-                    try:
-                        parts = ip_str.split('.')
-                        full_innings = int(parts[0])
-                        partial = int(parts[1]) if len(parts) > 1 else 0
-                        total_outs += (full_innings * 3) + partial
-                    except: pass
-                    
-                    total_k += int(stat.get('strikeOuts', 0))
-                    total_er += int(stat.get('earnedRuns', 0))
-                    total_bb += int(stat.get('baseOnBalls', 0))
-                
-                total_ip = total_outs / 3.0
-                recent_k9 = (total_k / total_ip * 9.0) if total_ip > 0 else 0.0
-                recent_era = (total_er / total_ip * 9.0) if total_ip > 0 else 0.0
-                recent_bb9 = (total_bb / total_ip * 9.0) if total_ip > 0 else 0.0
+                # OMEGA v21.1: Outlier-driven form detection (ex best start)
+                recent_era_ex_best = recent_era
+                is_outlier_driven = False
+                if len(recent_games) >= 2:
+                    max_remaining_era = 0.0
+                    for i in range(len(recent_games)):
+                        sub_games = [g for j, g in enumerate(recent_games) if j != i]
+                        _, sub_era, _, _ = _stats_from_games(sub_games)
+                        if sub_era > max_remaining_era:
+                            max_remaining_era = sub_era
+                    recent_era_ex_best = max_remaining_era
+                    if len(recent_games) >= 3:
+                        if (recent_era_ex_best - recent_era) >= 1.50 and recent_era_ex_best >= 4.0:
+                            is_outlier_driven = True
                 
                 # Trailing 15 starts for variance
                 def calculate_pitcher_dk_score(game_stat):
@@ -599,6 +625,10 @@ class StatcastBridge:
                     "recent_k9": round(recent_k9, 2),
                     "recent_era": round(recent_era, 2),
                     "recent_bb9": round(recent_bb9, 2),
+                    "recent_era_5g": round(recent_era_5g, 2),
+                    "recent_k9_5g": round(recent_k9_5g, 2),
+                    "recent_era_ex_best": round(recent_era_ex_best, 2),
+                    "is_outlier_driven": is_outlier_driven,
                     "dk_points_mean": dk_points_mean,
                     "dk_points_std": dk_points_std,
                     "starts_sampled": starts_sampled,

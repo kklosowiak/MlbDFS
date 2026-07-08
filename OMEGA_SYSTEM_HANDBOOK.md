@@ -36,6 +36,11 @@ The Market layer translates sharp Vegas activity into a team or pitcher score. T
 
 On top of ITT, the Market layer adds moneyline movement (ML_MOVE, measured in cents from open to current), total movement (TT_MOVE, measured in runs), and divergence (money percentage minus ticket percentage). Divergence is the sharpest signal in the market layer: when money percentage significantly exceeds ticket percentage, institutional betters are on that side. When it goes the other direction, the public is on it. For pitchers, the market inputs are the pitcher's current win probability (converted from ML) plus K prop positioning.
 
+> [!IMPORTANT]
+> **Market Layer & Win Probability Caveat (Zack Wheeler Effect):**
+> High-market signals such as `is_sharp`, `is_burst`, and positive `divergence` are calibrated against betting markets. These are primarily indicators of win probability and game outcomes, NOT direct indicators of fantasy point volume. 
+> A dominant starting pitcher on the same team (Wheeler Effect) can shorten the game (fewer baserunners, less late-game volume), capping the offensive stack's fantasy ceiling even if they win comfortably.
+
 ### Decision Layer
 
 The Decision layer is where Physics and Market combine into the final scores that drive the DK optimizer. For team stacks, the blend is: `score = 40 + (physics_raw × 0.80) + (market_raw × 0.20) + bullpen_boost`. This 80/20 Physics/Market split was derived from OLS regression on historical backtest data — an 8.2:1 optimal ratio, meaning team run scoring is primarily a function of team quality (Statcast) with Vegas amplifying the signal.
@@ -45,6 +50,10 @@ For pitchers the split is: `score = 45 + (physics_raw × 0.45) + (market_raw × 
 After the raw score is computed, the CONF (attack confidence) system runs. CONF compresses the score asymptotically into a [0, 100] range using a rolling series of signal additions and subtractions anchored at 50. Positive signals (DQI_TRUST, is_burst, high ITT, confirmed lineup) add CONF points. Negative signals (is_trap, COLD_STREAK_MSMI, DQI_FADE, volatile lineup) subtract CONF points. All signal weights are read from data/weights.json so any weight change you make to that file immediately affects model behavior on the next refresh — no code changes needed.
 
 The final output metric is blended_rating: `blended_rating = (score + attack_conf) / 2`. This is the canonical ranking metric. It's what feeds into the DraftKings optimizer's priority ordering. High blended_rating means the model both objectively scores the team/pitcher well AND has high confidence in that score.
+
+> [!NOTE]
+> **Same-Side Starter Ceiling Cap:**
+> Teams whose starting pitcher has an `attack_conf` \ge 85 receive a soft-ceiling penalty of -5 stack confidence. This acts as a minor fader (primarily a tie-breaker when comparing stacks) to account for game-shortening ceiling cap risk.
 
 ---
 
@@ -344,6 +353,17 @@ OMEGA maintains its own health through a three-layer system that requires minima
 **Layer 3 — Ad-hoc focused audit.** After shipping any significant new feature or refactor, run a focused audit on just that area within 48 hours. The June 24 session itself (a blended_rating consolidation) produced the blended_rating sequencing bug that was caught and fixed the same night — exactly the kind of thing a focused post-ship audit catches.
 
 The audit schedule persists in data/audit_schedule.json. The red dot badge on the Learning & Audits sidebar item is visible from any tab — you will never miss an overdue audit.
+
+---
+
+## 9. Backlog: Pitch-Mix vs. Opponent Contact Profile Matchups
+
+The system includes a backlog item to model the direct interaction between a pitcher's pitch-mix arsenal (Savant) and the opposing team's contact/chase profiles.
+
+### Architecture Scoping:
+- **Pitcher Primary Weaponry:** Extracted from `data/matchup_data.json` pitchers' arsenal (e.g. Sinker usage \ge 30%).
+- **Opponent Profile:** Compiled from opposing team plate-discipline metrics or averaged from the projected starting lineup's hitter stats.
+- **Matchup Alignment:** Flag matchups where a high-contact, low-discipline, or low-walk lineup (Z-Contact% \ge 85%, BB% \le 7.0%, O-Swing% \ge 33%) faces a contact-heavy, low-strikeout pitcher (e.g., sinker-heavy arms). This alignment reduces pitcher confidence and boosts stack confidence.
 
 ---
 

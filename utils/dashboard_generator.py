@@ -81,6 +81,14 @@ class DashboardGenerator:
             siera_val = p.get('siera', 4.10)
             csw_val = p.get('csw', 0.25)
             form_era = p.get('recent_era', '-')
+            form_era_subtext = ""
+            subparts = []
+            if p.get('recent_era_5g') is not None:
+                subparts.append(f"5G:{p['recent_era_5g']}")
+            if p.get('recent_era_ex_best') is not None:
+                subparts.append(f"ExB:{p['recent_era_ex_best']}")
+            if subparts:
+                form_era_subtext = f'<div style="font-size:0.62rem; color:var(--text-secondary); margin-top:2px; font-weight:500;">{", ".join(subparts)}</div>'
             form_k9 = p.get('recent_k9', '-')
             
             statcast_grid = f"""
@@ -95,7 +103,7 @@ class DashboardGenerator:
                 </div>
                 <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
                     <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form ERA</div>
-                    <div style="font-size:1.05rem; font-weight:700; color:var(--accent-green);">{form_era}</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:var(--accent-green);">{form_era}{form_era_subtext}</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
                     <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form K/9</div>
@@ -151,6 +159,31 @@ class DashboardGenerator:
                 </div>
                 """
                 
+            high_bust_warning_html = ""
+            if p.get('is_high_bust_risk'):
+                high_bust_warning_html = """
+                <div style="background:rgba(255,69,58,0.1); border:1px solid rgba(255,69,58,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">🔴</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff453a; font-weight:700; font-size:0.9rem;">HIGH BUST RISK — Volatile + Low Ceiling</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Backtested success rate of only 16.1% (N=31). Proceed with extreme caution.</div>
+                    </div>
+                </div>
+                """
+
+            outlier_warning_html = ""
+            if p.get('is_outlier_driven'):
+                ex_best = p.get('recent_era_ex_best', '-')
+                outlier_warning_html = f"""
+                <div style="background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">⚠️</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff9500; font-weight:700; font-size:0.9rem;">OUTLIER-DRIVEN RECENT FORM</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Recent ERA ({p.get('recent_era', '-')}) is driven by a single outlier start. Ex-best ERA is {ex_best}, indicating a hidden slump.</div>
+                    </div>
+                </div>
+                """
+
             bulk_warning_html = ""
             if p.get('is_bulk_arm'):
                 bulk_warning_html = f"""
@@ -182,6 +215,8 @@ class DashboardGenerator:
             </div>
             {props_pending_html}
             {bulk_warning_html}
+            {high_bust_warning_html}
+            {outlier_warning_html}
             {talent_warning_html}
             {statcast_grid}
             {props_grid_html}
