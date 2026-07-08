@@ -6,3 +6,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-07-04,Milwaukee Brewers,97.0,5.3,0.0,3,-2.3,N
 2026-07-05,Los Angeles Dodgers,97.0,5.75,0.0,2,-3.75,N
 2026-07-06,Arizona Diamondbacks,96.0,4.7,-6.0,8,3.3,Y
+2026-07-07,Los Angeles Dodgers,96.0,5.8,0.0,3,-2.8,N
