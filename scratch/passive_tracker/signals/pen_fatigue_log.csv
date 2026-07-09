@@ -57,3 +57,35 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-07-06,Colorado Rockies,78.0,4.3,N,Y,7,2.7
 2026-07-06,Toronto Blue Jays,41.0,3.9,Y,Y,1,-2.9
 2026-07-06,Tampa Bay Rays,76.0,3.9,Y,Y,1,-2.9
+2026-07-07,Los Angeles Dodgers,96.0,5.8,Y,Y,3,-2.8
+2026-07-07,Detroit Tigers,93.0,5.0,Y,Y,6,1.0
+2026-07-07,Milwaukee Brewers,75.0,4.4,Y,Y,4,-0.4
+2026-07-07,New York Mets,82.0,4.7,Y,Y,12,7.3
+2026-07-07,Pittsburgh Pirates,75.0,5.0,Y,Y,12,7.0
+2026-07-07,Washington Nationals,89.0,5.0,Y,Y,3,-2.0
+2026-07-07,Cincinnati Reds,78.0,4.1,N,Y,1,-3.1
+2026-07-07,Texas Rangers,92.0,4.0,Y,Y,8,4.0
+2026-07-07,Kansas City Royals,70.0,4.0,Y,Y,16,12.0
+2026-07-07,Houston Astros,84.0,4.7,Y,Y,6,1.3
+2026-07-07,Arizona Diamondbacks,94.0,4.4,Y,Y,1,-3.4
+2026-07-07,St. Louis Cardinals,82.0,3.8,Y,Y,3,-0.8
+2026-07-07,Minnesota Twins,80.0,4.5,N,Y,3,-1.5
+2026-07-07,Boston Red Sox,51.0,4.5,N,Y,8,3.5
+2026-07-07,Tampa Bay Rays,50.0,3.9,Y,Y,6,2.1
+2026-07-07,Colorado Rockies,68.0,3.7,Y,Y,4,0.3
+2026-07-07,New York Yankees,31.0,3.7,N,Y,4,0.3
+2026-07-08,Los Angeles Dodgers,96.0,5.85,Y,Y,4,-1.85
+2026-07-08,Detroit Tigers,97.0,5.3,Y,Y,6,0.7
+2026-07-08,Milwaukee Brewers,82.0,4.4,Y,Y,1,-3.4
+2026-07-08,New York Mets,94.0,5.3,Y,Y,6,0.7
+2026-07-08,Pittsburgh Pirates,94.0,5.0,Y,Y,0,-5.0
+2026-07-08,Washington Nationals,94.0,5.5,Y,Y,8,2.5
+2026-07-08,Cincinnati Reds,94.0,4.6,Y,Y,11,6.4
+2026-07-08,Kansas City Royals,77.0,4.5,Y,Y,2,-2.5
+2026-07-08,Colorado Rockies,94.0,4.1,Y,Y,3,-1.1
+2026-07-08,Seattle Mariners,91.0,4.6,N,Y,0,-4.6
+2026-07-08,Arizona Diamondbacks,85.0,4.0,Y,Y,4,0.0
+2026-07-08,Boston Red Sox,71.0,3.9,Y,Y,5,1.1
+2026-07-08,St. Louis Cardinals,58.0,3.8,N,Y,5,1.2
+2026-07-08,Los Angeles Angels,57.0,3.7,N,Y,13,9.3
+2026-07-08,Houston Astros,80.0,4.8,Y,Y,2,-2.8
