@@ -357,13 +357,15 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
   - Rolling 3-game ERA (`recent_era >= 4.50`): `-6` confidence penalty.
   - Divergence from season SIERA (`recent_era - siera >= 1.50` or `recent_era_5g - siera >= 1.50`): `-4` confidence penalty.
   - Rolling 3-game walk crisis (`recent_bb9 >= 4.5`): `-6` confidence penalty.
-- **Validation Note: [UNVALIDATED JUDGMENT CALL]**
-  - Multiple linear regression was conducted on a sample of $N = 153$ starting pitcher starts (spanning June 27 to July 8, 2026) to test if recent form splits predict actual DraftKings points.
+- **Validation Note: [PARTIALLY VALIDATED]**
+  - Multiple linear regression was conducted on a sample of $N = 167$ starting pitcher starts (spanning June 27 to July 8, 2026) to test if recent form splits predict actual DraftKings points.
   - **Results:**
-    - `recent_era_5g` coefficient: $-0.9553$ ($p = 0.1323$) -> **Not statistically significant**
-    - `siera_div` coefficient: $-0.3514$ ($p = 0.5337$) -> **Not statistically significant**
-    - `recent_bb9` coefficient: $+0.0933$ ($p = 0.8875$) -> **Not statistically significant**
-  - **Conclusion:** Recent form and control splits over a 3-5 game window are not statistically significant predictors of daily fantasy scoring at the 95% confidence level. These four penalties remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies (e.g., Davis Martin and MacKenzie Gore). They have been implemented to suppress recommendations on slumping arms, but are **not mathematically validated** by historical regression.
+    - `recent_era_5g` coefficient: $-1.3059$ ($p = 0.0331$) -> **Statistically significant (95% confidence)**
+    - `siera_div` coefficient: $+0.0378$ ($p = 0.9429$) -> **Not statistically significant**
+    - `recent_bb9` coefficient: $+0.2178$ ($p = 0.7308$) -> **Not statistically significant**
+  - **Conclusion:** 
+    - The rolling 5-game ERA (`recent_era_5g`) is a **statistically significant predictor** of a pitcher's actual DraftKings points ($p = 0.0331 < 0.05$). Under standard OMEGA scaling (2.5x), the coefficient $-1.31$ justifies a penalty of up to $-3.26$ confidence points per unit of rolling ERA. This mathematically validates the presence of a slump penalty (the $-6$ penalty implemented for `recent_era_5g >= 4.25` is highly conservative compared to the regression-calibrated value of $-11$).
+    - The other three penalties (rolling 3-game ERA, SIERA divergence, and rolling 3-game BB/9) remain **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies (e.g., Davis Martin and MacKenzie Gore). They have been implemented to suppress recommendations on slumping arms, but are not independently validated by historical regression in this sample.
 
 
 

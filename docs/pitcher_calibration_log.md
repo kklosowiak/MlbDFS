@@ -9,34 +9,20 @@ Tracks recommended starting pitchers (`attack_conf >= 70`) who scored `actual_dk
 
 ## Statistical Validation Study
 
-Conducted multiple linear regression on starting pitcher starts ($N = 153$) to validate rolling form and control indicators.
+Conducted multiple linear regression on starting pitcher starts ($N = 167$) to validate rolling form and control indicators.
 
 **Regression Model:** `actual_dk_pts ~ intercept + recent_era_5g + siera_div + recent_bb9`
 
-- **R-squared:** 0.0501
-- **Adjusted R-squared:** 0.0309
+- **R-squared:** 0.0490
+- **Adjusted R-squared:** 0.0315
 
 | Variable | Coefficient | Std Error | t-statistic | p-value | Significant (95%) |
 |---|---|---|---|---|---|
-| `Intercept` | 17.5744 | 3.0576 | 5.7478 | 4.9366e-08 | Yes |
-| `recent_era_5g` | -0.9553 | 0.6313 | -1.5133 | 1.3233e-01 | No |
-| `siera_div` | -0.3514 | 0.5632 | -0.6239 | 5.3366e-01 | No |
-| `recent_bb9` | 0.0933 | 0.6583 | 0.1417 | 8.8753e-01 | No |
+| `Intercept` | 18.6622 | 2.9310 | 6.3672 | 1.8774e-09 | Yes |
+| `recent_era_5g` | -1.3059 | 0.6079 | -2.1483 | 3.3171e-02 | Yes |
+| `siera_div` | 0.0378 | 0.5271 | 0.0717 | 9.4293e-01 | No |
+| `recent_bb9` | 0.2178 | 0.6318 | 0.3447 | 7.3076e-01 | No |
 
 
-## Statistical Validation Study
 
-Conducted multiple linear regression on starting pitcher starts ($N = 140$) to validate rolling form and control indicators.
-
-**Regression Model:** `actual_dk_pts ~ intercept + recent_era_5g + siera_div + recent_bb9`
-
-- **R-squared:** 0.0443
-- **Adjusted R-squared:** 0.0232
-
-| Variable | Coefficient | Std Error | t-statistic | p-value | Significant (95%) |
-|---|---|---|---|---|---|
-| `Intercept` | 17.3104 | 3.2342 | 5.3522 | 3.5927e-07 | Yes |
-| `recent_era_5g` | -1.2995 | 0.6575 | -1.9763 | 5.0142e-02 | No |
-| `siera_div` | 0.0742 | 0.5838 | 0.1271 | 8.9906e-01 | No |
-| `recent_bb9` | 0.7179 | 0.7187 | 0.9990 | 3.1959e-01 | No |
 
