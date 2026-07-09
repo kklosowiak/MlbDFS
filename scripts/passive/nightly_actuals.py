@@ -41,6 +41,7 @@ def parse_games(games):
     game_list = []
     completed_states = ["final", "completed early", "game over"]
     all_final = True
+    failed_pitchers_count = 0
 
     for game in games:
         game_pk = str(game['gamePk'])
@@ -98,6 +99,13 @@ def parse_games(games):
                 sp_dict["shutouts"] = stats.get('shutouts', 0)
                 sp_dict["hitByPitch"] = stats.get('hitByPitch', 0) or stats.get('hitBatsmen', 0) or 0
 
+        # Track pitcher fetch failures for final/completed games
+        if status.lower() in completed_states:
+            if sp_home["name"] in ["TBD", "Unknown"]:
+                failed_pitchers_count += 1
+            if sp_away["name"] in ["TBD", "Unknown"]:
+                failed_pitchers_count += 1
+
         game_list.append({
             "game_id": game_pk,
             "home_team": home_team,
@@ -110,7 +118,7 @@ def parse_games(games):
             "status": "final" if status.lower() in completed_states else status.lower()
         })
 
-    return game_list, all_final
+    return game_list, all_final, failed_pitchers_count
 
 def main():
     parser = argparse.ArgumentParser(description="OMEGA Nightly Actuals Fetcher")
@@ -150,7 +158,7 @@ def main():
         log_message(log_path, date_str, "SUCCESS", "No games scheduled")
         sys.exit(0)
 
-    game_list, all_final = parse_games(games)
+    game_list, all_final, failed_pitchers = parse_games(games)
 
     # If any game is still active, wait 30 min and retry once
     if not all_final and not args.date:
@@ -158,7 +166,12 @@ def main():
         time.sleep(1800) # 30 minutes
         games = fetch_games_for_date(date_str)
         if games is not None:
-            game_list, all_final = parse_games(games)
+            game_list, all_final, failed_pitchers = parse_games(games)
+
+    if failed_pitchers > 0:
+        log_message(log_path, date_str, "INCOMPLETE", f"{failed_pitchers} pitchers failed to fetch, sample incomplete for {date_str}")
+        print(f"Error: {failed_pitchers} starting pitchers failed to fetch from boxscores. Terminating.")
+        sys.exit(1)
 
     # Save output
     try:

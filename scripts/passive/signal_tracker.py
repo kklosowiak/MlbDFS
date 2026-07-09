@@ -252,7 +252,12 @@ def main():
     audit = AuditEngine()
     detailed_actuals = audit.fetch_results(date=date_str)
     if not detailed_actuals:
-        print("Warning: detailed actuals empty. Player actual scoring will default to 0.")
+        has_completed_games = any(g.get("status") == "final" for g in actuals_data) if actuals_data else False
+        if has_completed_games:
+            print("Error: Completed games exist but detailed boxscores failed to fetch via AuditEngine. Terminating.")
+            sys.exit(1)
+        else:
+            print("Warning: detailed actuals empty. Player actual scoring will default to 0.")
 
     # Mappings and lookups
     salary_map = load_salary_map()
