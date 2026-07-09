@@ -357,15 +357,16 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
   - Rolling 3-game ERA (`recent_era >= 4.50`): `-6` confidence penalty.
   - Divergence from season SIERA (`recent_era - siera >= 1.50` or `recent_era_5g - siera >= 1.50`): `-4` confidence penalty.
   - Rolling 3-game walk crisis (`recent_bb9 >= 4.5`): `-6` confidence penalty.
-- **Validation Note: [PARTIALLY VALIDATED]**
-  - Multiple linear regression was conducted on a sample of $N = 167$ starting pitcher starts (spanning June 27 to July 8, 2026) to test if recent form splits predict actual DraftKings points.
-  - **Results:**
-    - `recent_era_5g` coefficient: $-1.3059$ ($p = 0.0331$) -> **Statistically significant (95% confidence)**
-    - `siera_div` coefficient: $+0.0378$ ($p = 0.9429$) -> **Not statistically significant**
-    - `recent_bb9` coefficient: $+0.2178$ ($p = 0.7308$) -> **Not statistically significant**
-  - **Conclusion:** 
-    - The rolling 5-game ERA (`recent_era_5g`) is a **statistically significant predictor** of a pitcher's actual DraftKings points ($p = 0.0331 < 0.05$). Under standard OMEGA scaling (2.5x), the coefficient $-1.31$ justifies a penalty of up to $-3.26$ confidence points per unit of rolling ERA. This mathematically validates the presence of a slump penalty (the $-6$ penalty implemented for `recent_era_5g >= 4.25` is highly conservative compared to the regression-calibrated value of $-11$).
-    - The other three penalties (rolling 3-game ERA, SIERA divergence, and rolling 3-game BB/9) remain **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies (e.g., Davis Martin and MacKenzie Gore). They have been implemented to suppress recommendations on slumping arms, but are not independently validated by historical regression in this sample.
+- **Validation Note: [UNVALIDATED JUDGMENT CALL]**
+  - Multiple linear regression was conducted on starting pitcher starts to validate if recent form splits predict actual DraftKings points.
+  - We ran two runs of the same model:
+    - **Run 1 (N = 153 starts):** `recent_era_5g` coefficient $-0.9553$ ($p = 0.1323$ -> **Not significant**), `siera_div` coefficient $-0.3514$ ($p = 0.5337$), `recent_bb9` coefficient $+0.0933$ ($p = 0.8875$).
+    - **Run 2 (N = 167 starts):** `recent_era_5g` coefficient $-1.3059$ ($p = 0.0331$ -> **Significant**), `siera_div` coefficient $+0.0378$ ($p = 0.9429$), `recent_bb9` coefficient $+0.2178$ ($p = 0.7308$).
+  - **Discrepancy Analysis:** 
+    - The difference of 14 starts between Run 1 and Run 2 is due to API connection timeouts on the host during Run 1, which omitted 10 July 8 starting pitchers completely (e.g. MacKenzie Gore, George Kirby, Colin Rea, Dean Kremer, Alan Rangel, Steven Cruz, Gabriel Hughes, Jeffrey Springs, Troy Melton, Connor Prielipp) and 4 starts that had outdated game logs.
+    - Adding these 14 starts (which clustered several bad outings/busts on July 8 like Gore's 5.25 DK pts and Springs' -0.25 DK pts) completely shifted the p-value of `recent_era_5g` from insignificant ($0.132$) to significant ($0.033$).
+  - **Conclusion:** Because the regression results are extremely sensitive to the inclusion/exclusion of a single day's slate (July 8), and the coefficients diverge significantly under minor sample variations, **none of the four penalties are statistically validated**. They remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies. They are implemented to suppress slumping pitchers (like Davis Martin and MacKenzie Gore), but are not supported by a robust, stable regression.
+
 
 
 
