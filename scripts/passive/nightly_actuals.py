@@ -72,8 +72,8 @@ def parse_games(games):
             boxscore = box_resp.json()
         except Exception:
             boxscore = {}
-        sp_home = {"name": "TBD", "ip": 0.0, "er": 0, "k": 0, "h": 0, "bb": 0}
-        sp_away = {"name": "TBD", "ip": 0.0, "er": 0, "k": 0, "h": 0, "bb": 0}
+        sp_home = {"name": "TBD", "ip": 0.0, "er": 0, "k": 0, "h": 0, "bb": 0, "wins": 0, "completeGames": 0, "shutouts": 0, "hitByPitch": 0}
+        sp_away = {"name": "TBD", "ip": 0.0, "er": 0, "k": 0, "h": 0, "bb": 0, "wins": 0, "completeGames": 0, "shutouts": 0, "hitByPitch": 0}
 
         for side, sp_dict in [('home', sp_home), ('away', sp_away)]:
             pitcher_ids = boxscore.get('teams', {}).get(side, {}).get('pitchers', [])
@@ -93,6 +93,10 @@ def parse_games(games):
 
                 sp_dict["h"] = stats.get('hits', 0)
                 sp_dict["bb"] = stats.get('baseOnBalls', 0)
+                sp_dict["wins"] = stats.get('wins', 0)
+                sp_dict["completeGames"] = stats.get('completeGames', 0)
+                sp_dict["shutouts"] = stats.get('shutouts', 0)
+                sp_dict["hitByPitch"] = stats.get('hitByPitch', 0) or stats.get('hitBatsmen', 0) or 0
 
         game_list.append({
             "game_id": game_pk,

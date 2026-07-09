@@ -648,6 +648,33 @@ def score_pitcher_confidence(p, t_reports):
         ex_best = p.get("recent_era_ex_best", "-")
         reasons.append(f"Recent form driven by single outlier start (ex-best ERA: {ex_best}) (-10).")
 
+    # OMEGA v21.2: Rolling ERA and walk rate decline penalties
+    recent_era = p.get("recent_era")
+    recent_era_5g = p.get("recent_era_5g")
+    recent_bb9 = p.get("recent_bb9")
+    siera = p.get("siera")
+
+    if recent_era_5g is not None and recent_era_5g >= 4.25:
+        conf -= 6
+        reasons.append(f"Elevated L5 ERA ({recent_era_5g:.2f}) (-6).")
+
+    if recent_era is not None and recent_era >= 4.50:
+        conf -= 6
+        reasons.append(f"Elevated L3 ERA ({recent_era:.2f}) (-6).")
+
+    if siera is not None:
+        siera_val = float(siera)
+        if recent_era is not None and (recent_era - siera_val) >= 1.50:
+            conf -= 4
+            reasons.append(f"L3 ERA ({recent_era:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
+        elif recent_era_5g is not None and (recent_era_5g - siera_val) >= 1.50:
+            conf -= 4
+            reasons.append(f"L5 ERA ({recent_era_5g:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
+
+    if recent_bb9 is not None and recent_bb9 >= 4.5:
+        conf -= 6
+        reasons.append(f"Control crisis: elevated L3 BB/9 ({recent_bb9:.2f}) (-6).")
+
     # 5. K Line Steam
     k_move = float(p.get("k_move", 0) or 0)
     if k_move >= 0.5:

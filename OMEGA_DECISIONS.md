@@ -349,6 +349,24 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline.
 
 
+### July 9, 2026 — Pitcher Recent-Form Calibration Regression Study
+
+#### Pitcher Recent-Form Rolling Penalties — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply confidence penalties for recent poor performance splits:
+  - Rolling 5-game ERA (`recent_era_5g >= 4.25`): `-6` confidence penalty.
+  - Rolling 3-game ERA (`recent_era >= 4.50`): `-6` confidence penalty.
+  - Divergence from season SIERA (`recent_era - siera >= 1.50` or `recent_era_5g - siera >= 1.50`): `-4` confidence penalty.
+  - Rolling 3-game walk crisis (`recent_bb9 >= 4.5`): `-6` confidence penalty.
+- **Validation Note: [UNVALIDATED JUDGMENT CALL]**
+  - Multiple linear regression was conducted on a sample of $N = 153$ starting pitcher starts (spanning June 27 to July 8, 2026) to test if recent form splits predict actual DraftKings points.
+  - **Results:**
+    - `recent_era_5g` coefficient: $-0.9553$ ($p = 0.1323$) -> **Not statistically significant**
+    - `siera_div` coefficient: $-0.3514$ ($p = 0.5337$) -> **Not statistically significant**
+    - `recent_bb9` coefficient: $+0.0933$ ($p = 0.8875$) -> **Not statistically significant**
+  - **Conclusion:** Recent form and control splits over a 3-5 game window are not statistically significant predictors of daily fantasy scoring at the 95% confidence level. These four penalties remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies (e.g., Davis Martin and MacKenzie Gore). They have been implemented to suppress recommendations on slumping arms, but are **not mathematically validated** by historical regression.
+
+
+
 
 
 

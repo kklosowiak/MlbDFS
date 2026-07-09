@@ -92,6 +92,40 @@ def calculate_hitter_dk_pts(ha):
     dk_pts = 3*singles + 5*doubles + 8*triples + 10*hr + 2*r + 2*rbi + 2*bb + 5*sb - 0.5*k + 2*hbp
     return float(round(dk_pts, 2))
 
+def calculate_pitcher_dk_pts(sp):
+    if not sp:
+        return 0.0
+    
+    ip_str = str(sp.get('ip', "0.0"))
+    if '.' in ip_str:
+        parts = ip_str.split('.')
+        outs = int(parts[0]) * 3 + int(parts[1])
+    else:
+        try:
+            outs = int(float(ip_str)) * 3
+        except ValueError:
+            outs = 0
+            
+    ip_pts = outs * 0.75
+    k = sp.get('k', 0) or 0
+    er = sp.get('er', 0) or 0
+    h = sp.get('h', 0) or 0
+    bb = sp.get('bb', 0) or 0
+    hb = sp.get('hitByPitch', 0) or 0
+    win = sp.get('wins', 0) or 0
+    cg = sp.get('completeGames', 0) or 0
+    sho = sp.get('shutouts', 0) or 0
+    
+    dk_pts = ip_pts + (2.0 * k) - (2.0 * er) - (0.6 * h) - (0.6 * bb) - (0.6 * hb) + (4.0 * win)
+    if cg:
+        dk_pts += 2.5
+        if sho:
+            dk_pts += 2.5
+    if cg and h == 0:
+        dk_pts += 5.0
+        
+    return float(round(dk_pts, 2))
+
 def get_hitter_baseline(hitter_dk_map, target_salary, target_batting_order, exclude_name_norm):
     matches = []
     for h_name_norm, h_info in hitter_dk_map.items():
@@ -524,10 +558,10 @@ def main():
             writer = csv.writer(sf)
             writer.writerow([
                 "date", "pitcher", "team", "attack_conf", "blended_rating",
-                "conf_delta", "k_line", "er_line", "recent_era", "siera",
+                "conf_delta", "k_line", "er_line", "recent_era", "recent_era_5g", "siera",
                 "is_trap", "trap_type", "sharp_fade", "is_volatile",
                 "walks_penalty", "is_hazard", "form_status",
-                "actual_ip", "actual_er", "actual_k", "actual_h", "actual_bb",
+                "actual_ip", "actual_er", "actual_k", "actual_h", "actual_bb", "actual_dk_pts",
                 "er_vs_line", "k_vs_line", "attacking_team_actual_runs"
             ])
             for p in lock_data['pitchers']:
@@ -539,6 +573,11 @@ def main():
                 k_line = float(p.get('k_line', 0.0) or 0.0)
                 er_line = float(p.get('er_line', 0.0) or 0.0)
                 recent_era = float(p.get('recent_era', 0.0) or 0.0)
+                recent_era_5g = p.get('recent_era_5g')
+                if recent_era_5g is not None and recent_era_5g != '':
+                    recent_era_5g = float(recent_era_5g)
+                else:
+                    recent_era_5g = None
                 siera = float(p.get('siera', 0.0) or 0.0)
                 
                 sp_actual, runs_against = get_pitcher_actuals(actuals_data, team, p_name)
@@ -548,13 +587,14 @@ def main():
                 actual_k = sp_actual.get('k', 0) if sp_actual else 0
                 actual_h = sp_actual.get('h', 0) if sp_actual else 0
                 actual_bb = sp_actual.get('bb', 0) if sp_actual else 0
+                actual_dk_pts = calculate_pitcher_dk_pts(sp_actual)
                 
                 er_vs = float(round(actual_er - er_line, 2))
                 k_vs = float(round(actual_k - k_line, 2))
                 
                 writer.writerow([
                     date_str, p_name, team, conf, blended,
-                    delta, k_line, er_line, recent_era, siera,
+                    delta, k_line, er_line, recent_era, recent_era_5g, siera,
                     'Y' if p.get('is_trap') else 'N',
                     p.get('trap_type', 'Neutral'),
                     'Y' if p.get('sharp_fade') else 'N',
@@ -562,7 +602,7 @@ def main():
                     'Y' if p.get('walks_penalty') else 'N',
                     'Y' if p.get('is_hazard') else 'N',
                     p.get('form_status', 'Neutral'),
-                    actual_ip, actual_er, actual_k, actual_h, actual_bb,
+                    actual_ip, actual_er, actual_k, actual_h, actual_bb, actual_dk_pts,
                     er_vs, k_vs, runs_against or 0
                 ])
 
