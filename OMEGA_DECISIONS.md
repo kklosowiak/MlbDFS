@@ -368,6 +368,15 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
   - **Conclusion:** Because the regression results are extremely sensitive to the inclusion/exclusion of a single day's slate (July 8), and the coefficients diverge significantly under minor sample variations, **none of the four penalties are statistically validated**. They remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies. They are implemented to suppress slumping pitchers (like Davis Martin and MacKenzie Gore), but are not supported by a robust, stable regression.
 
 
+#### Team Stack attack_conf Predictive Power Study — RESEARCH COMPLETED (DO NOT DEPLOY)
+- **Context:** Evaluated the predictive power of the team-level composite `attack_conf` score across $N = 160$ team stacks from June 27 to July 8, 2026.
+- **Findings:**
+  - **No correlation with run production:** Regression of actual runs vs. ITT against `attack_conf` yields an R-squared of `0.0047` and an insignificant p-value of `0.391` (slope of `-0.0121` runs per confidence point).
+  - **Inversion at the extremes:** Elite stacks ($\ge 80$) underperformed their implied totals (averaging $-0.16$ runs below ITT, 41.6% hit rate), while Low confidence stacks ($40\text{–}54$) overperformed (averaging $+0.99$ runs above ITT, 53.8% hit rate).
+- **Strategic Impact:** Team-level `attack_conf` is currently uncalibrated and has zero floor-prediction value, likely due to over-weighting of broken/reverse signals (like Steam and DQI TRUST). 
+- **Action Gate:** **DO NOT change anything live.** This finding directly impacts stack ranking and must be discussed as a priority upon Konrad's return before any model adjustments or merges are made.
+
+
 
 
 
