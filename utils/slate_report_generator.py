@@ -59,7 +59,35 @@ class SlateReportGenerator:
             conf, reasons = score_stack_confidence(t, p_reports)
             t['attack_conf'] = conf
             t['attack_reasons'] = reasons
-            # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
+            
+            # Compute new stack_trust_score (separate from attack_conf)
+            opp_p = pitcher_map.get(normalize_player_name(t.get('opp_pitcher', '')))
+            if not opp_p:
+                opp_p = team_pitcher_map.get(t.get('opponent'))
+                
+            opp_sp_any_flag = 0.0
+            if opp_p:
+                is_trap = opp_p.get('is_trap', False)
+                trap_type = opp_p.get('trap_type')
+                opp_trap_short_leash = is_trap and trap_type == 'Short Leash'
+                opp_trap_vulnerable = is_trap and trap_type == 'Vulnerable'
+                opp_low_ceiling = opp_p.get('is_low_ceiling', False)
+                opp_hazard = opp_p.get('is_hazard', False)
+                opp_paradox = opp_p.get('is_paradox', False)
+                if opp_trap_short_leash or opp_trap_vulnerable or opp_low_ceiling or opp_hazard or opp_paradox:
+                    opp_sp_any_flag = 1.0
+                    
+            is_fade_risk = 1.0 if t.get('is_fade_risk') == 'Y' or t.get('is_fade_risk') is True else 0.0
+            is_pitch_alignment = 1.0 if t.get('is_pitch_alignment') == 'Y' or t.get('is_pitch_alignment') is True else 0.0
+            
+            team_hitters = [h for h in h_reports if h.get('team') == t.get('team')]
+            anti_chalk_count = sum(1 for h in team_hitters if h.get('is_anti_chalk_smash') == 'Y' or h.get('is_anti_chalk_smash') is True)
+            anti_chalk_pct = (anti_chalk_count / len(team_hitters)) * 100.0 if team_hitters else 0.0
+            
+            # Formula: 70.0 - 10.0 * opp_sp_any_flag - 47.0 * is_fade_risk + 0.64 * anti_chalk_pct + 12.0 * is_pitch_alignment
+            ts = 70.0 - 10.0 * opp_sp_any_flag - 47.0 * is_fade_risk + 0.64 * anti_chalk_pct + 12.0 * is_pitch_alignment
+            t['stack_trust_score'] = round(max(0.0, min(100.0, ts)), 1)
+            
             scored_stacks.append(t)
             
         # OMEGA v20.1: PARADOX Resolution Rule
@@ -239,7 +267,7 @@ class SlateReportGenerator:
         
         if best_t:
             blended_display = best_t.get('blended_rating') or self._compute_blended(best_t, 'stack_score')
-            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | CONF: {best_t['attack_conf']}% | Ω: {best_t.get('stack_score', 0)})")
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | CONF: {best_t['attack_conf']}% | Trust: {best_t.get('stack_trust_score', 0.0)}% | Ω: {best_t.get('stack_score', 0)})")
             for r in best_t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
@@ -263,7 +291,7 @@ class SlateReportGenerator:
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
             blended_display = t.get('blended_rating') or self._compute_blended(t, 'stack_score')
-            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | CONF: {t['attack_conf']}% | Omega: {t.get('stack_score', 0)})")
+            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | CONF: {t['attack_conf']}% | Trust: {t.get('stack_trust_score', 0.0)}% | Omega: {t.get('stack_score', 0)})")
             for r in t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")

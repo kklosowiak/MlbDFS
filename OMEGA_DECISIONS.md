@@ -377,6 +377,36 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Action Gate:** **DO NOT change anything live.** This finding directly impacts stack ranking and must be discussed as a priority upon Konrad's return before any model adjustments or merges are made.
 
 
+#### July 9, 2026 — Composite Stack Trust Score Backtest & Modeling
+
+##### New `stack_trust_score` Team Ranking Replacement — RESEARCH COMPLETED (UNMERGED / UNDER REVIEW)
+- **Decision:** Build a separate `stack_trust_score` field on each team stack object alongside the existing `attack_conf` to evaluate replacement of team stack confidence ranking.
+- **Formulation:**
+  \[ \text{stack\_trust\_score} = 70.0 - 10.0(\text{opp\_sp\_any\_flag}) - 47.0(\text{is\_fade\_risk}) + 0.64(\text{anti\_chalk\_pct}) + 12.0(\text{is\_pitch\_alignment}) \]
+  - *opp_sp_any_flag* = 1 if opposing SP is flagged with `trap_short_leash`, `trap_vulnerable`, `low_ceiling`, `hazard`, or `paradox`.
+  - *is_fade_risk* = 1 if team has a public fade/sharp divergence.
+  - *anti_chalk_pct* = percentage of hitter-level `is_anti_chalk_smash` flags on the team.
+  - *is_pitch_alignment* = 1 if team has a GPP/ownership-leverage pivot flag.
+- **Validation Results ($N = 160$ team stacks):**
+  - **Component Significance:**
+    - `opp_sp_any_flag`: Coefficient $-0.1002$ ($p = 0.8554$) $\rightarrow$ **Not statistically significant**.
+    - `is_fade_risk`: Coefficient $-0.4696$ ($p = 0.8912$) $\rightarrow$ **Not statistically significant** (high variance, small flag count).
+    - `anti_chalk_pct`: Coefficient $+0.0064$ ($p = 0.3806$) $\rightarrow$ **Not statistically significant** (directionally positive, $+0.32$ runs for 50% concentration).
+    - `is_pitch_alignment`: Coefficient $+0.1247$ ($p = 0.8348$) $\rightarrow$ **Not statistically significant**.
+  - **Composite Score Predictive Power (`runs_vs_itt ~ stack_trust_score`):**
+    - R-squared: **`0.0053`**
+    - Coefficient: **`+0.0177`** runs per confidence point
+    - p-value: **`0.3589`** $\rightarrow$ **Not statistically significant**
+  - **Comparison with `attack_conf` (`runs_vs_itt ~ attack_conf`):**
+    - R-squared: `0.0047`
+    - Coefficient: `-0.0121` runs per confidence point
+    - p-value: `0.3912` $\rightarrow$ **Not statistically significant**
+- **Conclusion:** 
+  - The new `stack_trust_score` succeeds in inverting the counter-intuitive negative slope of `attack_conf` to a directionally correct positive slope (`+0.0177` runs per point). 
+  - However, it remains **statistically insignificant** ($p = 0.3589 > 0.05$) and explains less than 1% of the actual run scoring variance vs ITT ($R^2 = 0.0053$). 
+- **Action Gate:** **DO NOT merge to main.** Keep on the `audit/july-2026` branch for manual review. Flagged for Konrad's post-trip review: we must determine if stack ranking should pivot completely to blended projection rating and GPP leverage metrics rather than relying on any confidence/trust-based scoring.
+
+
 
 
 
