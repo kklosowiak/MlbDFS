@@ -1,0 +1,122 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-09 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=97.0 | ITT=4.5 | actual=8.0 | diff=+3.5 | HIT
+TRAP ARMS (2 instances):
+  José Suarez (Vulnerable) vs Athletics: attack_conf=0.0 ITT=4.9 actual=4.0 diff=-0.9 | 1.1IP 0ER -> NORMAL
+  Carson Whisenhunt (Short Leash) vs San Francisco Giants: attack_conf=22.0 ITT=4.3 actual=2.0 diff=-2.3 | 5.2IP 2ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Randy Arozarena (Seattle Mariners): 20.0 DK pts
+  Otto Lopez (Miami Marlins): 18.0 DK pts
+  Jordan Walker (St. Louis Cardinals): 17.0 DK pts
+ANTI_CHALK_SMASH (25 fires):
+  Cooper Pratt (Milwaukee Brewers): blended=92.2 | actual=9.5DKpts | +6.6 vs baseline
+  Jake Bauers (Milwaukee Brewers): blended=83.4 | actual=24.0DKpts | +18.1 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): blended=84.7 | actual=4.0DKpts | +0.9 vs baseline
+  Riley Greene (Detroit Tigers): blended=83.6 | actual=-1.0DKpts | -4.8 vs baseline
+  Dominic Canzone (Seattle Mariners): blended=71.4 | actual=19.0DKpts | +10.4 vs baseline
+  Brice Turang (Milwaukee Brewers): blended=77.6 | actual=25.5DKpts | +15.6 vs baseline
+  Randy Arozarena (Seattle Mariners): blended=79.2 | actual=20.0DKpts | +15.4 vs baseline
+  Kevin Mcgonigle (Detroit Tigers): blended=78.0 | actual=2.5DKpts | -0.3 vs baseline
+  Jp Crawford (Seattle Mariners): blended=52.6 | actual=1.0DKpts | -5.2 vs baseline
+  Andrew Vaughn (Milwaukee Brewers): blended=60.4 | actual=2.0DKpts | -4.6 vs baseline
+  William Contreras (Milwaukee Brewers): blended=55.5 | actual=1.5DKpts | -10.8 vs baseline
+  Cole Young (Seattle Mariners): blended=45.4 | actual=1.5DKpts | -4.6 vs baseline
+  Spencer Torkelson (Detroit Tigers): blended=53.5 | actual=0.0DKpts | -1.7 vs baseline
+  Luke Raley (Seattle Mariners): blended=49.9 | actual=5.5DKpts | -0.2 vs baseline
+  Jackson Chourio (Milwaukee Brewers): blended=49.6 | actual=12.0DKpts | +1.2 vs baseline
+  Josh Naylor (Seattle Mariners): blended=40.6 | actual=15.0DKpts | +7.5 vs baseline
+  Joey Ortiz (Milwaukee Brewers): blended=39.9 | actual=2.0DKpts | -6.2 vs baseline
+  Kerry Carpenter (Detroit Tigers): blended=41.7 | actual=3.5DKpts | -2.0 vs baseline
+  Matt Vierling (Detroit Tigers): blended=40.1 | actual=2.5DKpts | -0.1 vs baseline
+  Sal Frelick (Milwaukee Brewers): blended=23.5 | actual=7.5DKpts | +1.8 vs baseline
+  Haoyu Lee (Detroit Tigers): blended=33.1 | actual=3.0DKpts | -2.7 vs baseline
+  Colt Emerson (Seattle Mariners): blended=11.6 | actual=9.0DKpts | +4.4 vs baseline
+  Victor Robles (Seattle Mariners): blended=23.6 | actual=-0.5DKpts | -2.2 vs baseline
+  Cal Raleigh (Seattle Mariners): blended=26.6 | actual=1.0DKpts | -11.4 vs baseline
+  James Outman (Detroit Tigers): blended=16.7 | actual=-1.0DKpts | -5.0 vs baseline
+COLD_HIGH_BR_WARNING (2 fires):
+  Bryce Harper (Philadelphia Phillies): blended=103.3 | actual=-1.0DKpts | -15.8 vs baseline
+  Kyle Schwarber (Philadelphia Phillies): blended=108.5 | actual=1.5DKpts | +2.5 vs baseline
+PLATOON_TRAP (24 fires):
+  Heliot Ramos (San Francisco Giants): actual=4.0DKpts | +0.0 vs baseline
+  Hunter Goodman (Colorado Rockies): actual=6.5DKpts | -9.0 vs baseline
+  Jakob Marsee (Miami Marlins): actual=14.0DKpts | +10.6 vs baseline
+  Tyler Freeman (Colorado Rockies): actual=2.5DKpts | -0.6 vs baseline
+  Jake Cronenworth (San Diego Padres): actual=0.0DKpts | +1.0 vs baseline
+  Luis Arraez (San Francisco Giants): actual=14.0DKpts | +6.4 vs baseline
+  Tommy Troy (Arizona Diamondbacks): actual=6.5DKpts | +4.3 vs baseline
+  Zach Neto (Los Angeles Angels): actual=7.0DKpts | -0.6 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=2.0DKpts | -6.2 vs baseline
+  Willy Adames (San Francisco Giants): actual=15.0DKpts | +9.9 vs baseline
+  Ezequiel Tovar (Colorado Rockies): actual=0.0DKpts | -6.9 vs baseline
+  Jake Burger (Texas Rangers): actual=4.5DKpts | -4.2 vs baseline
+  Trea Turner (Philadelphia Phillies): actual=2.0DKpts | -9.4 vs baseline
+  Willi Castro (Colorado Rockies): actual=15.5DKpts | +11.3 vs baseline
+  Logan Ohoppe (Los Angeles Angels): actual=0.5DKpts | -2.1 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=5.0DKpts | +1.1 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=7.5DKpts | +1.8 vs baseline
+  Henry Bolte (Athletics): actual=1.5DKpts | -2.0 vs baseline
+  Haoyu Lee (Detroit Tigers): actual=3.0DKpts | -2.7 vs baseline
+  Jacob Wilson (Athletics): actual=7.5DKpts | +2.5 vs baseline
+  Nathan Church (St. Louis Cardinals): actual=-0.5DKpts | -4.1 vs baseline
+  Lourdes Gurriel (Arizona Diamondbacks): actual=3.0DKpts | -1.4 vs baseline
+  Victor Robles (Seattle Mariners): actual=-0.5DKpts | -2.2 vs baseline
+  Cal Raleigh (Seattle Mariners): actual=1.0DKpts | -11.4 vs baseline
+STRONG_EDGE (12 fires):
+  Jordan Walker (St. Louis Cardinals): actual=17.0DKpts | +5.0 vs baseline
+  Bryce Eldridge (San Francisco Giants): actual=21.0DKpts | +14.9 vs baseline
+  Jj Bleday (Cincinnati Reds): actual=7.0DKpts | +6.3 vs baseline
+  Elly De La Cruz (Cincinnati Reds): actual=-1.5DKpts | -4.7 vs baseline
+  Dominic Canzone (Seattle Mariners): actual=19.0DKpts | +10.4 vs baseline
+  Griffin Conine (Miami Marlins): actual=24.0DKpts | +19.3 vs baseline
+  Kevin Mcgonigle (Detroit Tigers): actual=2.5DKpts | -0.3 vs baseline
+  Xavier Edwards (Miami Marlins): actual=5.0DKpts | -4.8 vs baseline
+  Jj Wetherholt (St. Louis Cardinals): actual=12.0DKpts | +9.6 vs baseline
+  Heriberto Hernandez (Miami Marlins): actual=2.0DKpts | -7.0 vs baseline
+  Brandon Nimmo (Texas Rangers): actual=24.0DKpts | +15.3 vs baseline
+  Luke Raley (Seattle Mariners): actual=5.5DKpts | -0.2 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Griffin Canning vs San Diego Padres: ITT=4.2 actual=3.0R diff=-1.2
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (5):
+  Bryce Miller (WALKS=N HAZ=Y): ITT=3.8 actual=8.0R diff=+4.2
+  Reid Detmers (WALKS=Y HAZ=N): ITT=4.2 actual=7.0R diff=+2.8
+  Andre Pallante (WALKS=N HAZ=Y): ITT=4.5 actual=8.0R diff=+3.5
+  Merrill Kelly (WALKS=Y HAZ=N): ITT=4.5 actual=1.0R diff=-3.5
+  Griffin Canning (WALKS=Y HAZ=N): ITT=4.2 actual=3.0R diff=-1.2
+GASSED/FATIGUED PEN (5 teams):
+  Milwaukee Brewers: actual=8.0R vs ITT=4.5 -> HIT
+  Detroit Tigers: actual=4.0R vs ITT=4.9 -> MISS
+  Arizona Diamondbacks: actual=3.0R vs ITT=4.2 -> MISS
+  Cincinnati Reds: actual=0.0R vs ITT=4.3 -> MISS
+  Colorado Rockies: actual=2.0R vs ITT=4.3 -> MISS
+BURST (2 teams):
+  Milwaukee Brewers: actual=8.0R vs ITT=4.5 -> CORRECT
+  Seattle Mariners: actual=4.0R vs ITT=4.5 -> MISS
+RIGHT GAME WRONG TEAM:
+  Los Angeles Angels @ Texas Rangers: both scored 6+? Y | higher-conf team won scoring? Y
+
+RUNNING ACCURACY (10 slates tracked):
+  TRAP/Vulnerable: 73.3% underscored ITT | avg diff +0.22R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +1.77R
+  FADE_RISK: 100.0% correct | avg diff -0.55R
+  Top Stack hit ITT: 40.0%
+  HOT_MSMI avg: 6.3 DK pts
+  STEAM: 41.7% correct | avg +0.95R
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 61.6% underperformed baseline
+  STRONG_EDGE: avg +0.26 DK pts vs baseline
+  SHARP_FADE pitchers: 57.1% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 42.9%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 40.5%
+  GASSED pen teams: 37.9% hit ITT
+  BURST teams: 42.9% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Carson Whisenhunt (5.2 IP, 2 ER)
+  Right-Game-Wrong-Team Match: Los Angeles Angels @ Texas Rangers (Both scored 6+ runs)
+
+=== END ===
