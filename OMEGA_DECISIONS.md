@@ -407,6 +407,18 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Action Gate:** **DO NOT merge to main.** Keep on the `audit/july-2026` branch for manual review. Flagged for Konrad's post-trip review: we must determine if stack ranking should pivot completely to blended projection rating and GPP leverage metrics rather than relying on any confidence/trust-based scoring.
 
 
+### July 10, 2026 — Automated Daily Digest Wording Neutralization
+
+#### Daily Digest narrative framing removed — IMPLEMENTED
+- **Decision:** Modify `generate_digest.py` to prevent narrative/predictive language (such as "correctly suppressed," "top stack HIT," or "Failed") for refuted, reversed, or unvalidated flags.
+- **Actionable Fix:**
+  - Replaced `HIT`/`MISS` and `CORRECT`/`MISS` results in top stack, steam, and gassed pen loops with factual run details.
+  - Added explicit warnings to `COLD_HIGH_BR_WARNING`, `is_steam`, `top_stack_log`, and `burst_log` print statements: `(note: this flag has an unreliable historical hit rate per the July audit)`.
+  - Replaced characterizations in the `AUDIT FLAGS` section to describe outcomes strictly factually (e.g. "TRAP Arm Outperformed Expectation", "COLD_HIGH_BR Hitter Outperformed Baseline").
+- **Reasoning:** To ensure that automated reports remain completely objective and do not quietly shift user perceptions of unvalidated or reversed signals while on the road.
+- **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
+
+
 
 
 

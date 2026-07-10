@@ -1,7 +1,7 @@
 === OMEGA SIGNAL DIGEST - 2026-07-09 ===
 
 CAPTURE: 6:20pm snapshot confirmed
-TOP STACK: Milwaukee Brewers | conf=97.0 | ITT=4.5 | actual=8.0 | diff=+3.5 | HIT
+TOP STACK: Milwaukee Brewers | conf=97.0 | ITT=4.5 | actual=8.0 | diff=+3.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
 TRAP ARMS (2 instances):
   José Suarez (Vulnerable) vs Athletics: attack_conf=0.0 ITT=4.9 actual=4.0 diff=-0.9 | 1.1IP 0ER -> NORMAL
   Carson Whisenhunt (Short Leash) vs San Francisco Giants: attack_conf=22.0 ITT=4.3 actual=2.0 diff=-2.3 | 5.2IP 2ER -> OVER-DELIVERED
@@ -38,8 +38,8 @@ ANTI_CHALK_SMASH (25 fires):
   Cal Raleigh (Seattle Mariners): blended=26.6 | actual=1.0DKpts | -11.4 vs baseline
   James Outman (Detroit Tigers): blended=16.7 | actual=-1.0DKpts | -5.0 vs baseline
 COLD_HIGH_BR_WARNING (2 fires):
-  Bryce Harper (Philadelphia Phillies): blended=103.3 | actual=-1.0DKpts | -15.8 vs baseline
-  Kyle Schwarber (Philadelphia Phillies): blended=108.5 | actual=1.5DKpts | +2.5 vs baseline
+  Bryce Harper (Philadelphia Phillies): blended=103.3 | actual=-1.0DKpts | -15.8 vs baseline (note: this flag has an unreliable historical hit rate per the July audit)
+  Kyle Schwarber (Philadelphia Phillies): blended=108.5 | actual=1.5DKpts | +2.5 vs baseline (note: this flag has an unreliable historical hit rate per the July audit)
 PLATOON_TRAP (24 fires):
   Heliot Ramos (San Francisco Giants): actual=4.0DKpts | +0.0 vs baseline
   Hunter Goodman (Colorado Rockies): actual=6.5DKpts | -9.0 vs baseline
@@ -103,9 +103,9 @@ RUNNING ACCURACY (10 slates tracked):
   TRAP/Vulnerable: 73.3% underscored ITT | avg diff +0.22R
   TRAP/Short Leash: 50.0% underscored ITT | avg diff +1.77R
   FADE_RISK: 100.0% correct | avg diff -0.55R
-  Top Stack hit ITT: 40.0%
+  Top Stack hit ITT: 40.0% (note: team-level attack_conf has no predictive power per the July audit)
   HOT_MSMI avg: 6.3 DK pts
-  STEAM: 41.7% correct | avg +0.95R
+  STEAM: 41.7% correct | avg +0.95R (note: steam is a refuted/reversed signal per the July audit)
   ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
   PLATOON_TRAP: 61.6% underperformed baseline
   STRONG_EDGE: avg +0.26 DK pts vs baseline
@@ -113,10 +113,10 @@ RUNNING ACCURACY (10 slates tracked):
   VOLATILE pitchers - attacking team overscored ITT: 42.9%
   WALKS/HAZARD pitchers - attacking team overscored ITT: 40.5%
   GASSED pen teams: 37.9% hit ITT
-  BURST teams: 42.9% hit ITT
+  BURST teams: 42.9% hit ITT (note: burst is a refuted signal per the July audit)
 
 AUDIT FLAGS:
-  TRAP Arm Over-delivered: Carson Whisenhunt (5.2 IP, 2 ER)
+  TRAP Arm Outperformed Expectation: Carson Whisenhunt (5.2 IP, 2 ER)
   Right-Game-Wrong-Team Match: Los Angeles Angels @ Texas Rangers (Both scored 6+ runs)
 
 === END ===

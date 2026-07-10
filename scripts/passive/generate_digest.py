@@ -120,8 +120,7 @@ def main():
         itt = safe_float(ts.get('ITT'))
         act = safe_float(ts.get('actual_runs'))
         diff = safe_float(ts.get('run_diff'))
-        res = "HIT" if ts.get('model_correct') == 'Y' else "MISS"
-        lines.append(f"TOP STACK: {ts.get('team')} | conf={ts.get('attack_conf')} | ITT={itt} | actual={act} | diff={diff:+.1f} | {res}")
+        lines.append(f"TOP STACK: {ts.get('team')} | conf={ts.get('attack_conf')} | ITT={itt} | actual={act} | diff={diff:+.1f} (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)")
     else:
         lines.append("TOP STACK: None")
 
@@ -164,8 +163,7 @@ def main():
         conf = st.get('attack_conf')
         itt = safe_float(st.get('ITT'))
         act = safe_float(st.get('actual_runs'))
-        res = "CORRECT" if st.get('steam_correct') == 'Y' else "MISS"
-        lines.append(f"  {team}: conf={conf} ITT={itt} | actual={act}R -> {res}")
+        lines.append(f"  {team}: conf={conf} ITT={itt} | actual={act}R (note: is_steam is a refuted/reversed signal per the July audit)")
 
     # Hot MSMI Top 3
     hot_sorted = sorted(hot_msmi_today, key=lambda x: safe_float(x.get('actual_dk_pts')), reverse=True)
@@ -191,7 +189,7 @@ def main():
         blended = cb.get('blended_rating')
         act = cb.get('actual_dk_pts')
         diff = safe_float(cb.get('pts_diff'))
-        lines.append(f"  {player} ({team}): blended={blended} | actual={act}DKpts | {diff:+.1f} vs baseline")
+        lines.append(f"  {player} ({team}): blended={blended} | actual={act}DKpts | {diff:+.1f} vs baseline (note: this flag has an unreliable historical hit rate per the July audit)")
 
     # Platoon Trap
     lines.append(f"PLATOON_TRAP ({len(plat_trap_today)} fires):")
@@ -365,9 +363,9 @@ def main():
     lines.append(f"  TRAP/Vulnerable: {vul_pct}% underscored ITT | avg diff {vul_diff:+.2f}R")
     lines.append(f"  TRAP/Short Leash: {sh_pct}% underscored ITT | avg diff {sh_diff:+.2f}R")
     lines.append(f"  FADE_RISK: {fade_corr_pct}% correct | avg diff {fade_diff:+.2f}R")
-    lines.append(f"  Top Stack hit ITT: {ts_hit_pct}%")
+    lines.append(f"  Top Stack hit ITT: {ts_hit_pct}% (note: team-level attack_conf has no predictive power per the July audit)")
     lines.append(f"  HOT_MSMI avg: {msmi_avg} DK pts")
-    lines.append(f"  STEAM: {steam_corr_pct}% correct | avg {steam_diff:+.2f}R")
+    lines.append(f"  STEAM: {steam_corr_pct}% correct | avg {steam_diff:+.2f}R (note: steam is a refuted/reversed signal per the July audit)")
     lines.append(f"  ANTI_CHALK_SMASH: avg {ac_avg_diff:+.2f} DK pts vs baseline")
     lines.append(f"  PLATOON_TRAP: {pt_under_pct}% underperformed baseline")
     lines.append(f"  STRONG_EDGE: avg {se_avg_diff:+.2f} DK pts vs baseline")
@@ -375,7 +373,7 @@ def main():
     lines.append(f"  VOLATILE pitchers - attacking team overscored ITT: {vol_over_pct}%")
     lines.append(f"  WALKS/HAZARD pitchers - attacking team overscored ITT: {wh_over_pct}%")
     lines.append(f"  GASSED pen teams: {pf_hit_pct}% hit ITT")
-    lines.append(f"  BURST teams: {bs_hit_pct}% hit ITT")
+    lines.append(f"  BURST teams: {bs_hit_pct}% hit ITT (note: burst is a refuted signal per the July audit)")
 
     # Audit Flags
     audit_flags = []
@@ -386,14 +384,14 @@ def main():
             ip = float(tr.get('pitcher_actual_ip', 0.0))
             er = int(tr.get('pitcher_actual_er', 0))
             if ip >= 5.0 and er <= 2:
-                audit_flags.append(f"TRAP Arm Over-delivered: {tr.get('pitcher')} ({ip} IP, {er} ER)")
+                audit_flags.append(f"TRAP Arm Outperformed Expectation: {tr.get('pitcher')} ({ip} IP, {er} ER)")
         except:
             pass
 
     # 2. FADE_RISK failure (Runs >= ITT)
     for fd in fade_today:
         if fd.get('fade_correct') == 'N':
-            audit_flags.append(f"FADE_RISK Failed: {fd.get('team')} scored {fd.get('actual_runs')} vs ITT={fd.get('ITT')}")
+            audit_flags.append(f"FADE_RISK Outperformed ITT: {fd.get('team')} scored {fd.get('actual_runs')} vs ITT={fd.get('ITT')}")
 
     # 3. Right game wrong team match (both scored 6+)
     for rg in rgwt_today:
@@ -405,7 +403,7 @@ def main():
         try:
             diff = float(cb.get('pts_diff', 0.0))
             if diff >= 5.0:
-                audit_flags.append(f"COLD_HIGH_BR Hitter Smashed: {cb.get('player')} outscored baseline by +{diff:.1f} pts")
+                audit_flags.append(f"COLD_HIGH_BR Hitter Outperformed Baseline: {cb.get('player')} outscored baseline by +{diff:.1f} pts (note: this flag has an unreliable historical hit rate per the July audit)")
         except:
             pass
 
