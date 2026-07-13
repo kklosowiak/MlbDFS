@@ -387,3 +387,59 @@ def test_omega_confidence_penalties_scoring():
     conf_st, reasons_st = score_stack_confidence(t_stack, p_reports_mock)
     assert conf_st == 55.0
     assert any("Same-side starter elite warning" in r for r in reasons_st)
+
+
+def test_hitter_platoon_retired():
+    """Verify that platoon label and multiplier adjustments are retired/neutral (July 13)."""
+    from utils.hitter_confidence import score_hitter_confidence
+
+    h_base = {
+        "name": "Test Hitter",
+        "matchup_xwoba": 0.330
+    }
+    h_elite = {
+        **h_base,
+        "platoon_label": "ELITE PLATOON",
+        "platoon_multiplier": 1.15
+    }
+    h_trap = {
+        **h_base,
+        "platoon_label": "PLATOON TRAP",
+        "platoon_multiplier": 0.85
+    }
+
+    c_base, _ = score_hitter_confidence(h_base)
+    c_elite, r_elite = score_hitter_confidence(h_elite)
+    c_trap, r_trap = score_hitter_confidence(h_trap)
+
+    # Platoon label adjustments should be retired -> conf scores must be identical
+    assert c_elite == c_base
+    assert c_trap == c_base
+    
+    # Platoon multiplier fallback adjustments should also be retired
+    assert not any("ELITE PLATOON" in r for r in r_elite)
+    assert not any("PLATOON TRAP" in r for r in r_trap)
+    assert not any("Platoon edge" in r for r in r_elite)
+    assert not any("Platoon fade" in r for r in r_trap)
+
+
+def test_hitter_gassed_bullpen_preserved():
+    """Verify that the gassed bullpen +8 CONF bonus remains active (July 13)."""
+    from utils.hitter_confidence import score_hitter_confidence
+
+    h_base = {
+        "name": "Test Hitter",
+        "matchup_xwoba": 0.330
+    }
+    h_gassed = {
+        **h_base,
+        "bullpen_fatigue": 90
+    }
+
+    c_base, _ = score_hitter_confidence(h_base)
+    c_gassed, r_gassed = score_hitter_confidence(h_gassed)
+
+    # Gassed bullpen bonus must be exactly +8 CONF
+    assert c_gassed - c_base == 8
+    assert any("Attacking gassed opposing bullpen" in r for r in r_gassed)
+
