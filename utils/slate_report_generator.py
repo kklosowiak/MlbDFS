@@ -33,7 +33,10 @@ class SlateReportGenerator:
         if isinstance(raw_score, dict):
             raw_score = raw_score.get('final', 0)
         score = float(raw_score or 0)
-        conf = float(entity.get('attack_conf', 0) or 0)
+        if score_field == 'stack_score':
+            conf = float(entity.get('stack_trust_score', 50.0) or 50.0)
+        else:
+            conf = float(entity.get('attack_conf', 50.0) or 50.0)
         return round((score + conf) / 2, 1)
 
     def generate(self, p_reports, t_reports, h_reports):
@@ -61,6 +64,7 @@ class SlateReportGenerator:
             t['attack_reasons'] = reasons
             
             # Compute new stack_trust_score (separate from attack_conf)
+            # Redefined stack_trust_score: incorporates implied_total to resolve July 2 failure mode
             opp_p = pitcher_map.get(normalize_player_name(t.get('opp_pitcher', '')))
             if not opp_p:
                 opp_p = team_pitcher_map.get(t.get('opponent'))
@@ -77,15 +81,8 @@ class SlateReportGenerator:
                 if opp_trap_short_leash or opp_trap_vulnerable or opp_low_ceiling or opp_hazard or opp_paradox:
                     opp_sp_any_flag = 1.0
                     
-            is_fade_risk = 1.0 if t.get('is_fade_risk') == 'Y' or t.get('is_fade_risk') is True else 0.0
-            is_pitch_alignment = 1.0 if t.get('is_pitch_alignment') == 'Y' or t.get('is_pitch_alignment') is True else 0.0
-            
-            team_hitters = [h for h in h_reports if h.get('team') == t.get('team')]
-            anti_chalk_count = sum(1 for h in team_hitters if h.get('is_anti_chalk_smash') == 'Y' or h.get('is_anti_chalk_smash') is True)
-            anti_chalk_pct = (anti_chalk_count / len(team_hitters)) * 100.0 if team_hitters else 0.0
-            
-            # Formula: 70.0 - 10.0 * opp_sp_any_flag - 47.0 * is_fade_risk + 0.64 * anti_chalk_pct + 12.0 * is_pitch_alignment
-            ts = 70.0 - 10.0 * opp_sp_any_flag - 47.0 * is_fade_risk + 0.64 * anti_chalk_pct + 12.0 * is_pitch_alignment
+            itt = float(t.get('implied_total', 0.0) or 0.0)
+            ts = itt * 10.0 - 10.0 * opp_sp_any_flag
             t['stack_trust_score'] = round(max(0.0, min(100.0, ts)), 1)
             
             scored_stacks.append(t)
@@ -152,7 +149,8 @@ class SlateReportGenerator:
                             f"PARADOX: Lost within-game recommendation vs {winner['team']} (lower ITT/momentum)."
                         )
 
-        scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
+        # Sort primarily by stack_trust_score (Option B) and break ties with attack_conf (reference)
+        scored_stacks.sort(key=lambda x: (x.get('stack_trust_score', 0.0), x.get('attack_conf', 0.0)), reverse=True)
 
         # OMEGA v20.3: Slate Compression Detection (Item 3)
         self.is_low_diff = False
@@ -267,7 +265,7 @@ class SlateReportGenerator:
         
         if best_t:
             blended_display = best_t.get('blended_rating') or self._compute_blended(best_t, 'stack_score')
-            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | CONF: {best_t['attack_conf']}% | Trust: {best_t.get('stack_trust_score', 0.0)}% | Ω: {best_t.get('stack_score', 0)})")
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | Trust: {best_t.get('stack_trust_score', 0.0)}% | CONF: {best_t['attack_conf']}% (Ref) | Ω: {best_t.get('stack_score', 0)})")
             for r in best_t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
@@ -291,7 +289,7 @@ class SlateReportGenerator:
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
             blended_display = t.get('blended_rating') or self._compute_blended(t, 'stack_score')
-            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | CONF: {t['attack_conf']}% | Trust: {t.get('stack_trust_score', 0.0)}% | Omega: {t.get('stack_score', 0)})")
+            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | Trust: {t.get('stack_trust_score', 0.0)}% | CONF: {t['attack_conf']}% (Ref) | Omega: {t.get('stack_score', 0)})")
             for r in t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")

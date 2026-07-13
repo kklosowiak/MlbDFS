@@ -556,11 +556,12 @@ def run_full_analysis():
     # Do NOT compute blended_rating anywhere else — dashboard and server must read
     # the value set here rather than recomputing it.
 
-    # Teams: blended = (stack_score + attack_conf) / 2
+    # Teams: blended = (stack_score + stack_trust_score) / 2
+    # stack_trust_score incorporates implied_total to resolve July 2 failure mode
     for t in team_reports:
         stack_score = float(t.get('stack_score', 0) or 0)
-        attack_conf = float(t.get('attack_conf', 0) or 0)
-        t['blended_rating'] = round((stack_score + attack_conf) / 2, 1)
+        stack_trust_score = float(t.get('stack_trust_score', 50.0) or 50.0)
+        t['blended_rating'] = round((stack_score + stack_trust_score) / 2, 1)
 
     # Pitchers: blended = (alpha_score_final + attack_conf) / 2
     for p in p_reports:

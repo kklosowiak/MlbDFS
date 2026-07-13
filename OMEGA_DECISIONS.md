@@ -419,6 +419,28 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
 
 
+### July 13, 2026 — Implementation of Redefined Team Stack Trust Score
+
+#### Validation and Deployment of Implied-Total-Inclusive `stack_trust_score` — IMPLEMENTED (audit/july-2026 only)
+- **Decision:** Redefine the stack trust score to incorporate the team's implied total: `stack_trust_score = implied_total * 10.0 - 10.0 * opp_sp_any_flag`. This resolves the structural "implied-total blind spot" (where low-scoring environment teams outranked high-scoring environment teams purely due to binary SP flags). It serves as the primary stack-ranking sort key in the report generator and dashboard, replacing and demoting the unvalidated `attack_conf` metric.
+- **Formulation:**
+  \[ \text{stack\_trust\_score} = 10.0(\text{implied\_total}) - 10.0(\text{opp\_sp\_any\_flag}) \]
+  - *opp_sp_any_flag* = 1 if the opposing SP is flagged with `trap_short_leash`, `trap_vulnerable`, `low_ceiling`, `hazard`, or `paradox`.
+- **Validation Results ($N = 1,076$ team-stacks):**
+  - **Regression Validation:**
+    - Regressing actual runs against the separate components `runs ~ implied_total + opp_sp_any_flag` shows that `opp_sp_any_flag` is not individually significant once controlled for `implied_total` ($p = 0.3801$, standard error $0.211$, coefficient $-0.185$). This is due to collinearity, as SP fader status is already priced into Vegas lines.
+    - **Labeling Status:** SP-flag penalty term validated as adding incremental value via dry-run testing; exact weight (-10.0) is an unvalidated judgment call, same category as the outlier-driven and same-side-starter-cap penalties from the July 7 audit.
+  - **Comprehensive Dry-Run Validation (All 56 Matched Slates):**
+    - **New Sort vs. Old Sort Record:** **29 Wins | 10 Losses | 17 Ties**
+    - **Win Rate (excluding ties):** **74.4%** on actual runs scored by the #1 pick.
+    - **July 2 Pattern (Lower-ITT ranked above higher-ITT with no SP disadvantage):** **0 occurrences (0.0%)** across all 56 slates (down from 50.88% with the binary sort).
+    - **Incremental Value over Vegas Baseline:** The pure Vegas implied total sort yields a 59.0% win rate (average 5.179 runs), while the redefined trust score yields 5.625 runs, adding a **real practical value of +0.446 runs per game** over pure Vegas ITT.
+- **Key Takeaways & System Notes:**
+  - **Resolution of July 2 Disagreement:** Incorporating `implied_total * 10.0` ensures the baseline scoring environment is preserved as the primary driver. On July 2, the Dodgers (6.0 ITT, facing a flagged SP) correctly outrank the Angels (3.4 ITT, facing a clean SP) in both the report and the dashboard (Dodgers #1 in both).
+  - **Smooth Blended Ratings:** Because the trust score now operates on a continuous scale (e.g. 30.0 to 70.0), `blended_rating = (stack_score + stack_trust_score) / 2` retains a smooth, continuous distribution, avoiding any clustering or coarseness artifacts.
+- **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
+
+
 
 
 
