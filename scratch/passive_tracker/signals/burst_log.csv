@@ -48,3 +48,6 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-07-11,Baltimore Orioles,97.0,5.1,6,0.9,Y
 2026-07-11,St. Louis Cardinals,97.0,4.3,4,-0.3,N
 2026-07-11,Kansas City Royals,75.0,4.2,1,-3.2,N
+2026-07-12,Baltimore Orioles,94.0,5.4,8,2.6,Y
+2026-07-12,Kansas City Royals,82.0,4.4,2,-2.4,N
+2026-07-12,St. Louis Cardinals,82.0,4.0,3,-1.0,N
