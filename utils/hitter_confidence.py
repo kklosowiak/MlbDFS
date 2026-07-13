@@ -19,23 +19,9 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf -= 12
         reasons.append(f"Weak matchup xwOBA ({xwoba:.3f}).")
 
-    # 2. Dynamic Platoon Splits via NPAS (Net Platoon Advantage Score)
-    platoon_label = h.get("platoon_label", "")
-    if platoon_label and "ELITE" in platoon_label.upper():
-        conf += 12
-        reasons.append("⚡ ELITE PLATOON MATCHUP: Hitter xwOBA and pitcher splits allowed perfectly align.")
-    elif platoon_label and "TRAP" in platoon_label.upper():
-        conf -= 10
-        reasons.append("🚨 PLATOON TRAP: Matchup heavily neutralizes their side split.")
-    else:
-        # Fallback to old platoon multiplier if no NPAS label is found
-        plt = float(h.get("platoon_multiplier", 1.0) or 1.0)
-        if plt >= 1.08:
-            conf += 12
-            reasons.append(f"Platoon edge vs {h.get('pitch_hand', 'P')}HP.")
-        elif plt <= 0.92:
-            conf -= 10
-            reasons.append(f"Platoon fade vs {h.get('pitch_hand', 'P')}HP.")
+    # 2. Dynamic Platoon Splits via NPAS (Retired per July 13 Audit to prevent splits double-counting)
+    # Splits are already natively priced inside matchup_xwoba. Adding additional splits-based CONF bonuses
+    # resulted in OOS overfitting and double-counting.
 
     # 3. Prop Betting Targets & Juice
     if h.get("runs_target") or h.get("rbis_target"):

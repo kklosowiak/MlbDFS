@@ -441,8 +441,22 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
 
 
+### July 13, 2026 — Removal of Platoon Label Confidence Adjustments
 
-
-
-
-
+#### Platoon Split Double-Counting Cleaned and Gassed Bullpen Validated — IMPLEMENTED (audit/july-2026 only)
+- **Decision:** Remove the dynamic platoon label adjustments (`ELITE PLATOON` / `STRONG EDGE` / `PLATOON TRAP` / fallback `platoon_multiplier` adjustments) from individual hitter confidence calculations. Keep the `GASSED BULLPEN` confidence adjustment active.
+- **Reasoning:** 
+  - **The Double-Counting Mechanism:** The individual hitter confidence calculation already directly prices in the matchup quality via `matchup_xwoba` (+18 CONF for >= 0.370, +10 for >= 0.345). Because the matchup xwOBA is itself built from the platoon splits, adding another splits-based confidence modifier (+12 CONF for `ELITE PLATOON`) results in double-counting the splits, which overcorrects hitter confidence scores.
+  - **Statistical Evidence (N = 6,963 matched hitter-game outcomes):**
+    - **`ELITE PLATOON`:** Statistically refuted by in-sample outcomes (N=196, OLS coefficient: -1.358521, t=-2.541, p=0.011089). Hitters flagged with this label underperform baseline expectations by -1.003 DraftKings points on average (t = -2.169, p=0.031305).
+    - **`STRONG EDGE` & `PLATOON TRAP`:** Removed via the shared double-counting mechanism, not by independent proof. Neither signal cleared the individual significance threshold in OLS (p=0.215476 and p=0.240883 respectively).
+    - **`GASSED BULLPEN`:** Strongly validated. Facing an exhausted bullpen has a highly significant positive OLS coefficient of **+0.593196 DK points** (t=3.363, p=0.000775).
+  - **Out-of-Sample (OOS) Grouped 5-Fold Cross-Validation:**
+    - Confirmed that removing the platoon adjustment block yields a **small but real, statistically significant improvement** on held-out slates. 
+    - Average test MSE improved from 52.0524 to 51.9890 (paired t-test p=0.049205). Average test correlation improved from 0.0480 to 0.0602, and average R2 improved from -0.00123 to +0.00007 (both still near zero, showing small absolute magnitude relative to a near-zero baseline).
+  - **3-Slate Illustrative Dry Run (July 4, 7, 8 — N=262 labeled hitters):**
+    - Per-hitter prediction error computed by first fitting a linear calibration (dk_pts = 5.09 + 0.026 * attack_conf) on all 1,433 snapshot hitter-game records, then translating old vs. new CONF into expected pts, then computing signed error vs. actual.
+    - **Calibration caveat:** The CONF->pts slope (0.026, r=0.082) is very shallow. A 12-pt ELITE removal shifts predicted pts by only ~0.31 — well inside per-game noise. Per-hitter MAE differences on a 3-slate sample (~0.05-0.08 pts) are not individually meaningful.
+    - **Dry-run result:** ELITE PLATOON MAE improved (5.570 -> 5.519, 57% of hitters better). STRONG EDGE unchanged (no adjustment was removed). PLATOON TRAP slightly worse (+0.078) on this specific 3-slate sample.
+    - **This dry run is ILLUSTRATIVE ONLY** — not additional statistical evidence. Its purpose is mechanical sanity-check (confirming conf->pts translation is correctly applied), not a separate validation finding. The headline statistical evidence for this change remains the N=6,963 in-sample regression (ELITE PLATOON p=0.011, avg -1.003 DK pts cost) and the N=6,963 OOS cross-validation (paired t-test p=0.049).
+- **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
