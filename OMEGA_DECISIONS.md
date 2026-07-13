@@ -347,6 +347,8 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 #### Backlog Items for Statistical Validation:
 1. **Outlier-Driven Recent Form Penalty Check:** Verify if `is_outlier_driven = True` corresponds to a statistically significant drop in actual DraftKings points and success rate compared to clean recent-form starting pitchers.
 2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline.
+3. **Pitcher Form Cache Coverage Gap (added July 13):** `pitcher_form_cache.json` is currently refreshed only for today's slate pitchers, leaving the cache with ~24 entries vs. the full pitcher pool (~175 over a week's slates). This means `recent_era_5g` is `None` for virtually all pitchers in production, and the L5 ERA penalty was dead code. Before adding any L5-window scoring signal, the form cache refresh logic in `statcast_bridge.py` must be expanded to cover all pitchers on each slate at run time (not just the current day). Once coverage is fixed, `recent_era_5g` should be re-evaluated statistically (N >= 300 pitcher-game records recommended) before any penalty is re-added.
+4. **recent_era Penalty Re-Calibration:** Current `-6 CONF` penalty for `recent_era >= 4.50` is likely oversized relative to the controlled effect size (~-2.9 DK pts, p=0.041 after controlling for SIERA and opponent environment). Re-calibrate once N exceeds ~400 pitcher-game records to support a stable 3-covariate OLS.
 
 
 ### July 9, 2026 — Pitcher Recent-Form Calibration Regression Study
@@ -367,6 +369,19 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
     - Adding these 14 starts (which clustered several bad outings/busts on July 8 like Gore's 5.25 DK pts and Springs' -0.25 DK pts) completely shifted the p-value of `recent_era_5g` from insignificant ($0.132$) to significant ($0.033$).
   - **Conclusion:** Because the regression results are extremely sensitive to the inclusion/exclusion of a single day's slate (July 8), and the coefficients diverge significantly under minor sample variations, **none of the four penalties are statistically validated**. They remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies. They are implemented to suppress slumping pitchers (like Davis Martin and MacKenzie Gore), but are not supported by a robust, stable regression.
 
+
+#### Full First-Half SIERA Dominance Study — RESEARCH COMPLETED (NOT YET ACTED ON) — logged retroactively July 13
+- **Methodology:** Full-season game logs through the 2026 first half. N = 962 starting pitcher appearances across all 244 starting pitchers. Outcome: `actual_dk_pts`. Predictors: `recent_era_5g` (rolling 5-game ERA) and `siera` (season-long SIERA). Source: `run_all_studies.py`.
+- **Result:**
+  \[ \text{dk\_pts} \approx 49.20 - 0.22 \cdot \text{recent\_era\_5g} - 6.80 \cdot \text{siera} \]
+- **Interpretation:**
+  - Season-long SIERA is the dominant driver of DK output ($-6.80$ per unit). A pitcher moving from a 3.00 SIERA to a 5.00 SIERA represents ~$13.6$ DK pts of expected difference.
+  - Rolling 5-game ERA (`recent_era_5g`) has an independent coefficient of only $-0.22$ per unit once SIERA is controlled for. Even a pitcher posting a 7.00 ERA over their last five starts vs. a 4.25 ERA (the penalty trigger) represents an independent effect of only $(7.00 - 4.25) \times 0.22 = 0.61$ DK pts above what SIERA already explains.
+  - The small-sample flip-flopping in the N=153/167 runs is explained by multicollinearity: when SIERA is absent from those models, `recent_era_5g` picks up SIERA's predictive power and appears artificially significant. Once SIERA is controlled for at full scale, rolling ERA adds almost nothing independently.
+  - `siera_div` (the ERA-minus-SIERA divergence term): adding divergence as a separate term on top of SIERA and rolling ERA introduces further multicollinearity with no independent value — both the N=153/167 runs and this finding confirm zero measured independent effect.
+  - `recent_bb9`: both small-sample runs showed small positive (wrong-direction) coefficients, consistent with noise. Not re-run at N=962 but directionally unsupported.
+- **Logging Gap:** This finding was produced during the July 9 audit week via `run_all_studies.py` but was not formally recorded at the time. Logged here retroactively on July 13 to establish the documented basis for scoring decisions.
+- **Action Gate:** Finding documented. Scoring change pending review.
 
 #### Team Stack attack_conf Predictive Power Study — RESEARCH COMPLETED (DO NOT DEPLOY)
 - **Context:** Evaluated the predictive power of the team-level composite `attack_conf` score across $N = 160$ team stacks from June 27 to July 8, 2026.
@@ -460,3 +475,32 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
     - **Dry-run result:** ELITE PLATOON MAE improved (5.570 -> 5.519, 57% of hitters better). STRONG EDGE unchanged (no adjustment was removed). PLATOON TRAP slightly worse (+0.078) on this specific 3-slate sample.
     - **This dry run is ILLUSTRATIVE ONLY** — not additional statistical evidence. Its purpose is mechanical sanity-check (confirming conf->pts translation is correctly applied), not a separate validation finding. The headline statistical evidence for this change remains the N=6,963 in-sample regression (ELITE PLATOON p=0.011, avg -1.003 DK pts cost) and the N=6,963 OOS cross-validation (paired t-test p=0.049).
 - **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
+
+
+### July 13, 2026 — Pitcher Penalty Audit Follow-Up
+
+#### recent_era_5g Penalty — Dead Code Removal
+- **Finding:** `recent_era_5g` is `None` for **all 175** pitcher-game records in snapshot history (June 27–July 8). The `-6 CONF` penalty for `recent_era_5g >= 4.25` has **never fired in production**.
+- **Root cause:** `pitcher_form_cache.json` is populated by `statcast_bridge.py` only for today's slate pitchers at cache-refresh time. It currently holds only 24 profiles — a fraction of the ~175 pitchers tracked. When `pitcher_analyzer.py` calls `form_cache.get(normalize_player_name(...))` (line 457), most pitchers return `None`, bypassing the entire form-population block (gated at line 474: `if p_form and p_form.get('recent_ip', 0) >= 8.0`). `recent_era_5g` stays at its initialized `None` value and propagates as `None` through to the confidence scorer.
+- **Signal validity:** The field is correctly computed and stored when a pitcher is fetched — all 24 cache entries have valid `recent_era_5g` values. This is a coverage gap in the form cache pipeline, not a computation error.
+- **Decision:** Remove the `recent_era_5g >= 4.25` penalty block from `attack_confidence.py` as **dead code cleanup**. This is not a signal quality judgment. The form cache coverage gap is **backlogged** for future pipeline work — if coverage is expanded to all slate pitchers, `recent_era_5g` should be re-evaluated statistically before re-adding any penalty.
+
+#### recent_era Group Difference — Confound Check (N=175 pitcher-game records)
+- **Question:** Does the naive 6.46 DK pt gap between `recent_era >= 4.50` and `recent_era < 4.50` groups (p=0.0003) survive controls for pitcher quality and opponent environment?
+- **Three OLS models run:**
+
+  | Model | `is_bad_era` coef | p-value |
+  |---|---|---|
+  | Naive (no controls) | -6.46 | 0.0003 |
+  | + SIERA control | -5.18 | 0.0040 |
+  | + SIERA + opp run environment | -2.86 | 0.0409 |
+
+- **Confound structure:** `is_bad_era` correlates with SIERA ($r = 0.27$, $p = 0.0004$) and opponent run output ($r = 0.20$, $p = 0.009$), confirming partial confounding — bad-ERA pitchers tend to be lower-quality arms facing better offenses.
+- **Conclusion:** The signal is **real but partially confounded**. Controlled effect size is approximately $-2.9$ DK pts (not $-6.5$), significant at $p = 0.041$. The current `-6 CONF` penalty is likely oversized relative to the controlled effect. **Kept at `-6` for now** — backlogged for re-calibration once N grows; current N=175 is too small to reliably fit a 3-covariate model.
+
+#### siera_div Reduction — UNVALIDATED JUDGMENT CALL
+- **Decision:** Reduce `siera_div >= 1.50` penalty from `-4 CONF` to `-2 CONF`.
+- **Rationale:** Both small-sample regressions show near-zero independent coefficient for the divergence term once raw L3 ERA is included in the same model. This conservative reduction acknowledges the lack of evidence for the original weight.
+- **Classification: [UNVALIDATED JUDGMENT CALL]** — The `-2` value is not data-derived. It is an arbitrary conservative downward adjustment from `-4`, not a measured effect size. Treat with the same skepticism as the original `-4`.
+- **Action Gate:** Pending merge approval.
+

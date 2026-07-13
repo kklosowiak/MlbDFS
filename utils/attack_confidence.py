@@ -649,14 +649,15 @@ def score_pitcher_confidence(p, t_reports):
         reasons.append(f"Recent form driven by single outlier start (ex-best ERA: {ex_best}) (-10).")
 
     # OMEGA v21.2: Rolling ERA and walk rate decline penalties
+    # OMEGA v21.3 (July 13): recent_era_5g blocks removed — dead code.
+    #   recent_era_5g is None for all pitchers in production due to pitcher_form_cache.json
+    #   coverage gap (cache only refreshes for today's slate, ~24 pitchers vs. full pool).
+    #   Backlog item #3 in OMEGA_DECISIONS.md tracks the fix.
+    # OMEGA v21.3 (July 13): siera_div penalty reduced -4 -> -2 (unvalidated judgment call;
+    #   both regression runs show near-zero independent coefficient once L3 ERA is controlled).
     recent_era = p.get("recent_era")
-    recent_era_5g = p.get("recent_era_5g")
     recent_bb9 = p.get("recent_bb9")
     siera = p.get("siera")
-
-    if recent_era_5g is not None and recent_era_5g >= 4.25:
-        conf -= 6
-        reasons.append(f"Elevated L5 ERA ({recent_era_5g:.2f}) (-6).")
 
     if recent_era is not None and recent_era >= 4.50:
         conf -= 6
@@ -665,11 +666,8 @@ def score_pitcher_confidence(p, t_reports):
     if siera is not None:
         siera_val = float(siera)
         if recent_era is not None and (recent_era - siera_val) >= 1.50:
-            conf -= 4
-            reasons.append(f"L3 ERA ({recent_era:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
-        elif recent_era_5g is not None and (recent_era_5g - siera_val) >= 1.50:
-            conf -= 4
-            reasons.append(f"L5 ERA ({recent_era_5g:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
+            conf -= 2
+            reasons.append(f"L3 ERA ({recent_era:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-2).")
 
     if recent_bb9 is not None and recent_bb9 >= 4.5:
         conf -= 6
