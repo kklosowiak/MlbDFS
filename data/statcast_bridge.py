@@ -6,6 +6,7 @@ import json
 import time
 import random
 import concurrent.futures
+import statistics
 
 # Support for standalone execution
 if __name__ == "__main__":
@@ -496,6 +497,32 @@ class StatcastBridge:
             return {}
             
         form_cache = {}
+        def _parse_ip(ip_str):
+            try:
+                parts = str(ip_str).split('.')
+                full_innings = int(parts[0])
+                partial = int(parts[1]) if len(parts) > 1 else 0
+                return (full_innings * 3) + partial
+            except:
+                return 0
+
+        def _stats_from_games(games):
+            t_outs = 0
+            t_k = 0
+            t_er = 0
+            t_bb = 0
+            for g in games:
+                stat = g.get('stat', {})
+                t_outs += _parse_ip(stat.get('inningsPitched', '0.0'))
+                t_k += int(stat.get('strikeOuts', 0))
+                t_er += int(stat.get('earnedRuns', 0))
+                t_bb += int(stat.get('baseOnBalls', 0))
+            t_ip = t_outs / 3.0
+            era = (t_er / t_ip * 9.0) if t_ip > 0 else 0.0
+            k9 = (t_k / t_ip * 9.0) if t_ip > 0 else 0.0
+            bb9 = (t_bb / t_ip * 9.0) if t_ip > 0 else 0.0
+            return t_ip, era, k9, bb9
+
         seen_pitchers = set()
         for team, pitcher_name in probables.items():
             if team.endswith("_time") or pitcher_name in ["TBD", "Tbd", "tbd"]:
@@ -521,30 +548,71 @@ class StatcastBridge:
                 splits = stats_data[0].get('splits', [])
                 if not splits: continue
                 
-                # Get last 3 games (assumes chronological order)
-                # Some players might have relief appearances. For starters, we just take last 3 appearances.
-                recent_games = splits[-3:]
+                # Filter for starting pitching games
+                starting_splits = [g for g in splits if g.get('stat', {}).get('gamesStarted', 0) == 1]
+                target_splits = starting_splits if starting_splits else splits
                 
-                total_outs = 0
-                total_k = 0
-                total_er = 0
+                # Get last 3 games for recent form
+                recent_games = target_splits[-3:]
+                total_ip, recent_era, recent_k9, recent_bb9 = _stats_from_games(recent_games)
                 
-                for g in recent_games:
-                    stat = g.get('stat', {})
-                    ip_str = str(stat.get('inningsPitched', '0.0'))
+                total_k = sum(int(g.get('stat', {}).get('strikeOuts', 0)) for g in recent_games)
+                total_er = sum(int(g.get('stat', {}).get('earnedRuns', 0)) for g in recent_games)
+                total_bb = sum(int(g.get('stat', {}).get('baseOnBalls', 0)) for g in recent_games)
+
+                # OMEGA v21.1: 5-game rolling window
+                recent_games_5g = target_splits[-5:]
+                _, recent_era_5g, recent_k9_5g, _ = _stats_from_games(recent_games_5g)
+                
+                # OMEGA v21.1: Outlier-driven form detection (ex best start)
+                recent_era_ex_best = recent_era
+                is_outlier_driven = False
+                if len(recent_games) >= 2:
+                    max_remaining_era = 0.0
+                    for i in range(len(recent_games)):
+                        sub_games = [g for j, g in enumerate(recent_games) if j != i]
+                        _, sub_era, _, _ = _stats_from_games(sub_games)
+                        if sub_era > max_remaining_era:
+                            max_remaining_era = sub_era
+                    recent_era_ex_best = max_remaining_era
+                    if len(recent_games) >= 3:
+                        if (recent_era_ex_best - recent_era) >= 1.50 and recent_era_ex_best >= 4.0:
+                            is_outlier_driven = True
+                
+                # Trailing 15 starts for variance
+                def calculate_pitcher_dk_score(game_stat):
+                    ip_str = str(game_stat.get('inningsPitched', '0.0'))
                     try:
                         parts = ip_str.split('.')
                         full_innings = int(parts[0])
                         partial = int(parts[1]) if len(parts) > 1 else 0
-                        total_outs += (full_innings * 3) + partial
-                    except: pass
-                    
-                    total_k += int(stat.get('strikeOuts', 0))
-                    total_er += int(stat.get('earnedRuns', 0))
+                        outs = (full_innings * 3) + partial
+                        ip_val = outs / 3.0
+                    except:
+                        ip_val = 0.0
+                    so = int(game_stat.get('strikeOuts', 0))
+                    wins = int(game_stat.get('wins', 0))
+                    er = int(game_stat.get('earnedRuns', 0))
+                    hits = int(game_stat.get('hits', 0))
+                    bb = int(game_stat.get('baseOnBalls', 0))
+                    hbp = int(game_stat.get('hitByPitch', 0))
+                    cg = 1 if game_stat.get('completeGames', 0) else 0
+                    sho = 1 if game_stat.get('shutouts', 0) else 0
+                    score = (ip_val * 2.25) + (so * 2.0) + (wins * 4.0) - (er * 2.0) - (hits * 0.6) - (bb * 0.6) - (hbp * 0.6)
+                    if cg: score += 2.5
+                    if sho: score += 2.5
+                    return score
+
+                variance_games = target_splits[-15:]
+                dk_points_list = [calculate_pitcher_dk_score(g.get('stat', {})) for g in variance_games]
                 
-                total_ip = total_outs / 3.0
-                recent_k9 = (total_k / total_ip * 9.0) if total_ip > 0 else 0.0
-                recent_era = (total_er / total_ip * 9.0) if total_ip > 0 else 0.0
+                dk_points_mean = 0.0
+                dk_points_std = 0.0
+                starts_sampled = len(dk_points_list)
+                if starts_sampled > 0:
+                    dk_points_mean = round(sum(dk_points_list) / starts_sampled, 2)
+                if starts_sampled >= 3:
+                    dk_points_std = round(statistics.stdev(dk_points_list), 2)
                 
                 form_cache[norm] = {
                     "pitcher": pitcher_name,
@@ -553,11 +621,20 @@ class StatcastBridge:
                     "recent_ip": round(total_ip, 1),
                     "recent_k": total_k,
                     "recent_er": total_er,
+                    "recent_bb": total_bb,
                     "recent_k9": round(recent_k9, 2),
                     "recent_era": round(recent_era, 2),
+                    "recent_bb9": round(recent_bb9, 2),
+                    "recent_era_5g": round(recent_era_5g, 2),
+                    "recent_k9_5g": round(recent_k9_5g, 2),
+                    "recent_era_ex_best": round(recent_era_ex_best, 2),
+                    "is_outlier_driven": is_outlier_driven,
+                    "dk_points_mean": dk_points_mean,
+                    "dk_points_std": dk_points_std,
+                    "starts_sampled": starts_sampled,
                     "timestamp": datetime.now().isoformat()
                 }
-                print(f"    + {pitcher_name} Form: {len(recent_games)}G, {round(total_ip,1)} IP, {total_k} K (K/9: {round(recent_k9,2)}), {total_er} ER (ERA: {round(recent_era,2)})")
+                print(f"    + {pitcher_name} Form: {len(recent_games)}G, {round(total_ip,1)} IP, {total_k} K (K/9: {round(recent_k9,2)}), {total_er} ER (ERA: {round(recent_era,2)}), L3 BB/9: {round(recent_bb9, 2)} | Trailing Starts: {starts_sampled}, Mean: {dk_points_mean}, Std: {dk_points_std}")
                 time.sleep(random.uniform(0.2, 0.4))
             except Exception as e:
                 print(f"    ! Failed to fetch form for {pitcher_name}: {e}")

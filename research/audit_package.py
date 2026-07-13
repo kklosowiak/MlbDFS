@@ -293,6 +293,9 @@ def health_checks(stats: dict | None) -> list[str]:
 
 
 def main() -> int:
+    import sys, io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
     ap = argparse.ArgumentParser(description="OMEGA package audit (git pull + tests + export replay)")
     ap.add_argument("--skip-pull", action="store_true", help="Skip git fetch/pull")
     ap.add_argument("--skip-tests", action="store_true", help="Skip unit tests")

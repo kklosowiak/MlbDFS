@@ -1,1 +1,19 @@
 date,player,team,salary,batting_order,blended_rating,actual_dk_pts,baseline_dk_pts,pts_diff
+2026-07-03,Yordan Alvarez,Houston Astros,6000,2,82.1,13.5,14.83,-1.33
+2026-07-03,Nick Kurtz,Athletics,3000,1,91.0,20.0,6.85,13.15
+2026-07-03,Ben Rice,New York Yankees,3000,2,93.7,18.0,6.97,11.03
+2026-07-03,James Wood,Washington Nationals,5900,1,93.9,15.0,15.5,-0.5
+2026-07-03,Shea Langeliers,Athletics,3000,1,82.4,-1.0,6.85,-7.85
+2026-07-03,Bryce Eldridge,San Francisco Giants,3000,7,86.9,6.5,4.71,1.79
+2026-07-04,Yordan Alvarez,Houston Astros,6000,2,85.8,39.0,8.5,30.5
+2026-07-04,Nick Kurtz,Athletics,3000,1,92.4,-1.5,5.87,-7.37
+2026-07-04,Jj Bleday,Cincinnati Reds,4800,3,86.1,5.0,6.56,-1.56
+2026-07-05,Teoscar Hernandez,Los Angeles Dodgers,3000,5,90.3,3.5,5.61,-2.11
+2026-07-06,Teoscar Hernandez,Los Angeles Dodgers,3000,6,86.8,6.5,6.83,-0.33
+2026-07-07,Kyle Schwarber,Philadelphia Phillies,6300,2,89.1,18.5,9.38,9.12
+2026-07-07,Alec Burleson,St. Louis Cardinals,4500,5,84.2,-0.5,3.11,-3.61
+2026-07-07,Bryan Reynolds,Pittsburgh Pirates,3000,3,85.7,10.0,7.0,3.0
+2026-07-08,Bryce Harper,Philadelphia Phillies,5800,1,95.8,6.0,1.5,4.5
+2026-07-08,Kyle Schwarber,Philadelphia Phillies,6300,2,85.2,15.0,11.88,3.12
+2026-07-09,Bryce Harper,Philadelphia Phillies,5800,3,103.3,-1.0,14.75,-15.75
+2026-07-09,Kyle Schwarber,Philadelphia Phillies,6300,2,108.5,1.5,-1.0,2.5

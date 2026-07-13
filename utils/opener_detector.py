@@ -233,6 +233,30 @@ def match_team(team_abbrev, team_name):
     if short_name in t_norm:
         return True
     return False
+def parse_dk_game_info_time(game_info_str, commence_dt):
+    """
+    OMEGA v20.3: Parses Eastern Time from DK Game Info (e.g. "CWS@KC 06/26/2026 08:10PM ET")
+    and checks if it aligns with the event's UTC commence_time (within 1.5 hours).
+    """
+    if not game_info_str or not commence_dt:
+        return False
+    try:
+        parts = game_info_str.strip().split(' ')
+        if len(parts) < 3:
+            return False
+        date_str = parts[1]
+        time_str = parts[2]
+        time_str = time_str.replace('PM', ' PM').replace('AM', ' AM')
+        dt_str = f"{date_str} {time_str}"
+        from datetime import datetime, timedelta
+        game_dt_naive = datetime.strptime(dt_str, "%m/%d/%Y %I:%M %p")
+        for offset in [4, 5]:
+            game_utc = game_dt_naive + timedelta(hours=offset)
+            if abs((game_utc - commence_dt).total_seconds()) <= 5400:
+                return True
+    except Exception:
+        pass
+    return False
 
 def detect_opener_for_team(team, game, dk_players, props_data, slate_date, previous_results=None):
     """
@@ -250,6 +274,36 @@ def detect_opener_for_team(team, game, dk_players, props_data, slate_date, previ
     # Resolve starter name from game
     starter = game.get('home_pitcher' if team == game['home_team'] else 'away_pitcher')
     gid_props = props_data.get(game_id, {}) if props_data else {}
+
+    # Resolve commence time and group team pitchers for doubleheaders (Item 6)
+    commence_dt = None
+    commence_time_str = game.get('commence_time')
+    if commence_time_str:
+        try:
+            from datetime import datetime
+            commence_dt = datetime.fromisoformat(commence_time_str.replace('Z', '+00:00')).replace(tzinfo=None)
+        except Exception:
+            pass
+
+    team_dk_pitchers = []
+    game_info_match = None
+    if dk_players:
+        for p in dk_players:
+            p_team = p.get('TeamAbbrev')
+            pos = p.get('Position', '')
+            roster_pos = p.get('Roster Position', '')
+            is_p = (roster_pos == 'P' or 'SP' in pos or 'RP' in pos or 'PO' in pos or 'PLR' in pos)
+            if match_team(p_team, team) and is_p:
+                g_info = p.get('Game Info')
+                if g_info:
+                    if commence_dt:
+                        if parse_dk_game_info_time(g_info, commence_dt):
+                            team_dk_pitchers.append(p)
+                    else:
+                        team_dk_pitchers.append(p)
+                        game_info_match = g_info
+        if not commence_dt and game_info_match:
+            team_dk_pitchers = [p for p in team_dk_pitchers if p.get('Game Info') == game_info_match]
 
     # Extract k_line for starter from props_data
     starter_k_line = None
@@ -273,23 +327,6 @@ def detect_opener_for_team(team, game, dk_players, props_data, slate_date, previ
         pitcher['opener_tier'] = 1
         pitcher['opener_reason'] = f"K line {pitcher['k_line']} <= 1.5 — definitive opener signal"
         
-        # trigger bulk arm lookup
-        # Group pitchers on the team in this game
-        game_info_match = None
-        team_dk_pitchers = []
-        if dk_players:
-            for p in dk_players:
-                p_team = p.get('TeamAbbrev')
-                pos = p.get('Position', '')
-                roster_pos = p.get('Roster Position', '')
-                is_p = (roster_pos == 'P' or 'SP' in pos or 'RP' in pos or 'PO' in pos or 'PLR' in pos)
-                if match_team(p_team, team) and is_p:
-                    team_dk_pitchers.append(p)
-                    if p.get('Game Info'):
-                        game_info_match = p.get('Game Info')
-            if game_info_match:
-                team_dk_pitchers = [p for p in team_dk_pitchers if p.get('Game Info') == game_info_match]
-
         # Scan teammate props for highest outs line
         teammate_outs = {}
         for outcome in gid_props.get('pitcher_outs', []):
@@ -366,25 +403,7 @@ def detect_opener_for_team(team, game, dk_players, props_data, slate_date, previ
             log_detection(date_str, team, game_id, 1, bool(dk_players), False, None, [], [], "CONFIRMED", method, None, False, "BULK_UNRESOLVED")
             return "CONFIRMED", starter, None, 1, method, False, "BULK_UNRESOLVED"
 
-    # Group pitchers on the team in this game
-    game_info_match = None
-    team_dk_pitchers = []
-    
-    if dk_players:
-        # Find the game_info for this matchup
-        for p in dk_players:
-            p_team = p.get('TeamAbbrev')
-            pos = p.get('Position', '')
-            roster_pos = p.get('Roster Position', '')
-            is_p = (roster_pos == 'P' or 'SP' in pos or 'RP' in pos or 'PO' in pos or 'PLR' in pos)
-            if match_team(p_team, team) and is_p:
-                team_dk_pitchers.append(p)
-                if p.get('Game Info'):
-                    game_info_match = p.get('Game Info')
-                    
-        # Doubleheader verify: Filter team_dk_pitchers to ensure they share the same Game Info
-        if game_info_match:
-            team_dk_pitchers = [p for p in team_dk_pitchers if p.get('Game Info') == game_info_match]
+    # team_dk_pitchers pre-populated at top of function
 
     # Resolve props for game
     gid_props = props_data.get(game_id, {}) if props_data else {}

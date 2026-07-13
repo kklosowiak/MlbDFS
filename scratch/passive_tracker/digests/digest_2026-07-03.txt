@@ -1,0 +1,53 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-03 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=97.0 | ITT=5.0 | actual=4.0 | diff=-1.0 | MISS
+TRAP ARMS (2 instances):
+  Kyle Harrison (Vulnerable) vs Milwaukee Brewers: attack_conf=35.0 ITT=4.1 actual=4.0 diff=-0.1 | 2.2IP 3ER -> NORMAL
+  Jake Bennett (Short Leash) vs Boston Red Sox: attack_conf=39.0 ITT=3.9 actual=2.0 diff=-1.9 | 7.2IP 2ER -> OVER-DELIVERED
+FADE_RISK (1 instances):
+  Athletics: div=-14.0 mon%=45.0 | ITT=5.55 actual=5.0R -> CORRECT FADE
+STEAM (1 team fires):
+  Arizona Diamondbacks: conf=73.0 ITT=4.1 | actual=4.0R -> MISS
+HOT_MSMI TOP 3:
+  Freddie Freeman (Los Angeles Dodgers): 2.5 DK pts
+ANTI_CHALK_SMASH (1 fires):
+  Junior Caminero (Tampa Bay Rays): blended=97.5 | actual=13.5DKpts | +3.8 vs baseline
+COLD_HIGH_BR_WARNING (1 fires):
+  Yordan Alvarez (Houston Astros): blended=82.1 | actual=13.5DKpts | +6.7 vs baseline
+PLATOON_TRAP (1 fires):
+  Gunnar Henderson (Baltimore Orioles): actual=11.0DKpts | +4.6 vs baseline
+STRONG_EDGE (1 fires):
+  Ben Rice (New York Yankees): actual=18.0DKpts | +1.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Dylan Cease (WALKS=Y HAZ=N): ITT=3.5 actual=0.0R diff=-3.5
+GASSED/FATIGUED PEN (1 teams):
+  Athletics: actual=5.0R vs ITT=5.55 -> MISS
+BURST (1 teams):
+  Los Angeles Dodgers: actual=4.0R vs ITT=5.0 -> MISS
+RIGHT GAME WRONG TEAM:
+  Miami Marlins @ Athletics: both scored 6+? N | higher-conf team won scoring? N
+
+RUNNING ACCURACY (4 slates tracked):
+  TRAP/Vulnerable: 50.0% underscored ITT | avg diff +0.00R
+  TRAP/Short Leash: 66.7% underscored ITT | avg diff +1.05R
+  FADE_RISK: 100.0% correct | avg diff -0.55R
+  Top Stack hit ITT: 25.0%
+  HOT_MSMI avg: 10.0 DK pts
+  STEAM: 33.3% correct | avg +0.33R
+  ANTI_CHALK_SMASH: avg +1.31 DK pts vs baseline
+  PLATOON_TRAP: 25.0% underperformed baseline
+  STRONG_EDGE: avg -2.87 DK pts vs baseline
+  SHARP_FADE pitchers: 0.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 100.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 75.0%
+  GASSED pen teams: 25.0% hit ITT
+  BURST teams: 25.0% hit ITT
+
+AUDIT FLAGS:
+  TRAP Arm Over-delivered: Jake Bennett (7.2 IP, 2 ER)
+  COLD_HIGH_BR Hitter Smashed: Yordan Alvarez outscored baseline by +6.7 pts
+
+=== END ===

@@ -68,10 +68,19 @@ class AuditEngine:
                             'name': sp_data.get('person', {}).get('fullName', 'Unknown'),
                             'k': stats.get('strikeOuts', 0),
                             'er': stats.get('earnedRuns', 0),
-                            'ip': stats.get('inningsPitched', "0.0")
+                            'ip': stats.get('inningsPitched', "0.0"),
+                            'h': stats.get('hits', 0),
+                            'bb': stats.get('baseOnBalls', 0),
+                            'wins': stats.get('wins', 0),
+                            'completeGames': stats.get('completeGames', 0),
+                            'shutouts': stats.get('shutouts', 0),
+                            'hitByPitch': stats.get('hitByPitch', 0) or stats.get('hitBatsmen', 0) or 0
                         }
                     else:
-                        results[team_name]['sp_stats'] = {'name': 'TBD', 'k': 0, 'er': 0, 'ip': "0.0"}
+                        results[team_name]['sp_stats'] = {
+                            'name': 'TBD', 'k': 0, 'er': 0, 'ip': "0.0", 'h': 0, 'bb': 0,
+                            'wins': 0, 'completeGames': 0, 'shutouts': 0, 'hitByPitch': 0
+                        }
                         
                     # --- Hitting ---
                     results[team_name]['hitters'] = {}
@@ -103,7 +112,8 @@ class AuditEngine:
                                 'walks': walks,
                                 'stolen_bases': stolen_bases,
                                 'hbp': hbp,
-                                'singles': singles
+                                'singles': singles,
+                                'strikeouts': b_stats.get('strikeOuts', 0) or 0
                             }
 
             

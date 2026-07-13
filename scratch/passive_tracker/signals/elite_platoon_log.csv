@@ -1,4 +1,85 @@
 date,player,team,salary,batting_order,blended_rating,actual_dk_pts,baseline_dk_pts,pts_diff
 2026-06-27,Alec Burleson,St. Louis Cardinals,4400,3,84.3,2.0,9.61,-7.61
+2026-06-27,Ivan Herrera,St. Louis Cardinals,4200,2,82.2,3.0,9.73,-6.73
+2026-06-27,Sam Antonacci,Chicago White Sox,4000,1,81.4,3.0,14.0,-11.0
+2026-06-27,Andrew Vaughn,Milwaukee Brewers,3800,4,79.9,0.0,6.88,-6.88
+2026-06-27,Francisco Lindor,New York Mets,4200,4,73.2,16.0,6.54,9.46
+2026-06-27,Luke Raley,Seattle Mariners,3900,7,55.6,1.5,6.38,-4.88
+2026-06-27,Heriberto Hernandez,Miami Marlins,3500,4,67.0,2.0,4.86,-2.86
+2026-06-27,Max Muncy,Athletics,3000,1,55.9,1.0,4.92,-3.92
+2026-06-27,Kyle Stowers,Miami Marlins,4000,3,57.9,12.0,10.36,1.64
+2026-06-27,Edmundo Sosa,Philadelphia Phillies,3000,6,53.9,0.0,5.03,-5.03
+2026-06-27,Max Kepler,Arizona Diamondbacks,2400,7,53.0,-0.5,3.75,-4.25
 2026-07-01,Bryce Eldridge,San Francisco Giants,3000,3,78.3,1.5,7.17,-5.67
-2026-07-02,Julio Rodriguez,Seattle Mariners,5000,2,71.2,2.0,7.0,-5.0
+2026-07-01,Jake Bauers,Milwaukee Brewers,4700,4,86.0,1.0,7.4,-6.4
+2026-07-01,Andrew Vaughn,Milwaukee Brewers,3800,5,71.3,8.5,4.14,4.36
+2026-07-01,Tyler Stephenson,Cincinnati Reds,2900,5,77.9,9.5,9.5,0.0
+2026-07-01,Ivan Herrera,St. Louis Cardinals,4200,2,62.2,6.5,6.44,0.06
+2026-07-01,Cam Smith,Houston Astros,2500,5,65.2,6.5,5.5,1.0
+2026-07-01,Jj Wetherholt,St. Louis Cardinals,4500,1,65.2,2.0,11.1,-9.1
+2026-07-02,Julio Rodriguez,Seattle Mariners,4900,2,71.2,2.0,8.0,-6.0
+2026-07-02,Jp Crawford,Seattle Mariners,3400,1,52.5,7.0,1.5,5.5
+2026-07-02,Luke Raley,Seattle Mariners,3900,7,43.8,-1.0,15.0,-16.0
+2026-07-02,Cal Raleigh,Seattle Mariners,4500,6,34.7,3.0,-0.5,3.5
+2026-07-03,Sal Stewart,Cincinnati Reds,4700,2,99.8,-1.0,9.55,-10.55
+2026-07-03,Trent Grisham,New York Yankees,3000,1,98.8,20.5,6.26,14.24
+2026-07-03,Bryce Eldridge,San Francisco Giants,3000,7,86.9,6.5,4.71,1.79
+2026-07-03,Elly De La Cruz,Cincinnati Reds,5100,1,76.2,16.5,9.61,6.89
+2026-07-03,Tyler Stephenson,Cincinnati Reds,2900,7,79.4,2.0,4.5,-2.5
+2026-07-03,Matt Olson,Atlanta Braves,3000,3,71.3,29.5,5.3,24.2
+2026-07-03,Paul Goldschmidt,New York Yankees,3000,5,54.5,-0.5,5.86,-6.36
+2026-07-03,Dominic Smith,Atlanta Braves,3000,6,61.4,-0.5,5.91,-6.41
+2026-07-03,Kazuma Okamoto,Toronto Blue Jays,3400,3,54.9,3.0,1.25,1.75
+2026-07-03,Brandon Lowe,Pittsburgh Pirates,5700,2,45.6,10.5,12.2,-1.7
+2026-07-04,Jj Bleday,Cincinnati Reds,4800,3,86.1,5.0,6.56,-1.56
+2026-07-04,Matt Olson,Atlanta Braves,3000,4,91.5,4.0,8.31,-4.31
+2026-07-04,Kyle Stowers,Miami Marlins,4000,2,90.0,22.5,7.77,14.73
+2026-07-04,Ivan Herrera,St. Louis Cardinals,4200,2,70.1,6.5,7.92,-1.42
+2026-07-04,Bryce Eldridge,San Francisco Giants,3000,7,68.7,20.5,7.55,12.95
+2026-07-04,Drake Baldwin,Atlanta Braves,3000,2,77.3,4.0,6.75,-2.75
+2026-07-04,Jj Wetherholt,St. Louis Cardinals,4500,1,69.6,23.5,3.5,20.0
+2026-07-04,Pete Crowarmstrong,Chicago Cubs,6400,1,80.5,9.0,5.0,4.0
+2026-07-04,Andrew Vaughn,Milwaukee Brewers,3800,6,78.6,1.0,9.57,-8.57
+2026-07-04,Colton Cowser,Baltimore Orioles,2800,6,52.1,6.5,7.38,-0.88
+2026-07-05,Willson Contreras,Boston Red Sox,3000,4,95.2,19.5,5.05,14.45
+2026-07-05,Gavin Sheets,San Diego Padres,3000,4,74.5,3.0,6.7,-3.7
+2026-07-05,Nathan Lukes,Toronto Blue Jays,2500,1,38.7,2.5,0.0,2.5
+2026-07-05,Jarren Duran,Boston Red Sox,3000,7,48.0,20.5,5.23,15.27
+2026-07-06,Bryce Eldridge,San Francisco Giants,3000,7,73.7,3.5,6.14,-2.64
+2026-07-06,Ivan Herrera,St. Louis Cardinals,4200,2,77.3,-0.5,7.9,-8.4
+2026-07-06,Corbin Carroll,Arizona Diamondbacks,5600,3,69.9,6.5,13.5,-7.0
+2026-07-06,Francisco Alvarez,New York Mets,2800,7,54.7,8.0,5.34,2.66
+2026-07-06,Ben Rice,New York Yankees,3000,2,60.8,13.0,8.07,4.93
+2026-07-06,Dominic Smith,Atlanta Braves,3000,6,50.1,4.5,6.93,-2.43
+2026-07-07,Jj Bleday,Cincinnati Reds,3000,3,83.1,4.5,7.16,-2.66
+2026-07-07,Bryce Eldridge,San Francisco Giants,3400,7,62.8,3.0,5.46,-2.46
+2026-07-07,Corbin Carroll,Arizona Diamondbacks,5500,3,69.4,1.5,6.06,-4.56
+2026-07-07,Bryan Reynolds,Pittsburgh Pirates,3000,3,85.7,10.0,7.0,3.0
+2026-07-07,Sam Antonacci,Chicago White Sox,3700,5,71.8,13.5,5.5,8.0
+2026-07-07,Otto Lopez,Miami Marlins,4300,3,78.2,3.0,5.35,-2.35
+2026-07-07,Jac Caglianone,Kansas City Royals,4600,5,63.7,5.5,4.61,0.89
+2026-07-07,Edmundo Sosa,Philadelphia Phillies,3000,5,58.0,10.0,8.35,1.65
+2026-07-07,Cj Abrams,Washington Nationals,5700,4,58.6,9.0,6.67,2.33
+2026-07-07,Andrew Vaughn,Milwaukee Brewers,4000,4,63.0,6.5,5.57,0.93
+2026-07-07,Tyler Stephenson,Cincinnati Reds,3000,7,68.5,1.5,7.44,-5.94
+2026-07-07,Paul Goldschmidt,New York Yankees,4200,2,45.8,-2.0,5.84,-7.84
+2026-07-07,Dominic Smith,Atlanta Braves,3300,6,37.6,2.0,6.52,-4.52
+2026-07-08,Jj Bleday,Cincinnati Reds,3000,3,90.4,23.0,7.74,15.26
+2026-07-08,Shea Langeliers,Athletics,5600,1,69.4,-0.5,1.5,-2.0
+2026-07-08,Elly De La Cruz,Cincinnati Reds,3000,1,78.4,29.0,4.42,24.58
+2026-07-08,Jac Caglianone,Kansas City Royals,4600,3,67.0,7.0,4.47,2.53
+2026-07-08,Ivan Herrera,St. Louis Cardinals,4400,2,71.7,-0.5,6.61,-7.11
+2026-07-08,Joc Pederson,Texas Rangers,3200,1,73.9,6.0,7.32,-1.32
+2026-07-08,Carson Benge,New York Mets,4000,5,73.1,10.0,5.45,4.55
+2026-07-08,Luke Raley,Seattle Mariners,4100,6,59.9,2.0,6.2,-4.2
+2026-07-08,Edmundo Sosa,Philadelphia Phillies,3000,9,54.3,3.0,4.04,-1.04
+2026-07-08,Francisco Alvarez,New York Mets,3000,9,52.3,6.5,3.9,2.6
+2026-07-08,Cody Bellinger,New York Yankees,4900,4,40.6,-1.0,6.68,-7.68
+2026-07-08,Paul Goldschmidt,New York Yankees,4200,1,40.0,-1.5,7.0,-8.5
+2026-07-09,Sal Stewart,Cincinnati Reds,3000,2,87.5,-0.5,2.86,-3.36
+2026-07-09,Justin Foscue,Texas Rangers,3000,1,82.7,23.0,0.95,22.05
+2026-07-09,Corbin Carroll,Arizona Diamondbacks,5500,3,74.8,4.0,15.25,-11.25
+2026-07-09,Ivan Herrera,St. Louis Cardinals,4400,2,63.1,1.0,10.43,-9.43
+2026-07-09,Otto Lopez,Miami Marlins,4300,2,71.4,18.0,6.79,11.21
+2026-07-09,Andrew Vaughn,Milwaukee Brewers,4000,6,60.4,2.0,6.6,-4.6
+2026-07-09,Tyler Stephenson,Cincinnati Reds,3000,6,71.0,2.5,5.56,-3.06

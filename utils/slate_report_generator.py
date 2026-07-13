@@ -33,7 +33,10 @@ class SlateReportGenerator:
         if isinstance(raw_score, dict):
             raw_score = raw_score.get('final', 0)
         score = float(raw_score or 0)
-        conf = float(entity.get('attack_conf', 0) or 0)
+        if score_field == 'stack_score':
+            conf = float(entity.get('stack_trust_score', 50.0) or 50.0)
+        else:
+            conf = float(entity.get('attack_conf', 50.0) or 50.0)
         return round((score + conf) / 2, 1)
 
     def generate(self, p_reports, t_reports, h_reports):
@@ -59,7 +62,29 @@ class SlateReportGenerator:
             conf, reasons = score_stack_confidence(t, p_reports)
             t['attack_conf'] = conf
             t['attack_reasons'] = reasons
-            # NOTE: blended_rating is set by main.py CANONICAL block after this function returns.
+            
+            # Compute new stack_trust_score (separate from attack_conf)
+            # Redefined stack_trust_score: incorporates implied_total to resolve July 2 failure mode
+            opp_p = pitcher_map.get(normalize_player_name(t.get('opp_pitcher', '')))
+            if not opp_p:
+                opp_p = team_pitcher_map.get(t.get('opponent'))
+                
+            opp_sp_any_flag = 0.0
+            if opp_p:
+                is_trap = opp_p.get('is_trap', False)
+                trap_type = opp_p.get('trap_type')
+                opp_trap_short_leash = is_trap and trap_type == 'Short Leash'
+                opp_trap_vulnerable = is_trap and trap_type == 'Vulnerable'
+                opp_low_ceiling = opp_p.get('is_low_ceiling', False)
+                opp_hazard = opp_p.get('is_hazard', False)
+                opp_paradox = opp_p.get('is_paradox', False)
+                if opp_trap_short_leash or opp_trap_vulnerable or opp_low_ceiling or opp_hazard or opp_paradox:
+                    opp_sp_any_flag = 1.0
+                    
+            itt = float(t.get('implied_total', 0.0) or 0.0)
+            ts = itt * 10.0 - 10.0 * opp_sp_any_flag
+            t['stack_trust_score'] = round(max(0.0, min(100.0, ts)), 1)
+            
             scored_stacks.append(t)
             
         # OMEGA v20.1: PARADOX Resolution Rule
@@ -124,8 +149,18 @@ class SlateReportGenerator:
                             f"PARADOX: Lost within-game recommendation vs {winner['team']} (lower ITT/momentum)."
                         )
 
-        scored_stacks.sort(key=lambda x: x['attack_conf'], reverse=True)
+        # Sort primarily by stack_trust_score (Option B) and break ties with attack_conf (reference)
+        scored_stacks.sort(key=lambda x: (x.get('stack_trust_score', 0.0), x.get('attack_conf', 0.0)), reverse=True)
 
+        # OMEGA v20.3: Slate Compression Detection (Item 3)
+        self.is_low_diff = False
+        self.differentiation_std = 99.0
+        if len(scored_stacks) >= 6:
+            import statistics
+            top6_confs = [float(t.get('attack_conf', 0) or 0) for t in scored_stacks[:6]]
+            self.differentiation_std = round(statistics.stdev(top6_confs), 2)
+            if self.differentiation_std < 5.0:
+                self.is_low_diff = True
 
         for h in h_reports:
             team_data = next((t for t in t_reports if t['team'] == h.get('team')), None)
@@ -139,6 +174,8 @@ class SlateReportGenerator:
 
         # OMEGA ELITE ALERTS (Highest Probability Backtested Combinations)
         alert_lines = []
+        if self.is_low_diff:
+            alert_lines.append(f"- ⚠️ **LOW DIFFERENTIATION WARNING**: The top stack options have highly compressed confidence scores (Std Dev: {self.differentiation_std:.2f} < 5.0). Stack selection should lean heavily on ownership, game totals, and platoon/radar alignment.")
         
         # 1. Stacks: Elite Physics + Weak Arm (66.3% hit rate)
         for t in t_reports:
@@ -183,6 +220,16 @@ class SlateReportGenerator:
             if p.get('is_trap') and p.get('divergence', 0) < -10:
                 alert_lines.append(f"- 📉 **SHARP TRAP FADE**: Starter **{p['pitcher']}** is a public trap experiencing heavy sharp money fade (Divergence: {p['divergence']}%). Institutional Anchor penalty active.")
 
+        # OMEGA v21.1: Pitchers: High Bust Risk Alert (Volatile + Low Ceiling)
+        for p in p_reports:
+            if p.get('is_high_bust_risk'):
+                alert_lines.append(f"- 🔴 **HIGH BUST RISK WARNING**: **{p['pitcher']}** has both **is_volatile** and **is_low_ceiling** pregame signals. Backtesting shows a success rate of only **16.1%** (N=31). Proceed with extreme caution.")
+
+        # OMEGA v21.1: Pitchers: Outlier-Driven Form Warning
+        for p in p_reports:
+            if p.get('is_outlier_driven'):
+                alert_lines.append(f"- ⚠️ **OUTLIER-DRIVEN FORM WARNING**: **{p['pitcher']}** recent ERA ({p.get('recent_era')}) is driven by a single outlier start. Ex-best ERA is **{p.get('recent_era_ex_best')}**, indicating a hidden slump.")
+
         lines = []
         lines.append(f"# 🔥 OMEGA Daily Attack Plan")
         lines.append(f"**Generated:** {datetime.datetime.now().strftime('%Y-%m-%d %I:%M %p ET')}")
@@ -218,7 +265,7 @@ class SlateReportGenerator:
         
         if best_t:
             blended_display = best_t.get('blended_rating') or self._compute_blended(best_t, 'stack_score')
-            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | CONF: {best_t['attack_conf']}% | Ω: {best_t.get('stack_score', 0)})")
+            lines.append(f"### 🏟️ Lock Stack: {best_t['team']} (Blended: {blended_display} | Trust: {best_t.get('stack_trust_score', 0.0)}% | CONF: {best_t['attack_conf']}% (Ref) | Ω: {best_t.get('stack_score', 0)})")
             for r in best_t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")
@@ -242,7 +289,7 @@ class SlateReportGenerator:
         lines.append("")
         for i, t in enumerate(scored_stacks[:5], 1):
             blended_display = t.get('blended_rating') or self._compute_blended(t, 'stack_score')
-            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | CONF: {t['attack_conf']}% | Omega: {t.get('stack_score', 0)})")
+            lines.append(f"### {i}. {t['team']} (Blended: {blended_display} | Trust: {t.get('stack_trust_score', 0.0)}% | CONF: {t['attack_conf']}% (Ref) | Omega: {t.get('stack_score', 0)})")
             for r in t['attack_reasons']:
                 lines.append(f"- {r}")
             lines.append("")

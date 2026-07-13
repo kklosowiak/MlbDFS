@@ -24,6 +24,8 @@ jobs:
         run: python scripts/passive/nightly_actuals.py
       - name: Run signal tracker
         run: python scripts/passive/signal_tracker.py
+      - name: Run pitcher calibration check
+        run: python scripts/passive/pitcher_calibration_check.py
       - name: Generate digest
         run: python scripts/passive/generate_digest.py
       - name: Update dashboard
@@ -38,6 +40,7 @@ jobs:
           git add -f scratch/passive_tracker/snapshots/rollup_week_*.csv || true
           git add -f scratch/passive_tracker/digests/
           git add -f docs/audit_dashboard.html
+          git add -f docs/pitcher_calibration_log.md || true
           git add -f scratch/passive_tracker/actuals_log.txt || true
           git add -f scratch/passive_tracker/error_log.txt || true
           git diff --staged --quiet || git commit -m "auto: nightly processing $(date -u +%Y-%m-%d)"

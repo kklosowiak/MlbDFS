@@ -2381,6 +2381,17 @@
                 </div>
             </div>
 
+            <!-- LOW DIFFERENTIATION WARNING BANNER -->
+            <div id="low-diff-banner" style="display: none; background: rgba(255, 214, 10, 0.1); border: 1px solid #ffd60a; border-radius: 12px; padding: 15px 20px; margin-bottom: 25px; box-shadow: 0 0 15px rgba(255, 214, 10, 0.08); align-items: center; gap: 15px;">
+                <div style="font-size: 1.8rem;">⚠️</div>
+                <div>
+                    <div style="font-weight: 800; color: #ffd60a; font-size: 1.1rem; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em;">Low Differentiation Warning</div>
+                    <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; line-height: 1.45;">
+                        The top stack options have highly compressed confidence scores (Std Dev: <span id="low-diff-std">--</span> < 5.0). Model CONF cannot discriminate; stack selection should lean heavily on ownership, game totals, and platoon/radar alignment.
+                    </div>
+                </div>
+            </div>
+
             <!-- SLATE SNAPSHOT -->
             <h2 style="margin-bottom: 15px;">Slate Snapshot</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px;">
@@ -3728,7 +3739,19 @@
             let pills = [];
 
             const conf = p.attack_conf != null ? parseFloat(p.attack_conf) : null;
-            if (conf !== null && conf >= 55.0 && conf <= 70.0) {
+            if (conf !== null && conf <= 25.0) {
+                if (p.is_high_variance) {
+                    pills.push(signalPillHtml('⚠️ VOLATILE FADE', {
+                        style: 'background:rgba(255,214,10,0.15); border:1px solid #ffd60a; color:#ffd60a; font-weight:800; box-shadow:0 0 6px rgba(255,214,10,0.2);',
+                        tip: 'VOLATILE FADE: Low model confidence but high performance variance (volatile ceiling).'
+                    }));
+                } else {
+                    pills.push(signalPillHtml('🔒 SOLID FADE', {
+                        style: 'background:rgba(255,69,58,0.15); border:1px solid #ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 6px rgba(255,69,58,0.2);',
+                        tip: 'SOLID FADE: Consistent low variance and poor matchups.'
+                    }));
+                }
+            } else if (conf !== null && conf >= 55.0 && conf <= 70.0) {
                 pills.push(signalPillHtml('⚠️ HIGH GPP RISK', {
                     style: 'background:rgba(255,69,58,0.15); border:1px solid #ff453a; color:#ff453a; font-weight:800; box-shadow:0 0 6px rgba(255,69,58,0.2);',
                     tip: 'HIGH GPP RISK: Pitcher confidence in the 55-70% range has historically shown a 43.2% underperformance rate (5+ pts below projection).'
@@ -5460,6 +5483,20 @@
         
           function updateWelcomeHub(data) {
               if (!data) return;
+
+              // Slate Compression Warning
+              const banner = document.getElementById('low-diff-banner');
+              if (banner) {
+                  if (data.low_differentiation) {
+                      banner.style.display = 'flex';
+                      const stdSpan = document.getElementById('low-diff-std');
+                      if (stdSpan) {
+                          stdSpan.innerText = data.differentiation_std != null ? parseFloat(data.differentiation_std).toFixed(2) : '--';
+                      }
+                  } else {
+                      banner.style.display = 'none';
+                  }
+              }
 
               // Top Pitcher
               if (data.pitchers && data.pitchers.length > 0) {

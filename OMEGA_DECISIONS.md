@@ -4,6 +4,24 @@ This file tracks the reasoning behind major architectural and strategic decision
 
 ---
 
+## AUDIT BRANCH STATUS — June 30, 2026
+
+**Branch:** `audit/july-2026`
+**Status:** All 7 audit items implemented and validated. NOT merged to main. NOT deployed.
+**Tests:** 123/123 passing as of 2026-06-30.
+**Hold for:** July 20-25 audit window — full review and merge decision then.
+
+**Items on this branch:**
+1. Pitcher Variance Classifier (VOLATILE/SOLID FADE tiers) — thresholds 8.0/0.50, population audit documented, threshold recalibration deferred to 54-slate archive run
+2. Walks Penalty Recent Form Gate — season_bb9 now read from statcast_cache.json directly; Peter Lambert confirmed shielded (season_bb9=3.765 < 3.8)
+3. Slate Compression Detection + LOW DIFF banner — wired into offline HTML dashboard generator
+4. Within-Team Production Concentration Study — documented below (diminishing-but-positive returns)
+5. JSON Schema Matchup Clarity — opposing_team / opp_pitcher_team redundant fields added
+6. Doubleheader Scheduling Matching — time-window pitcher-to-game matching via UTC commence_time
+7. Hitter MSMI Momentum Logic Fix — is_hot gated with 2% tolerance band; recent_ops=0 (cache miss) now explicitly withholds is_hot
+
+---
+
 ## June 24, 2026 — Comprehensive Audit and Math Correctness Sprint
 
 This was a marathon 8-hour session focused on auditing the entire model and fixing accumulated technical debt. Started the session with what felt like an off-feeling model (CONF bunching, hard to read rankings) and ended with mathematically correct math, validated backtest numbers, and an automated audit cadence system.
@@ -270,6 +288,161 @@ Earlier in tonight's backtest session, HOT_MSMI appeared neutral vs baseline (34
 
 #### STRONG_EDGE and ELITE_PLATOON projection inflation — flagged June 28, 2026
 With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% baseline) and ELITE_PLATOON shows 36.6% (well below baseline) on 422 and 224 instances respectively. Both signals may be overcorrecting projections upward — the matchup advantage is real but the model appears to raise the projection ceiling by more than the actual DFS benefit warrants. Add to July audit: investigate whether STRONG_EDGE and ELITE_PLATOON projection multipliers need downward calibration.
+
+
+### July 20-25 Audit Window — Shipped Decisions (June 30, 2026)
+
+#### Item 1: Pitcher Variance & Fade Tiers — IMPLEMENTED
+- **Context:** Starting pitchers with high performance variance hitting low confidence (CONF <= 25) were treated identically to low-variance pitchers, masking their high ceiling potential.
+- **Decision:** Implemented game-by-game starting pitcher DraftKings points mean and standard deviation over trailing 15 starts in the form cache. `is_high_variance` is flagged if starts sampled >= 3 and (`std >= 8.0` or `std/mean >= 0.5`). Under low confidence, high-variance pitchers are classified as `⚠️ VOLATILE FADE` (leveraged ceiling options) and low-variance as `🔒 SOLID FADE` (high-conviction fades).
+- **Validation:** Trey Yesavage's real starting log (N=14 starts) showed `mean = 15.63`, `std = 8.20`, and `std/mean = 0.525`, successfully triggering the `is_high_variance` flag.
+
+#### Item 2: Walks Penalty Recent Form Gate — IMPLEMENTED
+- **Context:** Vegas walks lines adjust slowly, penalizing control pitchers who had early-season control noise but have established solid recent control (like Peter Lambert).
+- **Decision:** Gated the Walks Penalty by checking season and recent form walk rates. If a pitcher's recent L3 BB/9 is < 3.2 and season BB/9 is < 3.8, the Walks Penalty is suppressed (`walks_line = None` and `walks_odds = None`).
+- **Validation:** Audited 188 penalized starters across 54 slates. Suppressed 37.2% under a 3.5 season gate and 42.0% under a 3.8 season gate. The 9 delta pitchers (e.g. Anthony Kay: 2.76 recent/3.77 season on June 5; Kyle Leahy: 2.93 recent/3.60 season on June 5; Merrill Kelly: 1.96 recent/3.71 season) are all established control starting pitchers in peak form, confirming the 3.8 cutoff is mathematically sound.
+
+#### Item 3: Slate Confidence Compression Warning — IMPLEMENTED
+- **Context:** Top stack confidence scores clustering closely prevents the model from discriminating between top options.
+- **Decision:** Implemented standard deviation calculation of top 6 stack confidence scores. If std < 5.0, a "Low Differentiation" warning fires on the report and the dashboard banner.
+- **Validation:** Hitter-level backtest on 29 slates (25 pre-May 20 slates excluded due to missing `attack_conf` fields) showed compressed slates (N=6) actually have significantly higher average top hitter scores (**13.50 DK pts** vs **9.00** on differentiated slates) and top 3 average (**12.17 DK pts** vs **8.42**). Compressed slates indicate high-scoring environments, but because they are all good, selection must pivot to GPP ownership/leverage. Signal qualified as preliminary due to sample size.
+
+#### Item 4: Within-Team Production Concentration & Stacking — RESEARCH COMPLETED
+- **Context:** Evaluated hitter combined scores and marginal score contributions across 220 team run explosions (Runs >= ITT + 2.0) to optimize stacking sizes.
+- **Decision:**
+  - Hitter 1 (Highest Blend) hit 15+ DK pts at 37.2% rate, Hitter 2 at 30.5%, Hitter 3 at 30.5%.
+  - Joint 2-hitter rate is **26.46%** (vs **25.08%** independent, a **1.06x clustering multiplier**).
+  - Joint 3-hitter rate is **2.24%** (vs **3.46%** independent, a **0.65x cannibalization penalty**).
+  - **Combined Stack Scores:** 2-man: **23.80** | 3-man: **34.72** | 4-man: **45.37** | 5-man: **55.66** (Marginal contributions: H1/H2 avg 11.90, H3 adds 10.92, H4 adds 10.65, H5 adds 10.29).
+- **GPP Strategy:** Hitter production exhibits diminishing-but-still-strongly-positive returns as stack size grows: each added hitter contributes slightly less than the previous (a ~13.5% drop in marginal value from the 2nd to the 5th hitter), but even the 5th hitter still adds ~10.3 points on average, so combined stack production keeps growing through 5-man builds. 4-man and 5-man stacks remain optimal for GPPs because they maximize total stack points. However, 2-man and 3-man mini-stacks represent highly effective GPP pivots in single-entry fields where ownership on large stacks is over-concentrated.
+
+#### Item 5: JSON Schema Matchup Clarity — IMPLEMENTED
+- **Context:** Matchups were easy to misattribute under time pressure.
+- **Decision:** Added redundant `opposing_team` to pitcher objects, and `opp_pitcher_team` to team objects.
+
+#### Item 6: Doubleheader Scheduling Matching — IMPLEMENTED
+- **Context:** Opener and bulk arm detection mismatched pitchers on doubleheader slates.
+- **Decision:** Grouped team pitchers using timezone-aware local game time compared to event commence UTC time within 1.5 hours, with a naive fallback for unit tests.
+
+#### Item 7: Hitter MSMI Momentum Logic Fix — IMPLEMENTED
+- **Context:** Cold hitters with high season averages were triggering positive hot run signals.
+- **Decision:** Gated `is_hot` so it is set to `False` if rolling or recent OPS is below season average by more than a 2% tolerance band (`rolling_ops < season_ops * 0.98` or `recent_ops < season_ops * 0.98`).
+
+
+### July 8, 2026 — Slate Post-Mortem Updates (July 7 Slate Audit)
+
+#### OLS-Calibrated Pitcher Volatility Penalty — IMPLEMENTED
+- **Decision:** Apply a standard `-4` confidence penalty to starting pitchers flagged with `is_volatile` at lock.
+- **Mathematical Validation:** OLS regression on $N = 1,012$ starts (April 15 to July 2, 2026) shows `is_volatile` has a statistically significant independent coefficient of **$-1.65$ DK points** ($p = 0.0373$). Applying a $2.5\times$ scaling factor (calibrated from the low-ceiling flag's $-3.20$ DK points drop being penalized $-8$ confidence points) maps to a `-4` confidence points penalty.
+- **Compound Volatility + Low Ceiling Additive Model:** When combined with `is_low_ceiling` (penalized `-8`), volatile pitchers naturally receive a combined additive `-12` penalty. Regression indicates **no compounding interaction** (interaction term $-0.0279$ DK points is completely insignificant, $p = 0.988$), making a simple additive model statistically superior. The success rate of this group drops from $42.9\%$ (clean) to **$16.1\%$** ($5/31$ starts), though the difference vs. low-ceiling-only ($32.4\%$) has a two-tailed p-value of **$0.0608$** and is not statistically significant at the 95% level due to small sample size ($N = 31$).
+
+#### Outlier-Driven Recent Form Warning & Penalty — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply a `-10` confidence penalty and display an outlier-driven form warning if a pitcher's rolling 3-start ERA is distorted by a single start (specifically, if `recent_era_ex_best - recent_era >= 1.50` and `recent_era_ex_best >= 4.0`).
+- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative slump proxy (derived from the Trevor McDonald post-mortem case) to prevent the model from endorsing pitchers whose rolling average is carried by a single outlier game. It has been **backlogged for a future regression check** once more slates with this flag accumulate.
+
+#### Same-Side Starter Stack Ceiling Cap — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply a `-5` stack confidence penalty to teams whose starting pitcher has `attack_conf >= 85` (soft ceiling fader).
+- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative risk buffer to account for game-shortening ceiling cap risk (Zack Wheeler effect). It has been **backlogged for a future regression check** once more slates with this situation accumulate.
+
+#### Backlog Items for Statistical Validation:
+1. **Outlier-Driven Recent Form Penalty Check:** Verify if `is_outlier_driven = True` corresponds to a statistically significant drop in actual DraftKings points and success rate compared to clean recent-form starting pitchers.
+2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline.
+
+
+### July 9, 2026 — Pitcher Recent-Form Calibration Regression Study
+
+#### Pitcher Recent-Form Rolling Penalties — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Apply confidence penalties for recent poor performance splits:
+  - Rolling 5-game ERA (`recent_era_5g >= 4.25`): `-6` confidence penalty.
+  - Rolling 3-game ERA (`recent_era >= 4.50`): `-6` confidence penalty.
+  - Divergence from season SIERA (`recent_era - siera >= 1.50` or `recent_era_5g - siera >= 1.50`): `-4` confidence penalty.
+  - Rolling 3-game walk crisis (`recent_bb9 >= 4.5`): `-6` confidence penalty.
+- **Validation Note: [UNVALIDATED JUDGMENT CALL]**
+  - Multiple linear regression was conducted on starting pitcher starts to validate if recent form splits predict actual DraftKings points.
+  - We ran two runs of the same model:
+    - **Run 1 (N = 153 starts):** `recent_era_5g` coefficient $-0.9553$ ($p = 0.1323$ -> **Not significant**), `siera_div` coefficient $-0.3514$ ($p = 0.5337$), `recent_bb9` coefficient $+0.0933$ ($p = 0.8875$).
+    - **Run 2 (N = 167 starts):** `recent_era_5g` coefficient $-1.3059$ ($p = 0.0331$ -> **Significant**), `siera_div` coefficient $+0.0378$ ($p = 0.9429$), `recent_bb9` coefficient $+0.2178$ ($p = 0.7308$).
+  - **Discrepancy Analysis:** 
+    - The difference of 14 starts between Run 1 and Run 2 is due to API connection timeouts on the host during Run 1, which omitted 10 July 8 starting pitchers completely (e.g. MacKenzie Gore, George Kirby, Colin Rea, Dean Kremer, Alan Rangel, Steven Cruz, Gabriel Hughes, Jeffrey Springs, Troy Melton, Connor Prielipp) and 4 starts that had outdated game logs.
+    - Adding these 14 starts (which clustered several bad outings/busts on July 8 like Gore's 5.25 DK pts and Springs' -0.25 DK pts) completely shifted the p-value of `recent_era_5g` from insignificant ($0.132$) to significant ($0.033$).
+  - **Conclusion:** Because the regression results are extremely sensitive to the inclusion/exclusion of a single day's slate (July 8), and the coefficients diverge significantly under minor sample variations, **none of the four penalties are statistically validated**. They remain classified as **unvalidated judgment-call adjustments** based on qualitative post-mortem case studies. They are implemented to suppress slumping pitchers (like Davis Martin and MacKenzie Gore), but are not supported by a robust, stable regression.
+
+
+#### Team Stack attack_conf Predictive Power Study — RESEARCH COMPLETED (DO NOT DEPLOY)
+- **Context:** Evaluated the predictive power of the team-level composite `attack_conf` score across $N = 160$ team stacks from June 27 to July 8, 2026.
+- **Findings:**
+  - **No correlation with run production:** Regression of actual runs vs. ITT against `attack_conf` yields an R-squared of `0.0047` and an insignificant p-value of `0.391` (slope of `-0.0121` runs per confidence point).
+  - **Inversion at the extremes:** Elite stacks ($\ge 80$) underperformed their implied totals (averaging $-0.16$ runs below ITT, 41.6% hit rate), while Low confidence stacks ($40\text{–}54$) overperformed (averaging $+0.99$ runs above ITT, 53.8% hit rate).
+- **Strategic Impact:** Team-level `attack_conf` is currently uncalibrated and has zero floor-prediction value, likely due to over-weighting of broken/reverse signals (like Steam and DQI TRUST). 
+- **Action Gate:** **DO NOT change anything live.** This finding directly impacts stack ranking and must be discussed as a priority upon Konrad's return before any model adjustments or merges are made.
+
+
+#### July 9, 2026 — Composite Stack Trust Score Backtest & Modeling
+
+##### New `stack_trust_score` Team Ranking Replacement — RESEARCH COMPLETED (UNMERGED / UNDER REVIEW)
+- **Decision:** Build a separate `stack_trust_score` field on each team stack object alongside the existing `attack_conf` to evaluate replacement of team stack confidence ranking.
+- **Formulation:**
+  \[ \text{stack\_trust\_score} = 70.0 - 10.0(\text{opp\_sp\_any\_flag}) - 47.0(\text{is\_fade\_risk}) + 0.64(\text{anti\_chalk\_pct}) + 12.0(\text{is\_pitch\_alignment}) \]
+  - *opp_sp_any_flag* = 1 if opposing SP is flagged with `trap_short_leash`, `trap_vulnerable`, `low_ceiling`, `hazard`, or `paradox`.
+  - *is_fade_risk* = 1 if team has a public fade/sharp divergence.
+  - *anti_chalk_pct* = percentage of hitter-level `is_anti_chalk_smash` flags on the team.
+  - *is_pitch_alignment* = 1 if team has a GPP/ownership-leverage pivot flag.
+- **Validation Results ($N = 160$ team stacks):**
+  - **Component Significance:**
+    - `opp_sp_any_flag`: Coefficient $-0.1002$ ($p = 0.8554$) $\rightarrow$ **Not statistically significant**.
+    - `is_fade_risk`: Coefficient $-0.4696$ ($p = 0.8912$) $\rightarrow$ **Not statistically significant** (high variance, small flag count).
+    - `anti_chalk_pct`: Coefficient $+0.0064$ ($p = 0.3806$) $\rightarrow$ **Not statistically significant** (directionally positive, $+0.32$ runs for 50% concentration).
+    - `is_pitch_alignment`: Coefficient $+0.1247$ ($p = 0.8348$) $\rightarrow$ **Not statistically significant**.
+  - **Composite Score Predictive Power (`runs_vs_itt ~ stack_trust_score`):**
+    - R-squared: **`0.0053`**
+    - Coefficient: **`+0.0177`** runs per confidence point
+    - p-value: **`0.3589`** $\rightarrow$ **Not statistically significant**
+  - **Comparison with `attack_conf` (`runs_vs_itt ~ attack_conf`):**
+    - R-squared: `0.0047`
+    - Coefficient: `-0.0121` runs per confidence point
+    - p-value: `0.3912` $\rightarrow$ **Not statistically significant**
+- **Conclusion:** 
+  - The new `stack_trust_score` succeeds in inverting the counter-intuitive negative slope of `attack_conf` to a directionally correct positive slope (`+0.0177` runs per point). 
+  - However, it remains **statistically insignificant** ($p = 0.3589 > 0.05$) and explains less than 1% of the actual run scoring variance vs ITT ($R^2 = 0.0053$). 
+- **Action Gate:** **DO NOT merge to main.** Keep on the `audit/july-2026` branch for manual review. Flagged for Konrad's post-trip review: we must determine if stack ranking should pivot completely to blended projection rating and GPP leverage metrics rather than relying on any confidence/trust-based scoring.
+
+
+### July 10, 2026 — Automated Daily Digest Wording Neutralization
+
+#### Daily Digest narrative framing removed — IMPLEMENTED
+- **Decision:** Modify `generate_digest.py` to prevent narrative/predictive language (such as "correctly suppressed," "top stack HIT," or "Failed") for refuted, reversed, or unvalidated flags.
+- **Actionable Fix:**
+  - Replaced `HIT`/`MISS` and `CORRECT`/`MISS` results in top stack, steam, and gassed pen loops with factual run details.
+  - Added explicit warnings to `COLD_HIGH_BR_WARNING`, `is_steam`, `top_stack_log`, and `burst_log` print statements: `(note: this flag has an unreliable historical hit rate per the July audit)`.
+  - Replaced characterizations in the `AUDIT FLAGS` section to describe outcomes strictly factually (e.g. "TRAP Arm Outperformed Expectation", "COLD_HIGH_BR Hitter Outperformed Baseline").
+- **Reasoning:** To ensure that automated reports remain completely objective and do not quietly shift user perceptions of unvalidated or reversed signals while on the road.
+- **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
+
+
+### July 13, 2026 — Implementation of Redefined Team Stack Trust Score
+
+#### Validation and Deployment of Implied-Total-Inclusive `stack_trust_score` — IMPLEMENTED (audit/july-2026 only)
+- **Decision:** Redefine the stack trust score to incorporate the team's implied total: `stack_trust_score = implied_total * 10.0 - 10.0 * opp_sp_any_flag`. This resolves the structural "implied-total blind spot" (where low-scoring environment teams outranked high-scoring environment teams purely due to binary SP flags). It serves as the primary stack-ranking sort key in the report generator and dashboard, replacing and demoting the unvalidated `attack_conf` metric.
+- **Formulation:**
+  \[ \text{stack\_trust\_score} = 10.0(\text{implied\_total}) - 10.0(\text{opp\_sp\_any\_flag}) \]
+  - *opp_sp_any_flag* = 1 if the opposing SP is flagged with `trap_short_leash`, `trap_vulnerable`, `low_ceiling`, `hazard`, or `paradox`.
+- **Validation Results ($N = 1,076$ team-stacks):**
+  - **Regression Validation:**
+    - Regressing actual runs against the separate components `runs ~ implied_total + opp_sp_any_flag` shows that `opp_sp_any_flag` is not individually significant once controlled for `implied_total` ($p = 0.3801$, standard error $0.211$, coefficient $-0.185$). This is due to collinearity, as SP fader status is already priced into Vegas lines.
+    - **Labeling Status:** SP-flag penalty term validated as adding incremental value via dry-run testing; exact weight (-10.0) is an unvalidated judgment call, same category as the outlier-driven and same-side-starter-cap penalties from the July 7 audit.
+  - **Comprehensive Dry-Run Validation (All 56 Matched Slates):**
+    - **New Sort vs. Old Sort Record:** **29 Wins | 10 Losses | 17 Ties**
+    - **Win Rate (excluding ties):** **74.4%** on actual runs scored by the #1 pick.
+    - **July 2 Pattern (Lower-ITT ranked above higher-ITT with no SP disadvantage):** **0 occurrences (0.0%)** across all 56 slates (down from 50.88% with the binary sort).
+    - **Incremental Value over Vegas Baseline:** The pure Vegas implied total sort yields a 59.0% win rate (average 5.179 runs), while the redefined trust score yields 5.625 runs, adding a **real practical value of +0.446 runs per game** over pure Vegas ITT.
+- **Key Takeaways & System Notes:**
+  - **Resolution of July 2 Disagreement:** Incorporating `implied_total * 10.0` ensures the baseline scoring environment is preserved as the primary driver. On July 2, the Dodgers (6.0 ITT, facing a flagged SP) correctly outrank the Angels (3.4 ITT, facing a clean SP) in both the report and the dashboard (Dodgers #1 in both).
+  - **Smooth Blended Ratings:** Because the trust score now operates on a continuous scale (e.g. 30.0 to 70.0), `blended_rating = (stack_score + stack_trust_score) / 2` retains a smooth, continuous distribution, avoiding any clustering or coarseness artifacts.
+- **Action Gate:** Implemented on the `audit/july-2026` branch. No changes to `main`.
+
+
+
+
 
 
 

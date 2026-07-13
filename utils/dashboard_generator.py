@@ -8,7 +8,7 @@ class DashboardGenerator:
         self.output_path = os.path.join(config.BASE_DIR, "reports", "dashboard.html")
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
 
-    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5, vegas_board=None):
+    def generate_report(self, p_reports, t_reports, h_reports, skipped_events=None, median_k=5.5, vegas_board=None, low_differentiation=False, differentiation_std=99.0):
         """Generates a premium 4-Tab dashboard including the Vegas Board."""
         if skipped_events is None: skipped_events = []
 
@@ -62,7 +62,7 @@ class DashboardGenerator:
         safe_md = json.dumps(slate_analysis_md)
         
         # OMEGA v8.7: Final Intelligence Sort
-        t_reports = sorted(t_reports, key=lambda x: x.get('blended_rating', (x.get('stack_score', 0) + x.get('attack_conf', 50)) / 2), reverse=True)
+        t_reports = sorted(t_reports, key=lambda x: x.get('blended_rating', (x.get('stack_score', 0) + x.get('stack_trust_score', 50.0)) / 2), reverse=True)
         p_reports = sorted(p_reports, key=lambda x: x.get('alpha_score', 0), reverse=True)
         h_reports = sorted(h_reports, key=lambda x: x.get('player_score', 0), reverse=True)
         
@@ -81,6 +81,14 @@ class DashboardGenerator:
             siera_val = p.get('siera', 4.10)
             csw_val = p.get('csw', 0.25)
             form_era = p.get('recent_era', '-')
+            form_era_subtext = ""
+            subparts = []
+            if p.get('recent_era_5g') is not None:
+                subparts.append(f"5G:{p['recent_era_5g']}")
+            if p.get('recent_era_ex_best') is not None:
+                subparts.append(f"ExB:{p['recent_era_ex_best']}")
+            if subparts:
+                form_era_subtext = f'<div style="font-size:0.62rem; color:var(--text-secondary); margin-top:2px; font-weight:500;">{", ".join(subparts)}</div>'
             form_k9 = p.get('recent_k9', '-')
             
             statcast_grid = f"""
@@ -95,7 +103,7 @@ class DashboardGenerator:
                 </div>
                 <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
                     <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form ERA</div>
-                    <div style="font-size:1.05rem; font-weight:700; color:var(--accent-green);">{form_era}</div>
+                    <div style="font-size:1.05rem; font-weight:700; color:var(--accent-green);">{form_era}{form_era_subtext}</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:8px; border-radius:8px; text-align:center;">
                     <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Form K/9</div>
@@ -151,6 +159,31 @@ class DashboardGenerator:
                 </div>
                 """
                 
+            high_bust_warning_html = ""
+            if p.get('is_high_bust_risk'):
+                high_bust_warning_html = """
+                <div style="background:rgba(255,69,58,0.1); border:1px solid rgba(255,69,58,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">🔴</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff453a; font-weight:700; font-size:0.9rem;">HIGH BUST RISK — Volatile + Low Ceiling</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Backtested success rate of only 16.1% (N=31). Proceed with extreme caution.</div>
+                    </div>
+                </div>
+                """
+
+            outlier_warning_html = ""
+            if p.get('is_outlier_driven'):
+                ex_best = p.get('recent_era_ex_best', '-')
+                outlier_warning_html = f"""
+                <div style="background:rgba(255,149,0,0.1); border:1px solid rgba(255,149,0,0.3); padding:12px 16px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.5rem;">⚠️</span>
+                    <div style="text-align:left;">
+                        <div style="color:#ff9500; font-weight:700; font-size:0.9rem;">OUTLIER-DRIVEN RECENT FORM</div>
+                        <div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:2px;">Recent ERA ({p.get('recent_era', '-')}) is driven by a single outlier start. Ex-best ERA is {ex_best}, indicating a hidden slump.</div>
+                    </div>
+                </div>
+                """
+
             bulk_warning_html = ""
             if p.get('is_bulk_arm'):
                 bulk_warning_html = f"""
@@ -182,6 +215,8 @@ class DashboardGenerator:
             </div>
             {props_pending_html}
             {bulk_warning_html}
+            {high_bust_warning_html}
+            {outlier_warning_html}
             {talent_warning_html}
             {statcast_grid}
             {props_grid_html}
@@ -233,7 +268,8 @@ class DashboardGenerator:
 { '<span class="signal-pill pill-target">🎯 TARGET</span>' if p.get('is_juiced_target') else '' }
 { '<span class="signal-pill pill-shark">🦈 SHARK</span>' if p.get('is_shark') else '' }
 { '<span class="signal-pill pill-storm">✨ DEBUT</span>' if p.get('is_debut') else '' }
-{ '<span class="signal-pill pill-lowconf">🔍 LOW CONF</span>' if p.get('confidence') == 'low' else '' }
+{ '<span class="signal-pill" style="background:rgba(255,214,10,0.15); border:1px solid #ffd60a; color:#ffd60a; font-weight:800; font-size:0.65rem; padding:2px 6px; border-radius:4px;">⚠️ VOLATILE FADE</span>' if (p.get('attack_conf') is not None and p['attack_conf'] <= 25.0 and p.get('is_high_variance')) else '' }
+{ '<span class="signal-pill" style="background:rgba(255,69,58,0.15); border:1px solid #ff453a; color:#ff453a; font-weight:800; font-size:0.65rem; padding:2px 6px; border-radius:4px;">🔒 SOLID FADE</span>' if (p.get('attack_conf') is not None and p['attack_conf'] <= 25.0 and not p.get('is_high_variance')) else '' }
 { '<span class="signal-pill pill-lowconf">⚠️ PROPS PENDING</span>' if p.get('props_pending') else '' }
 { '<span class="signal-pill" style="background:rgba(255,149,0,0.15); border:1px solid rgba(255,149,0,0.4); color:#ff9500; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">OPENER</span>' if p.get('is_opener') else '' }
 { '<span class="signal-pill" style="background:rgba(10,132,255,0.15); border:1px solid rgba(10,132,255,0.4); color:#0a84ff; font-weight:bold; font-size:0.65rem; padding:2px 6px; border-radius:4px;">BULK</span>' if p.get('is_bulk_arm') else '' }
@@ -329,17 +365,24 @@ class DashboardGenerator:
             """
             h_reasons_html = h_reasons_html.replace('"', '&quot;').replace('\n', ' ')
 
+            target_pill = '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else ''
+            power_pill = '<span class="signal-pill pill-neutral">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else ''
+            thief_pill = '<span class="signal-pill pill-neutral">🏃\u200d♂️ THIEF</span>' if h.get('is_speed_target') else ''
+            hot_pill = '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else ''
+            radar_pill = '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else ''
+            pen_pill = '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else ''
+
             row = f"""<tr class="{'god-tier' if h['player_score'] >= 85 else ''}" style="cursor:pointer;" onclick="showDetails('{h['name']} ({abbrev_map.get(h['team'], h['team'])})', '{h_reasons_html}')">
 <td class="score {'score-elite' if h['player_score'] >= 100 else ('score-high' if h['player_score'] >= 85 else '')}">{h['player_score']}</td>
 <td><div class="signals-container">
-{ '<span class="signal-pill pill-target">🎯 TARGET</span>' if h.get('is_juiced_target') else '' }
+{target_pill}
 </div></td>
 <td><div class="signals-container">
-{ '<span class="signal-pill pill-neutral">🔋 POWER</span>' if h['matchup_xwoba'] >= 0.360 else '' }
-{ '<span class="signal-pill pill-neutral">🏃\u200d♂️ THIEF</span>' if h.get('is_speed_target') else '' }
-{ '<span class="signal-pill pill-target">♨️ HOT</span>' if h.get('is_hot') else '' }
-{ '<span class="signal-pill pill-target">⚡ RADAR</span>' if h.get('matchup_boost', 1.0) > 1.0 else '' }
-{ '<span class="signal-pill pill-weary">♨️ PEN ALERT</span>' if h.get('bullpen_fatigue', 0) >= 80 else '' }
+{power_pill}
+{thief_pill}
+{hot_pill}
+{radar_pill}
+{pen_pill}
 </div></td>
 <td><strong>{h['name']}</strong> <span class="team-label" style="font-weight: 800; color: #ff9f0a;">({h.get('bat_side', 'R')}B)</span> <span class="team-label">({abbrev_map.get(h['team'], h['team'])})</span></td>
 <td><span class="vs">vs</span>{h.get('opp_pitcher', 'TBD')} <span class="team-label" style="font-weight: 800; color: #0a84ff;">({h.get('pitch_hand', 'R')}HP)</span> <span class="team-label">({abbrev_map.get(h.get('opponent', 'TBD'), 'TBD')})</span></td>
@@ -399,7 +442,7 @@ class DashboardGenerator:
             </div>
             """
             
-            blended = t.get('blended_rating', round((t.get('stack_score', 0) + t.get('attack_conf', 50)) / 2, 1))
+            blended = t.get('blended_rating', round((t.get('stack_score', 0) + t.get('stack_trust_score', 50.0)) / 2, 1))
 
             # Dynamic bullpen details
             opp = t.get('opponent', '')
@@ -479,7 +522,7 @@ class DashboardGenerator:
             row = f"""<tr class="{'god-tier' if blended >= 80 else ''}" style="cursor:pointer;" onclick="showDetails('{t['team']} vs {t['opponent']}', '{t_reasons_html}')">
 <td class="score {'score-elite' if blended >= 85 else ('score-high' if blended >= 75 else '')}">{blended}</td>
 <td class="metric-sub" style="font-weight:700; color:#fff;">{t['stack_score']}</td>
-<td class="metric-sub" style="font-weight:700; color:#0a84ff;">{t.get('attack_conf', 0)}%</td>
+<td class="metric-sub" style="font-weight:700; color:#0a84ff;">{t.get('stack_trust_score', 0.0)}%</td>
 <td class="score-physics">{t.get('physics_score', 0)}</td>
 <td class="score-market">{t.get('market_score', 0)}</td>
 <td><div class="signals-container">
@@ -1386,6 +1429,9 @@ class DashboardGenerator:
             <button class="tab-btn" onclick="openTab(event, 'analysis')">Model Analysis</button>
         </div>
 
+        <!-- LOW DIFF WARNING BANNER -->
+        {'<div style="background:rgba(255,214,10,0.10); border:1px solid rgba(255,214,10,0.4); border-radius:12px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:center; gap:14px;"><span style="font-size:1.5rem;">&#x26A0;&#xFE0F;</span><div><div style="color:#ffd60a; font-weight:800; font-size:0.95rem;">LOW DIFFERENTIATION WARNING</div><div style="color:rgba(255,255,255,0.75); font-size:0.82rem; margin-top:3px;">Top stack options have compressed confidence scores (Std Dev: ' + str(round(differentiation_std, 2)) + ' &lt; 5.0). Lean on ownership leverage, game totals, and platoon alignment rather than raw CONF ranking.</div></div></div>' if low_differentiation else ''}
+
         <!-- PITCHERS TAB -->
         <div id="pitchers" class="tab-content active">
             <div class="card">
@@ -1422,7 +1468,7 @@ class DashboardGenerator:
                 <h2>Market Sentiment Matrix</h2>
                 <table>
                     <thead>
-                        <tr><th>BLENDED</th><th>OMEGA</th><th>CONF</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
+                        <tr><th>BLENDED</th><th>OMEGA</th><th>TRUST</th><th>PHY</th><th>MKT</th><th>ALPHA SIGNALS</th><th>ALPHA CONTEXT</th><th>TEAM</th><th>vs PITCHER</th><th>ITT</th><th>ML MOVE</th><th>TT MOVE</th><th>DIVERGENCE</th></tr>
                     </thead>
                     <tbody>
                         {"".join(team_rows)}

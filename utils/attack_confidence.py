@@ -526,6 +526,12 @@ def score_stack_confidence(t, p_reports):
                     reasons[i] = "ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage (capped to +5 CONF for ITT < 4.5)."
                     break
 
+    # Same-side starter cap (Zack Wheeler effect)
+    own_pitcher = next((p for p in p_reports if p.get("team") == t.get("team")), None)
+    if own_pitcher and own_pitcher.get("attack_conf", 50.0) >= 85.0:
+        conf -= 5.0
+        reasons.append(f"Same-side starter elite warning ({own_pitcher['pitcher']} CONF {own_pitcher['attack_conf']}%): potential shortened game, capping stack ceiling.")
+
     # High Conviction Gate Check
 
     # (Require 2+ signals to exceed 75 CONF)
@@ -625,9 +631,49 @@ def score_pitcher_confidence(p, t_reports):
         conf -= 8
         reasons.append("Hits-allowed prop juiced Over — run risk priced in.")
 
+    if p.get("is_volatile"):
+        conf -= 4
+        reasons.append("Volatile pregame signal movement (-4).")
+
     if p.get("is_low_ceiling"):
         conf -= 8
         reasons.append("Low K ceiling on props.")
+
+    if p.get("is_volatile") and p.get("is_low_ceiling"):
+        p["is_high_bust_risk"] = True
+        reasons.append("Compound risk warning: volatile + low ceiling (is_high_bust_risk).")
+
+    if p.get("is_outlier_driven"):
+        conf -= 10
+        ex_best = p.get("recent_era_ex_best", "-")
+        reasons.append(f"Recent form driven by single outlier start (ex-best ERA: {ex_best}) (-10).")
+
+    # OMEGA v21.2: Rolling ERA and walk rate decline penalties
+    recent_era = p.get("recent_era")
+    recent_era_5g = p.get("recent_era_5g")
+    recent_bb9 = p.get("recent_bb9")
+    siera = p.get("siera")
+
+    if recent_era_5g is not None and recent_era_5g >= 4.25:
+        conf -= 6
+        reasons.append(f"Elevated L5 ERA ({recent_era_5g:.2f}) (-6).")
+
+    if recent_era is not None and recent_era >= 4.50:
+        conf -= 6
+        reasons.append(f"Elevated L3 ERA ({recent_era:.2f}) (-6).")
+
+    if siera is not None:
+        siera_val = float(siera)
+        if recent_era is not None and (recent_era - siera_val) >= 1.50:
+            conf -= 4
+            reasons.append(f"L3 ERA ({recent_era:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
+        elif recent_era_5g is not None and (recent_era_5g - siera_val) >= 1.50:
+            conf -= 4
+            reasons.append(f"L5 ERA ({recent_era_5g:.2f}) significantly exceeds SIERA ({siera_val:.2f}) (-4).")
+
+    if recent_bb9 is not None and recent_bb9 >= 4.5:
+        conf -= 6
+        reasons.append(f"Control crisis: elevated L3 BB/9 ({recent_bb9:.2f}) (-6).")
 
     # 5. K Line Steam
     k_move = float(p.get("k_move", 0) or 0)
@@ -756,4 +802,13 @@ def score_pitcher_confidence(p, t_reports):
         x = conf - 80
         conf = 80.0 + (20.0 * x) / (x + 12.0)
 
-    return _clamp(conf), reasons
+    final_conf = _clamp(conf)
+    
+    # OMEGA v20.3: Pitcher Variance Classifier Fade Label Reason (Item 1)
+    if final_conf <= 25.0:
+        if p.get("is_high_variance"):
+            reasons.append("LOW-CONFIDENCE FADE: Low model confidence but high performance variance (volatile ceiling).")
+        else:
+            reasons.append("HIGH-CONFIDENCE FADE: Consistent low variance and poor matchups.")
+
+    return final_conf, reasons

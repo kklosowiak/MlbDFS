@@ -1,4 +1,295 @@
 date,player,team,salary,batting_order,blended_rating,attack_conf,actual_dk_pts
 2026-06-27,Trevor Larnach,Minnesota Twins,3800,1,92.0,100.0,19.0
+2026-06-27,Jonathan Aranda,Tampa Bay Rays,4200,2,89.0,98.74407582938389,20.0
+2026-06-27,Jake Mccarthy,Colorado Rockies,3900,1,88.7,100.0,20.0
+2026-06-27,Fernando Tatis,San Diego Padres,3000,1,79.4,84.06963788300835,5.0
+2026-06-27,Gabriel Moreno,Arizona Diamondbacks,4000,4,86.4,100.0,3.0
+2026-06-27,Ketel Marte,Arizona Diamondbacks,5100,1,83.0,100.0,13.5
+2026-06-27,Blaze Alexander,Baltimore Orioles,2900,6,82.7,100.0,2.5
+2026-06-27,Sam Antonacci,Chicago White Sox,4000,1,81.4,100.0,3.0
+2026-06-27,Bobby Witt,Kansas City Royals,6200,2,71.9,81.01452784503633,5.0
+2026-06-27,Troy Johnston,Colorado Rockies,4500,7,69.4,76.43520782396088,0.0
+2026-06-27,Victor Caratini,Minnesota Twins,3300,5,72.8,88.1976911976912,4.5
+2026-06-27,Carter Jensen,Kansas City Royals,4400,1,63.0,69.38761776581427,4.5
+2026-06-27,Joe Mack,Miami Marlins,2800,9,56.7,58.49295774647888,4.5
+2026-06-27,Heriberto Hernandez,Miami Marlins,3500,4,67.0,79.76704545454545,2.0
+2026-06-27,Drew Gilbert,San Francisco Giants,3000,8,60.0,66.20351390922401,2.0
+2026-06-27,Nathan Church,St. Louis Cardinals,2700,9,51.6,49.497175141242934,-1.0
+2026-06-27,Xander Bogaerts,San Diego Padres,3000,6,63.7,75.01071975497703,0.0
+2026-06-27,Jung Hoo Lee,San Francisco Giants,3000,3,59.8,68.11311672683514,-1.0
+2026-06-27,Josh Bell,Minnesota Twins,3000,4,70.8,90.93083573487031,10.0
+2026-06-27,Carson Benge,New York Mets,3900,1,59.3,68.54253835425384,7.5
+2026-06-27,Isaac Collins,Kansas City Royals,2500,9,56.8,63.920731707317074,5.0
+2026-06-27,Owen Caissie,Miami Marlins,2800,5,59.2,70.0,-1.0
+2026-06-27,Masyn Winn,St. Louis Cardinals,3600,6,58.5,71.0,4.5
+2026-06-27,Jacob Gonzalez,Chicago White Sox,2200,8,55.0,64.64102564102564,4.5
+2026-06-27,Chandler Simpson,Tampa Bay Rays,3800,5,51.6,57.8525641025641,2.5
+2026-06-27,Brooks Lee,Minnesota Twins,3500,7,66.0,87.12890094979647,10.0
+2026-06-27,Manny Machado,San Diego Padres,3000,4,55.6,66.33587786259542,-1.0
+2026-06-27,Nolan Schanuel,Los Angeles Angels,3000,3,66.1,88.36313617606602,7.0
+2026-06-27,Dansby Swanson,Chicago Cubs,3500,9,51.4,59.0,-1.0
+2026-06-27,Sal Frelick,Milwaukee Brewers,3000,7,49.5,55.738853503184714,5.0
+2026-06-27,Taylor Walls,Tampa Bay Rays,2900,7,46.6,50.65428109854605,2.5
+2026-06-27,Mauricio Dubon,Atlanta Braves,3000,6,51.6,60.66666666666666,5.0
+2026-06-27,Aj Ewing,New York Mets,3300,7,45.1,49.0,9.5
+2026-06-27,Luis Arraez,San Francisco Giants,3000,1,50.0,60.03097893432466,5.0
+2026-06-27,Ozzie Albies,Atlanta Braves,3000,2,53.5,67.35567010309279,0.0
+2026-06-27,Blake Perkins,Milwaukee Brewers,2500,6,54.3,71.0,7.0
+2026-06-27,Henry Bolte,Athletics,3000,1,53.3,69.68796068796068,-2.0
+2026-06-27,Lujames Groover,Arizona Diamondbacks,2100,8,53.6,71.99130434782609,-1.0
+2026-06-27,Rafael Devers,San Francisco Giants,3000,4,39.4,43.50684931506849,31.5
+2026-06-27,Rafael Marchan,Philadelphia Phillies,2600,9,34.1,44.66666666666667,3.0
 2026-07-01,Esmerlyn Valdez,Pittsburgh Pirates,2900,4,95.3,95.52961980548187,4.5
-2026-07-02,Mookie Betts,Los Angeles Dodgers,4600,4,87.2,100.0,14.0
+2026-07-01,Jonathan Aranda,Tampa Bay Rays,4200,2,91.7,100.0,10.0
+2026-07-01,Yandy Diaz,Tampa Bay Rays,5200,1,90.5,100.0,-0.5
+2026-07-01,Ketel Marte,Arizona Diamondbacks,5100,1,88.8,100.0,21.5
+2026-07-01,Lars Nootbaar,St. Louis Cardinals,3700,5,82.8,100.0,-1.0
+2026-07-01,Tyler Stephenson,Cincinnati Reds,2900,5,77.9,94.04154302670622,9.5
+2026-07-01,Otto Lopez,Miami Marlins,4300,1,71.7,85.28169014084507,3.0
+2026-07-01,Geraldo Perdomo,Arizona Diamondbacks,4000,2,76.0,94.52777777777779,3.0
+2026-07-01,Cam Smith,Houston Astros,2500,5,65.2,77.19061583577712,6.5
+2026-07-01,Rafael Devers,San Francisco Giants,3000,4,59.3,71.69855832241154,7.0
+2026-07-01,Luis Arraez,San Francisco Giants,3000,1,59.2,76.97607655502392,0.0
+2026-07-01,Jake Mccarthy,Colorado Rockies,3900,1,54.8,69.17961165048544,-0.5
+2026-07-01,Henry Davis,Pittsburgh Pirates,3100,9,46.1,55.0,13.0
+2026-07-01,Carter Jensen,Kansas City Royals,4400,6,41.9,47.89473684210526,-1.0
+2026-07-01,Colby Thomas,Athletics,3000,1,36.6,37.28966521106259,8.5
+2026-07-01,Mauricio Dubon,Atlanta Braves,3000,5,50.2,64.82513661202185,6.0
+2026-07-01,Taylor Trammell,Houston Astros,2700,6,40.3,46.960205391527595,1.5
+2026-07-01,Victor Bericoto,San Francisco Giants,3000,7,46.2,59.652223489167625,19.0
+2026-07-01,Chandler Simpson,Tampa Bay Rays,3800,5,41.6,53.069182389937104,8.0
+2026-07-01,Lourdes Gurriel,Arizona Diamondbacks,2800,5,45.1,60.82255389718077,-1.0
+2026-07-01,Yainer Diaz,Houston Astros,3200,7,37.1,45.57861635220126,-1.5
+2026-07-02,Mookie Betts,Los Angeles Dodgers,3000,4,87.2,100.0,14.0
+2026-07-02,Gavin Sheets,San Diego Padres,3000,4,78.8,100.0,6.5
+2026-07-02,Manny Machado,San Diego Padres,3000,3,69.5,85.0,19.5
+2026-07-02,Cole Young,Seattle Mariners,3000,8,50.2,47.48876404494382,-1.0
+2026-07-02,Ty France,San Diego Padres,3000,5,66.9,83.0,2.5
+2026-07-02,Josh Naylor,Seattle Mariners,4500,5,51.9,58.89374090247452,-0.5
+2026-07-02,Mauricio Dubon,Atlanta Braves,3000,5,52.4,62.45283018867924,11.5
+2026-07-02,Jake Cronenworth,San Diego Padres,3000,2,62.6,86.19834710743802,17.5
+2026-07-02,Kerry Carpenter,Detroit Tigers,3600,3,53.8,70.26899128268991,1.5
+2026-07-02,Josh Lowe,Los Angeles Angels,3000,8,30.6,36.0,-0.5
+2026-07-02,Haoyu Lee,Detroit Tigers,2600,9,25.3,26.0,14.5
+2026-07-03,Freddie Freeman,Los Angeles Dodgers,3000,3,97.4,100.0,2.5
+2026-07-03,Esmerlyn Valdez,Pittsburgh Pirates,2900,4,95.0,100.0,14.5
+2026-07-03,Ketel Marte,Arizona Diamondbacks,5100,1,94.7,100.0,13.0
+2026-07-03,Miguel Vargas,Chicago White Sox,4900,2,90.0,96.33214709371293,22.5
+2026-07-03,Mookie Betts,Los Angeles Dodgers,3000,4,90.8,100.0,4.0
+2026-07-03,Jonathan Aranda,Tampa Bay Rays,4200,2,88.8,100.0,-0.5
+2026-07-03,Tyler Stephenson,Cincinnati Reds,2900,7,79.4,93.45772594752187,2.0
+2026-07-03,Aj Ewing,New York Mets,3300,1,80.0,96.0,2.0
+2026-07-03,Heliot Ramos,San Francisco Giants,3000,3,70.5,78.14732724902217,2.5
+2026-07-03,Rafael Devers,San Francisco Giants,3000,4,71.4,83.24607329842931,17.0
+2026-07-03,Trevor Larnach,Minnesota Twins,3800,1,72.1,86.1820418204182,1.5
+2026-07-03,Garrett Mitchell,Milwaukee Brewers,3100,1,76.3,95.0,17.5
+2026-07-03,Edouard Julien,Colorado Rockies,3200,7,64.0,70.62787136294028,7.5
+2026-07-03,Chase Delauter,Cleveland Guardians,3500,3,72.4,89.30647291941875,-0.5
+2026-07-03,Geraldo Perdomo,Arizona Diamondbacks,4000,2,77.7,100.0,-1.0
+2026-07-03,Otto Lopez,Miami Marlins,4300,3,71.3,88.24361948955917,12.5
+2026-07-03,Gavin Sheets,San Diego Padres,3000,4,67.5,82.0606826801517,5.0
+2026-07-03,Victor Bericoto,San Francisco Giants,3000,8,67.8,82.87370600414079,-0.5
+2026-07-03,Cam Smith,Houston Astros,2500,5,55.5,58.81286549707602,3.0
+2026-07-03,Victor Caratini,Minnesota Twins,3300,6,59.4,70.12676056338029,4.5
+2026-07-03,Cole Young,Seattle Mariners,3000,7,51.8,55.632768361581924,2.5
+2026-07-03,Tj Rumfield,Colorado Rockies,4100,4,56.6,67.13953488372093,6.5
+2026-07-03,Ty France,San Diego Padres,3000,5,60.0,74.22754491017965,-1.0
+2026-07-03,Mauricio Dubon,Atlanta Braves,3000,4,61.4,77.45283018867924,5.5
+2026-07-03,Jake Mccarthy,Colorado Rockies,3900,1,60.4,75.68033775633293,47.0
+2026-07-03,Luis Arraez,San Francisco Giants,3000,1,65.1,86.38349514563106,6.5
+2026-07-03,Steven Kwan,Cleveland Guardians,3000,9,55.0,67.45945945945945,6.5
+2026-07-03,Jake Cronenworth,San Diego Padres,3000,2,55.6,70.546875,7.5
+2026-07-03,Leo Jimenez,Miami Marlins,2200,9,50.5,62.60573476702508,-1.0
+2026-07-03,Sal Frelick,Milwaukee Brewers,3000,1,45.2,51.94856278366112,0.0
+2026-07-03,Jacob Gonzalez,Chicago White Sox,2200,9,44.7,52.15202231520223,3.0
+2026-07-03,Josh Lowe,Los Angeles Angels,3000,8,49.9,66.4308943089431,5.0
+2026-07-03,David Fry,Cleveland Guardians,3100,2,50.7,68.44141689373296,-0.5
+2026-07-03,Sungmun Song,San Diego Padres,3000,8,42.0,51.0,7.5
+2026-07-03,Colby Thomas,Athletics,3000,1,49.3,66.04347826086956,-0.5
+2026-07-03,Taylor Trammell,Houston Astros,2700,6,37.6,43.333333333333336,0.0
+2026-07-03,Taylor Walls,Tampa Bay Rays,2900,8,43.1,57.95943837753509,7.0
+2026-07-03,Gabriel Arias,Cleveland Guardians,2000,7,39.8,51.67816091954023,3.5
+2026-07-03,Ernie Clement,Toronto Blue Jays,2800,7,26.5,28.390275952693827,0.0
+2026-07-04,Willson Contreras,Boston Red Sox,3000,4,99.2,91.91666666666666,18.0
+2026-07-04,Freddie Freeman,Los Angeles Dodgers,3000,3,98.5,100.0,20.5
+2026-07-04,Miguel Vargas,Chicago White Sox,4900,1,98.2,100.0,5.5
+2026-07-04,Ketel Marte,Arizona Diamondbacks,5100,1,94.4,100.0,2.0
+2026-07-04,Mookie Betts,Los Angeles Dodgers,3000,4,92.2,100.0,5.0
+2026-07-04,Heliot Ramos,San Francisco Giants,3000,1,74.2,73.75853018372703,6.5
+2026-07-04,Jonathan Aranda,Tampa Bay Rays,4200,1,84.5,95.56537102473499,3.0
+2026-07-04,Samuel Basallo,Baltimore Orioles,3500,5,69.0,69.076726342711,19.0
+2026-07-04,Rafael Devers,San Francisco Giants,3000,4,76.2,88.0,5.0
+2026-07-04,Michael Conforto,Chicago Cubs,3400,7,80.9,100.0,7.5
+2026-07-04,Garrett Mitchell,Milwaukee Brewers,3100,5,80.3,100.0,7.5
+2026-07-04,Otto Lopez,Miami Marlins,4300,3,76.3,94.04529616724739,26.0
+2026-07-04,Kyle Karros,Colorado Rockies,2500,2,77.5,97.0,3.0
+2026-07-04,Gavin Sheets,San Diego Padres,3000,4,68.4,80.1526717557252,4.5
+2026-07-04,Cam Smith,Houston Astros,2500,6,53.3,57.844346549192366,0.0
+2026-07-04,Anthony Seigler,Boston Red Sox,3000,1,53.9,59.31981981981981,13.0
+2026-07-04,Ty France,San Diego Padres,3000,5,56.5,65.5813953488372,-0.5
+2026-07-04,Jake Mccarthy,Colorado Rockies,3900,6,60.8,75.72811059907833,3.0
+2026-07-04,Isaac Collins,Kansas City Royals,2500,7,55.3,65.06921944035346,-0.5
+2026-07-04,Jake Cronenworth,San Diego Padres,3000,2,59.6,73.84758364312268,-1.5
+2026-07-04,Steven Kwan,Cleveland Guardians,3000,9,57.5,70.44350758853288,8.0
+2026-07-04,Luis Arraez,San Francisco Giants,3000,2,62.8,82.27118644067797,12.5
+2026-07-04,Miguel Andujar,San Diego Padres,3000,8,53.4,65.8011049723757,-0.5
+2026-07-04,Eugenio Suarez,Cincinnati Reds,3800,4,42.5,45.031104199066874,9.5
+2026-07-04,Sal Frelick,Milwaukee Brewers,3000,7,56.6,74.37614678899082,-0.5
+2026-07-04,Masyn Winn,St. Louis Cardinals,3600,5,44.7,51.08928571428571,-1.0
+2026-07-04,Victor Bericoto,San Francisco Giants,3000,8,51.1,70.14155251141553,9.0
+2026-07-04,Chase Meidroth,Chicago White Sox,3600,3,37.9,45.63448275862069,-1.0
+2026-07-04,Kahlil Watson,Cleveland Guardians,2400,4,45.9,63.833333333333336,8.5
+2026-07-04,Joey Bart,Atlanta Braves,3000,8,47.7,67.67670364500793,13.0
+2026-07-04,Tyrone Taylor,New York Mets,2600,8,44.4,62.93284936479128,15.5
+2026-07-04,Taylor Walls,Tampa Bay Rays,2900,8,28.7,31.91139240506329,6.5
+2026-07-04,Josh Lowe,Los Angeles Angels,3000,5,38.0,55.0,13.5
+2026-07-05,Freddie Freeman,Los Angeles Dodgers,3000,3,96.8,100.0,0.0
+2026-07-05,Willson Contreras,Boston Red Sox,3000,4,95.2,100.0,19.5
+2026-07-05,Mookie Betts,Los Angeles Dodgers,3000,4,95.1,100.0,2.0
+2026-07-05,Gavin Sheets,San Diego Padres,3000,4,74.5,94.32909783989835,3.0
+2026-07-05,Anthony Seigler,Boston Red Sox,3000,1,75.7,100.0,9.5
+2026-07-05,Otto Lopez,Miami Marlins,4300,1,59.5,68.75336322869956,30.0
+2026-07-05,Randy Arozarena,Seattle Mariners,5000,2,64.2,79.04842615012106,4.5
+2026-07-05,Masataka Yoshida,Boston Red Sox,3000,5,69.3,98.70044052863436,11.0
+2026-07-05,Ty France,San Diego Padres,3000,5,52.8,67.15,-0.5
+2026-07-05,Lawrence Butler,Athletics,3000,1,49.7,62.950930626057534,10.5
+2026-07-05,Alex Call,Los Angeles Dodgers,3000,6,57.3,80.45810055865923,1.0
+2026-07-05,Zack Gelof,Athletics,3000,1,47.3,60.507246376811594,5.0
+2026-07-05,Josh Lowe,Los Angeles Angels,3000,9,33.8,34.0,5.5
+2026-07-05,Mitch Garver,Seattle Mariners,3000,7,40.8,48.267175572519086,15.5
+2026-07-05,Sungmun Song,San Diego Padres,3000,8,36.5,48.0,17.0
+2026-07-06,James Wood,Washington Nationals,5900,1,103.8,100.0,35.0
+2026-07-06,Freddie Freeman,Los Angeles Dodgers,3000,3,95.5,100.0,3.0
+2026-07-06,Ketel Marte,Arizona Diamondbacks,5100,1,91.7,100.0,9.0
+2026-07-06,Nelson Velazquez,St. Louis Cardinals,3500,4,91.0,100.0,9.0
+2026-07-06,Mookie Betts,Los Angeles Dodgers,3000,4,86.1,92.89673913043478,0.0
+2026-07-06,Francisco Lindor,New York Mets,4200,4,86.7,100.0,-0.5
+2026-07-06,Hunter Goodman,Colorado Rockies,5200,3,60.9,52.06896551724138,3.0
+2026-07-06,Garrett Mitchell,Milwaukee Brewers,3100,6,84.0,100.0,9.5
+2026-07-06,Dalton Rushing,Los Angeles Dodgers,3000,9,71.2,79.0,18.5
+2026-07-06,Aj Ewing,New York Mets,3300,1,78.8,100.0,0.5
+2026-07-06,Tj Rumfield,Colorado Rockies,4100,4,55.8,60.951945080091534,-0.5
+2026-07-06,Gavin Sheets,San Diego Padres,3000,4,63.9,79.6923076923077,2.5
+2026-07-06,Jake Mccarthy,Colorado Rockies,3900,7,51.7,56.10982658959537,9.0
+2026-07-06,Heliot Ramos,San Francisco Giants,3000,1,47.6,48.920529801324506,43.5
+2026-07-06,Mauricio Dubon,Atlanta Braves,3000,5,57.9,69.45502645502646,4.5
+2026-07-06,Rafael Devers,San Francisco Giants,3000,4,49.6,53.37800252844501,8.0
+2026-07-06,Isaac Paredes,Houston Astros,3700,3,66.6,88.66536964980546,3.5
+2026-07-06,Victor Bericoto,San Francisco Giants,3000,8,39.3,36.763440860215056,19.0
+2026-07-06,Sal Frelick,Milwaukee Brewers,3000,7,39.5,46.6801872074883,6.0
+2026-07-06,Sungmun Song,San Diego Padres,3000,8,43.0,57.0,0.0
+2026-07-06,David Hamilton,Milwaukee Brewers,2700,9,35.2,42.73584905660377,11.5
+2026-07-06,Chandler Simpson,Tampa Bay Rays,3800,6,33.7,40.64596273291925,5.0
+2026-07-06,Taylor Walls,Tampa Bay Rays,2900,9,23.5,26.793650793650798,-1.0
+2026-07-07,James Wood,Washington Nationals,6200,1,116.7,100.0,20.5
+2026-07-07,Juan Soto,New York Mets,5800,2,110.0,100.0,17.5
+2026-07-07,Willson Contreras,Boston Red Sox,4900,4,105.1,100.0,15.5
+2026-07-07,Miguel Vargas,Chicago White Sox,4400,1,105.0,100.0,1.5
+2026-07-07,Ketel Marte,Arizona Diamondbacks,5000,1,95.9,100.0,7.0
+2026-07-07,Pete Crowarmstrong,Chicago Cubs,6400,1,94.8,100.0,7.5
+2026-07-07,Kyle Tucker,Los Angeles Dodgers,4800,6,88.3,100.0,-0.5
+2026-07-07,Hunter Goodman,Colorado Rockies,5300,3,65.4,67.19119351100811,0.0
+2026-07-07,Heliot Ramos,San Francisco Giants,3500,1,64.1,65.5210918114144,9.5
+2026-07-07,Xavier Edwards,Miami Marlins,4100,4,80.2,100.0,4.0
+2026-07-07,Michael Conforto,Chicago Cubs,3500,7,79.4,98.99163679808841,2.5
+2026-07-07,Esmerlyn Valdez,Pittsburgh Pirates,3000,4,79.8,100.0,10.5
+2026-07-07,Rafael Devers,San Francisco Giants,3700,4,59.2,60.911392405063296,5.0
+2026-07-07,Otto Lopez,Miami Marlins,4300,3,78.2,100.0,3.0
+2026-07-07,Cam Smith,Houston Astros,3000,5,68.7,84.12023460410558,4.0
+2026-07-07,Josh Bell,Minnesota Twins,2600,3,72.9,93.48303934871099,10.0
+2026-07-07,Nick Gonzales,Pittsburgh Pirates,3000,6,76.2,100.0,8.0
+2026-07-07,Tyler Stephenson,Cincinnati Reds,3000,7,68.5,86.5232558139535,1.5
+2026-07-07,Kyle Stowers,Miami Marlins,3900,2,72.2,96.23308270676692,0.5
+2026-07-07,Steven Kwan,Cleveland Guardians,3200,9,53.3,59.0924092409241,0.0
+2026-07-07,Gavin Sheets,San Diego Padres,3200,5,63.0,79.04516129032258,4.0
+2026-07-07,Jake Mccarthy,Colorado Rockies,4100,5,49.9,53.46109175377468,5.5
+2026-07-07,Dansby Swanson,Chicago Cubs,3600,8,65.5,85.0,10.0
+2026-07-07,Samuel Basallo,Baltimore Orioles,3500,6,58.1,70.8555133079848,4.5
+2026-07-07,Kerry Carpenter,Detroit Tigers,3000,5,64.7,85.83715012722647,1.0
+2026-07-07,Randy Arozarena,Seattle Mariners,5100,2,66.4,90.54799513973269,12.0
+2026-07-07,Isaac Collins,Kansas City Royals,2700,7,64.5,87.06976744186046,17.0
+2026-07-07,Masyn Winn,St. Louis Cardinals,3500,6,69.1,96.3731343283582,-0.5
+2026-07-07,Isaac Paredes,Houston Astros,3000,3,51.0,61.53543307086614,2.0
+2026-07-07,Mauricio Dubon,Atlanta Braves,3200,5,46.8,53.11920529801324,9.5
+2026-07-07,Richie Palacios,Tampa Bay Rays,3400,8,44.0,49.21686746987952,14.0
+2026-07-07,Josh Smith,Texas Rangers,2000,2,64.2,90.68982229402262,4.5
+2026-07-07,Ezequiel Tovar,Colorado Rockies,3900,7,45.8,53.84422110552764,-0.5
+2026-07-07,Joe Mack,Miami Marlins,2800,8,60.9,84.69354838709677,2.0
+2026-07-07,Luke Keaschall,Minnesota Twins,3000,8,51.2,65.42105263157895,6.0
+2026-07-07,Brett Baty,New York Mets,2700,8,44.5,55.09317803660565,9.0
+2026-07-07,Spencer Torkelson,Detroit Tigers,3000,7,52.6,73.06896551724138,4.0
+2026-07-07,Josh Lowe,Los Angeles Angels,2200,5,38.1,45.774193548387096,5.0
+2026-07-07,Sungmun Song,San Diego Padres,2600,9,41.0,52.0,0.0
+2026-07-07,Justin Crawford,Philadelphia Phillies,3200,9,32.9,36.19440124416796,12.5
+2026-07-07,Chandler Simpson,Tampa Bay Rays,3500,5,36.8,45.79503105590062,0.0
+2026-07-07,Keibert Ruiz,Washington Nationals,3800,5,40.2,52.91326530612245,-0.5
+2026-07-07,Daniel Schneemann,Cleveland Guardians,2600,7,31.3,37.3524720893142,-0.5
+2026-07-07,Tj Friedl,Cincinnati Reds,3000,8,34.4,43.99250936329588,-1.5
+2026-07-07,Zach Dezenzo,Houston Astros,3000,6,36.7,49.347245409015024,12.5
+2026-07-07,Colby Thomas,Athletics,2800,1,34.0,45.00153609831029,-1.0
+2026-07-07,Taylor Walls,Tampa Bay Rays,2700,7,29.0,36.31189710610933,4.5
+2026-07-08,Juan Soto,New York Mets,5800,2,112.9,100.0,3.5
+2026-07-08,James Wood,Washington Nationals,6200,1,104.6,100.0,14.5
+2026-07-08,Ketel Marte,Arizona Diamondbacks,5000,1,99.0,100.0,3.0
+2026-07-08,Nelson Velazquez,St. Louis Cardinals,3400,4,88.8,91.86343612334802,-1.0
+2026-07-08,Jordan Walker,St. Louis Cardinals,5200,3,89.0,100.0,19.0
+2026-07-08,Willson Contreras,Boston Red Sox,4900,4,87.7,100.0,0.0
+2026-07-08,Pete Crowarmstrong,Chicago Cubs,6400,1,84.5,96.0,31.0
+2026-07-08,Heriberto Hernandez,Miami Marlins,3500,6,86.2,100.0,4.0
+2026-07-08,Cole Carrigg,Colorado Rockies,3300,3,84.7,100.0,1.5
+2026-07-08,Trevor Larnach,Minnesota Twins,3700,1,77.5,89.46674727932286,-0.5
+2026-07-08,Edouard Julien,Colorado Rockies,3400,7,76.7,91.51724137931035,13.5
+2026-07-08,Kyle Tucker,Los Angeles Dodgers,4800,7,80.8,99.90971272229822,7.0
+2026-07-08,Otto Lopez,Miami Marlins,4300,2,71.8,86.29133858267717,9.5
+2026-07-08,Nick Gonzales,Pittsburgh Pirates,3000,6,78.0,100.0,1.0
+2026-07-08,Garrett Mitchell,Milwaukee Brewers,3300,5,77.8,100.0,9.5
+2026-07-08,Josh Bell,Minnesota Twins,2600,4,60.6,68.16666666666666,4.5
+2026-07-08,Cam Smith,Houston Astros,3000,5,54.7,58.54437869822485,-1.0
+2026-07-08,Mauricio Dubon,Atlanta Braves,3200,5,60.1,70.54270696452036,-0.5
+2026-07-08,Jake Mccarthy,Colorado Rockies,4100,1,65.9,84.62777129521587,5.0
+2026-07-08,Ben Malgeri,Detroit Tigers,3000,7,58.0,69.78477690288713,-1.0
+2026-07-08,Masataka Yoshida,Boston Red Sox,3000,5,58.4,72.51793400286944,4.0
+2026-07-08,Michael Conforto,Chicago Cubs,3500,7,59.4,75.23751522533496,13.5
+2026-07-08,Isaac Collins,Kansas City Royals,2700,8,60.6,78.0,2.5
+2026-07-08,Esmerlyn Valdez,Pittsburgh Pirates,3000,4,53.9,65.86459378134404,-1.5
+2026-07-08,Elias Diaz,Texas Rangers,2700,8,59.8,79.2636815920398,-1.0
+2026-07-08,Luke Keaschall,Minnesota Twins,3000,7,39.1,40.0,12.5
+2026-07-08,Jonny Deluca,Tampa Bay Rays,3700,5,45.3,53.80474934036939,-0.5
+2026-07-08,Dansby Swanson,Chicago Cubs,3600,9,50.0,64.0,4.5
+2026-07-08,Joe Mack,Miami Marlins,2800,8,44.1,53.05729877216916,-0.5
+2026-07-08,Josh Smith,Texas Rangers,2000,2,60.1,85.22950819672131,2.0
+2026-07-08,Masyn Winn,St. Louis Cardinals,3500,1,48.8,62.52567975830816,6.5
+2026-07-08,Nick Loftin,Kansas City Royals,2900,7,52.2,70.62402088772846,7.0
+2026-07-08,Brett Baty,New York Mets,2700,8,45.2,58.083056478405325,8.5
+2026-07-08,Sungmun Song,San Diego Padres,2600,9,34.0,36.0,16.0
+2026-07-08,David Fry,Cleveland Guardians,3100,1,37.1,42.48241912798875,-1.0
+2026-07-08,Jose Tena,Washington Nationals,2700,8,57.2,83.0,1.5
+2026-07-08,Alex Bregman,Chicago Cubs,4000,2,44.6,59.177842565597665,2.0
+2026-07-08,Chandler Simpson,Tampa Bay Rays,3500,6,39.6,50.51090342679127,8.0
+2026-07-08,Josh Lowe,Los Angeles Angels,2200,9,33.6,38.919093851132686,9.0
+2026-07-08,Gabriel Arias,Cleveland Guardians,2200,6,28.8,30.815709969788514,-0.5
+2026-07-08,Justin Crawford,Philadelphia Phillies,3200,7,39.9,53.0,21.5
+2026-07-08,Lourdes Gurriel,Arizona Diamondbacks,2900,6,38.2,49.924914675767916,4.5
+2026-07-08,Jahmai Jones,Detroit Tigers,3000,8,43.0,59.630630630630634,-0.5
+2026-07-08,Brice Matthews,Houston Astros,3000,7,34.8,54.99490662139219,9.5
+2026-07-09,Mike Trout,Los Angeles Angels,5000,2,102.2,100.0,3.0
+2026-07-09,Ketel Marte,Arizona Diamondbacks,5000,1,94.3,100.0,-0.5
+2026-07-09,Cooper Pratt,Milwaukee Brewers,2900,8,92.2,100.0,9.5
+2026-07-09,Jordan Walker,St. Louis Cardinals,5200,4,92.2,100.0,17.0
+2026-07-09,Garrett Mitchell,Milwaukee Brewers,3300,1,84.7,100.0,4.0
+2026-07-09,Riley Greene,Detroit Tigers,3000,4,83.6,99.99763872491145,-1.0
+2026-07-09,Luis Campusano,San Diego Padres,2900,7,76.6,87.10176125244618,4.0
+2026-07-09,Randy Arozarena,Seattle Mariners,5100,2,79.2,98.42648845686513,20.0
+2026-07-09,Kyle Karros,Colorado Rockies,2700,2,78.7,99.17955112219451,1.5
+2026-07-09,Rafael Devers,San Francisco Giants,3700,4,64.1,72.56449553001278,15.5
+2026-07-09,Otto Lopez,Miami Marlins,4300,2,71.4,88.32286995515695,18.0
+2026-07-09,Heriberto Hernandez,Miami Marlins,3500,5,76.0,100.0,2.0
+2026-07-09,Jake Mccarthy,Colorado Rockies,4100,1,66.2,84.1588785046729,1.0
+2026-07-09,Victor Bericoto,San Francisco Giants,2200,7,52.9,60.328903654485046,-1.0
+2026-07-09,Alejandro Osuna,Texas Rangers,2400,9,40.7,43.6979969183359,6.5
+2026-07-09,Sungmun Song,San Diego Padres,2600,9,42.0,52.0,-1.0
+2026-07-09,Leo Jimenez,Miami Marlins,2100,9,38.3,44.90459363957598,10.0
+2026-07-09,Josh Lowe,Los Angeles Angels,2200,6,35.2,40.19292604501608,-1.0
+2026-07-09,Colby Thomas,Athletics,2800,1,37.2,47.34796238244514,-0.5
+2026-07-09,Justin Crawford,Philadelphia Phillies,3200,9,39.7,52.91251885369533,5.0
+2026-07-09,Lourdes Gurriel,Arizona Diamondbacks,2900,6,43.7,63.47169811320755,3.0
