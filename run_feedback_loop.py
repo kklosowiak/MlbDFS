@@ -147,7 +147,7 @@ def run_feedback_loop(days=7):
         'GPP_FADE_RISK': {'fired': 0, 'hit': 0},            # Success = Team scored < 4 runs
         'TEAM_COLD_STREAK_MSMI': {'fired': 0, 'hit': 0},   # Success = Cold streak team scored < 4 runs
         'DQI_TRUST': {'fired': 0, 'hit': 0},               # Success = Team scored 5+ runs
-        'DQI_FADE': {'fired': 0, 'hit': 0},                # Success = Team scored < 4 runs (trap worked)
+        'DQI_LEVERAGE': {'fired': 0, 'hit': 0},            # Success = Team scored 5+ runs (leverage hit)
         'STEAM_SUPPORT': {'fired': 0, 'hit': 0},           # Success = Team scored 5+ runs
         'EV_ML_POSITIVE': {'fired': 0, 'hit': 0},          # Success = Team with positive OMEGA ML edge won the game
         'EV_ML_HIGH_CONV': {'fired': 0, 'hit': 0},         # Success = Team where OMEGA prob > market by 4+ pp won the game
@@ -400,17 +400,17 @@ def run_feedback_loop(days=7):
                 if runs < 4:
                     signal_stats['TEAM_COLD_STREAK_MSMI']['hit'] += 1
 
-            # 🟢 DQI TRUST, 🔴 DQI FADE calculation (v9.5 6-Layer alignment)
+            # 🟢 DQI TRUST, 🟣 DQI LEVERAGE calculation (v9.5 6-Layer alignment)
             dqi_score, dqi_status, _, _ = calculate_dqi(t, pitchers)
             if dqi_score is not None:
                 if dqi_status == 'TRUST':
                     signal_stats['DQI_TRUST']['fired'] += 1
                     if is_hit_5:
                         signal_stats['DQI_TRUST']['hit'] += 1
-                elif dqi_status == 'FADE':
-                    signal_stats['DQI_FADE']['fired'] += 1
-                    if runs < 4:
-                        signal_stats['DQI_FADE']['hit'] += 1
+                elif dqi_status in ('LEVERAGE', 'FADE'):
+                    signal_stats['DQI_LEVERAGE']['fired'] += 1
+                    if is_hit_5:
+                        signal_stats['DQI_LEVERAGE']['hit'] += 1
             
             # STEAM Support Metric (v4 — data-driven: retired standalone ml_steam)
             # Diagnostics showed pure ML-shorten (ml <= -10 alone) hits only 32% on 5+ runs.
@@ -741,7 +741,7 @@ def run_feedback_loop(days=7):
     # Auto-adjust advice logic
     for signal, data in signal_stats.items():
         # Exclude DQI, STEAM & EV signals from basic card recommendations to keep advice focused on actionable multipliers
-        if signal in ['DQI_TRUST', 'DQI_FADE', 'STEAM_SUPPORT',
+        if signal in ['DQI_TRUST', 'DQI_LEVERAGE', 'STEAM_SUPPORT',
                       'EV_ML_POSITIVE', 'EV_ML_HIGH_CONV', 'EV_SPREAD_COVER', 'EV_TOTAL_OVER', 'EV_TOTAL_UNDER']:
             continue
             
@@ -828,7 +828,7 @@ def run_feedback_loop(days=7):
 
     # --- Signal bucket definitions ---
     pitcher_fade_signals = ['PITCHER_TRAP_FADE', 'PITCHER_LOW_CEILING', 'PITCHER_HAZARD', 'PITCHER_LC_HAZARD_COMBO']
-    team_attack_signals = ['TEAM_WHALE', 'GASSED_BULLPEN_ATTACK', 'TEAM_SNEAKY_STACK', 'TEAM_BURST', 'ANTI_CHALK_SMASH', 'GPP_FADE_RISK', 'TEAM_COLD_STREAK_MSMI', 'DQI_TRUST', 'DQI_FADE']
+    team_attack_signals = ['TEAM_WHALE', 'GASSED_BULLPEN_ATTACK', 'TEAM_SNEAKY_STACK', 'TEAM_BURST', 'ANTI_CHALK_SMASH', 'GPP_FADE_RISK', 'TEAM_COLD_STREAK_MSMI', 'DQI_TRUST', 'DQI_LEVERAGE']
     ev_signals = ['EV_ML_POSITIVE', 'EV_ML_HIGH_CONV', 'EV_SPREAD_COVER', 'EV_TOTAL_OVER', 'EV_TOTAL_UNDER', 'STEAM_SUPPORT']
     hitter_signals = ['HITTER_SMASH']
 

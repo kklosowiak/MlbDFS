@@ -96,7 +96,7 @@ def compute_dqi_status(dqi_score: int, divergence: float, implied_total: float, 
     Re-compute DQI status label from a raw dqi_score using given parameter set.
     Mirrors utils/dqi.py lines 146-156.
     """
-    status = "TRUST" if dqi_score >= params["dqi_trust_min"] else ("CAUTION" if dqi_score >= 50 else "FADE")
+    status = "TRUST" if dqi_score >= params["dqi_trust_min"] else ("CAUTION" if dqi_score >= 50 else "LEVERAGE")
     if status == "TRUST" and divergence < params["dqi_div_gate"]:
         status = "CAUTION"
     if status == "TRUST" and implied_total < params["dqi_itt_floor"]:

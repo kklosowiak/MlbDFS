@@ -11,8 +11,8 @@ def calculate_dqi(team, pitchers=None):
     Continuous Multi-Layer DQI Slider Model.
 
     GATE: Only fires when team divergence >= 10%.
-    Base: 30 (teams start in FADE — must earn TRUST).
-    TRUST >= 82 | CAUTION >= 50 | FADE < 50
+    Base: 30 (teams start in LEVERAGE — must earn TRUST).
+    TRUST >= 82 | CAUTION >= 50 | LEVERAGE < 50
 
     Returns (score, status, pos_factors, warn_factors) or (None, None, [], []) if gated.
     """
@@ -155,7 +155,7 @@ def calculate_dqi(team, pitchers=None):
         
     dqi_score_int = int(round(dqi_score))
     
-    status = "TRUST" if dqi_score_int >= 82 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
+    status = "TRUST" if dqi_score_int >= 82 else ("CAUTION" if dqi_score_int >= 50 else "LEVERAGE")
     
     # Dual-Gate Cap: TRUST requires >= 12.0% divergence
     if status == "TRUST" and divergence < 12.0:

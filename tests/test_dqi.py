@@ -30,7 +30,7 @@ def test_dqi_fires_with_divergence():
     score, status, pos, warn = calculate_dqi(team)
     assert score is not None
     assert score >= 50
-    assert status in ("TRUST", "CAUTION", "FADE")
+    assert status in ("TRUST", "CAUTION", "LEVERAGE")
     assert len(pos) > 0
 
 

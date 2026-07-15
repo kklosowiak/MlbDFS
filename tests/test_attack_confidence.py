@@ -90,32 +90,32 @@ def test_stack_conf_penalizes_chalk_and_cold_props():
         "prop_pressure_label": LABEL_COLD,
         "lineup_status": "CONFIRMED",
         "divergence": 18,
-        "dqi_status": "FADE",
+        "dqi_status": "LEVERAGE",
         "dqi_score": 42,
         "bullpen_fatigue": 50,
     }
     conf, reasons = score_stack_confidence(t, [])
     assert conf < 70
-    assert any("CHALK" in r or "DQI FADE" in r for r in reasons)
+    assert any("CHALK" in r or "DQI LEVERAGE" in r for r in reasons)
 
 
-def test_stack_conf_boosts_fade():
+def test_stack_conf_boosts_leverage():
     t_base = {
         "team": "Miami Marlins",
         "team_xwoba": 0.300,
         "implied_total": 4.5,
         "lineup_status": "CONFIRMED",
     }
-    t_fade = {
+    t_leverage = {
         **t_base,
-        "dqi_status": "FADE",
+        "dqi_status": "LEVERAGE",
         "dqi_score": 42,
     }
     conf_base, _ = score_stack_confidence(t_base, [])
-    conf_fade, reasons_fade = score_stack_confidence(t_fade, [])
-    # FADE should add exactly +8.0 confidence points
-    assert conf_fade - conf_base == 8.0
-    assert any("DQI FADE" in r for r in reasons_fade)
+    conf_leverage, reasons_leverage = score_stack_confidence(t_leverage, [])
+    # LEVERAGE should add exactly +8.0 confidence points
+    assert conf_leverage - conf_base == 8.0
+    assert any("DQI LEVERAGE" in r for r in reasons_leverage)
 
 
 def test_pitcher_prop_penalty_only_elite_board():

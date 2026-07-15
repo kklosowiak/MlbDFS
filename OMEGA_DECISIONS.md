@@ -591,13 +591,13 @@ Full report: `historical_study_report.md` in the session artifact directory.
   - **Verdict:** Neutral/negative signal. Retired from the high-conviction gates.
 - **Implementation:** Removed from `_has_high_conviction_stack()` in `utils/attack_confidence.py`.
 
-#### DQI Status FADE Re-Calibration — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
-- **Decision:** Convert the original `-15 CONF` penalty to a `+8 CONF` boost for stacks flagged as `dqi_status == "FADE"`. Do not unlock the high-conviction gate.
-- **Re-run Study Results (N=22 de-duplicated):** Stacks flagged as FADE hit or exceed their implied totals **72.7%** of the time (16/22) compared to a **44.0% baseline** (914 starts). Flagged teams outperformed by an average of **+1.38 runs** above ITT. This finding is highly statistically significant ($p = 0.0074$, Z-stat = 2.68).
-- **Magnitude Calibration:** Regressing actual runs on Vegas implied totals ($N=936$) shows a slope of **$0.3716$** ($p = 0.0002$). Since OMEGA's system design maps a 1.2-run implied total increase to +10 CONF, a +10 CONF boost represents an expected actual run premium of +0.45 runs. FADE's +1.38 run premium is **3x larger** than what +10 CONF represents, and would translate to a **+30.9 CONF boost** if scaled proportionally via the Vegas-equivalent slope.
+#### DQI Status LEVERAGE Re-Calibration (formerly FADE) — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Convert the original `-15 CONF` penalty to a `+8 CONF` boost for stacks flagged as `dqi_status == "LEVERAGE"` (formerly `"FADE"`). Do not unlock the high-conviction gate.
+- **Re-run Study Results (N=22 de-duplicated):** Stacks flagged as LEVERAGE hit or exceed their implied totals **72.7%** of the time (16/22) compared to a **44.0% baseline** (914 starts). Flagged teams outperformed by an average of **+1.38 runs** above ITT. This finding is highly statistically significant ($p = 0.0074$, Z-stat = 2.68).
+- **Magnitude Calibration:** Regressing actual runs on Vegas implied totals ($N=936$) shows a slope of **$0.3716$** ($p = 0.0002$). Since OMEGA's system design maps a 1.2-run implied total increase to +10 CONF, a +10 CONF boost represents an expected actual run premium of +0.45 runs. LEVERAGE's +1.38 run premium is **3x larger** than what +10 CONF represents, and would translate to a **+30.9 CONF boost** if scaled proportionally via the Vegas-equivalent slope.
 - **[UNVALIDATED JUDGMENT CALL]:** Because $N=22$ is a very thin sample, we are choosing **not** to apply the large derived +30.9 CONF boost. Instead, **+8 CONF** is applied as a deliberately conservative placeholder pending more data. This weight is not derived from the regression or benchmarked against other flags.
 - **OOS CV Note:** The 5-fold CV MAE deltas for +12 (delta −0.001084) and +8 (delta −0.001027) are nearly identical and both noise-level. This OOS check confirms that converting the penalty to a boost does not hurt predictive power, but it does not validate the specific magnitude.
-- **Implementation:** Changed to `conf += 8.0` in `score_stack_confidence()` in `utils/attack_confidence.py`.
+- **Implementation:** Changed to `conf += 8.0` in `score_stack_confidence()` in `utils/attack_confidence.py`. For backward-compatibility with historical files in `reports/archive/` (saved prior to July 15, 2026), both the engine and passive tracking scripts check for `dqi_status in ("LEVERAGE", "FADE")` when processing results.
 
 
 

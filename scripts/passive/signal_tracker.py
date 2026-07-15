@@ -396,7 +396,7 @@ def main():
             append_to_csv(os.path.join(signals_dir, "steam_log.csv"), ["date", "team", "attack_conf", "ITT", "divergence", "ticket_pct", "money_pct", "actual_runs", "run_diff", "steam_correct"], row, date_str)
 
         dqi_status = t.get('dqi_status')
-        if dqi_status in ['TRUST', 'CAUTION']:
+        if dqi_status in ['TRUST', 'CAUTION', 'LEVERAGE']:
             row = [date_str, t['team'], conf, itt, dqi_status, actual_runs, run_diff]
             append_to_csv(os.path.join(signals_dir, "dqi_log.csv"), ["date", "team", "attack_conf", "ITT", "dqi_tier", "actual_runs", "run_diff"], row, date_str)
 
