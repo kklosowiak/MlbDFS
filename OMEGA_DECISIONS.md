@@ -556,13 +556,13 @@ Full report: `historical_study_report.md` in the session artifact directory.
 > [!WARNING]
 > **Interacting Mechanisms Warning:** These retirements combine three interacting scoring mechanisms: a direct confidence boost (+10 CONF for DQI TRUST), a high-conviction stack gate signal (DQI TRUST and TTP), and a soft-cap bypass override (DQI TRUST overriding the divergence steam trap penalty). While each of these components was validated individually, the combined interaction effects of removing them simultaneously (e.g. Toronto on May 21 losing both the TRUST boost and the steam-trap bypass for a combined -18 CONF drop) have not been separately backtested as a joint interaction. They are implemented under the assumption of additive signal properties.
 
-#### Summary of Re-Run Study Results (N=1,000 team-starts, 50 slates)
+#### Summary of Re-Run Study Results (N=936 de-duplicated team-starts, 50 slates)
 
 | Signal | Success Definition | Flagged N | Flagged Hit Rate | Baseline Hit Rate | Avg Diff vs ITT | Z-statistic | P-value | Verdict |
 |---|---|:---:|:---:|:---:|:---:|:---:|:---:|---|
-| **dqi_status_TRUST** | Actual Runs >= ITT | 21 | 28.6% | 44.8% | -0.80 runs | -1.48 | 0.1377 | **Reversed (Fade)** |
+| **dqi_status_TRUST** | Actual Runs >= ITT | 20 | 30.0% | 44.8% | -0.80 runs | -1.33 | 0.1835 | **Reversed (Fade)** |
 | **is_public_steam_trap** | Actual Runs >= ITT | 6* | 50.0% | 44.5% | -0.18 runs | 0.27 | 0.7857 | **Inconclusive (Lines gap)** |
-| **is_true_talent_penalty (A)** | Actual Runs >= ITT | 119 | 47.9% | 44.0% | +0.09 runs | 0.79 | 0.4267 | **Neutral (No signal)** |
+| **is_true_talent_penalty (A)** | Actual Runs >= ITT | 108 | 48.1% | 44.0% | +0.09 runs | 0.81 | 0.4170 | **Neutral (No signal)** |
 | **is_true_talent_penalty (B)** | Actual Runs >= ITT | 13 | 23.1% | 40.3% | -0.99 runs | -1.18 | 0.2372 | **Reversed (Fade)** |
 
 *\*is_public_steam_trap note:* Pinnacle/Circa odds fields were missing for 91% of historical files in `reports/archive/`, limiting the retroactive dynamic N to 6. The original live-logged N=16 is also inconclusive (p=0.814) with no path to a larger sample without resolving the lines logging gap.
@@ -570,7 +570,7 @@ Full report: `historical_study_report.md` in the session artifact directory.
 #### DQI Status TRUST Boost & Gate — RETIRED July 15, 2026
 - **Original Decision:** Apply a `+10 CONF` boost to stacks flagged as `dqi_status == "TRUST"` (confirmed lineup/fresh data) and include it as a high-conviction stack gate signal.
 - **Retired:** July 15, 2026 audit validated this signal and confirmed it is a reverse indicator.
-  - **Hit Rate Analysis (N=21):** Stacks with TRUST status hit their implied totals only **28.6%** of the time (6/21) compared to a **44.8% baseline** (979 stats). Flagged teams underperformed by an average of **-0.80 runs below ITT**.
+  - **Hit Rate Analysis (N=20):** Stacks with TRUST status hit their implied totals only **30.0%** of the time (6/20) compared to a **44.8% baseline** (916 stats). Flagged teams underperformed by an average of **-0.80 runs below ITT**.
   - **OOS 5-Fold CV:** Retiring the boost slightly improved predictive accuracy (MAE delta −0.001798), though this small difference is directionally consistent but not meaningfully distinguishable from zero at this scale.
   - **Root cause:** Early confirmed lineups represent clean, public situations that Vegas prices to perfection (high ITT), leading to systematic underperformance relative to expectations.
 - **Implementation:** Boost set to `+0.0` in `score_stack_confidence()` (retaining reasons description for tracing) and override logic removed. Removed from `_has_high_conviction_stack()` and `spec_signals` soft-cap check in `utils/attack_confidence.py`.
@@ -586,7 +586,7 @@ Full report: `historical_study_report.md` in the session artifact directory.
 #### True Talent Penalty — RETIRED July 15, 2026
 - **Original Decision:** Flag opposing starting pitchers whose Statcast profiles meet the low-talent/regression criteria (`ip >= 50.0`, `k_bb_pct < 0.14`, `hr_9 > 1.6`) and count it as a high-conviction stack gate signal.
 - **Retired:** July 15, 2026 audit confirmed the signal is neutral or negative.
-  - **Framing A: Retroactive Full-Season Profile Check (N=119):** Stacking against pitchers whose full-season stats fit this profile yielded **47.9%** hit rate vs. **44.0% baseline** (p=0.4267), showing no statistically significant positive edge.
+  - **Framing A: Retroactive Full-Season Profile Check (N=108):** Stacking against pitchers whose full-season stats fit this profile yielded **48.1%** hit rate vs. **44.0% baseline** (p=0.4170), showing no statistically significant positive edge.
   - **Framing B: Live-Logged Pre-Game Signal Check (N=13):** Stacks facing pitchers flagged live underperformed baseline (**23.1%** hit rate vs. **40.3% baseline**, p=0.2372).
   - **Verdict:** Neutral/negative signal. Retired from the high-conviction gates.
 - **Implementation:** Removed from `_has_high_conviction_stack()` in `utils/attack_confidence.py`.
