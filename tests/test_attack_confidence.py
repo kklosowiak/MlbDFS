@@ -99,6 +99,25 @@ def test_stack_conf_penalizes_chalk_and_cold_props():
     assert any("CHALK" in r or "DQI FADE" in r for r in reasons)
 
 
+def test_stack_conf_boosts_fade():
+    t_base = {
+        "team": "Miami Marlins",
+        "team_xwoba": 0.300,
+        "implied_total": 4.5,
+        "lineup_status": "CONFIRMED",
+    }
+    t_fade = {
+        **t_base,
+        "dqi_status": "FADE",
+        "dqi_score": 42,
+    }
+    conf_base, _ = score_stack_confidence(t_base, [])
+    conf_fade, reasons_fade = score_stack_confidence(t_fade, [])
+    # FADE should add exactly +8.0 confidence points
+    assert conf_fade - conf_base == 8.0
+    assert any("DQI FADE" in r for r in reasons_fade)
+
+
 def test_pitcher_prop_penalty_only_elite_board():
     p = {
         "pitcher": "Test SP",
