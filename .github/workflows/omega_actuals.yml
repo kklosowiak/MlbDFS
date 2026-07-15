@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: audit/july-2026
+          ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
@@ -44,4 +44,4 @@ jobs:
           git add -f scratch/passive_tracker/actuals_log.txt || true
           git add -f scratch/passive_tracker/error_log.txt || true
           git diff --staged --quiet || git commit -m "auto: nightly processing $(date -u +%Y-%m-%d)"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/kklosowiak/MlbDFS.git audit/july-2026
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/kklosowiak/MlbDFS.git main
