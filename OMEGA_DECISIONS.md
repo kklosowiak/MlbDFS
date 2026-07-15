@@ -337,17 +337,26 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Compound Volatility + Low Ceiling Additive Model:** When combined with `is_low_ceiling` (penalized `-8`), volatile pitchers naturally receive a combined additive `-12` penalty. Regression indicates **no compounding interaction** (interaction term $-0.0279$ DK points is completely insignificant, $p = 0.988$), making a simple additive model statistically superior. The success rate of this group drops from $42.9\%$ (clean) to **$16.1\%$** ($5/31$ starts), though the difference vs. low-ceiling-only ($32.4\%$) has a two-tailed p-value of **$0.0608$** and is not statistically significant at the 95% level due to small sample size ($N = 31$).
 
 #### Outlier-Driven Recent Form Warning & Penalty — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
-- **Decision:** Apply a `-10` confidence penalty and display an outlier-driven form warning if a pitcher's rolling 3-start ERA is distorted by a single start (specifically, if `recent_era_ex_best - recent_era >= 1.50` and `recent_era_ex_best >= 4.0`).
-- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative slump proxy (derived from the Trevor McDonald post-mortem case) to prevent the model from endorsing pitchers whose rolling average is carried by a single outlier game. It has been **backlogged for a future regression check** once more slates with this flag accumulate.
+- **Decision:** Apply a `-10` confidence penalty and display an outlier-driven form warning if a pitcher's rolling 3-start ERA is distorted by a single outstanding start (specifically, if `recent_era_ex_best - recent_era >= 1.50` and `recent_era_ex_best >= 4.0`).
+- **Logic:** `recent_era_ex_best` is computed as the **maximum ERA when any single start is removed** from the L3 window — which necessarily corresponds to removing the *best* start. The condition therefore fires only when removing the pitcher's best start causes a large ERA swing AND the resulting ex-best ERA is still bad (>= 4.0). This correctly identifies pitchers whose good-looking L3 ERA is propped up by a single gem start, with the other starts being genuinely bad. The directional logic is sound. (Note: a July 15 audit initially described this as a "design flaw" — that was incorrect and has been retracted.)
+- **Limitation:** The `-10` weight is entirely unvalidated. The penalty also fires only for pitchers in the form cache (~24 entries), which is refreshed only for the current slate. `is_outlier_driven` is not written to snapshot CSVs, making retrospective validation impossible. Statistical testing is blocked until the form cache coverage gap (backlog item #3) is fixed.
+- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** The concept is directionally sound but the weight is not data-derived. Backlogged for regression check once `is_outlier_driven` is logged to snapshots and N >= 300 records with the flag populated are available.
 
-#### Same-Side Starter Stack Ceiling Cap — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
-- **Decision:** Apply a `-5` stack confidence penalty to teams whose starting pitcher has `attack_conf >= 85` (soft ceiling fader).
-- **Validation Note:** **[UNVALIDATED JUDGMENT CALL]** This is an unvalidated judgment-call penalty introduced as a qualitative risk buffer to account for game-shortening ceiling cap risk (Zack Wheeler effect). It has been **backlogged for a future regression check** once more slates with this situation accumulate.
+#### Same-Side Starter Stack Ceiling Cap — RETIRED July 15, 2026
+- **Original Decision:** Apply a `-5` stack confidence penalty to teams whose starting pitcher has `attack_conf >= 85` (soft ceiling fader, "Zack Wheeler effect").
+- **Retired:** July 15, 2026 audit validated this penalty and found no supporting signal.
+  - **Controlled regression (N=1,442 hitter-game records):** After controlling for `own_sp_conf` (continuous) and slate-mean pitcher quality, `has_elite_own_sp` coefficient **sign-flips to positive** (+0.36 DK pts, p=0.69). The raw -0.6 DK pt gap was fully explained by the correlation between the binary >=85 flag and the continuous pitcher quality already priced into stack scores (r=0.526).
+  - **OOS 5-fold CV:** Adding the cap term **worsened** prediction in 3 of 5 folds (mean MAE +0.004, paired t-test p=0.517). No predictive value confirmed out-of-sample.
+  - **Root cause:** Double-counting. Continuous pitcher quality adjustments already suppress stack scores for elite-SP teams through other channels. The -5 penalty was redundant.
+- **Implementation:** Code block removed from `score_stack_confidence()` in `utils/attack_confidence.py`. Retired comment left in place.
 
 #### Backlog Items for Statistical Validation:
-1. **Outlier-Driven Recent Form Penalty Check:** Verify if `is_outlier_driven = True` corresponds to a statistically significant drop in actual DraftKings points and success rate compared to clean recent-form starting pitchers.
-2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline.
-3. **Pitcher Form Cache Coverage Gap (added July 13):** `pitcher_form_cache.json` is currently refreshed only for today's slate pitchers, leaving the cache with ~24 entries vs. the full pitcher pool (~175 over a week's slates). This means `recent_era_5g` is `None` for virtually all pitchers in production, and the L5 ERA penalty was dead code. Before adding any L5-window scoring signal, the form cache refresh logic in `statcast_bridge.py` must be expanded to cover all pitchers on each slate at run time (not just the current day). Once coverage is fixed, `recent_era_5g` should be re-evaluated statistically (N >= 300 pitcher-game records recommended) before any penalty is re-added.
+1. **Outlier-Driven Recent Form Penalty Check:** Verify if `is_outlier_driven = True` corresponds to a statistically significant drop in actual DraftKings points and success rate compared to clean recent-form starting pitchers. **[BLOCKED by item #3 — confirmed July 15]**
+2. **Same-Side Starter Stack Cap Check:** Verify if teams stacking when their own starter has `attack_conf >= 85` exhibit a statistically significant drop in actual runs scored and DraftKings fantasy points compared to baseline. **[STUDIED July 15 — signal null, see July 15 entry]**
+3. **[ELEVATED PRIORITY — July 15] Pitcher Form Cache Coverage Gap:** `pitcher_form_cache.json` is currently refreshed only for today's slate pitchers, leaving the cache with ~24 entries vs. the full pitcher pool (~175 over a week's slates). **This is now confirmed to be blocking validation of at least two live scoring penalties:**
+   - `recent_era_5g >= 4.25` (-6 CONF) — dead code, never populates. Removed July 13.
+   - `is_outlier_driven` (-10 CONF) — fires for 14 of 24 cached pitchers today but is never written to snapshot CSVs, making retrospective validation impossible. Cannot be tested statistically until coverage is fixed.
+   - This is the third finding this week tracing back to the same root cause. It is not a minor pipeline gap — it is actively preventing validation of live production scoring decisions. **Fix should be prioritized before any further penalty tuning work on pitcher signals.** The form cache refresh in `statcast_bridge.py` must be expanded to cover all pitchers on each day's slate at run time (not just the current day's 24), and `is_outlier_driven` must be added as a logged column in the `signal_tracker.py` snapshot CSV.
 4. **recent_era Penalty Re-Calibration:** Current `-6 CONF` penalty for `recent_era >= 4.50` is likely oversized relative to the controlled effect size (~-2.9 DK pts, p=0.041 after controlling for SIERA and opponent environment). Re-calibrate once N exceeds ~400 pitcher-game records to support a stable 3-covariate OLS.
 
 
@@ -503,4 +512,42 @@ With complete actuals, STRONG_EDGE shows 46.4% outperformance rate (below 52% ba
 - **Rationale:** Both small-sample regressions show near-zero independent coefficient for the divergence term once raw L3 ERA is included in the same model. This conservative reduction acknowledges the lack of evidence for the original weight.
 - **Classification: [UNVALIDATED JUDGMENT CALL]** — The `-2` value is not data-derived. It is an arbitrary conservative downward adjustment from `-4`, not a measured effect size. Treat with the same skepticism as the original `-4`.
 - **Action Gate:** Pending merge approval.
+
+
+### July 14, 2026 — Historical Replication Study (2024/2025 Confirmation Layer)
+
+#### Study Scope
+Background confirmation study run against 2024 and 2025 backtest data (`backtest_2024_schedule.json`, `backtest_2025_schedule.json`, `backtest_2024_player_stats.json`, `backtest_2025_player_stats.json`). Goal: check whether two structural findings from this week's audit (SIERA dominance over rolling ERA; SP flag suppression) hold in prior seasons. No code changes follow from this study.
+
+Full report: `historical_study_report.md` in the session artifact directory.
+
+#### Finding 1: Run Environment — Comparable Across All Three Seasons
+- 2024 mean RPG = 8.763; 2025 mean RPG = 8.889. t-test: t = -0.994, p = 0.320 — not significantly different.
+- SP-filtered ERA medians: 2024 = 3.91, 2025 = 3.85, 2026 (snapshots) = 3.90. Within 0.06 runs across all three seasons.
+- **Verdict:** Environments are comparable. 2024/2025 data is a valid structural reference layer for slow-moving findings, subject to the constraints below.
+
+#### Finding 2: SIERA Dominance — Genuinely Open, Not Cross-Validated
+
+> **Critical disclaimer:** The N=962 full-season 2026 SIERA-dominance finding (source: `run_all_studies.py`, documented earlier in this log) was **not tested or cross-validated in this study.** The 2026 data used here was the N=175 passive-tracker snapshot sample (9 slates, June-July 2026) — a different, smaller dataset from the same season. The 2025 analysis also used a different outcome variable (season-average runs allowed per start, not per-start DK pts) and a different aggregation level (season-aggregate ERA/SIERA vs. rolling per-start values). **The N=962 finding remains neither confirmed nor denied by any cross-season check.**
+
+- **2025 result (N=342, all pitcher types, outcome = avg runs allowed per start):** ERA is the stronger single predictor (R2 = 0.213) vs. SIERA (R2 = 0.182). In the joint model, ERA wins (coef +0.265, p < 0.001) and SIERA is secondary (coef +0.371, p = 0.008, smaller weight). This is directionally opposite from the 2026 per-start finding — but the outcome variable and methodology differ materially. **Verdict: Different methodology — not comparable, directionally opposite.** This is not a clean contradiction of the N=962 claim.
+- **2025 SP-only subset (N=120, IP >= 100):** ERA/SIERA correlation = r = 0.935 (VIF = 7.96). Severe collinearity makes joint-model attribution unreliable. **Verdict: Inconclusive.**
+- **2024:** SIERA not present in 2024 player_stats. Analysis skipped.
+- **Mechanistic note:** At the season-aggregate level, ERA has already converged toward true talent and competes directly with SIERA. The 2026 per-start finding may be specific to the rolling/small-sample-ERA context, where SIERA's walk/HR-rate components carry signal that small-sample ERA hasn't yet earned. Both observations can be simultaneously true in their respective contexts.
+- **What a real cross-season check would require:** 2025 per-start DK point data. That data does not exist in this project's historical files. Not a current-week task.
+
+#### Finding 3: SP Trap Flags — Untestable Historically
+- Fields `trap_short_leash`, `trap_vulnerable`, `low_ceiling`, `hazard`, `paradox`, `is_trap`, `is_hazard`, `is_volatile` are **absent from both 2024 and 2025 backtest data.** These flags are computed at runtime by the live engine and not backfilled.
+- No proxy substitution was attempted. A proxy would test a different question.
+- **Verdict: Untestable with available historical data.** Flag validation must wait until enough 2026 live-slate snapshots accumulate.
+
+#### Summary Table
+
+| Question | Verdict |
+|---|---|
+| Are environments comparable? | **Yes** (RPG p=0.320, ERA medians within 0.06) |
+| SIERA dominance cross-validated (N=962)? | **Not tested here.** N=962 remains an unconfirmed 2026-specific finding. |
+| SIERA vs. ERA in 2025 runs-allowed (different methodology)? | **Different methodology — not comparable, directionally opposite.** ERA leads. Not a valid contradiction of N=962 claim. |
+| SP trap flags testable historically? | **Untestable** — no flag data in 2024/2025 files. |
+
 

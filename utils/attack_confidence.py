@@ -526,11 +526,12 @@ def score_stack_confidence(t, p_reports):
                     reasons[i] = "ANTI-CHALK SMASH: Elite SP matchup vulnerability provides massive slate leverage (capped to +5 CONF for ITT < 4.5)."
                     break
 
-    # Same-side starter cap (Zack Wheeler effect)
-    own_pitcher = next((p for p in p_reports if p.get("team") == t.get("team")), None)
-    if own_pitcher and own_pitcher.get("attack_conf", 50.0) >= 85.0:
-        conf -= 5.0
-        reasons.append(f"Same-side starter elite warning ({own_pitcher['pitcher']} CONF {own_pitcher['attack_conf']}%): potential shortened game, capping stack ceiling.")
+    # Same-side starter cap (Zack Wheeler effect) — RETIRED July 15, 2026
+    # Removed: OOS 5-fold CV showed no predictive value (MAE worsened in 3/5 folds,
+    # p=0.517). Controlled regression showed sign flip to positive once own_sp_conf
+    # is held constant (r=0.526 collinearity). -5 penalty was double-counting signal
+    # already priced into the team's stack score via continuous pitcher quality adjustments.
+    # See OMEGA_DECISIONS.md July 15 entry.
 
     # High Conviction Gate Check
 
