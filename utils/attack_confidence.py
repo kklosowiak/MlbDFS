@@ -46,8 +46,7 @@ def _clamp(conf):
 def _has_high_conviction_stack(t):
     """Need 2+ quality signals for CONF >= 85."""
     signals = 0
-    if t.get("dqi_status") == "TRUST":
-        signals += 1
+    # dqi_status == "TRUST" retired as high conviction signal (July 15, 2026)
     if float(t.get("divergence", 0) or 0) >= 10:
         signals += 1
     # Bullpen/leash status counts as at most 1 signal to avoid double-counting
@@ -67,7 +66,8 @@ def _has_high_conviction_stack(t):
     # Matchup conviction signals
     if float(t.get("implied_total", 4.5) or 4.5) >= 5.0:
         signals += 1
-    if t.get("is_true_talent_penalty") or t.get("is_trap"):
+    # is_true_talent_penalty retired as conviction signal (July 15, 2026)
+    if t.get("is_trap"):
         signals += 1
         
     opp_trap = False
@@ -148,15 +148,15 @@ def score_stack_confidence(t, p_reports):
     elif div <= -12:
         conf += 6.0
         reasons.append(f"Under-the-radar GPP leverage: Public fade ({div:+.0f}% div).")
-    elif div >= 10 and div < 20 and dqi_status != "TRUST":
+    # dqi_status == "TRUST" steam trap override retired (July 15, 2026)
+    elif div >= 10 and div < 20:
         # Steam trap penalty - sharps betting win probability, not run-scoring ceiling
         conf -= 8.0
         reasons.append(f"Public/ML steam trap: Divergence ({div:+.0f}% div) drags run ceiling.")
 
-    # Public Steam Trap Penalty
-    if t.get("is_public_steam_trap"):
-        conf -= 8.0
-        reasons.append("🚨 PUBLIC STEAM TRAP: Retail total steamed up but sharp bookmakers held steady (-8).")
+    # Public Steam Trap Penalty — RETIRED July 15, 2026
+    # Removed: Inconclusive (N=6/N=16) and lack of raw lines data in archives.
+    # See OMEGA_DECISIONS.md July 15 entry.
 
     # Implied Total Velocity (Sharp total movement close to lock)
     vel_dir = t.get("sharp_velocity_direction", 0)
@@ -204,9 +204,10 @@ def score_stack_confidence(t, p_reports):
 
     # 5. DQI Status
     dqi_status = t.get("dqi_status")
+    # DQI Status TRUST boost retired (July 15, 2026)
     if dqi_status == "TRUST":
-        conf += 10.0
-        reasons.append(f"DQI TRUST ({t.get('dqi_score')}%).")
+        conf += 0.0
+        reasons.append(f"DQI TRUST ({t.get('dqi_score')}% - boost retired) (+0).")
     elif dqi_status == "CAUTION":
         conf += 0.0
         reasons.append(f"DQI CAUTION ({t.get('dqi_score')}%).")
@@ -550,8 +551,7 @@ def score_stack_confidence(t, p_reports):
             spec_signals = 0
             if t.get("is_steam") or t.get("is_steam_support"):
                 spec_signals += 1
-            if t.get("dqi_status") == "TRUST":
-                spec_signals += 1
+            # dqi_status == "TRUST" retired from spec_signals (July 15, 2026)
             if t.get("is_gassed") or float(t.get("bullpen_fatigue", 0) or 0) >= 85:
                 spec_signals += 1
                 
@@ -562,7 +562,7 @@ def score_stack_confidence(t, p_reports):
         if not ok:
             if strict_soft_cap:
                 conf = 75.0
-                reasons.append("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/DQI-TRUST/GASSED-PEN.")
+                reasons.append("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/GASSED-PEN.")
             else:
                 # Apply 0.35 soft-cap above 75 instead of a non-monotonic cap from 70
                 conf = 75.0 + (conf - 75.0) * 0.35

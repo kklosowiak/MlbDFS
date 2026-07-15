@@ -471,7 +471,7 @@ def test_divergence_calibrations_v16_1():
     assert conf_base - conf_pos_15 == 8
     assert any("Public/ML steam trap" in r for r in reasons_pos_15)
 
-    # 5. Test DQI TRUST override (divergence >= 12%, dqi_status = TRUST -> no penalty, adds +10.0 CONF)
+    # 5. Test DQI TRUST override retired (divergence >= 12%, dqi_status = TRUST -> no boost, steam penalty applied)
     t_trust = {
         **t_base,
         "divergence": 15,
@@ -480,10 +480,10 @@ def test_divergence_calibrations_v16_1():
         "bullpen_fatigue": 70  # to pass DQI TRUST gates
     }
     conf_trust, reasons_trust = score_stack_confidence(t_trust, [])
-    # Should get +10.0 boost from DQI TRUST and bypass the -8.0 penalty
-    assert conf_trust - conf_base == 10
+    # TRUST boost is retired (+0), steam penalty of -8.0 is applied
+    assert conf_trust - conf_base == -8.0
     assert any("DQI TRUST" in r for r in reasons_trust)
-    assert not any("Public/ML steam trap" in r for r in reasons_trust)
+    assert any("Public/ML steam trap" in r for r in reasons_trust)
 
 
 def test_bullpen_fatigue_scaled_by_quality():
@@ -700,12 +700,12 @@ def test_short_leash_soft_cap():
     
     conf, reasons = score_stack_confidence(t, [opp_p])
     assert conf == 75
-    assert any("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/DQI-TRUST/GASSED-PEN." in r for r in reasons)
+    assert any("Soft-capped above 75 — short-leash SP requires 2+ of STEAM/GASSED-PEN." in r for r in reasons)
     
     t_conviction = {
         **t,
-        "dqi_status": "TRUST",
         "is_steam": True,
+        "is_gassed": True,
     }
     conf_conv, reasons_conv = score_stack_confidence(t_conviction, [opp_p])
     assert not any("short-leash SP requires 2+" in r for r in reasons_conv)
