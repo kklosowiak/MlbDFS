@@ -591,13 +591,14 @@ Full report: `historical_study_report.md` in the session artifact directory.
   - **Verdict:** Neutral/negative signal. Retired from the high-conviction gates.
 - **Implementation:** Removed from `_has_high_conviction_stack()` in `utils/attack_confidence.py`.
 
-#### DQI Status LEVERAGE Re-Calibration (formerly FADE) — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
-- **Decision:** Convert the original `-15 CONF` penalty to a `+8 CONF` boost for stacks flagged as `dqi_status == "LEVERAGE"` (formerly `"FADE"`). Do not unlock the high-conviction gate.
-- **Re-run Study Results (N=22 de-duplicated):** Stacks flagged as LEVERAGE hit or exceed their implied totals **72.7%** of the time (16/22) compared to a **44.0% baseline** (914 starts). Flagged teams outperformed by an average of **+1.38 runs** above ITT. This finding is highly statistically significant ($p = 0.0074$, Z-stat = 2.68).
-- **Magnitude Calibration:** Regressing actual runs on Vegas implied totals ($N=936$) shows a slope of **$0.3716$** ($p = 0.0002$). Since OMEGA's system design maps a 1.2-run implied total increase to +10 CONF, a +10 CONF boost represents an expected actual run premium of +0.45 runs. LEVERAGE's +1.38 run premium is **3x larger** than what +10 CONF represents, and would translate to a **+30.9 CONF boost** if scaled proportionally via the Vegas-equivalent slope.
-- **[UNVALIDATED JUDGMENT CALL]:** Because $N=22$ is a very thin sample, we are choosing **not** to apply the large derived +30.9 CONF boost. Instead, **+8 CONF** is applied as a deliberately conservative placeholder pending more data. This weight is not derived from the regression or benchmarked against other flags.
-- **OOS CV Note:** The 5-fold CV MAE deltas for +12 (delta −0.001084) and +8 (delta −0.001027) are nearly identical and both noise-level. This OOS check confirms that converting the penalty to a boost does not hurt predictive power, but it does not validate the specific magnitude.
-- **Implementation:** Changed to `conf += 8.0` in `score_stack_confidence()` in `utils/attack_confidence.py`. For backward-compatibility with historical files in `reports/archive/` (saved prior to July 15, 2026), both the engine and passive tracking scripts check for `dqi_status in ("LEVERAGE", "FADE")` when processing results.
+#### DQI Status LEVERAGE (formerly FADE) — NEUTRALIZED July 15, 2026
+- **Original Decision:** Convert the original `-15 CONF` penalty to a `+8 CONF` boost for stacks flagged as `dqi_status == "LEVERAGE"` (formerly `"FADE"`).
+- **Neutralized:** July 15, 2026 audit confirmed there is no statistically significant predictive signal on clean, recomputed data.
+  - **The N=22 vs. N=38 Discrepancy:** The original study reported a highly significant hit rate of **72.7%** ($p = 0.0074$, $N=22$) based on *stored-live* statuses. However, recomputing DQI scores on the clean, name-matched dataset using the *current* production scoring logic (which has since added the GPP chalk penalty, the shark target warnings, etc.) produces a larger and different population of **N=38** starts.
+  - **Recomputed Hit Rate (N=38):** Stacks recomputed under current production logic hit at **47.4%** vs. a **41.8% baseline** ($p = 0.533$, Z-stat = 0.62). 
+  - **Multiple-Comparisons Check:** Testing a blow-up rate metric ($\ge 2 \times$ ITT) on the N=22 subset produced a post-hoc significant result ($p = 0.0228$), but once corrected for multiple comparisons across the 4 tested metrics (Bonferroni correction), it is completely insignificant ($p_{\text{corrected}} = 0.091$).
+  - **Verdict:** The original $N=22$ finding was measuring a version of the classification logic that has been superseded by tonight's other changes (GPP chalk penalty, shark target drag). On the current production logic, there is no out-of-sample or in-sample predictive signal.
+- **Implementation:** Boost set to `+0.0` in `score_stack_confidence()` in `utils/attack_confidence.py` (retaining description for tracing). Unit tests updated to assert `conf_leverage - conf_base == 0.0`.
 
 #### DQI Status OVERPRICED Re-Calibration (formerly TRUST) — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
 - **Decision:** Convert the original neutral status to a `-4 CONF` penalty and rename `"TRUST"` to `"OVERPRICED"`. 
