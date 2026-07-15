@@ -8,6 +8,7 @@ import re
 
 from config import config
 from utils.team_prop_pressure import LABEL_COLD, LABEL_HOT, LABEL_WARM
+from utils.normalization import normalize_player_name
 
 
 def load_weights() -> dict:
@@ -305,7 +306,10 @@ def score_stack_confidence(t, p_reports):
 
     # 11. Matchup Pitching Boosts (Capped to avoid double-counting)
     opp_p_name = t.get("opp_pitcher")
-    opp_p = next((p for p in p_reports if p.get("pitcher") == opp_p_name), None)
+    opp_p = next(
+        (p for p in p_reports if normalize_player_name(p.get("pitcher", "")) == normalize_player_name(opp_p_name or "")),
+        None,
+    )
     
     sp_boost = 0
     sp_reasons = []
@@ -445,7 +449,6 @@ def score_stack_confidence(t, p_reports):
             if os.path.exists(cache_path):
                 with open(cache_path, "r", encoding="utf-8") as f:
                     bullpen_season = json.load(f)
-                from utils.normalization import normalize_player_name
                 norm_opp = normalize_player_name(opp_team)
                 for team_key, data in bullpen_season.items():
                     if normalize_player_name(team_key) == norm_opp:

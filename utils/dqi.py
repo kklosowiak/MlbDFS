@@ -6,6 +6,8 @@ import os
 import datetime
 
 
+from utils.normalization import normalize_player_name
+
 def calculate_dqi(team, pitchers=None):
     """
     Continuous Multi-Layer DQI Slider Model.
@@ -44,9 +46,9 @@ def calculate_dqi(team, pitchers=None):
     team_stack_trap = team.get('is_trap', False)
     opp_pitcher_trap = False
     if pitchers is not None:
-        opp_p_name = team.get('opp_pitcher', '').lower().strip()
+        opp_p_name = normalize_player_name(team.get('opp_pitcher', ''))
         opp_p_obj = next(
-            (p for p in pitchers if p.get('pitcher', '').lower().strip() == opp_p_name),
+            (p for p in pitchers if normalize_player_name(p.get('pitcher', '')) == opp_p_name),
             None,
         )
         if opp_p_obj:
