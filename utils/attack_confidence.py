@@ -212,8 +212,8 @@ def score_stack_confidence(t, p_reports):
         conf += 0.0
         reasons.append(f"DQI CAUTION ({t.get('dqi_score')}%).")
     elif dqi_status in ("LEVERAGE", "FADE"):
-        conf += 8.0
-        reasons.append(f"DQI LEVERAGE ({t.get('dqi_score')}%) (+8).")
+        conf += 0.0
+        reasons.append(f"DQI LEVERAGE ({t.get('dqi_score')}%).")
 
     if t.get("is_trap"):
         num_games = len(p_reports) // 2 if p_reports else 15
