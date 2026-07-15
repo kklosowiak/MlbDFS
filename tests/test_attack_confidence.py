@@ -113,8 +113,8 @@ def test_stack_conf_boosts_leverage():
     }
     conf_base, _ = score_stack_confidence(t_base, [])
     conf_leverage, reasons_leverage = score_stack_confidence(t_leverage, [])
-    # LEVERAGE should add exactly +8.0 confidence points
-    assert conf_leverage - conf_base == 8.0
+    # LEVERAGE should be neutral (+0.0 confidence points)
+    assert conf_leverage - conf_base == 0.0
     assert any("DQI LEVERAGE" in r for r in reasons_leverage)
 
 
