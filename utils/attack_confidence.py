@@ -46,7 +46,7 @@ def _clamp(conf):
 def _has_high_conviction_stack(t):
     """Need 2+ quality signals for CONF >= 85."""
     signals = 0
-    # dqi_status == "TRUST" retired as high conviction signal (July 15, 2026)
+    # dqi_status == "OVERPRICED" (formerly TRUST) retired as high conviction signal (July 15, 2026)
     if float(t.get("divergence", 0) or 0) >= 10:
         signals += 1
     # Bullpen/leash status counts as at most 1 signal to avoid double-counting
@@ -148,7 +148,7 @@ def score_stack_confidence(t, p_reports):
     elif div <= -12:
         conf += 6.0
         reasons.append(f"Under-the-radar GPP leverage: Public fade ({div:+.0f}% div).")
-    # dqi_status == "TRUST" steam trap override retired (July 15, 2026)
+    # dqi_status == "OVERPRICED" (formerly TRUST) steam trap override retired (July 15, 2026)
     elif div >= 10 and div < 20:
         # Steam trap penalty - sharps betting win probability, not run-scoring ceiling
         conf -= 8.0
@@ -204,10 +204,10 @@ def score_stack_confidence(t, p_reports):
 
     # 5. DQI Status
     dqi_status = t.get("dqi_status")
-    # DQI Status TRUST boost retired (July 15, 2026)
-    if dqi_status == "TRUST":
-        conf += 0.0
-        reasons.append(f"DQI TRUST ({t.get('dqi_score')}% - boost retired) (+0).")
+    # DQI Status OVERPRICED (formerly TRUST) negative calibration (July 15, 2026)
+    if dqi_status in ("OVERPRICED", "TRUST"):
+        conf -= 4.0
+        reasons.append(f"DQI OVERPRICED ({t.get('dqi_score')}% - overpriced public lineup) (-4).")
     elif dqi_status == "CAUTION":
         conf += 0.0
         reasons.append(f"DQI CAUTION ({t.get('dqi_score')}%).")
@@ -551,7 +551,7 @@ def score_stack_confidence(t, p_reports):
             spec_signals = 0
             if t.get("is_steam") or t.get("is_steam_support"):
                 spec_signals += 1
-            # dqi_status == "TRUST" retired from spec_signals (July 15, 2026)
+            # dqi_status == "OVERPRICED" (formerly TRUST) retired from spec_signals (July 15, 2026)
             if t.get("is_gassed") or float(t.get("bullpen_fatigue", 0) or 0) >= 85:
                 spec_signals += 1
                 

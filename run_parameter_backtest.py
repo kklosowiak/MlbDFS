@@ -96,10 +96,10 @@ def compute_dqi_status(dqi_score: int, divergence: float, implied_total: float, 
     Re-compute DQI status label from a raw dqi_score using given parameter set.
     Mirrors utils/dqi.py lines 146-156.
     """
-    status = "TRUST" if dqi_score >= params["dqi_trust_min"] else ("CAUTION" if dqi_score >= 50 else "LEVERAGE")
-    if status == "TRUST" and divergence < params["dqi_div_gate"]:
+    status = "OVERPRICED" if dqi_score >= params["dqi_trust_min"] else ("CAUTION" if dqi_score >= 50 else "LEVERAGE")
+    if status == "OVERPRICED" and divergence < params["dqi_div_gate"]:
         status = "CAUTION"
-    if status == "TRUST" and implied_total < params["dqi_itt_floor"]:
+    if status == "OVERPRICED" and implied_total < params["dqi_itt_floor"]:
         status = "CAUTION"
     return status
 
@@ -270,8 +270,8 @@ def run_backtest(start_date_str: str, end_date_str: str):
             old_dqi_status = compute_dqi_status(dqi_int, divergence, implied_total, OLD_PARAMS)
             new_dqi_status = compute_dqi_status(dqi_int, divergence, implied_total, NEW_PARAMS)
 
-            # Track trust-flip cases (TRUST -> CAUTION after tightening)
-            if old_dqi_status == "TRUST" and new_dqi_status == "CAUTION":
+            # Track trust-flip cases (OVERPRICED -> CAUTION after tightening)
+            if old_dqi_status == "OVERPRICED" and new_dqi_status == "CAUTION":
                 trust_flip_cases.append({
                     "date": date_str,
                     "team": team_name,
@@ -288,7 +288,7 @@ def run_backtest(start_date_str: str, end_date_str: str):
             old_stack = stored_stack  # OLD is the stored value
 
             # ─── OLD stats ───
-            if old_dqi_status == "TRUST":
+            if old_dqi_status == "OVERPRICED":
                 results["old"]["trust_total"] += 1
                 day_old["trust_total"] += 1
                 if hit:
@@ -298,7 +298,7 @@ def run_backtest(start_date_str: str, end_date_str: str):
                 results["old"]["caution_total"] += 1
 
             # ─── NEW stats ───
-            if new_dqi_status == "TRUST":
+            if new_dqi_status == "OVERPRICED":
                 results["new"]["trust_total"] += 1
                 day_new["trust_total"] += 1
                 if hit:

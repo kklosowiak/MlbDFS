@@ -222,7 +222,7 @@ def test_asymptotic_compression_retains_hierarchy():
         "implied_total": 5.2,
         "is_gassed": True,
         "opp_pitcher_outs": 14.0,  # 2 signals: gassed + outs -> Gassed Bullpen Attack
-        "dqi_status": "TRUST",
+        "dqi_status": "OVERPRICED",
         "lineup_status": "CONFIRMED",
         "is_sharp": True,
     }
@@ -233,7 +233,7 @@ def test_asymptotic_compression_retains_hierarchy():
         "implied_total": 4.8,
         "is_gassed": True,
         "opp_pitcher_outs": 14.0,
-        "dqi_status": "TRUST",
+        "dqi_status": "OVERPRICED",
         "lineup_status": "CONFIRMED",
     }
     
@@ -490,18 +490,18 @@ def test_divergence_calibrations_v16_1():
     assert conf_base - conf_pos_15 == 8
     assert any("Public/ML steam trap" in r for r in reasons_pos_15)
 
-    # 5. Test DQI TRUST override retired (divergence >= 12%, dqi_status = TRUST -> no boost, steam penalty applied)
+    # 5. Test DQI OVERPRICED override (divergence >= 12%, dqi_status = OVERPRICED -> -4 penalty, steam penalty applied)
     t_trust = {
         **t_base,
         "divergence": 15,
-        "dqi_status": "TRUST",
+        "dqi_status": "OVERPRICED",
         "dqi_score": 80,
-        "bullpen_fatigue": 70  # to pass DQI TRUST gates
+        "bullpen_fatigue": 70  # to pass DQI gates
     }
     conf_trust, reasons_trust = score_stack_confidence(t_trust, [])
-    # TRUST boost is retired (+0), steam penalty of -8.0 is applied
-    assert conf_trust - conf_base == -8.0
-    assert any("DQI TRUST" in r for r in reasons_trust)
+    # OVERPRICED penalty (-4) and steam penalty (-8.0) are applied
+    assert conf_trust - conf_base == -12.0
+    assert any("DQI OVERPRICED" in r for r in reasons_trust)
     assert any("Public/ML steam trap" in r for r in reasons_trust)
 
 

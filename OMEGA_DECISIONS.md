@@ -599,6 +599,16 @@ Full report: `historical_study_report.md` in the session artifact directory.
 - **OOS CV Note:** The 5-fold CV MAE deltas for +12 (delta −0.001084) and +8 (delta −0.001027) are nearly identical and both noise-level. This OOS check confirms that converting the penalty to a boost does not hurt predictive power, but it does not validate the specific magnitude.
 - **Implementation:** Changed to `conf += 8.0` in `score_stack_confidence()` in `utils/attack_confidence.py`. For backward-compatibility with historical files in `reports/archive/` (saved prior to July 15, 2026), both the engine and passive tracking scripts check for `dqi_status in ("LEVERAGE", "FADE")` when processing results.
 
+#### DQI Status OVERPRICED Re-Calibration (formerly TRUST) — IMPLEMENTED (UNVALIDATED JUDGMENT CALL)
+- **Decision:** Convert the original neutral status to a `-4 CONF` penalty and rename `"TRUST"` to `"OVERPRICED"`. 
+- **Reasoning:** Lineups flagged as `"TRUST"` are clean and correct from a scouting perspective, but because they are highly public and early-confirmed, the market prices their cleanliness to absolute perfection. Stacking them offers no GPP edge.
+- **Study Results (N=20 de-duplicated):** Stacks flagged as OVERPRICED (formerly TRUST) hit or exceed their implied run totals only **30.0%** of the time (6/20) compared to a **44.8% baseline** (914 starts), underperforming their implied totals by an average of **-0.80 runs**.
+- **Magnitude Calibration:** Scaling a -0.80 run underperformance via our Vegas-equivalent slope of $0.3716$ ($p = 0.0002$) corresponds to a **-17.9 CONF penalty** if fully calibrated.
+- **[UNVALIDATED JUDGMENT CALL]:** Because $N=20$ is a small sample, we apply a deliberately conservative placeholder penalty of **-4 CONF** to represent a mild warning, keeping it below standard system penalties (like weather fades).
+- **OOS CV Note:** The 5-fold CV MAE improves from **2.639992** (neutral) to **2.639257** (proposed -4 CONF), a delta of **-0.000735** runs. This OOS improvement validates that correcting this directional signal improves overall model accuracy.
+- **Visual Design:** Re-colored the badge from green to **Amber / Orange (`#ff9f0a`)** on the dashboard to reflect that it is a mild penalty, while CAUTION is re-colored to a flat grey (`#86868b`) to represent neutral/informational.
+- **Implementation:** Changed to `conf -= 4.0` in `score_stack_confidence()` in `utils/attack_confidence.py`. For backward-compatibility with historical files in `reports/archive/` (saved prior to July 15, 2026), both the engine and passive tracking scripts check for `dqi_status in ("OVERPRICED", "TRUST")` when processing results.
+
 
 
 

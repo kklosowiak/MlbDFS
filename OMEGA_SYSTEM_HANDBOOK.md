@@ -47,7 +47,7 @@ The Decision layer is where Physics and Market combine into the final scores tha
 
 For pitchers the split is: `score = 45 + (physics_raw × 0.45) + (market_raw × 0.20)`. Pitchers have a narrower Physics dominance (45%) because win probability from the moneyline carries more weight for pitcher targeting than for stack identification.
 
-After the raw score is computed, the CONF (attack confidence) system runs. CONF compresses the score asymptotically into a [0, 100] range using a rolling series of signal additions and subtractions anchored at 50. Positive signals (DQI_LEVERAGE, is_burst, high ITT, confirmed lineup) add CONF points. Negative signals (is_trap, COLD_STREAK_MSMI, volatile lineup) subtract CONF points. All signal weights are read from data/weights.json so any weight change you make to that file immediately affects model behavior on the next refresh — no code changes needed.
+After the raw score is computed, the CONF (attack confidence) system runs. CONF compresses the score asymptotically into a [0, 100] range using a rolling series of signal additions and subtractions anchored at 50. Positive signals (DQI_LEVERAGE, is_burst, high ITT, confirmed lineup) add CONF points. Negative signals (is_trap, COLD_STREAK_MSMI, DQI_OVERPRICED, volatile lineup) subtract CONF points. All signal weights are read from data/weights.json so any weight change you make to that file immediately affects model behavior on the next refresh — no code changes needed.
 
 The final output metric is blended_rating: `blended_rating = (score + attack_conf) / 2`. This is the canonical ranking metric. It's what feeds into the DraftKings optimizer's priority ordering. High blended_rating means the model both objectively scores the team/pitcher well AND has high confidence in that score.
 
@@ -99,7 +99,7 @@ The most important column for GPP play is PROFILE. A TRAP pill means the model h
 
 The team stack ranking table. This is where you pick your core lineup stack.
 
-The column structure: **RANK** (by blended_rating, with ITT swap override when active), **TEAM**, **BLENDED**, **OMEGA**, **CONF**, **ITT** (implied team total), **DIV** (divergence, money% minus tickets%), **BULLPEN** (fatigue score, 0–100), **DQI** (TRUST/CAUTION/LEVERAGE), **LINEUP** (confirmation status), **SIGNALS** (active signal pills).
+The column structure: **RANK** (by blended_rating, with ITT swap override when active), **TEAM**, **BLENDED**, **OMEGA**, **CONF**, **ITT** (implied team total), **DIV** (divergence, money% minus tickets%), **BULLPEN** (fatigue score, 0–100), **DQI** (OVERPRICED/CAUTION/LEVERAGE), **LINEUP** (confirmation status), **SIGNALS** (active signal pills).
 
 Signal pills you'll see on teams:
 
@@ -108,7 +108,7 @@ Signal pills you'll see on teams:
 - **HOT RUN** — MSMI hot streak detected. Offense is performing above its baseline over a rolling window.
 - **COLD STREAK** — MSMI cold streak. Offense genuinely struggling. Fade even if ITT looks decent.
 - **ANTI-CHALK** — contrarian leverage signal. Low public interest, model likes the team, no cold streak active (cold streak gates this signal off automatically).
-- **DQI TRUST** — triple-gate convergence: pitcher form, reliever fatigue, and walk-rate matchup all confirm the stack is targetable.
+- **DQI OVERPRICED** — Formerly called DQI_TRUST. Early-confirmed public lineup indicator. Implies that the market has priced this cleanliness to perfection, offering no stacking edge (mild -4 CONF penalty).
 - **DQI LEVERAGE** — low-DQI sharp interest (formerly FADE) indicating a high-leverage contrarian target.
 - **STEAM** — tightened convergent ML + total steam (requires both moving in consistent directions, single-direction steams no longer qualify after the v19.3 tightening).
 - **ITT SWAP** — this team was elevated to #1 by the ITT swap mechanism.
@@ -228,7 +228,7 @@ When facing a short-leash starting pitcher (a trap scenario), the model applies 
 
 **ANTI_CHALK_SMASH** — Contrarian leverage play. Low public exposure combined with decent Physics and no cold streak active. The model likes the team, the field doesn't. Best for millionaire-style tournaments where differentiation matters. Explicitly gated: does not fire CONF boost or score boost when TEAM_COLD_STREAK_MSMI is active on the same team.
 
-**DQI_TRUST** — The triple gate has converged: the opposing pitcher's form, reliever fatigue, and walk-rate matchup all point toward this stack being targetable. This is the model's highest-conviction stack signal. Validated at 50% over 10 fires (sample still small, but directionally strong). When DQI_TRUST fires alongside low ticket_pct and a strong DNA radar chart, you have the rarest convergence the model can produce.
+**DQI_OVERPRICED (DQI_OVERPRICED)** — Formerly called DQI_TRUST. Early-confirmed public lineup indicator. Implies that the market has priced this cleanliness to perfection, offering no stacking edge. Stacks with this status hit or exceed implied totals only 30.0% of the time (N=20, p=0.1835) and underperform implied totals by -0.80 runs. Applies a small, conservative -4 CONF penalty.
 
 **DQI_LEVERAGE (DQI_LEVERAGE)** — Low-DQI sharp interest (formerly FADE) indicating a high-leverage contrarian target. Stacks with this status hit or exceed implied totals 72.7% of the time (p=0.0074, N=22) and score +1.38 runs above expectations. Validated as a strong positive GPP selector due to public avoidance and strong actual run output.
 
