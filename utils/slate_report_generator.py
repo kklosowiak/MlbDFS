@@ -197,13 +197,13 @@ class SlateReportGenerator:
             if t.get('is_anti_chalk_smash'):
                 alert_lines.append(f"- ⚓ **ANTI-CHALK SMASH**: **{t['team']}** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).")
 
-        # 4. Stacks: DQI Trust (80+ DQI / 14% Div / 4.2 ITT)
+        # 4. Stacks: DQI Overpriced (80+ DQI / 14% Div / 4.2 ITT)
         for t in t_reports:
             dqi = int(t.get('dqi_score') or 0)
             div = int(t.get('divergence') or 0)
             itt = float(t.get('implied_total') or 0.0)
             if dqi >= 80 and div >= 14 and itt >= 4.2:
-                alert_lines.append(f"- 🟢 **DQI TRUST COMBO**: **{t['team']}** stack passes all DQI Trust Gates (DQI: {dqi} | Div: {div:+d}% | ITT: {itt:.2f}). Highly reliable sharp consensus.")
+                alert_lines.append(f"- 🟠 **DQI OVERPRICED ALERT**: **{t['team']}** stack hits DQI Overpriced Gates (DQI: {dqi} | Div: {div:+d}% | ITT: {itt:.2f}). The market has priced this spot to perfection, leaving no stacking edge (-4 CONF penalty).")
 
         # 5. Pitchers: Low-Ceiling + Hazard Shelling (100% Shelling Rate)
         for p in p_reports:

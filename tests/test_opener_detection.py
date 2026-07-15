@@ -317,7 +317,7 @@ def test_substitution_pipeline_order_before_soft_cap():
         "implied_total": 5.5,
         "is_trap": False,
         "is_public_steam_trap": False,
-        "dqi_status": "TRUST"
+        "dqi_status": "OVERPRICED"
     }
     p_reports = [
         {
@@ -344,7 +344,7 @@ def test_soft_cap_breaks_with_bulk_trap_arm():
         "opponent": "Kansas City Royals",
         "opp_pitcher": "Mitch Spence",
         "team_xwoba": 0.340,
-        "dqi_status": "TRUST",
+        "dqi_status": "OVERPRICED",
         "is_trap": True
     }
     p_reports = [
@@ -371,7 +371,7 @@ def test_team_signals_preserved_after_substitution():
         "is_hot_run_msmi": True,
         "divergence": 25.0,
         "dqi_score": 92,
-        "dqi_status": "TRUST"
+        "dqi_status": "OVERPRICED"
     }
     t['opp_pitcher'] = "Mitch Spence"
     t['opp_pitcher_display'] = "Cruz -> Spence (BULK)"
@@ -383,7 +383,7 @@ def test_team_signals_preserved_after_substitution():
     assert t['is_hot_run_msmi'] is True
     assert t['divergence'] == 25.0
     assert t['dqi_score'] == 92
-    assert t['dqi_status'] == "TRUST"
+    assert t['dqi_status'] == "OVERPRICED"
 
 # 15. test_bulk_pitcher_sp_rating_unchanged
 def test_bulk_pitcher_sp_rating_unchanged():

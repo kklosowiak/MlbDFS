@@ -4433,8 +4433,8 @@
         function buildTeamDqiBadgeHtml(t, dqiRankInfo = null) {
             if (t.dqi_score !== undefined && t.dqi_score !== null) {
                 const dqiScore = t.dqi_score;
-                const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
-                const scoreColor = dqiStatus === 'TRUST' ? '#32d74b' : (dqiStatus === 'CAUTION' ? '#ff9f0a' : '#bf5af2');
+                const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'OVERPRICED' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
+                const scoreColor = dqiStatus === 'OVERPRICED' ? '#ff9f0a' : (dqiStatus === 'CAUTION' ? '#86868b' : '#bf5af2');
                 
                 const posPts = t.dqi_pos_pts != null ? Math.round(t.dqi_pos_pts) : 0;
                 const warnPts = t.dqi_warn_pts != null ? Math.round(t.dqi_warn_pts) : 0;
@@ -4447,20 +4447,20 @@
                 if (warnList) breakdown += warnList;
                 
                 let scoreBg, scoreBorderColor, scoreGlow, rankColor, ptsColor, dotColor;
-                if (dqiStatus === 'TRUST') {
-                    scoreBg = 'rgba(50, 215, 75, 0.12)';
-                    scoreBorderColor = 'rgba(50, 215, 75, 0.65)';
-                    scoreGlow = 'box-shadow: 0 0 10px rgba(50, 215, 75, 0.35), inset 0 0 4px rgba(50, 215, 75, 0.15);';
-                    rankColor = '#8bfb9d';
-                    ptsColor = '#c2ffd0';
-                    dotColor = 'rgba(50, 215, 75, 0.6)';
-                } else if (dqiStatus === 'CAUTION') {
+                if (dqiStatus === 'OVERPRICED') {
                     scoreBg = 'rgba(255, 159, 10, 0.12)';
                     scoreBorderColor = 'rgba(255, 159, 10, 0.65)';
                     scoreGlow = 'box-shadow: 0 0 10px rgba(255, 159, 10, 0.35), inset 0 0 4px rgba(255, 159, 10, 0.15);';
                     rankColor = '#ffd28c';
                     ptsColor = '#ffe0b3';
                     dotColor = 'rgba(255, 159, 10, 0.6)';
+                } else if (dqiStatus === 'CAUTION') {
+                    scoreBg = 'rgba(255, 255, 255, 0.05)';
+                    scoreBorderColor = 'rgba(255, 255, 255, 0.15)';
+                    scoreGlow = 'box-shadow: none;';
+                    rankColor = '#a1a1a6';
+                    ptsColor = '#d2d2d7';
+                    dotColor = 'rgba(255, 255, 255, 0.2)';
                 } else {
                     scoreBg = 'rgba(191, 90, 242, 0.12)';
                     scoreBorderColor = 'rgba(191, 90, 242, 0.65)';
@@ -8225,8 +8225,8 @@
                     let dqiHtml = 'N/A';
                     if (oppT.dqi_score !== undefined) {
                         const dqiScore = oppT.dqi_score;
-                        const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
-                        const dqiColor = dqiStatus === 'TRUST' ? '#32d74b' : (dqiStatus === 'CAUTION' ? '#ff9f0a' : '#bf5af2');
+                        const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'OVERPRICED' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
+                        const dqiColor = dqiStatus === 'OVERPRICED' ? '#ff9f0a' : (dqiStatus === 'CAUTION' ? '#86868b' : '#bf5af2');
                         let dqiFactorStr = '';
                         if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
                             dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;

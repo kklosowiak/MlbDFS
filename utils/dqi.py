@@ -11,8 +11,8 @@ def calculate_dqi(team, pitchers=None):
     Continuous Multi-Layer DQI Slider Model.
 
     GATE: Only fires when team divergence >= 10%.
-    Base: 30 (teams start in LEVERAGE — must earn TRUST).
-    TRUST >= 82 | CAUTION >= 50 | LEVERAGE < 50
+    Base: 30 (teams start in LEVERAGE — must earn OVERPRICED).
+    OVERPRICED >= 82 | CAUTION >= 50 | LEVERAGE < 50
 
     Returns (score, status, pos_factors, warn_factors) or (None, None, [], []) if gated.
     """
@@ -155,24 +155,23 @@ def calculate_dqi(team, pitchers=None):
         
     dqi_score_int = int(round(dqi_score))
     
-    status = "TRUST" if dqi_score_int >= 82 else ("CAUTION" if dqi_score_int >= 50 else "LEVERAGE")
+    status = "OVERPRICED" if dqi_score_int >= 82 else ("CAUTION" if dqi_score_int >= 50 else "LEVERAGE")
     
-    # Dual-Gate Cap: TRUST requires >= 12.0% divergence
-    if status == "TRUST" and divergence < 12.0:
+    # Dual-Gate Cap: OVERPRICED requires >= 12.0% divergence
+    if status == "OVERPRICED" and divergence < 12.0:
         status = "CAUTION"
-        warn_factors.append(f"TRUST Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
+        warn_factors.append(f"OVERPRICED Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
 
-    # Implied run total floor (4.2 runs) for GPP Trust
-    if status == "TRUST" and implied_total < 4.2:
+    # Implied run total floor (4.2 runs) for GPP OVERPRICED
+    if status == "OVERPRICED" and implied_total < 4.2:
         status = "CAUTION"
         warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 4.2)")
 
-    # Bullpen Fatigue Floor: TRUST requires opposing bullpen >= 65
-    # Data: 0/8 TRUST calls with bullpen < 65 scored 4+ runs (30-slate audit, May 2026)
-    # All 4 confirmed TRUST hits had bullpen fatigue >= 65
-    if status == "TRUST" and bullpen < 65:
+    # Bullpen threshold gate for high-conviction stack
+    bullpen = float(team.get('bullpen_fatigue', 100.0) or 100.0)
+    if status == "OVERPRICED" and bullpen < 65:
         status = "CAUTION"
-        warn_factors.append(f"TRUST Capped: Bullpen Too Fresh ({int(bullpen)} < 65 fatigue)")
+        warn_factors.append(f"Rested Bullpen Cap (Pen {round(bullpen, 1)} < 65)")
         
     if isinstance(team, dict):
         team["dqi_pos_pts"] = pos_pts
