@@ -385,8 +385,12 @@ def test_omega_confidence_penalties_scoring():
         }
     ]
     conf_st, reasons_st = score_stack_confidence(t_stack, p_reports_mock)
-    assert conf_st == 55.0
-    assert any("Same-side starter elite warning" in r for r in reasons_st)
+    # Same-side cap retired July 15: no -5 deduction should fire.
+    # CAUTION baseline: 60. No cap penalty. Expected = 60.0.
+    assert conf_st == 60.0, f"Same-side cap should be retired; got conf_st={conf_st}"
+    assert not any("Same-side starter elite warning" in r for r in reasons_st), (
+        "Same-side starter elite warning reason should not appear after retirement"
+    )
 
 
 def test_hitter_platoon_retired():
