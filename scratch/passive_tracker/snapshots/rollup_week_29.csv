@@ -1,0 +1,18 @@
+date,player,team,salary,batting_order,blended_rating,player_score,attack_conf,is_hot_run_msmi,is_anti_chalk_smash,is_cold_high_br_warning,is_cold_streak_msmi,platoon_label,is_strong_edge,actual_dk_pts,dk_pts_per_1k_salary,batting_order_tier,team_actual_runs
+2026-07-16,Juan Soto,New York Mets,5800,2,91.0,92.9,89.13991769547324,N,N,N,N,NEUTRAL,N,9.0,1.55,1-4,4
+2026-07-16,Bryce Harper,Philadelphia Phillies,5800,3,62.6,70.8,54.31639722863741,N,N,N,N,STRONG EDGE,Y,6.5,1.12,1-4,1
+2026-07-16,Carson Benge,New York Mets,4000,5,63.4,52.6,74.15068493150685,N,N,N,N,PLATOON TRAP,N,8.0,2.0,5-6,4
+2026-07-16,Francisco Alvarez,New York Mets,3000,9,55.8,51.8,59.709163346613536,N,N,N,N,NEUTRAL,N,29.5,9.83,7+,4
+2026-07-16,Bo Bichette,New York Mets,4500,3,56.9,48.6,65.12481426448737,N,N,N,N,ELITE PLATOON,N,-0.5,-0.11,1-4,4
+2026-07-16,Kyle Schwarber,Philadelphia Phillies,6300,2,56.1,48.3,63.80911062906725,N,N,N,N,STRONG EDGE,Y,4.5,0.71,1-4,1
+2026-07-16,Francisco Lindor,New York Mets,4400,4,64.1,47.9,80.36651583710407,N,N,N,N,NEUTRAL,N,0.0,0.0,1-4,4
+2026-07-16,Aj Ewing,New York Mets,3500,1,58.1,42.3,74.0,N,N,N,N,NEUTRAL,N,6.0,1.71,1-4,4
+2026-07-16,Bryson Stott,Philadelphia Phillies,4000,6,38.5,37.5,39.44699140401146,N,N,N,N,PLATOON TRAP,N,-1.0,-0.25,5-6,1
+2026-07-16,Jt Realmuto,Philadelphia Phillies,3600,7,36.8,35.6,38.0,N,N,N,N,PLATOON TRAP,N,3.0,0.83,7+,1
+2026-07-16,Brett Baty,New York Mets,2700,8,45.2,31.8,58.52873563218391,N,N,N,N,NEUTRAL,N,17.0,6.3,7+,4
+2026-07-16,Brandon Marsh,Philadelphia Phillies,4700,4,27.1,28.9,25.233009708737868,N,N,N,Y,NEUTRAL,N,-0.5,-0.11,1-4,1
+2026-07-16,Justin Crawford,Philadelphia Phillies,3200,9,25.5,24.2,26.782805429864254,N,N,N,N,PLATOON TRAP,N,0.0,0.0,7+,1
+2026-07-16,Alec Bohm,Philadelphia Phillies,3500,5,14.9,21.0,8.825119236883943,N,N,N,Y,PLATOON TRAP,N,-0.5,-0.14,5-6,1
+2026-07-16,Trea Turner,Philadelphia Phillies,5400,1,26.6,20.3,32.855345911949684,N,N,N,N,NEUTRAL,N,13.5,2.5,1-4,1
+2026-07-16,Jorge Polanco,New York Mets,3600,6,31.3,20.1,42.58565737051793,N,N,N,N,NEUTRAL,N,-0.5,-0.14,5-6,4
+2026-07-16,Gabriel Rincones,Philadelphia Phillies,2700,8,20.1,17.4,22.71179883945841,N,N,N,N,NEUTRAL,N,-1.0,-0.37,7+,1

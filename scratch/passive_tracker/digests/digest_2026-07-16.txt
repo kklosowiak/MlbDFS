@@ -1,0 +1,48 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-16 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Philadelphia Phillies | conf=82.0 | ITT=5.1 | actual=1.0 | diff=-4.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (1 instances):
+  Aaron Nola (Vulnerable) vs Philadelphia Phillies: attack_conf=0.0 ITT=4.6 actual=4.0 diff=-0.6 | 6.0IP 3ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (5 fires):
+  Carson Benge (New York Mets): actual=8.0DKpts | +9.0 vs baseline
+  Bryson Stott (Philadelphia Phillies): actual=-1.0DKpts | -9.0 vs baseline
+  Jt Realmuto (Philadelphia Phillies): actual=3.0DKpts | +3.5 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=0.0DKpts | -29.5 vs baseline
+  Alec Bohm (Philadelphia Phillies): actual=-0.5DKpts | +0.0 vs baseline
+STRONG_EDGE (2 fires):
+  Bryce Harper (Philadelphia Phillies): actual=6.5DKpts | -2.5 vs baseline
+  Kyle Schwarber (Philadelphia Phillies): actual=4.5DKpts | +4.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  New York Mets: actual=4.0R vs ITT=4.6 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (11 slates tracked):
+  TRAP/Vulnerable: 75.0% underscored ITT | avg diff +0.17R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +1.77R
+  FADE_RISK: 100.0% correct | avg diff -0.55R
+  Top Stack hit ITT: 36.4% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.3 DK pts
+  STEAM: 41.7% correct | avg +0.95R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 61.4% underperformed baseline
+  STRONG_EDGE: avg +0.27 DK pts vs baseline
+  SHARP_FADE pitchers: 57.1% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 42.9%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 40.5%
+  GASSED pen teams: 37.9% hit ITT
+  BURST teams: 41.9% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
