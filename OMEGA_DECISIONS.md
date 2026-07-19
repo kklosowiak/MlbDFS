@@ -611,6 +611,21 @@ Full report: `historical_study_report.md` in the session artifact directory.
 - **Implementation:** Changed to `conf -= 4.0` in `score_stack_confidence()` in `utils/attack_confidence.py`. For backward-compatibility with historical files in `reports/archive/` (saved prior to July 15, 2026), both the engine and passive tracking scripts check for `dqi_status in ("OVERPRICED", "TRUST")` when processing results.
 
 
+## July 19, 2026 — Live Slate Post-Mortem: PARADOX+HAZARD combo, FADE_RISK side-read, Short Leash noise (2nd confirmation)
+
+Two-night post-mortem from live single-entry GPP play (7/18 and 7/19 slates), reviewed against actual results. Findings support tracking, not yet code changes.
+
+**PARADOX + HAZARD + conf=0 + no recent ERA on file = real boom signal, not noise (new finding, n=1, needs more data).**
+7/19: Alan Rangel (PHI) carried is_hazard=True, is_paradox=True, attack_conf=0, recent_era=None — a total blank-slate arm profile. Francisco Lindor (NYM) hit a 2-run HR off him in the first at-bat of the game; Mets led 5-0 by the top of the 2nd. This is distinct from a standard single-flag PARADOX or HAZARD fire — the combination plus zero track record is what made this a legible signal pregame. Worth breaking out as its own tracked bucket separate from PARADOX and HAZARD individually. n=1, do not weight the model on this yet — flag for future occurrences.
+
+**FADE_RISK "attack the clean side of the game, not the flagged side" — 2 for 2 across two slates.**
+7/17-18: WSH carried the FADE_RISK-adjacent top-team-conf read; Nationals scored 23R while conf=95 team narrative held. 7/19: SD@KC — KC carried is_fade_risk=True (not SD); SD stack (built 9-1-2-3-4 around Tatis/Merrill/Machado/France/Campusano) went for a reported 19 runs. Both nights, choosing the non-flagged side of a shared game over the flagged side was correct. Small n, consistent with the FADE_RISK running accuracy already tracked at 75% (13-slate window as of 7/18 digest), but this is a slightly different framing — game-relative side selection rather than absolute team fade — worth tracking as its own sub-pattern.
+
+**Short Leash penalty confirmed noise again (2nd live confirmation of pre-existing July 3/6 audit finding).**
+7/18: Spencer Arrighetti (BAL's opponent, Short Leash flag) went 5.0 IP, 1 ER — did not blow up, did not get shelled, landed in the "noise" zone as the audit predicted. Decision to not over-fade BAL's stack_trust_score penalty from this flag (and to roster Pete Alonso instead of the alternative) was correct. Taylor Ward (BAL, the player passed over in favor of Alonso) finished 3.5 DK pts, hit by a separate PLATOON_TRAP flag (-5.2 vs baseline) — confirms the Alonso-over-Ward call on both the pregame blended_rating gap and the actual outcome.
+
+
+
 
 
 

@@ -40,19 +40,42 @@ def fetch_games_for_date(date_str):
 def parse_games(games):
     game_list = []
     completed_states = ["final", "completed early", "game over"]
+    postponed_states = ["postponed", "cancelled", "suspended"]
+    all_terminal = True
     all_final = True
     failed_pitchers_count = 0
+    final_count = 0
+    postponed_count = 0
+    in_progress_count = 0
 
     for game in games:
         game_pk = str(game['gamePk'])
-        status = game['status']['detailedState']
+        status_raw = game['status']['detailedState']
+        status_lower = status_raw.lower()
         home_team = game['teams']['home']['team']['name']
         away_team = game['teams']['away']['team']['name']
         home_runs = game['teams']['home'].get('score', 0)
         away_runs = game['teams']['away'].get('score', 0)
 
-        if status.lower() not in completed_states:
+        is_final = status_lower in completed_states
+        is_postponed = any(s in status_lower for s in postponed_states)
+        is_complete = is_final or is_postponed
+
+        if is_final:
+            final_count += 1
+            game_status = "final"
+        elif is_postponed:
+            postponed_count += 1
+            game_status = "postponed"
+        else:
+            in_progress_count += 1
+            game_status = status_lower
+
+        if not is_final:
             all_final = False
+
+        if not is_complete:
+            all_terminal = False
 
         game_date_str = game.get('gameDate')
         first_pitch_et = "00:00"
@@ -100,7 +123,7 @@ def parse_games(games):
                 sp_dict["hitByPitch"] = stats.get('hitByPitch', 0) or stats.get('hitBatsmen', 0) or 0
 
         # Track pitcher fetch failures for final/completed games
-        if status.lower() in completed_states:
+        if is_final:
             if sp_home["name"] in ["TBD", "Unknown"]:
                 failed_pitchers_count += 1
             if sp_away["name"] in ["TBD", "Unknown"]:
@@ -115,10 +138,11 @@ def parse_games(games):
             "sp_home": sp_home,
             "sp_away": sp_away,
             "first_pitch_et": first_pitch_et,
-            "status": "final" if status.lower() in completed_states else status.lower()
+            "status": game_status,
+            "is_complete": is_complete
         })
 
-    return game_list, all_final, failed_pitchers_count
+    return game_list, all_terminal, all_final, failed_pitchers_count, final_count, postponed_count, in_progress_count
 
 def main():
     parser = argparse.ArgumentParser(description="OMEGA Nightly Actuals Fetcher")
@@ -138,8 +162,13 @@ def main():
         try:
             with open(target_path, "r", encoding="utf-8") as f:
                 existing_data = json.load(f)
-            # If all games in existing file are final, skip
-            if all(g.get("status") == "final" for g in existing_data):
+            def is_entry_complete(g):
+                if g.get("is_complete") is True:
+                    return True
+                st = g.get("status", "").lower()
+                return st in ["final", "completed early", "game over", "postponed", "cancelled", "suspended"]
+
+            if existing_data and all(is_entry_complete(g) for g in existing_data):
                 print(f"Complete actuals for {date_str} already exist. Skipping.")
                 sys.exit(0)
         except Exception:
@@ -158,15 +187,15 @@ def main():
         log_message(log_path, date_str, "SUCCESS", "No games scheduled")
         sys.exit(0)
 
-    game_list, all_final, failed_pitchers = parse_games(games)
+    game_list, all_terminal, all_final, failed_pitchers, final_cnt, post_cnt, in_prog_cnt = parse_games(games)
 
-    # If any game is still active, wait 30 min and retry once
-    if not all_final and not args.date:
+    # If any game is still active, wait 30 min and retry once if running un-dated
+    if not all_terminal and not args.date:
         print("Some games are still in progress. Waiting 30 minutes for completion...")
         time.sleep(1800) # 30 minutes
         games = fetch_games_for_date(date_str)
         if games is not None:
-            game_list, all_final, failed_pitchers = parse_games(games)
+            game_list, all_terminal, all_final, failed_pitchers, final_cnt, post_cnt, in_prog_cnt = parse_games(games)
 
     if failed_pitchers > 0:
         log_message(log_path, date_str, "INCOMPLETE", f"{failed_pitchers} pitchers failed to fetch, sample incomplete for {date_str}")
@@ -182,9 +211,19 @@ def main():
         print(f"Error writing actuals file: {e}")
         sys.exit(1)
 
-    status_code = "SUCCESS" if all_final else "INCOMPLETE"
-    log_message(log_path, date_str, status_code, f"Fetched {len(game_list)} games")
+    status_code = "SUCCESS" if all_terminal else "INCOMPLETE"
+    msg_parts = []
+    if final_cnt > 0:
+        msg_parts.append(f"{final_cnt} final")
+    if post_cnt > 0:
+        msg_parts.append(f"{post_cnt} postponed")
+    if in_prog_cnt > 0:
+        msg_parts.append(f"{in_prog_cnt} in progress")
+    detail_str = f" ({', '.join(msg_parts)})" if msg_parts else ""
+
+    log_message(log_path, date_str, status_code, f"Fetched {len(game_list)} games{detail_str}")
     print(f"Successfully saved actuals for {date_str} (Status: {status_code}).")
+
 
 def log_message(log_path, date_str, status, message):
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
