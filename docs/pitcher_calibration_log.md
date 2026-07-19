@@ -26,3 +26,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 
 
 
+| 2026-07-18 | Max Meyer | Miami Marlins | 75% | 3.21 | 2.42 | 3.1711081081081085 | N/A | 3.0 IP / 2 ER / 5 K / 3 BB | 9.2 |
