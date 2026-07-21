@@ -15,3 +15,6 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-07-19,San Diego Padres @ Kansas City Royals,San Diego Padres,77.0,19,Kansas City Royals,65.0,2,home,N,Y,Y
 2026-07-19,Cincinnati Reds @ Colorado Rockies,Cincinnati Reds,95.0,9,Colorado Rockies,91.0,6,none,Y,Y,N
 2026-07-19,St. Louis Cardinals @ Arizona Diamondbacks,St. Louis Cardinals,81.0,7,Arizona Diamondbacks,80.0,8,none,Y,N,N
+2026-07-20,Los Angeles Dodgers @ Philadelphia Phillies,Los Angeles Dodgers,57.0,7,Philadelphia Phillies,69.0,10,none,Y,Y,N
+2026-07-20,San Francisco Giants @ Kansas City Royals,San Francisco Giants,79.0,3,Kansas City Royals,83.0,4,away,N,Y,Y
+2026-07-20,Detroit Tigers @ Chicago Cubs,Detroit Tigers,93.0,8,Chicago Cubs,75.0,6,home,Y,Y,Y
