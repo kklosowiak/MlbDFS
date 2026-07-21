@@ -1,4 +1,5 @@
 === OMEGA SIGNAL DIGEST - 2026-07-19 ===
+⚠️ WARNING: STALE CAPTURE FALLBACK (6:20pm capture missing; fell back to 11:30am snapshot)
 
 CAPTURE: fell back to 11:30am
 TOP STACK: Milwaukee Brewers | conf=96.0 | ITT=4.3 | actual=3.0 | diff=-1.3 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)

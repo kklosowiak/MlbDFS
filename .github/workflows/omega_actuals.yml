@@ -27,6 +27,9 @@ jobs:
       - name: Run pitcher calibration check
         run: python scripts/passive/pitcher_calibration_check.py
       - name: Generate digest
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/passive/generate_digest.py
       - name: Update dashboard
         run: python scripts/passive/update_dashboard.py

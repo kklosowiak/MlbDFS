@@ -9,6 +9,9 @@ on:
         description: 'Capture time slot (1530 or 2220)'
         required: false
         default: '2220'
+      date:
+        description: 'Target date (YYYY-MM-DD), optional'
+        required: false
 
 permissions:
   contents: write
@@ -26,15 +29,18 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Determine time slot
+      - name: Determine time slot and date
         id: slot
         run: |
-          # If manual dispatch, use the input time_slot
+          # If manual dispatch, use the input time_slot and date
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "slot=${{ github.event.inputs.time_slot }}" >> $GITHUB_OUTPUT
+            if [ -n "${{ github.event.inputs.date }}" ]; then
+              echo "date=${{ github.event.inputs.date }}" >> $GITHUB_OUTPUT
+            fi
           else
             HOUR=$(date -u +%H)
-            if [ "$HOUR" -lt "19" ]; then 
+            if [ "$HOUR" -ge "7" ] && [ "$HOUR" -lt "19" ]; then 
               echo "slot=1530" >> $GITHUB_OUTPUT
             else 
               echo "slot=2220" >> $GITHUB_OUTPUT
@@ -46,7 +52,12 @@ jobs:
           USE_ODDS_API: 'True'
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scripts/passive/nightly_capture.py --time ${{ steps.slot.outputs.slot }}
+        run: |
+          DATE_ARG=""
+          if [ -n "${{ steps.slot.outputs.date }}" ]; then
+            DATE_ARG="--date ${{ steps.slot.outputs.date }}"
+          fi
+          python scripts/passive/nightly_capture.py --time ${{ steps.slot.outputs.slot }} $DATE_ARG
       - name: Commit outputs
         if: always()
         run: |

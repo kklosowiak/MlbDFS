@@ -54,6 +54,7 @@ def main():
     results_1530 = os.path.join(slates_dir, f"omega-results_{date_str}_1530UTC.json")
 
     capture_status = "not found"
+    is_fallback = False
     lock_data = None
     if os.path.exists(results_2220):
         try:
@@ -70,13 +71,34 @@ def main():
                 lock_data = json.load(f)
             if lock_data.get("teams"):
                 capture_status = "fell back to 11:30am"
+                is_fallback = True
         except Exception:
             pass
+
+    if is_fallback:
+        try:
+            repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            if repo_root not in sys.path:
+                sys.path.insert(0, repo_root)
+            from utils.notifier import Notifier
+            notifier = Notifier()
+            msg = (
+                f"⚠️ *OMEGA STALE CAPTURE ALERT* ⚠️\n\n"
+                f"*Date*: `{date_str}`\n"
+                f"*Status*: Missing 6:20pm ET capture!\n"
+                f"*Action*: Digest fell back to stale 11:30am ET snapshot.\n\n"
+                f"_Check GitHub Actions logs for omega_capture.yml._"
+            )
+            notifier.send_message(msg)
+        except Exception as e:
+            print(f"Warning: Could not fire Telegram alert for stale capture fallback: {e}")
 
     if not lock_data or not lock_data.get("teams"):
         # No slate today
         with open(digest_path, "w", encoding="utf-8") as f:
             f.write(f"=== OMEGA SIGNAL DIGEST - {date_str} ===\n")
+            if is_fallback:
+                f.write("⚠️ WARNING: STALE CAPTURE FALLBACK (6:20pm capture missing; fell back to 11:30am snapshot)\n")
             f.write("NO SLATE - off day or no data captured.\n")
             f.write("=== END ===\n")
         print(f"Generated empty digest for {date_str} (no slate).")
@@ -111,6 +133,8 @@ def main():
     # Construct digest lines
     lines = []
     lines.append(f"=== OMEGA SIGNAL DIGEST - {date_str} ===")
+    if is_fallback:
+        lines.append("⚠️ WARNING: STALE CAPTURE FALLBACK (6:20pm capture missing; fell back to 11:30am snapshot)")
     lines.append("")
     lines.append(f"CAPTURE: {capture_status}")
 
