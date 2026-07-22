@@ -41,17 +41,24 @@ def load_salary_map():
 
 def get_pitcher_actuals(actuals, team_name, pitcher_name):
     norm_p = normalize_player_name(pitcher_name)
+    # Pass 1: Match both team and starting pitcher name
     for g in actuals:
         if g['home_team'] == team_name:
             sp = g['sp_home']
             if normalize_player_name(sp['name']) == norm_p or norm_p in normalize_player_name(sp['name']) or normalize_player_name(sp['name']) in norm_p:
                 return sp, g['away_runs']
-            return sp, g['away_runs']
         elif g['away_team'] == team_name:
             sp = g['sp_away']
             if normalize_player_name(sp['name']) == norm_p or norm_p in normalize_player_name(sp['name']) or normalize_player_name(sp['name']) in norm_p:
                 return sp, g['home_runs']
-            return sp, g['home_runs']
+                
+    # Pass 2: Fallback to team only (e.g. for scratched/late changes)
+    for g in actuals:
+        if g['home_team'] == team_name:
+            return g['sp_home'], g['away_runs']
+        elif g['away_team'] == team_name:
+            return g['sp_away'], g['home_runs']
+            
     return None, None
 
 def get_team_implied_total(lock_data, team_name):
