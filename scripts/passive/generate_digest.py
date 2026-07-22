@@ -161,13 +161,25 @@ def main():
         ip = tr.get('pitcher_actual_ip')
         er = tr.get('pitcher_actual_er')
         
+        # Find opponent team from lock_data
+        opp_team = "Unknown"
+        if lock_data and lock_data.get("pitchers"):
+            from utils.normalization import normalize_player_name
+            norm_p = normalize_player_name(pitcher)
+            for p_proj in lock_data.get("pitchers", []):
+                if normalize_player_name(p_proj.get("pitcher", "")) == norm_p:
+                    opp_team = p_proj.get("opponent") or p_proj.get("opposing_team") or "Unknown"
+                    break
+        else:
+            opp_team = team
+            
         # Over-delivered if IP >= 5 and ER <= 2
         try:
             is_over = float(ip) >= 5.0 and int(er) <= 2
         except:
             is_over = False
         deliv = "OVER-DELIVERED" if is_over else "NORMAL"
-        lines.append(f"  {pitcher} ({type_lbl}) vs {team}: attack_conf={conf} ITT={itt} actual={act} diff={diff:+.1f} | {ip}IP {er}ER -> {deliv}")
+        lines.append(f"  {pitcher} ({type_lbl}) vs {opp_team}: attack_conf={conf} ITT={itt} actual={act} diff={diff:+.1f} | {ip}IP {er}ER -> {deliv}")
 
     # Fade Risk
     lines.append(f"FADE_RISK ({len(fade_today)} instances):")
@@ -241,7 +253,20 @@ def main():
         itt = safe_float(sf_row.get('ITT'))
         act = safe_float(sf_row.get('actual_runs_against'))
         diff = safe_float(sf_row.get('run_diff'))
-        lines.append(f"  {pitcher} vs {team}: ITT={itt} actual={act}R diff={diff:+.1f}")
+        
+        # Find opponent team from lock_data
+        opp_team = "Unknown"
+        if lock_data and lock_data.get("pitchers"):
+            from utils.normalization import normalize_player_name
+            norm_p = normalize_player_name(pitcher)
+            for p_proj in lock_data.get("pitchers", []):
+                if normalize_player_name(p_proj.get("pitcher", "")) == norm_p:
+                    opp_team = p_proj.get("opponent") or p_proj.get("opposing_team") or "Unknown"
+                    break
+        else:
+            opp_team = team
+            
+        lines.append(f"  {pitcher} vs {opp_team}: ITT={itt} actual={act}R diff={diff:+.1f}")
 
     # Volatile Pitchers
     lines.append(f"VOLATILE PITCHERS ({len(volatile_today)}):")
