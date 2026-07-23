@@ -129,3 +129,8 @@ date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_ag
 2026-07-21,Michael Lorenzen,Colorado Rockies,16.0,6.2,Y,N,7,0.8,6,1
 2026-07-21,Matthew Liberatore,St. Louis Cardinals,28.0,4.6,Y,N,5,0.4,5,2
 2026-07-21,Jack Perkins,Athletics,0.0,5.4,Y,N,6,0.6,3,1
+2026-07-22,Max Fried,New York Yankees,0.0,4.1,N,Y,0,-4.1,0,1
+2026-07-22,Aaron Nola,Philadelphia Phillies,0.0,5.0,N,Y,9,4.0,5,1
+2026-07-22,Bubba Chandler,Pittsburgh Pirates,0.0,5.2,Y,N,2,-3.2,0,1
+2026-07-22,Anthony Kay,Chicago White Sox,11.0,4.4,Y,N,2,-2.4,2,2
+2026-07-22,Colin Rea,Chicago Cubs,34.0,4.0,Y,N,5,1.0,4,1

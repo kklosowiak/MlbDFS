@@ -20,3 +20,5 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-07-20,Detroit Tigers @ Chicago Cubs,Detroit Tigers,93.0,8,Chicago Cubs,75.0,6,home,Y,Y,Y
 2026-07-21,Miami Marlins @ Houston Astros,Miami Marlins,75.0,3,Houston Astros,96.0,5,home,N,Y,Y
 2026-07-21,Washington Nationals @ Colorado Rockies,Washington Nationals,95.0,7,Colorado Rockies,75.0,8,home,Y,N,Y
+2026-07-22,Minnesota Twins @ Cleveland Guardians,Minnesota Twins,78.0,10,Cleveland Guardians,75.0,6,none,Y,Y,N
+2026-07-22,San Diego Padres @ Atlanta Braves,San Diego Padres,75.0,6,Atlanta Braves,80.0,7,none,Y,Y,N
