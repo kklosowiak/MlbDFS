@@ -1,0 +1,63 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-23 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Detroit Tigers | conf=75.0 | ITT=5.1 | actual=4.0 | diff=-1.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Gabriel Moreno (Arizona Diamondbacks): 17.0 DK pts
+  Vinnie Pasquantino (Kansas City Royals): 8.0 DK pts
+  Carter Jensen (Kansas City Royals): 6.5 DK pts
+ANTI_CHALK_SMASH (8 fires):
+  Riley Greene (Detroit Tigers): blended=78.6 | actual=3.0DKpts | -4.0 vs baseline
+  Kevin Mcgonigle (Detroit Tigers): blended=80.5 | actual=3.0DKpts | +1.0 vs baseline
+  Dillon Dingler (Detroit Tigers): blended=76.2 | actual=14.0DKpts | +5.5 vs baseline
+  Gleyber Torres (Detroit Tigers): blended=64.1 | actual=2.0DKpts | +0.3 vs baseline
+  Colt Keith (Detroit Tigers): blended=49.1 | actual=0.0DKpts | -2.3 vs baseline
+  Spencer Torkelson (Detroit Tigers): blended=49.5 | actual=-1.5DKpts | -7.4 vs baseline
+  Kerry Carpenter (Detroit Tigers): blended=26.2 | actual=5.0DKpts | -3.6 vs baseline
+  James Outman (Detroit Tigers): blended=17.9 | actual=17.5DKpts | +17.1 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (6 fires):
+  Corbin Carroll (Arizona Diamondbacks): actual=11.0DKpts | -1.0 vs baseline
+  Vinnie Pasquantino (Kansas City Royals): actual=8.0DKpts | -3.7 vs baseline
+  Jimmy Crooks (St. Louis Cardinals): actual=3.0DKpts | +3.5 vs baseline
+  Michael Massey (Kansas City Royals): actual=7.0DKpts | +5.2 vs baseline
+  Masyn Winn (St. Louis Cardinals): actual=2.0DKpts | -2.2 vs baseline
+  Carter Jensen (Kansas City Royals): actual=6.5DKpts | +6.5 vs baseline
+STRONG_EDGE (3 fires):
+  Alec Burleson (St. Louis Cardinals): actual=15.0DKpts | +15.0 vs baseline
+  Tim Tawa (Arizona Diamondbacks): actual=8.5DKpts | -9.0 vs baseline
+  Kerry Carpenter (Detroit Tigers): actual=5.0DKpts | -3.6 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (2):
+  Troy Melton (WALKS=Y HAZ=N): ITT=3.6 actual=3.0R diff=-0.6
+  Randy Dobnak (WALKS=Y HAZ=N): ITT=5.1 actual=4.0R diff=-1.1
+GASSED/FATIGUED PEN (1 teams):
+  Kansas City Royals: actual=3.0R vs ITT=3.6 -> MISS
+BURST (1 teams):
+  Detroit Tigers: actual=4.0R vs ITT=5.1 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (18 slates tracked):
+  TRAP/Vulnerable: 62.5% underscored ITT | avg diff +1.75R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +0.50R
+  FADE_RISK: 66.7% correct | avg diff +0.48R
+  Top Stack hit ITT: 27.8% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.7 DK pts
+  STEAM: 47.6% correct | avg +1.35R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.26 DK pts vs baseline
+  PLATOON_TRAP: 59.8% underperformed baseline
+  STRONG_EDGE: avg +0.22 DK pts vs baseline
+  SHARP_FADE pitchers: 44.4% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 43.8%
+  GASSED pen teams: 43.7% hit ITT
+  BURST teams: 50.0% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===

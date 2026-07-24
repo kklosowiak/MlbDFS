@@ -28,3 +28,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 
 | 2026-07-18 | Max Meyer | Miami Marlins | 75% | 3.21 | 2.42 | 3.1711081081081085 | N/A | 3.0 IP / 2 ER / 5 K / 3 BB | 9.2 |
 | 2026-07-22 | Sandy Alcantara | Miami Marlins | 79% | 2.14 | 2.97 | 3.7640146842878126 | N/A | 7.0 IP / 5 ER / 3 K / 1 BB | 5.8 |
+| 2026-07-23 | Michael Mcgreevy | St. Louis Cardinals | 71% | 2.84 | 2.32 | 3.7349114811568795 | N/A | 6.1 IP / 4 ER / 3 K / 3 BB | 6.2 |
