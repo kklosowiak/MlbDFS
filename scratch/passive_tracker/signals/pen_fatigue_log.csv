@@ -180,3 +180,12 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-07-24,Philadelphia Phillies,69.0,4.0,Y,Y,0,-4.0
 2026-07-24,Cleveland Guardians,24.0,3.45,N,Y,3,-0.45
 2026-07-24,Kansas City Royals,44.0,3.35,Y,Y,1,-2.35
+2026-07-25,Baltimore Orioles,81.0,4.9,Y,Y,3,-1.9
+2026-07-25,Chicago White Sox,79.0,4.5,N,Y,1,-3.5
+2026-07-25,Philadelphia Phillies,82.0,4.5,N,Y,1,-3.5
+2026-07-25,Athletics,82.0,4.5,Y,Y,0,-4.5
+2026-07-25,Tampa Bay Rays,77.0,4.2,Y,Y,3,-1.2
+2026-07-25,Cincinnati Reds,95.0,4.0,Y,Y,0,-4.0
+2026-07-25,Seattle Mariners,71.0,3.9,N,Y,1,-2.9
+2026-07-25,Cleveland Guardians,81.0,4.0,Y,Y,0,-4.0
+2026-07-25,Chicago Cubs,55.0,3.6,Y,Y,11,7.4
