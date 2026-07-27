@@ -1,0 +1,55 @@
+=== OMEGA SIGNAL DIGEST - 2026-07-26 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Philadelphia Phillies | conf=89.0 | ITT=4.6 | actual=11.0 | diff=+6.4 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Philadelphia Phillies: conf=89.0 ITT=4.6 | actual=11.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Alec Bohm (Philadelphia Phillies): 18.0 DK pts
+ANTI_CHALK_SMASH (9 fires):
+  Kyle Schwarber (Philadelphia Phillies): blended=87.8 | actual=13.0DKpts | +13.0 vs baseline
+  Bryce Harper (Philadelphia Phillies): blended=79.0 | actual=13.0DKpts | -7.5 vs baseline
+  Jt Realmuto (Philadelphia Phillies): blended=49.2 | actual=-1.0DKpts | -1.0 vs baseline
+  Bryson Stott (Philadelphia Phillies): blended=45.1 | actual=29.5DKpts | +23.0 vs baseline
+  Alec Bohm (Philadelphia Phillies): blended=60.1 | actual=18.0DKpts | +16.5 vs baseline
+  Brandon Marsh (Philadelphia Phillies): blended=41.1 | actual=13.5DKpts | +13.5 vs baseline
+  Trea Turner (Philadelphia Phillies): blended=51.6 | actual=16.5DKpts | +16.5 vs baseline
+  Justin Crawford (Philadelphia Phillies): blended=22.9 | actual=7.0DKpts | +7.0 vs baseline
+  Gabriel Rincones (Philadelphia Phillies): blended=22.0 | actual=2.5DKpts | +2.5 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (3 fires):
+  Paul Goldschmidt (New York Yankees): actual=4.0DKpts | +4.0 vs baseline
+  Anthony Volpe (New York Yankees): actual=13.5DKpts | -1.0 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=7.0DKpts | +7.0 vs baseline
+STRONG_EDGE (2 fires):
+  Bryce Harper (Philadelphia Phillies): actual=13.0DKpts | -7.5 vs baseline
+  Ben Rice (New York Yankees): actual=20.5DKpts | +7.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (21 slates tracked):
+  TRAP/Vulnerable: 69.7% underscored ITT | avg diff +0.73R
+  TRAP/Short Leash: 50.0% underscored ITT | avg diff +0.51R
+  FADE_RISK: 66.7% correct | avg diff +0.48R
+  Top Stack hit ITT: 28.6% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.48 DK pts
+  STEAM: 52.2% correct | avg +1.52R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.27 DK pts vs baseline
+  PLATOON_TRAP: 59.6% underperformed baseline
+  STRONG_EDGE: avg +0.21 DK pts vs baseline
+  SHARP_FADE pitchers: 46.4% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.1%
+  GASSED pen teams: 41.6% hit ITT
+  BURST teams: 48.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
