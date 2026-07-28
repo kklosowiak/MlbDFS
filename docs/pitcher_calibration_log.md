@@ -31,3 +31,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-07-23 | Michael Mcgreevy | St. Louis Cardinals | 71% | 2.84 | 2.32 | 3.7349114811568795 | N/A | 6.1 IP / 4 ER / 3 K / 3 BB | 6.2 |
 | 2026-07-24 | Bryce Miller | Seattle Mariners | 73% | 3.06 | 3.18 | 2.823619651347068 | 2.04 | 5.1 IP / 5 ER / 0 K / 1 BB | -2.2 |
 | 2026-07-25 | Eury Pérez | Miami Marlins | 79% | 2.37 | 1.72 | 3.670507128309572 | N/A | 7.0 IP / 3 ER / 2 K / 1 BB | 8.3 |
+| 2026-07-27 | Keider Montero | Detroit Tigers | 91% | 1.23 | 1.61 | 3.3578899167437557 | N/A | 4.1 IP / 4 ER / 1 K / 1 BB | -2.9 |
