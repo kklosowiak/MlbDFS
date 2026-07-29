@@ -25,3 +25,7 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-07-24,Atlanta Braves @ Baltimore Orioles,Atlanta Braves,95.0,7,Baltimore Orioles,80.0,6,none,Y,Y,N
 2026-07-24,Los Angeles Angels @ San Francisco Giants,Los Angeles Angels,45.0,6,San Francisco Giants,76.0,7,none,Y,Y,N
 2026-07-27,Philadelphia Phillies @ Miami Marlins,Philadelphia Phillies,72.0,7,Miami Marlins,78.0,8,none,Y,Y,N
+2026-07-28,Arizona Diamondbacks @ Pittsburgh Pirates,Arizona Diamondbacks,76.0,8,Pittsburgh Pirates,75.0,7,none,Y,Y,N
+2026-07-28,Toronto Blue Jays @ Washington Nationals,Toronto Blue Jays,61.0,6,Washington Nationals,79.0,8,none,Y,Y,N
+2026-07-28,Colorado Rockies @ San Diego Padres,Colorado Rockies,45.0,7,San Diego Padres,80.0,8,none,Y,Y,N
+2026-07-28,Seattle Mariners @ Los Angeles Dodgers,Seattle Mariners,70.0,7,Los Angeles Dodgers,94.0,6,none,Y,N,N

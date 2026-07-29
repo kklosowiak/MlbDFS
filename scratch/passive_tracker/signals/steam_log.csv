@@ -22,3 +22,6 @@ date,team,attack_conf,ITT,divergence,ticket_pct,money_pct,actual_runs,run_diff,s
 2026-07-22,Chicago White Sox,79.0,4.3,8.0,48.0,56.0,4,-0.3,N
 2026-07-24,Cincinnati Reds,87.0,3.7,1.0,17.0,18.0,4,0.3,Y
 2026-07-26,Philadelphia Phillies,89.0,4.6,-9.0,79.0,70.0,11,6.4,Y
+2026-07-28,Los Angeles Dodgers,94.0,5.4,0.0,0.0,0.0,6,0.6,Y
+2026-07-28,Minnesota Twins,87.0,5.1,12.0,75.0,87.0,3,-2.1,N
+2026-07-28,San Diego Padres,80.0,5.0,0.0,0.0,0.0,8,3.0,Y
