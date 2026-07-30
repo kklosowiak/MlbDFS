@@ -22,3 +22,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-07-26,Philadelphia Phillies,89.0,4.6,-9.0,11,6.4,Y
 2026-07-27,Pittsburgh Pirates,97.0,5.1,0.0,3,-2.1,N
 2026-07-28,Detroit Tigers,97.0,5.2,0.0,14,8.8,Y
+2026-07-29,Houston Astros,95.0,5.2,8.0,7,1.8,Y
