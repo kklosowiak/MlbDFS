@@ -236,3 +236,13 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-07-29,New York Mets,76.0,3.42,Y,Y,3,-0.42
 2026-07-29,Los Angeles Angels,93.0,4.6,Y,Y,4,-0.6
 2026-07-29,Chicago White Sox,55.0,3.5,Y,Y,6,2.5
+2026-07-30,Atlanta Braves,82.0,5.5,Y,Y,5,-0.5
+2026-07-30,Cincinnati Reds,82.0,4.8,Y,Y,3,-1.8
+2026-07-30,Los Angeles Dodgers,90.0,4.8,N,Y,6,1.2
+2026-07-30,Pittsburgh Pirates,92.0,4.9,Y,Y,2,-2.9
+2026-07-30,Washington Nationals,75.0,4.7,Y,Y,4,-0.7
+2026-07-30,Boston Red Sox,94.0,5.6,Y,Y,5,-0.6
+2026-07-30,Miami Marlins,74.0,3.48,Y,Y,2,-1.48
+2026-07-30,San Francisco Giants,67.0,4.2,N,Y,4,-0.2
+2026-07-30,New York Mets,73.0,3.8,N,Y,4,0.2
+2026-07-30,San Diego Padres,95.0,4.5,Y,Y,1,-3.5
