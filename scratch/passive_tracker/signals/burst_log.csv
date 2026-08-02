@@ -93,3 +93,7 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-07-31,New York Mets,81.0,4.5,2,-2.5,N
 2026-07-31,Arizona Diamondbacks,82.0,4.0,4,0.0,Y
 2026-07-31,Baltimore Orioles,75.0,4.5,6,1.5,Y
+2026-08-01,Atlanta Braves,97.0,5.55,8,2.45,Y
+2026-08-01,Detroit Tigers,97.0,5.6,8,2.4,Y
+2026-08-01,Los Angeles Dodgers,82.0,4.0,2,-2.0,N
+2026-08-01,Pittsburgh Pirates,80.0,4.2,4,-0.2,N

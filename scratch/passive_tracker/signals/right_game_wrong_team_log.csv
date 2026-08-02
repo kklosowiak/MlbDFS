@@ -31,3 +31,6 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-07-28,Seattle Mariners @ Los Angeles Dodgers,Seattle Mariners,70.0,7,Los Angeles Dodgers,94.0,6,none,Y,N,N
 2026-07-31,Pittsburgh Pirates @ Cincinnati Reds,Pittsburgh Pirates,82.0,7,Cincinnati Reds,92.0,8,none,Y,Y,N
 2026-07-31,Kansas City Royals @ Colorado Rockies,Kansas City Royals,93.0,1,Colorado Rockies,81.0,3,away,N,N,Y
+2026-08-01,Arizona Diamondbacks @ Cleveland Guardians,Arizona Diamondbacks,74.0,12,Cleveland Guardians,77.0,8,none,Y,N,N
+2026-08-01,Kansas City Royals @ Colorado Rockies,Kansas City Royals,93.0,6,Colorado Rockies,75.0,12,home,Y,N,Y
+2026-08-01,Detroit Tigers @ Athletics,Detroit Tigers,97.0,8,Athletics,88.0,6,none,Y,Y,N
