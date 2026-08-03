@@ -35,3 +35,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-07-29 | Casey Legumina | Tampa Bay Rays | 80% | 0.0 | N/A | 3.811222222222222 | N/A | 1.2 IP / 0 ER / 0 K / 0 BB | 3.1 |
 | 2026-07-31 | Foster Griffin | Washington Nationals | 85% | 2.18 | 1.65 | 3.339548387096774 | N/A | 5.1 IP / 6 ER / 3 K / 2 BB | -0.6 |
 | 2026-07-31 | Nick Martinez | Tampa Bay Rays | 73% | 1.38 | 1.9 | 3.3266960203217613 | N/A | 6.0 IP / 6 ER / 2 K / 0 BB | 1.3 |
+| 2026-08-02 | Taj Bradley | Minnesota Twins | 73% | 2.84 | 3.77 | 3.8142725832012676 | N/A | 6.0 IP / 3 ER / 2 K / 4 BB | 4.9 |

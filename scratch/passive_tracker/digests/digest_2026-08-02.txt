@@ -1,0 +1,64 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-02 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=82.0 | ITT=4.9 | actual=4.0 | diff=-0.9 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Los Angeles Dodgers: conf=82.0 ITT=4.9 | actual=4.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Jackson Merrill (San Diego Padres): 26.0 DK pts
+  Royce Lewis (Minnesota Twins): 21.0 DK pts
+  Rafael Devers (San Francisco Giants): 17.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (10 fires):
+  Jackson Merrill (San Diego Padres): actual=26.0DKpts | +8.2 vs baseline
+  Julio Rodriguez (Seattle Mariners): actual=9.0DKpts | +3.7 vs baseline
+  Heliot Ramos (San Francisco Giants): actual=2.5DKpts | -4.7 vs baseline
+  Jonah Heim (Athletics): actual=5.0DKpts | -2.2 vs baseline
+  Alan Roden (Minnesota Twins): actual=5.0DKpts | +5.0 vs baseline
+  Ceddanne Rafaela (Boston Red Sox): actual=18.0DKpts | +11.8 vs baseline
+  Victor Robles (Seattle Mariners): actual=2.5DKpts | -1.2 vs baseline
+  Caleb Durbin (Boston Red Sox): actual=11.0DKpts | +2.2 vs baseline
+  Jarren Duran (Boston Red Sox): actual=13.5DKpts | +13.5 vs baseline
+  Carlos Narvaez (Boston Red Sox): actual=1.0DKpts | +1.0 vs baseline
+STRONG_EDGE (6 fires):
+  Teoscar Hernandez (Los Angeles Dodgers): actual=5.0DKpts | +5.0 vs baseline
+  Willson Contreras (Boston Red Sox): actual=-1.0DKpts | -8.7 vs baseline
+  Mookie Betts (Los Angeles Dodgers): actual=0.0DKpts | -9.2 vs baseline
+  Gleyber Torres (Detroit Tigers): actual=21.0DKpts | +16.1 vs baseline
+  Luis Rengifo (San Diego Padres): actual=7.0DKpts | +1.1 vs baseline
+  Brooks Lee (Minnesota Twins): actual=-1.0DKpts | -12.9 vs baseline
+SHARP_FADE PITCHERS (2 instances):
+  Emmet Sheehan vs Boston Red Sox: ITT=3.8 actual=8.0R diff=+4.2
+  Kyle Hart vs San Francisco Giants: ITT=0.0 actual=4.0R diff=+4.0
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Jake Bennett (WALKS=N HAZ=Y): ITT=4.9 actual=4.0R diff=-0.9
+GASSED/FATIGUED PEN (1 teams):
+  Boston Red Sox: actual=8.0R vs ITT=3.8 -> HIT
+BURST (1 teams):
+  Los Angeles Dodgers: actual=4.0R vs ITT=4.9 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (28 slates tracked):
+  TRAP/Vulnerable: 62.7% underscored ITT | avg diff +0.73R
+  TRAP/Short Leash: 54.5% underscored ITT | avg diff +0.24R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 35.7% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.47 DK pts
+  STEAM: 44.4% correct | avg +0.59R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.98 DK pts vs baseline
+  PLATOON_TRAP: 58.9% underperformed baseline
+  STRONG_EDGE: avg +0.26 DK pts vs baseline
+  SHARP_FADE pitchers: 51.3% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 43.1%
+  GASSED pen teams: 42.9% hit ITT
+  BURST teams: 46.5% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
