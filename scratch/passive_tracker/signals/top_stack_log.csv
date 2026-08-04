@@ -27,3 +27,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-07-31,Detroit Tigers,97.0,5.7,0.0,13,7.3,Y
 2026-08-01,Atlanta Braves,97.0,5.55,0.0,8,2.45,Y
 2026-08-02,Los Angeles Dodgers,82.0,4.9,-35.0,4,-0.9,N
+2026-08-03,Arizona Diamondbacks,95.0,4.6,22.0,5,0.4,Y

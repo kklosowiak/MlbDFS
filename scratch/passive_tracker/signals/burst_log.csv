@@ -98,3 +98,6 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-08-01,Los Angeles Dodgers,82.0,4.0,2,-2.0,N
 2026-08-01,Pittsburgh Pirates,80.0,4.2,4,-0.2,N
 2026-08-02,Los Angeles Dodgers,82.0,4.9,4,-0.9,N
+2026-08-03,Arizona Diamondbacks,95.0,4.6,5,0.4,Y
+2026-08-03,Houston Astros,82.0,4.9,1,-3.9,N
+2026-08-03,Pittsburgh Pirates,78.0,3.7,4,0.3,Y

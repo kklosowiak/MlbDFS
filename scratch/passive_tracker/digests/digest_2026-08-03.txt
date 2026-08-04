@@ -1,0 +1,127 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-03 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Arizona Diamondbacks | conf=95.0 | ITT=4.6 | actual=5.0 | diff=+0.4 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (5 instances):
+  Michael Lorenzen (Vulnerable) vs Tampa Bay Rays: attack_conf=0.0 ITT=6.05 actual=13.0 diff=+7.0 | 3.0IP 7ER -> NORMAL
+  Cam Schlittler (Short Leash) vs St. Louis Cardinals: attack_conf=45.0 ITT=3.42 actual=13.0 diff=+9.6 | 3.0IP 4ER -> NORMAL
+  Bubba Chandler (Short Leash) vs Milwaukee Brewers: attack_conf=47.0 ITT=4.4 actual=3.0 diff=-1.4 | 5.2IP 2ER -> OVER-DELIVERED
+  Brandon Sproat (Short Leash) vs Pittsburgh Pirates: attack_conf=26.0 ITT=3.7 actual=4.0 diff=+0.3 | 3.0IP 4ER -> NORMAL
+  Cristian Javier (Short Leash) vs Toronto Blue Jays: attack_conf=0.0 ITT=4.4 actual=3.0 diff=-1.4 | 6.0IP 3ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (2 team fires):
+  Tampa Bay Rays: conf=75.0 ITT=6.05 | actual=13.0R (note: is_steam is a refuted/reversed signal per the July audit)
+  Texas Rangers: conf=90.0 ITT=4.1 | actual=1.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Austin Wells (New York Yankees): 18.5 DK pts
+  Teoscar Hernandez (Los Angeles Dodgers): 17.0 DK pts
+  Cole Carrigg (Colorado Rockies): 11.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (1 fires):
+  Jonathan Aranda (Tampa Bay Rays): blended=80.8 | actual=22.0DKpts | +14.9 vs baseline (note: this flag has an unreliable historical hit rate per the July audit)
+PLATOON_TRAP (36 fires):
+  Christian Walker (Houston Astros): actual=2.5DKpts | -3.2 vs baseline
+  Mookie Betts (Los Angeles Dodgers): actual=0.0DKpts | -10.4 vs baseline
+  Rafael Devers (San Francisco Giants): actual=-0.5DKpts | -4.9 vs baseline
+  Hunter Goodman (Colorado Rockies): actual=0.5DKpts | -2.2 vs baseline
+  Esmerlyn Valdez (Pittsburgh Pirates): actual=7.5DKpts | +1.9 vs baseline
+  Cole Carrigg (Colorado Rockies): actual=11.0DKpts | +2.2 vs baseline
+  Jung Hoo Lee (San Francisco Giants): actual=37.5DKpts | +31.2 vs baseline
+  Bryan De La Cruz (Philadelphia Phillies): actual=8.0DKpts | +2.7 vs baseline
+  Luis Rengifo (San Diego Padres): actual=3.0DKpts | -3.5 vs baseline
+  Nick Gonzales (Pittsburgh Pirates): actual=-1.0DKpts | -7.6 vs baseline
+  Alex Bregman (Chicago Cubs): actual=5.5DKpts | +0.7 vs baseline
+  Isaac Paredes (Houston Astros): actual=1.5DKpts | -5.5 vs baseline
+  Spencer Jones (New York Yankees): actual=-1.0DKpts | -5.0 vs baseline
+  Trea Turner (Philadelphia Phillies): actual=-0.5DKpts | -3.2 vs baseline
+  Austin Wells (New York Yankees): actual=18.5DKpts | +8.2 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=11.0DKpts | -1.7 vs baseline
+  Taylor Trammell (Houston Astros): actual=-0.5DKpts | -6.8 vs baseline
+  Richie Palacios (Tampa Bay Rays): actual=22.5DKpts | +17.1 vs baseline
+  Jake Cronenworth (San Diego Padres): actual=-0.5DKpts | -14.5 vs baseline
+  Tyler Freeman (Colorado Rockies): actual=5.0DKpts | -0.4 vs baseline
+  Jasson Dominguez (New York Yankees): actual=2.0DKpts | -4.5 vs baseline
+  Willi Castro (Colorado Rockies): actual=10.5DKpts | -1.5 vs baseline
+  Jake Mangum (Pittsburgh Pirates): actual=4.0DKpts | -1.7 vs baseline
+  Jimmy Crooks (St. Louis Cardinals): actual=15.0DKpts | +2.9 vs baseline
+  Ezequiel Tovar (Colorado Rockies): actual=27.0DKpts | +12.0 vs baseline
+  Wyatt Langford (Texas Rangers): actual=6.0DKpts | -2.7 vs baseline
+  Willy Adames (San Francisco Giants): actual=1.5DKpts | -8.2 vs baseline
+  Nasim Nunez (Washington Nationals): actual=-1.0DKpts | -8.3 vs baseline
+  Andres Gimenez (Toronto Blue Jays): actual=0.0DKpts | -8.6 vs baseline
+  Mickey Moniak (Colorado Rockies): actual=23.5DKpts | +15.1 vs baseline
+  David Hamilton (Milwaukee Brewers): actual=3.0DKpts | -3.5 vs baseline
+  Dansby Swanson (Chicago Cubs): actual=15.0DKpts | +5.3 vs baseline
+  Jose Altuve (Houston Astros): actual=6.0DKpts | -0.2 vs baseline
+  Evan Carter (Texas Rangers): actual=-0.5DKpts | -6.4 vs baseline
+  Keibert Ruiz (Washington Nationals): actual=7.5DKpts | +4.0 vs baseline
+  Ernie Clement (Toronto Blue Jays): actual=2.0DKpts | -4.1 vs baseline
+STRONG_EDGE (13 fires):
+  Freddie Freeman (Los Angeles Dodgers): actual=2.5DKpts | +0.5 vs baseline
+  Alec Burleson (St. Louis Cardinals): actual=47.5DKpts | +40.8 vs baseline
+  Ben Rice (New York Yankees): actual=0.0DKpts | -16.7 vs baseline
+  Jeremy Pena (Houston Astros): actual=6.5DKpts | +1.2 vs baseline
+  Brandon Lowe (Pittsburgh Pirates): actual=4.0DKpts | -1.2 vs baseline
+  Kyle Schwarber (Philadelphia Phillies): actual=3.0DKpts | -2.5 vs baseline
+  Yandy Diaz (Tampa Bay Rays): actual=1.5DKpts | -1.2 vs baseline
+  Trent Grisham (New York Yankees): actual=20.5DKpts | +12.3 vs baseline
+  Jordan Walker (St. Louis Cardinals): actual=7.0DKpts | +5.5 vs baseline
+  Daylen Lile (Washington Nationals): actual=16.0DKpts | +4.4 vs baseline
+  Ivan Herrera (St. Louis Cardinals): actual=11.0DKpts | -4.8 vs baseline
+  Spencer Horwitz (Pittsburgh Pirates): actual=10.0DKpts | +4.8 vs baseline
+  William Contreras (Milwaukee Brewers): actual=-1.0DKpts | -17.5 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Michael King vs Arizona Diamondbacks: ITT=4.6 actual=5.0R diff=+0.4
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (8):
+  Matthew Boyd (WALKS=N HAZ=Y): ITT=4.3 actual=5.0R diff=+0.7
+  Michael King (WALKS=Y HAZ=N): ITT=4.6 actual=5.0R diff=+0.4
+  Bubba Chandler (WALKS=Y HAZ=N): ITT=4.4 actual=3.0R diff=-1.4
+  Aaron Nola (WALKS=Y HAZ=N): ITT=4.2 actual=3.0R diff=-1.2
+  Shane Bieber (WALKS=Y HAZ=N): ITT=4.9 actual=1.0R diff=-3.9
+  Brandon Sproat (WALKS=Y HAZ=N): ITT=3.7 actual=4.0R diff=+0.3
+  Cristian Javier (WALKS=Y HAZ=N): ITT=4.4 actual=3.0R diff=-1.4
+  Michael Lorenzen (WALKS=Y HAZ=N): ITT=6.05 actual=13.0R diff=+7.0
+GASSED/FATIGUED PEN (11 teams):
+  Arizona Diamondbacks: actual=5.0R vs ITT=4.6 -> HIT
+  Houston Astros: actual=1.0R vs ITT=4.9 -> MISS
+  Milwaukee Brewers: actual=3.0R vs ITT=4.4 -> MISS
+  Toronto Blue Jays: actual=3.0R vs ITT=4.4 -> MISS
+  Texas Rangers: actual=1.0R vs ITT=4.1 -> MISS
+  Washington Nationals: actual=3.0R vs ITT=4.2 -> MISS
+  Colorado Rockies: actual=9.0R vs ITT=5.2 -> HIT
+  San Diego Padres: actual=1.0R vs ITT=4.6 -> MISS
+  San Francisco Giants: actual=5.0R vs ITT=4.1 -> HIT
+  St. Louis Cardinals: actual=13.0R vs ITT=3.42 -> HIT
+  Chicago Cubs: actual=10.0R vs ITT=3.9 -> HIT
+BURST (3 teams):
+  Arizona Diamondbacks: actual=5.0R vs ITT=4.6 -> CORRECT
+  Houston Astros: actual=1.0R vs ITT=4.9 -> MISS
+  Pittsburgh Pirates: actual=4.0R vs ITT=3.7 -> CORRECT
+RIGHT GAME WRONG TEAM:
+  St. Louis Cardinals @ New York Yankees: both scored 6+? Y | higher-conf team won scoring? Y
+  Tampa Bay Rays @ Colorado Rockies: both scored 6+? Y | higher-conf team won scoring? Y
+
+RUNNING ACCURACY (29 slates tracked):
+  TRAP/Vulnerable: 61.5% underscored ITT | avg diff +0.85R
+  TRAP/Short Leash: 54.3% underscored ITT | avg diff +0.32R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 37.9% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.42 DK pts
+  STEAM: 44.7% correct | avg +0.66R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.98 DK pts vs baseline
+  PLATOON_TRAP: 59.2% underperformed baseline
+  STRONG_EDGE: avg +0.30 DK pts vs baseline
+  SHARP_FADE pitchers: 50.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 43.4%
+  GASSED pen teams: 43.0% hit ITT
+  BURST teams: 47.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Bubba Chandler (5.2 IP, 2 ER)
+  Right-Game-Wrong-Team Match: St. Louis Cardinals @ New York Yankees (Both scored 6+ runs)
+  Right-Game-Wrong-Team Match: Tampa Bay Rays @ Colorado Rockies (Both scored 6+ runs)
+  COLD_HIGH_BR Hitter Outperformed Baseline: Jonathan Aranda outscored baseline by +14.9 pts (note: this flag has an unreliable historical hit rate per the July audit)
+
+=== END ===

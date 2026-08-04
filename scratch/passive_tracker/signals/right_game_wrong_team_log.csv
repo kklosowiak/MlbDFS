@@ -34,3 +34,5 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-08-01,Arizona Diamondbacks @ Cleveland Guardians,Arizona Diamondbacks,74.0,12,Cleveland Guardians,77.0,8,none,Y,N,N
 2026-08-01,Kansas City Royals @ Colorado Rockies,Kansas City Royals,93.0,6,Colorado Rockies,75.0,12,home,Y,N,Y
 2026-08-01,Detroit Tigers @ Athletics,Detroit Tigers,97.0,8,Athletics,88.0,6,none,Y,Y,N
+2026-08-03,St. Louis Cardinals @ New York Yankees,St. Louis Cardinals,73.0,13,New York Yankees,49.0,7,none,Y,Y,N
+2026-08-03,Tampa Bay Rays @ Colorado Rockies,Tampa Bay Rays,75.0,13,Colorado Rockies,70.0,9,none,Y,Y,N
