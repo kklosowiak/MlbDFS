@@ -48,3 +48,7 @@ date,team,attack_conf,ITT,dqi_tier,actual_runs,run_diff
 2026-08-01,Kansas City Royals,93.0,5.65,CAUTION,6,0.35
 2026-08-02,Boston Red Sox,67.0,3.8,CAUTION,8,4.2
 2026-08-03,Arizona Diamondbacks,95.0,4.6,OVERPRICED,5,0.4
+2026-08-04,Arizona Diamondbacks,75.0,4.5,CAUTION,4,-0.5
+2026-08-04,Los Angeles Dodgers,93.0,5.1,CAUTION,1,-4.1
+2026-08-04,Minnesota Twins,91.0,5.3,CAUTION,2,-3.3
+2026-08-04,Detroit Tigers,84.0,3.6,LEVERAGE,8,4.4
