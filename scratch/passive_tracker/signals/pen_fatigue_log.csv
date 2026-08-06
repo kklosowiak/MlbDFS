@@ -309,3 +309,9 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-08-04,St. Louis Cardinals,76.0,3.6,Y,Y,0,-3.6
 2026-08-04,Washington Nationals,52.0,3.5,N,Y,0,-3.5
 2026-08-04,Chicago Cubs,62.0,3.6,Y,Y,5,1.4
+2026-08-05,Philadelphia Phillies,76.0,5.5,N,Y,4,-1.5
+2026-08-05,Arizona Diamondbacks,93.0,4.4,Y,Y,10,5.6
+2026-08-05,Cincinnati Reds,93.0,5.2,N,Y,3,-2.2
+2026-08-05,St. Louis Cardinals,79.0,4.0,Y,Y,3,-1.0
+2026-08-05,Milwaukee Brewers,75.0,3.8,Y,Y,4,0.2
+2026-08-05,Pittsburgh Pirates,59.0,3.48,N,Y,2,-1.48

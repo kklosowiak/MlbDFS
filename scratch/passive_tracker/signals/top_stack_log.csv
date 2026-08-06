@@ -29,3 +29,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-08-02,Los Angeles Dodgers,82.0,4.9,-35.0,4,-0.9,N
 2026-08-03,Arizona Diamondbacks,95.0,4.6,22.0,5,0.4,Y
 2026-08-04,Cincinnati Reds,94.0,5.2,0.0,5,-0.2,N
+2026-08-05,Arizona Diamondbacks,93.0,4.4,1.0,10,5.6,Y
