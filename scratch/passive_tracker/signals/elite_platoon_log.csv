@@ -265,3 +265,7 @@ date,player,team,salary,batting_order,blended_rating,actual_dk_pts,baseline_dk_p
 2026-08-05,Heriberto Hernandez,Miami Marlins,3500,5,45.9,0.0,6.42,-6.42
 2026-08-05,Otto Lopez,Miami Marlins,4300,3,48.2,0.0,7.62,-7.62
 2026-08-05,Brandon Lowe,Pittsburgh Pirates,3000,2,51.2,-1.0,4.71,-5.71
+2026-08-06,Ronald Acuna,Atlanta Braves,5800,2,69.6,30.0,13.25,16.75
+2026-08-06,Ketel Marte,Arizona Diamondbacks,5000,4,67.3,4.5,27.0,-22.5
+2026-08-06,Munetaka Murakami,Chicago White Sox,5000,2,52.9,0.5,16.0,-15.5
+2026-08-06,Corbin Carroll,Arizona Diamondbacks,5500,2,62.1,6.5,30.0,-23.5

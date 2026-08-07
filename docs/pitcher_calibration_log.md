@@ -39,3 +39,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-03 | Justin Wrobleski | Los Angeles Dodgers | 84% | 3.26 | 3.24 | 3.2515347593582886 | N/A | 4.1 IP / 7 ER / 4 K / 3 BB | -2.2 |
 | 2026-08-04 | Jared Jones | Pittsburgh Pirates | 71% | 2.65 | 2.0 | 3.5223076923076926 | N/A | 4.0 IP / 3 ER / 4 K / 1 BB | 5.6 |
 | 2026-08-05 | Sean Burke | Chicago White Sox | 74% | 1.42 | 1.03 | 3.133 | N/A | 4.1 IP / 2 ER / 4 K / 2 BB | 9.6 |
+| 2026-08-06 | Michael Wacha | Kansas City Royals | 79% | 1.93 | 3.38 | 3.7136666666666667 | 2.45 | 5.2 IP / 1 ER / 1 K / 3 BB | 9.2 |

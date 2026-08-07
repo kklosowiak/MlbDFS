@@ -1,0 +1,75 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-06 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Arizona Diamondbacks | conf=82.0 | ITT=4.6 | actual=1.0 | diff=-3.6 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (4 instances):
+  Ranger Suarez (Vulnerable) vs Chicago White Sox: attack_conf=6.0 ITT=0.0 actual=11.0 diff=+11.0 | 3.0IP 3ER -> NORMAL
+  Bailey Ober (Vulnerable) vs Kansas City Royals: attack_conf=38.0 ITT=0.0 actual=3.0 diff=+3.0 | 6.0IP 3ER -> NORMAL
+  Janson Junk (Short Leash) vs Atlanta Braves: attack_conf=31.0 ITT=0.0 actual=11.0 diff=+11.0 | 3.0IP 2ER -> NORMAL
+  Walker Buehler (Short Leash) vs Arizona Diamondbacks: attack_conf=0.0 ITT=4.6 actual=1.0 diff=-3.6 | 4.0IP 1ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Bobby Witt (Kansas City Royals): 20.0 DK pts
+  Caleb Durbin (Boston Red Sox): 18.0 DK pts
+  Royce Lewis (Minnesota Twins): 16.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (18 fires):
+  Bobby Witt (Kansas City Royals): actual=20.0DKpts | -10.0 vs baseline
+  Royce Lewis (Minnesota Twins): actual=16.0DKpts | +11.1 vs baseline
+  Miguel Vargas (Chicago White Sox): actual=9.5DKpts | -3.3 vs baseline
+  Randal Grichuk (Chicago White Sox): actual=5.0DKpts | -7.4 vs baseline
+  Alan Roden (Minnesota Twins): actual=7.0DKpts | -1.7 vs baseline
+  Wilyer Abreu (Boston Red Sox): actual=10.0DKpts | -2.7 vs baseline
+  Andruw Monasterio (Boston Red Sox): actual=15.5DKpts | +12.4 vs baseline
+  Luis Rengifo (San Diego Padres): actual=9.0DKpts | +3.2 vs baseline
+  Heriberto Hernandez (Miami Marlins): actual=-1.5DKpts | -14.7 vs baseline
+  Gavin Sheets (San Diego Padres): actual=-0.5DKpts | -4.8 vs baseline
+  Chase Meidroth (Chicago White Sox): actual=38.5DKpts | +38.7 vs baseline
+  Tim Tawa (Arizona Diamondbacks): actual=1.5DKpts | -6.1 vs baseline
+  Salvador Perez (Kansas City Royals): actual=7.0DKpts | -4.9 vs baseline
+  Esteury Ruiz (Miami Marlins): actual=-0.5DKpts | -4.9 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=13.5DKpts | +2.4 vs baseline
+  Connor Wong (Boston Red Sox): actual=23.0DKpts | +18.8 vs baseline
+  Agustin Ramirez (Miami Marlins): actual=4.5DKpts | -6.9 vs baseline
+  Jake Cronenworth (San Diego Padres): actual=9.0DKpts | +3.6 vs baseline
+STRONG_EDGE (7 fires):
+  Drake Baldwin (Atlanta Braves): actual=5.0DKpts | +4.5 vs baseline
+  Jackson Merrill (San Diego Padres): actual=9.5DKpts | -3.1 vs baseline
+  Kyle Stowers (Miami Marlins): actual=6.5DKpts | -3.9 vs baseline
+  Joey Bart (Chicago White Sox): actual=3.0DKpts | -5.3 vs baseline
+  Kyle Isbel (Kansas City Royals): actual=0.0DKpts | -8.8 vs baseline
+  Josh Rojas (Kansas City Royals): actual=3.0DKpts | -2.9 vs baseline
+  Brooks Lee (Minnesota Twins): actual=7.0DKpts | +0.4 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Kohl Drake vs San Diego Padres: ITT=4.6 actual=5.0R diff=+0.4
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (2):
+  Kohl Drake (WALKS=Y HAZ=N): ITT=4.6 actual=5.0R diff=+0.4
+  Walker Buehler (WALKS=Y HAZ=N): ITT=4.6 actual=1.0R diff=-3.6
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Arizona Diamondbacks: actual=1.0R vs ITT=4.6 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (32 slates tracked):
+  TRAP/Vulnerable: 60.3% underscored ITT | avg diff +0.96R
+  TRAP/Short Leash: 56.0% underscored ITT | avg diff +0.34R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 37.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.39 DK pts
+  STEAM: 46.2% correct | avg +0.73R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.94 DK pts vs baseline
+  PLATOON_TRAP: 59.5% underperformed baseline
+  STRONG_EDGE: avg +0.34 DK pts vs baseline
+  SHARP_FADE pitchers: 46.5% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 42.9%
+  GASSED pen teams: 42.7% hit ITT
+  BURST teams: 45.4% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
