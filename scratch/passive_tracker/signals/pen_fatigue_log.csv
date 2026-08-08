@@ -315,3 +315,20 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-08-05,St. Louis Cardinals,79.0,4.0,Y,Y,3,-1.0
 2026-08-05,Milwaukee Brewers,75.0,3.8,Y,Y,4,0.2
 2026-08-05,Pittsburgh Pirates,59.0,3.48,N,Y,2,-1.48
+2026-08-07,Los Angeles Dodgers,97.0,5.1,Y,Y,3,-2.1
+2026-08-07,Philadelphia Phillies,92.0,4.6,Y,Y,4,-0.6
+2026-08-07,St. Louis Cardinals,75.0,4.8,N,Y,3,-1.8
+2026-08-07,Miami Marlins,78.0,4.9,N,Y,3,-1.9
+2026-08-07,New York Yankees,91.0,4.5,Y,Y,3,-1.5
+2026-08-07,Cleveland Guardians,75.0,4.0,Y,Y,8,4.0
+2026-08-07,Tampa Bay Rays,90.0,3.5,Y,Y,2,-1.5
+2026-08-07,Houston Astros,66.0,4.2,Y,Y,6,1.8
+2026-08-07,Kansas City Royals,75.0,4.1,Y,Y,4,-0.1
+2026-08-07,Cincinnati Reds,77.0,4.6,Y,Y,3,-1.6
+2026-08-07,Texas Rangers,35.0,4.2,N,Y,2,-2.2
+2026-08-07,Los Angeles Angels,81.0,3.8,Y,Y,4,0.2
+2026-08-07,New York Mets,74.0,3.8,N,Y,6,2.2
+2026-08-07,Pittsburgh Pirates,77.0,4.4,Y,Y,4,-0.4
+2026-08-07,Toronto Blue Jays,62.0,3.4,Y,Y,5,1.6
+2026-08-07,Athletics,55.0,3.48,Y,Y,1,-2.48
+2026-08-07,Chicago White Sox,67.0,3.7,Y,Y,2,-1.7
