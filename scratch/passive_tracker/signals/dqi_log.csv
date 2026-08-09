@@ -56,3 +56,9 @@ date,team,attack_conf,ITT,dqi_tier,actual_runs,run_diff
 2026-08-07,Cleveland Guardians,75.0,4.0,LEVERAGE,8,4.0
 2026-08-07,Tampa Bay Rays,90.0,3.5,LEVERAGE,2,-1.5
 2026-08-07,Atlanta Braves,52.0,3.7,LEVERAGE,2,-1.7
+2026-08-08,Detroit Tigers,95.0,4.1,CAUTION,8,3.9
+2026-08-08,Los Angeles Dodgers,81.0,4.9,OVERPRICED,2,-2.9
+2026-08-08,Milwaukee Brewers,63.0,4.5,LEVERAGE,4,-0.5
+2026-08-08,Houston Astros,95.0,4.1,CAUTION,2,-2.1
+2026-08-08,Cleveland Guardians,91.0,3.7,CAUTION,3,-0.7
+2026-08-08,Tampa Bay Rays,51.0,3.5,CAUTION,3,-0.5

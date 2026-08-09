@@ -112,3 +112,5 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-08-07,Arizona Diamondbacks,79.0,4.1,4,-0.1,N
 2026-08-07,Milwaukee Brewers,81.0,4.5,6,1.5,Y
 2026-08-07,San Diego Padres,80.0,4.5,3,-1.5,N
+2026-08-08,Los Angeles Dodgers,81.0,4.9,2,-2.9,N
+2026-08-08,St. Louis Cardinals,82.0,4.8,6,1.2,Y

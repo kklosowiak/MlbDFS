@@ -1,0 +1,189 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-08 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: New York Mets | conf=96.0 | ITT=4.2 | actual=0.0 | diff=-4.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (6 instances):
+  Clay Holmes (Vulnerable) vs Kansas City Royals: attack_conf=29.0 ITT=4.0 actual=6.0 diff=+2.0 | 4.0IP 4ER -> NORMAL
+  Michael King (Vulnerable) vs Houston Astros: attack_conf=0.0 ITT=4.1 actual=2.0 diff=-2.1 | 6.0IP 1ER -> OVER-DELIVERED
+  Jake Bennett (Vulnerable) vs Athletics: attack_conf=26.0 ITT=0.0 actual=7.0 diff=+7.0 | 5.1IP 4ER -> NORMAL
+  Seth Lugo (Vulnerable) vs Chicago Cubs: attack_conf=0.0 ITT=5.2 actual=3.0 diff=-2.2 | 6.0IP 3ER -> NORMAL
+  Griffin Jax (Short Leash) vs Seattle Mariners: attack_conf=53.0 ITT=3.7 actual=2.0 diff=-1.7 | 1.1IP 0ER -> NORMAL
+  Bubba Chandler (Short Leash) vs New York Mets: attack_conf=0.0 ITT=4.2 actual=0.0 diff=-4.2 | 6.0IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Jac Caglianone (Kansas City Royals): 42.0 DK pts
+  Trea Turner (Philadelphia Phillies): 19.0 DK pts
+  Bryson Stott (Philadelphia Phillies): 17.0 DK pts
+ANTI_CHALK_SMASH (17 fires):
+  Jj Bleday (Cincinnati Reds): blended=90.7 | actual=-0.5DKpts | -6.9 vs baseline
+  Elly De La Cruz (Cincinnati Reds): blended=88.5 | actual=-0.5DKpts | -8.2 vs baseline
+  Sal Stewart (Cincinnati Reds): blended=73.5 | actual=5.0DKpts | -3.4 vs baseline
+  Bryan Reynolds (Pittsburgh Pirates): blended=60.9 | actual=10.5DKpts | +2.0 vs baseline
+  Brandon Lowe (Pittsburgh Pirates): blended=57.9 | actual=16.5DKpts | +8.5 vs baseline
+  Matt Mclain (Cincinnati Reds): blended=59.4 | actual=3.5DKpts | -2.6 vs baseline
+  Esmerlyn Valdez (Pittsburgh Pirates): blended=51.0 | actual=8.5DKpts | +3.0 vs baseline
+  Dane Myers (Cincinnati Reds): blended=42.6 | actual=3.0DKpts | -5.8 vs baseline
+  Jacob Gonzalez (Pittsburgh Pirates): blended=49.7 | actual=5.0DKpts | +1.2 vs baseline
+  Spencer Horwitz (Pittsburgh Pirates): blended=44.3 | actual=8.0DKpts | +0.3 vs baseline
+  Kebryan Hayes (Cincinnati Reds): blended=41.4 | actual=-0.5DKpts | -3.9 vs baseline
+  Nick Gonzales (Pittsburgh Pirates): blended=44.8 | actual=10.5DKpts | +4.4 vs baseline
+  Ronny Simon (Pittsburgh Pirates): blended=47.6 | actual=19.0DKpts | +13.3 vs baseline
+  Eugenio Suarez (Cincinnati Reds): blended=39.4 | actual=18.0DKpts | +10.7 vs baseline
+  Henry Davis (Pittsburgh Pirates): blended=28.5 | actual=9.5DKpts | +6.7 vs baseline
+  Jake Mangum (Pittsburgh Pirates): blended=39.0 | actual=23.5DKpts | +16.9 vs baseline
+  Noelvi Marte (Cincinnati Reds): blended=32.9 | actual=3.0DKpts | -1.5 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (63 fires):
+  Royce Lewis (Minnesota Twins): actual=16.0DKpts | +10.5 vs baseline
+  Gunnar Henderson (Baltimore Orioles): actual=-0.5DKpts | -10.2 vs baseline
+  John Rave (Kansas City Royals): actual=12.0DKpts | +5.8 vs baseline
+  Christian Encarnacionstrand (Baltimore Orioles): actual=2.0DKpts | -2.4 vs baseline
+  Luis Robert (New York Mets): actual=2.5DKpts | -5.9 vs baseline
+  Manny Machado (San Diego Padres): actual=2.5DKpts | -2.7 vs baseline
+  Cole Young (Seattle Mariners): actual=2.5DKpts | -4.6 vs baseline
+  Cole Carrigg (Colorado Rockies): actual=22.5DKpts | +15.8 vs baseline
+  Luke Keaschall (Minnesota Twins): actual=10.0DKpts | +4.1 vs baseline
+  Esmerlyn Valdez (Pittsburgh Pirates): actual=8.5DKpts | +3.0 vs baseline
+  Colt Keith (Detroit Tigers): actual=6.0DKpts | -0.2 vs baseline
+  Heriberto Hernandez (Miami Marlins): actual=6.0DKpts | +0.0 vs baseline
+  Andruw Monasterio (Boston Red Sox): actual=10.5DKpts | +8.3 vs baseline
+  Josh Bell (Minnesota Twins): actual=5.0DKpts | -0.8 vs baseline
+  Jake Mccarthy (Colorado Rockies): actual=50.0DKpts | +43.3 vs baseline
+  Willi Castro (Colorado Rockies): actual=-0.5DKpts | -10.6 vs baseline
+  Richie Palacios (Tampa Bay Rays): actual=19.0DKpts | +15.3 vs baseline
+  Nick Sogard (Boston Red Sox): actual=12.5DKpts | +9.9 vs baseline
+  Isaac Collins (Kansas City Royals): actual=3.0DKpts | -3.8 vs baseline
+  Otto Lopez (Miami Marlins): actual=13.5DKpts | +3.4 vs baseline
+  Austin Martin (Minnesota Twins): actual=4.0DKpts | -2.1 vs baseline
+  Dane Myers (Cincinnati Reds): actual=3.0DKpts | -5.8 vs baseline
+  Rhys Hoskins (Cleveland Guardians): actual=21.0DKpts | +14.8 vs baseline
+  Ty France (San Diego Padres): actual=4.0DKpts | -2.2 vs baseline
+  Dylan Crews (Washington Nationals): actual=6.5DKpts | +0.3 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=1.5DKpts | -6.7 vs baseline
+  Tyrone Taylor (Chicago Cubs): actual=4.5DKpts | +2.5 vs baseline
+  Jahmai Jones (Boston Red Sox): actual=26.5DKpts | +20.1 vs baseline
+  Angel Martinez (Cleveland Guardians): actual=9.5DKpts | +2.1 vs baseline
+  Masyn Winn (St. Louis Cardinals): actual=5.0DKpts | -1.0 vs baseline
+  Trea Turner (Philadelphia Phillies): actual=19.0DKpts | +12.7 vs baseline
+  Nathan Church (St. Louis Cardinals): actual=5.0DKpts | +0.6 vs baseline
+  Kebryan Hayes (Cincinnati Reds): actual=-0.5DKpts | -3.9 vs baseline
+  Tim Tawa (Arizona Diamondbacks): actual=4.0DKpts | -0.2 vs baseline
+  Ezequiel Tovar (Colorado Rockies): actual=6.5DKpts | +5.0 vs baseline
+  Jake Cronenworth (San Diego Padres): actual=7.5DKpts | +0.5 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=-0.5DKpts | -5.1 vs baseline
+  Nick Fortes (Tampa Bay Rays): actual=0.0DKpts | -3.5 vs baseline
+  Nick Gonzales (Pittsburgh Pirates): actual=10.5DKpts | +4.4 vs baseline
+  Daylen Lile (Washington Nationals): actual=6.5DKpts | -1.4 vs baseline
+  Jose Altuve (Houston Astros): actual=2.5DKpts | -5.4 vs baseline
+  Jonah Heim (Athletics): actual=6.0DKpts | +0.0 vs baseline
+  Jake Burger (Texas Rangers): actual=2.5DKpts | -1.6 vs baseline
+  Nick Loftin (Kansas City Royals): actual=7.0DKpts | +1.2 vs baseline
+  Tristan Peters (Chicago White Sox): actual=15.0DKpts | +10.3 vs baseline
+  Michael Massey (Kansas City Royals): actual=5.0DKpts | -1.2 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=4.5DKpts | -9.0 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=12.0DKpts | +6.9 vs baseline
+  Eugenio Suarez (Cincinnati Reds): actual=18.0DKpts | +10.7 vs baseline
+  Andres Gimenez (Toronto Blue Jays): actual=13.5DKpts | +8.4 vs baseline
+  Jake Mangum (Pittsburgh Pirates): actual=23.5DKpts | +16.9 vs baseline
+  Alex Bregman (Chicago Cubs): actual=1.5DKpts | -5.4 vs baseline
+  Leody Taveras (Baltimore Orioles): actual=-0.5DKpts | -6.8 vs baseline
+  Brett Baty (New York Mets): actual=-1.0DKpts | -6.9 vs baseline
+  Kyle Isbel (Kansas City Royals): actual=0.0DKpts | -2.2 vs baseline
+  Keibert Ruiz (Washington Nationals): actual=7.0DKpts | +0.7 vs baseline
+  Brooks Lee (Minnesota Twins): actual=-0.5DKpts | -4.6 vs baseline
+  Nasim Nunez (Washington Nationals): actual=3.5DKpts | -0.6 vs baseline
+  Javier Baez (Detroit Tigers): actual=7.5DKpts | +3.2 vs baseline
+  Eli White (Boston Red Sox): actual=1.0DKpts | -4.8 vs baseline
+  Ernie Clement (Toronto Blue Jays): actual=5.0DKpts | -1.3 vs baseline
+  Willy Adames (San Francisco Giants): actual=2.5DKpts | -5.1 vs baseline
+  Carlos Narvaez (Baltimore Orioles): actual=-1.0DKpts | -5.7 vs baseline
+STRONG_EDGE (23 fires):
+  Jake Bauers (Milwaukee Brewers): actual=1.5DKpts | -8.0 vs baseline
+  Junior Caminero (Tampa Bay Rays): actual=-1.0DKpts | -10.9 vs baseline
+  Alec Burleson (St. Louis Cardinals): actual=2.5DKpts | -8.8 vs baseline
+  Joc Pederson (Texas Rangers): actual=-0.5DKpts | -6.8 vs baseline
+  Bobby Witt (Kansas City Royals): actual=7.0DKpts | +0.0 vs baseline
+  Dominic Canzone (Seattle Mariners): actual=0.0DKpts | -6.8 vs baseline
+  Ketel Marte (Arizona Diamondbacks): actual=4.0DKpts | +0.2 vs baseline
+  Francisco Lindor (New York Mets): actual=3.0DKpts | -8.3 vs baseline
+  Kyle Schwarber (Philadelphia Phillies): actual=4.5DKpts | -0.5 vs baseline
+  Freddie Freeman (Los Angeles Dodgers): actual=0.0DKpts | -7.2 vs baseline
+  Jj Wetherholt (St. Louis Cardinals): actual=2.5DKpts | -3.6 vs baseline
+  Julio Rodriguez (Seattle Mariners): actual=2.5DKpts | -5.9 vs baseline
+  Seiya Suzuki (Chicago Cubs): actual=-0.5DKpts | -10.7 vs baseline
+  Vladimir Guerrero (Toronto Blue Jays): actual=23.0DKpts | +15.1 vs baseline
+  Francisco Alvarez (New York Mets): actual=3.0DKpts | -0.2 vs baseline
+  Griffin Conine (Miami Marlins): actual=7.5DKpts | +0.9 vs baseline
+  Blaze Jordan (St. Louis Cardinals): actual=3.0DKpts | -2.3 vs baseline
+  William Contreras (Milwaukee Brewers): actual=7.0DKpts | -4.0 vs baseline
+  Cooper Pratt (Milwaukee Brewers): actual=-1.5DKpts | -6.1 vs baseline
+  Spencer Torkelson (Detroit Tigers): actual=9.0DKpts | +3.0 vs baseline
+  Cal Raleigh (Seattle Mariners): actual=5.0DKpts | +4.2 vs baseline
+  Daulton Varsho (Houston Astros): actual=-0.5DKpts | -7.0 vs baseline
+  Colton Cowser (Baltimore Orioles): actual=4.0DKpts | +0.1 vs baseline
+SHARP_FADE PITCHERS (5 instances):
+  Sandy Alcantara vs Los Angeles Angels: ITT=0.0 actual=0.0R diff=+0.0
+  George Kirby vs Tampa Bay Rays: ITT=3.5 actual=3.0R diff=-0.5
+  Anthony Kay vs Cleveland Guardians: ITT=3.7 actual=3.0R diff=-0.7
+  Landen Roupp vs Detroit Tigers: ITT=4.1 actual=8.0R diff=+3.9
+  Brandon Pfaadt vs Los Angeles Dodgers: ITT=4.9 actual=2.0R diff=-2.9
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (12):
+  Yoshinobu Yamamoto (WALKS=N HAZ=Y): ITT=3.8 actual=1.0R diff=-2.8
+  Chase Burns (WALKS=Y HAZ=N): ITT=4.0 actual=8.0R diff=+4.0
+  Taj Bradley (WALKS=Y HAZ=Y): ITT=4.5 actual=4.0R diff=-0.5
+  Jacob Degrom (WALKS=Y HAZ=N): ITT=3.5 actual=1.0R diff=-2.5
+  Robert Stock (WALKS=Y HAZ=N): ITT=4.9 actual=9.0R diff=+4.1
+  Landen Roupp (WALKS=Y HAZ=N): ITT=4.1 actual=8.0R diff=+3.9
+  Brandon Pfaadt (WALKS=N HAZ=Y): ITT=4.9 actual=2.0R diff=-2.9
+  Jackson Jobe (WALKS=Y HAZ=N): ITT=4.1 actual=0.0R diff=-4.1
+  Michael King (WALKS=Y HAZ=N): ITT=4.1 actual=2.0R diff=-2.1
+  Seth Lugo (WALKS=Y HAZ=N): ITT=5.2 actual=3.0R diff=-2.2
+  Bubba Chandler (WALKS=Y HAZ=N): ITT=4.2 actual=0.0R diff=-4.2
+  Kyle Bradish (WALKS=Y HAZ=N): ITT=4.2 actual=5.0R diff=+0.8
+GASSED/FATIGUED PEN (16 teams):
+  Chicago Cubs: actual=3.0R vs ITT=5.2 -> MISS
+  Detroit Tigers: actual=8.0R vs ITT=4.1 -> HIT
+  Los Angeles Dodgers: actual=2.0R vs ITT=4.9 -> MISS
+  Milwaukee Brewers: actual=4.0R vs ITT=4.5 -> MISS
+  New York Mets: actual=0.0R vs ITT=4.2 -> MISS
+  Pittsburgh Pirates: actual=9.0R vs ITT=4.9 -> HIT
+  Houston Astros: actual=2.0R vs ITT=4.1 -> MISS
+  Philadelphia Phillies: actual=5.0R vs ITT=5.55 -> MISS
+  Cincinnati Reds: actual=2.0R vs ITT=4.7 -> MISS
+  Cleveland Guardians: actual=3.0R vs ITT=3.7 -> MISS
+  Toronto Blue Jays: actual=7.0R vs ITT=4.6 -> HIT
+  Tampa Bay Rays: actual=3.0R vs ITT=3.5 -> MISS
+  Kansas City Royals: actual=6.0R vs ITT=4.0 -> HIT
+  Washington Nationals: actual=8.0R vs ITT=4.0 -> HIT
+  Chicago White Sox: actual=6.0R vs ITT=3.48 -> HIT
+  Minnesota Twins: actual=3.0R vs ITT=3.7 -> MISS
+BURST (2 teams):
+  Los Angeles Dodgers: actual=2.0R vs ITT=4.9 -> MISS
+  St. Louis Cardinals: actual=6.0R vs ITT=4.8 -> CORRECT
+RIGHT GAME WRONG TEAM:
+  Colorado Rockies @ St. Louis Cardinals: both scored 6+? Y | higher-conf team won scoring? N
+
+RUNNING ACCURACY (34 slates tracked):
+  TRAP/Vulnerable: 60.0% underscored ITT | avg diff +0.87R
+  TRAP/Short Leash: 56.4% underscored ITT | avg diff +0.35R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 35.3% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.44 DK pts
+  STEAM: 45.0% correct | avg +0.67R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.88 DK pts vs baseline
+  PLATOON_TRAP: 59.0% underperformed baseline
+  STRONG_EDGE: avg +0.17 DK pts vs baseline
+  SHARP_FADE pitchers: 46.9% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 42.5%
+  GASSED pen teams: 41.8% hit ITT
+  BURST teams: 44.3% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Michael King (6.0 IP, 1 ER)
+  TRAP Arm Outperformed Expectation: Bubba Chandler (6.0 IP, 0 ER)
+  Right-Game-Wrong-Team Match: Colorado Rockies @ St. Louis Cardinals (Both scored 6+ runs)
+
+=== END ===

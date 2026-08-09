@@ -41,3 +41,6 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-05 | Sean Burke | Chicago White Sox | 74% | 1.42 | 1.03 | 3.133 | N/A | 4.1 IP / 2 ER / 4 K / 2 BB | 9.6 |
 | 2026-08-06 | Michael Wacha | Kansas City Royals | 79% | 1.93 | 3.38 | 3.7136666666666667 | 2.45 | 5.2 IP / 1 ER / 1 K / 3 BB | 9.2 |
 | 2026-08-07 | Robbie Ray | San Diego Padres | 75% | 1.12 | 2.0 | 3.8949312602291326 | N/A | 5.0 IP / 4 ER / 2 K / 5 BB | 0.1 |
+| 2026-08-08 | Chase Burns | Cincinnati Reds | 72% | 1.12 | 2.33 | 3.041522842639594 | N/A | 5.1 IP / 5 ER / 6 K / 3 BB | 8.6 |
+| 2026-08-08 | Peter Lambert | Houston Astros | 73% | 3.24 | 2.51 | 3.402053604436229 | N/A | 5.0 IP / 2 ER / 3 K / 3 BB | 8.4 |
+| 2026-08-08 | Robert Gasser | Milwaukee Brewers | 89% | 2.25 | 4.39 | 4.224864734299517 | N/A | 4.2 IP / 3 ER / 3 K / 2 BB | 3.9 |

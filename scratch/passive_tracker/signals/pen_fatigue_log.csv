@@ -332,3 +332,19 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-08-07,Toronto Blue Jays,62.0,3.4,Y,Y,5,1.6
 2026-08-07,Athletics,55.0,3.48,Y,Y,1,-2.48
 2026-08-07,Chicago White Sox,67.0,3.7,Y,Y,2,-1.7
+2026-08-08,Chicago Cubs,95.0,5.2,Y,Y,3,-2.2
+2026-08-08,Detroit Tigers,95.0,4.1,Y,Y,8,3.9
+2026-08-08,Los Angeles Dodgers,81.0,4.9,N,Y,2,-2.9
+2026-08-08,Milwaukee Brewers,63.0,4.5,N,Y,4,-0.5
+2026-08-08,New York Mets,96.0,4.2,Y,Y,0,-4.2
+2026-08-08,Pittsburgh Pirates,96.0,4.9,Y,Y,9,4.1
+2026-08-08,Houston Astros,95.0,4.1,Y,Y,2,-2.1
+2026-08-08,Philadelphia Phillies,75.0,5.55,Y,Y,5,-0.55
+2026-08-08,Cincinnati Reds,78.0,4.7,N,Y,2,-2.7
+2026-08-08,Cleveland Guardians,91.0,3.7,Y,Y,3,-0.7
+2026-08-08,Toronto Blue Jays,81.0,4.6,Y,Y,7,2.4
+2026-08-08,Tampa Bay Rays,51.0,3.5,N,Y,3,-0.5
+2026-08-08,Kansas City Royals,80.0,4.0,Y,Y,6,2.0
+2026-08-08,Washington Nationals,77.0,4.0,Y,Y,8,4.0
+2026-08-08,Chicago White Sox,75.0,3.48,Y,Y,6,2.52
+2026-08-08,Minnesota Twins,27.0,3.7,N,Y,3,-0.7
