@@ -64,3 +64,5 @@ date,pitcher,pitcher_team,trap_type,attack_conf,ITT,actual_runs_against,run_diff
 2026-08-08,Michael King,San Diego Padres,Vulnerable,0.0,4.1,2,-2.1,1,6.0
 2026-08-08,Jake Bennett,Boston Red Sox,Vulnerable,26.0,0.0,7,7.0,4,5.1
 2026-08-08,Seth Lugo,Kansas City Royals,Vulnerable,0.0,5.2,3,-2.2,3,6.0
+2026-08-09,Logan Webb,San Francisco Giants,Vulnerable,59.0,0.0,3,3.0,1,8.0
+2026-08-09,Joey Cantillo,Cleveland Guardians,Vulnerable,29.0,0.0,5,5.0,1,1.0

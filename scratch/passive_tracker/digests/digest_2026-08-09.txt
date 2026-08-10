@@ -1,0 +1,66 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-09 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: San Diego Padres | conf=76.0 | ITT=4.8 | actual=7.0 | diff=+2.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (2 instances):
+  Logan Webb (Vulnerable) vs Detroit Tigers: attack_conf=59.0 ITT=0.0 actual=3.0 diff=+3.0 | 8.0IP 1ER -> OVER-DELIVERED
+  Joey Cantillo (Vulnerable) vs Chicago White Sox: attack_conf=29.0 ITT=0.0 actual=5.0 diff=+5.0 | 1.0IP 1ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Liam Hicks (Tampa Bay Rays): 12.0 DK pts
+  Cedric Mullins (Tampa Bay Rays): 11.0 DK pts
+  Randal Grichuk (Chicago White Sox): 8.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (12 fires):
+  Miguel Vargas (Chicago White Sox): actual=11.0DKpts | +8.5 vs baseline
+  Jose Ramirez (Cleveland Guardians): actual=15.0DKpts | +11.0 vs baseline
+  Chase Delauter (Cleveland Guardians): actual=5.5DKpts | -0.9 vs baseline
+  Taylor Ward (Seattle Mariners): actual=10.0DKpts | -12.5 vs baseline
+  Randal Grichuk (Chicago White Sox): actual=8.0DKpts | +2.1 vs baseline
+  Lamonte Wade (Houston Astros): actual=0.0DKpts | -3.2 vs baseline
+  Jo Adell (Cleveland Guardians): actual=0.5DKpts | -8.5 vs baseline
+  Jose Altuve (Houston Astros): actual=0.0DKpts | -2.2 vs baseline
+  Freddy Fermin (San Diego Padres): actual=7.0DKpts | +4.7 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=19.5DKpts | +2.5 vs baseline
+  Daniel Susac (San Francisco Giants): actual=-0.5DKpts | -7.5 vs baseline
+  Daulton Varsho (Houston Astros): actual=15.5DKpts | +11.3 vs baseline
+STRONG_EDGE (7 fires):
+  Dillon Dingler (Detroit Tigers): actual=-0.5DKpts | -2.3 vs baseline
+  Nathaniel Lowe (Cleveland Guardians): actual=1.5DKpts | -0.6 vs baseline
+  Munetaka Murakami (Chicago White Sox): actual=8.0DKpts | -2.3 vs baseline
+  Riley Greene (Detroit Tigers): actual=0.5DKpts | -1.7 vs baseline
+  Jonathan Aranda (Tampa Bay Rays): actual=2.5DKpts | -4.2 vs baseline
+  Liam Hicks (Tampa Bay Rays): actual=12.0DKpts | +9.3 vs baseline
+  Drew Gilbert (San Francisco Giants): actual=12.5DKpts | +9.7 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Cristian Javier (WALKS=Y HAZ=N): ITT=4.8 actual=7.0R diff=+2.2
+GASSED/FATIGUED PEN (1 teams):
+  Houston Astros: actual=2.0R vs ITT=4.4 -> MISS
+BURST (1 teams):
+  San Diego Padres: actual=7.0R vs ITT=4.8 -> CORRECT
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (35 slates tracked):
+  TRAP/Vulnerable: 58.2% underscored ITT | avg diff +0.96R
+  TRAP/Short Leash: 56.4% underscored ITT | avg diff +0.35R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 37.1% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.41 DK pts
+  STEAM: 45.0% correct | avg +0.67R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.88 DK pts vs baseline
+  PLATOON_TRAP: 58.9% underperformed baseline
+  STRONG_EDGE: avg +0.18 DK pts vs baseline
+  SHARP_FADE pitchers: 46.9% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 42.7%
+  GASSED pen teams: 41.7% hit ITT
+  BURST teams: 44.8% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Logan Webb (8.0 IP, 1 ER)
+
+=== END ===
