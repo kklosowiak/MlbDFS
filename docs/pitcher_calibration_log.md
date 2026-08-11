@@ -44,3 +44,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-08 | Chase Burns | Cincinnati Reds | 72% | 1.12 | 2.33 | 3.041522842639594 | N/A | 5.1 IP / 5 ER / 6 K / 3 BB | 8.6 |
 | 2026-08-08 | Peter Lambert | Houston Astros | 73% | 3.24 | 2.51 | 3.402053604436229 | N/A | 5.0 IP / 2 ER / 3 K / 3 BB | 8.4 |
 | 2026-08-08 | Robert Gasser | Milwaukee Brewers | 89% | 2.25 | 4.39 | 4.224864734299517 | N/A | 4.2 IP / 3 ER / 3 K / 2 BB | 3.9 |
+| 2026-08-10 | Trevor Rogers | Baltimore Orioles | 71% | 3.79 | 2.87 | 3.7656319444444444 | 3.63 | 4.0 IP / 2 ER / 4 K / 2 BB | 8.2 |
