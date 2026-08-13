@@ -125,3 +125,5 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-08-11,Detroit Tigers,78.0,4.2,6,1.8,Y
 2026-08-11,Chicago White Sox,76.0,4.3,4,-0.3,N
 2026-08-11,Milwaukee Brewers,69.0,4.1,2,-2.1,N
+2026-08-12,New York Mets,80.0,3.7,3,-0.7,N
+2026-08-12,Seattle Mariners,81.0,4.2,5,0.8,Y
