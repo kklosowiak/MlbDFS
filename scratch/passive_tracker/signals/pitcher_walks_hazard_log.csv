@@ -278,3 +278,7 @@ date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_ag
 2026-08-12,Rhett Lowder,Cincinnati Reds,79.0,4.7,Y,N,5,0.3,2,1
 2026-08-12,Daniel Lynch Iv,Kansas City Royals,0.0,5.55,N,Y,4,-1.55,3,0
 2026-08-12,George Klassen,Los Angeles Angels,0.0,4.8,Y,N,2,-2.8,2,1
+2026-08-13,Jacob Degrom,Texas Rangers,48.0,3.48,Y,N,7,3.52,2,1
+2026-08-13,Taj Bradley,Minnesota Twins,58.0,4.6,Y,N,7,2.4,5,4
+2026-08-13,Shane Drohan,Milwaukee Brewers,18.0,4.4,Y,N,4,-0.4,3,3
+2026-08-13,Aaron Nola,Philadelphia Phillies,9.0,4.7,Y,N,1,-3.7,1,3

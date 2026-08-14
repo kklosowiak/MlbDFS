@@ -1,0 +1,73 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-13 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Texas Rangers | conf=94.0 | ITT=4.3 | actual=0.0 | diff=-4.3 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (2 instances):
+  Aaron Nola (Vulnerable) vs Minnesota Twins: attack_conf=9.0 ITT=4.7 actual=1.0 diff=-3.7 | 5.0IP 1ER -> OVER-DELIVERED
+  Walbert Ureña (Short Leash) vs Texas Rangers: attack_conf=1.0 ITT=4.3 actual=0.0 diff=-4.3 | 6.0IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Bryce Harper (Philadelphia Phillies): 8.0 DK pts
+  Bryson Stott (Philadelphia Phillies): 5.0 DK pts
+  Justin Crawford (Philadelphia Phillies): 2.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (13 fires):
+  Bryson Stott (Philadelphia Phillies): actual=5.0DKpts | -0.8 vs baseline
+  Jt Realmuto (Philadelphia Phillies): actual=-0.5DKpts | +0.0 vs baseline
+  Alec Bohm (Philadelphia Phillies): actual=6.0DKpts | -0.8 vs baseline
+  Luke Keaschall (Minnesota Twins): actual=20.5DKpts | +10.2 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=3.0DKpts | -11.8 vs baseline
+  Ben Rortvedt (Los Angeles Dodgers): actual=4.5DKpts | -0.2 vs baseline
+  Moises Ballesteros (Los Angeles Angels): actual=4.5DKpts | -7.5 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=12.0DKpts | +1.0 vs baseline
+  Wyatt Langford (Texas Rangers): actual=2.0DKpts | -3.5 vs baseline
+  Evan Carter (Texas Rangers): actual=2.5DKpts | +0.4 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=2.5DKpts | -1.6 vs baseline
+  Brooks Lee (Minnesota Twins): actual=-0.5DKpts | -1.5 vs baseline
+  Josh Lowe (Los Angeles Angels): actual=11.0DKpts | -1.0 vs baseline
+STRONG_EDGE (4 fires):
+  Mike Trout (Los Angeles Angels): actual=12.5DKpts | +8.8 vs baseline
+  Jake Bauers (Milwaukee Brewers): actual=12.0DKpts | +4.5 vs baseline
+  Byron Buxton (Minnesota Twins): actual=5.0DKpts | -3.0 vs baseline
+  Freddie Freeman (Los Angeles Dodgers): actual=4.0DKpts | +4.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (4):
+  Jacob Degrom (WALKS=Y HAZ=N): ITT=3.48 actual=7.0R diff=+3.5
+  Taj Bradley (WALKS=Y HAZ=N): ITT=4.6 actual=7.0R diff=+2.4
+  Shane Drohan (WALKS=Y HAZ=N): ITT=4.4 actual=4.0R diff=-0.4
+  Aaron Nola (WALKS=Y HAZ=N): ITT=4.7 actual=1.0R diff=-3.7
+GASSED/FATIGUED PEN (5 teams):
+  Minnesota Twins: actual=1.0R vs ITT=4.7 -> MISS
+  Texas Rangers: actual=0.0R vs ITT=4.3 -> MISS
+  Los Angeles Dodgers: actual=4.0R vs ITT=4.4 -> MISS
+  Philadelphia Phillies: actual=7.0R vs ITT=4.6 -> HIT
+  Milwaukee Brewers: actual=5.0R vs ITT=3.8 -> HIT
+BURST (2 teams):
+  Minnesota Twins: actual=1.0R vs ITT=4.7 -> MISS
+  Milwaukee Brewers: actual=5.0R vs ITT=3.8 -> CORRECT
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (39 slates tracked):
+  TRAP/Vulnerable: 59.5% underscored ITT | avg diff +0.80R
+  TRAP/Short Leash: 52.8% underscored ITT | avg diff +0.33R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 38.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.37 DK pts
+  STEAM: 46.3% correct | avg +0.74R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.94 DK pts vs baseline
+  PLATOON_TRAP: 59.1% underperformed baseline
+  STRONG_EDGE: avg +0.22 DK pts vs baseline
+  SHARP_FADE pitchers: 49.1% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.5%
+  GASSED pen teams: 42.7% hit ITT
+  BURST teams: 44.6% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Aaron Nola (5.0 IP, 1 ER)
+  TRAP Arm Outperformed Expectation: Walbert Ureña (6.0 IP, 0 ER)
+
+=== END ===

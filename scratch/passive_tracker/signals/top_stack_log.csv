@@ -37,3 +37,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-08-10,Houston Astros,97.0,4.8,-16.0,6,1.2,Y
 2026-08-11,Arizona Diamondbacks,97.0,5.5,9.0,2,-3.5,N
 2026-08-12,Chicago Cubs,97.0,5.4,0.0,12,6.6,Y
+2026-08-13,Texas Rangers,94.0,4.3,-4.0,0,-4.3,N
