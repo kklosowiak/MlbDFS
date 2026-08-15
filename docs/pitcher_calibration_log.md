@@ -48,3 +48,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-11 | Hunter Brown | Houston Astros | 84% | 2.41 | 3.68 | 3.9020549828178694 | N/A | 5.0 IP / 3 ER / 4 K / 3 BB | 8.4 |
 | 2026-08-11 | Tanner Bibee | Cleveland Guardians | 75% | 3.21 | 3.46 | 4.076556434219986 | N/A | 6.1 IP / 5 ER / 4 K / 2 BB | 7.5 |
 | 2026-08-13 | Roki Sasaki | Los Angeles Dodgers | 87% | 2.45 | 2.4 | 4.566904761904762 | N/A | 6.0 IP / 2 ER / 2 K / 5 BB | 8.1 |
+| 2026-08-14 | Tbd | Athletics | 71% | 0.0 | N/A | 4.1 | N/A | 5.1 IP / 3 ER / 1 K / 4 BB | 3.8 |
