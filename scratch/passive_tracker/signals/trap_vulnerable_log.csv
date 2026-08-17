@@ -79,3 +79,7 @@ date,pitcher,pitcher_team,trap_type,attack_conf,ITT,actual_runs_against,run_diff
 2026-08-14,Shane Bieber,Toronto Blue Jays,Vulnerable,0.0,4.5,1,-3.5,1,6.0
 2026-08-14,Steven Matz,Tampa Bay Rays,Vulnerable,0.0,3.7,6,2.3,0,1.0
 2026-08-15,Sean Manaea,New York Mets,Vulnerable,49.0,0.0,4,4.0,4,6.1
+2026-08-16,Tarik Skubal,Los Angeles Dodgers,Vulnerable,49.0,0.0,6,6.0,1,6.0
+2026-08-16,Cody Bradford,Texas Rangers,Vulnerable,59.0,0.0,5,5.0,2,4.0
+2026-08-16,Patrick Sandoval,Boston Red Sox,Vulnerable,10.0,0.0,8,8.0,7,4.0
+2026-08-16,Tanner Bibee,Cleveland Guardians,Vulnerable,28.0,0.0,5,5.0,3,6.0

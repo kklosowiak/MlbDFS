@@ -1,0 +1,78 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-16 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Houston Astros | conf=91.0 | ITT=4.1 | actual=2.0 | diff=-2.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (4 instances):
+  Tarik Skubal (Vulnerable) vs Milwaukee Brewers: attack_conf=49.0 ITT=0.0 actual=6.0 diff=+6.0 | 6.0IP 1ER -> OVER-DELIVERED
+  Cody Bradford (Vulnerable) vs Athletics: attack_conf=59.0 ITT=0.0 actual=5.0 diff=+5.0 | 4.0IP 2ER -> NORMAL
+  Patrick Sandoval (Vulnerable) vs Pittsburgh Pirates: attack_conf=10.0 ITT=0.0 actual=8.0 diff=+8.0 | 4.0IP 7ER -> NORMAL
+  Tanner Bibee (Vulnerable) vs San Diego Padres: attack_conf=28.0 ITT=0.0 actual=5.0 diff=+5.0 | 6.0IP 3ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Anthony Seigler (Boston Red Sox): 9.0 DK pts
+  Fernando Tatis (San Diego Padres): 6.0 DK pts
+  Troy Johnston (Colorado Rockies): 5.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (20 fires):
+  Fernando Tatis (San Diego Padres): actual=6.0DKpts | -1.7 vs baseline
+  Wilyer Abreu (Boston Red Sox): actual=1.5DKpts | -3.2 vs baseline
+  Jose Ramirez (Cleveland Guardians): actual=8.0DKpts | -3.3 vs baseline
+  Teoscar Hernandez (Los Angeles Dodgers): actual=2.5DKpts | +2.5 vs baseline
+  Esmerlyn Valdez (Pittsburgh Pirates): actual=15.5DKpts | +6.0 vs baseline
+  Brandon Nimmo (Texas Rangers): actual=2.0DKpts | -7.6 vs baseline
+  Andy Pages (Los Angeles Dodgers): actual=15.5DKpts | +5.0 vs baseline
+  Jackson Chourio (Milwaukee Brewers): actual=18.5DKpts | +9.7 vs baseline
+  Jo Adell (Cleveland Guardians): actual=-1.0DKpts | -9.4 vs baseline
+  Henry Bolte (Athletics): actual=11.0DKpts | +2.7 vs baseline
+  Jake Burger (Texas Rangers): actual=22.0DKpts | +18.4 vs baseline
+  Andruw Monasterio (Boston Red Sox): actual=-0.5DKpts | -8.7 vs baseline
+  Ben Rortvedt (Los Angeles Dodgers): actual=-0.5DKpts | -5.1 vs baseline
+  Nick Yorke (Pittsburgh Pirates): actual=16.5DKpts | +12.0 vs baseline
+  Max Muncy (Athletics): actual=10.0DKpts | +3.4 vs baseline
+  Jonah Heim (Athletics): actual=3.5DKpts | -5.4 vs baseline
+  Justin Foscue (Texas Rangers): actual=3.0DKpts | -1.5 vs baseline
+  Jose Altuve (Houston Astros): actual=4.5DKpts | -1.2 vs baseline
+  Tommy White (Athletics): actual=19.0DKpts | +10.3 vs baseline
+  Daulton Varsho (Houston Astros): actual=-0.5DKpts | -4.3 vs baseline
+STRONG_EDGE (10 fires):
+  Freddie Freeman (Los Angeles Dodgers): actual=-0.5DKpts | -15.8 vs baseline
+  Randy Arozarena (Seattle Mariners): actual=19.0DKpts | +6.9 vs baseline
+  Nathaniel Lowe (Cleveland Guardians): actual=4.5DKpts | +0.1 vs baseline
+  Jeremy Pena (Houston Astros): actual=14.0DKpts | +4.8 vs baseline
+  Troy Johnston (Colorado Rockies): actual=5.0DKpts | -2.3 vs baseline
+  Anthony Seigler (Boston Red Sox): actual=9.0DKpts | -2.4 vs baseline
+  Rafael Devers (San Francisco Giants): actual=25.0DKpts | +20.3 vs baseline
+  Brandon Lowe (Pittsburgh Pirates): actual=11.0DKpts | +6.0 vs baseline
+  Travis Bazzana (Cleveland Guardians): actual=0.0DKpts | -6.5 vs baseline
+  Henry Davis (Pittsburgh Pirates): actual=2.0DKpts | -2.2 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Hunter Brown (WALKS=Y HAZ=N): ITT=3.6 actual=3.0R diff=-0.6
+GASSED/FATIGUED PEN (1 teams):
+  Seattle Mariners: actual=3.0R vs ITT=3.6 -> MISS
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (42 slates tracked):
+  TRAP/Vulnerable: 56.0% underscored ITT | avg diff +1.04R
+  TRAP/Short Leash: 51.6% underscored ITT | avg diff +0.45R
+  FADE_RISK: 63.6% correct | avg diff +0.54R
+  Top Stack hit ITT: 35.7% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.37 DK pts
+  STEAM: 45.2% correct | avg +0.72R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.89 DK pts vs baseline
+  PLATOON_TRAP: 59.1% underperformed baseline
+  STRONG_EDGE: avg +0.19 DK pts vs baseline
+  SHARP_FADE pitchers: 50.8% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.5%
+  GASSED pen teams: 42.9% hit ITT
+  BURST teams: 44.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Tarik Skubal (6.0 IP, 1 ER)
+
+=== END ===
