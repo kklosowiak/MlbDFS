@@ -49,3 +49,8 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-11 | Tanner Bibee | Cleveland Guardians | 75% | 3.21 | 3.46 | 4.076556434219986 | N/A | 6.1 IP / 5 ER / 4 K / 2 BB | 7.5 |
 | 2026-08-13 | Roki Sasaki | Los Angeles Dodgers | 87% | 2.45 | 2.4 | 4.566904761904762 | N/A | 6.0 IP / 2 ER / 2 K / 5 BB | 8.1 |
 | 2026-08-14 | Tbd | Athletics | 71% | 0.0 | N/A | 4.1 | N/A | 5.1 IP / 3 ER / 1 K / 4 BB | 3.8 |
+| 2026-08-17 | Shane Mcclanahan | Tampa Bay Rays | 84% | 2.45 | 3.22 | 3.2807450980392154 | N/A | 3.1 IP / 3 ER / 3 K / 0 BB | 5.1 |
+| 2026-08-17 | Michael Wacha | Kansas City Royals | 80% | 2.45 | 2.3 | 3.7124540612516648 | 2.45 | 5.0 IP / 4 ER / 3 K / 0 BB | 9.7 |
+| 2026-08-17 | Andre Pallante | St. Louis Cardinals | 84% | 1.53 | 1.8 | 3.598846153846154 | 2.08 | 6.0 IP / 4 ER / 5 K / 1 BB | 8.9 |
+| 2026-08-17 | Brandon Young | Baltimore Orioles | 71% | 2.84 | 3.28 | 3.744172413793103 | N/A | 4.0 IP / 4 ER / 3 K / 1 BB | 1.6 |
+| 2026-08-17 | Mitch Bratt | Arizona Diamondbacks | 77% | 1.5 | 3.25 | 4.62133734939759 | N/A | 3.0 IP / 3 ER / 0 K / 3 BB | -3.5 |
