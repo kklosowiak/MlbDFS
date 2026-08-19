@@ -54,3 +54,5 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-17 | Andre Pallante | St. Louis Cardinals | 84% | 1.53 | 1.8 | 3.598846153846154 | 2.08 | 6.0 IP / 4 ER / 5 K / 1 BB | 8.9 |
 | 2026-08-17 | Brandon Young | Baltimore Orioles | 71% | 2.84 | 3.28 | 3.744172413793103 | N/A | 4.0 IP / 4 ER / 3 K / 1 BB | 1.6 |
 | 2026-08-17 | Mitch Bratt | Arizona Diamondbacks | 77% | 1.5 | 3.25 | 4.62133734939759 | N/A | 3.0 IP / 3 ER / 0 K / 3 BB | -3.5 |
+| 2026-08-18 | Keider Montero | Detroit Tigers | 71% | 2.45 | 3.21 | 3.462613104524181 | N/A | 5.0 IP / 3 ER / 3 K / 1 BB | 8.2 |
+| 2026-08-18 | Nick Martinez | Tampa Bay Rays | 90% | 2.35 | 3.29 | 3.439973950795948 | N/A | 3.2 IP / 6 ER / 5 K / 2 BB | -0.3 |
