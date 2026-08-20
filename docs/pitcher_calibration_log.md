@@ -56,3 +56,5 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-17 | Mitch Bratt | Arizona Diamondbacks | 77% | 1.5 | 3.25 | 4.62133734939759 | N/A | 3.0 IP / 3 ER / 0 K / 3 BB | -3.5 |
 | 2026-08-18 | Keider Montero | Detroit Tigers | 71% | 2.45 | 3.21 | 3.462613104524181 | N/A | 5.0 IP / 3 ER / 3 K / 1 BB | 8.2 |
 | 2026-08-18 | Nick Martinez | Tampa Bay Rays | 90% | 2.35 | 3.29 | 3.439973950795948 | N/A | 3.2 IP / 6 ER / 5 K / 2 BB | -0.3 |
+| 2026-08-19 | Drew Rasmussen | Tampa Bay Rays | 86% | 1.42 | 0.7 | 2.7837425057647964 | 1.35 | 5.0 IP / 5 ER / 5 K / 2 BB | 9.8 |
+| 2026-08-19 | Dustin May | Milwaukee Brewers | 73% | 1.5 | 2.79 | 3.576295081967213 | N/A | 2.0 IP / 7 ER / 1 K / 2 BB | -13.5 |

@@ -1777,3 +1777,53 @@ date,player,team,salary,batting_order,blended_rating,actual_dk_pts,baseline_dk_p
 2026-08-18,Jarren Duran,Boston Red Sox,4700,7,28.3,10.0,2.14,7.86
 2026-08-18,Carlos Narvaez,Baltimore Orioles,2100,9,22.2,-0.5,5.5,-6.0
 2026-08-18,Owen Caissie,Miami Marlins,2800,7,24.0,-1.0,4.27,-5.27
+2026-08-19,Mookie Betts,Los Angeles Dodgers,4600,5,89.3,24.0,9.57,14.43
+2026-08-19,Gunnar Henderson,Baltimore Orioles,5100,3,89.8,11.5,7.54,3.96
+2026-08-19,Andres Chaparro,Washington Nationals,2000,5,70.1,30.0,3.17,26.83
+2026-08-19,Vinnie Pasquantino,Kansas City Royals,4100,5,79.8,28.0,8.94,19.06
+2026-08-19,Wilyer Abreu,Boston Red Sox,4400,3,68.2,6.5,6.36,0.14
+2026-08-19,Corbin Carroll,Arizona Diamondbacks,5500,2,69.6,6.0,7.64,-1.64
+2026-08-19,Ryan Vilade,Tampa Bay Rays,3100,7,73.7,-1.0,3.76,-4.76
+2026-08-19,Steven Kwan,Cleveland Guardians,3200,1,54.4,2.0,5.81,-3.81
+2026-08-19,Alec Bohm,Philadelphia Phillies,3500,5,67.0,0.0,4.03,-4.03
+2026-08-19,Nathaniel Lowe,Cleveland Guardians,3000,3,49.5,1.5,8.36,-6.86
+2026-08-19,Jesus Sanchez,Toronto Blue Jays,2600,6,37.6,-1.0,2.82,-3.82
+2026-08-19,Luis Arraez,Philadelphia Phillies,3900,4,54.4,21.0,7.95,13.05
+2026-08-19,Henry Bolte,Athletics,3200,1,50.8,11.5,5.22,6.28
+2026-08-19,Mickey Moniak,Colorado Rockies,4500,2,33.1,23.5,5.25,18.25
+2026-08-19,Zack Gelof,Athletics,4800,1,48.6,11.5,9.75,1.75
+2026-08-19,Jarred Kelenic,Texas Rangers,2300,7,38.4,1.5,5.82,-4.32
+2026-08-19,Eugenio Suarez,Cincinnati Reds,3000,4,55.4,0.5,5.0,-4.5
+2026-08-19,Blaze Jordan,St. Louis Cardinals,3200,8,45.3,4.0,3.91,0.09
+2026-08-19,Dane Myers,Cincinnati Reds,3000,3,58.0,4.5,8.09,-3.59
+2026-08-19,Charles Mcadoo,Toronto Blue Jays,2500,9,40.3,22.0,5.7,16.3
+2026-08-19,Ben Rortvedt,Los Angeles Dodgers,3000,9,51.8,3.0,7.12,-4.12
+2026-08-19,Matt Mclain,Cincinnati Reds,3000,9,45.1,20.0,6.06,13.94
+2026-08-19,Heliot Ramos,New York Yankees,3500,4,47.5,6.5,3.5,3.0
+2026-08-19,Joey Ortiz,Milwaukee Brewers,2100,8,35.5,22.5,4.0,18.5
+2026-08-19,Connor Wong,Boston Red Sox,2600,9,38.5,2.5,6.91,-4.41
+2026-08-19,Trea Turner,Philadelphia Phillies,5400,2,38.4,9.5,7.88,1.62
+2026-08-19,Christian Yelich,Milwaukee Brewers,5000,5,39.1,8.5,10.81,-2.31
+2026-08-19,Wyatt Langford,Texas Rangers,4000,3,37.0,-1.5,7.92,-9.42
+2026-08-19,Justin Crawford,Philadelphia Phillies,3200,8,46.9,3.0,3.95,-0.95
+2026-08-19,Brayan Rocchio,Cleveland Guardians,3400,9,31.4,0.0,5.08,-5.08
+2026-08-19,Andruw Monasterio,Boston Red Sox,2400,7,34.5,0.0,5.36,-5.36
+2026-08-19,Lamonte Wade,Houston Astros,3000,5,38.4,2.5,3.81,-1.31
+2026-08-19,Salvador Perez,Kansas City Royals,3500,6,46.2,11.0,4.32,6.68
+2026-08-19,Travis Bazzana,Cleveland Guardians,4600,5,31.4,5.0,12.29,-7.29
+2026-08-19,Keibert Ruiz,Washington Nationals,3800,6,35.5,10.0,7.25,2.75
+2026-08-19,Chandler Simpson,Tampa Bay Rays,3500,1,54.4,4.5,6.2,-1.7
+2026-08-19,Michael Toglia,Cincinnati Reds,3000,6,42.0,-1.0,3.06,-4.06
+2026-08-19,Ryan Waldschmidt,Arizona Diamondbacks,2700,9,25.3,21.0,6.17,14.83
+2026-08-19,Petey Halpin,Cleveland Guardians,2600,7,34.5,-1.0,3.42,-4.42
+2026-08-19,Jose Altuve,Houston Astros,3000,4,33.3,6.5,4.65,1.85
+2026-08-19,Nathan Church,St. Louis Cardinals,2900,5,32.2,6.5,3.4,3.1
+2026-08-19,Andres Gimenez,Toronto Blue Jays,2800,5,34.8,0.0,3.81,-3.81
+2026-08-19,Nathan Lukes,Toronto Blue Jays,2500,2,30.4,0.5,15.88,-15.38
+2026-08-19,Ezequiel Tovar,Colorado Rockies,3900,9,37.2,-1.0,0.0,-1.0
+2026-08-19,Owen Caissie,Miami Marlins,2800,6,34.0,-0.5,2.48,-2.98
+2026-08-19,Carlos Narvaez,Baltimore Orioles,2100,9,27.2,-0.5,10.75,-11.25
+2026-08-19,Nasim Nunez,Washington Nationals,3500,9,19.5,0.0,5.08,-5.08
+2026-08-19,Carter Jensen,Kansas City Royals,4200,7,40.3,4.5,0.0,4.5
+2026-08-19,Willy Adames,San Francisco Giants,3300,3,35.8,9.0,4.94,4.06
+2026-08-19,Connor Norby,Colorado Rockies,3100,6,28.8,11.0,1.98,9.02
