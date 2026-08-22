@@ -89,3 +89,7 @@ date,team,attack_conf,ITT,dqi_tier,actual_runs,run_diff
 2026-08-18,San Diego Padres,80.0,4.4,LEVERAGE,5,0.6
 2026-08-19,Washington Nationals,54.0,3.6,CAUTION,6,2.4
 2026-08-19,Los Angeles Angels,53.0,3.9,LEVERAGE,2,-1.9
+2026-08-21,Chicago Cubs,85.0,4.1,CAUTION,5,0.9
+2026-08-21,Minnesota Twins,73.0,3.8,CAUTION,2,-1.8
+2026-08-21,Washington Nationals,33.0,3.5,LEVERAGE,2,-1.5
+2026-08-21,Los Angeles Angels,39.0,3.5,LEVERAGE,1,-2.5

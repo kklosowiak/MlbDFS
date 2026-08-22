@@ -59,3 +59,7 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-19 | Drew Rasmussen | Tampa Bay Rays | 86% | 1.42 | 0.7 | 2.7837425057647964 | 1.35 | 5.0 IP / 5 ER / 5 K / 2 BB | 9.8 |
 | 2026-08-19 | Dustin May | Milwaukee Brewers | 73% | 1.5 | 2.79 | 3.576295081967213 | N/A | 2.0 IP / 7 ER / 1 K / 2 BB | -13.5 |
 | 2026-08-20 | Peter Lambert | Houston Astros | 75% | 3.45 | 3.38 | 3.4518071065989844 | N/A | 3.2 IP / 9 ER / 3 K / 2 BB | -9.8 |
+| 2026-08-21 | Sean Manaea | New York Mets | 84% | 3.26 | 2.87 | 4.051918918918918 | 2.04 | 6.0 IP / 4 ER / 4 K / 2 BB | 9.3 |
+| 2026-08-21 | Logan Webb | San Francisco Giants | 84% | 0.9 | 2.25 | 3.235820143884892 | N/A | 2.2 IP / 5 ER / 2 K / 3 BB | -6.6 |
+| 2026-08-21 | J.T. Ginn | Athletics | 72% | 4.0 | 5.02 | 3.810531864673486 | N/A | 5.0 IP / 3 ER / 4 K / 2 BB | 7.8 |
+| 2026-08-21 | Ryan Gusto | Miami Marlins | 79% | 3.07 | 4.7 | 4.228127819548872 | N/A | 4.0 IP / 0 ER / 2 K / 1 BB | 9.4 |
