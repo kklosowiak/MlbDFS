@@ -1,0 +1,257 @@
+=== main.py failed ===
+STDOUT:
+[INIT]: Syncing v5.0 Master Convergence...
+
+==================================================
+      MLB Omega DFS + Betting engine v.5.0
+==================================================
+[INIT]: Syncing atmospheric and officiating sentiment...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+[INIT]: Loading OMEGA Snapshot: snapshot_20260822_154434.json
+[INIT]: Analysis targeting 15 Night Slate matchups.
+[BULK INIT]: Loaded 1 bulk reliever overrides.
+[INIT]: Pitchers will analyze after ingest; hitters/teams follow snapshot.
+[STEP 1]: Ranking Pitcher Alpha...
+  - FALLBACK: No physics data found for TBD. Using league-average defaults.
+  - FALLBACK: No physics data found for Kade Anderson. Using league-average defaults.
+[STEP 1 DONE]: 30 pitcher rows.
+[INIT]: Running Opener/Bulk Pitcher Auto-Detection...
+[OPENER DETECTOR]: Processed New York Yankees (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Toronto Blue Jays (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Milwaukee Brewers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Atlanta Braves (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Miami Marlins (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Washington Nationals (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Philadelphia Phillies (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Baltimore Orioles (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Tampa Bay Rays (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Texas Rangers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Los Angeles Angels (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Chicago White Sox (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed New York Mets (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Houston Astros (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Athletics (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Boston Red Sox (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed San Francisco Giants (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Seattle Mariners (PROPS_PENDING) - Substitution: NO
+[OPENER DETECTOR]: Processed Chicago Cubs (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Kansas City Royals (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Detroit Tigers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Los Angeles Dodgers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Pittsburgh Pirates (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Arizona Diamondbacks (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Cincinnati Reds (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Colorado Rockies (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Cleveland Guardians (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed San Diego Padres (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Minnesota Twins (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed New York Yankees (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Toronto Blue Jays (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Milwaukee Brewers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Atlanta Braves (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Miami Marlins (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Washington Nationals (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Philadelphia Phillies (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Baltimore Orioles (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Tampa Bay Rays (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Texas Rangers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Los Angeles Angels (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Chicago White Sox (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed New York Mets (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Houston Astros (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Athletics (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Boston Red Sox (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed San Francisco Giants (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Seattle Mariners (PROPS_PENDING) - Substitution: NO
+[OPENER DETECTOR]: Processed Chicago Cubs (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Kansas City Royals (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Detroit Tigers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Los Angeles Dodgers (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Pittsburgh Pirates (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Arizona Diamondbacks (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Cincinnati Reds (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Colorado Rockies (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Cleveland Guardians (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed San Diego Padres (REJECTED) - Substitution: NO
+[OPENER DETECTOR]: Processed Minnesota Twins (REJECTED) - Substitution: NO
+[OMEGA]: Opening Slate Profile: /home/runner/work/MlbDFS/MlbDFS/data/snapshot_20260822_154434.json
+[OMEGA]: Initiating High-Sample Dynamic Discovery for 30 teams...
+  [WARNING]: No dynamic roster found for team 'Kansas City Royals'
+  [WARNING]: No dynamic roster found for team 'Athletics'
+  [WARNING]: No dynamic roster found for team 'Atlanta Braves'
+  [WARNING]: No dynamic roster found for team 'Boston Red Sox'
+  [WARNING]: No dynamic roster found for team 'Texas Rangers'
+  [WARNING]: No dynamic roster found for team 'Toronto Blue Jays'
+  [WARNING]: No dynamic roster found for team 'Chicago Cubs'
+  [WARNING]: No dynamic roster found for team 'St. Louis Cardinals'
+  [WARNING]: No dynamic roster found for team 'Houston Astros'
+  [WARNING]: No dynamic roster found for team 'Tampa Bay Rays'
+  [WARNING]: No dynamic roster found for team 'Pittsburgh Pirates'
+  [WARNING]: No dynamic roster found for team 'Los Angeles Dodgers'
+  [WARNING]: No dynamic roster found for team 'Arizona Diamondbacks'
+  [WARNING]: No dynamic roster found for team 'New York Mets'
+  [WARNING]: No dynamic roster found for team 'Cincinnati Reds'
+  [WARNING]: No dynamic roster found for team 'Los Angeles Angels'
+  [WARNING]: No dynamic roster found for team 'Seattle Mariners'
+  [WARNING]: No dynamic roster found for team 'San Diego Padres'
+  [WARNING]: No dynamic roster found for team 'Miami Marlins'
+  [WARNING]: No dynamic roster found for team 'Philadelphia Phillies'
+  [WARNING]: No dynamic roster found for team 'Cleveland Guardians'
+  [WARNING]: No dynamic roster found for team 'San Francisco Giants'
+  [WARNING]: No dynamic roster found for team 'Chicago White Sox'
+  [WARNING]: No dynamic roster found for team 'New York Yankees'
+  [WARNING]: No dynamic roster found for team 'Detroit Tigers'
+  [WARNING]: No dynamic roster found for team 'Minnesota Twins'
+  [WARNING]: No dynamic roster found for team 'Milwaukee Brewers'
+  [WARNING]: No dynamic roster found for team 'Washington Nationals'
+  [WARNING]: No dynamic roster found for team 'Baltimore Orioles'
+  [WARNING]: No dynamic roster found for team 'Colorado Rockies'
+[OMEGA]: Backfilling 2 teams via High-Sample Dynamic Logic...
+[OMEGA]: Hitter discovery complete — 74 players (0 TARGET, 63 JUICE) across 30 teams.
+[STEP 2a]: 74 hitters before lineup purge.
+[PURGE]: Hitter pool 71 after lineup filter (from 30 team keys).
+
+[STEP 2]: Ranking Team Omega (15 games)...
+  [VEGAS ENRICH]: Using direct FL team total for New York Yankees: 3.4 (Open: 3.4, Move: +0.00)
+  - Stack: New York Yankees vs Toronto Blue Jays (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated New York Yankees Platoon-Adjusted xwOBA: 0.326 | Conc: 0.328 (CONFIRMED)
+  [VEGAS ENRICH]: Using direct FL team total for Toronto Blue Jays: 3.3 (Open: 3.3, Move: +0.00)
+  - Stack: Toronto Blue Jays vs New York Yankees (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Toronto Blue Jays Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Milwaukee Brewers: 4.3 (Open: 4.3, Move: +0.00)
+  - Stack: Milwaukee Brewers vs Atlanta Braves (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Milwaukee Brewers Platoon-Adjusted xwOBA: 0.318 | Conc: 0.323 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Atlanta Braves: 3.4 (Open: 3.4, Move: +0.00)
+  - Stack: Atlanta Braves vs Milwaukee Brewers (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Atlanta Braves Platoon-Adjusted xwOBA: 0.328 | Conc: 0.330 (CONFIRMED)
+  [VEGAS ENRICH]: Using direct FL team total for Miami Marlins: 4.4 (Open: 4.4, Move: +0.00)
+  - Stack: Miami Marlins vs Washington Nationals (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  [VEGAS ENRICH]: Using direct FL team total for Washington Nationals: 3.3 (Open: 3.3, Move: +0.00)
+  - Stack: Washington Nationals vs Miami Marlins (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Washington Nationals Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Philadelphia Phillies: 4.9 (Open: 4.6, Move: +0.30)
+  - Stack: Philadelphia Phillies vs St. Louis Cardinals (bullpen fatigue lookup)...
+  - NEUTRALIZED: Tbd matchup physics capped at 56 (TRAP)
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Philadelphia Phillies Platoon-Adjusted xwOBA: 0.319 | Conc: 0.324 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for St. Louis Cardinals: 4.3 (Open: 4.1, Move: +0.20)
+  - Stack: St. Louis Cardinals vs Philadelphia Phillies (bullpen fatigue lookup)...
+  - NEUTRALIZED: Andrew Painter matchup physics capped at 56 (TRAP)
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated St. Louis Cardinals Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Baltimore Orioles: 3.9 (Open: 4.1, Move: -0.20)
+  - Stack: Baltimore Orioles vs Tampa Bay Rays (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Baltimore Orioles Platoon-Adjusted xwOBA: 0.317 | Conc: 0.321 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Tampa Bay Rays: 4.3 (Open: 4.6, Move: -0.30)
+  - Stack: Tampa Bay Rays vs Baltimore Orioles (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Tampa Bay Rays Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Texas Rangers: 4.9 (Open: 4.6, Move: +0.30)
+  - Stack: Texas Rangers vs Los Angeles Angels (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Texas Rangers Platoon-Adjusted xwOBA: 0.317 | Conc: 0.322 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Los Angeles Angels: 3.8 (Open: 3.6, Move: +0.20)
+  - Stack: Los Angeles Angels vs Texas Rangers (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Los Angeles Angels Platoon-Adjusted xwOBA: 0.314 | Conc: 0.318 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Chicago White Sox: 4.4 (Open: 4.4, Move: +0.00)
+  - Stack: Chicago White Sox vs New York Mets (bullpen fatigue lookup)...
+  - NEUTRALIZED: Christian Scott matchup physics capped at 57 (TRAP)
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Chicago White Sox Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for New York Mets: 4.3 (Open: 4.3, Move: +0.00)
+  - Stack: New York Mets vs Chicago White Sox (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated New York Mets Platoon-Adjusted xwOBA: 0.317 | Conc: 0.323 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Houston Astros: 5.0 (Open: 5.3, Move: -0.30)
+  - Stack: Houston Astros vs Athletics (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Houston Astros Platoon-Adjusted xwOBA: 0.317 | Conc: 0.321 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Athletics: 3.2 (Open: 3.4, Move: -0.20)
+  - Stack: Athletics vs Houston Astros (bullpen fatigue lookup)...
+  - NEUTRALIZED: Hunter Brown matchup physics capped at 54 (TRAP)
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  [VEGAS ENRICH]: Using direct FL team total for Boston Red Sox: 4.9 (Open: 5.2, Move: -0.30)
+  - Stack: Boston Red Sox vs San Francisco Giants (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Boston Red Sox Platoon-Adjusted xwOBA: 0.314 | Conc: 0.318 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for San Francisco Giants: 3.3 (Open: 3.5, Move: -0.20)
+  - Stack: San Francisco Giants vs Boston Red Sox (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated San Francisco Giants Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Seattle Mariners: 4.2 (Open: 4.5, Move: -0.30)
+  - Stack: Seattle Mariners vs Chicago Cubs (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Seattle Mariners Platoon-Adjusted xwOBA: 0.318 | Conc: 0.322 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Chicago Cubs: 4.0 (Open: 4.3, Move: -0.30)
+  - Stack: Chicago Cubs vs Seattle Mariners (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Chicago Cubs Platoon-Adjusted xwOBA: 0.317 | Conc: 0.321 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Kansas City Royals: 4.4 (Open: 4.4, Move: +0.00)
+  - Stack: Kansas City Royals vs Detroit Tigers (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Kansas City Royals Platoon-Adjusted xwOBA: 0.317 | Conc: 0.321 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Detroit Tigers: 4.4 (Open: 4.4, Move: +0.00)
+  - Stack: Detroit Tigers vs Kansas City Royals (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Detroit Tigers Platoon-Adjusted xwOBA: 0.312 | Conc: 0.317 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Los Angeles Dodgers: 4.8 (Open: 4.8, Move: +0.00)
+  - Stack: Los Angeles Dodgers vs Pittsburgh Pirates (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Los Angeles Dodgers Platoon-Adjusted xwOBA: 0.327 | Conc: 0.338 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Pittsburgh Pirates: 3.0 (Open: 3.0, Move: +0.00)
+  - Stack: Pittsburgh Pirates vs Los Angeles Dodgers (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Pittsburgh Pirates Platoon-Adjusted xwOBA: 0.310 | Conc: 0.316 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Arizona Diamondbacks: 4.6 (Open: 4.6, Move: +0.00)
+  - Stack: Arizona Diamondbacks vs Cincinnati Reds (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Arizona Diamondbacks Platoon-Adjusted xwOBA: 0.316 | Conc: 0.321 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Cincinnati Reds: 3.7 (Open: 3.7, Move: +0.00)
+  - Stack: Cincinnati Reds vs Arizona Diamondbacks (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Cincinnati Reds Platoon-Adjusted xwOBA: 0.312 | Conc: 0.314 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Colorado Rockies: 5.2 (Open: 5.5, Move: -0.30)
+  - Stack: Colorado Rockies vs Cleveland Guardians (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Colorado Rockies Platoon-Adjusted xwOBA: 0.311 | Conc: 0.313 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Cleveland Guardians: 6.1 (Open: 6.3, Move: -0.20)
+  - Stack: Cleveland Guardians vs Colorado Rockies (bullpen fatigue lookup)...
+  - NEUTRALIZED: Gabriel Hughes matchup physics capped at 48 (TRAP)
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Cleveland Guardians Platoon-Adjusted xwOBA: 0.314 | Conc: 0.318 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for San Diego Padres: 4.8 (Open: 4.8, Move: +0.00)
+  - Stack: San Diego Padres vs Minnesota Twins (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated San Diego Padres Platoon-Adjusted xwOBA: 0.321 | Conc: 0.325 (PROJECTED_HIGH_CONF)
+  [VEGAS ENRICH]: Using direct FL team total for Minnesota Twins: 3.9 (Open: 3.9, Move: +0.00)
+  - Stack: Minnesota Twins vs San Diego Padres (bullpen fatigue lookup)...
+[LINEUPS]: MLB.com __NEXT_DATA__ script tag not found
+  - Calculated Minnesota Twins Platoon-Adjusted xwOBA: 0.318 | Conc: 0.322 (PROJECTED_HIGH_CONF)
+[ITT SWAP]: Cleveland Guardians (ITT 5.8) elevated to #1 over Minnesota Twins (ITT 3.9)
+
+[STEP 3]: Ranking Hitter Alpha...
+[SPLITS]: Loaded 958 profiles for dynamic matchup resolution.
+[NPAS]: Loaded Platoon Cache with 25 pitchers splits.
+[FORM]: Loaded 483 profiles for recent form factor.
+
+STDERR:
+Traceback (most recent call last):
+  File "/home/runner/work/MlbDFS/MlbDFS/main.py", line 2016, in <module>
+    run_full_analysis()
+  File "/home/runner/work/MlbDFS/MlbDFS/main.py", line 507, in run_full_analysis
+    h_reports = _get_hitter_alpha(
+                ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MlbDFS/MlbDFS/main.py", line 1902, in _get_hitter_alpha
+    hard_hit_pct=hard_hit_pct,
+                 ^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'hard_hit_pct' where it is not associated with a value
+
