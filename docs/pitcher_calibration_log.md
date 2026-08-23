@@ -63,3 +63,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-21 | Logan Webb | San Francisco Giants | 84% | 0.9 | 2.25 | 3.235820143884892 | N/A | 2.2 IP / 5 ER / 2 K / 3 BB | -6.6 |
 | 2026-08-21 | J.T. Ginn | Athletics | 72% | 4.0 | 5.02 | 3.810531864673486 | N/A | 5.0 IP / 3 ER / 4 K / 2 BB | 7.8 |
 | 2026-08-21 | Ryan Gusto | Miami Marlins | 79% | 3.07 | 4.7 | 4.228127819548872 | N/A | 4.0 IP / 0 ER / 2 K / 1 BB | 9.4 |
+| 2026-08-22 | Cody Bradford | Texas Rangers | 79% | 2.93 | 2.93 | 3.477562913907285 | N/A | 5.1 IP / 2 ER / 3 K / 0 BB | 9.8 |
