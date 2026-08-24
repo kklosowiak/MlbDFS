@@ -1,0 +1,80 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-23 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=88.0 | ITT=4.1 | actual=2.0 | diff=-2.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (4 instances):
+  Bailey Ober (Vulnerable) vs San Diego Padres: attack_conf=28.0 ITT=0.0 actual=8.0 diff=+8.0 | 5.0IP 1ER -> OVER-DELIVERED
+  Andrew Abbott (Vulnerable) vs Arizona Diamondbacks: attack_conf=2.0 ITT=0.0 actual=5.0 diff=+5.0 | 6.0IP 4ER -> NORMAL
+  Lake Bachar (Vulnerable) vs Los Angeles Dodgers: attack_conf=18.0 ITT=0.0 actual=4.0 diff=+4.0 | 2.0IP 1ER -> NORMAL
+  Tyler Mahle (Short Leash) vs Milwaukee Brewers: attack_conf=7.0 ITT=4.1 actual=2.0 diff=-2.1 | 5.0IP 1ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Fernando Tatis (San Diego Padres): 43.0 DK pts
+  Chase Delauter (Cleveland Guardians): 29.0 DK pts
+  Corbin Carroll (Arizona Diamondbacks): 16.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (19 fires):
+  Fernando Tatis (San Diego Padres): actual=43.0DKpts | +24.8 vs baseline
+  Elly De La Cruz (Cincinnati Reds): actual=6.0DKpts | +1.3 vs baseline
+  Corbin Carroll (Arizona Diamondbacks): actual=16.5DKpts | +8.4 vs baseline
+  Alan Roden (Minnesota Twins): actual=7.5DKpts | -2.4 vs baseline
+  Chase Delauter (Cleveland Guardians): actual=29.0DKpts | +22.2 vs baseline
+  Jo Adell (Cleveland Guardians): actual=11.5DKpts | +3.3 vs baseline
+  Dane Myers (Cincinnati Reds): actual=11.5DKpts | +7.9 vs baseline
+  Esmerlyn Valdez (Pittsburgh Pirates): actual=0.5DKpts | -5.4 vs baseline
+  Seiya Suzuki (Chicago Cubs): actual=23.0DKpts | +8.8 vs baseline
+  Mauricio Dubon (Atlanta Braves): actual=11.0DKpts | +6.2 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=1.5DKpts | -9.9 vs baseline
+  Jordan Lawlar (Arizona Diamondbacks): actual=4.5DKpts | +1.6 vs baseline
+  Ryan Waldschmidt (Arizona Diamondbacks): actual=-1.0DKpts | -3.6 vs baseline
+  Michael Conforto (Chicago Cubs): actual=14.0DKpts | +7.1 vs baseline
+  Nick Yorke (Pittsburgh Pirates): actual=-0.5DKpts | -4.8 vs baseline
+  Ozzie Albies (Atlanta Braves): actual=7.0DKpts | -3.1 vs baseline
+  Pedro Ramirez (Chicago Cubs): actual=31.5DKpts | +26.8 vs baseline
+  David Hamilton (Milwaukee Brewers): actual=0.0DKpts | -2.6 vs baseline
+  Austin Riley (Atlanta Braves): actual=12.5DKpts | +5.4 vs baseline
+STRONG_EDGE (10 fires):
+  Freddie Freeman (Los Angeles Dodgers): actual=8.0DKpts | +1.1 vs baseline
+  Nathaniel Lowe (Cleveland Guardians): actual=7.0DKpts | +2.0 vs baseline
+  Brandon Lowe (Pittsburgh Pirates): actual=5.0DKpts | -0.2 vs baseline
+  Gavin Sheets (San Diego Padres): actual=4.0DKpts | -1.2 vs baseline
+  Tim Tawa (Arizona Diamondbacks): actual=8.0DKpts | -10.0 vs baseline
+  Ian Happ (Chicago Cubs): actual=30.5DKpts | +26.6 vs baseline
+  Hunter Feduccia (Los Angeles Dodgers): actual=4.5DKpts | +2.5 vs baseline
+  Brice Turang (Milwaukee Brewers): actual=6.5DKpts | -4.1 vs baseline
+  Cole Young (Seattle Mariners): actual=-0.5DKpts | -6.0 vs baseline
+  Travis Bazzana (Cleveland Guardians): actual=2.0DKpts | -12.3 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Shane Drohan vs Atlanta Braves: ITT=4.0 actual=4.0R diff=+0.0
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Shane Drohan (WALKS=Y HAZ=N): ITT=4.0 actual=4.0R diff=+0.0
+GASSED/FATIGUED PEN (1 teams):
+  Atlanta Braves: actual=4.0R vs ITT=4.0 -> HIT
+BURST (1 teams):
+  Milwaukee Brewers: actual=2.0R vs ITT=4.1 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (49 slates tracked):
+  TRAP/Vulnerable: 55.6% underscored ITT | avg diff +1.01R
+  TRAP/Short Leash: 52.2% underscored ITT | avg diff +0.24R
+  FADE_RISK: 57.1% correct | avg diff +1.03R
+  Top Stack hit ITT: 36.7% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.49 DK pts
+  STEAM: 45.7% correct | avg +0.69R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.84 DK pts vs baseline
+  PLATOON_TRAP: 59.0% underperformed baseline
+  STRONG_EDGE: avg +0.02 DK pts vs baseline
+  SHARP_FADE pitchers: 48.6% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 45.8%
+  GASSED pen teams: 43.8% hit ITT
+  BURST teams: 43.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Bailey Ober (5.0 IP, 1 ER)
+  TRAP Arm Outperformed Expectation: Tyler Mahle (5.0 IP, 1 ER)
+
+=== END ===
