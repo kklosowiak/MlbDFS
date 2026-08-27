@@ -56,3 +56,6 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-08-25,Houston Astros @ New York Yankees,Houston Astros,59.0,9,New York Yankees,73.0,7,none,Y,N,N
 2026-08-25,Texas Rangers @ Chicago White Sox,Texas Rangers,62.0,7,Chicago White Sox,33.0,11,none,Y,N,N
 2026-08-25,Cleveland Guardians @ Los Angeles Angels,Cleveland Guardians,51.0,8,Los Angeles Angels,43.0,6,none,Y,Y,N
+2026-08-26,Cincinnati Reds @ San Francisco Giants,Cincinnati Reds,63.0,10,San Francisco Giants,37.0,9,none,Y,Y,N
+2026-08-26,Baltimore Orioles @ St. Louis Cardinals,Baltimore Orioles,80.0,8,St. Louis Cardinals,73.0,7,none,Y,Y,N
+2026-08-26,Minnesota Twins @ Athletics,Minnesota Twins,94.0,4,Athletics,67.0,7,away,N,N,Y

@@ -66,3 +66,5 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-22 | Cody Bradford | Texas Rangers | 79% | 2.93 | 2.93 | 3.477562913907285 | N/A | 5.1 IP / 2 ER / 3 K / 0 BB | 9.8 |
 | 2026-08-25 | Jacob Degrom | Texas Rangers | 82% | 2.08 | 3.8 | 2.45 | N/A | 3.2 IP / 8 ER / 2 K / 5 BB | -10.3 |
 | 2026-08-25 | Brandon Pfaadt | Arizona Diamondbacks | 86% | 2.29 | 1.35 | 3.6684566768603464 | N/A | 6.2 IP / 4 ER / 3 K / 2 BB | 7.6 |
+| 2026-08-26 | Mackenzie Gore | Texas Rangers | 75% | 2.12 | 2.1 | 3.825159779614325 | N/A | 3.2 IP / 4 ER / 4 K / 4 BB | 1.1 |
+| 2026-08-26 | Bryan Woo | Seattle Mariners | 79% | 1.0 | 3.86 | 3.4819645184648804 | N/A | 4.0 IP / 6 ER / 5 K / 1 BB | 3.4 |

@@ -1361,3 +1361,57 @@ date,player,team,salary,batting_order,blended_rating,attack_conf,actual_dk_pts
 2026-08-25,Drew Romo,Chicago White Sox,2900,9,28.6,37.962825278810406,3.0
 2026-08-25,Jarren Duran,Boston Red Sox,4700,7,41.1,63.62658227848101,19.0
 2026-08-25,Grant Mccray,San Francisco Giants,2000,8,19.6,29.161220043572982,4.5
+2026-08-26,Miguel Vargas,Chicago White Sox,4400,1,105.1,100.0,20.5
+2026-08-26,Pete Alonso,Baltimore Orioles,5600,1,102.7,100.0,17.5
+2026-08-26,Bryce Harper,Philadelphia Phillies,5800,1,97.5,100.0,21.0
+2026-08-26,Fernando Tatis,San Diego Padres,4500,1,94.2,100.0,-1.0
+2026-08-26,Pete Crowarmstrong,Chicago Cubs,6400,1,84.7,98.0,3.5
+2026-08-26,Luis Robert,New York Mets,5000,1,81.9,93.0,3.0
+2026-08-26,Corey Seager,Texas Rangers,4500,1,67.4,68.544474393531,1.0
+2026-08-26,Vinnie Pasquantino,Kansas City Royals,4100,1,81.5,100.0,0.0
+2026-08-26,Randal Grichuk,Chicago White Sox,3400,1,69.8,77.63133640552995,-0.5
+2026-08-26,Garrett Mitchell,Milwaukee Brewers,3300,1,80.0,100.0,8.5
+2026-08-26,Mickey Gasper,Boston Red Sox,3100,1,75.1,93.0,2.0
+2026-08-26,Hunter Goodman,Colorado Rockies,5300,1,65.6,75.0324074074074,20.5
+2026-08-26,Heriberto Hernandez,Miami Marlins,3500,1,63.1,71.50649350649351,12.5
+2026-08-26,Michael Harris,Atlanta Braves,4200,1,66.5,78.53086419753086,2.0
+2026-08-26,Steven Kwan,Cleveland Guardians,3200,1,67.6,83.7605633802817,9.5
+2026-08-26,Colt Keith,Detroit Tigers,3000,4,54.2,60.08108108108108,-0.5
+2026-08-26,Max Muncy,Athletics,3500,1,59.5,72.0,0.0
+2026-08-26,Alejandro Kirk,Toronto Blue Jays,3300,1,58.3,69.94871794871794,0.0
+2026-08-26,Cal Raleigh,Seattle Mariners,4600,1,56.8,67.0,-2.0
+2026-08-26,Ezequiel Tovar,Colorado Rockies,3900,1,65.8,85.55704697986577,16.5
+2026-08-26,Kazuma Okamoto,Toronto Blue Jays,3400,1,46.5,48.22764227642276,4.0
+2026-08-26,Tim Tawa,Arizona Diamondbacks,2500,1,55.7,67.8581560283688,1.5
+2026-08-26,Zach Neto,Los Angeles Angels,5200,1,71.6,100.0,9.0
+2026-08-26,Dane Myers,Cincinnati Reds,3000,1,48.6,54.40340909090909,19.5
+2026-08-26,Brett Baty,New York Mets,2700,1,52.2,63.146496815286625,10.0
+2026-08-26,Salvador Perez,Kansas City Royals,3500,1,56.9,72.95800933125972,-1.0
+2026-08-26,Jt Realmuto,Philadelphia Phillies,3600,1,54.4,68.0,2.5
+2026-08-26,Mauricio Dubon,Atlanta Braves,3200,1,54.7,70.40311173974541,11.0
+2026-08-26,Luis Arraez,Philadelphia Phillies,3900,1,55.0,71.27959697732997,0.0
+2026-08-26,Alec Bohm,Philadelphia Phillies,3500,1,54.5,70.46734397677794,1.5
+2026-08-26,Christian Yelich,Milwaukee Brewers,5000,1,57.2,75.70605187319885,5.0
+2026-08-26,William Contreras,Milwaukee Brewers,4500,1,59.8,81.12313937753721,0.0
+2026-08-26,Isaac Paredes,Houston Astros,3000,1,58.1,79.80102040816327,4.0
+2026-08-26,Jose Fernandez,Arizona Diamondbacks,2800,1,49.2,62.879765395894424,-0.5
+2026-08-26,Nathan Church,St. Louis Cardinals,2900,1,51.6,68.0,17.5
+2026-08-26,Tommy White,Athletics,3000,1,49.8,64.73553719008265,12.5
+2026-08-26,Jazz Chisholm,New York Yankees,4400,1,56.4,78.20689655172414,22.0
+2026-08-26,Haoyu Lee,Detroit Tigers,3000,9,41.2,48.0,0.0
+2026-08-26,Carson Benge,New York Mets,4000,1,48.8,65.15912031047866,2.5
+2026-08-26,Coby Mayo,Baltimore Orioles,3300,1,48.8,65.14668547249647,0.0
+2026-08-26,Kyle Isbel,Kansas City Royals,2500,1,46.5,60.8854961832061,-0.5
+2026-08-26,David Hamilton,Milwaukee Brewers,3000,1,50.7,69.99537750385208,7.0
+2026-08-26,George Springer,Toronto Blue Jays,3700,1,46.9,63.66619519094766,2.5
+2026-08-26,Keibert Ruiz,Washington Nationals,3800,1,48.3,66.91029023746702,0.0
+2026-08-26,Hector Rodriguez,Cincinnati Reds,3000,1,43.4,57.42857142857142,30.5
+2026-08-26,Christian Moore,Los Angeles Angels,2400,1,50.7,74.35403726708074,6.0
+2026-08-26,Andres Gimenez,Toronto Blue Jays,2800,1,36.5,46.12634822804314,0.0
+2026-08-26,Cody Freeman,Texas Rangers,2000,1,38.0,49.55882352941176,4.0
+2026-08-26,Rafael Devers,San Francisco Giants,3700,2,48.5,71.60847880299252,21.0
+2026-08-26,Brooks Lee,Minnesota Twins,3400,1,45.6,66.21857923497268,13.5
+2026-08-26,Justin Crawford,Philadelphia Phillies,3200,1,38.7,53.39520958083832,7.0
+2026-08-26,Ian Happ,Chicago Cubs,4500,1,43.5,65.44297082228117,0.0
+2026-08-26,Michael Massey,Kansas City Royals,3500,1,42.6,70.55702917771883,0.0
+2026-08-26,Jarren Duran,Boston Red Sox,4700,1,39.0,68.26415094339623,3.0
