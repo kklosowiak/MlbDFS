@@ -1,0 +1,103 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-29 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=95.0 | ITT=4.9 | actual=5.0 | diff=+0.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (3 instances):
+  Yunior Marte (Vulnerable) vs Arizona Diamondbacks: attack_conf=0.0 ITT=3.9 actual=2.0 diff=-1.9 | 4.2IP 1ER -> NORMAL
+  Cal Quantrill (Short Leash) vs Milwaukee Brewers: attack_conf=3.0 ITT=4.9 actual=5.0 diff=+0.1 | 6.0IP 3ER -> NORMAL
+  Ryan Johnson (Short Leash) vs Philadelphia Phillies: attack_conf=20.0 ITT=5.3 actual=4.0 diff=-1.3 | 5.0IP 1ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  William Contreras (Milwaukee Brewers): 20.5 DK pts
+  Christian Yelich (Milwaukee Brewers): 17.0 DK pts
+  Colton Cowser (Baltimore Orioles): 16.0 DK pts
+ANTI_CHALK_SMASH (18 fires):
+  Pete Alonso (Baltimore Orioles): blended=109.1 | actual=-1.5DKpts | -10.2 vs baseline
+  Gunnar Henderson (Baltimore Orioles): blended=70.7 | actual=4.0DKpts | -4.7 vs baseline
+  Jake Bauers (Milwaukee Brewers): blended=72.1 | actual=0.5DKpts | -8.2 vs baseline
+  Jackson Chourio (Milwaukee Brewers): blended=65.5 | actual=13.5DKpts | +7.7 vs baseline
+  Colton Cowser (Baltimore Orioles): blended=62.4 | actual=16.0DKpts | +12.7 vs baseline
+  Christian Encarnacionstrand (Baltimore Orioles): blended=58.9 | actual=4.5DKpts | +2.2 vs baseline
+  Samuel Basallo (Baltimore Orioles): blended=43.4 | actual=0.0DKpts | -7.8 vs baseline
+  William Contreras (Milwaukee Brewers): blended=62.9 | actual=20.5DKpts | +16.3 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): blended=54.9 | actual=1.5DKpts | -3.9 vs baseline
+  Luis Lara (Milwaukee Brewers): blended=53.2 | actual=9.0DKpts | +4.0 vs baseline
+  Brice Turang (Milwaukee Brewers): blended=54.2 | actual=-1.5DKpts | -10.7 vs baseline
+  Christian Yelich (Milwaukee Brewers): blended=59.5 | actual=17.0DKpts | +10.0 vs baseline
+  Dylan Beavers (Baltimore Orioles): blended=58.8 | actual=4.0DKpts | +2.3 vs baseline
+  Coby Mayo (Baltimore Orioles): blended=42.4 | actual=8.5DKpts | +4.6 vs baseline
+  Cooper Pratt (Milwaukee Brewers): blended=39.1 | actual=2.0DKpts | -2.8 vs baseline
+  Jackson Holliday (Baltimore Orioles): blended=41.4 | actual=2.0DKpts | -2.9 vs baseline
+  David Hamilton (Milwaukee Brewers): blended=28.2 | actual=0.0DKpts | -5.1 vs baseline
+  Leody Taveras (Baltimore Orioles): blended=18.3 | actual=23.0DKpts | +19.8 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (24 fires):
+  Gunnar Henderson (Baltimore Orioles): actual=4.0DKpts | -4.7 vs baseline
+  Ben Rice (New York Yankees): actual=13.5DKpts | +11.2 vs baseline
+  Christian Encarnacionstrand (Baltimore Orioles): actual=4.5DKpts | +2.2 vs baseline
+  Corbin Carroll (Arizona Diamondbacks): actual=4.0DKpts | -3.8 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=17.0DKpts | +10.0 vs baseline
+  Corey Seager (Texas Rangers): actual=6.5DKpts | +3.9 vs baseline
+  Rafael Devers (San Francisco Giants): actual=9.5DKpts | +3.2 vs baseline
+  Jung Hoo Lee (San Francisco Giants): actual=7.0DKpts | +0.3 vs baseline
+  Jake Burger (Texas Rangers): actual=3.0DKpts | -1.6 vs baseline
+  Luis Arraez (Philadelphia Phillies): actual=0.0DKpts | -10.2 vs baseline
+  Connor Wong (Boston Red Sox): actual=2.0DKpts | -3.8 vs baseline
+  Zack Gelof (Athletics): actual=1.5DKpts | -1.2 vs baseline
+  Ryan Waldschmidt (Arizona Diamondbacks): actual=-0.5DKpts | -5.4 vs baseline
+  Caleb Durbin (Boston Red Sox): actual=-1.5DKpts | -4.1 vs baseline
+  Jazz Chisholm (New York Yankees): actual=3.5DKpts | -17.0 vs baseline
+  Osleivis Basabe (San Francisco Giants): actual=11.0DKpts | +6.5 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=6.5DKpts | -1.0 vs baseline
+  Ceddanne Rafaela (Boston Red Sox): actual=0.0DKpts | -6.1 vs baseline
+  Alec Bohm (Philadelphia Phillies): actual=8.0DKpts | +1.6 vs baseline
+  Travis Darnaud (Los Angeles Angels): actual=2.5DKpts | -6.0 vs baseline
+  Austin Wells (New York Yankees): actual=9.0DKpts | +3.6 vs baseline
+  Trea Turner (Philadelphia Phillies): actual=17.0DKpts | +11.8 vs baseline
+  Leody Taveras (Baltimore Orioles): actual=23.0DKpts | +19.8 vs baseline
+  Jonah Heim (Athletics): actual=7.0DKpts | +2.9 vs baseline
+STRONG_EDGE (8 fires):
+  Kyle Schwarber (Philadelphia Phillies): actual=6.0DKpts | +6.0 vs baseline
+  Mike Trout (Los Angeles Angels): actual=-1.0DKpts | -5.8 vs baseline
+  Willson Contreras (Boston Red Sox): actual=13.5DKpts | +11.2 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): actual=1.5DKpts | -3.9 vs baseline
+  Brandon Nimmo (Texas Rangers): actual=27.0DKpts | +22.5 vs baseline
+  Jahmai Jones (Boston Red Sox): actual=3.0DKpts | -3.1 vs baseline
+  Dylan Beavers (Baltimore Orioles): actual=4.0DKpts | +2.3 vs baseline
+  Heliot Ramos (New York Yankees): actual=1.5DKpts | -9.5 vs baseline
+SHARP_FADE PITCHERS (2 instances):
+  Max Fried vs Boston Red Sox: ITT=3.48 actual=2.0R diff=-1.5
+  Shane Drohan vs Texas Rangers: ITT=3.8 actual=3.0R diff=-0.8
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (3):
+  Shane Baz (WALKS=Y HAZ=N): ITT=4.5 actual=3.0R diff=-1.5
+  Jack Perkins (WALKS=Y HAZ=N): ITT=5.2 actual=5.0R diff=-0.2
+  Ryan Johnson (WALKS=Y HAZ=N): ITT=5.3 actual=4.0R diff=-1.3
+GASSED/FATIGUED PEN (3 teams):
+  Arizona Diamondbacks: actual=7.0R vs ITT=3.9 -> HIT
+  San Francisco Giants: actual=1.0R vs ITT=3.7 -> MISS
+  Boston Red Sox: actual=6.0R vs ITT=3.48 -> HIT
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (55 slates tracked):
+  TRAP/Vulnerable: 54.9% underscored ITT | avg diff +0.90R
+  TRAP/Short Leash: 52.7% underscored ITT | avg diff +0.19R
+  FADE_RISK: 56.2% correct | avg diff +1.00R
+  Top Stack hit ITT: 38.2% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.57 DK pts
+  STEAM: 44.7% correct | avg +0.64R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.89 DK pts vs baseline
+  PLATOON_TRAP: 59.3% underperformed baseline
+  STRONG_EDGE: avg -0.04 DK pts vs baseline
+  SHARP_FADE pitchers: 49.4% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.6%
+  GASSED pen teams: 42.6% hit ITT
+  BURST teams: 43.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Ryan Johnson (5.0 IP, 1 ER)
+
+=== END ===

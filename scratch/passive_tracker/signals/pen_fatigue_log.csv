@@ -559,3 +559,6 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-08-28,Pittsburgh Pirates,48.0,3.6,N,Y,1,-2.6
 2026-08-28,Texas Rangers,41.0,3.48,N,Y,1,-2.48
 2026-08-28,Seattle Mariners,75.0,3.42,Y,Y,1,-2.42
+2026-08-29,Arizona Diamondbacks,93.0,3.9,Y,Y,7,3.1
+2026-08-29,San Francisco Giants,55.0,3.7,Y,Y,1,-2.7
+2026-08-29,Boston Red Sox,72.0,3.48,Y,Y,6,2.52
