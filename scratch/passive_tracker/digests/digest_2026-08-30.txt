@@ -1,0 +1,59 @@
+=== OMEGA SIGNAL DIGEST - 2026-08-30 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Chicago Cubs | conf=97.0 | ITT=5.1 | actual=5.0 | diff=-0.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (1 instances):
+  Chase Burns (Vulnerable) vs Chicago Cubs: attack_conf=0.0 ITT=5.1 actual=5.0 diff=-0.1 | 5.2IP 2ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Pete Crowarmstrong (Chicago Cubs): 27.5 DK pts
+  Hector Rodriguez (Cincinnati Reds): 17.0 DK pts
+  Elly De La Cruz (Cincinnati Reds): 9.0 DK pts
+ANTI_CHALK_SMASH (9 fires):
+  Pete Crowarmstrong (Chicago Cubs): blended=80.5 | actual=27.5DKpts | +27.5 vs baseline
+  Michael Busch (Chicago Cubs): blended=66.6 | actual=-2.0DKpts | -1.5 vs baseline
+  Ian Happ (Chicago Cubs): blended=61.7 | actual=12.0DKpts | +12.0 vs baseline
+  Seiya Suzuki (Chicago Cubs): blended=71.0 | actual=-0.5DKpts | +1.5 vs baseline
+  Pedro Ramirez (Chicago Cubs): blended=67.3 | actual=0.0DKpts | +0.0 vs baseline
+  Michael Conforto (Chicago Cubs): blended=65.8 | actual=5.0DKpts | +5.0 vs baseline
+  Alex Bregman (Chicago Cubs): blended=57.9 | actual=6.5DKpts | +6.5 vs baseline
+  Nico Hoerner (Chicago Cubs): blended=44.8 | actual=7.5DKpts | +7.5 vs baseline
+  Miguel Amaya (Chicago Cubs): blended=26.5 | actual=2.5DKpts | +2.5 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (3 fires):
+  Michael Busch (Chicago Cubs): actual=-2.0DKpts | -1.5 vs baseline
+  Eugenio Suarez (Cincinnati Reds): actual=7.0DKpts | -6.0 vs baseline
+  Dane Myers (Cincinnati Reds): actual=13.0DKpts | +4.0 vs baseline
+STRONG_EDGE (2 fires):
+  Elly De La Cruz (Cincinnati Reds): actual=9.0DKpts | -5.8 vs baseline
+  Tyler Stephenson (Cincinnati Reds): actual=21.0DKpts | +9.2 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (2 teams):
+  Chicago Cubs: actual=5.0R vs ITT=5.1 -> MISS
+  Cincinnati Reds: actual=7.0R vs ITT=4.5 -> HIT
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (56 slates tracked):
+  TRAP/Vulnerable: 55.3% underscored ITT | avg diff +0.89R
+  TRAP/Short Leash: 52.7% underscored ITT | avg diff +0.19R
+  FADE_RISK: 56.2% correct | avg diff +1.00R
+  Top Stack hit ITT: 37.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.58 DK pts
+  STEAM: 44.7% correct | avg +0.64R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.95 DK pts vs baseline
+  PLATOON_TRAP: 59.3% underperformed baseline
+  STRONG_EDGE: avg -0.04 DK pts vs baseline
+  SHARP_FADE pitchers: 49.4% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.6%
+  GASSED pen teams: 42.7% hit ITT
+  BURST teams: 43.1% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Chase Burns (5.2 IP, 2 ER)
+
+=== END ===
