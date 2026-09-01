@@ -55,3 +55,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-08-28,Baltimore Orioles,91.0,5.5,12.0,4,-1.5,N
 2026-08-29,Milwaukee Brewers,95.0,4.9,0.0,5,0.1,Y
 2026-08-30,Chicago Cubs,97.0,5.1,0.0,5,-0.1,N
+2026-08-31,Milwaukee Brewers,97.0,4.8,11.0,3,-1.8,N
