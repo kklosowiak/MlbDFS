@@ -68,3 +68,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-25 | Brandon Pfaadt | Arizona Diamondbacks | 86% | 2.29 | 1.35 | 3.6684566768603464 | N/A | 6.2 IP / 4 ER / 3 K / 2 BB | 7.6 |
 | 2026-08-26 | Mackenzie Gore | Texas Rangers | 75% | 2.12 | 2.1 | 3.825159779614325 | N/A | 3.2 IP / 4 ER / 4 K / 4 BB | 1.1 |
 | 2026-08-26 | Bryan Woo | Seattle Mariners | 79% | 1.0 | 3.86 | 3.4819645184648804 | N/A | 4.0 IP / 6 ER / 5 K / 1 BB | 3.4 |
+| 2026-09-01 | Randy Vásquez | San Diego Padres | 92% | 2.16 | 1.95 | 4.10717610062893 | N/A | 4.2 IP / 2 ER / 3 K / 1 BB | 8.9 |

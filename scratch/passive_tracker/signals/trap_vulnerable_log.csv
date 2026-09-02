@@ -114,3 +114,8 @@ date,pitcher,pitcher_team,trap_type,attack_conf,ITT,actual_runs_against,run_diff
 2026-08-29,Yunior Marte,San Francisco Giants,Vulnerable,0.0,3.9,2,-1.9,1,4.2
 2026-08-30,Chase Burns,Cincinnati Reds,Vulnerable,0.0,5.1,5,-0.1,2,5.2
 2026-08-31,Clay Holmes,Chicago Cubs,Vulnerable,15.0,4.8,3,-1.8,0,6.0
+2026-09-01,Spencer Miles,Toronto Blue Jays,Vulnerable,24.0,0.0,6,6.0,0,1.0
+2026-09-01,Sean Manaea,New York Mets,Vulnerable,26.0,0.0,6,6.0,5,5.2
+2026-09-01,Aj Smith-Shawver,Atlanta Braves,Vulnerable,0.0,0.0,9,9.0,5,4.0
+2026-09-01,Brady Basso,Athletics,Vulnerable,28.0,4.4,8,3.6,2,2.1
+2026-09-01,Michael Mcgreevy,St. Louis Cardinals,Vulnerable,0.0,4.9,8,3.1,4,5.0
