@@ -62,3 +62,6 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-08-28,Arizona Diamondbacks @ San Francisco Giants,Arizona Diamondbacks,81.0,10,San Francisco Giants,55.0,6,none,Y,Y,N
 2026-08-31,Seattle Mariners @ Boston Red Sox,Seattle Mariners,80.0,8,Boston Red Sox,73.0,9,none,Y,N,N
 2026-09-01,St. Louis Cardinals @ Los Angeles Dodgers,St. Louis Cardinals,77.0,13,Los Angeles Dodgers,82.0,8,none,Y,N,N
+2026-09-02,Detroit Tigers @ Minnesota Twins,Detroit Tigers,64.0,11,Minnesota Twins,75.0,6,none,Y,N,N
+2026-09-02,Miami Marlins @ Kansas City Royals,Miami Marlins,62.0,9,Kansas City Royals,70.0,6,none,Y,N,N
+2026-09-02,St. Louis Cardinals @ Los Angeles Dodgers,St. Louis Cardinals,53.0,8,Los Angeles Dodgers,82.0,6,none,Y,N,N
