@@ -65,3 +65,9 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-09-02,Detroit Tigers @ Minnesota Twins,Detroit Tigers,64.0,11,Minnesota Twins,75.0,6,none,Y,N,N
 2026-09-02,Miami Marlins @ Kansas City Royals,Miami Marlins,62.0,9,Kansas City Royals,70.0,6,none,Y,N,N
 2026-09-02,St. Louis Cardinals @ Los Angeles Dodgers,St. Louis Cardinals,53.0,8,Los Angeles Dodgers,82.0,6,none,Y,N,N
+2026-09-04,Detroit Tigers @ Cleveland Guardians,Detroit Tigers,54.0,6,Cleveland Guardians,81.0,7,none,Y,Y,N
+2026-09-04,Milwaukee Brewers @ Cincinnati Reds,Milwaukee Brewers,94.0,10,Cincinnati Reds,81.0,7,none,Y,Y,N
+2026-09-04,San Francisco Giants @ New York Mets,San Francisco Giants,80.0,6,New York Mets,80.0,10,none,Y,Y,N
+2026-09-04,Tampa Bay Rays @ Texas Rangers,Tampa Bay Rays,53.0,7,Texas Rangers,71.0,6,none,Y,N,N
+2026-09-04,St. Louis Cardinals @ Colorado Rockies,St. Louis Cardinals,85.0,7,Colorado Rockies,94.0,6,home,Y,N,Y
+2026-09-04,Athletics @ Seattle Mariners,Athletics,37.0,7,Seattle Mariners,75.0,6,none,Y,N,N

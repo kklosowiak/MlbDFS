@@ -51,3 +51,5 @@ date,team,attack_conf,ITT,divergence,ticket_pct,money_pct,actual_runs,run_diff,s
 2026-09-02,Los Angeles Dodgers,82.0,4.9,0.0,0.0,0.0,6,1.1,Y
 2026-09-03,Seattle Mariners,81.0,4.2,0.0,0.0,0.0,4,-0.2,N
 2026-09-03,St. Louis Cardinals,61.0,3.35,1.0,10.0,11.0,2,-1.35,N
+2026-09-04,Seattle Mariners,75.0,4.3,0.0,0.0,0.0,6,1.7,Y
+2026-09-04,Washington Nationals,41.0,3.4,0.0,0.0,0.0,3,-0.4,N

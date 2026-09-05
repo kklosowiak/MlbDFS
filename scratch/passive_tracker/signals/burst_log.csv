@@ -177,3 +177,6 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-09-02,Los Angeles Dodgers,82.0,4.9,6,1.1,Y
 2026-09-03,Seattle Mariners,81.0,4.2,4,-0.2,N
 2026-09-03,Milwaukee Brewers,81.0,4.1,1,-3.1,N
+2026-09-04,Chicago White Sox,95.0,4.8,4,-0.8,N
+2026-09-04,Arizona Diamondbacks,81.0,4.1,1,-3.1,N
+2026-09-04,Seattle Mariners,75.0,4.3,6,1.7,Y
