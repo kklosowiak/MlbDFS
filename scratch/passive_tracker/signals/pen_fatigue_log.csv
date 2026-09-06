@@ -599,3 +599,15 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-09-04,Seattle Mariners,75.0,4.3,N,Y,6,1.7
 2026-09-04,Detroit Tigers,54.0,3.6,Y,Y,6,2.4
 2026-09-04,Los Angeles Angels,37.0,3.6,N,Y,0,-3.6
+2026-09-05,Kansas City Royals,90.0,4.9,Y,Y,3,-1.9
+2026-09-05,Seattle Mariners,97.0,5.0,Y,Y,2,-3.0
+2026-09-05,Cincinnati Reds,76.0,4.4,N,Y,5,0.6
+2026-09-05,Milwaukee Brewers,82.0,5.4,N,Y,3,-2.4
+2026-09-05,Colorado Rockies,90.0,5.5,Y,Y,10,4.5
+2026-09-05,Tampa Bay Rays,72.0,3.45,Y,Y,6,2.55
+2026-09-05,Toronto Blue Jays,82.0,4.8,Y,Y,4,-0.8
+2026-09-05,Baltimore Orioles,76.0,3.5,N,Y,0,-3.5
+2026-09-05,Boston Red Sox,57.0,4.2,N,Y,5,0.8
+2026-09-05,Los Angeles Angels,64.0,3.5,Y,Y,6,2.5
+2026-09-05,Athletics,25.0,3.42,Y,Y,6,2.58
+2026-09-05,Texas Rangers,46.0,3.45,Y,Y,3,-0.45
