@@ -1,0 +1,64 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-06 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=94.0 | ITT=5.2 | actual=7.0 | diff=+1.8 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (2 instances):
+  Bailey Ober (Vulnerable) vs Chicago White Sox: attack_conf=43.0 ITT=0.0 actual=10.0 diff=+10.0 | 4.1IP 1ER -> NORMAL
+  Justin Wrobleski (Short Leash) vs Washington Nationals: attack_conf=0.0 ITT=3.5 actual=5.0 diff=+1.5 | 3.0IP 4ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Washington Nationals: conf=69.0 ITT=3.5 | actual=5.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Daylen Lile (Washington Nationals): 12.0 DK pts
+  Jacob Young (Washington Nationals): 8.0 DK pts
+  Teoscar Hernandez (Los Angeles Dodgers): 6.5 DK pts
+ANTI_CHALK_SMASH (7 fires):
+  Mookie Betts (Los Angeles Dodgers): blended=78.6 | actual=20.0DKpts | +11.8 vs baseline
+  Will Smith (Los Angeles Dodgers): blended=68.2 | actual=10.5DKpts | +10.5 vs baseline
+  Freddie Freeman (Los Angeles Dodgers): blended=74.9 | actual=2.5DKpts | -3.5 vs baseline
+  Teoscar Hernandez (Los Angeles Dodgers): blended=73.7 | actual=6.5DKpts | -0.5 vs baseline
+  Max Muncy (Los Angeles Dodgers): blended=26.7 | actual=15.0DKpts | +11.8 vs baseline
+  Kyle Tucker (Los Angeles Dodgers): blended=38.0 | actual=-0.5DKpts | -0.5 vs baseline
+  Tommy Edman (Los Angeles Dodgers): blended=34.7 | actual=15.5DKpts | +1.2 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (7 fires):
+  Miguel Vargas (Chicago White Sox): actual=14.5DKpts | +3.5 vs baseline
+  Andres Chaparro (Washington Nationals): actual=2.0DKpts | +2.0 vs baseline
+  Brady House (Washington Nationals): actual=4.5DKpts | +0.8 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=2.0DKpts | -7.2 vs baseline
+  Dylan Crews (Washington Nationals): actual=3.0DKpts | -15.5 vs baseline
+  Chase Meidroth (Chicago White Sox): actual=7.5DKpts | +3.3 vs baseline
+  Nasim Nunez (Washington Nationals): actual=-1.0DKpts | -11.2 vs baseline
+STRONG_EDGE (3 fires):
+  Will Smith (Los Angeles Dodgers): actual=10.5DKpts | +10.5 vs baseline
+  Braden Montgomery (Chicago White Sox): actual=5.5DKpts | +1.0 vs baseline
+  Max Muncy (Los Angeles Dodgers): actual=15.0DKpts | +11.8 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Andrew Alvarez (WALKS=Y HAZ=Y): ITT=5.2 actual=7.0R diff=+1.8
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Los Angeles Dodgers: actual=7.0R vs ITT=5.2 -> CORRECT
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (63 slates tracked):
+  TRAP/Vulnerable: 50.0% underscored ITT | avg diff +1.32R
+  TRAP/Short Leash: 52.8% underscored ITT | avg diff +0.23R
+  FADE_RISK: 52.9% correct | avg diff +0.97R
+  Top Stack hit ITT: 36.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.67 DK pts
+  STEAM: 46.4% correct | avg +0.63R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.01 DK pts vs baseline
+  PLATOON_TRAP: 58.3% underperformed baseline
+  STRONG_EDGE: avg -0.07 DK pts vs baseline
+  SHARP_FADE pitchers: 49.5% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.6%
+  GASSED pen teams: 43.0% hit ITT
+  BURST teams: 43.5% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
