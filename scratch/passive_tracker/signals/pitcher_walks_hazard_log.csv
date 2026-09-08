@@ -434,3 +434,7 @@ date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_ag
 2026-09-05,Jeffrey Springs,Athletics,0.0,5.0,Y,Y,2,-3.0,0,2
 2026-09-05,Max Scherzer,Toronto Blue Jays,0.0,4.9,Y,N,3,-1.9,3,1
 2026-09-06,Andrew Alvarez,Washington Nationals,9.0,5.2,Y,Y,7,1.8,3,2
+2026-09-07,Michael Mcgreevy,St. Louis Cardinals,52.0,4.3,Y,N,5,0.7,2,2
+2026-09-07,Chase Burns,Cincinnati Reds,0.0,4.8,N,Y,6,1.2,0,1
+2026-09-07,Jacob Lopez,Athletics,58.0,5.1,Y,N,5,-0.1,4,1
+2026-09-07,Jake Irvin,Washington Nationals,11.0,4.8,Y,N,3,-1.8,3,2
