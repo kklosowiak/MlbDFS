@@ -1,0 +1,59 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-10 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: New York Yankees | conf=81.0 | ITT=5.75 | actual=10.0 | diff=+4.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Jake Mccarthy (Colorado Rockies): 12.5 DK pts
+  Braden Montgomery (Chicago White Sox): 0.0 DK pts
+  Bryan Reynolds (Pittsburgh Pirates): -0.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (11 fires):
+  Spencer Jones (New York Yankees): actual=15.0DKpts | +11.0 vs baseline
+  Tristan Peters (Chicago White Sox): actual=-1.0DKpts | -7.8 vs baseline
+  Spencer Horwitz (Pittsburgh Pirates): actual=3.0DKpts | +1.0 vs baseline
+  Anthony Volpe (New York Yankees): actual=33.0DKpts | +23.0 vs baseline
+  Austin Wells (New York Yankees): actual=10.0DKpts | +6.7 vs baseline
+  Connor Norby (Colorado Rockies): actual=1.0DKpts | -6.2 vs baseline
+  Nick Gonzales (Pittsburgh Pirates): actual=4.5DKpts | +1.0 vs baseline
+  Brandon Lowe (Pittsburgh Pirates): actual=-0.5DKpts | -5.5 vs baseline
+  Ezequiel Tovar (Colorado Rockies): actual=10.0DKpts | -23.0 vs baseline
+  Jake Mangum (Pittsburgh Pirates): actual=5.0DKpts | +2.2 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=4.5DKpts | +3.0 vs baseline
+STRONG_EDGE (3 fires):
+  Ben Rice (New York Yankees): actual=4.5DKpts | +4.5 vs baseline
+  Miguel Vargas (Chicago White Sox): actual=6.5DKpts | -6.0 vs baseline
+  Sam Antonacci (Chicago White Sox): actual=-0.5DKpts | -0.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Ryan Feltner (WALKS=Y HAZ=N): ITT=5.75 actual=10.0R diff=+4.2
+GASSED/FATIGUED PEN (2 teams):
+  Chicago White Sox: actual=0.0R vs ITT=4.1 -> MISS
+  Pittsburgh Pirates: actual=2.0R vs ITT=4.1 -> MISS
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (67 slates tracked):
+  TRAP/Vulnerable: 46.5% underscored ITT | avg diff +1.62R
+  TRAP/Short Leash: 53.4% underscored ITT | avg diff +0.24R
+  FADE_RISK: 52.9% correct | avg diff +0.97R
+  Top Stack hit ITT: 40.3% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.69 DK pts
+  STEAM: 46.6% correct | avg +0.60R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.94 DK pts vs baseline
+  PLATOON_TRAP: 58.5% underperformed baseline
+  STRONG_EDGE: avg -0.04 DK pts vs baseline
+  SHARP_FADE pitchers: 49.0% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.1%
+  GASSED pen teams: 42.7% hit ITT
+  BURST teams: 44.6% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
