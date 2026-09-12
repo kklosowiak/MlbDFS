@@ -633,3 +633,5 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-09-09,Arizona Diamondbacks,54.0,4.4,N,Y,2,-2.4
 2026-09-10,Chicago White Sox,57.0,4.1,N,Y,0,-4.1
 2026-09-10,Pittsburgh Pirates,79.0,4.1,Y,Y,2,-2.1
+2026-09-11,St. Louis Cardinals,82.0,3.8,Y,Y,7,3.2
+2026-09-11,Tampa Bay Rays,71.0,4.5,N,Y,3,-1.5

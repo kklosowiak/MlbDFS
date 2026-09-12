@@ -70,3 +70,5 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-08-26 | Bryan Woo | Seattle Mariners | 79% | 1.0 | 3.86 | 3.4819645184648804 | N/A | 4.0 IP / 6 ER / 5 K / 1 BB | 3.4 |
 | 2026-09-01 | Randy Vásquez | San Diego Padres | 92% | 2.16 | 1.95 | 4.10717610062893 | N/A | 4.2 IP / 2 ER / 3 K / 1 BB | 8.9 |
 | 2026-09-08 | Drew Anderson | Detroit Tigers | 84% | 2.3 | 3.51 | 3.9692268041237115 | N/A | 5.1 IP / 3 ER / 4 K / 3 BB | 9.8 |
+| 2026-09-11 | Nolan Mclean | New York Mets | 73% | 3.18 | 2.17 | 3.3550653753026634 | N/A | 5.0 IP / 5 ER / 5 K / 1 BB | 4.7 |
+| 2026-09-11 | Anthony Molina | San Francisco Giants | 79% | 2.7 | 2.7 | 3.411204188481675 | N/A | 3.0 IP / 7 ER / 4 K / 2 BB | -5.8 |
