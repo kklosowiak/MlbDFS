@@ -1,0 +1,87 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-12 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Seattle Mariners | conf=94.0 | ITT=5.5 | actual=19.0 | diff=+13.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (3 instances):
+  Sean Newcomb (Vulnerable) vs St. Louis Cardinals: attack_conf=21.0 ITT=4.4 actual=5.0 diff=+0.6 | 1.1IP 1ER -> NORMAL
+  Brady Singer (Vulnerable) vs Milwaukee Brewers: attack_conf=0.0 ITT=4.9 actual=13.0 diff=+8.1 | 4.0IP 8ER -> NORMAL
+  Gage Jump (Short Leash) vs Seattle Mariners: attack_conf=0.0 ITT=5.5 actual=19.0 diff=+13.5 | 2.0IP 5ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Athletics: conf=53.0 ITT=4.2 | actual=1.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Eugenio Suarez (Cincinnati Reds): 28.0 DK pts
+  Ronald Acuna (Atlanta Braves): 26.0 DK pts
+  Juan Brito (Cincinnati Reds): 24.0 DK pts
+ANTI_CHALK_SMASH (8 fires):
+  Dominic Canzone (Seattle Mariners): blended=67.5 | actual=18.5DKpts | +11.2 vs baseline
+  Cal Raleigh (Seattle Mariners): blended=72.7 | actual=5.5DKpts | -3.6 vs baseline
+  Randy Arozarena (Seattle Mariners): blended=63.9 | actual=22.5DKpts | +18.4 vs baseline
+  Julio Rodriguez (Seattle Mariners): blended=50.4 | actual=17.0DKpts | +7.1 vs baseline
+  Jp Crawford (Seattle Mariners): blended=57.9 | actual=25.0DKpts | +20.0 vs baseline
+  Michael Arroyo (Seattle Mariners): blended=45.4 | actual=30.0DKpts | +24.2 vs baseline
+  Josh Naylor (Seattle Mariners): blended=35.8 | actual=15.0DKpts | +1.3 vs baseline
+  Cole Young (Seattle Mariners): blended=39.0 | actual=30.0DKpts | +21.1 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (16 fires):
+  Eugenio Suarez (Cincinnati Reds): actual=28.0DKpts | +19.6 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=11.5DKpts | +3.2 vs baseline
+  Chase Meidroth (Chicago White Sox): actual=1.5DKpts | -9.5 vs baseline
+  Luis Arraez (Philadelphia Phillies): actual=0.0DKpts | -14.1 vs baseline
+  Joshua Baez (St. Louis Cardinals): actual=-0.5DKpts | -14.0 vs baseline
+  Nathan Church (St. Louis Cardinals): actual=13.0DKpts | +6.2 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=8.0DKpts | +8.0 vs baseline
+  Ozzie Albies (Atlanta Braves): actual=12.5DKpts | +0.2 vs baseline
+  Austin Riley (Atlanta Braves): actual=6.5DKpts | -4.7 vs baseline
+  Hector Rodriguez (Cincinnati Reds): actual=3.0DKpts | -4.5 vs baseline
+  Jonah Heim (Athletics): actual=2.5DKpts | -2.3 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=0.0DKpts | -11.1 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=14.0DKpts | +6.6 vs baseline
+  Thomas Saggese (St. Louis Cardinals): actual=4.5DKpts | -19.5 vs baseline
+  Nolan Arenado (Arizona Diamondbacks): actual=3.0DKpts | -6.1 vs baseline
+  Elias Diaz (Texas Rangers): actual=12.5DKpts | +6.2 vs baseline
+STRONG_EDGE (10 fires):
+  Alec Burleson (St. Louis Cardinals): actual=1.0DKpts | -6.7 vs baseline
+  Elly De La Cruz (Cincinnati Reds): actual=11.0DKpts | +7.0 vs baseline
+  Jake Bauers (Milwaukee Brewers): actual=12.0DKpts | +5.1 vs baseline
+  Shea Langeliers (Athletics): actual=5.0DKpts | -10.5 vs baseline
+  Matt Olson (Atlanta Braves): actual=-0.5DKpts | -10.3 vs baseline
+  Tyler Stephenson (Cincinnati Reds): actual=4.0DKpts | -4.6 vs baseline
+  Jake Burger (Texas Rangers): actual=9.5DKpts | -1.4 vs baseline
+  Donovan Walton (Athletics): actual=-0.5DKpts | -4.9 vs baseline
+  Brandon Nimmo (Texas Rangers): actual=13.0DKpts | +6.0 vs baseline
+  Jj Bleday (Cincinnati Reds): actual=13.5DKpts | +4.2 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Brandon Pfaadt vs Texas Rangers: ITT=4.1 actual=6.0R diff=+1.9
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Gage Jump (WALKS=Y HAZ=N): ITT=5.5 actual=19.0R diff=+13.5
+GASSED/FATIGUED PEN (1 teams):
+  St. Louis Cardinals: actual=5.0R vs ITT=4.4 -> HIT
+BURST (3 teams):
+  Seattle Mariners: actual=19.0R vs ITT=5.5 -> CORRECT
+  Arizona Diamondbacks: actual=2.0R vs ITT=4.6 -> MISS
+  Milwaukee Brewers: actual=13.0R vs ITT=4.9 -> CORRECT
+RIGHT GAME WRONG TEAM:
+  Cincinnati Reds @ Milwaukee Brewers: both scored 6+? Y | higher-conf team won scoring? Y
+
+RUNNING ACCURACY (69 slates tracked):
+  TRAP/Vulnerable: 44.8% underscored ITT | avg diff +1.74R
+  TRAP/Short Leash: 52.3% underscored ITT | avg diff +0.35R
+  FADE_RISK: 55.6% correct | avg diff +0.88R
+  Top Stack hit ITT: 40.6% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.76 DK pts
+  STEAM: 46.7% correct | avg +0.58R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.05 DK pts vs baseline
+  PLATOON_TRAP: 58.5% underperformed baseline
+  STRONG_EDGE: avg -0.02 DK pts vs baseline
+  SHARP_FADE pitchers: 47.6% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.0%
+  GASSED pen teams: 42.9% hit ITT
+  BURST teams: 45.8% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  Right-Game-Wrong-Team Match: Cincinnati Reds @ Milwaukee Brewers (Both scored 6+ runs)
+
+=== END ===
