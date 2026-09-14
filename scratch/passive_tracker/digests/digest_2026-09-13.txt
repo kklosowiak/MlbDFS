@@ -1,0 +1,49 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-13 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: San Diego Padres | conf=57.0 | ITT=4.0 | actual=6.0 | diff=+2.0 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Fernando Tatis (San Diego Padres): 21.5 DK pts
+  Manny Machado (San Diego Padres): 17.5 DK pts
+  Jackson Merrill (San Diego Padres): 8.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (3 fires):
+  Manny Machado (San Diego Padres): actual=17.5DKpts | +17.5 vs baseline
+  Xander Bogaerts (San Diego Padres): actual=-1.0DKpts | -1.0 vs baseline
+  Jake Cronenworth (San Diego Padres): actual=2.0DKpts | +2.0 vs baseline
+STRONG_EDGE (2 fires):
+  Jackson Merrill (San Diego Padres): actual=8.5DKpts | +8.5 vs baseline
+  Brett Harris (San Francisco Giants): actual=0.0DKpts | -2.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Logan Webb (WALKS=Y HAZ=N): ITT=4.0 actual=6.0R diff=+2.0
+GASSED/FATIGUED PEN (1 teams):
+  San Diego Padres: actual=6.0R vs ITT=4.0 -> HIT
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (70 slates tracked):
+  TRAP/Vulnerable: 44.8% underscored ITT | avg diff +1.74R
+  TRAP/Short Leash: 52.3% underscored ITT | avg diff +0.35R
+  FADE_RISK: 55.6% correct | avg diff +0.88R
+  Top Stack hit ITT: 41.4% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.77 DK pts
+  STEAM: 46.7% correct | avg +0.58R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.05 DK pts vs baseline
+  PLATOON_TRAP: 58.5% underperformed baseline
+  STRONG_EDGE: avg -0.02 DK pts vs baseline
+  SHARP_FADE pitchers: 47.6% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.1%
+  GASSED pen teams: 42.9% hit ITT
+  BURST teams: 45.8% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
