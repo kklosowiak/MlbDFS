@@ -75,3 +75,6 @@ date,game,teamA,teamA_conf,teamA_actual_runs,teamB,teamB_conf,teamB_actual_runs,
 2026-09-09,Chicago Cubs @ Milwaukee Brewers,Chicago Cubs,57.0,6,Milwaukee Brewers,57.0,8,none,Y,Y,N
 2026-09-11,Seattle Mariners @ Athletics,Seattle Mariners,96.0,5,Athletics,62.0,6,away,N,N,Y
 2026-09-12,Cincinnati Reds @ Milwaukee Brewers,Cincinnati Reds,49.0,9,Milwaukee Brewers,82.0,13,none,Y,Y,N
+2026-09-14,Atlanta Braves @ Chicago Cubs,Atlanta Braves,63.0,3,Chicago Cubs,89.0,7,home,N,Y,Y
+2026-09-14,San Diego Padres @ Colorado Rockies,San Diego Padres,97.0,8,Colorado Rockies,81.0,7,none,Y,Y,N
+2026-09-14,Miami Marlins @ Arizona Diamondbacks,Miami Marlins,60.0,7,Arizona Diamondbacks,91.0,8,none,Y,Y,N
