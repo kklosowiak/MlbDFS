@@ -73,3 +73,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-09-11 | Nolan Mclean | New York Mets | 73% | 3.18 | 2.17 | 3.3550653753026634 | N/A | 5.0 IP / 5 ER / 5 K / 1 BB | 4.7 |
 | 2026-09-11 | Anthony Molina | San Francisco Giants | 79% | 2.7 | 2.7 | 3.411204188481675 | N/A | 3.0 IP / 7 ER / 4 K / 2 BB | -5.8 |
 | 2026-09-15 | Michael Wacha | Kansas City Royals | 79% | 1.35 | 2.25 | 3.6605664105378706 | 2.45 | 6.0 IP / 4 ER / 2 K / 1 BB | 5.9 |
+| 2026-09-16 | George Kirby | Seattle Mariners | 83% | 6.11 | 5.97 | 4.011245305875227 | N/A | 4.1 IP / 2 ER / 5 K / 5 BB | 9.8 |
