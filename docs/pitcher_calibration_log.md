@@ -74,3 +74,6 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-09-11 | Anthony Molina | San Francisco Giants | 79% | 2.7 | 2.7 | 3.411204188481675 | N/A | 3.0 IP / 7 ER / 4 K / 2 BB | -5.8 |
 | 2026-09-15 | Michael Wacha | Kansas City Royals | 79% | 1.35 | 2.25 | 3.6605664105378706 | 2.45 | 6.0 IP / 4 ER / 2 K / 1 BB | 5.9 |
 | 2026-09-16 | George Kirby | Seattle Mariners | 83% | 6.11 | 5.97 | 4.011245305875227 | N/A | 4.1 IP / 2 ER / 5 K / 5 BB | 9.8 |
+| 2026-09-18 | Eduardo Rodriguez | Arizona Diamondbacks | 90% | 3.86 | 2.17 | 3.4074300954519936 | N/A | 5.1 IP / 7 ER / 5 K / 4 BB | 2.6 |
+| 2026-09-18 | David Sandlin | Chicago White Sox | 75% | 1.32 | 4.18 | 4.763968847352025 | N/A | 4.0 IP / 5 ER / 4 K / 1 BB | 2.2 |
+| 2026-09-18 | Kumar Rocker | Texas Rangers | 73% | 3.38 | 3.38 | 4.360285714285714 | N/A | 4.1 IP / 1 ER / 2 K / 2 BB | 8.8 |

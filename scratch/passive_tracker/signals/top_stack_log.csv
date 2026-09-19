@@ -73,3 +73,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-09-15,San Diego Padres,94.0,6.2,0.0,3,-3.2,N
 2026-09-16,Arizona Diamondbacks,97.0,4.6,24.0,3,-1.6,N
 2026-09-17,San Diego Padres,96.0,5.75,0.0,9,3.25,Y
+2026-09-18,Arizona Diamondbacks,90.0,3.7,39.0,2,-1.7,N
