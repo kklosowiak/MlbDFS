@@ -222,3 +222,5 @@ date,team,attack_conf,ITT,actual_runs,run_diff,burst_correct
 2026-09-17,New York Mets,80.0,4.4,0,-4.4,N
 2026-09-18,Arizona Diamondbacks,90.0,3.7,2,-1.7,N
 2026-09-18,Milwaukee Brewers,75.0,4.6,6,1.4,Y
+2026-09-19,Seattle Mariners,80.0,5.95,3,-2.95,N
+2026-09-19,Los Angeles Dodgers,97.0,4.6,10,5.4,Y
