@@ -1,0 +1,68 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-20 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=82.0 | ITT=4.5 | actual=3.0 | diff=-1.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (1 instances):
+  Troy Melton (Vulnerable) vs Chicago White Sox: attack_conf=10.0 ITT=0.0 actual=8.0 diff=+8.0 | 3.2IP 4ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Chase Meidroth (Chicago White Sox): 22.0 DK pts
+  Cooper Pratt (Milwaukee Brewers): 21.5 DK pts
+  William Contreras (Milwaukee Brewers): 15.5 DK pts
+ANTI_CHALK_SMASH (9 fires):
+  Jake Bauers (Milwaukee Brewers): blended=78.8 | actual=13.0DKpts | +5.0 vs baseline
+  William Contreras (Milwaukee Brewers): blended=72.2 | actual=15.5DKpts | +4.8 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): blended=69.4 | actual=4.5DKpts | -1.6 vs baseline
+  Brice Turang (Milwaukee Brewers): blended=73.2 | actual=-1.5DKpts | -8.8 vs baseline
+  Jackson Chourio (Milwaukee Brewers): blended=44.8 | actual=14.5DKpts | +15.2 vs baseline
+  Cooper Pratt (Milwaukee Brewers): blended=59.0 | actual=21.5DKpts | +16.5 vs baseline
+  Joey Ortiz (Milwaukee Brewers): blended=43.9 | actual=-2.0DKpts | -2.0 vs baseline
+  Christian Yelich (Milwaukee Brewers): blended=40.7 | actual=-1.5DKpts | -1.5 vs baseline
+  Sal Frelick (Milwaukee Brewers): blended=26.0 | actual=0.0DKpts | -4.6 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (10 fires):
+  Miguel Vargas (Chicago White Sox): actual=8.5DKpts | -7.0 vs baseline
+  Gunnar Henderson (Baltimore Orioles): actual=1.0DKpts | -9.2 vs baseline
+  Max Clark (Detroit Tigers): actual=4.0DKpts | -3.2 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=-2.0DKpts | -2.0 vs baseline
+  Chase Meidroth (Chicago White Sox): actual=22.0DKpts | +19.8 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=-1.5DKpts | -1.5 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=11.0DKpts | +11.0 vs baseline
+  Jeremiah Jackson (Baltimore Orioles): actual=-0.5DKpts | -9.0 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=0.0DKpts | -4.6 vs baseline
+  Leody Taveras (Baltimore Orioles): actual=0.0DKpts | -12.2 vs baseline
+STRONG_EDGE (4 fires):
+  Jake Bauers (Milwaukee Brewers): actual=13.0DKpts | +5.0 vs baseline
+  William Contreras (Milwaukee Brewers): actual=15.5DKpts | +4.8 vs baseline
+  Brice Turang (Milwaukee Brewers): actual=-1.5DKpts | -8.8 vs baseline
+  Dylan Beavers (Baltimore Orioles): actual=-1.0DKpts | -4.7 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Brandon Young (WALKS=Y HAZ=N): ITT=4.5 actual=3.0R diff=-1.5
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Milwaukee Brewers: actual=3.0R vs ITT=4.5 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (77 slates tracked):
+  TRAP/Vulnerable: 41.6% underscored ITT | avg diff +2.03R
+  TRAP/Short Leash: 53.1% underscored ITT | avg diff +0.31R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 41.6% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.88 DK pts
+  STEAM: 48.6% correct | avg +0.62R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.97 DK pts vs baseline
+  PLATOON_TRAP: 58.7% underperformed baseline
+  STRONG_EDGE: avg +0.04 DK pts vs baseline
+  SHARP_FADE pitchers: 49.1% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.4%
+  GASSED pen teams: 43.0% hit ITT
+  BURST teams: 44.2% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
