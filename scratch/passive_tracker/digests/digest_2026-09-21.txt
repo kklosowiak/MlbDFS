@@ -1,0 +1,83 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-21 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Minnesota Twins | conf=95.0 | ITT=4.5 | actual=2.0 | diff=-2.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (2 instances):
+  Shane Baz (Vulnerable) vs Toronto Blue Jays: attack_conf=0.0 ITT=3.8 actual=3.0 diff=-0.8 | 6.2IP 3ER -> NORMAL
+  Blade Tidwell (Short Leash) vs Minnesota Twins: attack_conf=0.0 ITT=4.5 actual=2.0 diff=-2.5 | 3.1IP 1ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (1 team fires):
+  Washington Nationals: conf=67.0 ITT=3.9 | actual=2.0R (note: is_steam is a refuted/reversed signal per the July audit)
+HOT_MSMI TOP 3:
+  Drew Gilbert (San Francisco Giants): 25.5 DK pts
+  Eduardo Valencia (Detroit Tigers): 15.0 DK pts
+  Spencer Torkelson (Detroit Tigers): 15.0 DK pts
+ANTI_CHALK_SMASH (16 fires):
+  Riley Greene (Detroit Tigers): blended=79.7 | actual=3.5DKpts | -6.0 vs baseline
+  Eduardo Valencia (Detroit Tigers): blended=62.1 | actual=15.0DKpts | +8.5 vs baseline
+  John Peck (Detroit Tigers): blended=45.8 | actual=0.0DKpts | -5.9 vs baseline
+  Dillon Dingler (Detroit Tigers): blended=36.9 | actual=13.5DKpts | +4.1 vs baseline
+  Josh Bell (Minnesota Twins): blended=50.0 | actual=0.0DKpts | -12.2 vs baseline
+  Spencer Torkelson (Detroit Tigers): blended=46.5 | actual=15.0DKpts | +8.1 vs baseline
+  Ryan Jeffers (Minnesota Twins): blended=40.8 | actual=-1.5DKpts | -1.5 vs baseline
+  Ben Ross (Minnesota Twins): blended=36.7 | actual=0.0DKpts | -5.4 vs baseline
+  Javier Baez (Detroit Tigers): blended=15.5 | actual=17.5DKpts | +13.8 vs baseline
+  Emmanuel Rodriguez (Minnesota Twins): blended=40.5 | actual=13.5DKpts | +11.8 vs baseline
+  Ben Malgeri (Detroit Tigers): blended=34.4 | actual=22.5DKpts | +15.4 vs baseline
+  Luke Keaschall (Minnesota Twins): blended=46.0 | actual=-0.5DKpts | -5.9 vs baseline
+  Walker Jenkins (Minnesota Twins): blended=49.4 | actual=3.0DKpts | -2.1 vs baseline
+  Gleyber Torres (Detroit Tigers): blended=32.6 | actual=4.0DKpts | -1.0 vs baseline
+  Haoyu Lee (Detroit Tigers): blended=34.6 | actual=17.0DKpts | +13.2 vs baseline
+  Brooks Lee (Minnesota Twins): blended=31.4 | actual=14.0DKpts | +11.7 vs baseline
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (8 fires):
+  Gunnar Henderson (Baltimore Orioles): actual=25.0DKpts | +25.0 vs baseline
+  Christian Encarnacionstrand (Baltimore Orioles): actual=3.0DKpts | +3.0 vs baseline
+  Jacob Young (Washington Nationals): actual=7.5DKpts | +1.7 vs baseline
+  Dylan Crews (Washington Nationals): actual=4.5DKpts | +2.5 vs baseline
+  Brady House (Washington Nationals): actual=-1.0DKpts | -11.3 vs baseline
+  Luke Keaschall (Minnesota Twins): actual=-0.5DKpts | -5.9 vs baseline
+  Brooks Lee (Minnesota Twins): actual=14.0DKpts | +11.7 vs baseline
+  Andres Gimenez (Toronto Blue Jays): actual=3.0DKpts | -2.5 vs baseline
+STRONG_EDGE (5 fires):
+  Ryan Jeffers (Minnesota Twins): actual=-1.5DKpts | -1.5 vs baseline
+  George Springer (Toronto Blue Jays): actual=7.5DKpts | +3.0 vs baseline
+  Ben Malgeri (Detroit Tigers): actual=22.5DKpts | +15.4 vs baseline
+  Walker Jenkins (Minnesota Twins): actual=3.0DKpts | -2.1 vs baseline
+  Alejandro Kirk (Toronto Blue Jays): actual=7.0DKpts | +3.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (3):
+  Zebby Matthews (WALKS=Y HAZ=N): ITT=4.2 actual=5.0R diff=+0.8
+  Dj Herz (WALKS=Y HAZ=N): ITT=4.8 actual=9.0R diff=+4.2
+  Blade Tidwell (WALKS=Y HAZ=N): ITT=4.5 actual=2.0R diff=-2.5
+GASSED/FATIGUED PEN (6 teams):
+  Minnesota Twins: actual=2.0R vs ITT=4.5 -> MISS
+  Toronto Blue Jays: actual=3.0R vs ITT=3.8 -> MISS
+  Baltimore Orioles: actual=4.0R vs ITT=3.9 -> HIT
+  San Francisco Giants: actual=5.0R vs ITT=4.2 -> HIT
+  Detroit Tigers: actual=9.0R vs ITT=4.8 -> HIT
+  Washington Nationals: actual=2.0R vs ITT=3.9 -> MISS
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (78 slates tracked):
+  TRAP/Vulnerable: 41.9% underscored ITT | avg diff +2.02R
+  TRAP/Short Leash: 53.4% underscored ITT | avg diff +0.29R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 41.0% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.88 DK pts
+  STEAM: 47.9% correct | avg +0.58R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +1.00 DK pts vs baseline
+  PLATOON_TRAP: 58.6% underperformed baseline
+  STRONG_EDGE: avg +0.06 DK pts vs baseline
+  SHARP_FADE pitchers: 49.1% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 40.0%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.5%
+  GASSED pen teams: 43.1% hit ITT
+  BURST teams: 44.2% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===

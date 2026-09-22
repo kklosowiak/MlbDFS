@@ -694,3 +694,9 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-09-18,San Francisco Giants,72.0,3.38,Y,Y,2,-1.38
 2026-09-19,Atlanta Braves,79.0,4.2,N,Y,6,1.8
 2026-09-19,Toronto Blue Jays,74.0,4.0,Y,Y,2,-2.0
+2026-09-21,Minnesota Twins,95.0,4.5,Y,Y,2,-2.5
+2026-09-21,Toronto Blue Jays,75.0,3.8,Y,Y,3,-0.8
+2026-09-21,Baltimore Orioles,77.0,3.9,Y,Y,4,0.1
+2026-09-21,San Francisco Giants,62.0,4.2,N,Y,5,0.8
+2026-09-21,Detroit Tigers,95.0,4.8,Y,Y,9,4.2
+2026-09-21,Washington Nationals,67.0,3.9,Y,Y,2,-1.9
