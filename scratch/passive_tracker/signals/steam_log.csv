@@ -70,3 +70,5 @@ date,team,attack_conf,ITT,divergence,ticket_pct,money_pct,actual_runs,run_diff,s
 2026-09-19,Los Angeles Dodgers,97.0,4.6,0.0,0.0,0.0,10,5.4,Y
 2026-09-19,New York Yankees,57.0,4.1,0.0,0.0,0.0,3,-1.1,N
 2026-09-21,Washington Nationals,67.0,3.9,10.0,21.0,31.0,2,-1.9,N
+2026-09-22,Los Angeles Dodgers,81.0,4.2,15.0,67.0,82.0,7,2.8,Y
+2026-09-22,Pittsburgh Pirates,92.0,4.3,-21.0,73.0,52.0,2,-2.3,N

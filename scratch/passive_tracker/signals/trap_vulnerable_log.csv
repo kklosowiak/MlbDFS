@@ -185,3 +185,5 @@ date,pitcher,pitcher_team,trap_type,attack_conf,ITT,actual_runs_against,run_diff
 2026-09-19,Nick Lodolo,Cincinnati Reds,Vulnerable,8.0,0.0,5,5.0,3,7.0
 2026-09-20,Troy Melton,Detroit Tigers,Vulnerable,10.0,0.0,8,8.0,4,3.2
 2026-09-21,Shane Baz,Baltimore Orioles,Vulnerable,0.0,3.8,3,-0.8,3,6.2
+2026-09-22,Payton Tolle,Boston Red Sox,Vulnerable,49.0,3.42,3,-0.42,2,5.2
+2026-09-22,Nick Martinez,Tampa Bay Rays,Vulnerable,67.0,3.5,2,-1.5,2,6.0

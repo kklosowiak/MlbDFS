@@ -81,3 +81,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-09-19 | Reid Detmers | Los Angeles Angels | 73% | 1.89 | 1.45 | 3.1382873563218388 | 4.3 | 5.0 IP / 4 ER / 5 K / 0 BB | 9.7 |
 | 2026-09-19 | Cal Quantrill | Texas Rangers | 91% | 3.38 | 2.73 | 3.429727272727273 | N/A | 1.1 IP / 0 ER / 0 K / 0 BB | 3.0 |
 | 2026-09-21 | Dj Herz | Washington Nationals | 85% | 0.0 | N/A | 4.1 | N/A | 4.0 IP / 4 ER / 4 K / 2 BB | 4.8 |
+| 2026-09-22 | Tbd | Los Angeles Dodgers | 78% | 0.0 | N/A | 4.1 | N/A | 1.0 IP / 0 ER / 1 K / 0 BB | 3.6 |
