@@ -72,3 +72,7 @@ date,team,attack_conf,ITT,divergence,ticket_pct,money_pct,actual_runs,run_diff,s
 2026-09-21,Washington Nationals,67.0,3.9,10.0,21.0,31.0,2,-1.9,N
 2026-09-22,Los Angeles Dodgers,81.0,4.2,15.0,67.0,82.0,7,2.8,Y
 2026-09-22,Pittsburgh Pirates,92.0,4.3,-21.0,73.0,52.0,2,-2.3,N
+2026-09-23,Atlanta Braves,72.0,4.7,0.0,0.0,0.0,3,-1.7,N
+2026-09-23,Houston Astros,70.0,4.0,31.0,51.0,82.0,5,1.0,Y
+2026-09-23,Pittsburgh Pirates,79.0,3.9,18.0,65.0,83.0,1,-2.9,N
+2026-09-23,Tampa Bay Rays,44.0,3.38,11.0,33.0,44.0,2,-1.38,N
