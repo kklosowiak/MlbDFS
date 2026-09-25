@@ -83,3 +83,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-09-21 | Dj Herz | Washington Nationals | 85% | 0.0 | N/A | 4.1 | N/A | 4.0 IP / 4 ER / 4 K / 2 BB | 4.8 |
 | 2026-09-22 | Tbd | Los Angeles Dodgers | 78% | 0.0 | N/A | 4.1 | N/A | 1.0 IP / 0 ER / 1 K / 0 BB | 3.6 |
 | 2026-09-23 | Mason Englert | Tampa Bay Rays | 76% | 6.28 | 6.28 | 4.88875 | N/A | 3.2 IP / 8 ER / 6 K / 1 BB | -1.8 |
+| 2026-09-24 | Tyler Mahle | Atlanta Braves | 90% | 0.95 | 1.17 | 3.7972222222222225 | N/A | 5.0 IP / 5 ER / 4 K / 2 BB | 4.5 |
