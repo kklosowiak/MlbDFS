@@ -82,3 +82,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-09-24,Chicago White Sox,96.0,4.5,0.0,9,4.5,Y
 2026-09-25,Milwaukee Brewers,95.0,4.6,14.0,8,3.4,Y
 2026-09-26,Seattle Mariners,81.0,4.5,-2.0,8,3.5,Y
+2026-09-27,Chicago Cubs,96.0,6.34,0.0,6,-0.34,N

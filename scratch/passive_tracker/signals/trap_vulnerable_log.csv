@@ -202,3 +202,7 @@ date,pitcher,pitcher_team,trap_type,attack_conf,ITT,actual_runs_against,run_diff
 2026-09-26,Tanner Bibee,Cleveland Guardians,Vulnerable,16.0,0.0,5,5.0,3,6.0
 2026-09-26,Davis Martin,Chicago White Sox,Vulnerable,23.0,0.0,9,9.0,2,0.2
 2026-09-26,Bailey Ober,Minnesota Twins,Vulnerable,16.0,0.0,6,6.0,6,5.0
+2026-09-27,Logan Gilbert,Seattle Mariners,Vulnerable,44.0,3.4,3,-0.4,0,4.0
+2026-09-27,Jack Dreyer,Los Angeles Dodgers,Vulnerable,30.0,3.4,1,-2.4,1,2.0
+2026-09-27,Kyle Freeland,Colorado Rockies,Vulnerable,2.0,5.1,4,-1.1,4,4.0
+2026-09-27,Max Scherzer,Toronto Blue Jays,Vulnerable,14.0,3.8,1,-2.8,1,7.0
