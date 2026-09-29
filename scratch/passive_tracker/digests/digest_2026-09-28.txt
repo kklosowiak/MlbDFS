@@ -1,0 +1,39 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-28 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: None
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (0 fires):
+STRONG_EDGE (0 fires):
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (84 slates tracked):
+  TRAP/Vulnerable: 42.5% underscored ITT | avg diff +1.99R
+  TRAP/Short Leash: 53.9% underscored ITT | avg diff +0.22R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 42.9% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.79 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.8% underperformed baseline
+  STRONG_EDGE: avg +0.08 DK pts vs baseline
+  SHARP_FADE pitchers: 48.8% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 45.1%
+  GASSED pen teams: 43.6% hit ITT
+  BURST teams: 44.4% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
