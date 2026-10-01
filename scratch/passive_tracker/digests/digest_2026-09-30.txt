@@ -1,0 +1,74 @@
+=== OMEGA SIGNAL DIGEST - 2026-09-30 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Houston Astros | conf=95.0 | ITT=4.2 | actual=3.0 | diff=-1.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (3 instances):
+  Cristopher Sánchez (Vulnerable) vs Atlanta Braves: attack_conf=34.0 ITT=0.0 actual=3.0 diff=+3.0 | 6.2IP 3ER -> NORMAL
+  Hunter Brown (Short Leash) vs Chicago White Sox: attack_conf=0.0 ITT=3.5 actual=7.0 diff=+3.5 | 0.2IP 3ER -> NORMAL
+  Kevin Gausman (Short Leash) vs San Diego Padres: attack_conf=0.0 ITT=4.0 actual=4.0 diff=+0.0 | 3.1IP 3ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Gavin Sheets (San Diego Padres): 16.0 DK pts
+  Xander Bogaerts (San Diego Padres): 12.0 DK pts
+  Austin Wells (New York Yankees): 9.0 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (15 fires):
+  Christian Walker (Houston Astros): actual=-1.5DKpts | -5.9 vs baseline
+  Jackson Merrill (San Diego Padres): actual=14.5DKpts | +11.6 vs baseline
+  Isaac Paredes (Houston Astros): actual=3.5DKpts | -4.5 vs baseline
+  Alex Bregman (Chicago Cubs): actual=-0.5DKpts | -7.1 vs baseline
+  Ty France (San Diego Padres): actual=9.5DKpts | +5.5 vs baseline
+  Spencer Jones (New York Yankees): actual=8.0DKpts | +1.8 vs baseline
+  Jazz Chisholm (New York Yankees): actual=22.0DKpts | +17.0 vs baseline
+  Edmundo Sosa (Philadelphia Phillies): actual=3.0DKpts | -1.7 vs baseline
+  Alec Bohm (Philadelphia Phillies): actual=19.0DKpts | +13.0 vs baseline
+  Chase Meidroth (Chicago White Sox): actual=23.0DKpts | +21.0 vs baseline
+  Colson Montgomery (Chicago White Sox): actual=1.0DKpts | +1.0 vs baseline
+  Tristan Peters (Chicago White Sox): actual=13.5DKpts | +12.6 vs baseline
+  George Lombard (New York Yankees): actual=6.0DKpts | -0.2 vs baseline
+  Caleb Durbin (Boston Red Sox): actual=-0.5DKpts | -4.8 vs baseline
+  Ceddanne Rafaela (Boston Red Sox): actual=0.0DKpts | -8.0 vs baseline
+STRONG_EDGE (7 fires):
+  Ben Rice (New York Yankees): actual=6.5DKpts | -8.5 vs baseline
+  Willson Contreras (Boston Red Sox): actual=21.0DKpts | +12.0 vs baseline
+  Bryce Harper (Philadelphia Phillies): actual=18.5DKpts | +18.5 vs baseline
+  Miguel Vargas (Chicago White Sox): actual=1.0DKpts | -1.2 vs baseline
+  Trent Grisham (New York Yankees): actual=15.0DKpts | +2.8 vs baseline
+  Cam Smith (Houston Astros): actual=15.0DKpts | +12.8 vs baseline
+  Braden Montgomery (Chicago White Sox): actual=-0.5DKpts | -4.6 vs baseline
+SHARP_FADE PITCHERS (1 instances):
+  Nick Pivetta vs Chicago Cubs: ITT=3.6 actual=1.0R diff=-2.6
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (2):
+  Hunter Brown (WALKS=Y HAZ=N): ITT=3.5 actual=7.0R diff=+3.5
+  Sean Burke (WALKS=Y HAZ=N): ITT=4.2 actual=3.0R diff=-1.2
+GASSED/FATIGUED PEN (4 teams):
+  Houston Astros: actual=3.0R vs ITT=4.2 -> MISS
+  Chicago White Sox: actual=7.0R vs ITT=3.5 -> HIT
+  San Diego Padres: actual=4.0R vs ITT=4.0 -> HIT
+  New York Yankees: actual=9.0R vs ITT=3.5 -> HIT
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (86 slates tracked):
+  TRAP/Vulnerable: 42.3% underscored ITT | avg diff +1.99R
+  TRAP/Short Leash: 53.3% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 41.9% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.76 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.8% underperformed baseline
+  STRONG_EDGE: avg +0.12 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 45.1%
+  GASSED pen teams: 43.7% hit ITT
+  BURST teams: 44.7% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
