@@ -1,0 +1,51 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-01 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Atlanta Braves | conf=71.0 | ITT=3.91 | actual=6.0 | diff=+2.1 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Michael Harris (Atlanta Braves): 19.5 DK pts
+  Drake Baldwin (Atlanta Braves): 0.0 DK pts
+  Mauricio Dubon (Atlanta Braves): -0.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (6 fires):
+  Austin Riley (Atlanta Braves): actual=6.0DKpts | +6.0 vs baseline
+  Alec Bohm (Philadelphia Phillies): actual=5.0DKpts | +5.0 vs baseline
+  Mauricio Dubon (Atlanta Braves): actual=-0.5DKpts | -0.5 vs baseline
+  Trea Turner (Philadelphia Phillies): actual=2.0DKpts | +2.0 vs baseline
+  Brandon Marsh (Philadelphia Phillies): actual=2.0DKpts | +2.0 vs baseline
+  Justin Crawford (Philadelphia Phillies): actual=0.0DKpts | -2.5 vs baseline
+STRONG_EDGE (2 fires):
+  Kyle Schwarber (Philadelphia Phillies): actual=10.0DKpts | +10.0 vs baseline
+  Ronald Acuna (Atlanta Braves): actual=7.0DKpts | +3.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Atlanta Braves: actual=6.0R vs ITT=3.91 -> CORRECT
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (87 slates tracked):
+  TRAP/Vulnerable: 42.3% underscored ITT | avg diff +1.99R
+  TRAP/Short Leash: 53.3% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 42.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.76 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.7% underperformed baseline
+  STRONG_EDGE: avg +0.12 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 45.1%
+  GASSED pen teams: 43.7% hit ITT
+  BURST teams: 44.9% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
