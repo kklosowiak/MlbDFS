@@ -1,0 +1,54 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-03 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=81.0 | ITT=4.2 | actual=3.0 | diff=-1.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+  Jackson Chourio (Milwaukee Brewers): 16.0 DK pts
+  Xander Bogaerts (San Diego Padres): 7.0 DK pts
+  Brice Turang (Milwaukee Brewers): 6.5 DK pts
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (6 fires):
+  George Lombard (New York Yankees): actual=-0.5DKpts | -1.8 vs baseline
+  Spencer Jones (New York Yankees): actual=-1.0DKpts | -3.0 vs baseline
+  Ty France (San Diego Padres): actual=4.5DKpts | +5.2 vs baseline
+  Dustin Harris (San Diego Padres): actual=8.0DKpts | +8.0 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=3.0DKpts | -4.5 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=-1.0DKpts | -1.5 vs baseline
+STRONG_EDGE (4 fires):
+  Xander Bogaerts (San Diego Padres): actual=7.0DKpts | +7.5 vs baseline
+  Austin Wells (New York Yankees): actual=4.5DKpts | +4.8 vs baseline
+  Liam Hicks (Tampa Bay Rays): actual=7.0DKpts | +1.5 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): actual=11.5DKpts | +6.8 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Robbie Ray (WALKS=Y HAZ=N): ITT=4.2 actual=3.0R diff=-1.2
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Milwaukee Brewers: actual=3.0R vs ITT=4.2 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (88 slates tracked):
+  TRAP/Vulnerable: 42.3% underscored ITT | avg diff +1.99R
+  TRAP/Short Leash: 53.3% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 42.0% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.75 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.7% underperformed baseline
+  STRONG_EDGE: avg +0.14 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 45.0%
+  GASSED pen teams: 43.7% hit ITT
+  BURST teams: 44.7% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
