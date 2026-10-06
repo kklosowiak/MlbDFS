@@ -557,3 +557,6 @@ date,pitcher,pitcher_team,attack_conf,ITT,walks_penalty,is_hazard,actual_runs_ag
 2026-09-30,Hunter Brown,Houston Astros,0.0,3.5,Y,N,7,3.5,3,1
 2026-09-30,Sean Burke,Chicago White Sox,22.0,4.2,Y,N,3,-1.2,3,0
 2026-10-03,Robbie Ray,San Diego Padres,26.0,4.2,Y,N,3,-1.2,2,2
+2026-10-05,Cam Schlittler,New York Yankees,94.0,3.42,Y,N,5,1.58,2,1
+2026-10-05,Gavin Williams,Cleveland Guardians,38.0,3.38,Y,N,4,0.62,2,3
+2026-10-05,Freddy Peralta,Tampa Bay Rays,63.0,3.5,Y,N,2,-1.5,1,1

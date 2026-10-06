@@ -85,3 +85,4 @@ Conducted multiple linear regression on starting pitcher starts ($N = 167$) to v
 | 2026-09-23 | Mason Englert | Tampa Bay Rays | 76% | 6.28 | 6.28 | 4.88875 | N/A | 3.2 IP / 8 ER / 6 K / 1 BB | -1.8 |
 | 2026-09-24 | Tyler Mahle | Atlanta Braves | 90% | 0.95 | 1.17 | 3.7972222222222225 | N/A | 5.0 IP / 5 ER / 4 K / 2 BB | 4.5 |
 | 2026-09-25 | Gavin Williams | Cleveland Guardians | 91% | 2.0 | 3.08 | 3.4059226519337016 | 3.24 | 3.1 IP / 4 ER / 4 K / 4 BB | 2.1 |
+| 2026-10-05 | Cam Schlittler | New York Yankees | 94% | 1.2 | 1.2 | 2.3936770186335403 | N/A | 4.1 IP / 2 ER / 2 K / 1 BB | 5.5 |
