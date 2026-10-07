@@ -784,3 +784,5 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-09-30,Chicago White Sox,57.0,3.5,Y,Y,7,3.5
 2026-09-30,San Diego Padres,78.0,4.0,N,Y,4,0.0
 2026-09-30,New York Yankees,74.0,3.5,Y,Y,9,5.5
+2026-10-06,Los Angeles Dodgers,81.0,3.48,Y,Y,3,-0.48
+2026-10-06,Milwaukee Brewers,73.0,3.48,N,Y,3,-0.48
