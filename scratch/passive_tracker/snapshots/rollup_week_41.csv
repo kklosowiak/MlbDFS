@@ -1,18 +1,19 @@
 date,player,team,salary,batting_order,blended_rating,player_score,attack_conf,is_hot_run_msmi,is_anti_chalk_smash,is_cold_high_br_warning,is_cold_streak_msmi,platoon_label,is_strong_edge,actual_dk_pts,dk_pts_per_1k_salary,batting_order_tier,team_actual_runs
-2026-10-08,Miguel Vargas,Chicago White Sox,4400,3,77.8,80.2,75.36200716845879,N,N,N,N,NEUTRAL,N,27.0,6.14,1-4,5
-2026-10-08,Munetaka Murakami,Chicago White Sox,5000,4,67.6,66.6,68.64242424242424,N,N,N,N,STRONG EDGE,Y,13.5,2.7,1-4,5
-2026-10-08,Randal Grichuk,Chicago White Sox,3400,2,49.9,40.4,59.31818181818182,N,N,N,N,NEUTRAL,N,-0.5,-0.15,1-4,5
-2026-10-08,Jo Adell,Cleveland Guardians,3600,4,43.3,33.4,53.144492131616595,N,N,N,N,ELITE PLATOON,N,8.5,2.36,1-4,9
-2026-10-08,Jose Ramirez,Cleveland Guardians,5300,2,41.3,28.9,53.72093023255814,N,N,N,N,STRONG EDGE,Y,23.0,4.34,1-4,9
-2026-10-08,Chase Delauter,Cleveland Guardians,3500,3,45.9,27.8,63.92682926829268,N,N,N,N,NEUTRAL,N,7.0,2.0,1-4,9
-2026-10-08,Steven Kwan,Cleveland Guardians,3200,1,44.7,27.5,61.83994528043776,N,N,N,N,PLATOON TRAP,N,11.0,3.44,1-4,9
-2026-10-08,Tommy Pham,Chicago White Sox,3000,5,41.0,22.2,59.7995337995338,N,N,N,N,NEUTRAL,N,2.0,0.67,5-6,5
-2026-10-08,Chase Meidroth,Chicago White Sox,3600,1,43.6,20.9,66.39869281045752,N,N,N,N,PLATOON TRAP,N,11.0,3.06,1-4,5
-2026-10-08,Kyle Teel,Chicago White Sox,3000,7,32.4,19.8,44.98852223816356,N,N,N,N,NEUTRAL,N,1.0,0.33,7+,5
-2026-10-08,Braden Montgomery,Chicago White Sox,3200,8,36.1,18.2,54.003021148036254,N,N,N,N,PLATOON TRAP,N,-2.0,-0.62,7+,5
-2026-10-08,Nathaniel Lowe,Cleveland Guardians,3000,5,28.9,16.6,41.1957950065703,N,N,N,N,PLATOON TRAP,N,8.0,2.67,5-6,9
-2026-10-08,Colson Montgomery,Chicago White Sox,4200,9,9.7,12.3,7.0,N,N,N,N,NEUTRAL,N,7.5,1.79,7+,5
-2026-10-08,Brayan Rocchio,Cleveland Guardians,3400,9,25.1,12.2,38.01704545454545,N,N,N,N,PLATOON TRAP,N,6.0,1.76,7+,9
-2026-10-08,Angel Martinez,Cleveland Guardians,4100,6,22.7,8.7,36.78145695364238,N,N,N,N,NEUTRAL,N,8.5,2.07,5-6,9
-2026-10-08,Travis Bazzana,Cleveland Guardians,4600,7,18.8,8.7,28.908479138627186,N,N,N,N,PLATOON TRAP,N,9.0,1.96,7+,9
-2026-10-08,Brenton Doyle,Chicago White Sox,3000,6,29.5,8.0,50.967032967032964,N,N,N,N,NEUTRAL,N,4.5,1.5,5-6,5
+2026-10-10,Miguel Vargas,Chicago White Sox,4400,1,74.1,66.9,81.36200716845879,N,N,N,N,NEUTRAL,N,1.5,0.34,1-4,0
+2026-10-10,Munetaka Murakami,Chicago White Sox,5000,1,68.0,61.3,74.64242424242424,N,N,N,N,ELITE PLATOON,N,-2.0,-0.4,1-4,0
+2026-10-10,Chase Delauter,Cleveland Guardians,3500,1,57.2,44.4,69.92682926829268,N,N,N,N,NEUTRAL,N,3.0,0.86,1-4,2
+2026-10-10,Jo Adell,Cleveland Guardians,3600,1,45.1,31.1,59.144492131616595,N,N,N,N,NEUTRAL,N,2.5,0.69,1-4,2
+2026-10-10,Steven Kwan,Cleveland Guardians,3200,1,47.8,30.8,64.83994528043776,N,N,N,N,NEUTRAL,N,6.5,2.03,1-4,2
+2026-10-10,Sam Antonacci,Chicago White Sox,3700,1,51.2,30.1,72.36031331592689,N,N,N,N,STRONG EDGE,Y,3.0,0.81,1-4,0
+2026-10-10,Jose Ramirez,Cleveland Guardians,5300,1,44.4,27.0,61.720930232558146,N,N,N,N,NEUTRAL,N,17.5,3.3,1-4,2
+2026-10-10,Nathaniel Lowe,Cleveland Guardians,3000,1,36.6,24.0,49.1957950065703,N,N,N,N,NEUTRAL,N,0.0,0.0,1-4,2
+2026-10-10,Braden Montgomery,Chicago White Sox,3200,1,44.8,22.6,67.00302114803625,N,N,N,N,STRONG EDGE,Y,0.0,0.0,1-4,0
+2026-10-10,Kyle Teel,Chicago White Sox,3000,1,40.8,19.6,61.98852223816357,N,N,N,N,NEUTRAL,N,1.5,0.5,1-4,0
+2026-10-10,Chase Meidroth,Chicago White Sox,3600,1,42.1,14.8,69.39869281045752,N,N,N,N,NEUTRAL,N,-1.5,-0.42,1-4,0
+2026-10-10,Brayan Rocchio,Cleveland Guardians,3400,1,35.6,13.1,58.01704545454545,N,N,N,N,NEUTRAL,N,-1.0,-0.29,1-4,2
+2026-10-10,Patrick Bailey,Cleveland Guardians,2200,1,37.3,12.3,62.31630971993411,N,N,N,N,PLATOON TRAP,N,0.0,0.0,1-4,2
+2026-10-10,Tristan Peters,Chicago White Sox,2700,1,28.0,11.1,44.950904392764855,N,N,N,N,PLATOON TRAP,N,4.5,1.67,1-4,0
+2026-10-10,Angel Martinez,Cleveland Guardians,4100,1,27.2,9.7,44.78145695364238,N,N,N,N,PLATOON TRAP,N,0.0,0.0,1-4,2
+2026-10-10,Travis Bazzana,Cleveland Guardians,4600,1,25.8,9.7,41.908479138627186,N,N,N,N,NEUTRAL,N,-1.0,-0.22,1-4,2
+2026-10-10,Colson Montgomery,Chicago White Sox,4200,1,18.0,9.0,27.0,N,N,N,N,PLATOON TRAP,N,1.0,0.24,1-4,0
+2026-10-10,Andrew Benintendi,Chicago White Sox,3100,1,27.6,6.4,48.88111888111888,N,N,N,N,NEUTRAL,N,-2.0,-0.65,1-4,0

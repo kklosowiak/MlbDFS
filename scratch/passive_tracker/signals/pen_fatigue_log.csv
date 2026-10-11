@@ -790,3 +790,5 @@ date,team,attack_conf,ITT,is_gassed,is_fatigued,actual_runs,run_diff
 2026-10-07,Milwaukee Brewers,89.0,3.8,Y,Y,3,-0.8
 2026-10-08,Cleveland Guardians,88.0,3.7,Y,Y,9,5.3
 2026-10-08,Chicago White Sox,61.0,3.5,Y,Y,5,1.5
+2026-10-10,Cleveland Guardians,77.0,4.1,Y,Y,2,-2.1
+2026-10-10,Chicago White Sox,75.0,3.6,Y,Y,0,-3.6
