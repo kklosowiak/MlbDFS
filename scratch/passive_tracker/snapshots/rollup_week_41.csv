@@ -1,19 +1,16 @@
 date,player,team,salary,batting_order,blended_rating,player_score,attack_conf,is_hot_run_msmi,is_anti_chalk_smash,is_cold_high_br_warning,is_cold_streak_msmi,platoon_label,is_strong_edge,actual_dk_pts,dk_pts_per_1k_salary,batting_order_tier,team_actual_runs
-2026-10-10,Miguel Vargas,Chicago White Sox,4400,1,74.1,66.9,81.36200716845879,N,N,N,N,NEUTRAL,N,1.5,0.34,1-4,0
-2026-10-10,Munetaka Murakami,Chicago White Sox,5000,1,68.0,61.3,74.64242424242424,N,N,N,N,ELITE PLATOON,N,-2.0,-0.4,1-4,0
-2026-10-10,Chase Delauter,Cleveland Guardians,3500,1,57.2,44.4,69.92682926829268,N,N,N,N,NEUTRAL,N,3.0,0.86,1-4,2
-2026-10-10,Jo Adell,Cleveland Guardians,3600,1,45.1,31.1,59.144492131616595,N,N,N,N,NEUTRAL,N,2.5,0.69,1-4,2
-2026-10-10,Steven Kwan,Cleveland Guardians,3200,1,47.8,30.8,64.83994528043776,N,N,N,N,NEUTRAL,N,6.5,2.03,1-4,2
-2026-10-10,Sam Antonacci,Chicago White Sox,3700,1,51.2,30.1,72.36031331592689,N,N,N,N,STRONG EDGE,Y,3.0,0.81,1-4,0
-2026-10-10,Jose Ramirez,Cleveland Guardians,5300,1,44.4,27.0,61.720930232558146,N,N,N,N,NEUTRAL,N,17.5,3.3,1-4,2
-2026-10-10,Nathaniel Lowe,Cleveland Guardians,3000,1,36.6,24.0,49.1957950065703,N,N,N,N,NEUTRAL,N,0.0,0.0,1-4,2
-2026-10-10,Braden Montgomery,Chicago White Sox,3200,1,44.8,22.6,67.00302114803625,N,N,N,N,STRONG EDGE,Y,0.0,0.0,1-4,0
-2026-10-10,Kyle Teel,Chicago White Sox,3000,1,40.8,19.6,61.98852223816357,N,N,N,N,NEUTRAL,N,1.5,0.5,1-4,0
-2026-10-10,Chase Meidroth,Chicago White Sox,3600,1,42.1,14.8,69.39869281045752,N,N,N,N,NEUTRAL,N,-1.5,-0.42,1-4,0
-2026-10-10,Brayan Rocchio,Cleveland Guardians,3400,1,35.6,13.1,58.01704545454545,N,N,N,N,NEUTRAL,N,-1.0,-0.29,1-4,2
-2026-10-10,Patrick Bailey,Cleveland Guardians,2200,1,37.3,12.3,62.31630971993411,N,N,N,N,PLATOON TRAP,N,0.0,0.0,1-4,2
-2026-10-10,Tristan Peters,Chicago White Sox,2700,1,28.0,11.1,44.950904392764855,N,N,N,N,PLATOON TRAP,N,4.5,1.67,1-4,0
-2026-10-10,Angel Martinez,Cleveland Guardians,4100,1,27.2,9.7,44.78145695364238,N,N,N,N,PLATOON TRAP,N,0.0,0.0,1-4,2
-2026-10-10,Travis Bazzana,Cleveland Guardians,4600,1,25.8,9.7,41.908479138627186,N,N,N,N,NEUTRAL,N,-1.0,-0.22,1-4,2
-2026-10-10,Colson Montgomery,Chicago White Sox,4200,1,18.0,9.0,27.0,N,N,N,N,PLATOON TRAP,N,1.0,0.24,1-4,0
-2026-10-10,Andrew Benintendi,Chicago White Sox,3100,1,27.6,6.4,48.88111888111888,N,N,N,N,NEUTRAL,N,-2.0,-0.65,1-4,0
+2026-10-11,Will Smith,Los Angeles Dodgers,4000,1,73.7,68.9,78.44302176696543,N,N,N,N,NEUTRAL,N,2.0,0.5,1-4,1
+2026-10-11,Jake Bauers,Milwaukee Brewers,4800,1,58.8,63.7,53.928980526918664,N,N,N,N,STRONG EDGE,Y,4.0,0.83,1-4,2
+2026-10-11,Mookie Betts,Los Angeles Dodgers,4600,1,60.9,60.2,61.56410256410257,N,N,N,N,NEUTRAL,N,5.0,1.09,1-4,1
+2026-10-11,Jackson Chourio,Milwaukee Brewers,5400,1,46.7,44.1,49.25536992840095,N,N,N,N,NEUTRAL,N,5.5,1.02,1-4,2
+2026-10-11,Freddie Freeman,Los Angeles Dodgers,5300,1,42.4,38.4,46.45454545454545,N,N,N,N,ELITE PLATOON,N,2.5,0.47,1-4,1
+2026-10-11,Teoscar Hernandez,Los Angeles Dodgers,4200,1,46.0,38.2,53.76548089591567,N,N,N,N,NEUTRAL,N,5.5,1.31,1-4,1
+2026-10-11,Brice Turang,Milwaukee Brewers,5500,1,37.4,29.5,45.38235294117647,N,N,N,N,NEUTRAL,N,16.0,2.91,1-4,2
+2026-10-11,Tommy Edman,Los Angeles Dodgers,3700,1,35.5,28.3,42.67787114845939,N,N,N,N,PLATOON TRAP,N,0.0,0.0,1-4,1
+2026-10-11,Andy Pages,Los Angeles Dodgers,5000,1,36.8,27.3,46.26140567200986,N,N,N,N,NEUTRAL,N,4.5,0.9,1-4,1
+2026-10-11,William Contreras,Milwaukee Brewers,4500,1,32.9,25.5,40.364116094986805,N,N,N,N,NEUTRAL,N,1.0,0.22,1-4,2
+2026-10-11,Kyle Tucker,Los Angeles Dodgers,4800,1,30.7,21.3,40.05594405594405,N,N,N,N,STRONG EDGE,Y,3.0,0.62,1-4,1
+2026-10-11,Garrett Mitchell,Milwaukee Brewers,3300,1,24.8,18.5,31.116883116883116,N,N,N,N,NEUTRAL,N,3.5,1.06,1-4,2
+2026-10-11,Cooper Pratt,Milwaukee Brewers,2900,1,27.8,13.9,41.721448467966574,N,N,N,N,PLATOON TRAP,N,-1.0,-0.34,1-4,2
+2026-10-11,Joey Ortiz,Milwaukee Brewers,2100,1,18.7,8.5,28.93150684931507,N,N,N,N,PLATOON TRAP,N,-1.0,-0.48,1-4,2
+2026-10-11,Luis Lara,Milwaukee Brewers,2000,1,13.0,4.4,21.572327044025158,N,N,N,N,NEUTRAL,N,4.0,2.0,1-4,2
