@@ -1,0 +1,54 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-12 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=73.0 | ITT=3.5 | actual=4.0 | diff=+0.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (2 instances):
+  Yoshinobu Yamamoto (Vulnerable) vs Milwaukee Brewers: attack_conf=35.0 ITT=3.42 actual=7.0 diff=+3.6 | 2.2IP 3ER -> NORMAL
+  Foster Griffin (Short Leash) vs Tampa Bay Rays: attack_conf=0.0 ITT=3.7 actual=3.0 diff=-0.7 | 4.0IP 2ER -> NORMAL
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (8 fires):
+  Mookie Betts (Los Angeles Dodgers): actual=6.5DKpts | +6.5 vs baseline
+  Christian Yelich (Milwaukee Brewers): actual=9.5DKpts | +3.5 vs baseline
+  Kyle Tucker (Los Angeles Dodgers): actual=7.0DKpts | +5.5 vs baseline
+  Tommy Edman (Los Angeles Dodgers): actual=7.0DKpts | +8.5 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=1.5DKpts | -8.0 vs baseline
+  Ryan Vilade (Tampa Bay Rays): actual=1.5DKpts | -4.5 vs baseline
+  Patrick Bailey (Cleveland Guardians): actual=16.0DKpts | +16.0 vs baseline
+  Nick Fortes (Tampa Bay Rays): actual=0.0DKpts | +0.5 vs baseline
+STRONG_EDGE (4 fires):
+  Junior Caminero (Tampa Bay Rays): actual=6.0DKpts | -13.5 vs baseline
+  Will Smith (Los Angeles Dodgers): actual=-0.5DKpts | -13.5 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): actual=0.5DKpts | -3.3 vs baseline
+  Petey Halpin (Cleveland Guardians): actual=-0.5DKpts | -2.3 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Logan Henderson (WALKS=N HAZ=Y): ITT=3.5 actual=4.0R diff=+0.5
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (96 slates tracked):
+  TRAP/Vulnerable: 42.7% underscored ITT | avg diff +1.97R
+  TRAP/Short Leash: 53.8% underscored ITT | avg diff +0.22R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 40.6% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.6% underperformed baseline
+  STRONG_EDGE: avg +0.16 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.7%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.4% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===

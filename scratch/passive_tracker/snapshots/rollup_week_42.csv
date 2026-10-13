@@ -1,0 +1,35 @@
+date,player,team,salary,batting_order,blended_rating,player_score,attack_conf,is_hot_run_msmi,is_anti_chalk_smash,is_cold_high_br_warning,is_cold_streak_msmi,platoon_label,is_strong_edge,actual_dk_pts,dk_pts_per_1k_salary,batting_order_tier,team_actual_runs
+2026-10-12,Junior Caminero,Tampa Bay Rays,5700,3,71.3,70.9,71.76923076923077,N,N,N,N,STRONG EDGE,Y,6.0,1.05,1-4,3
+2026-10-12,Brice Turang,Milwaukee Brewers,5500,2,63.8,61.3,66.38235294117646,N,N,N,N,NEUTRAL,N,19.5,3.55,1-4,7
+2026-10-12,Mookie Betts,Los Angeles Dodgers,4600,1,59.3,60.1,58.56410256410257,N,N,N,N,PLATOON TRAP,N,6.5,1.41,1-4,4
+2026-10-12,Will Smith,Los Angeles Dodgers,4000,5,64.9,59.4,70.44302176696543,N,N,N,N,STRONG EDGE,Y,-0.5,-0.12,5-6,4
+2026-10-12,Jackson Chourio,Milwaukee Brewers,5400,1,60.3,56.4,64.25536992840095,N,N,N,N,NEUTRAL,N,-1.0,-0.19,1-4,7
+2026-10-12,Jake Bauers,Milwaukee Brewers,4800,4,56.0,50.1,61.92898052691868,N,N,N,N,NEUTRAL,N,6.0,1.25,1-4,7
+2026-10-12,William Contreras,Milwaukee Brewers,4500,3,48.7,49.0,48.364116094986805,N,N,N,N,NEUTRAL,N,26.0,5.78,1-4,7
+2026-10-12,Andy Pages,Los Angeles Dodgers,5000,7,42.4,43.6,41.26140567200986,N,N,N,N,NEUTRAL,N,1.5,0.3,7+,4
+2026-10-12,Teoscar Hernandez,Los Angeles Dodgers,4200,3,47.6,43.4,51.76548089591568,N,N,N,N,NEUTRAL,N,1.5,0.36,1-4,4
+2026-10-12,Freddie Freeman,Los Angeles Dodgers,5300,2,43.1,42.7,43.45454545454545,N,N,N,N,ELITE PLATOON,N,1.5,0.28,1-4,4
+2026-10-12,Cooper Pratt,Milwaukee Brewers,2900,7,41.9,41.1,42.721448467966574,N,N,N,N,NEUTRAL,N,6.0,2.07,7+,7
+2026-10-12,Chase Delauter,Cleveland Guardians,3500,3,48.3,40.7,55.92682926829268,N,N,N,N,NEUTRAL,N,28.0,8.0,1-4,7
+2026-10-12,Christian Yelich,Milwaukee Brewers,5000,5,40.9,37.9,43.901875901875904,N,N,N,N,PLATOON TRAP,N,9.5,1.9,5-6,7
+2026-10-12,Garrett Mitchell,Milwaukee Brewers,3300,6,38.4,35.7,41.116883116883116,N,N,N,N,STRONG EDGE,Y,0.5,0.15,5-6,7
+2026-10-12,Kyle Tucker,Los Angeles Dodgers,4800,8,34.9,34.8,35.05594405594405,N,N,N,N,PLATOON TRAP,N,7.0,1.46,7+,4
+2026-10-12,Tommy Edman,Los Angeles Dodgers,3700,9,32.7,34.7,30.67787114845939,N,N,N,N,PLATOON TRAP,N,7.0,1.89,7+,4
+2026-10-12,Jonathan Aranda,Tampa Bay Rays,4100,2,43.0,32.0,53.994949494949495,N,N,N,N,NEUTRAL,N,-0.5,-0.12,1-4,3
+2026-10-12,Steven Kwan,Cleveland Guardians,3200,1,41.1,28.4,53.83994528043776,N,N,N,N,NEUTRAL,N,2.5,0.78,1-4,7
+2026-10-12,Sal Frelick,Milwaukee Brewers,3100,8,28.5,25.5,31.42345276872964,N,N,N,N,PLATOON TRAP,N,1.5,0.48,7+,7
+2026-10-12,Yandy Diaz,Tampa Bay Rays,5200,1,44.3,25.5,63.17391304347825,N,N,N,N,NEUTRAL,N,9.5,1.83,1-4,3
+2026-10-12,Victor Mesa,Tampa Bay Rays,3000,5,40.9,25.3,56.43636363636364,N,N,N,N,NEUTRAL,N,2.0,0.67,5-6,3
+2026-10-12,David Hamilton,Milwaukee Brewers,3000,9,26.0,25.2,26.738461538461536,N,N,N,N,NEUTRAL,N,24.0,8.0,7+,7
+2026-10-12,Max Muncy,Los Angeles Dodgers,3500,6,23.8,22.4,25.209370424597367,N,N,N,N,ELITE PLATOON,N,-0.5,-0.14,5-6,4
+2026-10-12,Jo Adell,Cleveland Guardians,3600,4,32.7,20.3,45.144492131616595,N,N,N,N,NEUTRAL,N,8.5,2.36,1-4,7
+2026-10-12,Jose Ramirez,Cleveland Guardians,5300,2,34.5,18.3,50.72093023255814,N,N,N,N,NEUTRAL,N,14.5,2.74,1-4,7
+2026-10-12,Nathaniel Lowe,Cleveland Guardians,3000,5,25.4,17.7,33.1957950065703,N,N,N,N,NEUTRAL,N,10.0,3.33,5-6,7
+2026-10-12,Ryan Vilade,Tampa Bay Rays,3100,4,29.4,16.6,42.10666666666667,N,N,N,N,PLATOON TRAP,N,1.5,0.48,1-4,3
+2026-10-12,Brayan Rocchio,Cleveland Guardians,3400,9,21.3,12.6,30.017045454545453,N,N,N,N,NEUTRAL,N,-1.5,-0.44,7+,7
+2026-10-12,Patrick Bailey,Cleveland Guardians,2200,7,24.5,11.7,37.316309719934104,N,N,N,N,PLATOON TRAP,N,16.0,7.27,7+,7
+2026-10-12,Petey Halpin,Cleveland Guardians,2600,8,22.1,9.8,34.46127946127946,N,N,N,N,STRONG EDGE,Y,-0.5,-0.19,7+,7
+2026-10-12,Travis Bazzana,Cleveland Guardians,4600,6,17.5,9.1,25.908479138627186,N,N,N,N,NEUTRAL,N,8.0,1.74,5-6,7
+2026-10-12,Jonny Deluca,Tampa Bay Rays,3700,6,28.7,8.0,49.300411522633745,N,N,N,N,NEUTRAL,N,13.0,3.51,5-6,3
+2026-10-12,Taylor Walls,Tampa Bay Rays,2700,8,22.0,3.0,41.06260296540363,N,N,N,N,NEUTRAL,N,-0.5,-0.19,7+,3
+2026-10-12,Nick Fortes,Tampa Bay Rays,2400,9,10.1,0.0,20.11764705882353,N,N,N,N,PLATOON TRAP,N,0.0,0.0,7+,3
