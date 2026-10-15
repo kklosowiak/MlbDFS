@@ -1,0 +1,57 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-14 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Los Angeles Dodgers | conf=75.0 | ITT=4.4 | actual=2.0 | diff=-2.4 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (12 fires):
+  Ryan Ward (Los Angeles Dodgers): actual=0.0DKpts | -3.4 vs baseline
+  Santiago Espinal (Los Angeles Dodgers): actual=0.0DKpts | -2.8 vs baseline
+  Bo Naylor (Milwaukee Brewers): actual=0.0DKpts | -1.3 vs baseline
+  Braden Shewmake (Milwaukee Brewers): actual=0.0DKpts | -2.8 vs baseline
+  Hyeseong Kim (Los Angeles Dodgers): actual=0.0DKpts | +0.0 vs baseline
+  Alex Call (Los Angeles Dodgers): actual=0.0DKpts | -2.8 vs baseline
+  David Hamilton (Milwaukee Brewers): actual=0.0DKpts | -2.8 vs baseline
+  Alek Thomas (Los Angeles Dodgers): actual=0.0DKpts | -1.6 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=0.0DKpts | -3.4 vs baseline
+  Cooper Pratt (Milwaukee Brewers): actual=16.0DKpts | +16.0 vs baseline
+  Luis Lara (Milwaukee Brewers): actual=-0.5DKpts | -2.0 vs baseline
+  Joey Ortiz (Milwaukee Brewers): actual=4.5DKpts | +4.7 vs baseline
+STRONG_EDGE (3 fires):
+  Will Smith (Los Angeles Dodgers): actual=8.5DKpts | +7.7 vs baseline
+  Freddie Freeman (Los Angeles Dodgers): actual=0.0DKpts | -4.8 vs baseline
+  Garrett Mitchell (Milwaukee Brewers): actual=15.0DKpts | +15.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (2):
+  Blake Snell (WALKS=N HAZ=Y): ITT=3.45 actual=6.0R diff=+2.5
+  Robert Gasser (WALKS=N HAZ=Y): ITT=4.4 actual=2.0R diff=-2.4
+GASSED/FATIGUED PEN (0 teams):
+BURST (1 teams):
+  Los Angeles Dodgers: actual=2.0R vs ITT=4.4 -> MISS
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (98 slates tracked):
+  TRAP/Vulnerable: 42.7% underscored ITT | avg diff +1.97R
+  TRAP/Short Leash: 53.8% underscored ITT | avg diff +0.22R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 39.8% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.6% underperformed baseline
+  STRONG_EDGE: avg +0.18 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.7%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.2% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
