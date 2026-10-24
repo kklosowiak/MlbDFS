@@ -1,0 +1,43 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-23 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=78.0 | ITT=3.8 | actual=3.0 | diff=-0.8 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (1 instances):
+  Nick Martinez (Vulnerable) vs Milwaukee Brewers: attack_conf=0.0 ITT=3.8 actual=3.0 diff=-0.8 | 5.0IP 2ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (1 fires):
+  Joey Ortiz (Milwaukee Brewers): actual=0.0DKpts | +0.0 vs baseline
+STRONG_EDGE (2 fires):
+  Jackson Chourio (Milwaukee Brewers): actual=9.5DKpts | +6.2 vs baseline
+  Jonathan Aranda (Tampa Bay Rays): actual=13.0DKpts | +13.0 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (104 slates tracked):
+  TRAP/Vulnerable: 43.7% underscored ITT | avg diff +1.91R
+  TRAP/Short Leash: 53.5% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 38.5% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.4% underperformed baseline
+  STRONG_EDGE: avg +0.22 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.6%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.0% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Nick Martinez (5.0 IP, 2 ER)
+
+=== END ===
