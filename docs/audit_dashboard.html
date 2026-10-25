@@ -268,7 +268,7 @@
     <div class="container">
         <header>
             <h1>⚾ OMEGA Audit Dashboard</h1>
-            <div class="timestamp">Last updated: 2026-10-24 10:18:47 UTC (Eastern Time rollover tracking)</div>
+            <div class="timestamp">Last updated: 2026-10-25 10:45:22 UTC (Eastern Time rollover tracking)</div>
         </header>
 
         <!-- Signal Accuracy Section -->
@@ -321,12 +321,12 @@
                         </tr>
                         <tr>
                             <td><strong>Top Stack</strong></td>
-                            <td>104</td>
-                            <td>38.5%</td>
-                            <td>+0.07</td>
+                            <td>105</td>
+                            <td>39.0%</td>
+                            <td>+0.08</td>
                             <td>
                                 <div class="trend-container">
-                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span><span class="trend-pill miss" title="MISS"></span>
+                                    <span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span><span class="trend-pill miss" title="MISS"></span><span class="trend-pill hit" title="HIT"></span>
                                 </div>
                             </td>
                         </tr>
@@ -376,7 +376,7 @@
                         </tr>
                         <tr>
                             <td><strong>PLATOON_TRAP</strong></td>
-                            <td>3463</td>
+                            <td>3465</td>
                             <td>58.4% under</td>
                             <td>+0.28</td>
                             <td>
@@ -387,9 +387,9 @@
                         </tr>
                         <tr>
                             <td><strong>STRONG_EDGE</strong></td>
-                            <td>1430</td>
+                            <td>1432</td>
                             <td>N/A</td>
-                            <td>+0.22 vs BL</td>
+                            <td>+0.21 vs BL</td>
                             <td>
                                 <div class="trend-container">
                                     <span style="color:var(--text-muted); font-size:12px;">N/A</span>
@@ -474,6 +474,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td><code>2026-10-24</code></td>
+                            <td><strong>Milwaukee Brewers</strong></td>
+                            <td>58.0</td>
+                            <td>3.48</td>
+                            <td>5</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="status-badge none">None</span></td>
+                        </tr>
                         <tr>
                             <td><code>2026-10-23</code></td>
                             <td><strong>Milwaukee Brewers</strong></td>
@@ -601,16 +611,6 @@
                             <td>3.8</td>
                             <td>3</td>
                             <td>2</td>
-                            <td>0</td>
-                            <td><span class="status-badge none">None</span></td>
-                        </tr>
-                        <tr>
-                            <td><code>2026-10-06</code></td>
-                            <td><strong>Los Angeles Dodgers</strong></td>
-                            <td>81.0</td>
-                            <td>3.48</td>
-                            <td>3</td>
-                            <td>0</td>
                             <td>0</td>
                             <td><span class="status-badge none">None</span></td>
                         </tr>
@@ -2331,6 +2331,53 @@
         <div class="section">
             <h2>Recent Digests</h2>
             <details>
+                <summary>Digest - 2026-10-24</summary>
+                <pre>=== OMEGA SIGNAL DIGEST - 2026-10-24 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=58.0 | ITT=3.48 | actual=5.0 | diff=+1.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (2 fires):
+  Cooper Pratt (Milwaukee Brewers): actual=13.5DKpts | +2.8 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=17.0DKpts | +10.5 vs baseline
+STRONG_EDGE (2 fires):
+  Junior Caminero (Tampa Bay Rays): actual=7.0DKpts | -2.0 vs baseline
+  Richie Palacios (Tampa Bay Rays): actual=-0.5DKpts | -6.8 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (105 slates tracked):
+  TRAP/Vulnerable: 43.7% underscored ITT | avg diff +1.91R
+  TRAP/Short Leash: 53.5% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 39.0% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.4% underperformed baseline
+  STRONG_EDGE: avg +0.21 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.6%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.0% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
+</pre>
+            </details>
+            <details>
                 <summary>Digest - 2026-10-23</summary>
                 <pre>=== OMEGA SIGNAL DIGEST - 2026-10-23 ===
 
@@ -2530,55 +2577,6 @@ RUNNING ACCURACY (102 slates tracked):
 
 AUDIT FLAGS:
   None
-
-=== END ===
-</pre>
-            </details>
-            <details>
-                <summary>Digest - 2026-10-17</summary>
-                <pre>=== OMEGA SIGNAL DIGEST - 2026-10-17 ===
-
-CAPTURE: 6:20pm snapshot confirmed
-TOP STACK: Cleveland Guardians | conf=73.0 | ITT=3.5 | actual=3.0 | diff=-0.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
-TRAP ARMS (1 instances):
-  Nick Martinez (Vulnerable) vs Cleveland Guardians: attack_conf=0.0 ITT=3.5 actual=3.0 diff=-0.5 | 5.1IP 1ER -> OVER-DELIVERED
-FADE_RISK (0 instances):
-STEAM (0 team fires):
-HOT_MSMI TOP 3:
-ANTI_CHALK_SMASH (0 fires):
-COLD_HIGH_BR_WARNING (0 fires):
-PLATOON_TRAP (3 fires):
-  Yandy Diaz (Tampa Bay Rays): actual=21.5DKpts | +19.5 vs baseline
-  Brayan Rocchio (Cleveland Guardians): actual=4.5DKpts | -13.0 vs baseline
-  Patrick Bailey (Cleveland Guardians): actual=5.0DKpts | +5.0 vs baseline
-STRONG_EDGE (2 fires):
-  Steven Kwan (Cleveland Guardians): actual=5.0DKpts | +5.0 vs baseline
-  Nathaniel Lowe (Cleveland Guardians): actual=0.0DKpts | -2.0 vs baseline
-SHARP_FADE PITCHERS (0 instances):
-VOLATILE PITCHERS (0):
-WALKS/HAZARD PITCHERS (0):
-GASSED/FATIGUED PEN (0 teams):
-BURST (0 teams):
-RIGHT GAME WRONG TEAM:
-
-RUNNING ACCURACY (101 slates tracked):
-  TRAP/Vulnerable: 43.2% underscored ITT | avg diff +1.94R
-  TRAP/Short Leash: 53.8% underscored ITT | avg diff +0.22R
-  FADE_RISK: 50.0% correct | avg diff +0.93R
-  Top Stack hit ITT: 38.6% (note: team-level attack_conf has no predictive power per the July audit)
-  HOT_MSMI avg: 6.72 DK pts
-  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
-  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
-  PLATOON_TRAP: 58.5% underperformed baseline
-  STRONG_EDGE: avg +0.19 DK pts vs baseline
-  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
-  VOLATILE pitchers - attacking team overscored ITT: 47.1%
-  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.7%
-  GASSED pen teams: 43.5% hit ITT
-  BURST teams: 44.0% hit ITT (note: burst is a refuted signal per the July audit)
-
-AUDIT FLAGS:
-  TRAP Arm Outperformed Expectation: Nick Martinez (5.1 IP, 1 ER)
 
 === END ===
 </pre>

@@ -103,3 +103,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-10-18,Tampa Bay Rays,62.0,3.67,0.0,3,-0.67,N
 2026-10-19,Tampa Bay Rays,76.0,3.6,0.0,7,3.4,Y
 2026-10-23,Milwaukee Brewers,78.0,3.8,7.0,3,-0.8,N
+2026-10-24,Milwaukee Brewers,58.0,3.48,0.0,5,1.52,Y
