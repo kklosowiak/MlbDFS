@@ -1,0 +1,46 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-26 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=49.0 | ITT=3.8 | actual=10.0 | diff=+6.2 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (0 instances):
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (4 fires):
+  Nick Fortes (Tampa Bay Rays): actual=0.0DKpts | +0.5 vs baseline
+  Ryan Vilade (Tampa Bay Rays): actual=-0.5DKpts | -0.5 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=11.0DKpts | +4.7 vs baseline
+  David Hamilton (Milwaukee Brewers): actual=7.0DKpts | +1.8 vs baseline
+STRONG_EDGE (2 fires):
+  Brice Turang (Milwaukee Brewers): actual=17.0DKpts | +17.0 vs baseline
+  William Contreras (Milwaukee Brewers): actual=12.5DKpts | +12.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (1):
+  Freddy Peralta (WALKS=Y HAZ=N): ITT=3.8 actual=10.0R diff=+6.2
+GASSED/FATIGUED PEN (0 teams):
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (106 slates tracked):
+  TRAP/Vulnerable: 43.7% underscored ITT | avg diff +1.91R
+  TRAP/Short Leash: 53.5% underscored ITT | avg diff +0.24R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 39.6% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.4% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.3% underperformed baseline
+  STRONG_EDGE: avg +0.23 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.7%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.0% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  None
+
+=== END ===
