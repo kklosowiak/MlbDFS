@@ -106,3 +106,4 @@ date,team,attack_conf,ITT,divergence,actual_runs,run_diff,model_correct
 2026-10-24,Milwaukee Brewers,58.0,3.48,0.0,5,1.52,Y
 2026-10-26,Milwaukee Brewers,49.0,3.8,7.0,10,6.2,Y
 2026-10-27,Milwaukee Brewers,75.0,4.0,7.0,3,-1.0,N
+2026-10-28,Milwaukee Brewers,69.0,3.5,7.0,4,0.5,Y

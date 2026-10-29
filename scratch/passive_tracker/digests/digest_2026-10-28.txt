@@ -1,0 +1,46 @@
+=== OMEGA SIGNAL DIGEST - 2026-10-28 ===
+
+CAPTURE: 6:20pm snapshot confirmed
+TOP STACK: Milwaukee Brewers | conf=69.0 | ITT=3.5 | actual=4.0 | diff=+0.5 (note: team-level attack_conf has an unreliable historical correlation to stack outcomes per the July audit)
+TRAP ARMS (1 instances):
+  Jacob Misiorowski (Short Leash) vs Tampa Bay Rays: attack_conf=25.0 ITT=3.42 actual=1.0 diff=-2.4 | 5.2IP 0ER -> OVER-DELIVERED
+FADE_RISK (0 instances):
+STEAM (0 team fires):
+HOT_MSMI TOP 3:
+ANTI_CHALK_SMASH (0 fires):
+COLD_HIGH_BR_WARNING (0 fires):
+PLATOON_TRAP (2 fires):
+  Ryan Vilade (Tampa Bay Rays): actual=0.0DKpts | +0.0 vs baseline
+  Sal Frelick (Milwaukee Brewers): actual=1.5DKpts | -5.3 vs baseline
+STRONG_EDGE (2 fires):
+  William Contreras (Milwaukee Brewers): actual=9.0DKpts | +10.0 vs baseline
+  Jonathan Aranda (Tampa Bay Rays): actual=-0.5DKpts | -0.5 vs baseline
+SHARP_FADE PITCHERS (0 instances):
+VOLATILE PITCHERS (0):
+WALKS/HAZARD PITCHERS (0):
+GASSED/FATIGUED PEN (2 teams):
+  Milwaukee Brewers: actual=4.0R vs ITT=3.5 -> HIT
+  Tampa Bay Rays: actual=1.0R vs ITT=3.42 -> MISS
+BURST (0 teams):
+RIGHT GAME WRONG TEAM:
+
+RUNNING ACCURACY (108 slates tracked):
+  TRAP/Vulnerable: 43.5% underscored ITT | avg diff +1.91R
+  TRAP/Short Leash: 53.8% underscored ITT | avg diff +0.23R
+  FADE_RISK: 50.0% correct | avg diff +0.93R
+  Top Stack hit ITT: 39.8% (note: team-level attack_conf has no predictive power per the July audit)
+  HOT_MSMI avg: 6.72 DK pts
+  STEAM: 48.9% correct | avg +0.51R (note: steam is a refuted/reversed signal per the July audit)
+  ANTI_CHALK_SMASH: avg +0.99 DK pts vs baseline
+  PLATOON_TRAP: 58.3% underperformed baseline
+  STRONG_EDGE: avg +0.23 DK pts vs baseline
+  SHARP_FADE pitchers: 49.2% attacking team underscored ITT
+  VOLATILE pitchers - attacking team overscored ITT: 47.1%
+  WALKS/HAZARD pitchers - attacking team overscored ITT: 44.7%
+  GASSED pen teams: 43.5% hit ITT
+  BURST teams: 44.0% hit ITT (note: burst is a refuted signal per the July audit)
+
+AUDIT FLAGS:
+  TRAP Arm Outperformed Expectation: Jacob Misiorowski (5.2 IP, 0 ER)
+
+=== END ===
