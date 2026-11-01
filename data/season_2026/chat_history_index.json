@@ -1,0 +1,1875 @@
+[
+  {
+    "cid": "e539e617-b6b7-44f0-888f-d871b5cd1b21",
+    "date_start": "2026-04-06T01:29:20",
+    "date_end": "2026-04-06T01:29:20",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "quant_model_framework.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "b6b5a10c-3605-49f4-b342-ab55ab2a2cb9",
+    "date_start": "2026-04-06T17:14:21",
+    "date_end": "2026-04-06T17:14:21",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "mlb_quant_full_analysis.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "11ab04bd-1e47-40e4-8afe-55a917086e3a",
+    "date_start": "2026-04-06T18:10:37",
+    "date_end": "2026-04-06T18:10:37",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "MLB_Quant_3.1_Engine_Spec.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "f12b3098-d55d-4342-82ae-83b201f9831b",
+    "date_start": "2026-04-06T23:01:51",
+    "date_end": "2026-04-06T23:01:51",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "master_framework.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "8c211f3b-07f5-4e44-a999-330454242ea0",
+    "date_start": "2026-04-07T10:17:38",
+    "date_end": "2026-04-07T10:17:38",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "implementation_plan_api_mastery.md",
+      "implementation_plan_patches.md",
+      "implementation_plan_radar.md",
+      "implementation_plan_revert_props.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "94b2b40a-6f2a-4619-97f6-2e2dfa17590d",
+    "date_start": "2026-04-07T17:35:59",
+    "date_end": "2026-04-07T17:35:59",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "abf12aae-acae-4652-bd12-20a91b0108e6",
+    "date_start": "2026-04-08T00:45:39",
+    "date_end": "2026-04-08T00:45:39",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "33747304-6a98-4b99-856a-3c32b546f97d",
+    "date_start": "2026-04-08T12:48:09",
+    "date_end": "2026-04-08T12:48:09",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "c2811c37-f997-4c4e-a706-8b7ca87ff964",
+    "date_start": "2026-04-08T16:56:38",
+    "date_end": "2026-04-08T16:56:38",
+    "n_user_msgs": 0,
+    "md_files": [
+      "audit_report.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "c05a0d8f-e537-4795-b95f-5cf34835502a",
+    "date_start": "2026-04-08T23:25:10",
+    "date_end": "2026-04-08T23:25:10",
+    "n_user_msgs": 0,
+    "md_files": [
+      "CLOUD_READY.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md",
+      "walkthrough_outs_integration.md",
+      "walkthrough_v45_final.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "261bf836-50ca-4522-a102-26dd30af8dbd",
+    "date_start": "2026-04-09T17:17:19",
+    "date_end": "2026-04-09T17:17:19",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "a104160c-3e01-4d45-b644-da003076123a",
+    "date_start": "2026-04-09T22:03:39",
+    "date_end": "2026-04-09T22:03:39",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "omega_analysis_report.md",
+      "task.md",
+      "walkthrough.md",
+      "walkthrough_v5.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "68dcbec0-37db-4a61-b39a-4f249564eefa",
+    "date_start": "2026-04-10T15:56:11",
+    "date_end": "2026-04-10T15:56:11",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "cba4ceb1-0947-4b59-b6b5-5c128f9cc805",
+    "date_start": "2026-04-11T10:59:49",
+    "date_end": "2026-04-11T10:59:49",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "24262c49-dfef-4f3e-b909-3616302a0e36",
+    "date_start": "2026-04-11T16:46:28",
+    "date_end": "2026-04-11T16:46:28",
+    "n_user_msgs": 0,
+    "md_files": [
+      "alpha_report.md",
+      "bos_stl_deep_dive.md",
+      "implementation_plan.md",
+      "INGESTION_MAP.md",
+      "late_slate_sharps.md",
+      "sharp_hitting_report.md",
+      "task.md",
+      "totals_sharp_report.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "1dd95e16-4268-4663-84f8-f75833311b91",
+    "date_start": "2026-04-11T23:40:53",
+    "date_end": "2026-04-11T23:40:53",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "66917760-ef37-4d98-b878-056b79190676",
+    "date_start": "2026-04-12T11:51:48",
+    "date_end": "2026-04-12T11:51:48",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "df9784f4-03b9-4fda-8db3-8f643651fbf8",
+    "date_start": "2026-04-12T19:38:52",
+    "date_end": "2026-04-12T19:38:52",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "1f5f27cc-7a2d-4a0d-85f5-9514b95835af",
+    "date_start": "2026-04-12T22:43:27",
+    "date_end": "2026-04-12T22:43:27",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "54deee65-e920-4e71-8d62-bf6dc5eefb80",
+    "date_start": "2026-04-13T08:42:04",
+    "date_end": "2026-04-13T08:42:04",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "4f1da940-ab25-456a-af4e-84ae052573e5",
+    "date_start": "2026-04-13T22:49:08",
+    "date_end": "2026-04-13T22:49:08",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "ce4300ce-0200-41e2-9e5d-97a7d4fe4d80",
+    "date_start": "2026-04-14T15:53:16",
+    "date_end": "2026-04-14T15:53:16",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "b91358ea-8139-4e0e-afb8-7dc0d1436bdf",
+    "date_start": "2026-04-14T17:34:03",
+    "date_end": "2026-04-14T17:34:03",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "7e66781b-2b39-4f9d-a05b-4c98d5b78740",
+    "date_start": "2026-04-15T18:33:40",
+    "date_end": "2026-04-15T18:33:40",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "5cda3d4b-14e9-4f92-bd8c-37f7d1976f4d",
+    "date_start": "2026-04-15T23:10:23",
+    "date_end": "2026-04-15T23:10:23",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "implementation_plan_skills.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "7ff1f359-8549-4ebd-9398-54d02f961905",
+    "date_start": "2026-04-16T10:12:13",
+    "date_end": "2026-04-16T10:12:13",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "97a6c906-8edd-47a0-8edd-85fb9a3c05b0",
+    "date_start": "2026-04-16T20:43:19",
+    "date_end": "2026-04-16T20:43:19",
+    "n_user_msgs": 0,
+    "md_files": [
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "54e08898-de1b-4d91-aaa3-8a34b05164a4",
+    "date_start": "2026-04-16T22:49:55",
+    "date_end": "2026-04-16T22:49:55",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "f2636fd0-a6b0-48f8-90a2-dc85e0a87e65",
+    "date_start": "2026-04-17T08:46:46",
+    "date_end": "2026-04-17T08:46:46",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "632b46f3-90bc-407d-9ad4-4e24b86b3718",
+    "date_start": "2026-04-18T00:23:41",
+    "date_end": "2026-04-18T00:23:41",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "e90da966-efc0-4c74-a69d-ff7a5b5ce994",
+    "date_start": "2026-04-19T10:43:46",
+    "date_end": "2026-04-19T10:43:46",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "aab1817c-114c-40fc-8ede-1802599ee0ba",
+    "date_start": "2026-04-19T19:25:01",
+    "date_end": "2026-04-19T19:25:01",
+    "n_user_msgs": 0,
+    "md_files": [
+      "postmortem_april19.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "9a6b0d39-6d54-4efb-8f57-edc8058993b5",
+    "date_start": "2026-04-20T23:06:30",
+    "date_end": "2026-04-20T23:06:30",
+    "n_user_msgs": 0,
+    "md_files": [
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "fc359811-c970-4c09-86af-31e93b69265d",
+    "date_start": "2026-04-21T19:09:53",
+    "date_end": "2026-04-21T19:09:53",
+    "n_user_msgs": 0,
+    "md_files": [
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "b7ab5c0d-4414-4b97-87e8-813013ec60a4",
+    "date_start": "2026-04-21T23:28:32",
+    "date_end": "2026-04-21T23:28:32",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "70290e41-4817-46a6-9b99-9baa48b1cfd6",
+    "date_start": "2026-04-22T08:54:18",
+    "date_end": "2026-04-22T08:54:18",
+    "n_user_msgs": 0,
+    "md_files": [
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "b54400cd-40cd-48c0-b89e-615a38b72a9f",
+    "date_start": "2026-04-23T21:30:15",
+    "date_end": "2026-04-23T21:30:15",
+    "n_user_msgs": 0,
+    "md_files": [
+      "post_mortem_2026_04_23.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "f9cce084-9c59-4c9a-b9c6-4c97036d586b",
+    "date_start": "2026-04-24T22:56:03",
+    "date_end": "2026-04-24T22:56:03",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "post_mortem_20260424.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "a6c4babe-36f6-4cde-b881-6b5fe83b38ef",
+    "date_start": "2026-04-25T22:05:19",
+    "date_end": "2026-04-25T22:05:19",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "8c7230c8-fbbe-43f4-a337-ce0a787d8a54",
+    "date_start": "2026-04-26T17:10:54",
+    "date_end": "2026-04-26T17:10:54",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "OMEGA_ENGINE_SPEC.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "461ab104-c1fd-4f2c-b6ca-d8ad0496d017",
+    "date_start": "2026-04-26T20:39:19",
+    "date_end": "2026-04-26T20:39:19",
+    "n_user_msgs": 0,
+    "md_files": [
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "1ef5f712-15cf-4777-b5a4-d0165b6533d5",
+    "date_start": "2026-04-26T20:47:31",
+    "date_end": "2026-04-26T20:47:31",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "4424fb2b-57b3-4e2e-8882-09c6464e0a6c",
+    "date_start": "2026-04-27T09:28:19",
+    "date_end": "2026-04-27T09:28:19",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "481bcf1c-82b8-4d74-a008-a6b10bfe9875",
+    "date_start": "2026-04-28T17:19:17",
+    "date_end": "2026-04-28T17:19:17",
+    "n_user_msgs": 0,
+    "md_files": [
+      "full_slate_analysis.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "57cf1293-6076-4e55-bbb1-3b5fb750d06b",
+    "date_start": "2026-04-29T00:28:05",
+    "date_end": "2026-04-29T00:28:05",
+    "n_user_msgs": 0,
+    "md_files": [
+      "post_mortem_audit.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "3617a4be-f26d-4264-95ec-10f965ffe729",
+    "date_start": "2026-04-29T08:16:59",
+    "date_end": "2026-04-29T08:16:59",
+    "n_user_msgs": 0,
+    "md_files": [
+      "early_slate_audit.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "f4868e21-894f-4b2b-8b0e-e71fdcd40f50",
+    "date_start": "2026-04-29T11:13:50",
+    "date_end": "2026-04-29T11:13:50",
+    "n_user_msgs": 0,
+    "md_files": [
+      "early_slate_analysis.md",
+      "implementation_plan.md",
+      "night_slate_analysis.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "6853be5e-7b3f-4afd-85a1-5cfaa64e2ef0",
+    "date_start": "2026-05-03T20:37:26",
+    "date_end": "2026-05-03T20:37:26",
+    "n_user_msgs": 0,
+    "md_files": [
+      "vacation_slate_recap.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "5cb8fc0d-c7c3-414f-b4be-244ddbb03c47",
+    "date_start": "2026-05-06T12:25:27",
+    "date_end": "2026-05-06T12:25:27",
+    "n_user_msgs": 0,
+    "md_files": [
+      "early_slate_deep_dive.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "2739e0f3-1202-4a50-87f6-5a1e565e6807",
+    "date_start": "2026-05-08T23:48:53",
+    "date_end": "2026-05-08T23:48:53",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "may8_full_slate.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "27a5fdb8-f38b-4a54-b417-faa4ffc82ca2",
+    "date_start": "2026-05-09T23:52:51",
+    "date_end": "2026-05-09T23:52:51",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "52a22027-049d-449f-a2ee-c8a0cf593a29",
+    "date_start": "2026-05-10T14:18:40",
+    "date_end": "2026-05-10T14:18:40",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "609676c0-4210-40d7-9446-ed68b782f855",
+    "date_start": "2026-05-10T22:14:07",
+    "date_end": "2026-05-10T22:14:07",
+    "n_user_msgs": 0,
+    "md_files": [
+      "OMEGA_TECHNICAL_WHITE_PAPER.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "302fb53b-8d9a-4955-b1e8-11c29711d475",
+    "date_start": "2026-05-11T14:30:00",
+    "date_end": "2026-05-11T14:30:00",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "f32054f8-f96f-44ea-88c1-5c9a426f6c47",
+    "date_start": "2026-05-11T21:47:11",
+    "date_end": "2026-05-11T21:47:11",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "03a9a054-5a65-448f-ad8e-966219452929",
+    "date_start": "2026-05-11T23:40:38",
+    "date_end": "2026-05-11T23:40:38",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "e679ae10-beaa-4fe4-8560-26e155b6d4fd",
+    "date_start": "2026-05-12T22:53:57",
+    "date_end": "2026-05-12T22:53:57",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "slate_deep_dive.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "8a191367-00bb-45ee-b226-720108023fc6",
+    "date_start": "2026-05-13T17:06:39",
+    "date_end": "2026-05-13T17:06:39",
+    "n_user_msgs": 0,
+    "md_files": [
+      "final_deep_dive.md",
+      "late_slate_analysis.md",
+      "post_mortem_may13.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "97eacf72-6102-4d8b-b71b-d54877edf2f5",
+    "date_start": "2026-05-14T11:28:50",
+    "date_end": "2026-05-14T11:28:50",
+    "n_user_msgs": 0,
+    "md_files": [
+      "deep_dive_analysis.md",
+      "implementation_plan.md",
+      "late_slate_deep_dive.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "cb976ea7-d5a2-4fad-9dfb-fd2dca88f031",
+    "date_start": "2026-05-14T22:51:21",
+    "date_end": "2026-05-14T22:51:21",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "post_mortem_2026_05_14.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "1f5b914d-d5a0-498c-a585-6dfb4ddf5f81",
+    "date_start": "2026-05-16T00:36:57",
+    "date_end": "2026-05-16T00:36:57",
+    "n_user_msgs": 0,
+    "md_files": [
+      "omega_field_manual.md",
+      "post_mortem_2026_05_15.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "a619fd94-66b9-4628-a57e-51c00e80e0ed",
+    "date_start": "2026-05-16T23:05:52",
+    "date_end": "2026-05-16T23:05:52",
+    "n_user_msgs": 0,
+    "md_files": [
+      "post_mortem_2026_05_16.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "b27dc271-0120-429a-ab5d-c83aea3ab606",
+    "date_start": "2026-05-17T21:34:13",
+    "date_end": "2026-05-17T21:34:13",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "post_mortem_2026_05_17.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "fe4eb43b-aea9-4099-90f1-95387169375e",
+    "date_start": "2026-05-18T08:48:05",
+    "date_end": "2026-05-18T08:48:05",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "e0116445-3a6a-4fc9-9d7b-a30c32790b56",
+    "date_start": "2026-05-18T12:25:49",
+    "date_end": "2026-05-18T12:25:49",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "1736da74-8a37-4629-b9a6-cbf122c849f6",
+    "date_start": "2026-05-18T15:47:21",
+    "date_end": "2026-05-18T15:47:21",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "cc559d7e-3064-49af-9782-9dbb88cae426",
+    "date_start": "2026-05-18T22:27:36",
+    "date_end": "2026-05-18T22:27:36",
+    "n_user_msgs": 0,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "(Artifact-only session)"
+  },
+  {
+    "cid": "35e942dd-9293-4c1c-9498-915f3f104630",
+    "date_start": "2026-05-19T18:52:19",
+    "date_end": "2026-05-19T18:52:46",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "how do i open my MLBDFS project we've been working on together?    The current local time is: 2026-05-19T14:52:19-04:00.   The user changed setting `Model Selection` from None to Gemini 3.5 Flash (High). No need to comme"
+  },
+  {
+    "cid": "33538430-20fd-4b98-9691-5e7972ea84ae",
+    "date_start": "2026-05-19T18:53:37",
+    "date_end": "2026-05-19T23:06:00",
+    "n_user_msgs": 41,
+    "md_files": [
+      "implementation_plan.md",
+      "math_audit_v9.5.md",
+      "season_audit_report.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "how do i open up the left hand side that stored all my code and stuff? here in AG   The current local time is: 2026-05-19T14:53:37-04:00."
+  },
+  {
+    "cid": "5764f595-84d0-4d2b-91db-31b7b2406191",
+    "date_start": "2026-05-19T23:08:31",
+    "date_end": "2026-05-20T04:48:31",
+    "n_user_msgs": 72,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "1. Tier 1 DQI (Divergence Quality Index) Upgrade\r \r Upgrade calculate_dqi() in server.py to ingest live data metrics:\r Implied Totals (Adding points for ITT > 4.5)\r Offense Quality (Using team_xwoba and power_concentrati"
+  },
+  {
+    "cid": "4a179a5a-d1f4-4970-ab28-200ad399840b",
+    "date_start": "2026-05-20T13:06:45",
+    "date_end": "2026-05-20T13:33:03",
+    "n_user_msgs": 13,
+    "md_files": [],
+    "first_user_msg": "Morning! Tough loss with not stacking the A's last night. All good. We got 2 major slates. Early and later today.  A few things when I popped up render on the website:  - In the teams matrix, clicking on a team, sometime"
+  },
+  {
+    "cid": "cd0455ff-5fa1-47b0-b1ce-8fd31d2d3d2b",
+    "date_start": "2026-05-20T14:41:27",
+    "date_end": "2026-05-21T02:30:53",
+    "n_user_msgs": 83,
+    "md_files": [
+      "dqi_math_audit.md",
+      "implementation_plan.md",
+      "slate_analysis.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Continue   The current local time is: 2026-05-20T10:41:29-04:00."
+  },
+  {
+    "cid": "dd232dd5-f4f9-4eef-a1a5-9adee043dc95",
+    "date_start": "2026-05-20T20:23:21",
+    "date_end": "2026-05-20T20:27:44",
+    "n_user_msgs": 2,
+    "md_files": [
+      "late_slate_breakdown.md"
+    ],
+    "first_user_msg": "The DQI for the cinci game that finished was really good. It was a TRUST at a 86% clip. Very good.  I'm moving on to the later slate:  LAD @ SD PIT @ STL BOS @ KC TOR @ NYY MIL @ CHC OAK @ LAA  I'm strugging to figure ou"
+  },
+  {
+    "cid": "cbb6ab50-0f7e-40f3-b3f3-7ac133b120a2",
+    "date_start": "2026-05-20T20:23:42",
+    "date_end": "2026-05-20T20:24:21",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "I need you to find and read the latest model output data for the MLB DFS late slate. The workspace is at C:\\Users\\konra\\.gemini\\antigravity\\worktrees\\MlbDFS\\analyze-late-slate-stacking  The games on this late slate are: "
+  },
+  {
+    "cid": "7ef57d09-57ea-4658-bf65-8f098d369d2d",
+    "date_start": "2026-05-23T03:53:08",
+    "date_end": "2026-05-24T04:48:31",
+    "n_user_msgs": 148,
+    "md_files": [
+      "implementation_plan.md",
+      "omega_engine_audit.md",
+      "omega_signals_audit.md",
+      "task.md",
+      "tonight_summary_easy_terms.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "I've been working with cursor for a while to work on the project while my tokens here refreshed.  Run the OMEGA package audit:  1. cd to the MlbDFS repo 2. git pull origin main 3. Run: .\\audit.ps1 4. If there's an omega-"
+  },
+  {
+    "cid": "62d08e57-286e-49cb-90e0-7f56aae24e26",
+    "date_start": "2026-05-24T13:12:03",
+    "date_end": "2026-05-25T03:40:43",
+    "n_user_msgs": 119,
+    "md_files": [
+      "deep_mathematical_audit.md",
+      "historical_audit_report.md",
+      "implementation_plan.md",
+      "master_optimization_report.md",
+      "omega_strategic_recommendations.md",
+      "slate_audit_2026_05_24.md",
+      "slate_comparative_audit.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Morning! we got a slate today later at 1:35pm ish.  I'm looking at the model, i know we made a lot of good changes yesterday, I'm seeing too many \"sneaky\" icons. I feel like it needs to be tightened on how it triggers?  "
+  },
+  {
+    "cid": "8b0bbc5b-53f8-4ee9-97a3-7a6be2d46f32",
+    "date_start": "2026-05-25T13:53:18",
+    "date_end": "2026-05-26T12:50:54",
+    "n_user_msgs": 128,
+    "md_files": [
+      "2025_season_backtest_report.md",
+      "confidence_cap_results.md",
+      "dqi_backtest_results.md",
+      "dqi_conf_optimization.md",
+      "dqi_math_comparison.md",
+      "extended_sweep_results.md",
+      "implementation_plan.md",
+      "omega_architectural_upgrades.md",
+      "rookie_modifier_backtest_results.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Morning!  Quick question...I see DQI 74% caution in one picture for one team and then I see 75% and 75% caution and green for another team.,..  How do the triggers work? When is it supposed to say trust and green vs caut"
+  },
+  {
+    "cid": "af84fc6a-195c-4ad0-94be-73a5adabb55c",
+    "date_start": "2026-05-26T12:51:27",
+    "date_end": "2026-05-26T15:04:24",
+    "n_user_msgs": 15,
+    "md_files": [
+      "implementation_plan.md",
+      "omega_architecture.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Read the logs/transcript of conversation 8b0bbc5b-53f8-4ee9-97a3-7a6be2d46f32 to understand the context of the recent calibrations, testing checks, and the architectural upgrades we outlined.  What are your thoughts?   T"
+  },
+  {
+    "cid": "1815eb2d-abe8-48b8-af90-36e3c60efcc7",
+    "date_start": "2026-05-26T20:06:01",
+    "date_end": "2026-05-27T01:59:04",
+    "n_user_msgs": 57,
+    "md_files": [
+      "analysis_results.md",
+      "copilot_playbook.md",
+      "game_by_game_analysis.md",
+      "lineup_strategy.md",
+      "slate_shifts.md"
+    ],
+    "first_user_msg": "Alright, we got a 10 game slate. Time to win some money together. We've taken down a few GPPs together already, so lets continue to cash.  Here's the games I care about today and only to focus on these:  MIA @ TOR CIN @ "
+  },
+  {
+    "cid": "c4e809da-e5c8-447a-94f7-e4189a0b193e",
+    "date_start": "2026-05-27T01:59:51",
+    "date_end": "2026-05-27T02:26:10",
+    "n_user_msgs": 10,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "/goal I want to build the \"OMEGA Slate Center\"\u2014a live, unified betting and DFS playbook dashboard that replaces our old static \"Attack Plan\" tab.\r Please review our server.py, market/prop fetchers, and HTML templates, an"
+  },
+  {
+    "cid": "a19dd2fa-b966-45f4-a275-51cc4ab94385",
+    "date_start": "2026-05-27T13:14:34",
+    "date_end": "2026-05-27T16:54:51",
+    "n_user_msgs": 40,
+    "md_files": [
+      "analysis_results.md"
+    ],
+    "first_user_msg": "Can we do a post mortem audit from the MLB slate yesterday?   omega-results(31).json - use this JSON to look at how the model stacked up before lock.  Give me detailed results from every aspect of the model.   The curren"
+  },
+  {
+    "cid": "58739c73-0f67-49dd-be40-e365053d8165",
+    "date_start": "2026-05-27T18:02:36",
+    "date_end": "2026-05-27T21:37:18",
+    "n_user_msgs": 25,
+    "md_files": [
+      "slate_analysis.md"
+    ],
+    "first_user_msg": "I want to focus on the later game slate tonight:  TB @ BAL CHC @ PIT LAA @ DET  ATL @ BOS CIN @ NYM MIN @ CWS NYY @ KC HOU @ TEX COL @ LAD  Here are the JSONs we've had from the start of the morning til now. Lock is not "
+  },
+  {
+    "cid": "f18d52d2-8751-447d-8318-91430b3004b3",
+    "date_start": "2026-05-27T21:40:18",
+    "date_end": "2026-05-28T03:21:37",
+    "n_user_msgs": 35,
+    "md_files": [],
+    "first_user_msg": "omega-results(40).json omega-results(41).json omega-results(42).json omega-results(43).json  I need a full game slate analysis for these teams:  TB @ BAL CHC @ PIT LAA @ DET ATL @ BOS CIN @ NYM MIN @ CWS NYY @ KC HOU @ T"
+  },
+  {
+    "cid": "435a9651-5107-4f1b-aee6-01028c6e9a95",
+    "date_start": "2026-05-28T13:17:33",
+    "date_end": "2026-05-29T03:13:50",
+    "n_user_msgs": 84,
+    "md_files": [
+      "analysis_results.md",
+      "implementation_plan.md",
+      "post_mortem_2026_05_28.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Is it worth doing the slate today?  Its split up into 2, 3 game slates. first one is:  LAA @ DET MIN @ CWS ATL @ BOS  and then later is:  TOR @ BAL CHC @ PIT HOU @ TEX   The current local time is: 2026-05-28T09:17:33-04:"
+  },
+  {
+    "cid": "91229847-f76b-4c83-989c-f05d6a84c8e6",
+    "date_start": "2026-05-29T01:57:48",
+    "date_end": "2026-10-12T17:50:42",
+    "n_user_msgs": 112,
+    "md_files": [
+      "implementation_plan.md",
+      "pokemon_pricing_results.md",
+      "pricecharting_132_cards_pricing.md",
+      "pricing_analysis_results.md",
+      "pricing_results.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "I want to find pricing for a CSV I have of cards. Its about 300-400 cards. I have a free API we can use to quickly look for the cards. Can we do this real quick? I have the CSV and the free API   The current local time i"
+  },
+  {
+    "cid": "8969f7be-8d76-470b-836a-8bbdc1fe163a",
+    "date_start": "2026-05-29T19:34:22",
+    "date_end": "2026-05-30T05:05:21",
+    "n_user_msgs": 97,
+    "md_files": [
+      "implementation_plan.md",
+      "omega_model_report_card.md",
+      "signal_performance_report.md",
+      "slate_analysis_today.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We have a large slate today for MLB DFS. I have to leave in about an hour and a half, so I can only go off that before lock.  12 game slate... the only games we don't care about is ATL @ CIN, MIN @ PIT, SD @ WASH... ever"
+  },
+  {
+    "cid": "97acb262-0342-40a3-97b5-a9966d2c74ab",
+    "date_start": "2026-05-30T04:19:50",
+    "date_end": "2026-05-30T04:21:41",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Rewrite c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\run_feedback_loop.py to make these specific changes:  1. In the signal_stats dict (around line 27), REMOVE these three keys entirely:    - 'PITCHER_WHAL"
+  },
+  {
+    "cid": "266599e9-6fd1-4961-b849-0469e2752b1f",
+    "date_start": "2026-05-30T17:24:12",
+    "date_end": "2026-06-01T00:10:38",
+    "n_user_msgs": 115,
+    "md_files": [
+      "analysis_results.md",
+      "implementation_plan.md",
+      "quantitative_backtest_report.md",
+      "task.md",
+      "tomorrow_todo.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Just got home!   problem... model hasnt' been refreshing all day because of an error around paremeters?   means we haven't been tracking anything all day.  Can we please fix this ASAP    The current local time is: 2026-0"
+  },
+  {
+    "cid": "3b9af727-fa9f-494f-a577-78a8220b94ba",
+    "date_start": "2026-06-01T00:11:08",
+    "date_end": "2026-06-01T02:19:11",
+    "n_user_msgs": 29,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We are resuming MLB DFS development. We are starting OMEGA v16.2.  Please refer to the analysis_results.md artifact from our previous session and implement: 1. The High-Contrast Slate Light Theme overhaul in templates/in"
+  },
+  {
+    "cid": "9e2c2d28-8bf1-4b92-8334-23bb63829996",
+    "date_start": "2026-06-01T12:43:06",
+    "date_end": "2026-06-02T02:56:58",
+    "n_user_msgs": 101,
+    "md_files": [
+      "analysis_results.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "opened up render this morning, and nothing is populated... i thought we had an auto refresh for slates?   i did a manual refresh and that was the error I got. We got that last time too... please can we fix this already? "
+  },
+  {
+    "cid": "664449e2-a204-4e00-90d1-4222d55ed2d4",
+    "date_start": "2026-06-02T13:21:08",
+    "date_end": "2026-06-02T17:46:47",
+    "n_user_msgs": 7,
+    "md_files": [
+      "omega_model_deep_dive.md",
+      "omega_model_plain_english_guide.md"
+    ],
+    "first_user_msg": "My brother told me he still wants an explanation of understanding the omega model and the data.   Is there anyway you can help me? I need it to be detailed. He \"likes\" to read. sooo something easy to break down and long "
+  },
+  {
+    "cid": "f50ac459-5eed-4b56-b607-8c0fb61c455f",
+    "date_start": "2026-06-02T18:29:33",
+    "date_end": "2026-06-03T16:46:17",
+    "n_user_msgs": 62,
+    "md_files": [
+      "filtered_slate_analysis.md",
+      "post_mortem_june2.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We need a DFS win tonight. Been cold.  Here is the first JSON im sending: omega-results(73).json - Please read this and let me know your thoughts.   The only games we want to cross off from our analysis are:  SD @ PHI DE"
+  },
+  {
+    "cid": "20992ae0-357a-4596-8b51-1bbed78b7ce2",
+    "date_start": "2026-06-03T16:02:51",
+    "date_end": "2026-06-04T13:48:02",
+    "n_user_msgs": 90,
+    "md_files": [
+      "filtered_slate_analysis.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We are doing the MLB slate later. Ive added a screenshot of the games / matchups that I will be targeting. they are checked. The ones unchecked im not focusing on so you can ignore those.  omega-results(80).json  Take a "
+  },
+  {
+    "cid": "c6a153ce-7c25-40f5-a9f6-d1a96856008e",
+    "date_start": "2026-06-04T13:29:12",
+    "date_end": "2026-06-04T19:51:26",
+    "n_user_msgs": 38,
+    "md_files": [
+      "early_slate_strategy.md",
+      "implementation_plan.md",
+      "night_slate_analysis.md",
+      "night_slate_pirates_lineups.md",
+      "night_slate_strategy.md",
+      "night_slate_tactical_guide.md",
+      "slate_comparison_report.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "There are 2 MLB slates today...    1:05pm EST:  SD @ PHI CLE @ NYY BAL @ BOS SF @ MIL  and  715pm EST:  TOR @ ATL KC @ MIN OAK @ CHC PIT @ HOU LAD @ ARI  I'm debating if i should play one slate or or one or the other... "
+  },
+  {
+    "cid": "eef1154f-3cdd-4ec2-b7c9-7679ead902d1",
+    "date_start": "2026-06-04T19:52:06",
+    "date_end": "2026-06-05T03:40:58",
+    "n_user_msgs": 77,
+    "md_files": [
+      "implementation_plan.md",
+      "lineup_lock_checklist.md",
+      "model_leaks_audit.md",
+      "sp_trap_backtest.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Let's optimize our lineups for the 5 night slate games tonight (starting 7:15 PM ET).   We are working in the active workspace. Please check the files in the `reports/` folder, specifically `reports/night_slate_pirates_l"
+  },
+  {
+    "cid": "419253db-a28a-4078-b1ea-13dcbf915310",
+    "date_start": "2026-06-05T16:38:58",
+    "date_end": "2026-06-05T17:32:31",
+    "n_user_msgs": 5,
+    "md_files": [],
+    "first_user_msg": "We got a large 12 game slate today...  Here is the latest JSON: omega-results(104).json  I won't be around later to use you, but will have the model in front of me...  You can ignore:  CWS @ PHI SF @ CHC SEA @ DET  every"
+  },
+  {
+    "cid": "e8111cc0-1a8b-4bbd-9f59-9dbf555ac81d",
+    "date_start": "2026-06-07T16:10:33",
+    "date_end": "2026-06-07T17:33:54",
+    "n_user_msgs": 16,
+    "md_files": [
+      "analysis_results.md"
+    ],
+    "first_user_msg": "Back from my trip and feel refreshed! Ready to lock in on this slate.  Lock is in 90ish min.  Here's the JSON: omega-results(106).json  Let me know how this slate looks today.   also only focused on the checked matchups."
+  },
+  {
+    "cid": "cde43b80-5e60-4de0-8785-39469dcfa70e",
+    "date_start": "2026-06-08T20:43:58",
+    "date_end": "2026-06-08T22:23:04",
+    "n_user_msgs": 12,
+    "md_files": [
+      "daily_attack_plan_june8.md"
+    ],
+    "first_user_msg": "Tough slate today... very concentrated today.  Here is the JSON for today's slate: omega-results(112).json  what are we thinking?   The current local time is: 2026-06-08T16:43:58-04:00.   The user changed setting `Model "
+  },
+  {
+    "cid": "1a654fdf-4709-460b-9e65-3fe3c82caeb1",
+    "date_start": "2026-06-09T20:19:36",
+    "date_end": "2026-06-09T22:51:40",
+    "n_user_msgs": 21,
+    "md_files": [
+      "atl_corrected_lineups_june9.md",
+      "fedde_override_verification_june9.md",
+      "ginn_lineups_june9.md",
+      "may_corrected_lineups_june9.md",
+      "optimized_draftkings_lineups.md",
+      "slate_playbook_june9.md"
+    ],
+    "first_user_msg": "We have a 9 game slate tonight!  Here's the JSON of how the model and everything looks: omega-results(116).json  I also only care about the CHECKED games from the picture. Everything unchecked we don't care about.  Give "
+  },
+  {
+    "cid": "a0b39009-160f-433a-b051-78064d1e47cf",
+    "date_start": "2026-06-10T12:59:10",
+    "date_end": "2026-06-10T13:08:18",
+    "n_user_msgs": 4,
+    "md_files": [],
+    "first_user_msg": "Morning - Why does the model show that Atlanta is going against Erick Fedde? Erick Fedde pitched yesterday...   The current local time is: 2026-06-10T08:59:10-04:00.   The user changed setting `Model Selection` from None"
+  },
+  {
+    "cid": "426030bc-dec3-46fd-b47e-04b4c5ffd2b3",
+    "date_start": "2026-06-10T14:16:05",
+    "date_end": "2026-06-10T22:33:10",
+    "n_user_msgs": 31,
+    "md_files": [
+      "early_slate_analysis.md",
+      "late_slate_strategy.md"
+    ],
+    "first_user_msg": "Two slates today... we are gonna start with the early one first.  Here's the JSON of the model as of right now: omega-results(119).json  only focus on the 4 checked games so far.   Nothing eye popping yet but how would y"
+  },
+  {
+    "cid": "63ebd528-9eb6-41af-830f-f33b83229bd9",
+    "date_start": "2026-06-11T13:14:07",
+    "date_end": "2026-06-11T14:24:13",
+    "n_user_msgs": 10,
+    "md_files": [
+      "analysis_results.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Anyway we can do a post mortem from yesterday and the last couple days? I feel like I haven't done many post mortems as the model actually been super good so far... just want to see how the model has been holding up and "
+  },
+  {
+    "cid": "e4b8a3ee-576a-4972-9cbd-de4717aebc06",
+    "date_start": "2026-06-11T15:03:45",
+    "date_end": "2026-06-11T16:59:48",
+    "n_user_msgs": 20,
+    "md_files": [
+      "slate_analysis_june11.md"
+    ],
+    "first_user_msg": "I want to do a game by game analysis for the 5 games today... for this slate im playing.  JSON: omega-results(126).json  No need to create a lineup or anything right now... just want an analysis of game by game and how y"
+  },
+  {
+    "cid": "7b72e754-446f-4215-86eb-f1292d073f2b",
+    "date_start": "2026-06-12T15:42:26",
+    "date_end": "2026-06-13T04:00:11",
+    "n_user_msgs": 52,
+    "md_files": [
+      "implementation_plan.md",
+      "salary_value_analysis.md",
+      "slate_analysis_june12.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Alright we got a big 13 game slate tonight... need a WIN!@   The current local time is: 2026-06-12T11:42:26-04:00.   The user changed setting `Model Selection` from None to Gemini 3.5 Flash (High). No need to comment on "
+  },
+  {
+    "cid": "bc56e2cd-bc83-41b5-8252-ee0610202b83",
+    "date_start": "2026-06-13T18:47:38",
+    "date_end": "2026-06-13T19:39:38",
+    "n_user_msgs": 23,
+    "md_files": [
+      "salary_value_analysis_june13.md",
+      "slate_analysis_june13.md"
+    ],
+    "first_user_msg": "We got a 8 game slate today.   HEre is the JSON from 2pm EST: omega-results(140).json  The checked games is the ones we care about for this analysis.  What are your thoughts for this slate? Sneaky stacks? stacks to stack"
+  },
+  {
+    "cid": "c6be7d3e-1690-4ed2-be4d-5873126a7e8b",
+    "date_start": "2026-06-15T22:23:17",
+    "date_end": "2026-06-16T03:34:17",
+    "n_user_msgs": 39,
+    "md_files": [
+      "slate_analysis_report.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "I'm doing the 8 game slate tonight. Lock in 45 min.  Here is the JSON. How would you attack this slate? Any thoughts on hitters? Pitchers?  I added the JSON and the salaries. Also added the screenshot with the CHECKED te"
+  },
+  {
+    "cid": "906e86fa-8b6c-4cf2-9ef2-b6c77f3befc0",
+    "date_start": "2026-06-16T17:25:32",
+    "date_end": "2026-06-17T00:01:45",
+    "n_user_msgs": 39,
+    "md_files": [
+      "game_by_game_analysis.md",
+      "june_audit_report.md",
+      "june_model_performance.md",
+      "salary_value_analysis.md",
+      "slate_analysis.md"
+    ],
+    "first_user_msg": "Alright we got a juicy 12 gamer later tonight.  I wanna do the same game by game analysis we've been doing.   Here's the JSON now... (i wont send another one til much later)  and here is the DK salaries for todays slate."
+  },
+  {
+    "cid": "9a3b68cd-927a-4a53-914f-3eb23e1ba046",
+    "date_start": "2026-06-17T14:51:10",
+    "date_end": "2026-06-17T22:33:33",
+    "n_user_msgs": 68,
+    "md_files": [],
+    "first_user_msg": "Alright! Today is my birthday and we got a couple MLB slates!   We'll start with the 5 gamer, games / matchups are in the screenshot that are checked.   omega-results(149).json - HEre is the JSON as of right now!  DKSala"
+  },
+  {
+    "cid": "1feca7a8-7e9e-4d7f-8c30-d22f1f241593",
+    "date_start": "2026-06-18T22:02:16",
+    "date_end": "2026-06-19T04:31:36",
+    "n_user_msgs": 15,
+    "md_files": [
+      "walkthrough.md"
+    ],
+    "first_user_msg": "omega-results(162).json  check this omega... unbias, how we playing this slate? Looks very tough tonight.   The current local time is: 2026-06-18T18:02:16-04:00.   The user changed setting `Model Selection` from None to "
+  },
+  {
+    "cid": "2cc57fe4-9b6d-4191-888f-cc949831f42a",
+    "date_start": "2026-06-19T01:24:36",
+    "date_end": "2026-06-19T04:39:11",
+    "n_user_msgs": 41,
+    "md_files": [
+      "analysis_trust_divergence.md",
+      "analysis_trust_redesign.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We are building the NFL version of the OMEGA DFS Projection Engine. The goal is to establish a three-layer pipeline (Physics/Volume -> Market Alpha -> Decision/Correlation Stacking) similar to what we did for MLB.   I wa"
+  },
+  {
+    "cid": "b74f629c-25f0-406b-a00a-47de7ac3ad8d",
+    "date_start": "2026-06-19T03:22:47",
+    "date_end": "2026-06-19T03:24:45",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Build Items 1 and 2 for the NFL OMEGA DFS engine at c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\NflDFS.  ## Item 1: CONTRARIAN_DOG signal in correlation_stacker.py  In `engine/correlation_stacker.py`, inside the"
+  },
+  {
+    "cid": "1e389649-5359-4211-8b26-178517f0d924",
+    "date_start": "2026-06-19T04:09:12",
+    "date_end": "2026-06-19T04:28:55",
+    "n_user_msgs": 1,
+    "md_files": [
+      "phase3_completion.md"
+    ],
+    "first_user_msg": "Build all Phase 3 features for the NFL OMEGA DFS engine. Full spec is at: C:\\Users\\konra\\.gemini\\antigravity\\brain\\2cc57fe4-9b6d-4191-888f-cc949831f42a\\scratch\\phase3_build_spec.md  Read that spec file first, then read a"
+  },
+  {
+    "cid": "71606e3e-266c-4e4a-a174-e72e7af6d570",
+    "date_start": "2026-06-19T21:36:05",
+    "date_end": "2026-06-19T22:53:48",
+    "n_user_msgs": 18,
+    "md_files": [
+      "filtered_slate_analysis_163.md",
+      "filtered_slate_analysis_164.md",
+      "filtered_slate_analysis_165.md"
+    ],
+    "first_user_msg": "Lock in an hour and a half.  Here is the JSON: omega-results(163).json  thoughts on this slate? only the checked mark teams for this analysis.    The current local time is: 2026-06-19T17:36:05-04:00.   The user changed s"
+  },
+  {
+    "cid": "5c7cd9fa-8e04-4042-9fae-81e0490485a3",
+    "date_start": "2026-06-20T16:42:59",
+    "date_end": "2026-06-20T19:37:14",
+    "n_user_msgs": 9,
+    "md_files": [],
+    "first_user_msg": "omega-results(167).json  Lock in 25 min. HEre is the JSON above.  The checked games in the screenshot is the games we care about only right now.  DKSalaries(22)  DK salaries JSON too.  What are your thoughts on this slat"
+  },
+  {
+    "cid": "5cac2612-c103-4e7e-aa89-8b80428b13c9",
+    "date_start": "2026-06-20T21:07:23",
+    "date_end": "2026-06-21T04:35:40",
+    "n_user_msgs": 36,
+    "md_files": [
+      "audit_plan.md",
+      "backtest_results.md",
+      "engine_audit.md",
+      "implementation_plan.md",
+      "omega_audit_2026.md",
+      "phi_postmortem.md",
+      "slate_analysis.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "omega-results(168).json  DKSalaries(23)  Thoughts on this slate? I have the JSON from the model and DK salaries for the later slate.  screenshot is the checked games for tonight. I need your thoughts.    The current loca"
+  },
+  {
+    "cid": "c5b9ba64-d7b2-4465-af05-65497d1f132b",
+    "date_start": "2026-06-22T00:22:21",
+    "date_end": "2026-06-22T02:19:53",
+    "n_user_msgs": 6,
+    "md_files": [
+      "post_mortem_june_20.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "I did a \"lock\" screenshot earlier today for the earlier MLB slate... can you pull that of the model and let me know why the model was really wrong today   The current local time is: 2026-06-21T20:22:21-04:00.   The user "
+  },
+  {
+    "cid": "96fd9eff-6d2c-41c0-92d4-81531719494f",
+    "date_start": "2026-06-22T15:51:39",
+    "date_end": "2026-06-23T13:19:32",
+    "n_user_msgs": 56,
+    "md_files": [
+      "learning_proposal.md",
+      "slate_analysis_june22.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "I'm looking a a 9 game slate today for MLB dfs... but the model is just so bunched up with conf scores and a bunch of smash spots etc.... I just feel like as of right now its really hard to choose which stack to go with."
+  },
+  {
+    "cid": "5c5e3e84-46fb-4928-8e80-678982f6e392",
+    "date_start": "2026-06-23T18:33:52",
+    "date_end": "2026-06-24T15:05:11",
+    "n_user_msgs": 80,
+    "md_files": [
+      "betting_ev_backtest_report.md",
+      "implementation_plan.md",
+      "omega_model_a_plus_roadmap.md",
+      "omega_model_report_card_v2.md",
+      "slate_analysis_june23.md",
+      "slate_analysis_june23_v177.md",
+      "slate_analysis_mil_atl.md",
+      "slate_analysis_mil_atl_classic.md",
+      "slate_analysis_mil_atl_salary_min.md",
+      "slate_analysis_no_marquez.md",
+      "slate_analysis_user_lineup.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "We got a 9 game slate tonight. We need to make up from yesterday as we got smacked yesterday.  Here is the current model JSON: omega-results(176).json  Here are the DK salaries: DKSalaries(25)  Please pull these and give"
+  },
+  {
+    "cid": "d23c3298-806e-4411-af09-580eaa220ace",
+    "date_start": "2026-06-24T01:07:24",
+    "date_end": "2026-06-24T01:07:46",
+    "n_user_msgs": 1,
+    "md_files": [
+      "database_commercialization_guide.md"
+    ],
+    "first_user_msg": "If I wanted to add a persistent database for users when I want to commercialize this application what would that look like. Are there internal tools or would I need to link up to something like digital ocean etc. Walk me"
+  },
+  {
+    "cid": "dbc1e689-fb2a-4e2e-801f-ac855017f1dc",
+    "date_start": "2026-06-24T13:59:26",
+    "date_end": "2026-06-25T01:29:55",
+    "n_user_msgs": 88,
+    "md_files": [
+      "early_slate_lineup_builds.md",
+      "early_slate_tactical_report.md",
+      "implementation_plan.md",
+      "learning_proposal.md",
+      "sprint_backtest_results.md",
+      "task.md",
+      "walkthrough.md",
+      "workflow_improvements.md"
+    ],
+    "first_user_msg": "omega-results(181).json  Here is the JSON for todays slate...  So cubs have a double header today, but only showing sean manaea as the pitcher. Nolan McLean is pitching the first game, in the early slate which im playing"
+  },
+  {
+    "cid": "c3e66e8e-c3b4-4eba-897b-e00ab8fc24fa",
+    "date_start": "2026-06-25T01:03:24",
+    "date_end": "2026-06-25T01:05:51",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read the file c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\templates\\index.html at these specific line ranges and return the COMPLETE raw text for each range (no summarizing, no truncating):  1. Lines 4920"
+  },
+  {
+    "cid": "f3fa58ea-8041-4fcc-99ac-79b0c15fc1aa",
+    "date_start": "2026-06-25T01:06:47",
+    "date_end": "2026-06-25T01:08:57",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read these files and return the COMPLETE raw content for each \u2014 do not summarize, do not skip anything:  1. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\data\\matchup_data.json \u2014 read the FIRST 80 lines onl"
+  },
+  {
+    "cid": "0a1f860e-8a61-4018-b927-ab193998adb0",
+    "date_start": "2026-06-25T01:37:55",
+    "date_end": "2026-06-25T01:38:19",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "You are running a final comprehensive audit of the OMEGA MLB DFS model before the session ends. Read every file mentioned and report back findings systematically. Do not make any changes \u2014 this is read-only diagnostic wo"
+  },
+  {
+    "cid": "13d91938-cbec-42ed-be2a-c39446381e44",
+    "date_start": "2026-06-25T01:39:07",
+    "date_end": "2026-06-25T04:24:53",
+    "n_user_msgs": 31,
+    "md_files": [
+      "omega_audit_report.md"
+    ],
+    "first_user_msg": "You are running a final comprehensive audit of the OMEGA MLB DFS model before the session ends. Read every file mentioned and report back findings systematically. Do not make any changes \u2014 this is read-only diagnostic wo"
+  },
+  {
+    "cid": "72bce153-eb55-4734-9e60-b8bc25b936c2",
+    "date_start": "2026-06-25T02:44:28",
+    "date_end": "2026-06-25T02:45:41",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read the following files completely and return their full contents: 1. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\OMEGA_CONTEXT.md 2. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\run_feedb"
+  },
+  {
+    "cid": "f97e0784-04bd-4115-b5a9-9b002b90c897",
+    "date_start": "2026-06-25T03:28:38",
+    "date_end": "2026-06-25T03:31:17",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read the following files completely and return their full contents verbatim. Do not summarize: 1. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\OMEGA_SYSTEM_HANDBOOK.md 2. c:\\Users\\konra\\OneDrive\\Desktop\\An"
+  },
+  {
+    "cid": "a2b15dfe-a146-4092-8675-2dcfa59c5ea8",
+    "date_start": "2026-06-25T15:03:02",
+    "date_end": "2026-06-25T18:07:53",
+    "n_user_msgs": 16,
+    "md_files": [
+      "implementation_plan.md",
+      "slate_analysis_june25_early.md",
+      "slate_analysis_june25_update.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Read these files from the repo root before responding: - OMEGA_CONTEXT.md (model architecture) - OMEGA_DECISIONS.md (decision history)   - OMEGA_SYSTEM_HANDBOOK.md (current model reference)  GitHub: https://github.com/kk"
+  },
+  {
+    "cid": "0588908b-dc8e-4720-b27c-99e15b628ce8",
+    "date_start": "2026-06-25T18:25:52",
+    "date_end": "2026-06-26T02:07:28",
+    "n_user_msgs": 7,
+    "md_files": [
+      "optimizer_final_results.md",
+      "slate_analysis_results.md"
+    ],
+    "first_user_msg": "Read these files from the repo root before responding: - OMEGA_CONTEXT.md (model architecture) - OMEGA_DECISIONS.md (decision history)   - OMEGA_SYSTEM_HANDBOOK.md (current model reference)  GitHub: https://github.com/kk"
+  },
+  {
+    "cid": "2aad9adf-7165-4a04-912c-21d23bc5c43e",
+    "date_start": "2026-06-26T19:19:13",
+    "date_end": "2026-06-26T19:34:17",
+    "n_user_msgs": 2,
+    "md_files": [
+      "omega_additional_backtests.md",
+      "omega_backtest_report.md"
+    ],
+    "first_user_msg": "OMEGA Research Task \u2014 Backtest Query Read OMEGA_CONTEXT.md, OMEGA_DECISIONS.md, and OMEGA_SYSTEM_HANDBOOK.md from the repo root for full context before proceeding. Then run the following research task: I want to backtest"
+  },
+  {
+    "cid": "860cdbce-82d4-4099-9150-068f10d56702",
+    "date_start": "2026-06-26T21:15:42",
+    "date_end": "2026-06-26T22:06:03",
+    "n_user_msgs": 2,
+    "md_files": [
+      "pre_lock_stack_analysis.md"
+    ],
+    "first_user_msg": "OMEGA Research Task \u2014 Final Pre-Lock Stack Decision Analysis Read OMEGA_CONTEXT.md, OMEGA_DECISIONS.md, and OMEGA_SYSTEM_HANDBOOK.md before proceeding. Then run all of the following queries against the archive in reports"
+  },
+  {
+    "cid": "d6cad487-019f-49c9-bad7-07fa7c1d07f2",
+    "date_start": "2026-06-27T02:32:15",
+    "date_end": "2026-06-27T04:27:09",
+    "n_user_msgs": 12,
+    "md_files": [
+      "implementation_plan.md",
+      "opener_source_research.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "OMEGA Model Update \u2014 Opener/Bulk Pitcher Auto-Detection System Read OMEGA_CONTEXT.md, OMEGA_DECISIONS.md, OMEGA_SYSTEM_HANDBOOK.md, and every file involved in pitcher ingestion, salary CSV processing, team attack scoring"
+  },
+  {
+    "cid": "f4e10f18-fd2b-4c0c-8446-ccd1e476fd54",
+    "date_start": "2026-06-28T03:13:03",
+    "date_end": "2026-06-28T03:30:22",
+    "n_user_msgs": 6,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Session type: Research task + potential model update  Load: OMEGA_CONTEXT.md, OMEGA_DECISIONS.md, OMEGA_SYSTEM_HANDBOOK.md Research question to investigate: When an opposing SP has all three of these flags firing simulta"
+  },
+  {
+    "cid": "9bde2337-b9a7-4118-8c16-b07a85c655ea",
+    "date_start": "2026-06-28T17:26:16",
+    "date_end": "2026-06-28T18:08:49",
+    "n_user_msgs": 4,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "This is for the OMEGA MLB DFS model. Public repo at github.com/kklosowiak/MlbDFS. The dashboard runs on Render. We have a bug in the three-tier opener/bulk detection system that needs to be fixed before first pitch tonig"
+  },
+  {
+    "cid": "4889b94a-ba06-4636-a285-4c0bdc66eec4",
+    "date_start": "2026-06-29T01:25:04",
+    "date_end": "2026-06-29T02:54:10",
+    "n_user_msgs": 9,
+    "md_files": [
+      "implementation_plan.md"
+    ],
+    "first_user_msg": "Implement Today \u2014 High Confidence, Low Risk Decision #9 \u2014 PARADOX resolution rule  This is the highest-value fix available. Four slates, four wrong calls on PARADOX games. The logic is clean \u2014 swap from \"higher raw xwOBA"
+  },
+  {
+    "cid": "2c451a53-c7b3-4860-a25f-0c5cb922eaa4",
+    "date_start": "2026-06-30T03:33:09",
+    "date_end": "2026-06-30T05:13:32",
+    "n_user_msgs": 15,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "CONTEXT FOR AG  You're working on OMEGA, a proprietary MLB DFS analytics engine for DraftKings  Classic GPP contests (single-entry, $121 buy-in, 275-350 person fields). The  system is hosted at mlbdfs.onrender.com, repo "
+  },
+  {
+    "cid": "ee7bbb0f-3b6d-417b-ab5e-9cc104c82603",
+    "date_start": "2026-07-01T16:17:44",
+    "date_end": "2026-07-01T18:35:11",
+    "n_user_msgs": 5,
+    "md_files": [
+      "implementation_plan.md"
+    ],
+    "first_user_msg": "Hey AG \u2014 fresh session, three tasks from last night's June 30 slate. No model changes today.  Two are data collection/analysis scripts only, one is an audit log entry.  Nothing touches weights, signal logic, or gets comm"
+  },
+  {
+    "cid": "45afc25e-9c68-4657-b2de-d8faf51fa92d",
+    "date_start": "2026-07-01T16:17:59",
+    "date_end": "2026-07-01T16:28:43",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read the following files in full and return their complete contents: 1. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\OMEGA_CONTEXT.md 2. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\OMEGA_DE"
+  },
+  {
+    "cid": "57701036-45ad-4b82-a18a-e200f0c460b8",
+    "date_start": "2026-07-01T16:17:59",
+    "date_end": "2026-07-01T16:19:50",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Explore the following repository structure and return details about: 1. List contents of: c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\data\\ 2. List contents of: c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity"
+  },
+  {
+    "cid": "773533cf-fb99-405f-b63d-2fe4c80deb37",
+    "date_start": "2026-07-01T16:20:07",
+    "date_end": "2026-07-01T16:24:00",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "I need to understand the data format stored in omega-results JSON files and the actuals cache files in the MlbDFS reports directory.  Please do the following: 1. List all files in c:\\Users\\konra\\OneDrive\\Desktop\\Antigrav"
+  },
+  {
+    "cid": "c0014866-732b-4721-a53f-fbb6747085fd",
+    "date_start": "2026-07-01T16:20:07",
+    "date_end": "2026-07-01T16:26:00",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Read these files and return their FULL contents \u2014 do not truncate anything: 1. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\OMEGA_CONTEXT.md 2. c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\O"
+  },
+  {
+    "cid": "c5b4d7fe-a495-45c2-8d50-364a427cb2bb",
+    "date_start": "2026-07-01T16:20:07",
+    "date_end": "2026-07-01T16:21:51",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "I need to understand the git branch situation for the MlbDFS repository. Run these commands and return the output:  1. Run: git -C 'c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS' branch -a 2. Run: git -C 'c"
+  },
+  {
+    "cid": "7162625a-79ae-48b0-9d31-49089066c968",
+    "date_start": "2026-07-01T16:22:17",
+    "date_end": "2026-07-01T16:22:57",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "Please search the following files for COLD_HIGH_BR_WARNING and is_trap references:  1. Search c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\main.py for: 'COLD_HIGH_BR_WARNING' - return every line that conta"
+  },
+  {
+    "cid": "e7d7bdfe-9302-4812-89c2-310270046b49",
+    "date_start": "2026-07-01T16:22:17",
+    "date_end": "2026-07-01T16:24:22",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "I need to read specific sections of two large JSON files to understand their data structure. Please read and return:  1. The first 200 lines of: c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS\\reports\\archive"
+  },
+  {
+    "cid": "c7ea1e25-f0e0-43d1-a2d7-cabe51b00e5a",
+    "date_start": "2026-07-01T23:55:05",
+    "date_end": "2026-07-07T13:07:03",
+    "n_user_msgs": 33,
+    "md_files": [
+      "implementation_plan.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Hey AG \u2014 fresh chat. Building a fully automated passive tracking  system for OMEGA. No computer required from Konrad. Runs on  GitHub Actions servers every night regardless of whether he's active.  First real test run is"
+  },
+  {
+    "cid": "03db5b1b-d9a8-4e32-9690-92c41fc53c81",
+    "date_start": "2026-07-07T13:10:48",
+    "date_end": "2026-07-28T16:53:08",
+    "n_user_msgs": 34,
+    "md_files": [
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "working on inventorying a large collection that im picking up friday. Its mostly japanese vending series, holos, etc.   If I inventory, you'll be able to help me price the raw tcgplayer, raw price charting and then 8,9,1"
+  },
+  {
+    "cid": "97e0dba7-56e4-4daa-93fa-fd5232be16b1",
+    "date_start": "2026-07-08T13:44:18",
+    "date_end": "2026-07-08T13:58:08",
+    "n_user_msgs": 5,
+    "md_files": [
+      "backtest_verification_report.md",
+      "implementation_plan.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "# OMEGA Post-Mortem \u2014 July 7, 2026 Slate\r \r **Slate:** 9-game main slate (LAA@TEX, COL@LAD, CLE@MIN, PHI@CIN, MIL@STL, BOS@CWS, TOR@SF, KC@NYM, ARI@SD)\r **Contest:** DK Classic SE, $121, 275\u2013350 field\r **Result:** Lineup"
+  },
+  {
+    "cid": "473c204b-a229-410f-9aaa-e1f8ba968352",
+    "date_start": "2026-07-08T21:40:56",
+    "date_end": "2026-07-08T21:48:09",
+    "n_user_msgs": 1,
+    "md_files": [
+      "signal_hitrate_audit.md"
+    ],
+    "first_user_msg": "Now that we have several weeks of passive tracking data accumulated via the GitHub Actions pipeline (since late June), I want a comprehensive, rigorous hit-rate analysis across every named signal in OMEGA \u2014 not a qualita"
+  },
+  {
+    "cid": "11c37bd3-342f-4e75-afd2-423252f03bf2",
+    "date_start": "2026-07-09T12:19:04",
+    "date_end": "2026-07-10T15:57:28",
+    "n_user_msgs": 9,
+    "md_files": [
+      "implementation_plan.md",
+      "pitcher_calibration_log_synced.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Two more pitcher busts tonight (July 8) \u2014 Davis Martin (5 ER/4 IP) and Mackenzie Gore (7 ER/5 IP) \u2014 both were rostered off a \"clean, no red flags\" read from OMEGA. Both had visible real-world decline trends beforehand (M"
+  },
+  {
+    "cid": "286b0029-a3d2-4965-a21b-d2df1ae12674",
+    "date_start": "2026-07-13T14:29:38",
+    "date_end": "2026-07-18T03:51:49",
+    "n_user_msgs": 105,
+    "md_files": [
+      "dqi_final_audit_report.md",
+      "dqi_leverage_distribution_report.md",
+      "dqi_threshold_sweep_report.md",
+      "dry_run_validation.md",
+      "final_omega_audit_summary.md",
+      "historical_study_report.md",
+      "implementation_plan.md",
+      "study_results.md",
+      "task.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Context: I run OMEGA, a proprietary MLB DFS analytics engine for DraftKings Classic GPP contests. This week is the All-Star break \u2014 no live slates until Friday \u2014 so I want to use the downtime to run a comprehensive audit"
+  },
+  {
+    "cid": "30589840-b4e9-4e79-927a-82e4e3b83874",
+    "date_start": "2026-07-13T19:18:00",
+    "date_end": "2026-07-13T19:19:38",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "In the MlbDFS project at c:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\MlbDFS, I need to know exactly how the `siera` field is populated on pitcher objects and what it defaults to when data is missing or stale.  S"
+  },
+  {
+    "cid": "7e7337cd-babb-4b85-8ed4-2ec3528ff184",
+    "date_start": "2026-07-14T16:03:18",
+    "date_end": "2026-07-14T16:11:19",
+    "n_user_msgs": 1,
+    "md_files": [
+      "historical_study_report.md"
+    ],
+    "first_user_msg": "Run a historical replication study for the MlbDFS project. Write all scripts to C:\\Users\\konra\\.gemini\\antigravity\\brain\\286b0029-a3d2-4965-a21b-d2df1ae12674\\scratch\\ and write your final report to C:\\Users\\konra\\.gemini"
+  },
+  {
+    "cid": "3c6feacd-909d-40f9-b70b-b73476a51948",
+    "date_start": "2026-07-19T22:55:44",
+    "date_end": "2026-07-20T01:16:19",
+    "n_user_msgs": 4,
+    "md_files": [],
+    "first_user_msg": "Two separate, unrelated tasks \u2014 please do them independently, not as steps of one job. Suggested order: do Task 1 first since it's trivial and zero-risk, then Task 2.  === TASK 1: Append to OMEGA_DECISIONS.md (documentat"
+  },
+  {
+    "cid": "a28971f5-d18c-4e6c-bd6b-67f7d289d158",
+    "date_start": "2026-07-21T14:42:46",
+    "date_end": "2026-07-21T15:48:45",
+    "n_user_msgs": 4,
+    "md_files": [
+      "implementation_plan.md",
+      "walkthrough.md"
+    ],
+    "first_user_msg": "Investigate a silent failure in the OMEGA capture pipeline and add logging so it can't happen invisibly again.  Context: .github/workflows/omega_capture.yml runs on a schedule twice daily (11:30am and 6:20pm ET / 1530 an"
+  },
+  {
+    "cid": "167c94fa-b6a6-43f5-a3ea-9461c8e7b46b",
+    "date_start": "2026-07-22T13:42:57",
+    "date_end": "2026-07-22T13:59:38",
+    "n_user_msgs": 3,
+    "md_files": [],
+    "first_user_msg": "Run a full health check on the automated OMEGA tracking pipeline \u2014 I want to confirm everything actually ran correctly for yesterday's slate (July 21) before I trust it going forward. This is a verification pass only \u2014 r"
+  },
+  {
+    "cid": "e9196b8b-be10-4889-b0b7-dd3cdf4a0a69",
+    "date_start": "2026-07-22T20:35:05",
+    "date_end": "2026-07-22T22:31:54",
+    "n_user_msgs": 25,
+    "md_files": [],
+    "first_user_msg": "You know the MLB DFS OMEGA model better than anyone right? excluding myself   The current local time is: 2026-07-22T16:35:05-04:00.   The user changed setting `Model Selection` from None to Gemini 3.5 Flash (Medium). No "
+  },
+  {
+    "cid": "d4f435b1-6285-4172-a8c3-d762e5d85c8a",
+    "date_start": "2026-07-23T13:36:14",
+    "date_end": "2026-07-23T14:01:50",
+    "n_user_msgs": 4,
+    "md_files": [],
+    "first_user_msg": "The Actuals + Processing GitHub Action failed this morning (run e2fe306, \"process\" job, failed in 39s).  Error from the logs: [paste the traceback / annotation text here]  Please: 1. Read the actual error above \u2014 don't a"
+  },
+  {
+    "cid": "9338ba5c-c1dc-4b7e-95b0-a3e71486658b",
+    "date_start": "2026-08-04T20:45:50",
+    "date_end": "2026-08-04T22:22:37",
+    "n_user_msgs": 7,
+    "md_files": [
+      "health_audit_jul30_aug04.md",
+      "signal_audit_jul24_aug03.md"
+    ],
+    "first_user_msg": "AG prompt \u2014 5-day pipeline health check (July 30\u2013Aug 4)  I've been away for 5 days (last verified state: July 23, ca57946 merged to main with the doubleheader pitcher-matching fix and digest display fix). Before tonight'"
+  },
+  {
+    "cid": "0f80c7c4-4cae-4a37-91d3-8432e9f993ac",
+    "date_start": "2026-09-02T15:11:08",
+    "date_end": "2026-09-02T15:11:08",
+    "n_user_msgs": 1,
+    "md_files": [],
+    "first_user_msg": "I haven't done MLB DFS in sometime now. But I know the github workflows and pulling in how things have been doing is working. \r \r I plan to do the early slate today, 6 games. \r \r Any chance you could first tell me what s"
+  },
+  {
+    "cid": "c846a4e9-5c09-43fd-80cb-65df0a830833",
+    "date_start": "2026-09-02T15:11:33",
+    "date_end": "2026-09-02T15:51:05",
+    "n_user_msgs": 5,
+    "md_files": [
+      "stack_analysis.md"
+    ],
+    "first_user_msg": "I haven't done MLB DFS in sometime now. But I know the github workflows and pulling in how things have been doing is working. \r \r I plan to do the early slate today, 6 games. \r \r Any chance you could first tell me what s"
+  },
+  {
+    "cid": "d5d1e4bf-01e8-49b5-b897-cbb482234825",
+    "date_start": "2026-09-09T23:20:21",
+    "date_end": "2026-09-09T23:59:36",
+    "n_user_msgs": 24,
+    "md_files": [],
+    "first_user_msg": "So I'm a bit burnt out on vibe coding. Haven't worked on the omega model in quite sometime.   Trying to think if i should keep it up live on render and keep that up and payign or just call it and just keep it local on my"
+  },
+  {
+    "cid": "fda7a5a8-714f-48cf-a855-8ddd515bf1e4",
+    "date_start": "2026-09-10T00:00:06",
+    "date_end": "2026-09-10T00:15:10",
+    "n_user_msgs": 2,
+    "md_files": [
+      "assessment.md",
+      "task.md"
+    ],
+    "first_user_msg": "I'm building an NFL DFS intelligence system called the NFL OMEGA Engine, located at `C:\\Users\\konra\\OneDrive\\Desktop\\Antigravity\\Projects\\NflDFS`. It's modeled after a successful MLB DFS engine I already built and won mo"
+  },
+  {
+    "cid": "168747ef-becb-4e54-a98d-cb2083001ec7",
+    "date_start": "2026-10-12T19:36:46",
+    "date_end": "2026-10-13T02:14:24",
+    "n_user_msgs": 5,
+    "md_files": [],
+    "first_user_msg": "Hey - starting a new chat here. I bought a 150+ card collection, took videos, i was wondering if you could inventory it for me by looking at the videos, pull raw prices for each card (each card is NM) but maybe price cha"
+  }
+]
