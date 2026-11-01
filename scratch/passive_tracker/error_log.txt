@@ -6,6 +6,37 @@ STDOUT:
       MLB Omega DFS + Betting engine v.5.0
 ==================================================
 [OMEGA]: Dynamic K-Boosts Recalibrated. Target: Cincinnati Reds (+15.0%) | Avoid: Tampa Bay Rays (-10.0%)
+[MATCHUP DNA]: Refreshing pitch arsenal data from Baseball Savant...
+[MATCHUP DNA]: Pulling 2026 and 2025 pitcher arsenals...
+[MATCHUP DNA]: Fetching pitcher arsenal from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenals?year=2026&min=25&type=pa&csv=true
+[MATCHUP DNA]: Actual CSV headers found for pitcher_arsenal 2026 (type=pa):
+['last_name, first_name', 'pitcher', 'ff_pa', 'si_pa', 'fc_pa', 'sl_pa', 'ch_pa', 'cu_pa', 'fs_pa', 'kn_pa', 'st_pa', 'sv_pa']
+[MATCHUP DNA]: Fetching real usage data from fallback URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenals?year=2026&min=25&type=n_&csv=true
+[MATCHUP DNA]: Fallback CSV headers found for pitcher_arsenal 2026 (type=n_):
+['last_name, first_name', 'pitcher', 'n_ff', 'n_si', 'n_fc', 'n_sl', 'n_ch', 'n_cu', 'n_fs', 'n_kn', 'n_st', 'n_sv']
+[MATCHUP DNA]: Fetching pitcher arsenal from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenals?year=2025&min=25&type=pa&csv=true
+[MATCHUP DNA]: Actual CSV headers found for pitcher_arsenal 2025 (type=pa):
+['last_name, first_name', 'pitcher', 'ff_pa', 'si_pa', 'fc_pa', 'sl_pa', 'ch_pa', 'cu_pa', 'fs_pa', 'kn_pa', 'st_pa', 'sv_pa']
+[MATCHUP DNA]: Fetching real usage data from fallback URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenals?year=2025&min=25&type=n_&csv=true
+[MATCHUP DNA]: Fallback CSV headers found for pitcher_arsenal 2025 (type=n_):
+['last_name, first_name', 'pitcher', 'n_ff', 'n_si', 'n_fc', 'n_sl', 'n_ch', 'n_cu', 'n_fs', 'n_kn', 'n_st', 'n_sv']
+[MATCHUP DNA]: Pulling 2026 and 2025 hitter xwOBAs...
+[MATCHUP DNA]: Fetching hitter xwOBA from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenal-stats?type=batter&year=2026&min=25&csv=true
+[MATCHUP DNA]: Actual CSV headers found for hitter_xwoba 2026:
+['last_name, first_name', 'player_id', 'team_name_alt', 'pitch_type', 'pitch_name', 'run_value_per_100', 'run_value', 'pitches', 'pitch_usage', 'pa', 'ba', 'slg', 'woba', 'whiff_percent', 'k_percent', 'put_away', 'est_ba', 'est_slg', 'est_woba', 'hard_hit_percent']
+[MATCHUP DNA]: Fetching hitter xwOBA from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenal-stats?type=batter&year=2025&min=25&csv=true
+[MATCHUP DNA]: Actual CSV headers found for hitter_xwoba 2025:
+['last_name, first_name', 'player_id', 'team_name_alt', 'pitch_type', 'pitch_name', 'run_value_per_100', 'run_value', 'pitches', 'pitch_usage', 'pa', 'ba', 'slg', 'woba', 'whiff_percent', 'k_percent', 'put_away', 'est_ba', 'est_slg', 'est_woba', 'hard_hit_percent']
+[MATCHUP DNA]: Computing league average xwOBAs...
+[MATCHUP DNA]: Fetching hitter xwOBA from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenal-stats?type=batter&year=2026&min=25&csv=true
+[MATCHUP DNA]: Actual CSV headers found for hitter_xwoba 2026:
+['last_name, first_name', 'player_id', 'team_name_alt', 'pitch_type', 'pitch_name', 'run_value_per_100', 'run_value', 'pitches', 'pitch_usage', 'pa', 'ba', 'slg', 'woba', 'whiff_percent', 'k_percent', 'put_away', 'est_ba', 'est_slg', 'est_woba', 'hard_hit_percent']
+[MATCHUP DNA]: Fetching hitter xwOBA from URL: https://baseballsavant.mlb.com/leaderboard/pitch-arsenal-stats?type=batter&year=2025&min=25&csv=true
+[MATCHUP DNA]: Actual CSV headers found for hitter_xwoba 2025:
+['last_name, first_name', 'player_id', 'team_name_alt', 'pitch_type', 'pitch_name', 'run_value_per_100', 'run_value', 'pitches', 'pitch_usage', 'pa', 'ba', 'slg', 'woba', 'whiff_percent', 'k_percent', 'put_away', 'est_ba', 'est_slg', 'est_woba', 'hard_hit_percent']
+[MATCHUP DNA]: Insufficient 2026 data for FS (N=59 < 100). Falling back to 2025...
+[MATCHUP DNA]: Insufficient 2025 data for FS (N=58 < 100). Using hardcoded default.
+[MATCHUP DNA]: Refreshed — 1017 pitchers, 608 hitters.
 [INIT]: Probable pitchers missing or stale. Running auto-refresh...
 [INGEST]: Synchronizing MLB Probable Pitchers (Dynamic Slate)...
   - TARGET DATE: 2026-10-31
