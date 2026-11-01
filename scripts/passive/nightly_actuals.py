@@ -122,6 +122,66 @@ def parse_games(games):
                 sp_dict["shutouts"] = stats.get('shutouts', 0)
                 sp_dict["hitByPitch"] = stats.get('hitByPitch', 0) or stats.get('hitBatsmen', 0) or 0
 
+        # OMEGA 2027: Also extract full hitter boxscores (hitters_home & hitters_away)
+        hitters_home = []
+        hitters_away = []
+        for side, h_list in [('home', hitters_home), ('away', hitters_away)]:
+            players_dict = boxscore.get('teams', {}).get(side, {}).get('players', {})
+            for p_key, p_data in players_dict.items():
+                b_stats = p_data.get('stats', {}).get('batting', {})
+                if not b_stats:
+                    continue
+                pa = (
+                    int(b_stats.get('atBats', 0))
+                    + int(b_stats.get('baseOnBalls', 0))
+                    + int(b_stats.get('hitByPitch', 0))
+                    + int(b_stats.get('sacFlies', 0))
+                    + int(b_stats.get('sacBunts', 0))
+                )
+                runs = int(b_stats.get('runs', 0))
+                sb = int(b_stats.get('stolenBases', 0))
+                if pa == 0 and runs == 0 and sb == 0:
+                    continue
+                hits = int(b_stats.get('hits', 0))
+                doubles = int(b_stats.get('doubles', 0))
+                triples = int(b_stats.get('triples', 0))
+                hr = int(b_stats.get('homeRuns', 0))
+                singles = max(0, hits - doubles - triples - hr)
+                rbi = int(b_stats.get('rbi', 0))
+                bb = int(b_stats.get('baseOnBalls', 0))
+                hbp = int(b_stats.get('hitByPitch', 0))
+                tb = int(b_stats.get('totalBases', singles + 2 * doubles + 3 * triples + 4 * hr))
+                dk_pts = (
+                    singles * 3
+                    + doubles * 5
+                    + triples * 8
+                    + hr * 10
+                    + rbi * 2
+                    + runs * 2
+                    + bb * 2
+                    + hbp * 2
+                    + sb * 5
+                )
+                h_list.append({
+                    "name": p_data.get('person', {}).get('fullName', 'Unknown'),
+                    "batting_order": p_data.get('battingOrder', ''),
+                    "pa": pa,
+                    "ab": int(b_stats.get('atBats', 0)),
+                    "h": hits,
+                    "1b": singles,
+                    "2b": doubles,
+                    "3b": triples,
+                    "hr": hr,
+                    "r": runs,
+                    "rbi": rbi,
+                    "bb": bb,
+                    "hbp": hbp,
+                    "sb": sb,
+                    "k": int(b_stats.get('strikeOuts', 0)),
+                    "tb": tb,
+                    "dk_pts": dk_pts,
+                })
+
         # Track pitcher fetch failures for final/completed games
         if is_final:
             if sp_home["name"] in ["TBD", "Unknown"]:
@@ -137,6 +197,8 @@ def parse_games(games):
             "away_runs": away_runs,
             "sp_home": sp_home,
             "sp_away": sp_away,
+            "hitters_home": hitters_home,
+            "hitters_away": hitters_away,
             "first_pitch_et": first_pitch_et,
             "status": game_status,
             "is_complete": is_complete

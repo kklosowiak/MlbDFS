@@ -79,13 +79,16 @@ class StatcastBridge:
             self._memory_cache = {}
             return {}
         
-    def refresh_momentum_data(self, season=2026):
+    def refresh_momentum_data(self, season=None):
         """
         OMEGA v7.2: Unified Dual-Stream Alignment (Hitting + Pitching).
         Pulls seasonal and rolling metrics to eliminate 'Detmers-style' blind spots.
         OMEGA v9.5 splits update: Ingests bulk handedness and splits vs LHP/RHP in parallel.
         """
-        print(f"[STATCAST]: Refreshing unified momentum alpha for {season}...")
+        from config import config
+        season = season or config.CURRENT_SEASON
+        prior_season = season - 1
+        print(f"[STATCAST]: Refreshing unified momentum alpha for {season} (prior anchor: {prior_season})...")
         
         # 1. Fetch Hitting Data
         h_seasonal = self._fetch_api_stats(group='hitting', stats='season', season=season)
@@ -98,7 +101,7 @@ class StatcastBridge:
         
         # 2. Fetch Pitching Data
         p_seasonal = self._fetch_api_stats(group='pitching', stats='season', season=season)
-        p_seasonal_2025 = self._fetch_api_stats(group='pitching', stats='season', season=2025)
+        p_seasonal_2025 = self._fetch_api_stats(group='pitching', stats='season', season=prior_season)
         p_rolling = self._fetch_api_stats(
             group='pitching', 
             stats='byDateRange', 
@@ -166,8 +169,8 @@ class StatcastBridge:
                 print(f"  - WARNING: Failed to fetch bulk splits for {season_year}: {e}")
             return splits_map
 
-        splits_2026 = _fetch_bulk_splits(2026)
-        splits_2025 = _fetch_bulk_splits(2025)
+        splits_2026 = _fetch_bulk_splits(season)
+        splits_2025 = _fetch_bulk_splits(prior_season)
 
         # 3. Unified Merge
         existing_cache = {}
@@ -294,12 +297,14 @@ class StatcastBridge:
         self._memory_cache = cache
         return cache
 
-    def refresh_statcast_xwoba(self, season=2026, min_pa=30, force=False):
+    def refresh_statcast_xwoba(self, season=None, min_pa=30, force=False):
         """
         Bulk-merge Baseball Savant season xwOBA (est_woba) into statcast_cache.json.
         Uses one pybaseball leaderboard pull per season (free). Runs at most once per slate day
         unless force=True, so hourly refreshes do not hammer Savant.
         """
+        from config import config
+        season = season or config.CURRENT_SEASON
         from utils.xwoba_estimates import cap_matchup_xwoba
 
         today = datetime.now().strftime("%Y-%m-%d")
@@ -453,12 +458,14 @@ class StatcastBridge:
         print(f"  - SUCCESS: Merged Statcast xwOBA for {updated} hitters ({len(xwoba_map)} leaderboard entries).")
         return cache
 
-    def _prefetch_probable_pitchers(self, cache, season=2026):
+    def _prefetch_probable_pitchers(self, cache, season=None):
         """
         OMEGA v7.2: Ensures today's probable pitchers are in the cache.
         Reads probable_pitchers.json and fetches stats for any missing pitcher
         directly from the MLB StatsAPI.
         """
+        from config import config
+        season = season or config.CURRENT_SEASON
         probables_path = os.path.join(os.path.dirname(self.cache_path), "probable_pitchers.json")
         if not os.path.exists(probables_path):
             return cache
@@ -529,26 +536,34 @@ class StatcastBridge:
         
         return cache
 
-    def refresh_pitcher_form_cache(self, season=2026):
+    def refresh_pitcher_form_cache(self, season=None):
         """
-        OMEGA v10.2: Pulls the last 3 game logs for all probable pitchers
-        to calculate Recent K/9 and Recent ERA.
+        OMEGA v10.2 / 2027 Hardened: Pulls the last 3 & 5 game logs for probable pitchers
+        while preserving existing pitcher_form_cache.json entries across the rotation week.
         """
-        print("[STATCAST]: Refreshing pitcher recent form (L3 starts)...")
+        from config import config
+        season = season or config.CURRENT_SEASON
+        print("[STATCAST]: Refreshing pitcher recent form (L3/L5 starts)...")
         probables_path = os.path.join(os.path.dirname(self.cache_path), "probable_pitchers.json")
         form_path = os.path.join(os.path.dirname(self.cache_path), "pitcher_form_cache.json")
         
+        form_cache = {}
+        if os.path.exists(form_path):
+            try:
+                with open(form_path, 'r', encoding='utf-8') as f:
+                    form_cache = json.load(f)
+            except Exception:
+                form_cache = {}
+
         if not os.path.exists(probables_path):
-            print("  - WARNING: No probable pitchers found. Skipping form cache.")
-            return {}
+            print("  - WARNING: No probable pitchers found. Returning existing form cache.")
+            return form_cache
             
         try:
-            with open(probables_path, 'r') as f:
+            with open(probables_path, 'r', encoding='utf-8') as f:
                 probables = json.load(f)
         except Exception:
-            return {}
-            
-        form_cache = {}
+            return form_cache
         def _parse_ip(ip_str):
             try:
                 parts = str(ip_str).split('.')
@@ -771,7 +786,9 @@ class StatcastBridge:
         except Exception:
             return None
 
-    def refresh_hitter_form_cache(self, active_lineups, season=2026):
+    def refresh_hitter_form_cache(self, active_lineups, season=None):
+        from config import config
+        season = season or config.CURRENT_SEASON
         """
         OMEGA v11.0: Pulls the last 7 game logs for all starting hitters
         on the active slate to calculate recent OPS and K%.
@@ -867,7 +884,9 @@ class StatcastBridge:
         """OMEGA v7.3: Roster integrity restored. Trusts Live API data exclusively."""
         return None
 
-    def _fetch_api_stats(self, group='hitting', stats='season', season=2026, extra_params=None):
+    def _fetch_api_stats(self, group='hitting', stats='season', season=None, extra_params=None):
+        from config import config
+        season = season or config.CURRENT_SEASON
         """Internal helper for MLB StatsAPI requests."""
         time.sleep(random.uniform(0.3, 0.7)) # Respect rate limits
         params = {

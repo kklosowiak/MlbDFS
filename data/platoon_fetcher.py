@@ -19,7 +19,8 @@ class PlatoonFetcher:
         self.cache_path = os.path.join(data_dir, "platoon_cache.json")
         self.api_url = "https://statsapi.mlb.com/api/v1"
 
-    def fetch_platoon_data(self, season=2026):
+    def fetch_platoon_data(self, season=None):
+        season = season or config.CURRENT_SEASON
         print(f"\n[PLATOONS]: Fetching Team & Pitcher Platoon Splits for {season}...")
         cache = {
             "teams": {},

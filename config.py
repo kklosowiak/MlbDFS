@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -8,6 +9,10 @@ class Config:
     ODDS_API_KEY = os.getenv("ODDS_API_KEY")
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+    
+    # Dynamic Season Rollover (defaults to active calendar year >= 2026, or OMEGA_SEASON override)
+    CURRENT_SEASON = int(os.getenv("OMEGA_SEASON", max(2026, datetime.now().year)))
+    PRIOR_SEASON = CURRENT_SEASON - 1
     
     # Engine Settings
     SHARP_WEIGHT_THRESHOLD = 0.05  # 5% movement threshold

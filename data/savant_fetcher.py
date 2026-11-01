@@ -271,11 +271,13 @@ def fetch_hitter_pitch_xwoba(year: int) -> dict:
             
     return result
 
-def fetch_league_avg_xwoba(year: int) -> dict:
+def fetch_league_avg_xwoba(year: int = None) -> dict:
     """Returns {pitch_type: league_avg_xwoba}"""
-    # Fetch 2026 and 2025 hitter datasets
-    hitters_2026 = fetch_hitter_pitch_xwoba(2026)
-    hitters_2025 = fetch_hitter_pitch_xwoba(2025)
+    from config import config
+    cur_year = year or config.CURRENT_SEASON
+    prior_year = cur_year - 1
+    hitters_2026 = fetch_hitter_pitch_xwoba(cur_year)
+    hitters_2025 = fetch_hitter_pitch_xwoba(prior_year)
     
     pitch_types = ['FF', 'SI', 'SL', 'CU', 'CH', 'FC', 'FS']
     result = {}
@@ -297,12 +299,12 @@ def fetch_league_avg_xwoba(year: int) -> dict:
         if len(vals_2026) >= 100:
             result[ptype] = sum(vals_2026) / len(vals_2026)
         else:
-            print(f"[MATCHUP DNA]: Insufficient 2026 data for {ptype} (N={len(vals_2026)} < 100). Falling back to 2025...")
+            print(f"[MATCHUP DNA]: Insufficient {cur_year} data for {ptype} (N={len(vals_2026)} < 100). Falling back to {prior_year}...")
             vals_2025 = [player[ptype] for player in hitters_2025.values() if ptype in player and player[ptype] > 0.0]
             if len(vals_2025) >= 100:
                 result[ptype] = sum(vals_2025) / len(vals_2025)
             else:
-                print(f"[MATCHUP DNA]: Insufficient 2025 data for {ptype} (N={len(vals_2025)} < 100). Using hardcoded default.")
+                print(f"[MATCHUP DNA]: Insufficient {prior_year} data for {ptype} (N={len(vals_2025)} < 100). Using hardcoded default.")
                 result[ptype] = default_averages.get(ptype, 0.300)
                 
         result[ptype] = round(result[ptype], 3)
@@ -310,18 +312,21 @@ def fetch_league_avg_xwoba(year: int) -> dict:
     return result
 
 def build_matchup_data() -> dict:
-    """Pulls 2025 + 2026, blends, returns full matchup_data.json structure"""
+    """Pulls prior + current season, blends, returns full matchup_data.json structure"""
     try:
-        print("[MATCHUP DNA]: Pulling 2026 and 2025 pitcher arsenals...")
-        pitchers_2026 = fetch_pitcher_arsenal(2026)
-        pitchers_2025 = fetch_pitcher_arsenal(2025)
+        from config import config
+        cur_year = config.CURRENT_SEASON
+        prior_year = config.PRIOR_SEASON
+        print(f"[MATCHUP DNA]: Pulling {cur_year} and {prior_year} pitcher arsenals...")
+        pitchers_2026 = fetch_pitcher_arsenal(cur_year)
+        pitchers_2025 = fetch_pitcher_arsenal(prior_year)
         
-        print("[MATCHUP DNA]: Pulling 2026 and 2025 hitter xwOBAs...")
-        hitters_2026 = fetch_hitter_pitch_xwoba(2026)
-        hitters_2025 = fetch_hitter_pitch_xwoba(2025)
+        print(f"[MATCHUP DNA]: Pulling {cur_year} and {prior_year} hitter xwOBAs...")
+        hitters_2026 = fetch_hitter_pitch_xwoba(cur_year)
+        hitters_2025 = fetch_hitter_pitch_xwoba(prior_year)
         
         print("[MATCHUP DNA]: Computing league average xwOBAs...")
-        league_avg = fetch_league_avg_xwoba(2026)
+        league_avg = fetch_league_avg_xwoba(cur_year)
         
         pitch_types = ['FF', 'SI', 'SL', 'CU', 'CH', 'FC', 'FS']
         

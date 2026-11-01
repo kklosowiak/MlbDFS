@@ -693,7 +693,7 @@ def main():
     ]
     
     for fn, label in csv_links:
-        raw_url = f"https://raw.githubusercontent.com/kklosowiak/MlbDFS/audit/july-2026/scratch/passive_tracker/signals/{fn}"
+        raw_url = f"https://raw.githubusercontent.com/kklosowiak/MlbDFS/main/scratch/passive_tracker/signals/{fn}"
         html += f"""
                 <a href="{raw_url}" target="_blank" class="link-card">
                     <span class="link-name">{label}</span>

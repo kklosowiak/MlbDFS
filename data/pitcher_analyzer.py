@@ -932,7 +932,7 @@ class PitcherAnalyzer:
                     player_id = people[0]['id']
                     stats_resp = requests.get(
                         f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats",
-                        params={"stats": "season", "season": 2026, "group": "pitching"},
+                        params={"stats": "season", "season": config.CURRENT_SEASON, "group": "pitching"},
                         timeout=10
                     )
                     if stats_resp.status_code == 200:

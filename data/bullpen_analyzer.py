@@ -127,12 +127,13 @@ class BullpenAnalyzer:
         self._save_cache_file()
         return result
 
-    def refresh_bullpen_season_stats(self, season=2026):
+    def refresh_bullpen_season_stats(self, season=None):
         """
         Fetches team relief pitching stats in bulk from the MLB Stats API
         and caches them to data/bullpen_season_cache.json.
         """
         import requests
+        season = season or config.CURRENT_SEASON
         cache_path = os.path.join(config.DATA_DIR, "bullpen_season_cache.json")
         print("[BULLPEN]: Refreshing reliever season stats from MLB API...")
         

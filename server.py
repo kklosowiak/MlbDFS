@@ -3072,9 +3072,139 @@ def get_slate_center_api(date: str = None):
                 "opp_bullpen_data": opp_bullpen_data
             })
 
+    # OMEGA 2027: Validated Player Prop Edges (Pitcher K UNDER, Outs UNDER, Juiced K OVER, Hitter TB/Hits Smash)
+    k_unders = []
+    outs_unders = []
+    k_overs = []
+    for p in pitchers_list:
+        if p.get("is_opener"):
+            continue
+        p_name = p.get("pitcher", "TBD")
+        p_team = p.get("team", "")
+        p_opp = p.get("opponent", "")
+        phy = float(p.get("physics_score") or 25.0)
+        siera = float(p.get("siera") or 4.00)
+        k_line = float(p.get("k_line") or 0.0) if p.get("k_line") not in (None, "-", "") else 0.0
+        k_odds = int(p.get("k_odds") or -110) if p.get("k_odds") not in (None, "-", "") else -110
+        k_under_odds = int(p.get("k_under_odds") or -115) if p.get("k_under_odds") not in (None, "-", "") else -115
+        outs_line = float(p.get("outs_line") or 0.0) if p.get("outs_line") not in (None, "-", "") else 0.0
+        outs_under_odds = int(p.get("outs_under_odds") or -115) if p.get("outs_under_odds") not in (None, "-", "") else -115
+        is_trap = bool(p.get("is_trap"))
+        is_hazard = bool(p.get("is_hazard"))
+        is_paradox = bool(p.get("is_paradox"))
+
+        if k_line >= 4.5 and (phy <= 22.0 or siera >= 4.20 or is_trap or is_hazard) and k_under_odds >= -145:
+            reasons = []
+            if phy <= 21.5:
+                reasons.append(f"PHY {phy:.1f}")
+            if siera >= 4.20:
+                reasons.append(f"SIERA {siera:.2f}")
+            if is_trap:
+                reasons.append("TRAP ARM")
+            if is_hazard:
+                reasons.append("HAZARD")
+            k_unders.append({
+                "pitcher": p_name,
+                "team": p_team,
+                "opponent": p_opp,
+                "prop": f"UNDER {k_line} Ks",
+                "odds": k_under_odds,
+                "phy": round(phy, 1),
+                "siera": round(siera, 2),
+                "reason": " · ".join(reasons) or f"PHY {phy:.1f}",
+                "sort_score": (25.0 - phy) + (k_line - 4.5) * 2.0 + (3.0 if is_trap else 0.0)
+            })
+
+        if outs_line >= 15.5 and (is_trap or is_hazard or is_paradox or phy <= 21.5) and outs_under_odds >= -145:
+            reasons = []
+            if is_trap:
+                reasons.append(f"TRAP ({p.get('trap_type') or 'SP'})")
+            if is_paradox:
+                reasons.append("PARADOX VS ELITE OFF")
+            if is_hazard:
+                reasons.append("HAZARD")
+            if phy <= 21.5:
+                reasons.append(f"PHY {phy:.1f}")
+            outs_unders.append({
+                "pitcher": p_name,
+                "team": p_team,
+                "opponent": p_opp,
+                "prop": f"UNDER {outs_line} Outs",
+                "odds": outs_under_odds,
+                "phy": round(phy, 1),
+                "reason": " · ".join(reasons) or f"PHY {phy:.1f}",
+                "sort_score": (outs_line - 15.0) * 3.0 + (25.0 - phy) + (3.0 if is_trap else 0.0)
+            })
+
+        if k_line > 0 and not is_trap and (p.get("is_juiced_k") or (phy >= 27.5 and k_odds <= -120)):
+            k_overs.append({
+                "pitcher": p_name,
+                "team": p_team,
+                "opponent": p_opp,
+                "prop": f"OVER {k_line} Ks",
+                "odds": k_odds,
+                "phy": round(phy, 1),
+                "siera": round(siera, 2),
+                "reason": f"PHY {phy:.1f} · SIERA {siera:.2f} · Juiced Over ({k_odds})"
+            })
+
+    k_unders.sort(key=lambda x: x["sort_score"], reverse=True)
+    outs_unders.sort(key=lambda x: x["sort_score"], reverse=True)
+    k_overs.sort(key=lambda x: x["phy"], reverse=True)
+
+    hitter_props = []
+    for h in hitters_list:
+        if h.get("is_cold_streak") or h.get("is_cold_high_br_warning"):
+            continue
+        brl = float(h.get("barrel_pct") or 0.0)
+        xwoba = float(h.get("matchup_xwoba") or 0.0)
+        p_score = float(h.get("player_score") or 0.0)
+        is_smash = bool(h.get("smash_factor"))
+        is_juiced = bool(h.get("is_juiced_target"))
+        tb_line = h.get("tb_line", "-")
+        tb_price = h.get("tb_price", 0)
+        hits_line = h.get("hits_line", "-")
+        hits_price = h.get("hits_price", 0)
+
+        if is_juiced or is_smash or (brl >= 10.0 and xwoba >= 0.345):
+            prop_str = f"OVER {tb_line} TB" if tb_line not in (None, "-", "") else (
+                f"OVER {hits_line} Hits" if hits_line not in (None, "-", "") else "1.5+ Total Bases / 1+ Hit"
+            )
+            odds_val = tb_price if tb_line not in (None, "-", "") else hits_price
+            tags = []
+            if is_smash:
+                tags.append("SMASH")
+            if is_juiced:
+                tags.append("JUICED PROP")
+            if brl >= 10.0:
+                tags.append(f"{brl:.1f}% Brl")
+            if xwoba >= 0.340:
+                tags.append(f".{int(round(xwoba*1000)):03d} xwOBA")
+            hitter_props.append({
+                "name": h.get("name", ""),
+                "team": h.get("team", ""),
+                "opponent": h.get("opponent", ""),
+                "opp_pitcher": h.get("opp_pitcher", "TBD"),
+                "prop": prop_str,
+                "odds": odds_val,
+                "player_score": round(p_score, 1),
+                "barrel_pct": round(brl, 1),
+                "matchup_xwoba": round(xwoba, 3),
+                "reason": " · ".join(tags) or f"Omega {p_score:.1f}",
+                "sort_score": p_score + (8.0 if is_smash else 0.0) + (6.0 if is_juiced else 0.0) + brl * 0.5
+            })
+
+    hitter_props.sort(key=lambda x: x["sort_score"], reverse=True)
+
     return JSONResponse(
         content={
             "betting_edges": betting_edges,
+            "prop_edges": {
+                "k_unders": k_unders[:6],
+                "outs_unders": outs_unders[:6],
+                "k_overs": k_overs[:5],
+                "hitter_props": hitter_props[:8]
+            },
             "dfs_playbook": {
                 "teams": dfs_playbook_teams
             }
