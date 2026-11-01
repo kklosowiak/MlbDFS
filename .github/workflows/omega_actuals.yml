@@ -1,7 +1,8 @@
 name: OMEGA Actuals + Processing
 on:
-  schedule:
-    - cron: '0 6 * * *'    # 2:00am ET (06:00 UTC)
+  # OFFSEASON 2026-11-01: schedule disabled. Re-enable before Opening Day 2027.
+  # schedule:
+  #   - cron: '0 6 * * *'    # 2:00am ET (06:00 UTC)
   workflow_dispatch:
 
 permissions:

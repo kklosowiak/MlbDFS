@@ -1,8 +1,9 @@
 name: OMEGA Model Capture
 on:
-  schedule:
-    - cron: '30 15 * * *'   # 11:30am ET (15:30 UTC)
-    - cron: '20 22 * * *'   # 6:20pm ET (22:20 UTC)
+  # OFFSEASON 2026-11-01: schedule disabled. Re-enable before Opening Day 2027 (and re-subscribe Odds API).
+  # schedule:
+  #   - cron: '30 15 * * *'   # 11:30am ET (15:30 UTC)
+  #   - cron: '20 22 * * *'   # 6:20pm ET (22:20 UTC)
   workflow_dispatch:
     inputs:
       time_slot:
