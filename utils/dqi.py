@@ -157,27 +157,42 @@ def calculate_dqi(team, pitchers=None):
         
     dqi_score_int = int(round(dqi_score))
     
-    status = "OVERPRICED" if dqi_score_int >= 82 else ("CAUTION" if dqi_score_int >= 50 else "LEVERAGE")
-    
-    # Dual-Gate Cap: OVERPRICED requires >= 12.0% divergence
-    if status == "OVERPRICED" and divergence < 12.0:
-        status = "CAUTION"
-        warn_factors.append(f"OVERPRICED Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
+    status = "TRUST" if dqi_score_int >= 80 else ("CAUTION" if dqi_score_int >= 50 else "FADE")
 
-    # Implied run total floor (4.2 runs) for GPP OVERPRICED
-    if status == "OVERPRICED" and implied_total < 4.2:
+    # Dual-Gate Cap: TRUST requires >= 12.0% divergence
+    if status == "TRUST" and divergence < 12.0:
         status = "CAUTION"
-        warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 4.2)")
+        warn_factors.append(f"TRUST Status Capped (Div {round(divergence, 1)}% < 12.0% Gate)")
 
-    # Bullpen threshold gate for high-conviction stack
+    # Implied run total floor (4.0 runs) for GPP TRUST
+    if status == "TRUST" and implied_total < 4.0:
+        status = "CAUTION"
+        warn_factors.append(f"Implied Total Floor Cap (ITT {round(implied_total, 2)} < 4.0)")
+
+    # Bullpen threshold gate for high-conviction stack (exempt when lineup xwOBA >= .335 or opp SP is trap)
     bullpen = float(team.get('bullpen_fatigue', 100.0) or 100.0)
-    if status == "OVERPRICED" and bullpen < 65:
+    if status == "TRUST" and bullpen < 60 and team_xwoba < 0.335 and not opp_pitcher_trap:
         status = "CAUTION"
-        warn_factors.append(f"Rested Bullpen Cap (Pen {round(bullpen, 1)} < 65)")
-        
+        warn_factors.append(f"Rested Bullpen Cap (Pen {round(bullpen, 1)} < 60)")
+
+    # OMEGA 2027: Distinguish CONTRARIAN TRUST vs CHALK TRUST for GPP tournament leverage
+    ticket_pct = team.get("ticket_pct") if isinstance(team, dict) else None
+    dqi_tier = status
+    if status == "TRUST":
+        try:
+            t_pct = float(ticket_pct) if ticket_pct is not None else 50.0
+        except (TypeError, ValueError):
+            t_pct = 50.0
+        if t_pct <= 55.0 and implied_total < 5.3:
+            dqi_tier = "CONTRARIAN TRUST"
+            pos_factors.append("GPP Contrarian Trust Tier (Sharp Div + Moderate Public Tickets)")
+        else:
+            dqi_tier = "CHALK TRUST"
+
     if isinstance(team, dict):
         team["dqi_pos_pts"] = pos_pts
         team["dqi_warn_pts"] = warn_pts
+        team["dqi_tier"] = dqi_tier
 
     return dqi_score_int, status, pos_factors, warn_factors
 

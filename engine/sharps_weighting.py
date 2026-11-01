@@ -93,11 +93,26 @@ class SharpsWeighting:
         ml_score = max(0.0, min(100.0, (abs(ml_move) / 20.0) * 100.0)) if ml_move < 0 else 0.0
         tt_score = max(0.0, min(100.0, (abs(tt_move) / 0.7) * 100.0))
         
-        market_raw = base_market_score + (ml_score * 0.20) + (tt_score * 0.20)
-        market_raw = max(0.0, min(100.0, market_raw))
-        
-        # OMEGA v6.8.6: Talent-First Weighting
-        score = 45.0 + (physics_raw * 0.45) + (market_raw * 0.20)
+        win_market_raw = max(0.0, min(100.0, base_market_score + (ml_score * 0.20) + (tt_score * 0.20)))
+        has_k_prop = False
+        k_prop_score = 50.0
+        try:
+            if k_prop is not None and str(k_prop) != '-' and float(k_prop) > 0:
+                has_k_prop = True
+                # Scale K-line from 3.5 -> 0 to 8.5 -> 100
+                k_prop_score = max(0.0, min(100.0, ((float(k_prop) - 3.5) / 5.0) * 100.0))
+        except (TypeError, ValueError):
+            has_k_prop = False
+
+        outs_prop_score = max(0.0, min(100.0, ((projected_outs - 14.5) / 4.5) * 100.0))
+        if has_k_prop:
+            # Blend Vegas K-prop (50%), Win-Prob/Line Move (30%), and Outs Prop (20%)
+            market_raw = max(0.0, min(100.0, (k_prop_score * 0.50) + (win_market_raw * 0.30) + (outs_prop_score * 0.20)))
+            score = 42.0 + (physics_raw * 0.38) + (market_raw * 0.27)
+        else:
+            # Props pending / debut fallback: lean on physics + win probability so unposted props aren't penalized
+            market_raw = win_market_raw
+            score = 45.0 + (physics_raw * 0.50) + (market_raw * 0.15)
         
         if physics_raw_base >= 70.0:
             score += 15.0
@@ -697,7 +712,9 @@ class SharpsWeighting:
                 if k_pct >= 0.28:
                     bb_k_split_multiplier -= 0.05
                     
-            matchup_xwoba = matchup_xwoba * bb_k_split_multiplier
+            # Apply bounded platoon multiplier + BB/K split adjustment to matchup_xwoba
+            bounded_platoon = max(0.85, min(1.15, platoon_multiplier))
+            matchup_xwoba = cap_matchup_xwoba(matchup_xwoba * bounded_platoon * bb_k_split_multiplier)
 
         # 1. Physics Pillar (xwOBA based: Scale 0.280 to 0.420 -> 0 to 50 pts)
         p_comp = max(0, min(50, ((matchup_xwoba - 0.280) / (0.420 - 0.280)) * 50))
@@ -712,11 +729,14 @@ class SharpsWeighting:
         elif p_comp >= 25.0: # Strong physics (xwOBA > ~0.350)
             m_comp = max(m_comp, 10.0)
         
-        # 3. Boost Coefficient (Targets, Momentum, and Vision)
+        # 3. Boost Coefficient (Targets, Power/Barrel Ceiling, and Vision)
+        # OMEGA 2027: Removed is_hot (+7%) from core multiplier (negative edge once priced in;
+        # L7 form_boost is already applied additively). Added Barrel/Slugger power boost.
         boost = 1.0
         if is_target: boost += 0.10
-        if is_speed_target: boost += 0.05
-        if is_hot: boost += 0.07
+        if is_speed_target: boost += 0.04
+        if barrel_pct >= 10.0 or matchup_xwoba >= 0.360:
+            boost += 0.05
         if smash_factor:
             boost += 0.05
         
@@ -740,7 +760,7 @@ class SharpsWeighting:
             try:
                 wf = float(walks_line)
                 wp = float(walks_price) if walks_price is not None else 0.0
-                if wf >= 0.5 and (wp < 0 or wp >= 100): # Favored over
+                if wf >= 0.5 and wp != 0 and (wp < 0 or wp >= 105): # Real favored walks prop only
                     walks_boost = 3.0
             except:
                 pass

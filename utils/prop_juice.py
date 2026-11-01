@@ -23,17 +23,18 @@ def merge_hitter_market_juice(hitter_entry, market_data, player_name, market_key
     from utils.normalization import normalize_player_name
 
     norm = normalize_player_name(player_name)
-    stack_market = market_key in ("batter_runs", "batter_rbis")
-    flag_juice = "runs_juice" if market_key == "batter_runs" else (
+    is_runs_mkt = market_key in ("batter_runs", "batter_runs_scored")
+    stack_market = is_runs_mkt or market_key == "batter_rbis"
+    flag_juice = "runs_juice" if is_runs_mkt else (
         "rbis_juice" if market_key == "batter_rbis" else None
     )
-    flag_target = "runs_target" if market_key == "batter_runs" else (
+    flag_target = "runs_target" if is_runs_mkt else (
         "rbis_target" if market_key == "batter_rbis" else None
     )
-    line_key = "runs_line" if market_key == "batter_runs" else (
+    line_key = "runs_line" if is_runs_mkt else (
         "rbis_line" if market_key == "batter_rbis" else None
     )
-    price_key = "runs_price" if market_key == "batter_runs" else (
+    price_key = "runs_price" if is_runs_mkt else (
         "rbis_price" if market_key == "batter_rbis" else None
     )
 

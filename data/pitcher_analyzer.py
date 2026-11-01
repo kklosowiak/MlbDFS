@@ -479,9 +479,9 @@ class PitcherAnalyzer:
                     recent_era_ex_best = p_form.get('recent_era_ex_best')
                     is_outlier_driven = bool(p_form.get('is_outlier_driven', False))
                     # Get baseline from our statcast physics dict (cached during ingest)
-                    s_k = physics.get('k', 0)
-                    s_ip = physics.get('ip', 1.0)
-                    season_k9 = (s_k / s_ip) * 9.0 if s_ip > 0 else 7.0
+                    s_k = float(physics.get('k', 0) or 0)
+                    s_ip = float(physics.get('ip', 0.0) or 0.0)
+                    season_k9 = (s_k / s_ip) * 9.0 if s_ip >= 5.0 else 8.2
                     
                     if recent_k9 >= (season_k9 + 1.5) and recent_era < 3.50:
                         form_boost = 5.0
@@ -511,8 +511,8 @@ class PitcherAnalyzer:
                         if _pd.get('type') == 'pitcher':
                             _ip26 = float(_pd.get('ip', 0.0))
                             _bb26 = float(_pd.get('bb', 0.0))
-                            _ip25 = float(_pd.get('ip_25', 0.0) or 0.0)
-                            _bb25 = float(_pd.get('bb_25', 0.0) or 0.0)
+                            _ip25 = float(_pd.get('ip_2025', _pd.get('ip_25', 0.0)) or 0.0)
+                            _bb25 = float(_pd.get('bb_2025', _pd.get('bb_25', 0.0)) or 0.0)
                             # Prefer blended if 2026 sample is thin
                             _total_ip = _ip26 + _ip25
                             _total_bb = _bb26 + _bb25
@@ -589,7 +589,12 @@ class PitcherAnalyzer:
                     'is_hits_allowed_juice': is_hits_allowed_juice,
                     '_ha_juice_gap': _ha_gap,
                     'k_move': k_move,
-                    'sharp_fade': int(divergence) <= -15 and not is_trap,
+                    'sharp_fade': (
+                        int(divergence) <= -15
+                        and not is_trap
+                        and (k_line is None or float(k_line) <= 5.0)
+                        and float(physics.get('siera', 4.10)) > 3.85
+                    ),
                     'is_shark': is_shark,
                     'is_sharp': is_sharp,
                     'ml_move': ml_move,
@@ -833,15 +838,13 @@ class PitcherAnalyzer:
             "Germán Márquez": {"siera": 4.25, "csw": 0.24},    # Accent variant
         }
         
-        # --- TIER 1: Master Matrix (manual overrides) ---
+        matrix_override = None
         for name, stats in master_matrix.items():
             if normalize_player_name(name) == p_norm:
-                siera = stats['siera']
-                csw = stats['csw']
-                bm_score = max(0, min(25, (csw / 0.30) * 25))
-                return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": "high"}
-        
-        # --- TIER 2: StatsAPI Cache (real 2026 ERA/K/IP from MLB.com) ---
+                matrix_override = stats
+                break
+
+        # --- TIER 1: StatsAPI Cache (real 2026 ERA/K/IP from MLB.com, with 2025 stabilization) ---
         statcast_path = os.path.join(self.config.DATA_DIR, "statcast_cache.json")
         if os.path.exists(statcast_path):
             try:
@@ -855,27 +858,42 @@ class PitcherAnalyzer:
                     bb_26 = float(p_data.get('bb', 0))
                     hr_26 = float(p_data.get('hr', 0))
                     whip_26 = float(p_data.get('whip', 1.20))
-                    
-                    # 2025 seasonal stats for stabilization
-                    ip_25 = float(p_data.get('ip_25', 0.0))
-                    era_25 = float(p_data.get('era_25', 4.00))
-                    k_25 = float(p_data.get('k_25', 0))
-                    bb_25 = float(p_data.get('bb_25', 0))
-                    hr_25 = float(p_data.get('hr_25', 0))
-                    whip_25 = float(p_data.get('whip_25', 1.20))
-                    
+
+                    # 2025 seasonal stats for stabilization (supports both _2025 and legacy _25 keys)
+                    ip_25 = float(p_data.get('ip_2025', p_data.get('ip_25', 0.0)) or 0.0)
+                    era_25 = float(p_data.get('era_2025', p_data.get('era_25', 4.00)) or 4.00)
+                    k_25 = float(p_data.get('k_2025', p_data.get('k_25', 0)) or 0)
+                    bb_25 = float(p_data.get('bb_2025', p_data.get('bb_25', 0)) or 0)
+                    hr_25 = float(p_data.get('hr_2025', p_data.get('hr_25', 0)) or 0)
+                    whip_25 = float(p_data.get('whip_2025', p_data.get('whip_25', 1.20)) or 1.20)
+
+                    # If pitcher has < 25 IP in 2026 and is in master_matrix, blend or use matrix prior
+                    if ip_26 < 40.0 and matrix_override is not None:
+                        if ip_26 >= 8.0:
+                            live_siera, live_csw, _ = self._calculate_proxy_physics(
+                                era_26, k_26, ip_26, bb=bb_26, hr=hr_26, whip=whip_26
+                            )
+                            w_26 = ip_26 / 40.0
+                            siera = round((w_26 * live_siera) + ((1.0 - w_26) * matrix_override['siera']), 2)
+                            csw = round((w_26 * live_csw) + ((1.0 - w_26) * matrix_override['csw']), 3)
+                        else:
+                            siera = matrix_override['siera']
+                            csw = matrix_override['csw']
+                        bm_score = max(0, min(25, (csw / 0.30) * 25))
+                        return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": "high", "k": k_26, "ip": ip_26}
+
                     # Stabilized Empirical Blend
-                    if ip_26 < 30.0 and ip_25 > 5.0:
+                    if ip_26 < 50.0 and ip_25 > 5.0:
                         total_ip = ip_26 + ip_25
                         w_26 = ip_26 / total_ip
                         w_25 = ip_25 / total_ip
-                        
+
                         blended_era = (era_26 * w_26) + (era_25 * w_25)
                         blended_k = k_26 + k_25
                         blended_bb = bb_26 + bb_25
                         blended_hr = hr_26 + hr_25
                         blended_whip = (whip_26 * w_26) + (whip_25 * w_25)
-                        
+
                         siera, csw, confidence = self._calculate_proxy_physics(
                             blended_era, blended_k, total_ip, bb=blended_bb, hr=blended_hr, whip=blended_whip
                         )
@@ -887,11 +905,18 @@ class PitcherAnalyzer:
                     else:
                         # Fallback if both 2026 and 2025 are missing from cache
                         siera, csw, confidence = 4.10, 0.25, "low"
-                        
+
                     bm_score = max(0, min(25, (csw / 0.30) * 25))
-                    return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence}
+                    return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": confidence, "k": k_26, "ip": ip_26}
             except Exception:
                 pass
+
+        # --- TIER 2: Master Matrix fallback (when cache unavailable) ---
+        if matrix_override is not None:
+            siera = matrix_override['siera']
+            csw = matrix_override['csw']
+            bm_score = max(0, min(25, (csw / 0.30) * 25))
+            return {"siera": siera, "csw": csw, "bm_score": bm_score, "confidence": "high", "k": 0, "ip": 0.0}
         
         # --- TIER 3: Direct MLB StatsAPI Lookup (on-demand for missing pitchers) ---
         try:

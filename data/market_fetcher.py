@@ -28,9 +28,9 @@ class MarketFetcher:
         # Requirement: Strictly comma-separated strings for requests
         self.prop_markets = (
             'pitcher_strikeouts,batter_home_runs,batter_hits,pitcher_outs,'
-            'batter_total_bases,batter_stolen_bases,batter_runs,batter_rbis,'
+            'batter_total_bases,batter_stolen_bases,batter_runs_scored,batter_rbis,'
             'pitcher_hits_allowed,pitcher_walks,pitcher_earned_runs,batter_walks,'
-            'batter_strikeouts,batter_runs_g_rbi'
+            'batter_strikeouts,batter_hits_runs_rbis'
         )
         self.game_markets = 'h2h,totals'
         self.bookmakers = config.BOOKMAKERS

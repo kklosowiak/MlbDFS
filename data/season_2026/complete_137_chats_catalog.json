@@ -1,0 +1,1372 @@
+[
+  {
+    "index": 1,
+    "cid": "ce4300ce-0200-41e2-9e5d-97a7d4fe4d80",
+    "date_utc": "2026-04-14 21:27",
+    "title": "Refreshing OMEGA Dashboard Data",
+    "step_count": 869,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 2,
+    "cid": "b91358ea-8139-4e0e-afb8-7dc0d1436bdf",
+    "date_utc": "2026-04-14 21:41",
+    "title": "Refreshing OMEGA Slate Signals",
+    "step_count": 56,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 3,
+    "cid": "cc0771e3-b1ef-42b6-9a26-ca66b1f1616e",
+    "date_utc": "2026-04-14 22:07",
+    "title": "Refreshing OMEGA Model Stats",
+    "step_count": 19,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 4,
+    "cid": "6d2db036-40aa-4a7d-ad09-fda7d822f88c",
+    "date_utc": "2026-04-14 22:25",
+    "title": "Hi are you working?",
+    "step_count": 30,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 5,
+    "cid": "ec8307ea-1957-4b47-966b-db0b2a2c0ccd",
+    "date_utc": "2026-04-14 22:45",
+    "title": "Can we run the model?",
+    "step_count": 18,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 6,
+    "cid": "d62a3958-ead1-4d33-8efa-fb006c0ad553",
+    "date_utc": "2026-04-15 02:05",
+    "title": "Executing OMEGA Engine Refresh",
+    "step_count": 57,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 7,
+    "cid": "001fc456-cde5-4196-8e5a-0a038aa92ba7",
+    "date_utc": "2026-04-15 03:15",
+    "title": "do you fuckign work now?",
+    "step_count": 14,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 8,
+    "cid": "7e66781b-2b39-4f9d-a05b-4c98d5b78740",
+    "date_utc": "2026-04-15 23:00",
+    "title": "Executing OMEGA Model Pipeline",
+    "step_count": 2099,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 9,
+    "cid": "5cda3d4b-14e9-4f92-bd8c-37f7d1976f4d",
+    "date_utc": "2026-04-16 03:22",
+    "title": "Investigating Pitcher Projection Discrepancies",
+    "step_count": 466,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 10,
+    "cid": "7ff1f359-8549-4ebd-9398-54d02f961905",
+    "date_utc": "2026-04-16 16:30",
+    "title": "Analyzing Today's OMEGA Projections",
+    "step_count": 347,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 11,
+    "cid": "97a6c906-8edd-47a0-8edd-85fb9a3c05b0",
+    "date_utc": "2026-04-17 01:00",
+    "title": "Analyzing Today's DFS Performance",
+    "step_count": 235,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 12,
+    "cid": "54e08898-de1b-4d91-aaa3-8a34b05164a4",
+    "date_utc": "2026-04-17 03:16",
+    "title": "Cleaning And Auditing OMEGA Codebase",
+    "step_count": 181,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 13,
+    "cid": "530116b8-e0e0-492d-af9f-07d5eaab1315",
+    "date_utc": "2026-04-17 03:34",
+    "title": "Preparing OMEGA Engine Slate",
+    "step_count": 93,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 14,
+    "cid": "f2636fd0-a6b0-48f8-90a2-dc85e0a87e65",
+    "date_utc": "2026-04-17 22:57",
+    "title": "Troubleshooting Pybaseball Data Fetch",
+    "step_count": 806,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 15,
+    "cid": "632b46f3-90bc-407d-9ad4-4e24b86b3718",
+    "date_utc": "2026-04-18 04:28",
+    "title": "Celebrating OMEGA Slate Performance",
+    "step_count": 162,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 16,
+    "cid": "48527e5f-9a24-480f-9a26-66a6abba0fcd",
+    "date_utc": "2026-04-18 23:11",
+    "title": "Troubleshooting OMEGA Data Refresh",
+    "step_count": 555,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 17,
+    "cid": "e90da966-efc0-4c74-a69d-ff7a5b5ce994",
+    "date_utc": "2026-04-19 17:37",
+    "title": "Executing OMEGA Slate Dashboards",
+    "step_count": 657,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 18,
+    "cid": "aab1817c-114c-40fc-8ede-1802599ee0ba",
+    "date_utc": "2026-04-19 23:44",
+    "title": "OMEGA Slate Performance Post-Mortem",
+    "step_count": 78,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 19,
+    "cid": "9a6b0d39-6d54-4efb-8f57-edc8058993b5",
+    "date_utc": "2026-04-21 03:23",
+    "title": "Optimizing OMEGA Data Refresh",
+    "step_count": 611,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 20,
+    "cid": "fc359811-c970-4c09-86af-31e93b69265d",
+    "date_utc": "2026-04-21 23:34",
+    "title": "Refreshing OMEGA Dashboard Model",
+    "step_count": 880,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 21,
+    "cid": "b7ab5c0d-4414-4b97-87e8-813013ec60a4",
+    "date_utc": "2026-04-22 03:29",
+    "title": "Executing OMEGA Slate Post-Mortem",
+    "step_count": 58,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 22,
+    "cid": "70290e41-4817-46a6-9b99-9baa48b1cfd6",
+    "date_utc": "2026-04-23 03:11",
+    "title": "Executing OMEGA Slate Post-Mortem",
+    "step_count": 987,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 23,
+    "cid": "9c0d7ae0-e35b-4e9c-83b2-0f6331672273",
+    "date_utc": "2026-04-23 17:38",
+    "title": "Refreshing OMEGA Dashboard Data",
+    "step_count": 261,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 24,
+    "cid": "b54400cd-40cd-48c0-b89e-615a38b72a9f",
+    "date_utc": "2026-04-24 01:30",
+    "title": "Executing OMEGA Slate Post-Mortem",
+    "step_count": 26,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 25,
+    "cid": "1eeaaccc-d1ed-406b-9b3c-cdbb988ed44b",
+    "date_utc": "2026-04-24 23:08",
+    "title": "Initiating OMEGA Dashboard Refresh",
+    "step_count": 539,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 26,
+    "cid": "f9cce084-9c59-4c9a-b9c6-4c97036d586b",
+    "date_utc": "2026-04-25 04:02",
+    "title": "Debugging Dashboard Betting Indicators",
+    "step_count": 479,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 27,
+    "cid": "80995547-7891-4fe9-9b82-e7a551a3552f",
+    "date_utc": "2026-04-25 22:07",
+    "title": "Refreshing OMEGA Daily Dashboard",
+    "step_count": 656,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 28,
+    "cid": "a6c4babe-36f6-4cde-b881-6b5fe83b38ef",
+    "date_utc": "2026-04-26 03:49",
+    "title": "Auditing Hitter Matrix Accuracy",
+    "step_count": 708,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 29,
+    "cid": "febf0fda-94c8-4c3f-8807-6c2641c4a01a",
+    "date_utc": "2026-04-26 10:55",
+    "title": "Running OMEGA Daily Dashboard",
+    "step_count": 87,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 30,
+    "cid": "26de573f-729b-4236-a99a-f1ce80d0d83f",
+    "date_utc": "2026-04-26 17:33",
+    "title": "Refreshing OMEGA Daily Dashboards",
+    "step_count": 729,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 31,
+    "cid": "8c7230c8-fbbe-43f4-a337-ce0a787d8a54",
+    "date_utc": "2026-04-26 21:25",
+    "title": "Executing OMEGA Slate Post-Mortem",
+    "step_count": 266,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 32,
+    "cid": "461ab104-c1fd-4f2c-b6ca-d8ad0496d017",
+    "date_utc": "2026-04-27 00:41",
+    "title": "Executing OMEGA Slate Post-Mortem",
+    "step_count": 74,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 33,
+    "cid": "1ef5f712-15cf-4777-b5a4-d0165b6533d5",
+    "date_utc": "2026-04-27 01:22",
+    "title": "Viewing OMEGA Teams Matrix",
+    "step_count": 328,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 34,
+    "cid": "4424fb2b-57b3-4e2e-8882-09c6464e0a6c",
+    "date_utc": "2026-04-27 22:44",
+    "title": "Refreshing OMEGA Daily Dashboards",
+    "step_count": 975,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 35,
+    "cid": "481bcf1c-82b8-4d74-a008-a6b10bfe9875",
+    "date_utc": "2026-04-28 23:03",
+    "title": "Refreshing Dashboards and Post-Mortem",
+    "step_count": 573,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 36,
+    "cid": "57cf1293-6076-4e55-bbb1-3b5fb750d06b",
+    "date_utc": "2026-04-29 04:32",
+    "title": "Conducting MLB Slate Post-Mortem",
+    "step_count": 87,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 37,
+    "cid": "3617a4be-f26d-4264-95ec-10f965ffe729",
+    "date_utc": "2026-04-29 15:02",
+    "title": "Running OMEGA Daily Dashboards",
+    "step_count": 100,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 38,
+    "cid": "f4868e21-894f-4b2b-8b0e-e71fdcd40f50",
+    "date_utc": "2026-04-30 02:01",
+    "title": "Refreshing OMEGA Early Slate",
+    "step_count": 302,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 39,
+    "cid": "6853be5e-7b3f-4afd-85a1-5cfaa64e2ef0",
+    "date_utc": "2026-05-04 00:42",
+    "title": "Auditing Missed Slate Performance",
+    "step_count": 122,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 40,
+    "cid": "39f8f61a-61ff-4bb9-86f9-e8fedbf58e21",
+    "date_utc": "2026-05-04 23:06",
+    "title": "Fetching MLB Data Pipelines",
+    "step_count": 554,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 41,
+    "cid": "9e4f89b7-781f-4bed-a791-dde1e5b99ffb",
+    "date_utc": "2026-05-05 22:32",
+    "title": "Auditing Yesterday's Slate Performance",
+    "step_count": 380,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 42,
+    "cid": "411a7b33-a240-4c11-a2c5-9e1501cd3801",
+    "date_utc": "2026-05-06 03:02",
+    "title": "Auditing Today's Slate Performance",
+    "step_count": 104,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 43,
+    "cid": "5cb8fc0d-c7c3-414f-b4be-244ddbb03c47",
+    "date_utc": "2026-05-07 01:46",
+    "title": "Running OMEGA Morning Dashboards",
+    "step_count": 650,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 44,
+    "cid": "2739e0f3-1202-4a50-87f6-5a1e565e6807",
+    "date_utc": "2026-05-09 04:19",
+    "title": "Refreshing OMEGA Morning Dashboards",
+    "step_count": 494,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 45,
+    "cid": "0095d728-3529-4500-8a75-03fe8b1e728c",
+    "date_utc": "2026-05-09 14:24",
+    "title": "Executing Morning OMEGA Dashboards",
+    "step_count": 84,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 46,
+    "cid": "4a5a5fb3-0893-4ec0-ad7a-c55d990aa67a",
+    "date_utc": "2026-05-09 22:52",
+    "title": "Refreshing OMEGA Slate Dashboards",
+    "step_count": 281,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 47,
+    "cid": "27a5fdb8-f38b-4a54-b417-faa4ffc82ca2",
+    "date_utc": "2026-05-10 04:07",
+    "title": "Post-Mortem Review and Audit",
+    "step_count": 183,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 48,
+    "cid": "9adc5017-01af-4a5d-92a4-951cbabfb818",
+    "date_utc": "2026-05-10 17:31",
+    "title": "Refreshing Mother's Day Dashboards",
+    "step_count": 334,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 49,
+    "cid": "52a22027-049d-449f-a2ee-c8a0cf593a29",
+    "date_utc": "2026-05-10 19:40",
+    "title": "Focusing Afternoon MLB Slate",
+    "step_count": 180,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 50,
+    "cid": "609676c0-4210-40d7-9446-ed68b782f855",
+    "date_utc": "2026-05-11 02:56",
+    "title": "May 10th Slate Post-Mortem",
+    "step_count": 669,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 51,
+    "cid": "302fb53b-8d9a-4955-b1e8-11c29711d475",
+    "date_utc": "2026-05-11 22:08",
+    "title": "Running Sunday Morning Dashboards",
+    "step_count": 856,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 52,
+    "cid": "11e9097f-0a99-492f-b02b-cfdd89865b4b",
+    "date_utc": "2026-05-11 23:58",
+    "title": "Initializing NFL Project Engine",
+    "step_count": 14,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 53,
+    "cid": "f32054f8-f96f-44ea-88c1-5c9a426f6c47",
+    "date_utc": "2026-05-12 01:50",
+    "title": "Refreshing MLB DFS Dashboards",
+    "step_count": 175,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 54,
+    "cid": "03a9a054-5a65-448f-ad8e-966219452929",
+    "date_utc": "2026-05-12 04:33",
+    "title": "Revamping OMEGA Dashboard UI",
+    "step_count": 514,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 55,
+    "cid": "e679ae10-beaa-4fe4-8560-26e155b6d4fd",
+    "date_utc": "2026-05-13 03:33",
+    "title": "Investigating Model Analysis Dashboard Triggers",
+    "step_count": 962,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 56,
+    "cid": "8a191367-00bb-45ee-b226-720108023fc6",
+    "date_utc": "2026-05-14 04:41",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 362,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 57,
+    "cid": "97eacf72-6102-4d8b-b71b-d54877edf2f5",
+    "date_utc": "2026-05-14 22:24",
+    "title": "Refreshing MLB DFS Dashboards",
+    "step_count": 440,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 58,
+    "cid": "cb976ea7-d5a2-4fad-9dfb-fd2dca88f031",
+    "date_utc": "2026-05-15 03:47",
+    "title": "May 14th MLB Post-Mortem",
+    "step_count": 472,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 59,
+    "cid": "8c3cef84-8281-48c8-885e-05c07abfde4e",
+    "date_utc": "2026-05-15 23:06",
+    "title": "Investigating Reds Dashboard Anomaly",
+    "step_count": 728,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 60,
+    "cid": "1f5b914d-d5a0-498c-a585-6dfb4ddf5f81",
+    "date_utc": "2026-05-16 05:01",
+    "title": "May 15th MLB Post-Mortem",
+    "step_count": 725,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 61,
+    "cid": "a619fd94-66b9-4628-a57e-51c00e80e0ed",
+    "date_utc": "2026-05-17 03:51",
+    "title": "Mid-Day OMEGA Dashboard Refresh",
+    "step_count": 564,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 62,
+    "cid": "b27dc271-0120-429a-ab5d-c83aea3ab606",
+    "date_utc": "2026-05-18 03:16",
+    "title": "Refreshing Sunday MLB Projections",
+    "step_count": 1831,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 63,
+    "cid": "fe4eb43b-aea9-4099-90f1-95387169375e",
+    "date_utc": "2026-05-18 14:32",
+    "title": "I will examine the `OMEGA_FUTURE_ROADMAP.md` and `OMEGA_ENGINE_WHITE_PAPER.md` to see our planned features and architectural goals. This will help formulate a solid objective and title for our conversation today.",
+    "step_count": 1271,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 64,
+    "cid": "7b66dd44-7cdb-405d-9a68-f6b931ae8261",
+    "date_utc": "2026-05-18 14:47",
+    "title": "Repairing MLB DFS Dashboard",
+    "step_count": 99,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 65,
+    "cid": "e0116445-3a6a-4fc9-9d7b-a30c32790b56",
+    "date_utc": "2026-05-18 16:47",
+    "title": "Hardening OMEGA Ingestion Pipeline",
+    "step_count": 825,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 66,
+    "cid": "1736da74-8a37-4629-b9a6-cbf122c849f6",
+    "date_utc": "2026-05-19 00:11",
+    "title": "i dont see it on my website yet",
+    "step_count": 2397,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 67,
+    "cid": "cc559d7e-3064-49af-9782-9dbb88cae426",
+    "date_utc": "2026-05-19 03:50",
+    "title": "Building The Omega Command Hub",
+    "step_count": 2064,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 68,
+    "cid": "33538430-20fd-4b98-9691-5e7972ea84ae",
+    "date_utc": "2026-05-19 23:06",
+    "title": "Analyzing Historical Slate Projections",
+    "step_count": 2149,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 69,
+    "cid": "5764f595-84d0-4d2b-91db-31b7b2406191",
+    "date_utc": "2026-05-20 04:48",
+    "title": "DQI And Pitcher UI Upgrade",
+    "step_count": 1370,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 70,
+    "cid": "4a179a5a-d1f4-4970-ab28-200ad399840b",
+    "date_utc": "2026-05-20 13:33",
+    "title": "Debugging Teams Matrix and Moneyline Movements",
+    "step_count": 331,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 71,
+    "cid": "cd0455ff-5fa1-47b0-b1ce-8fd31d2d3d2b",
+    "date_utc": "2026-05-21 02:31",
+    "title": "MLB DFS Slate Analysis",
+    "step_count": 1396,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 72,
+    "cid": "7ef57d09-57ea-4658-bf65-8f098d369d2d",
+    "date_utc": "2026-05-24 04:48",
+    "title": "Running OMEGA Package Audit",
+    "step_count": 4967,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 73,
+    "cid": "62d08e57-286e-49cb-90e0-7f56aae24e26",
+    "date_utc": "2026-05-25 03:40",
+    "title": "Optimizing Sneaky Play Triggers",
+    "step_count": 3070,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 74,
+    "cid": "8b0bbc5b-53f8-4ee9-97a3-7a6be2d46f32",
+    "date_utc": "2026-05-26 12:50",
+    "title": "Clarifying DQI Trigger Logic",
+    "step_count": 1890,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 75,
+    "cid": "af84fc6a-195c-4ad0-94be-73a5adabb55c",
+    "date_utc": "2026-05-26 15:04",
+    "title": "Read the logs/transcript of conversation 8b0bbc5b-53f8-4ee9-97a3-7a6be2d46f32 to understand the context of the recent calibrations, testing checks, and the architectural upgrades we outlined.",
+    "step_count": 683,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 76,
+    "cid": "1815eb2d-abe8-48b8-af90-36e3c60efcc7",
+    "date_utc": "2026-05-27 01:59",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 619,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 77,
+    "cid": "c4e809da-e5c8-447a-94f7-e4189a0b193e",
+    "date_utc": "2026-05-27 02:26",
+    "title": "Building OMEGA Slate Center",
+    "step_count": 323,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 78,
+    "cid": "a19dd2fa-b966-45f4-a275-51cc4ab94385",
+    "date_utc": "2026-05-27 16:54",
+    "title": "MLB Slate Post-Mortem Audit",
+    "step_count": 449,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 79,
+    "cid": "58739c73-0f67-49dd-be40-e365053d8165",
+    "date_utc": "2026-05-27 21:37",
+    "title": "Late MLB Slate Analysis",
+    "step_count": 474,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 80,
+    "cid": "f18d52d2-8751-447d-8318-91430b3004b3",
+    "date_utc": "2026-05-28 03:21",
+    "title": "MLB Slate DFS Lineup Analysis",
+    "step_count": 429,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 81,
+    "cid": "435a9651-5107-4f1b-aee6-01028c6e9a95",
+    "date_utc": "2026-05-29 03:13",
+    "title": "Evaluating Today's MLB Slate",
+    "step_count": 1507,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 82,
+    "cid": "8969f7be-8d76-470b-836a-8bbdc1fe163a",
+    "date_utc": "2026-05-30 05:05",
+    "title": "MLB DFS Slate Analysis",
+    "step_count": 2259,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 83,
+    "cid": "266599e9-6fd1-4961-b849-0469e2752b1f",
+    "date_utc": "2026-06-01 00:10",
+    "title": "we fixed the whole chalk trap on teams earlier today too right?",
+    "step_count": 2080,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 84,
+    "cid": "3b9af727-fa9f-494f-a577-78a8220b94ba",
+    "date_utc": "2026-06-01 02:19",
+    "title": "light mode still looks really bad tbh... hard to see stuff.",
+    "step_count": 1419,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 85,
+    "cid": "9e2c2d28-8bf1-4b92-8334-23bb63829996",
+    "date_utc": "2026-06-02 02:57",
+    "title": "Fixing Slate Refresh Error",
+    "step_count": 2149,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 86,
+    "cid": "664449e2-a204-4e00-90d1-4222d55ed2d4",
+    "date_utc": "2026-06-02 17:46",
+    "title": "Explaining Omega Model Architecture",
+    "step_count": 178,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 87,
+    "cid": "f50ac459-5eed-4b56-b607-8c0fb61c455f",
+    "date_utc": "2026-06-03 16:46",
+    "title": "We need a DFS win tonight. Been cold.",
+    "step_count": 1049,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 88,
+    "cid": "20992ae0-357a-4596-8b51-1bbed78b7ce2",
+    "date_utc": "2026-06-04 13:48",
+    "title": "MLB DFS Slate Optimization",
+    "step_count": 1820,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 89,
+    "cid": "c6a153ce-7c25-40f5-a9f6-d1a96856008e",
+    "date_utc": "2026-06-04 19:51",
+    "title": "Analyzing DFS Slates",
+    "step_count": 663,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 90,
+    "cid": "eef1154f-3cdd-4ec2-b7c9-7679ead902d1",
+    "date_utc": "2026-06-05 03:41",
+    "title": "Optimizing Night Slate Lineups",
+    "step_count": 948,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 91,
+    "cid": "419253db-a28a-4078-b1ea-13dcbf915310",
+    "date_utc": "2026-06-05 17:32",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 54,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 92,
+    "cid": "e8111cc0-1a8b-4bbd-9f59-9dbf555ac81d",
+    "date_utc": "2026-06-07 17:33",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 198,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 93,
+    "cid": "cde43b80-5e60-4de0-8785-39469dcfa70e",
+    "date_utc": "2026-06-08 22:23",
+    "title": "Analyzing Slate Projections",
+    "step_count": 182,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 94,
+    "cid": "1a654fdf-4709-460b-9e65-3fe3c82caeb1",
+    "date_utc": "2026-06-09 22:51",
+    "title": "We have a 9 game slate tonight!",
+    "step_count": 764,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 95,
+    "cid": "a0b39009-160f-433a-b051-78064d1e47cf",
+    "date_utc": "2026-06-10 13:08",
+    "title": "Investigating Pitcher Matchup Discrepancy",
+    "step_count": 90,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 96,
+    "cid": "426030bc-dec3-46fd-b47e-04b4c5ffd2b3",
+    "date_utc": "2026-06-10 22:33",
+    "title": "Analyzing Early Slate Strategy",
+    "step_count": 701,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 97,
+    "cid": "63ebd528-9eb6-41af-830f-f33b83229bd9",
+    "date_utc": "2026-06-11 14:24",
+    "title": "Conducting Model Performance Post Mortem",
+    "step_count": 342,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 98,
+    "cid": "e4b8a3ee-576a-4972-9cbd-de4717aebc06",
+    "date_utc": "2026-06-11 16:59",
+    "title": "I want to do a game by game analysis for the 5 games today... for this slate im playing.",
+    "step_count": 96,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 99,
+    "cid": "7b72e754-446f-4215-86eb-f1292d073f2b",
+    "date_utc": "2026-06-13 04:00",
+    "title": "Winning Thirteen Game MLB Slate",
+    "step_count": 760,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 100,
+    "cid": "bc56e2cd-bc83-41b5-8252-ee0610202b83",
+    "date_utc": "2026-06-13 19:39",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 206,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 101,
+    "cid": "c6be7d3e-1690-4ed2-be4d-5873126a7e8b",
+    "date_utc": "2026-06-16 03:34",
+    "title": "MLB DFS Slate Strategy",
+    "step_count": 427,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 102,
+    "cid": "906e86fa-8b6c-4cf2-9ef2-b6c77f3befc0",
+    "date_utc": "2026-06-17 00:01",
+    "title": "Analyzing Twelve Game Slate",
+    "step_count": 457,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 103,
+    "cid": "9a3b68cd-927a-4a53-914f-3eb23e1ba046",
+    "date_utc": "2026-06-17 22:33",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 765,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 104,
+    "cid": "1feca7a8-7e9e-4d7f-8c30-d22f1f241593",
+    "date_utc": "2026-06-19 04:31",
+    "title": "Analyzing Slate Strategy",
+    "step_count": 380,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 105,
+    "cid": "71606e3e-266c-4e4a-a174-e72e7af6d570",
+    "date_utc": "2026-06-19 22:53",
+    "title": "Lock in an hour and a half.",
+    "step_count": 401,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 106,
+    "cid": "5c7cd9fa-8e04-4042-9fae-81e0490485a3",
+    "date_utc": "2026-06-20 19:37",
+    "title": "Analyzing Slate and Salaries",
+    "step_count": 140,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 107,
+    "cid": "5cac2612-c103-4e7e-aa89-8b80428b13c9",
+    "date_utc": "2026-06-21 04:35",
+    "title": "Late Slate DFS Analysis",
+    "step_count": 921,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 108,
+    "cid": "c5b9ba64-d7b2-4465-af05-65497d1f132b",
+    "date_utc": "2026-06-22 02:19",
+    "title": "Analyzing DFS Model Performance",
+    "step_count": 389,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 109,
+    "cid": "96fd9eff-6d2c-41c0-92d4-81531719494f",
+    "date_utc": "2026-06-23 13:19",
+    "title": "Selecting MLB DFS Stacks",
+    "step_count": 1494,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 110,
+    "cid": "d23c3298-806e-4411-af09-580eaa220ace",
+    "date_utc": "2026-06-24 01:07",
+    "title": "If I wanted to add a persistent database for users when I want to commercialize this application what would that look like. Are there internal tools or would I need to link up to something like digital ocean etc. Walk me through that process and explain to me the current state and what the future state would look like.",
+    "step_count": 20,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 111,
+    "cid": "5c5e3e84-46fb-4928-8e80-678982f6e392",
+    "date_utc": "2026-06-24 15:05",
+    "title": "Analyzing MLB DFS Slate",
+    "step_count": 3043,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 112,
+    "cid": "dbc1e689-fb2a-4e2e-801f-ac855017f1dc",
+    "date_utc": "2026-06-25 01:30",
+    "title": "I will search for the file `omega-results(181).json` or similar files in the workspace directory to locate the relevant data.",
+    "step_count": 3683,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 113,
+    "cid": "13d91938-cbec-42ed-be2a-c39446381e44",
+    "date_utc": "2026-06-25 04:24",
+    "title": "Comprehensive OMEGA Model Audit",
+    "step_count": 724,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 114,
+    "cid": "a2b15dfe-a146-4092-8675-2dcfa59c5ea8",
+    "date_utc": "2026-06-25 18:07",
+    "title": "Read these files from the repo root before responding:",
+    "step_count": 1595,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 115,
+    "cid": "0588908b-dc8e-4720-b27c-99e15b628ce8",
+    "date_utc": "2026-06-26 02:07",
+    "title": "Slate GPP Lineup Optimization",
+    "step_count": 173,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 116,
+    "cid": "2aad9adf-7165-4a04-912c-21d23bc5c43e",
+    "date_utc": "2026-06-26 19:34",
+    "title": "OMEGA Signal Backtesting",
+    "step_count": 90,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 117,
+    "cid": "860cdbce-82d4-4099-9150-068f10d56702",
+    "date_utc": "2026-06-26 22:06",
+    "title": "OMEGA Stack Decision Analysis",
+    "step_count": 165,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 118,
+    "cid": "d6cad487-019f-49c9-bad7-07fa7c1d07f2",
+    "date_utc": "2026-06-27 04:27",
+    "title": "Opener Bulk Pitcher Auto Detection",
+    "step_count": 940,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 119,
+    "cid": "f4e10f18-fd2b-4c0c-8446-ccd1e476fd54",
+    "date_utc": "2026-06-28 03:30",
+    "title": "Analyzing Volatile Pitcher Stacks",
+    "step_count": 398,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 120,
+    "cid": "9bde2337-b9a7-4118-8c16-b07a85c655ea",
+    "date_utc": "2026-06-28 18:08",
+    "title": "Opener Detection K Prop Fix",
+    "step_count": 270,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 121,
+    "cid": "4889b94a-ba06-4636-a285-4c0bdc66eec4",
+    "date_utc": "2026-06-29 02:54",
+    "title": "Backtesting MLB DFS Upgrades",
+    "step_count": 634,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 122,
+    "cid": "2c451a53-c7b3-4860-a25f-0c5cb922eaa4",
+    "date_utc": "2026-06-30 05:13",
+    "title": "OMEGA DFS Audit Implementation",
+    "step_count": 1223,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 123,
+    "cid": "ee7bbb0f-3b6d-417b-ab5e-9cc104c82603",
+    "date_utc": "2026-07-01 18:35",
+    "title": "OMEGA Analytics Performance Audit",
+    "step_count": 125,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 124,
+    "cid": "c7ea1e25-f0e0-43d1-a2d7-cabe51b00e5a",
+    "date_utc": "2026-07-07 13:07",
+    "title": "Automated Passive Tracking System",
+    "step_count": 996,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 125,
+    "cid": "97e0dba7-56e4-4daa-93fa-fd5232be16b1",
+    "date_utc": "2026-07-08 13:58",
+    "title": "MLB DFS July Post-Mortem Audit",
+    "step_count": 286,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 126,
+    "cid": "473c204b-a229-410f-9aaa-e1f8ba968352",
+    "date_utc": "2026-07-08 21:48",
+    "title": "OMEGA Signal Hitrate Audit",
+    "step_count": 130,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 127,
+    "cid": "11c37bd3-342f-4e75-afd2-423252f03bf2",
+    "date_utc": "2026-07-10 15:57",
+    "title": "Pitcher Calibration and Pipeline Automation",
+    "step_count": 873,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 128,
+    "cid": "286b0029-a3d2-4965-a21b-d2df1ae12674",
+    "date_utc": "2026-07-18 03:51",
+    "title": "OMEGA First Half Audit",
+    "step_count": 2745,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 129,
+    "cid": "3c6feacd-909d-40f9-b70b-b73476a51948",
+    "date_utc": "2026-07-20 01:16",
+    "title": "OMEGA Post-Mortem and Actuals Pipeline Fix",
+    "step_count": 317,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 130,
+    "cid": "a28971f5-d18c-4e6c-bd6b-67f7d289d158",
+    "date_utc": "2026-07-21 15:48",
+    "title": "Debugging OMEGA Capture Pipeline",
+    "step_count": 155,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 131,
+    "cid": "167c94fa-b6a6-43f5-a3ea-9461c8e7b46b",
+    "date_utc": "2026-07-22 13:59",
+    "title": "OMEGA Pipeline Integrity Audit",
+    "step_count": 263,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 132,
+    "cid": "e9196b8b-be10-4889-b0b7-dd3cdf4a0a69",
+    "date_utc": "2026-07-22 22:31",
+    "title": "MLB DFS Strategy Discussion",
+    "step_count": 332,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 133,
+    "cid": "d4f435b1-6285-4172-a8c3-d762e5d85c8a",
+    "date_utc": "2026-07-23 14:01",
+    "title": "Troubleshooting Actuals Processing Failure",
+    "step_count": 229,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 134,
+    "cid": "9338ba5c-c1dc-4b7e-95b0-a3e71486658b",
+    "date_utc": "2026-08-04 22:22",
+    "title": "Automated Pipeline Health Audit",
+    "step_count": 345,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 135,
+    "cid": "0f80c7c4-4cae-4a37-91d3-8432e9f993ac",
+    "date_utc": "2026-09-02 15:11",
+    "title": "I haven't done MLB DFS in sometime now. But I know the github workflows and pulling in how things have been doing is working.",
+    "step_count": 1,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 136,
+    "cid": "c846a4e9-5c09-43fd-80cb-65df0a830833",
+    "date_utc": "2026-09-02 15:51",
+    "title": "MLB DFS Recent Signals Check",
+    "step_count": 120,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  },
+  {
+    "index": 137,
+    "cid": "d5d1e4bf-01e8-49b5-b897-cbb482234825",
+    "date_utc": "2026-09-09 23:59",
+    "title": "Omega Model Hosting Decision",
+    "step_count": 138,
+    "user_chars": 0,
+    "agent_chars": 0,
+    "user_preview": ""
+  }
+]

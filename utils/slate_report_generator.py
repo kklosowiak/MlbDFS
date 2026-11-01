@@ -69,20 +69,26 @@ class SlateReportGenerator:
             if not opp_p:
                 opp_p = team_pitcher_map.get(t.get('opponent'))
                 
-            opp_sp_any_flag = 0.0
+            opp_sp_vuln_flag = 0.0
             if opp_p:
                 is_trap = opp_p.get('is_trap', False)
-                trap_type = opp_p.get('trap_type')
-                opp_trap_short_leash = is_trap and trap_type == 'Short Leash'
-                opp_trap_vulnerable = is_trap and trap_type == 'Vulnerable'
                 opp_low_ceiling = opp_p.get('is_low_ceiling', False)
                 opp_hazard = opp_p.get('is_hazard', False)
                 opp_paradox = opp_p.get('is_paradox', False)
-                if opp_trap_short_leash or opp_trap_vulnerable or opp_low_ceiling or opp_hazard or opp_paradox:
-                    opp_sp_any_flag = 1.0
-                    
+                opp_siera = float(opp_p.get('siera', 4.10) or 4.10)
+                # Veteran Paradox Shield: don't treat an ace (SIERA < 3.80) as vulnerable on paradox alone
+                unshielded_paradox = opp_paradox and opp_siera >= 3.80
+                if is_trap or opp_low_ceiling or opp_hazard or unshielded_paradox:
+                    opp_sp_vuln_flag = 1.0
+
             itt = float(t.get('implied_total', 0.0) or 0.0)
-            ts = itt * 10.0 - 10.0 * opp_sp_any_flag
+            xwoba = float(t.get('team_xwoba', 0.315) or 0.315)
+            bp_fat = float(t.get('bullpen_fatigue', 0.0) or 0.0)
+            dqi_bonus = 4.0 if t.get('dqi_status') == 'TRUST' else (-4.0 if t.get('dqi_status') == 'FADE' else 0.0)
+            phys_bonus = max(-8.0, min(14.0, (xwoba - 0.315) * 280.0))
+            pen_bonus = max(0.0, min(6.0, (bp_fat - 60.0) * 0.15))
+            # OMEGA 2027 Fix: Vulnerable opposing SP ADDS +10.0 to stack_trust_score (was subtracting -10.0)
+            ts = (max(itt, 4.5 if (itt < 3.2 and float(t.get('stack_score', 0.0) or 0.0) >= 95.0) else itt) * 10.0) + (10.0 * opp_sp_vuln_flag) + phys_bonus + pen_bonus + dqi_bonus + 0.15 * (float(conf) - 50.0)
             t['stack_trust_score'] = round(max(0.0, min(100.0, ts)), 1)
             
             scored_stacks.append(t)
@@ -197,13 +203,14 @@ class SlateReportGenerator:
             if t.get('is_anti_chalk_smash'):
                 alert_lines.append(f"- ⚓ **ANTI-CHALK SMASH**: **{t['team']}** targets a starting pitcher with hidden physical or market vulnerabilities. Backtested as an elite mismatch target (+10.0 pts boost).")
 
-        # 4. Stacks: DQI Overpriced (80+ DQI / 14% Div / 4.2 ITT)
+        # 4. Stacks: DQI High-Conviction Trust (80+ DQI / 12%+ Div / 4.0+ ITT)
         for t in t_reports:
             dqi = int(t.get('dqi_score') or 0)
             div = int(t.get('divergence') or 0)
             itt = float(t.get('implied_total') or 0.0)
-            if dqi >= 80 and div >= 14 and itt >= 4.2:
-                alert_lines.append(f"- 🟠 **DQI OVERPRICED ALERT**: **{t['team']}** stack hits DQI Overpriced Gates (DQI: {dqi} | Div: {div:+d}% | ITT: {itt:.2f}). The market has priced this spot to perfection, leaving no stacking edge (-4 CONF penalty).")
+            if t.get('dqi_status') == 'TRUST' or (dqi >= 80 and div >= 12 and itt >= 4.0):
+                tier_lbl = t.get('dqi_tier', 'TRUST')
+                alert_lines.append(f"- 🟢 **DQI {tier_lbl} ALERT**: **{t['team']}** stack hits DQI Trust Gates (DQI: {dqi} | Div: {div:+d}% | ITT: {itt:.2f}). Sharp money divergence aligns with physical stack upside (+6 CONF boost).")
 
         # 5. Pitchers: Low-Ceiling + Hazard Shelling (100% Shelling Rate)
         for p in p_reports:

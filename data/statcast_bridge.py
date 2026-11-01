@@ -226,6 +226,10 @@ class StatcastBridge:
             }
             if existing_xwoba is not None:
                 cache[name]["xwoba"] = existing_xwoba
+            if existing_profile.get("barrel_pct") is not None:
+                cache[name]["barrel_pct"] = existing_profile["barrel_pct"]
+            if existing_profile.get("hard_hit_pct") is not None:
+                cache[name]["hard_hit_pct"] = existing_profile["hard_hit_pct"]
 
             
         # Merge Pitchers
@@ -313,10 +317,14 @@ class StatcastBridge:
 
         print(f"[STATCAST-XWOBA]: Pulling Savant expected-stats leaderboard (min PA {min_pa})...")
         try:
-            from pybaseball import statcast_batter_expected_stats
+            from pybaseball import statcast_batter_expected_stats, statcast_batter_exitvelo_barrels
         except ImportError:
-            print("  - WARNING: pybaseball unavailable; xwOBA refresh skipped.")
-            return self._load_cache_to_memory()
+            try:
+                from pybaseball import statcast_batter_expected_stats
+                statcast_batter_exitvelo_barrels = None
+            except ImportError:
+                print("  - WARNING: pybaseball unavailable; xwOBA refresh skipped.")
+                return self._load_cache_to_memory()
 
         import concurrent.futures
 
@@ -365,7 +373,51 @@ class StatcastBridge:
                             hardhit_map[norm] = round(hh, 1)
                     except (TypeError, ValueError):
                         pass
-                print(f"  - Loaded {len(df)} Savant rows for {yr}.")
+                print(f"  - Loaded {len(df)} Savant expected-stats rows for {yr}.")
+                if statcast_batter_exitvelo_barrels is not None:
+                    try:
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex_b:
+                            fut_b = ex_b.submit(statcast_batter_exitvelo_barrels, yr, minBBE=max(10, min_pa // 2))
+                            df_b = fut_b.result(timeout=90)
+                        if df_b is not None and not df_b.empty:
+                            b_name_col = next((c for c in df_b.columns if "first_name" in str(c)), None)
+                            if b_name_col:
+                                for _, brow in df_b.iterrows():
+                                    b_disp = self._name_from_expected_stats_row(brow, b_name_col)
+                                    if not b_disp:
+                                        continue
+                                    bnorm = normalize_player_name(b_disp)
+                                    for bcol in ("brl_percent", "barrel_batted_rate"):
+                                        if bcol in df_b.columns:
+                                            try:
+                                                bval = float(brow.get(bcol, 0) or 0)
+                                                if bval > 0:
+                                                    if bval < 1.0:
+                                                        bval = round(bval * 100.0, 1)
+                                                    else:
+                                                        bval = round(bval, 1)
+                                                    if yr == season or bnorm not in barrel_map:
+                                                        barrel_map[bnorm] = bval
+                                                    break
+                                            except (TypeError, ValueError):
+                                                pass
+                                    for hcol in ("ev95percent", "hard_hit_percent"):
+                                        if hcol in df_b.columns:
+                                            try:
+                                                hval = float(brow.get(hcol, 0) or 0)
+                                                if hval > 0:
+                                                    if hval < 1.0:
+                                                        hval = round(hval * 100.0, 1)
+                                                    else:
+                                                        hval = round(hval, 1)
+                                                    if yr == season or bnorm not in hardhit_map:
+                                                        hardhit_map[bnorm] = hval
+                                                    break
+                                            except (TypeError, ValueError):
+                                                pass
+                                print(f"  - Loaded {len(df_b)} Savant exitvelo/barrels rows for {yr}.")
+                    except Exception as be:
+                        print(f"  - WARNING: Savant exitvelo/barrels ingest failed for {yr}: {be}")
             except concurrent.futures.TimeoutError:
                 print(f"  - WARNING: Savant xwOBA timed out for {yr}; skipping year.")
             except Exception as e:

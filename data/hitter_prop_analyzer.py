@@ -41,22 +41,38 @@ class HitterPropAnalyzer:
         self.statcast = StatcastBridge()
 
     def _resolve_xwoba(self, name, profile):
-        """Registry → Statcast xwOBA → MLB wOBA → ops_to_xwoba heuristic."""
+        """
+        OMEGA 2027 Dynamic xwOBA Resolution:
+        1. Once a hitter has >= 50 PA in the current season, use 100% real Statcast xwOBA / wOBA / OPS.
+        2. When PA < 50 (April / call-ups / injury returns), Bayesian-blend the preseason registry prior
+           with current-season performance so April priors never overwrite full-season performance.
+        """
         norm = normalize_player_name(name)
         reg = self.xwoba_registry.get(norm)
-        if reg is not None:
-            return cap_matchup_xwoba(reg)
         if isinstance(profile, dict):
             pa = int(profile.get("pa", 0) or 0)
             xwoba_val = float(profile.get("xwoba", 0.0) or 0.0)
-            if pa >= 30 and xwoba_val >= 0.250:
-                return cap_matchup_xwoba(xwoba_val)
             woba_val = float(profile.get("woba", 0.0) or 0.0)
-            if pa >= 50 and woba_val >= 0.250:
-                return cap_matchup_xwoba(woba_val)
             ops_val = float(profile.get("ops", 0.0) or 0.0)
-            if pa >= 50 and ops_val > 0:
-                return ops_to_xwoba(ops_val)
+
+            live_est = None
+            if pa >= 30 and xwoba_val >= 0.220:
+                live_est = cap_matchup_xwoba(xwoba_val)
+            elif pa >= 20 and woba_val >= 0.220:
+                live_est = cap_matchup_xwoba(woba_val)
+            elif pa >= 20 and ops_val > 0.350:
+                live_est = ops_to_xwoba(ops_val)
+
+            if pa >= 50 and live_est is not None:
+                return live_est
+            if reg is not None and live_est is not None and pa > 0:
+                w_live = min(1.0, pa / 50.0)
+                return cap_matchup_xwoba((w_live * live_est) + ((1.0 - w_live) * reg))
+            if live_est is not None:
+                return live_est
+
+        if reg is not None:
+            return cap_matchup_xwoba(reg)
         return 0.310
 
     def decimal_to_american(self, decimal):
@@ -207,8 +223,8 @@ class HitterPropAnalyzer:
                 
                 for m_key in [
                     'batter_home_runs', 'batter_hits', 'batter_total_bases',
-                    'batter_stolen_bases', 'batter_runs', 'batter_rbis',
-                    'batter_walks', 'batter_strikeouts', 'batter_runs_g_rbi',
+                    'batter_stolen_bases', 'batter_runs', 'batter_runs_scored', 'batter_rbis',
+                    'batter_walks', 'batter_strikeouts', 'batter_runs_g_rbi', 'batter_hits_runs_rbis',
                 ]:
                     market_data = markets.get(m_key, [])
                     for entry in market_data:
@@ -348,7 +364,7 @@ class HitterPropAnalyzer:
                                 if -500 < sb_price <= 250:
                                     hitter_map[found_key]['is_speed_target'] = True
 
-                        elif m_key in ('batter_runs', 'batter_rbis'):
+                        elif m_key in ('batter_runs', 'batter_runs_scored', 'batter_rbis'):
                             if entry.get('side') == 'Over':
                                 from utils.prop_juice import merge_hitter_market_juice
 
@@ -370,7 +386,7 @@ class HitterPropAnalyzer:
                                 hitter_map[found_key]['strikeouts_line'] = entry.get('point', 1.5)
                                 hitter_map[found_key]['strikeouts_price'] = so_price
 
-                        elif m_key == 'batter_runs_g_rbi':
+                        elif m_key in ('batter_runs_g_rbi', 'batter_hits_runs_rbis'):
                             if entry.get('side') == 'Over':
                                 rr_price = entry.get('price', 0)
                                 if 1.0 < rr_price < 100.0: rr_price = self.decimal_to_american(rr_price)

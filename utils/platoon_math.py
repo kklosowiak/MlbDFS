@@ -3,32 +3,88 @@
 
 def compute_platoon_multiplier(hitter_profile, pitch_hand, hitter_name=None, pitcher_name=None, matchup_radar=None):
     """
-    Bayesian blend of 2026 vs 2025 OPS split ratios vs opposing pitcher hand,
-    or high-resolution Matchup DNA pitch mix vs pitch-type xwOBA.
+    OMEGA 2027 Platoon + Matchup DNA Hybrid Multiplier:
+    1. Computes the empirical L/R handedness split first (Bayesian blend of 2026 + 2025 OPS split
+       ratios vs opposing pitcher hand, preserving reverse-split hitters with >= 40 split PA).
+    2. Blends Matchup DNA pitch-mix vs pitch-type xwOBA as a secondary modifier (35% weight)
+       rather than short-circuiting handedness splits.
     Returns 1.0 when data is insufficient.
     """
-    # 1. Try Matchup DNA pitch-mix mapping first
+    hand_multiplier = 1.0
+    has_hand_split = False
+
+    if pitch_hand and hitter_profile:
+        opp_hand = str(pitch_hand).upper()
+        overall_ops = float(hitter_profile.get("ops", 0.720) or 0.720)
+        if overall_ops <= 0.200:
+            overall_ops = 0.720
+
+        if opp_hand == "L":
+            split_ops = float(hitter_profile.get("vs_left_ops", 0.0) or 0.0)
+            split_pa = int(hitter_profile.get("vs_left_pa", 0) or 0)
+            split_ops_2025 = float(hitter_profile.get("vs_left_ops_2025", 0.0) or 0.0)
+            split_pa_2025 = int(hitter_profile.get("vs_left_pa_2025", 0) or 0)
+            split_ops_other_2025 = float(hitter_profile.get("vs_right_ops_2025", 0.0) or 0.0)
+            split_pa_other_2025 = int(hitter_profile.get("vs_right_pa_2025", 0) or 0)
+        else:
+            split_ops = float(hitter_profile.get("vs_right_ops", 0.0) or 0.0)
+            split_pa = int(hitter_profile.get("vs_right_pa", 0) or 0)
+            split_ops_2025 = float(hitter_profile.get("vs_right_ops_2025", 0.0) or 0.0)
+            split_pa_2025 = int(hitter_profile.get("vs_right_pa_2025", 0) or 0)
+            split_ops_other_2025 = float(hitter_profile.get("vs_left_ops_2025", 0.0) or 0.0)
+            split_pa_other_2025 = int(hitter_profile.get("vs_left_pa_2025", 0) or 0)
+
+        ratio_2026 = split_ops / overall_ops if overall_ops > 0 and split_ops > 0 else 1.0
+
+        ratio_2025 = 1.0
+        has_2025 = False
+        if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
+            total_pa_2025 = split_pa_2025 + split_pa_other_2025
+            overall_ops_2025 = (
+                (split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)
+            ) / total_pa_2025
+            if overall_ops_2025 > 0.200:
+                ratio_2025 = split_ops_2025 / overall_ops_2025
+                has_2025 = True
+
+        weight_2026 = min(1.0, split_pa / 100.0)
+
+        if has_2025:
+            hand_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
+            has_hand_split = True
+        elif split_pa >= 20:
+            hand_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
+            has_hand_split = True
+        else:
+            # Small sample fallback: apply modest textbook handedness prior (+/- 4%) if bat_side known
+            bat_side = str(hitter_profile.get("bat_side", "") or "").upper()
+            if bat_side in ("L", "R") and opp_hand in ("L", "R"):
+                hand_multiplier = 1.04 if bat_side != opp_hand else 0.96
+                has_hand_split = True
+
+    # 2. Blend Matchup DNA pitch-mix mapping as secondary modifier (never overwrites handedness split)
+    dna_multiplier = None
     if hitter_name and pitcher_name and matchup_radar:
         try:
             from utils.normalization import normalize_player_name
             p_name = normalize_player_name(pitcher_name)
             h_name = normalize_player_name(hitter_name)
-            
+
             pitcher_data = matchup_radar.data.get('pitchers', {}).get(p_name)
             hitter_data = matchup_radar.data.get('hitters', {}).get(h_name)
             league_avg = matchup_radar.data.get('league_avg', {})
-            
+
             if pitcher_data and hitter_data and league_avg:
                 pitch_types = ['FF', 'SI', 'SL', 'CU', 'CH']
                 weighted_hitter_xwoba = 0.0
                 weighted_league_xwoba = 0.0
                 total_usage = 0.0
-                
+
                 for ptype in pitch_types:
                     usage = float(pitcher_data.get(ptype, 0.0) or 0.0)
                     h_xwoba = hitter_data.get(ptype)
                     l_xwoba = league_avg.get(ptype, 0.300)
-                    
+
                     if usage > 0.0:
                         total_usage += usage
                         if h_xwoba is not None:
@@ -36,59 +92,21 @@ def compute_platoon_multiplier(hitter_profile, pitch_hand, hitter_name=None, pit
                         else:
                             weighted_hitter_xwoba += usage * float(l_xwoba)
                         weighted_league_xwoba += usage * float(l_xwoba)
-                
+
                 if total_usage > 0.0 and weighted_league_xwoba > 0.0:
                     h_expected = weighted_hitter_xwoba / total_usage
                     l_expected = weighted_league_xwoba / total_usage
-                    
                     if l_expected > 0.0:
-                        dna_multiplier = h_expected / l_expected
-                        return max(0.70, min(1.30, dna_multiplier))
+                        dna_multiplier = max(0.75, min(1.25, h_expected / l_expected))
         except Exception:
             pass
 
-    if not pitch_hand or not hitter_profile:
-        return 1.0
-
-    opp_hand = str(pitch_hand).upper()
-    overall_ops = float(hitter_profile.get("ops", 0.720) or 0.720)
-    if overall_ops <= 0.200:
-        overall_ops = 0.720
-
-    if opp_hand == "L":
-        split_ops = float(hitter_profile.get("vs_left_ops", 0.0) or 0.0)
-        split_pa = int(hitter_profile.get("vs_left_pa", 0) or 0)
-        split_ops_2025 = float(hitter_profile.get("vs_left_ops_2025", 0.0) or 0.0)
-        split_pa_2025 = int(hitter_profile.get("vs_left_pa_2025", 0) or 0)
-        split_ops_other_2025 = float(hitter_profile.get("vs_right_ops_2025", 0.0) or 0.0)
-        split_pa_other_2025 = int(hitter_profile.get("vs_right_pa_2025", 0) or 0)
-    else:
-        split_ops = float(hitter_profile.get("vs_right_ops", 0.0) or 0.0)
-        split_pa = int(hitter_profile.get("vs_right_pa", 0) or 0)
-        split_ops_2025 = float(hitter_profile.get("vs_right_ops_2025", 0.0) or 0.0)
-        split_pa_2025 = int(hitter_profile.get("vs_right_pa_2025", 0) or 0)
-        split_ops_other_2025 = float(hitter_profile.get("vs_left_ops_2025", 0.0) or 0.0)
-        split_pa_other_2025 = int(hitter_profile.get("vs_left_pa_2025", 0) or 0)
-
-    ratio_2026 = split_ops / overall_ops if overall_ops > 0 and split_ops > 0 else 1.0
-
-    ratio_2025 = 1.0
-    has_2025 = False
-    if (split_pa_2025 + split_pa_other_2025) >= 40 and split_ops_2025 > 0:
-        total_pa_2025 = split_pa_2025 + split_pa_other_2025
-        overall_ops_2025 = (
-            (split_ops_2025 * split_pa_2025) + (split_ops_other_2025 * split_pa_other_2025)
-        ) / total_pa_2025
-        if overall_ops_2025 > 0.200:
-            ratio_2025 = split_ops_2025 / overall_ops_2025
-            has_2025 = True
-
-    weight_2026 = min(1.0, split_pa / 100.0)
-
-    if has_2025:
-        platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * ratio_2025)
-    elif split_pa >= 20:
-        platoon_multiplier = (weight_2026 * ratio_2026) + ((1.0 - weight_2026) * 1.0)
+    if has_hand_split and dna_multiplier is not None:
+        platoon_multiplier = (0.65 * hand_multiplier) + (0.35 * dna_multiplier)
+    elif has_hand_split:
+        platoon_multiplier = hand_multiplier
+    elif dna_multiplier is not None:
+        platoon_multiplier = dna_multiplier
     else:
         platoon_multiplier = 1.0
 

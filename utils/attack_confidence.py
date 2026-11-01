@@ -45,32 +45,33 @@ def _clamp(conf):
 
 
 def _has_high_conviction_stack(t):
-    """Need 2+ quality signals for CONF >= 85."""
+    """Need 2+ quality signals for CONF >= 75."""
     signals = 0
-    # dqi_status == "OVERPRICED" (formerly TRUST) retired as high conviction signal (July 15, 2026)
+    if t.get("dqi_status") in ("TRUST", "CONTRARIAN TRUST", "CHALK TRUST"):
+        signals += 1
     if float(t.get("divergence", 0) or 0) >= 10:
         signals += 1
     # Bullpen/leash status counts as at most 1 signal to avoid double-counting
     opp_outs = float(t.get("opp_pitcher_outs", 18.0) or 18.0)
     if t.get("is_gassed") and opp_outs <= 15.5:
         signals += 1
-    elif t.get("bullpen_fatigue", 0) >= 85 or t.get("is_gassed"):
+    elif float(t.get("bullpen_fatigue", 0) or 0) >= 80 or t.get("is_gassed"):
         signals += 1
 
-    # Prop pressure label no longer influences high conviction stack triggers (retired)
-    # New tactical GPP signals count as high conviction anchors!
+    # Tactical GPP signals & physical power
     if t.get("is_anti_chalk_smash"):
         signals += 1
     if t.get("is_pitch_alignment"):
         signals += 1
+    if t.get("is_burst") or float(t.get("team_xwoba", 0) or 0) >= 0.335:
+        signals += 1
 
     # Matchup conviction signals
-    if float(t.get("implied_total", 4.5) or 4.5) >= 5.0:
+    if float(t.get("implied_total", 4.5) or 4.5) >= 4.8:
         signals += 1
-    # is_true_talent_penalty retired as conviction signal (July 15, 2026)
-    if t.get("is_trap"):
+    if t.get("is_true_talent_penalty"):
         signals += 1
-        
+
     opp_trap = False
     return signals >= 2, opp_trap
 
@@ -139,21 +140,21 @@ def score_stack_confidence(t, p_reports):
         conf += float(_sw.get("is_sharp", 12.0))
         reasons.append("Sharp / institutional interest on this side.")
 
-    # 2. Divergence (Sharp money vs Public tickets - GPP calibrated v16.1)
+    # 2. Divergence (Sharp money vs Public tickets - OMEGA 2027 Validated Calibration)
+    # Full-season 2026 audit (N=1,544): div >= +20 had the highest 6+ run smash rate (33.3%)
+    # and highest 8+ run smash rate (21.7% vs 11.7% for div <= -20).
     div = float(t.get("divergence", 0) or 0)
     dqi_status = t.get("dqi_status")
-    
-    if div <= -20:
-        conf += 10.0
-        reasons.append(f"Institutional GPP leverage: Heavy public fade ({div:+.0f}% div).")
-    elif div <= -12:
+
+    if div >= 20:
         conf += 6.0
-        reasons.append(f"Under-the-radar GPP leverage: Public fade ({div:+.0f}% div).")
-    # dqi_status == "OVERPRICED" (formerly TRUST) steam trap override retired (July 15, 2026)
-    elif div >= 10 and div < 20:
-        # Steam trap penalty - sharps betting win probability, not run-scoring ceiling
-        conf -= 8.0
-        reasons.append(f"Public/ML steam trap: Divergence ({div:+.0f}% div) drags run ceiling.")
+        reasons.append(f"Whale sharp money divergence ({div:+.0f}% div) — top-tier 6+ run ceiling.")
+    elif div >= 10 and xwoba >= 0.315:
+        conf += 3.0
+        reasons.append(f"Positive sharp money divergence ({div:+.0f}% div) backed by lineup xwOBA.")
+    elif div <= -15 and xwoba < 0.320:
+        conf -= 5.0
+        reasons.append(f"Public ticket trap ({div:+.0f}% div) without elite offensive physics.")
 
     # Public Steam Trap Penalty — RETIRED July 15, 2026
     # Removed: Inconclusive (N=6/N=16) and lack of raw lines data in archives.
@@ -203,18 +204,18 @@ def score_stack_confidence(t, p_reports):
         conf -= 8.0
         reasons.append(f"Very low implied run total ({itt:.1f} runs) — avoid stacking.")
 
-    # 5. DQI Status
+    # 5. DQI Status (OMEGA 2027: Restored positive polarity — TRUST averaged 4.94 runs, 38.0% 6+ runs)
     dqi_status = t.get("dqi_status")
-    # DQI Status OVERPRICED (formerly TRUST) negative calibration (July 15, 2026)
-    if dqi_status in ("OVERPRICED", "TRUST"):
-        conf -= 4.0
-        reasons.append(f"DQI OVERPRICED ({t.get('dqi_score')}% - overpriced public lineup) (-4).")
+    dqi_tier = t.get("dqi_tier", dqi_status)
+    if dqi_status in ("TRUST", "OVERPRICED"):
+        conf += 6.0
+        reasons.append(f"DQI {dqi_tier or 'TRUST'} ({t.get('dqi_score')}% — validated sharp divergence + matchup) (+6).")
     elif dqi_status == "CAUTION":
         conf += 0.0
         reasons.append(f"DQI CAUTION ({t.get('dqi_score')}%).")
-    elif dqi_status in ("LEVERAGE", "FADE"):
-        conf += 0.0
-        reasons.append(f"DQI LEVERAGE ({t.get('dqi_score')}%).")
+    elif dqi_status in ("FADE", "LEVERAGE"):
+        conf -= 6.0
+        reasons.append(f"DQI FADE ({t.get('dqi_score')}% — divergence lacks matchup/bullpen support) (-6).")
 
     if t.get("is_trap"):
         num_games = len(p_reports) // 2 if p_reports else 15
@@ -357,50 +358,43 @@ def score_stack_confidence(t, p_reports):
                 f"TTP noted vs {opp_p_name} but offense too weak to capitalize ({xwoba:.3f} xwOBA)."
             )
         
-        # Tough SP penalty
-        phys = float(opp_p.get("physics_score", 0) or 0)
-        if isinstance(opp_p.get("alpha_score"), dict):
-            alpha = opp_p["alpha_score"]
-            if isinstance(alpha, dict):
-                phys = max(phys, float(alpha.get("physics", 0) or 0))
-            else:
-                phys = max(phys, float(alpha or 0))
-        if phys >= 20.0:
-            # OMEGA v17.1 (Fix 2): Tiered Tough SP Penalty — physics-proportional, not flat
-            # Tier 1: 20–35 physics = vulnerable arm (4+ ERA risk, walk risk, low CSW) → lighter penalty
-            # Tier 2: 35–55 physics = solid mid-tier SP → moderate penalty
-            # Tier 3: 55+ physics = true ace / front-line arm → full penalty
-            # Backtest: 0 matchups penalized vs old rules across 184 June matchups
+        # Tough SP penalty (OMEGA 2027 Fix: convert 0-45 physics_score to 0-100 talent scale)
+        from utils.matchup_physics import pitcher_physics_0_100
+        phys_100 = pitcher_physics_0_100(opp_p)
+        if phys_100 >= 48.0:
             p_mkt = float(opp_p.get("market_score", 0.0) or 0.0)
             p_conf = str(opp_p.get("confidence", "low")).lower()
-            
-            # Determine dampening factor based on data quality
+
             damp_factor = 1.0
             is_volatile = False
             volatility_reason = ""
-            
-            if p_conf in ("low", "med"):
-                damp_factor = 0.0  # 100% dampening (eliminate penalty)
+
+            if p_conf == "low":
+                damp_factor = 0.0
                 is_volatile = True
                 volatility_reason = "low-sample SP"
+            elif p_conf == "med":
+                damp_factor = 0.5
+                is_volatile = True
+                volatility_reason = "med-sample SP"
             elif p_mkt == 0.0:
-                damp_factor = 0.5  # 50% dampening
+                damp_factor = 0.5
                 is_volatile = True
                 volatility_reason = "unanchored market SP"
 
-            # Physics-tiered base penalty
-            if phys >= 55.0:
-                base_penalty = 24.0   # True ace — full penalty
+            # Physics-tiered base penalty on 0-100 scale (P75=63.8, P50=56.0, P25=48.2)
+            if phys_100 >= 66.0:
+                base_penalty = 22.0   # True ace — full penalty
                 tier_label = "ace-tier"
-                bp_dampening_mult = 0.85  # Retain 85% of penalty vs. gassed pen
-            elif phys >= 35.0:
-                base_penalty = 16.0   # Solid arm — moderate penalty
+                bp_dampening_mult = 0.85
+            elif phys_100 >= 56.0:
+                base_penalty = 12.0   # Solid arm — moderate penalty
                 tier_label = "solid-tier"
-                bp_dampening_mult = 0.65  # Retain 65% of penalty vs. gassed pen
+                bp_dampening_mult = 0.65
             else:
-                base_penalty = 8.0    # Vulnerable arm (20–35) — light penalty
-                tier_label = "vulnerable-tier"
-                bp_dampening_mult = 0.40  # Retain 40% of penalty vs. gassed pen
+                base_penalty = 5.0    # Average arm (48–56) — light penalty
+                tier_label = "average-tier"
+                bp_dampening_mult = 0.40
 
             bp_fatigue = float(t.get("bullpen_fatigue", 0) or 0)
             if bp_fatigue >= 90 or t.get("is_gassed"):
@@ -554,7 +548,8 @@ def score_stack_confidence(t, p_reports):
             spec_signals = 0
             if t.get("is_steam") or t.get("is_steam_support"):
                 spec_signals += 1
-            # dqi_status == "OVERPRICED" (formerly TRUST) retired from spec_signals (July 15, 2026)
+            if t.get("dqi_status") in ("TRUST", "CONTRARIAN TRUST", "CHALK TRUST"):
+                spec_signals += 1
             if t.get("is_gassed") or float(t.get("bullpen_fatigue", 0) or 0) >= 85:
                 spec_signals += 1
                 
@@ -590,16 +585,19 @@ def score_pitcher_confidence(p, t_reports):
         conf -= 20
         reasons.append(f"COLD form ({p.get('recent_era')} ERA L3).")
 
-    # 2. Physics Score (SIERA/xERA based)
-    siera = float(p.get("physics_score", 0) or 0)
+    # 2. Physics Score (OMEGA 2027 Fix: calibrated to 0-45 physics_score scale; mean=25.15, P75=28.7, P25=21.7)
+    phys_val = float(p.get("physics_score", 0) or 0)
     if isinstance(p.get("alpha_score"), dict):
-        siera = max(siera, float(p["alpha_score"].get("physics", 0) or 0))
-    if siera >= 20:
+        phys_val = max(phys_val, float(p["alpha_score"].get("physics", 0) or 0))
+    if phys_val >= 28.5:
         conf += 14
-        reasons.append(f"Strong underlying physics ({siera:.1f}).")
-    elif siera < 10:
+        reasons.append(f"Elite underlying physics ({phys_val:.1f}).")
+    elif phys_val >= 24.5:
+        conf += 7
+        reasons.append(f"Solid underlying physics ({phys_val:.1f}).")
+    elif 0 < phys_val <= 21.0:
         conf -= 14
-        reasons.append(f"Weak underlying physics ({siera:.1f}).")
+        reasons.append(f"Weak underlying physics ({phys_val:.1f}).")
 
     # 3. Market Traps and Fades
     if p.get("is_trap"):

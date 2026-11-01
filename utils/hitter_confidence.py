@@ -63,12 +63,15 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
         conf += form_boost
         reasons.append(f"Continuous Form Index boost ({form_boost:+.1f} CONF) based on L7 OPS {recent_ops:.3f} vs Season OPS {season_ops:.3f}")
 
-    # Statcast Batted-Ball Profiles (Sprint 1)
+    # Statcast Batted-Ball Profiles & Slugger Ceiling
     barrel_pct = float(h.get("barrel_pct", 0.0) or 0.0)
     hard_hit_pct = float(h.get("hard_hit_pct", 0.0) or 0.0)
     if barrel_pct >= 12.0 and hard_hit_pct >= 45.0:
         conf += 8.0
         reasons.append(f"Statcast Batted-Ball profile edge: Barrel% ({barrel_pct:.1f}%) and HardHit% ({hard_hit_pct:.1f}%) are elite.")
+    elif barrel_pct >= 9.5 or xwoba >= 0.360:
+        conf += 4.0
+        reasons.append("Slugger power profile (elevated HR/extra-base ceiling).")
 
     # 5. Team Stack & Market Sentiment Context
     if team_data:
@@ -89,13 +92,14 @@ def score_hitter_confidence(h, team_data=None, opp_pitcher=None):
             conf += 10
             reasons.append(f"Attacking cold opposing pitcher ({opp_pitcher.get('pitcher', 'SP')}).")
             
-        opp_sp_phys = opp_pitcher.get("physics_score", 0) or 0
-        if opp_sp_phys >= 18:
+        opp_sp_phys = float(opp_pitcher.get("physics_score", 0) or 0)
+        # OMEGA 2027 Fix: physics_score is on the 0-45 weighted scale (mean=25.15, P75=28.7, P25=21.7)
+        if opp_sp_phys >= 29.0:
             conf -= 12
-            reasons.append("Opposing SP has strong underlying physics.")
-        elif opp_sp_phys < 10 and not opp_pitcher.get("is_trap"):
+            reasons.append(f"Opposing SP has strong underlying physics ({opp_sp_phys:.1f}).")
+        elif 0 < opp_sp_phys <= 21.5 and not opp_pitcher.get("is_trap"):
             conf += 12
-            reasons.append("Attacking pitcher with weak underlying physics.")
+            reasons.append(f"Attacking pitcher with weak underlying physics ({opp_sp_phys:.1f}).")
 
     # 7. Opposing Bullpen Fatigue
     opp_bf = h.get("bullpen_fatigue", 0) or (team_data.get("bullpen_fatigue", 0) if team_data else 0)
