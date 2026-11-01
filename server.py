@@ -40,32 +40,7 @@ def get_eastern_time(dt_naive):
 
 
 def apply_onrender_overrides(data):
-    if not isinstance(data, dict):
-        return data
-    
-    # 1. Pitchers
-    pitchers = data.get("pitchers", [])
-    for p in pitchers:
-        if p.get('pitcher') in ['Tbd', 'TBD'] and p.get('team') in ['San Diego Padres', 'SD']:
-            p['pitcher'] = 'German Marquez'
-            p['confidence'] = 'high'
-            p['is_confirmed'] = True
-            
-    # 2. Teams
-    teams = data.get("teams", [])
-    for t in teams:
-        if t.get('opp_pitcher') in ['Tbd', 'TBD'] and (t.get('opponent') in ['San Diego Padres', 'SD'] or t.get('team') == 'Atlanta Braves'):
-            t['opp_pitcher'] = 'German Marquez'
-            t['confidence'] = 'high'
-            t['stack_score'] = 150.0
-            # blended_rating already set by main.py canonical block; no re-compute here
-
-    # 3. Hitters
-    hitters = data.get("hitters", [])
-    for h in hitters:
-        if h.get('opp_pitcher') in ['Tbd', 'TBD'] and (h.get('opponent') in ['San Diego Padres', 'SD'] or h.get('team') == 'Atlanta Braves'):
-            h['opp_pitcher'] = 'German Marquez'
-            
+    # OMEGA 2027: Clean pass-through (removed legacy German Marquez / Atlanta single-slate override)
     return data
 
 # Load last refresh time from cached results on startup
@@ -2578,15 +2553,26 @@ def get_slate_center_api(date: str = None):
         away_sp_obj = team_sp if is_team_away else opp_sp
         home_sp_obj = opp_sp if is_team_away else team_sp
 
-        # Match Vegas odds
-        game_line = None
-        for o in opening_lines:
-            o_away = o.get("team_away") or ""
-            o_home = o.get("team_home") or ""
-            if (o_away == away_team and o_home == home_team) or \
-               (get_abbrev(o_away) == get_abbrev(away_team) and get_abbrev(o_home) == get_abbrev(home_team)):
-                game_line = o
-                break
+        # Match Vegas odds (check vegas_board inside results first, then opening_lines)
+        vb_list = results.get("vegas_board", [])
+        game_line = next(
+            (
+                g for g in vb_list
+                if isinstance(g, dict) and (
+                    (g.get("away_team") == away_team and g.get("home_team") == home_team) or
+                    (get_abbrev(g.get("away_team", "")) == get_abbrev(away_team) and get_abbrev(g.get("home_team", "")) == get_abbrev(home_team))
+                )
+            ),
+            None,
+        )
+        if not game_line:
+            for o in opening_lines:
+                o_away = o.get("team_away") or ""
+                o_home = o.get("team_home") or ""
+                if (o_away == away_team and o_home == home_team) or \
+                   (get_abbrev(o_away) == get_abbrev(away_team) and get_abbrev(o_home) == get_abbrev(home_team)):
+                    game_line = o
+                    break
 
         away_ml = game_line.get("away_current_ml") if game_line else None
         home_ml = game_line.get("home_current_ml") if game_line else None
@@ -2619,15 +2605,23 @@ def get_slate_center_api(date: str = None):
         away_div = float(away_team_obj.get("divergence") or 0.0)
         home_div = float(home_team_obj.get("divergence") or 0.0)
 
-        # Scale deltas appropriately for log-odds space
-        rating_diff = (away_rating - home_rating) * 0.012
-        sp_diff = (home_sp_rating - away_sp_rating) * 0.012
-        div_diff = (away_div - home_div) * 0.02
+        # OMEGA 2027 Fix: Correct SP direction (better away SP increases away win prob!) + validated bullpen/SIERA/xwOBA deltas
+        a_siera = float(away_sp_obj.get("siera") or 4.10) if away_sp_obj else 4.10
+        h_siera = float(home_sp_obj.get("siera") or 4.10) if home_sp_obj else 4.10
+        a_xw = float(away_team_obj.get("team_xwoba") or 0.315)
+        h_xw = float(home_team_obj.get("team_xwoba") or 0.315)
+        a_bp = float(away_team_obj.get("bullpen_fatigue") or 0.0)
+        h_bp = float(home_team_obj.get("bullpen_fatigue") or 0.0)
+
+        bp_diff = ((a_bp - h_bp) / 100.0) * 0.22
+        sp_diff = ((h_siera - a_siera) * 0.12) + ((away_sp_rating - home_sp_rating) * 0.004)
+        xw_diff = (a_xw - h_xw) * 2.2
+        div_diff = max(-0.10, min(0.10, (away_div - home_div) * 0.0025))
 
         # Convert market probability to log-odds, add deltas, and map back to probability via sigmoid
-        market_prob_away_clamped = max(0.01, min(0.99, market_prob_away))
+        market_prob_away_clamped = max(0.05, min(0.95, market_prob_away))
         market_logit = math.log(market_prob_away_clamped / (1.0 - market_prob_away_clamped))
-        omega_logit = market_logit + rating_diff + sp_diff + div_diff
+        omega_logit = market_logit + bp_diff + sp_diff + xw_diff + div_diff
         
         omega_prob_away = 1.0 / (1.0 + math.exp(-omega_logit))
         omega_prob_away = max(0.05, min(0.95, omega_prob_away)) # safe bounds
@@ -2648,8 +2642,9 @@ def get_slate_center_api(date: str = None):
         away_implied = float(away_team_obj.get("implied_total") or 4.5)
         home_implied = float(home_team_obj.get("implied_total") or 4.5)
 
-        runs_omega_away = max(1.5, away_implied * (1.0 + (away_div / 100.0) + (away_rating - 75.0) * 0.005))
-        runs_omega_home = max(1.5, home_implied * (1.0 + (home_div / 100.0) + (home_rating - 75.0) * 0.005))
+        # OMEGA 2027 Calibrated Expected Runs (avoids systematic OVER bias)
+        runs_omega_away = max(1.5, away_implied + ((a_xw - 0.315) * 12.0) + ((3.95 - h_siera) * -0.35) + (max(0.0, a_bp - 70.0) * 0.012))
+        runs_omega_home = max(1.5, home_implied + ((h_xw - 0.315) * 12.0) + ((3.95 - a_siera) * -0.35) + (max(0.0, h_bp - 70.0) * 0.012))
 
         # Bivariate Poisson simulation for spread cover probabilities
         from utils.audit_engine import simulate_game_poisson
@@ -3409,9 +3404,9 @@ DQI fires only when team divergence >= 10% (sharp money interest). Base score st
 - **Positive layers:** Targetable SP physics, gassed bullpen, market steam, O-DIV, xwOBA, power stack, surging trend, run environment, storm/debut bonuses
 - **Warning layers:** Reverse steam, U-DIV, fading trend, public chalk trap (-20 pts)
 - **🚥 DQI Grades:**
-  - `TRUST` (75-100): High-conviction divergence play
-  - `CAUTION` (50-74): Mixed signals — proceed carefully
-  - `LEVERAGE` (under 50): Formerly FADE. Low-DQI sharp interest indicating a high-leverage contrarian target.
+  - `TRUST` (80-100): High-conviction divergence play (+6 CONF). Sub-classified into `CONTRARIAN TRUST` (sharp money >= +10% divergence, low public ownership) and `CHALK TRUST` (confirmed high-ITT juggernaut).
+  - `CAUTION` (50-79): Mixed signals — neutral confidence modifier.
+  - `FADE` (under 50): Public chalk trap or sharp fade (-6 CONF). Avoid stacking in single-entry GPPs.
 - **HEAVY $ (`is_sharp`):** Money >= 65% AND divergence >= 10% (not chalk alone)
 - **ML WHALE FADE:** Smart money (divergence >= 25%) backing a team while the public tickets go the other way (+2-4% ROI edge in ML betting).
 

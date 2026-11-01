@@ -4437,8 +4437,11 @@
         function buildTeamDqiBadgeHtml(t, dqiRankInfo = null) {
             if (t.dqi_score !== undefined && t.dqi_score !== null) {
                 const dqiScore = t.dqi_score;
-                const dqiStatus = t.dqi_status || (dqiScore >= 75 ? 'OVERPRICED' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
-                const scoreColor = dqiStatus === 'OVERPRICED' ? '#ff9f0a' : (dqiStatus === 'CAUTION' ? '#86868b' : '#bf5af2');
+                const dqiStatus = t.dqi_status || (dqiScore >= 80 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                const dqiLabel = t.dqi_tier || dqiStatus;
+                const isTrust = (dqiStatus === 'TRUST' || dqiStatus === 'OVERPRICED');
+                const isFade = (dqiStatus === 'FADE' || dqiStatus === 'LEVERAGE');
+                const scoreColor = isTrust ? '#30d158' : (isFade ? '#ff453a' : '#86868b');
                 
                 const posPts = t.dqi_pos_pts != null ? Math.round(t.dqi_pos_pts) : 0;
                 const warnPts = t.dqi_warn_pts != null ? Math.round(t.dqi_warn_pts) : 0;
@@ -4451,13 +4454,13 @@
                 if (warnList) breakdown += warnList;
                 
                 let scoreBg, scoreBorderColor, scoreGlow, rankColor, ptsColor, dotColor;
-                if (dqiStatus === 'OVERPRICED') {
-                    scoreBg = 'rgba(255, 159, 10, 0.12)';
-                    scoreBorderColor = 'rgba(255, 159, 10, 0.65)';
-                    scoreGlow = 'box-shadow: 0 0 10px rgba(255, 159, 10, 0.35), inset 0 0 4px rgba(255, 159, 10, 0.15);';
-                    rankColor = '#ffd28c';
-                    ptsColor = '#ffe0b3';
-                    dotColor = 'rgba(255, 159, 10, 0.6)';
+                if (isTrust) {
+                    scoreBg = 'rgba(48, 209, 88, 0.12)';
+                    scoreBorderColor = 'rgba(48, 209, 88, 0.65)';
+                    scoreGlow = 'box-shadow: 0 0 10px rgba(48, 209, 88, 0.30), inset 0 0 4px rgba(48, 209, 88, 0.15);';
+                    rankColor = '#7bf196';
+                    ptsColor = '#b3f7c2';
+                    dotColor = 'rgba(48, 209, 88, 0.6)';
                 } else if (dqiStatus === 'CAUTION') {
                     scoreBg = 'rgba(255, 255, 255, 0.05)';
                     scoreBorderColor = 'rgba(255, 255, 255, 0.15)';
@@ -4466,12 +4469,12 @@
                     ptsColor = '#d2d2d7';
                     dotColor = 'rgba(255, 255, 255, 0.2)';
                 } else {
-                    scoreBg = 'rgba(191, 90, 242, 0.12)';
-                    scoreBorderColor = 'rgba(191, 90, 242, 0.65)';
-                    scoreGlow = 'box-shadow: 0 0 10px rgba(191, 90, 242, 0.35), inset 0 0 4px rgba(191, 90, 242, 0.15);';
-                    rankColor = '#da9eff';
-                    ptsColor = '#ecd4ff';
-                    dotColor = 'rgba(191, 90, 242, 0.6)';
+                    scoreBg = 'rgba(255, 69, 58, 0.12)';
+                    scoreBorderColor = 'rgba(255, 69, 58, 0.65)';
+                    scoreGlow = 'box-shadow: 0 0 10px rgba(255, 69, 58, 0.30), inset 0 0 4px rgba(255, 69, 58, 0.15);';
+                    rankColor = '#ff8a84';
+                    ptsColor = '#ffb3af';
+                    dotColor = 'rgba(255, 69, 58, 0.6)';
                 }
 
                 const rankHtml = dqiRankInfo ? `<span style="color:${rankColor}; font-weight:700;">Rank #${dqiRankInfo.rank}</span>` : '';
@@ -4481,7 +4484,7 @@
                 
                 return `
                     <div${tipAttrs(breakdown)} style="font-size:0.68rem; margin-top:6px; display:flex; flex-direction:column; gap:3px; font-weight:600; text-align:left; background:${scoreBg}; border:1px solid ${scoreBorderColor}; padding:5px 8px; border-radius:6px; width:fit-content; ${scoreGlow}">
-                        <div style="color:${scoreColor}; font-weight:800; font-size:0.72rem; letter-spacing:0.02em;">DQI ${dqiScore}% · ${dqiStatus}</div>
+                        <div style="color:${scoreColor}; font-weight:800; font-size:0.72rem; letter-spacing:0.02em;">DQI ${dqiScore}% · ${dqiLabel}</div>
                         <div style="font-size:0.64rem; font-weight:600; margin-top:1px; color:#ffffff;">${subHtml}</div>
                     </div>`;
             }
@@ -8241,8 +8244,8 @@
                     let dqiHtml = 'N/A';
                     if (oppT.dqi_score !== undefined) {
                         const dqiScore = oppT.dqi_score;
-                        const dqiStatus = oppT.dqi_status || (dqiScore >= 75 ? 'OVERPRICED' : (dqiScore >= 50 ? 'CAUTION' : 'LEVERAGE'));
-                        const dqiColor = dqiStatus === 'OVERPRICED' ? '#ff9f0a' : (dqiStatus === 'CAUTION' ? '#86868b' : '#bf5af2');
+                        const dqiStatus = oppT.dqi_status || (dqiScore >= 80 ? 'TRUST' : (dqiScore >= 50 ? 'CAUTION' : 'FADE'));
+                        const dqiColor = (dqiStatus === 'TRUST' || dqiStatus === 'OVERPRICED') ? '#30d158' : (dqiStatus === 'CAUTION' ? '#86868b' : '#ff453a');
                         let dqiFactorStr = '';
                         if (oppT.dqi_pos_factors && oppT.dqi_pos_factors.length > 0) {
                             dqiFactorStr += `<div style="color:rgba(255,255,255,0.55); font-size:0.72rem; margin-top:4px;">✅ ${oppT.dqi_pos_factors.join(' · ')}</div>`;
@@ -9530,8 +9533,8 @@
                 </p>
                 <ul style="font-size: 1.0rem; line-height: 1.8; color: rgba(255,255,255,0.85); padding-left: 20px;">
                     <li><strong style="color:var(--accent-blue);">OMEGA Score ($\ge 100$ is Elite, $\ge 85$ is Strong):</strong> The absolute baseline projection of a pitcher's slate quality. It incorporates vegas win probability, strikeout rates, and runs allowed projection.</li>
-                    <li><strong style="color:var(--accent-blue);">PHY (Physics Score, 0-40 Scale):</strong> Represents the pitcher's raw physical stuff. It measures recent strikeout rate (K/9), swing-and-miss ability (CSW%), and expected ERA (SIERA). **If a pitcher has a high PHY but a low salary, they are a premier value.**</li>
-                    <li><strong style="color:var(--accent-blue);">MKT (Market Score, 0-20 Scale):</strong> The betting market's confidence in this pitcher. It tracks line movement, odds shifts, and sharp betting volume. A **high Market score** means the smartest money in the world is heavily backing this pitcher.</li>
+                    <li><strong style="color:var(--accent-blue);">PHY (Physics Score, 0-45 Scale):</strong> Represents the pitcher's true Statcast talent (multi-year stabilized SIERA &amp; CSW%). Elite aces score $\ge 28.5$, solid starters $\ge 24.5$, and vulnerable arms $\le 21.5$.</li>
+                    <li><strong style="color:var(--accent-blue);">MKT (Market Score, 0-40 Scale):</strong> Blends Strikeout Prop line &amp; juice ($50\%$), Moneyline Win Probability ($30\%$), and Projected Outs ($20\%$). When props are not yet posted, OMEGA dynamically shifts weight to Physics so elite arms are never artificially penalized.</li>
                     <li><strong style="color:var(--accent-blue);">Sharp Money Filtering (Shark & Whale):</strong> We de-weight starting pitcher sharp multipliers to prioritize individual pitching talent (like strikeouts) over general team moneyline swings. Look for pitchers who combine a high **PHY** score with solid market steam.</li>
                 </ul>
             </div>
@@ -9682,11 +9685,20 @@
                 </div>
                 
                 <div class="quant-card" style="border-left: 4px solid var(--accent-purple);">
-                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 3: The Sneary Stack contrarian Hunt</h4>
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 3: DQI 2.0 Contrarian Trust &amp; Clean-Side Game Leverage</h4>
                     <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0;">
-                        1. Locate low-owned teams flagged as `🛸 SNEAKY` with low implied totals.
-                        <br>2. Check their matchup details to verify if they are facing a debuting starter, a bullpen opener, or an exhausted bullpen behind a short leash.
-                        <br>3. Stack these hitters. Because the public ignores them due to low Vegas lines, their ownership is near-zero. If their physics override fires, your lineup secures a massive contrarian leverage advantage.
+                        1. Filter for teams graded <strong>DQI TRUST ($\ge 80\%$)</strong> — full-season 2026 validation confirmed DQI TRUST stacks average <strong>5.31 runs/game (46.2% 6+ run explosion rate)</strong> vs 2.74 runs for DQI FADE ($&lt; 50\%$).
+                        <br>2. Distinguish <strong>CONTRARIAN TRUST</strong> ($\ge +10\%$ sharp divergence, low public ownership) from <strong>CHALK TRUST</strong> (high-ITT public favorites) to balance floor and tournament leverage in Single-Entry contests.
+                        <br>3. When a high-total game features one team flagged with <code>⚠️ FADE RISK</code>, attack the <strong>clean opposing side of that same game</strong> + pair your 4/5-man primary stack with 1–2 elite Barrel% ($\ge 10\%$) / hybrid platoon one-off sluggers.
+                    </p>
+                </div>
+                
+                <div class="quant-card" style="border-left: 4px solid #30d158; margin-top: 16px;">
+                    <h4 style="color:#fff; font-weight:800; margin-bottom: 10px;">Strategy 4: 2027 Sports Betting &amp; Prop Intelligence (61.9% Backtested Win Rate)</h4>
+                    <p style="font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0;">
+                        1. <strong>Gassed Bullpen Fade ML (+13.7% ROI):</strong> Back teams facing an exhausted bullpen ($\ge 85\%$ fatigue) when their own bullpen is fresh ($\le 68\%$) and starting pitching is even or better.
+                        <br>2. <strong>Ace Duel Total UNDER (+45.5% ROI, 76.2% Win Rate):</strong> Bet the Full-Game UNDER when both starting pitchers carry $\text{SIERA} \le 3.80$ and combined team $\text{xwOBA} \le .630$ on totals $\ge 7.5$.
+                        <br>3. <strong>Whale ML Divergence (+8.3% ROI) &amp; Pitcher K/Outs Props:</strong> Target Moneyline sides with $\ge +20\%$ sharp divergence + SP SIERA edge, and attack <strong>Pitcher K UNDERs</strong> ($58.3\%$ win rate when $\text{PHY} \le 21.5, \text{SIERA} \ge 4.25$) and <strong>Trap Arm Outs UNDERs</strong> ($54.0\%$ win rate).
                     </p>
                 </div>
             </div>

@@ -12,21 +12,7 @@ class DashboardGenerator:
         """Generates a premium 4-Tab dashboard including the Vegas Board."""
         if skipped_events is None: skipped_events = []
 
-        # OMEGA ON-RENDER OVERRIDE: Map TBD to German Marquez for Padres and uncap Atlanta
-        for p in p_reports:
-            if p.get('pitcher') in ['Tbd', 'TBD'] and p.get('team') in ['San Diego Padres', 'SD']:
-                p['pitcher'] = 'German Marquez'
-                p['confidence'] = 'high'
-                p['is_confirmed'] = True
-        for t in t_reports:
-            if t.get('opp_pitcher') in ['Tbd', 'TBD'] and (t.get('opponent') in ['San Diego Padres', 'SD'] or t.get('team') == 'Atlanta Braves'):
-                t['opp_pitcher'] = 'German Marquez'
-                t['confidence'] = 'high'
-                t['stack_score'] = 150.0
-                # blended_rating is written by main.py canonical block after generate() returns
-        for h in h_reports:
-            if h.get('opp_pitcher') in ['Tbd', 'TBD'] and (h.get('opponent') in ['San Diego Padres', 'SD'] or h.get('team') == 'Atlanta Braves'):
-                h['opp_pitcher'] = 'German Marquez'
+        # OMEGA 2027: Removed legacy single-slate German Marquez / Atlanta override
         emoji_key = {
             "elite": "🔥", "high": "⚡", "med": "📈", "low": "📉",
             "trap": "🚨", "shark": "🦈", "whale": "🐳", "steam": "💨",
